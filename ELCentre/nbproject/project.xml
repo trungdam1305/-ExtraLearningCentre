@@ -27,6 +27,8 @@
                 <library dirs="200">
                     <file>${file.reference.sqljdbc42.jar}</file>
                 </library>
+<<<<<<< HEAD
+=======
                 <library dirs="200">
                     <file>${file.reference.gson-2.8.9.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
@@ -55,6 +57,7 @@
                     <file>${file.reference.sqljdbc42.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
+>>>>>>> 06babd063d310f69c5a44c197c97bb75f70ecef2
             </web-module-libraries>
             <web-module-additional-libraries/>
             <source-roots>
