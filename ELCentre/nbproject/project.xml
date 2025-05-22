@@ -7,36 +7,6 @@
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <web-module-libraries>
                 <library dirs="200">
-<<<<<<< HEAD
-                    <file>${&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD}</file>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.gson-2.8.9.jar-2}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.jakarta.activation-2.0.1.jar-2}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.jakarta.mail-2.0.1.jar-2}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.jakarta.servlet.jsp.jstl-api-2.0.0__1_.jar-2}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.jakarta.servlet.jsp.jstl-api-2.0.0__2_.jar-2}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.jaxb-api-2.1.jar-2}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.sqljdbc42.jar-2}</file>
-=======
                     <file>${file.reference.gson-2.8.9.jar-1}</file>
                 </library>
                 <library dirs="200">
@@ -83,7 +53,6 @@
                 </library>
                 <library dirs="200">
                     <file>${file.reference.sqljdbc42.jar}</file>
->>>>>>> b2470300f8059886d3e6f10f61896ec9df8a5b9e
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
