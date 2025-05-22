@@ -982,6 +982,27 @@ exists or setup the property manually. For example like this:
     </target>
     <target depends="init,compile,compile-jsps,-pre-dist,-do-dist-with-manifest,-do-dist-without-manifest" name="do-dist"/>
     <target depends="init" if="dist.ear.dir" name="library-inclusion-in-manifest">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <copyfiles files="${file.reference.gson-2.8.9.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${file.reference.jakarta.activation-2.0.1.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${file.reference.jakarta.mail-2.0.1.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${file.reference.jakarta.servlet.jsp.jstl-api-2.0.0__1_.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${file.reference.jakarta.servlet.jsp.jstl-api-2.0.0__2_.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${file.reference.jaxb-api-2.1.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${file.reference.sqljdbc42.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+<<<<<<< HEAD
+=======
+>>>>>>> d8e5aacb8379e6506496b71d90419d54bddc7114
+=======
+>>>>>>> d6ca0297df5c8e38c7d43bb0c7addcf2febfe3dd
+=======
+>>>>>>> 497f8f16a4aee12715a6f7aa07c879233c898f13
+>>>>>>> 4c0ef024b792d4ce40647a51f8277be7b8fd1b65
         <copyfiles files="${file.reference.gson-2.8.9.jar-1}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.jakarta.activation-2.0.1.jar-1}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.jakarta.mail-2.0.1.jar-1}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
@@ -989,10 +1010,41 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${file.reference.jakarta.servlet.jsp.jstl-api-2.0.0__2_.jar-1}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.jaxb-api-2.1.jar-1}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.sqljdbc42.jar-1}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 06babd063d310f69c5a44c197c97bb75f70ecef2
+=======
+>>>>>>> d6ca0297df5c8e38c7d43bb0c7addcf2febfe3dd
+=======
+>>>>>>> 497f8f16a4aee12715a6f7aa07c879233c898f13
+>>>>>>> 4c0ef024b792d4ce40647a51f8277be7b8fd1b65
         <mkdir dir="${build.web.dir}/META-INF"/>
         <manifest file="${build.web.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
     <target depends="init" name="library-inclusion-in-archive" unless="dist.ear.dir">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <copyfiles files="${file.reference.gson-2.8.9.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copyfiles files="${file.reference.jakarta.activation-2.0.1.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copyfiles files="${file.reference.jakarta.mail-2.0.1.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copyfiles files="${file.reference.jakarta.servlet.jsp.jstl-api-2.0.0__1_.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copyfiles files="${file.reference.jakarta.servlet.jsp.jstl-api-2.0.0__2_.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copyfiles files="${file.reference.jaxb-api-2.1.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copyfiles files="${file.reference.sqljdbc42.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+<<<<<<< HEAD
+=======
+>>>>>>> d8e5aacb8379e6506496b71d90419d54bddc7114
+=======
+>>>>>>> d6ca0297df5c8e38c7d43bb0c7addcf2febfe3dd
+=======
+>>>>>>> 497f8f16a4aee12715a6f7aa07c879233c898f13
+>>>>>>> 4c0ef024b792d4ce40647a51f8277be7b8fd1b65
         <copyfiles files="${file.reference.gson-2.8.9.jar-1}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${file.reference.jakarta.activation-2.0.1.jar-1}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${file.reference.jakarta.mail-2.0.1.jar-1}" todir="${build.web.dir}/WEB-INF/lib"/>
@@ -1000,6 +1052,16 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${file.reference.jakarta.servlet.jsp.jstl-api-2.0.0__2_.jar-1}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${file.reference.jaxb-api-2.1.jar-1}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${file.reference.sqljdbc42.jar-1}" todir="${build.web.dir}/WEB-INF/lib"/>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 06babd063d310f69c5a44c197c97bb75f70ecef2
+=======
+>>>>>>> d6ca0297df5c8e38c7d43bb0c7addcf2febfe3dd
+=======
+>>>>>>> 497f8f16a4aee12715a6f7aa07c879233c898f13
+>>>>>>> 4c0ef024b792d4ce40647a51f8277be7b8fd1b65
     </target>
     <target depends="init" if="dist.ear.dir" name="-clean-webinf-lib">
         <delete dir="${build.web.dir}/WEB-INF/lib"/>

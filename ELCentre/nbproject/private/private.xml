@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+=======
+<<<<<<< HEAD
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group name="SWP">
+            <file>file:/C:/Users/admin/Desktop/hehe/ELCentre/web/index.html</file>
+            <file>file:/C:/Users/admin/Desktop/hehe/ELCentre/web/WEB-INF/web.xml</file>
+=======
+=======
+>>>>>>> 497f8f16a4aee12715a6f7aa07c879233c898f13
+>>>>>>> 4c0ef024b792d4ce40647a51f8277be7b8fd1b65
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0">
+>>>>>>> d8e5aacb8379e6506496b71d90419d54bddc7114
+        <file>
+            <url>src/java/model/VaiTro.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>13</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group name="SWP">
+            <file>file:/C:/Users/admin/Desktop/hehe/ELCentre/web/index.html</file>
+            <file>file:/C:/Users/admin/Desktop/hehe/ELCentre/src/java/model/VaiTro.java</file>
+            <file>file:/C:/Users/admin/Desktop/hehe/ELCentre/src/java/model/Taikhoan.java</file>
+<<<<<<< HEAD
+=======
+            <file>file:/C:/Users/admin/Desktop/hehe/ELCentre/src/java/model/Model.java</file>
+>>>>>>> 06babd063d310f69c5a44c197c97bb75f70ecef2
+>>>>>>> d8e5aacb8379e6506496b71d90419d54bddc7114
+=======
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
         <file>
             <url>src/java/model/VaiTro.java</url>
             <bookmark id="1">
@@ -16,6 +55,16 @@
             <file>file:/C:/Users/admin/Desktop/hehe/ELCentre/src/java/model/VaiTro.java</file>
             <file>file:/C:/Users/admin/Desktop/hehe/ELCentre/src/java/model/Taikhoan.java</file>
             <file>file:/C:/Users/admin/Desktop/hehe/ELCentre/src/java/model/Model.java</file>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        </group>
+        <group>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/G3_SWP/-ExtraLearningCentre/ELCentre/src/java/model/HocSinh.java</file>
+>>>>>>> d6ca0297df5c8e38c7d43bb0c7addcf2febfe3dd
+=======
+>>>>>>> 497f8f16a4aee12715a6f7aa07c879233c898f13
+>>>>>>> 4c0ef024b792d4ce40647a51f8277be7b8fd1b65
         </group>
     </open-files>
 </project-private>
