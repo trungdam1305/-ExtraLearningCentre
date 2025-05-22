@@ -7,10 +7,46 @@
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <web-module-libraries>
                 <library dirs="200">
+<<<<<<< HEAD
                     <file>${&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD}</file>
                 </library>
                 <library dirs="200">
                     <file>${file.reference.gson-2.8.9.jar-2}</file>
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+                    <file>${file.reference.gson-2.8.9.jar}</file>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.jakarta.activation-2.0.1.jar}</file>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.jakarta.mail-2.0.1.jar}</file>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.jakarta.servlet.jsp.jstl-api-2.0.0__1_.jar}</file>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.jakarta.servlet.jsp.jstl-api-2.0.0__2_.jar}</file>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.jaxb-api-2.1.jar}</file>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.sqljdbc42.jar}</file>
+                </library>
+<<<<<<< HEAD
+=======
+                <library dirs="200">
+=======
+>>>>>>> 497f8f16a4aee12715a6f7aa07c879233c898f13
+>>>>>>> 4c0ef024b792d4ce40647a51f8277be7b8fd1b65
+                    <file>${file.reference.gson-2.8.9.jar-1}</file>
+=======
+                    <file>${file.reference.gson-2.8.9.jar-1}</file>
+>>>>>>> 106a9fb6d203f474f6358302a072627cee70ce3f
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
@@ -37,6 +73,33 @@
                     <file>${file.reference.sqljdbc42.jar-2}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
+<<<<<<< HEAD
+=======
+                <library dirs="200">
+                    <file>${file.reference.jakarta.activation-2.0.1.jar-1}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.jakarta.mail-2.0.1.jar-1}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.jakarta.servlet.jsp.jstl-api-2.0.0__1_.jar-1}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.jakarta.servlet.jsp.jstl-api-2.0.0__2_.jar-1}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.jaxb-api-2.1.jar-1}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.sqljdbc42.jar-1}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+>>>>>>> 106a9fb6d203f474f6358302a072627cee70ce3f
             </web-module-libraries>
             <web-module-additional-libraries/>
             <source-roots>
