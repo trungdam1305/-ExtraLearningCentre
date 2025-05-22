@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-<<<<<<< HEAD
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group name="SWP">
-            <file>file:/C:/Users/admin/Desktop/hehe/ELCentre/web/index.html</file>
-            <file>file:/C:/Users/admin/Desktop/hehe/ELCentre/web/WEB-INF/web.xml</file>
-=======
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0">
         <file>
             <url>src/java/model/VaiTro.java</url>
@@ -23,7 +16,6 @@
             <file>file:/C:/Users/admin/Desktop/hehe/ELCentre/src/java/model/VaiTro.java</file>
             <file>file:/C:/Users/admin/Desktop/hehe/ELCentre/src/java/model/Taikhoan.java</file>
             <file>file:/C:/Users/admin/Desktop/hehe/ELCentre/src/java/model/Model.java</file>
->>>>>>> 06babd063d310f69c5a44c197c97bb75f70ecef2
         </group>
     </open-files>
 </project-private>
