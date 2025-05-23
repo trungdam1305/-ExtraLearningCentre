@@ -26,7 +26,7 @@
                     <div class="container">
                         <div id="logo">								<a href="${pageContext.request.contextPath}/views/HomePage.jsp" title="Guru Learning Management System WP Theme">
 									<img width="160" height="90" class="normal_logo" src="${pageContext.request.contextPath}/img/SieuLogo.png" alt="Guru Learning Management System WP Theme" title="Guru Learning Management System WP Theme" />
-									<img class="retina_logo" src="${pageContext.request.contextPath}/img/LogoMain.jpg" alt="Guru Learning Management System WP Theme" title="Guru Learning Management System WP Theme" style="width:174px; height:94px;"/>
+									<img class="retina_logo" src="${pageContext.request.contextPath}/img/SieuLogo.png" alt="Guru Learning Management System WP Theme" title="Guru Learning Management System WP Theme" style="width:174px; height:94px;"/>
 								</a>                        
                         </div>
 			<div id="primary-menu"　>                        
