@@ -4,8 +4,16 @@
         <servlet-name>NewServlet</servlet-name>
         <servlet-class>controller.NewServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>adminGetFromDashboard</servlet-name>
+        <servlet-class>controller.adminGetFromDashboard</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>NewServlet</servlet-name>
         <url-pattern>/NewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminGetFromDashboard</servlet-name>
+        <url-pattern>/adminGetFromDashboard</url-pattern>
     </servlet-mapping>
 </web-app>
