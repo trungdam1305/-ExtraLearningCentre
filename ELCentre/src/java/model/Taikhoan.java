@@ -1,101 +1,45 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package model;
+
 import java.time.LocalDateTime;
-/**
- *
- * @author wrx_Chur04
- */
-public class Taikhoan {
-    private int idTaiKhoan;
-    private String email;
-    private String matKhau;
-    private int idVaiTro;
-    private String userType;
-    private String trangThai;
-    private String soDienThoai;
-    private LocalDateTime ngayTao;
 
-    public Taikhoan() {
+// 2. TaiKhoan.java
+public class TaiKhoan {
+    private int ID_TaiKhoan;
+    private String Email;
+    private String MatKhau;
+    private int ID_VaiTro;
+    private String UserType;
+    private String SoDienThoai;
+    private String TrangThai;
+    private LocalDateTime NgayTao;
+
+    public TaiKhoan() {}
+
+    public TaiKhoan(int ID_TaiKhoan, String Email, String MatKhau, int ID_VaiTro, String UserType, String SoDienThoai, String TrangThai, LocalDateTime NgayTao) {
+        this.ID_TaiKhoan = ID_TaiKhoan;
+        this.Email = Email;
+        this.MatKhau = MatKhau;
+        this.ID_VaiTro = ID_VaiTro;
+        this.UserType = UserType;
+        this.SoDienThoai = SoDienThoai;
+        this.TrangThai = TrangThai;
+        this.NgayTao = NgayTao;
     }
 
-    public Taikhoan(int idTaiKhoan, String email, String matKhau, int idVaiTro, String userType, String trangThai, String soDienThoai, LocalDateTime ngayTao) {
-        this.idTaiKhoan = idTaiKhoan;
-        this.email = email;
-        this.matKhau = matKhau;
-        this.idVaiTro = idVaiTro;
-        this.userType = userType;
-        this.trangThai = trangThai;
-        this.soDienThoai = soDienThoai;
-        this.ngayTao = ngayTao;
-    }
-
-    public int getIdTaiKhoan() {
-        return idTaiKhoan;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getMatKhau() {
-        return matKhau;
-    }
-
-    public int getIdVaiTro() {
-        return idVaiTro;
-    }
-
-    public String getUserType() {
-        return userType;
-    }
-
-    public String getTrangThai() {
-        return trangThai;
-    }
-
-    public String getSoDienThoai() {
-        return soDienThoai;
-    }
-
-    public LocalDateTime getNgayTao() {
-        return ngayTao;
-    }
-
-    public void setIdTaiKhoan(int idTaiKhoan) {
-        this.idTaiKhoan = idTaiKhoan;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setMatKhau(String matKhau) {
-        this.matKhau = matKhau;
-    }
-
-    public void setIdVaiTro(int idVaiTro) {
-        this.idVaiTro = idVaiTro;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
-
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
-    }
-
-    public void setSoDienThoai(String soDienThoai) {
-        this.soDienThoai = soDienThoai;
-    }
-
-    public void setNgayTao(LocalDateTime ngayTao) {
-        this.ngayTao = ngayTao;
-    }
-    
-    
+    public int getID_TaiKhoan() { return ID_TaiKhoan; }
+    public void setID_TaiKhoan(int ID_TaiKhoan) { this.ID_TaiKhoan = ID_TaiKhoan; }
+    public String getEmail() { return Email; }
+    public void setEmail(String Email) { this.Email = Email; }
+    public String getMatKhau() { return MatKhau; }
+    public void setMatKhau(String MatKhau) { this.MatKhau = MatKhau; }
+    public int getID_VaiTro() { return ID_VaiTro; }
+    public void setID_VaiTro(int ID_VaiTro) { this.ID_VaiTro = ID_VaiTro; }
+    public String getUserType() { return UserType; }
+    public void setUserType(String UserType) { this.UserType = UserType; }
+    public String getSoDienThoai() { return SoDienThoai; }
+    public void setSoDienThoai(String SoDienThoai) { this.SoDienThoai = SoDienThoai; }
+    public String getTrangThai() { return TrangThai; }
+    public void setTrangThai(String TrangThai) { this.TrangThai = TrangThai; }
+    public LocalDateTime getNgayTao() { return NgayTao; }
+    public void setNgayTao(LocalDateTime NgayTao) { this.NgayTao = NgayTao; }
 }
