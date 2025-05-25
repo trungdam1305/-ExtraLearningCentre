@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
-        <servlet-name>NewServlet</servlet-name>
-        <servlet-class>controller.NewServlet</servlet-class>
+        <servlet-name>SendEmailServlet</servlet-name>
+        <servlet-class>controller.SendEmailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchCourses</servlet-name>
+        <servlet-class>controller.SearchCourses</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>adminGetFromDashboard</servlet-name>
         <servlet-class>controller.adminGetFromDashboard</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>NewServlet</servlet-name>
-        <url-pattern>/NewServlet</url-pattern>
+        <servlet-name>SendEmailServlet</servlet-name>
+        <url-pattern>/SendEmailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchCourses</servlet-name>
+        <url-pattern>/SearchCourses</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>adminGetFromDashboard</servlet-name>

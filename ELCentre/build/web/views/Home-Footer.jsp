@@ -10,12 +10,11 @@
     <footer id="footer">
         	<div class="footer-top-links">
                 <div class="container">
-                    <ul id="menu-another-menu" class="menu"><li id="menu-item-4446" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-8 current_page_item menu-item-4446"><a href="index.html" aria-current="page">Home</a></li>
-<li id="menu-item-4447" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4447"><a href="">About</a></li>
-<li id="menu-item-4448" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4448"><a href="">Courses</a></li>
-<li id="menu-item-4449" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4449"><a href="">News</a></li>
-<li id="menu-item-4450" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4450"><a href="">Shop</a></li>
-<li id="menu-item-4451" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4451"><a href="">Contact</a></li>
+                    <ul id="menu-another-menu" class="menu"><li id="menu-item-4446" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-8 current_page_item menu-item-4446"><a href="index.html" aria-current="page">Trang chủ</a></li>
+<li id="menu-item-4447" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4447"><a href="">Về Chúng Tôi</a></li>
+<li id="menu-item-4448" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4448"><a href="">Khóa Học</a></li>
+<li id="menu-item-4449" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4449"><a href="">Blog</a></li>
+<li id="menu-item-4451" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4451"><a href="">Liên Hệ</a></li>
 </ul>                </div>
 			</div>
         
