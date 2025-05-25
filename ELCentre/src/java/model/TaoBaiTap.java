@@ -1,38 +1,34 @@
 package model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-// 14. CreateHomework.java
 public class TaoBaiTap {
-    private int ID_BaiTap;
-    private int ID_GiaoVien;
+    private Integer ID_BaiTap;
+    private Integer ID_GiaoVien;
     private String TenBaiTap;
     private String MoTa;
-    private LocalDateTime NgayTao;
+    private LocalDate NgayTao;
+    private Integer ID_LopHoc;
     private LocalDate Deadline;
 
-    public TaoBaiTap() {}
+    public Integer getID_BaiTap() { return ID_BaiTap; }
+    public void setID_BaiTap(Integer ID_BaiTap) { this.ID_BaiTap = ID_BaiTap; }
 
-    public TaoBaiTap(int ID_BaiTap, int ID_GiaoVien, String TenBaiTap, String MoTa, LocalDateTime NgayTao, LocalDate Deadline) {
-        this.ID_BaiTap = ID_BaiTap;
-        this.ID_GiaoVien = ID_GiaoVien;
-        this.TenBaiTap = TenBaiTap;
-        this.MoTa = MoTa;
-        this.NgayTao = NgayTao;
-        this.Deadline = Deadline;
-    }
+    public Integer getID_GiaoVien() { return ID_GiaoVien; }
+    public void setID_GiaoVien(Integer ID_GiaoVien) { this.ID_GiaoVien = ID_GiaoVien; }
 
-    public int getID_BaiTap() { return ID_BaiTap; }
-    public void setID_BaiTap(int ID_BaiTap) { this.ID_BaiTap = ID_BaiTap; }
-    public int getID_GiaoVien() { return ID_GiaoVien; }
-    public void setID_GiaoVien(int ID_GiaoVien) { this.ID_GiaoVien = ID_GiaoVien; }
     public String getTenBaiTap() { return TenBaiTap; }
     public void setTenBaiTap(String TenBaiTap) { this.TenBaiTap = TenBaiTap; }
+
     public String getMoTa() { return MoTa; }
     public void setMoTa(String MoTa) { this.MoTa = MoTa; }
-    public LocalDateTime getNgayTao() { return NgayTao; }
-    public void setNgayTao(LocalDateTime NgayTao) { this.NgayTao = NgayTao; }
+
+    public LocalDate getNgayTao() { return NgayTao; }
+    public void setNgayTao(LocalDate NgayTao) { this.NgayTao = NgayTao; }
+
+    public Integer getID_LopHoc() { return ID_LopHoc; }
+    public void setID_LopHoc(Integer ID_LopHoc) { this.ID_LopHoc = ID_LopHoc; }
+
     public LocalDate getDeadline() { return Deadline; }
     public void setDeadline(LocalDate Deadline) { this.Deadline = Deadline; }
 }
