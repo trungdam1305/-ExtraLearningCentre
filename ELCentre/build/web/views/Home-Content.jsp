@@ -16,7 +16,7 @@
         <div id="layerslider_1_5r4q8o8aqo3t" class="ls-wp-container fitvidsignore" style="width:1000px;height:630px;margin:0 auto;margin-bottom: 0px;">
             <div class="ls-slide" data-ls="duration:9000;transition2d:1,4;timeshift:-1000;kenburnsscale:1.2;">
                 <img width="1920" height="630" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg2.jpg" class="ls-bg" alt="" decoding="async" fetchpriority="high" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg2.jpg 1920w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg2-520x171.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg2-300x98.jpg 300w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg2-768x252.jpg 768w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg2-1024x336.jpg 1024w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg2-100x33.jpg 100w" sizes="(max-width: 1920px) 100vw, 1920px" />
-                <p style="font-weight:bold; text-transform:uppercase; ;font-family:'Crete Round';font-size:50px;color:#355c7d;top:156px;left:-60px;" class="ls-l" data-ls="durationin:3000;delayin:2000;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Study With
+                <p style="font-weight:bold; text-transform:uppercase; ;font-size:50px;color:#355c7d;top:156px;left:-60px;" class="ls-l" data-ls="durationin:3000;delayin:2000;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Học Cùng Với
                 </p>
                 <a style="" class="ls-l" href="#3" target="_self" data-ls="offsetxin:-50;delayin:5500;offsetxout:-50;durationout:400;parallaxlevel:0;">
                     <img width="45" height="45" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/prev-arrow.png" class="" alt="" decoding="async" style="top:560px;left:415px;">
@@ -24,22 +24,22 @@
                 <a style="" class="ls-l" href="#2" target="_self" data-ls="offsetxin:50;delayin:6000;offsetxout:50;durationout:400;parallaxlevel:0;">
                     <img width="45" height="45" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/next-arrow.png" class="" alt="" decoding="async" style="top:560px;left:480px;">
                 </a>
-                <a style="" class="ls-l" href="http://wedesignthemes.com/themes/dt-guru/courses-overview/" target="_self" data-ls="delayin:4500;rotatexin:-90;transformoriginin:50% top 0;offsetxout:-80;durationout:400;parallaxlevel:0;">
-                    <p style="color:#fff; font-size: 14px; padding: 20px 20px; background: none repeat scroll 0 0 #355C7D; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: 600; line-height: normal; text-transform: uppercase;top:367px;left:-60px;" class="">See List of Courses
+                <a style="" class="ls-l" href="" target="_self" data-ls="delayin:4500;rotatexin:-90;transformoriginin:50% top 0;offsetxout:-80;durationout:400;parallaxlevel:0;">
+                    <p style="color:#fff; font-size: 14px; padding: 20px 20px; background: none repeat scroll 0 0 #355C7D; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: 600; line-height: normal; text-transform: uppercase;top:367px;left:-60px;" class="">Xem Các Khóa Học
                     </p>
                 </a>
-                <p style="font-weight:bold; text-transform:uppercase; ;font-family:'Crete Round';font-size:35px;color:#355c7d;top:222px;left:-60px;" class="ls-l" data-ls="durationin:5000;delayin:2500;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Group of 
+                <p style="font-weight:bold; text-transform:uppercase; ;font-size:35px;color:#355c7d;top:222px;left:-60px;" class="ls-l" data-ls="durationin:5000;delayin:2500;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Tập Hợp Những 
                 </p>
-                <p style="font-weight:bold; text-transform:uppercase; ;font-family:'Crete Round';font-size:39px;color:#355c7d;top:269px;left:-60px;" class="ls-l" data-ls="durationin:3000;delayin:3000;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Professionals
+                <p style="font-weight:bold; text-transform:uppercase; ;font-size:39px;color:#355c7d;top:269px;left:-60px;" class="ls-l" data-ls="durationin:3000;delayin:3000;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Chuyên Gia
                 </p>
             </div>
             <div class="ls-slide" data-ls="duration:9000;transition2d:1,4;timeshift:-1000;">
                 <img width="1920" height="630" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg1a.jpg" class="ls-bg" alt="" decoding="async" loading="lazy" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg1a.jpg 1920w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg1a-520x171.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg1a-300x98.jpg 300w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg1a-768x252.jpg 768w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg1a-1024x336.jpg 1024w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg1a-100x33.jpg 100w" sizes="auto, (max-width: 1920px) 100vw, 1920px" />
                 <img width="559" height="337" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/imac.png" class="ls-l" alt="" decoding="async" loading="lazy" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/imac.png 559w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/imac-520x313.png 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/imac-300x181.png 300w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/imac-100x60.png 100w" sizes="auto, (max-width: 559px) 100vw, 559px" style="top:161px;left:-2px;" data-ls="offsetxin:-200;durationin:2000;offsetxout:-200;durationout:400;parallaxlevel:0;">
                 <img width="243" height="261" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/i-pad.png" class="ls-l" alt="" decoding="async" loading="lazy" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/i-pad.png 243w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/i-pad-93x100.png 93w" sizes="auto, (max-width: 243px) 100vw, 243px" style="top:236px;left:-35px;" data-ls="offsetxin:-400;durationin:2000;offsetxout:-400;durationout:400;parallaxlevel:0;"><img width="146" height="240" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/i-phone.png" class="ls-l" alt="" decoding="async" loading="lazy" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/i-phone.png 146w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/i-phone-61x100.png 61w" sizes="auto, (max-width: 146px) 100vw, 146px" style="top:266px;left:419px;" data-ls="offsetxin:400;durationin:2500;offsetxout:400;durationout:400;parallaxlevel:0;">
-                <div style="font-weight:300;font-family:'Open Sans';font-size:50px;color:#355c7d;top:173px;left:607px;" class="ls-l" data-ls="durationin:3000;delayin:2000;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Complatible with 
+                <div style="font-weight:300;font-family:'Open Sans';font-size:50px;color:#355c7d;top:173px;left:607px;" class="ls-l" data-ls="durationin:3000;delayin:2000;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Xuất Phát Sớm
                     <br>
-                    <strong>Sensei </strong>
+                    <strong>THPTQG </strong>
                 </div>
                 <a style="" class="ls-l" href="#1" target="_self" data-ls="offsetxin:-50;delayin:5500;offsetxout:-50;durationout:400;parallaxlevel:0;">
                     <img width="45" height="45" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/prev-arrow.png" class="" alt="" decoding="async" loading="lazy" style="top:560px;left:415px;">
@@ -47,32 +47,32 @@
                 <a style="" class="ls-l" href="#3" target="_self" data-ls="offsetxin:50;delayin:6000;offsetxout:50;durationout:400;parallaxlevel:0;">
                     <img width="45" height="45" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/next-arrow.png" class="" alt="" decoding="async" loading="lazy" style="top:560px;left:480px;">
                 </a>
-                <p style="font-weight:300;font-family:'Open Sans';font-size:24px;color:#272727;top:331px;left:607px;" class="ls-l" data-ls="durationin:3700;delayin:3500;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">The Learning Management 
+                <p style="font-weight:300;font-family:'Open Sans';font-size:24px;color:#272727;top:331px;left:607px;" class="ls-l" data-ls="durationin:3700;delayin:3500;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Cùng Trung Tâm
                     <br>
-                Plugin for WP</p>
-                <a style="" class="ls-l" href="http://wedesignthemes.com/themes/dt-guru/courses-overview/" target="_self" data-ls="offsetxin:80;delayin:4500;offsetxout:-80;durationout:400;parallaxlevel:0;">
-                    <p style="color:#fff; font-size: 14px; padding: 20px 20px; background: none repeat scroll 0 0 #355C7D; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: 600; line-height: normal; text-transform: uppercase;top:423px;left:610px;" class="">See List of Courses
+                ELCentre</p>
+                <a style="" class="ls-l" href="" target="_self" data-ls="offsetxin:80;delayin:4500;offsetxout:-80;durationout:400;parallaxlevel:0;">
+                    <p style="color:#fff; font-size: 14px; padding: 20px 20px; background: none repeat scroll 0 0 #355C7D; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: 600; line-height: normal; text-transform: uppercase;top:423px;left:610px;" class="">Xem Các Khóa Học
                     </p>
                 </a>
             </div>
             <div class="ls-slide" data-ls="duration:9000;transition2d:1,4;timeshift:-1000;">
                 <img width="1920" height="630" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg3.jpg" class="ls-bg" alt="" decoding="async" loading="lazy" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg3.jpg 1920w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg3-520x171.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg3-300x98.jpg 300w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg3-768x252.jpg 768w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg3-1024x336.jpg 1024w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg3-100x33.jpg 100w" sizes="auto, (max-width: 1920px) 100vw, 1920px" />
                 <img width="818" height="723" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/woman1.png" class="ls-l" alt="" decoding="async" loading="lazy" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/woman1.png 818w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/woman1-520x460.png 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/woman1-300x265.png 300w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/woman1-768x679.png 768w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/woman1-100x88.png 100w" sizes="auto, (max-width: 818px) 100vw, 818px" style="top:-20px;left:328px;" data-ls="offsetxin:-200;durationin:2000;offsetxout:-200;durationout:400;parallaxlevel:0;">
-                <p style="font-weight:bold; text-transform:uppercase; ;font-family:'Crete Round';font-size:60px;color:#355c7d;top:109px;left:-1px;" class="ls-l" data-ls="durationin:3000;delayin:2000;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Learn Top
+                <p style="font-weight:bold; text-transform:uppercase; ;font-size:60px;color:#355c7d;top:109px;left:-1px;" class="ls-l" data-ls="durationin:3000;delayin:2000;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Khóa Học 
                 </p>
                 <a style="" class="ls-l" href="#2" target="_self" data-ls="offsetxin:-50;delayin:6500;offsetxout:-50;durationout:400;parallaxlevel:0;">
                     <img width="45" height="45" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/prev-arrow.png" class="" alt="" decoding="async" loading="lazy" style="top:490px;left:0px;">
                 </a>
                 <a style="" class="ls-l" href="#1" target="_self" data-ls="offsetxin:50;delayin:7000;offsetxout:50;durationout:400;parallaxlevel:0;"><img width="45" height="45" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/next-arrow.png" class="" alt="" decoding="async" loading="lazy" style="top:490px;left:65px;">
                 </a>
-                <p style="font-weight:300;font-family:'Open Sans';font-size:24px;color:#272727;top:241px;left:2px;" class="ls-l" data-ls="durationin:3700;delayin:3500;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Your ultimate learning experience
+                <p style="font-weight:300;font-family:'Open Sans';font-size:24px;color:#272727;top:241px;left:2px;" class="ls-l" data-ls="durationin:3700;delayin:3500;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Trải Nghiệm Học Tuyệt Vời
                 </p>
-                <p style="color:#fff; font-size: 14px; padding: 20px 20px; background: none repeat scroll 0 0 #355C7D; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: 600; line-height: normal; text-transform: uppercase;top:400px;left:0px;" class="ls-l" data-ls="delayin:5500;rotatexin:-90;transformoriginin:50% top 0;offsetxout:-80;durationout:400;parallaxlevel:0;">Enroll Now
+                <p style="color:#fff; font-size: 14px; padding: 20px 20px; background: none repeat scroll 0 0 #355C7D; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: 600; line-height: normal; text-transform: uppercase;top:400px;left:0px;" class="ls-l" data-ls="delayin:5500;rotatexin:-90;transformoriginin:50% top 0;offsetxout:-80;durationout:400;parallaxlevel:0;">Đăng kí ngay
                 </p>
-                <p style="font-family:'Crete Round';font-size:24px;line-height:40px;color:#355c7d;top:292px;left:1px;" class="ls-l" data-ls="durationin:3000;delayin:4500;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Join 7,390,585 Courserians. <br>
-                Learn from 642 courses.
+                <p style="font-size:24px;line-height:40px;color:#355c7d;top:292px;left:1px;" class="ls-l" data-ls="durationin:3000;delayin:4500;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Tham Gia Lớp Học Ngay. <br>
+                Tại ELCentre
                 </p>
-                <p style="font-weight:bold; text-transform:uppercase; ;font-family:'Crete Round';font-size:35px;color:#355c7d;top:182px;left:0px;" class="ls-l" data-ls="durationin:5000;delayin:2500;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Certified Course
+                <p style="font-weight:bold; text-transform:uppercase; ;font-size:35px;color:#355c7d;top:182px;left:0px;" class="ls-l" data-ls="durationin:5000;delayin:2500;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Hàng Đầu
                 </p>
             </div>
         </div>
@@ -89,13 +89,14 @@
                                   
                               </div>
                               <div class="dt-sc-subscribe-wrapper">
-                                  <h2>Be the first to know about new Course and Discounts: Subscribe to Newsletter
+                                  <h2 style="font-family:'Open Sans'; font-weight: bold" >Hãy trở thành một phần của chúng tôi. Đăng Kí để được tư vấn
                                   </h2>
                                   <form name="#" method="post" class="dt-sc-subscribe-frm">
-                                      <input type="text" name="dt_mc_fname" id="dt_mc_fname" placeholder="Enter Name" /><input type="email" name="dt_mc_emailid" id="dt_mc_emailid" required placeholder="Enter Email" />
+                                      <input type="text" name="dt_mc_fname" id="dt_mc_fname" placeholder="Nhập Tên" />
+                                      <input type="email" name="dt_mc_emailid" id="dt_mc_emailid" required placeholder="Nhập Email" />
                                       <input type='hidden' name='dt_mc_apikey' id='dt_mc_apikey' value='' />
                                       <input type='hidden' name='dt_mc_listid' id='dt_mc_listid' value='' />
-                                      <input type="submit" name="submit" class="dt-sc-button small" value="Subscribe" />
+                                      <input type="submit" name="submit" class="dt-sc-button small" value="Đăng Ký" />
                                   </form>
                                   <p></p>
                                   <div id="ajax_newsletter_msg">
@@ -460,4 +461,96 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
               </article>
           </section>
     </div><!-- content ends here -->
+    
+    
+    
+    <script>
+		( function ( body ) {
+			'use strict';
+			body.className = body.className.replace( /\btribe-no-js\b/, 'tribe-js' );
+		} )( document.body );
+		</script>
+		<script> /* <![CDATA[ */var tribe_l10n_datatables = {"aria":{"sort_ascending":": activate to sort column ascending","sort_descending":": activate to sort column descending"},"length_menu":"Show _MENU_ entries","empty_table":"No data available in table","info":"Showing _START_ to _END_ of _TOTAL_ entries","info_empty":"Showing 0 to 0 of 0 entries","info_filtered":"(filtered from _MAX_ total entries)","zero_records":"No matching records found","search":"Search:","all_selected_text":"All items on this page were selected. ","select_all_link":"Select all pages","clear_selection":"Clear Selection.","pagination":{"all":"All","next":"Next","previous":"Previous"},"select":{"rows":{"0":"","_":": Selected %d rows","1":": Selected 1 row"}},"datepicker":{"dayNames":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"dayNamesShort":["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],"dayNamesMin":["S","M","T","W","T","F","S"],"monthNames":["January","February","March","April","May","June","July","August","September","October","November","December"],"monthNamesShort":["January","February","March","April","May","June","July","August","September","October","November","December"],"monthNamesMin":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"nextText":"Next","prevText":"Prev","currentText":"Today","closeText":"Done","today":"Today","clear":"Clear"}};/* ]]> */ </script>	<script type="text/javascript">
+		(function () {
+			var c = document.body.className;
+			c = c.replace(/woocommerce-no-js/, 'woocommerce-js');
+			document.body.className = c;
+		})()
+	</script>
+	<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/plugins/designthemes-core-features/shortcodes/js/jquery.tipTip.minified9704.js?ver=6.7.1" id="dt-tooltip-sc-script-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/plugins/designthemes-core-features/shortcodes/js/jquery.tabs.min9704.js?ver=6.7.1" id="dt-tabs-script-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/plugins/designthemes-core-features/shortcodes/js/jquery.viewport9704.js?ver=6.7.1" id="dt-viewport-script-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/plugins/designthemes-core-features/shortcodes/js/jquery.toggle.click9704.js?ver=6.7.1" id="dt-sc-toggle-click-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/plugins/designthemes-core-features/shortcodes/js/shortcodes9704.js?ver=6.7.1" id="dt-sc-script-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/plugins/yith-woocommerce-wishlist/assets/js/jquery.selectBox.min7359.js?ver=1.2.0" id="jquery-selectBox-js"></script>
+<script type="text/javascript" id="jquery-yith-wcwl-js-extra">
+/* <![CDATA[ */
+var yith_wcwl_l10n = {"ajax_url":"\/wp-admin\/admin-ajax.php","redirect_to_cart":"no","multi_wishlist":"","hide_add_button":"1","enable_ajax_loading":"","ajax_loader_url":"https:\/\/dtguru.wpengine.com\/wp-content\/plugins\/yith-woocommerce-wishlist\/assets\/images\/ajax-loader-alt.svg","remove_from_wishlist_after_add_to_cart":"1","is_wishlist_responsive":"1","time_to_close_prettyphoto":"3000","fragments_index_glue":".","reload_on_found_variation":"1","labels":{"cookie_disabled":"We are sorry, but this feature is available only if cookies on your browser are enabled.","added_to_cart_message":"<div class=\"woocommerce-notices-wrapper\"><div class=\"woocommerce-message\" role=\"alert\">Product added to cart successfully<\/div><\/div>"},"actions":{"add_to_wishlist_action":"add_to_wishlist","remove_from_wishlist_action":"remove_from_wishlist","reload_wishlist_and_adding_elem_action":"reload_wishlist_and_adding_elem","load_mobile_action":"load_mobile","delete_item_action":"delete_item","save_title_action":"save_title","save_privacy_action":"save_privacy","load_fragments":"load_fragments"}};
+/* ]]> */
+</script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/plugins/yith-woocommerce-wishlist/assets/js/jquery.yith-wcwld4e0.js?ver=3.0.17" id="jquery-yith-wcwl-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-includes/js/comment-reply.min9704.js?ver=6.7.1" id="comment-reply-js" async="async" data-wp-strategy="async"></script>
+<script type="text/javascript" id="contact-form-7-js-extra">
+/* <![CDATA[ */
+var wpcf7 = {"apiSettings":{"root":"https:\/\/dtguru.wpengine.com\/wp-json\/contact-form-7\/v1","namespace":"contact-form-7\/v1"},"cached":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/plugins/contact-form-7/includes/js/scripts9dff.js?ver=5.3.2" id="contact-form-7-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/plugins/designthemes-fb-pixel/script9704.js?ver=6.7.1" id="dt-fbpixel-script-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/plugins/woocommerce/assets/js/jquery-blockui/jquery.blockUI.min44fd.js?ver=2.70" id="jquery-blockui-js"></script>
+<script type="text/javascript" id="wc-add-to-cart-js-extra">
+/* <![CDATA[ */
+var wc_add_to_cart_params = {"ajax_url":"\/wp-admin\/admin-ajax.php","wc_ajax_url":"\/?wc-ajax=%%endpoint%%","i18n_view_cart":"View cart","cart_url":"https:\/\/dtguru.wpengine.com\/cart\/","is_cart":"","cart_redirect_after_add":"no"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/plugins/woocommerce/assets/js/frontend/add-to-cart.min7bcd.js?ver=4.8.3" id="wc-add-to-cart-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/plugins/woocommerce/assets/js/js-cookie/js.cookie.min6b25.js?ver=2.1.4" id="js-cookie-js"></script>
+<script type="text/javascript" id="woocommerce-js-extra">
+/* <![CDATA[ */
+var woocommerce_params = {"ajax_url":"\/wp-admin\/admin-ajax.php","wc_ajax_url":"\/?wc-ajax=%%endpoint%%"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/plugins/woocommerce/assets/js/frontend/woocommerce.min7bcd.js?ver=4.8.3" id="woocommerce-js"></script>
+<script type="text/javascript" id="wc-cart-fragments-js-extra">
+/* <![CDATA[ */
+var wc_cart_fragments_params = {"ajax_url":"\/wp-admin\/admin-ajax.php","wc_ajax_url":"\/?wc-ajax=%%endpoint%%","cart_hash_key":"wc_cart_hash_7744c75059fc33b0412f73e1f3599070","fragment_name":"wc_fragments_7744c75059fc33b0412f73e1f3599070","request_timeout":"5000"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/plugins/woocommerce/assets/js/frontend/cart-fragments.min7bcd.js?ver=4.8.3" id="wc-cart-fragments-js"></script>
+<script type="text/javascript" id="wp-postratings-js-extra">
+/* <![CDATA[ */
+var ratingsL10n = {"plugin_url":"https:\/\/dtguru.wpengine.com\/wp-content\/plugins\/wp-postratings","ajax_url":"https:\/\/dtguru.wpengine.com\/wp-admin\/admin-ajax.php","text_wait":"Please rate only 1 item at a time.","image":"stars_crystal","image_ext":"gif","max":"5","show_loading":"1","show_fading":"1","custom":"0"};
+var ratings_mouseover_image=new Image();ratings_mouseover_image.src="../dtguru.wpenginepowered.com/wp-content/plugins/wp-postratings/images/stars_crystal/rating_over.gif";;
+/* ]]> */
+</script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/plugins/wp-postratings/js/postratings-js40d5.js?ver=1.89" id="wp-postratings-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/plugins/woocommerce/assets/js/prettyPhoto/jquery.prettyPhoto.min005e.js?ver=3.1.6" id="prettyPhoto-js"></script>
+<!--[if lt IE 9]>
+<script type="text/javascript" src="https://dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/html5shiv.min.js?ver=3.7.2" id="jq-html5-js"></script>
+<![endif]-->
+<!--[if lt IE 8]>
+<script type="text/javascript" src="https://dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/excanvas.js?ver=2.0" id="jq-canvas-js"></script>
+<![endif]-->
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/retina9704.js?ver=6.7.1" id="retina-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.sticky9704.js?ver=6.7.1" id="jquery-stickynav-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.smartresize9704.js?ver=6.7.1" id="jquery-smartresize-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery-smoothscroll9704.js?ver=6.7.1" id="jquery-smoothscroll-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery-easing-1.39704.js?ver=6.7.1" id="jquery-easing-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.inview9704.js?ver=6.7.1" id="jquery-inview-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.validate.min9704.js?ver=6.7.1" id="jquery-validate-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.carouFredSel-6.2.0-packed9704.js?ver=6.7.1" id="jquery-caroufredsel-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.isotope.min9704.js?ver=6.7.1" id="jquery-isotope-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.prettyPhoto9704.js?ver=6.7.1" id="jquery-prettyphoto-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.ui.totop.min9704.js?ver=6.7.1" id="jquery-uitotop-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/plugins/woocommerce/assets/js/jquery-cookie/jquery.cookie.min330a.js?ver=1.4.1" id="jquery-cookie-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/controlpanel9704.js?ver=6.7.1" id="guru-controlpanel-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.meanmenu9704.js?ver=6.7.1" id="jquery-meanmenu-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/contact9704.js?ver=6.7.1" id="guru-contact-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.donutchart9704.js?ver=6.7.1" id="jquery-donutchart-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.fitvids9704.js?ver=6.7.1" id="jquery-fitvids-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.bxslider9704.js?ver=6.7.1" id="jquery-bxslider-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.parallax-1.1.39704.js?ver=6.7.1" id="jquery-parallax-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.animateNumber.min9704.js?ver=6.7.1" id="jquery-animateNumber-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/custom9704.js?ver=6.7.1" id="guru-custom-js"></script>
+<script type="text/javascript" src="../dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/magnific/jquery.magnific-popup.min9704.js?ver=6.7.1" id="jquery-magnific-popup-js"></script>
 </html>
