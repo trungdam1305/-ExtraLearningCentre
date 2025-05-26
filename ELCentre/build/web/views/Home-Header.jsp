@@ -32,7 +32,7 @@
 			<div id="primary-menu">
                             <form action="${pageContext.request.contextPath}/SearchCourses" method="" style="display: flex; align-items: center; transform: translateY(20px)">
                                 <input type="text" name="query" placeholder="Tìm Khóa Học..." style="padding: 5px 8px; border-radius: 3px; border: 1px solid #ccc; font-size: 14px;" />
-                                <button type="submit" style="padding: 6px 10px; transform: translateY(-15px); border: none; background-color: rgb(193, 8, 65); color: white; border-radius: 4px; cursor: pointer;">
+                                <button type="submit" style="padding: 6px 10px; transform: translateY(-15px); border: none; border-radius: 4px" class="dt-sc-button small">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </form> 
