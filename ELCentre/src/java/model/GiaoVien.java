@@ -3,8 +3,13 @@ package model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+// 8. GiaoVien.java
 public class GiaoVien {
-    private Integer ID_GiaoVien;
+
+    private int ID_GiaoVien;
+
+
+
     private Integer ID_TaiKhoan;
     private String HoTen;
     private String ChuyenMon;
@@ -15,6 +20,23 @@ public class GiaoVien {
     private String TrangThai;
     private LocalDateTime NgayTao;
 
+    public GiaoVien() {
+    }
+
+    public GiaoVien(int ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT, String TruongGiangDay, BigDecimal Luong, String GhiChu, String TrangThai, LocalDateTime NgayTao) {
+        this.ID_GiaoVien = ID_GiaoVien;
+        this.ID_TaiKhoan = ID_TaiKhoan;
+        this.HoTen = HoTen;
+        this.ChuyenMon = ChuyenMon;
+        this.SDT = SDT;
+        this.TruongGiangDay = TruongGiangDay;
+        this.Luong = Luong;
+        this.GhiChu = GhiChu;
+        this.TrangThai = TrangThai;
+        this.NgayTao = NgayTao;
+    }
+
+    
     public Integer getID_GiaoVien() { return ID_GiaoVien; }
     public void setID_GiaoVien(Integer ID_GiaoVien) { this.ID_GiaoVien = ID_GiaoVien; }
 

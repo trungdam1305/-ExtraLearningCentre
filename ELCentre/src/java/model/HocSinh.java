@@ -1,8 +1,9 @@
-package model;
+ package model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+// 5. HocSinh.java
 public class HocSinh {
     private Integer ID_HocSinh;
     private Integer ID_TaiKhoan;
@@ -16,6 +17,24 @@ public class HocSinh {
     private String TrangThai;
     private LocalDateTime NgayTao;
 
+    public HocSinh() {
+    }
+
+    public HocSinh(Integer ID_HocSinh, Integer ID_TaiKhoan,  String HoTen, LocalDate NgaySinh, String GioiTinh, String DiaChi, String SDT_PhuHuynh, String TruongHoc, String GhiChu, String TrangThai, LocalDateTime NgayTao) {
+        this.ID_HocSinh = ID_HocSinh;
+        this.ID_TaiKhoan = ID_TaiKhoan;
+        this.HoTen = HoTen;
+        this.NgaySinh = NgaySinh;
+        this.GioiTinh = GioiTinh;
+        this.DiaChi = DiaChi;
+        this.SDT_PhuHuynh = SDT_PhuHuynh;
+        this.TruongHoc = TruongHoc;
+        this.GhiChu = GhiChu;
+        this.TrangThai = TrangThai;
+        this.NgayTao = NgayTao;
+    }
+
+    
     public Integer getID_HocSinh() { return ID_HocSinh; }
     public void setID_HocSinh(Integer ID_HocSinh) { this.ID_HocSinh = ID_HocSinh; }
 

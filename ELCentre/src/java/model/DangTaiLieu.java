@@ -1,5 +1,7 @@
 package model;
 
+
+
 import java.time.LocalDate;
 
 public class DangTaiLieu {
@@ -10,6 +12,19 @@ public class DangTaiLieu {
     private String DuongDan;
     private LocalDate NgayTao;
 
+    public DangTaiLieu() {
+    }
+
+    public DangTaiLieu(Integer ID_Material, Integer ID_GiaoVien, String TenTaiLieu, String LoaiTaiLieu, String DuongDan, LocalDate NgayTao) {
+        this.ID_Material = ID_Material;
+        this.ID_GiaoVien = ID_GiaoVien;
+        this.TenTaiLieu = TenTaiLieu;
+        this.LoaiTaiLieu = LoaiTaiLieu;
+        this.DuongDan = DuongDan;
+        this.NgayTao = NgayTao;
+    }
+
+    
     public Integer getID_Material() { return ID_Material; }
     public void setID_Material(Integer ID_Material) { this.ID_Material = ID_Material; }
 
@@ -27,4 +42,5 @@ public class DangTaiLieu {
 
     public LocalDate getNgayTao() { return NgayTao; }
     public void setNgayTao(LocalDate NgayTao) { this.NgayTao = NgayTao; }
+
 }

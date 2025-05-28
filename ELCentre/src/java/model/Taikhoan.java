@@ -12,6 +12,21 @@ public class TaiKhoan {
     private String TrangThai;
     private LocalDateTime NgayTao;
 
+    public TaiKhoan() {
+    }
+
+    public TaiKhoan(Integer ID_TaiKhoan, String Email, String MatKhau, Integer ID_VaiTro, String UserType, String SoDienThoai, String TrangThai, LocalDateTime NgayTao) {
+        this.ID_TaiKhoan = ID_TaiKhoan;
+        this.Email = Email;
+        this.MatKhau = MatKhau;
+        this.ID_VaiTro = ID_VaiTro;
+        this.UserType = UserType;
+        this.SoDienThoai = SoDienThoai;
+        this.TrangThai = TrangThai;
+        this.NgayTao = NgayTao;
+    }
+
+    
     public Integer getID_TaiKhoan() { return ID_TaiKhoan; }
     public void setID_TaiKhoan(Integer ID_TaiKhoan) { this.ID_TaiKhoan = ID_TaiKhoan; }
 
