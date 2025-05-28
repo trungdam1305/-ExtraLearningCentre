@@ -401,8 +401,8 @@
                                 </div>
                                 <div class="dt-courses-wrapper">
                                     <div class="course-carousel-arrows">
-                                        <a class="prev-arrow fa fa-angle-left" href="#"></a>
-                                        <a class="next-arrow fa fa-angle-right" href="#"></a>
+                                        <a class="prev-arrow fa fa-angle-left"></a>
+                                        <a class="next-arrow fa fa-angle-right"></a>
                                     </div>
                                     <div class="dt-courses-carousel">
                                         <div class="column dt-sc-one-third">
