@@ -5,12 +5,11 @@ package dal;
  *
  * @author wrx_Chur04
  */
-import java.sql.Connection ; 
-import java.sql.PreparedStatement ; 
+import java.sql.PreparedStatement ;
+import java.sql.ResultSet ;
 import java.sql.SQLException ; 
+import java.util.ArrayList ;
 import model.TaiKhoan ; 
-import java.sql.ResultSet ; 
-import java.util.ArrayList ; 
 public class TaiKhoanDAO {
     
     public static ArrayList<TaiKhoan> adminGetAllTaiKhoan(){
@@ -40,13 +39,83 @@ public class TaiKhoanDAO {
                 taikhoans.add(tk) ; 
             }
         } catch (SQLException e ) {
-            e.printStackTrace();
+            //Exception ignored
             return null ; 
         }
         if (taikhoans.isEmpty()){
             return null ; 
         } else {
             return taikhoans ; 
+        }
+    }
+    
+    public static boolean adminDisableAccountUser(String id) {
+        DBContext db = DBContext.getInstance() ; 
+        int rs = 0 ; 
+        try {
+            String sql = """
+                         UPDATE TaiKhoan
+                         SET TrangThai = 'Inactive'
+                         WHERE ID_TaiKhoan = ?;
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, id);
+            rs = statement.executeUpdate() ; 
+        } catch (SQLException e ) {
+            e.printStackTrace();
+             
+        }
+        if (rs == 0 ){
+            return false ; 
+        } else {
+            return true ; 
+        }
+    }
+    
+    
+    public static boolean adminEnableAccountUser(String id) {
+        DBContext db = DBContext.getInstance() ; 
+        int rs = 0 ; 
+        try {
+            String sql = """
+                         UPDATE TaiKhoan
+                         SET TrangThai = 'Active'
+                         WHERE ID_TaiKhoan = ?;
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, id);
+            rs = statement.executeUpdate() ; 
+        } catch (SQLException e ) {
+            e.printStackTrace();
+             
+        }
+        if (rs == 0 ){
+            return false ; 
+        } else {
+            return true ; 
+        }
+    }
+    
+    public static boolean adminEnableSatff(String id) {
+        DBContext db = DBContext.getInstance() ; 
+        int rs = 0 ; 
+        try {
+            String sql = """
+                         UPDATE Staff
+                         SET TrangThai = 'Active'
+                         WHERE ID_TaiKhoan = ?;
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, id);
+            rs = statement.executeUpdate() ; 
+        } catch (SQLException e ) {
+            e.printStackTrace();
+             
+        }
+        if (rs == 0 ){
+            return false ; 
+        } else {
+            return true ; 
         }
     }
 }

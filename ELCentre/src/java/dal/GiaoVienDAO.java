@@ -8,10 +8,9 @@ package dal;
  *
  * @author wrx_Chur04
  */
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import model.GiaoVien;
 
@@ -45,8 +44,8 @@ public class GiaoVienDAO {
                 giaoviens.add(giaovien) ; 
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            // Exception ignored    
+            return new ArrayList<GiaoVien>();
         }
         
         if (giaoviens.isEmpty()){
@@ -94,6 +93,29 @@ public class GiaoVienDAO {
             return null ; 
         } else {
             return giaoviens ; 
+        }
+    }
+    
+    public static boolean adminEnableGiaoVien(String id) {
+        DBContext db = DBContext.getInstance() ; 
+        int rs = 0 ; 
+        try {
+            String sql = """
+                         UPDATE GiaoVien
+                         SET TrangThai = 'Active'
+                         WHERE ID_TaiKhoan = ?;
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, id);
+            rs = statement.executeUpdate() ; 
+        } catch (SQLException e ) {
+            e.printStackTrace();
+             
+        }
+        if (rs == 0 ){
+            return false ; 
+        } else {
+            return true ; 
         }
     }
 

@@ -1,16 +1,16 @@
-/*
 
+/*
 	* Style settings of LayerSlider
 	*
 	* (c) 2011-2020 George Krupa, John Gera & Kreatura Media
 	*
 	* LayerSlider home:		https://layerslider.kreaturamedia.com/
 	* Licensing:			https://layerslider.kreaturamedia.com/licensing/
+*/
 
 
 
-
- Slider 
+/* Slider */
 
 	.ls-container {
 		visibility: hidden;
@@ -36,7 +36,7 @@
 
 
 
- Layers 
+/* Layers */
 
 	.ls-layers,
 	.ls-slide-backgrounds,
@@ -182,11 +182,11 @@
 
 
 
- GUI 
+/* GUI */
 
 
 
-	 Common 
+	/* Common */
 
 	.ls-gui-element {
 		z-index: 40;
@@ -206,7 +206,7 @@
 
 
 
-	 Media 
+	/* Media */
 
 	.ls-media-unmute {
 		visibility: hidden;
@@ -289,7 +289,7 @@
 
 
 
-	 Navigation 
+	/* Navigation */
 
 		.ls-bottom-slidebuttons {
 			text-align: left;
@@ -358,7 +358,7 @@
 
 
 
-	 Timers 
+	/* Timers */
 
 		.ls-bar-timer {
 			position: absolute;
@@ -493,7 +493,7 @@
 			cursor: pointer;
 		}
 
-		 slidebar default dark skin 
+		/* slidebar default dark skin */
 
 		.ls-slidebar {
 			height: 10px;
@@ -520,7 +520,7 @@
 			background-color: #999;
 		}
 
-		 slidebar default light skin 
+		/* slidebar default light skin */
 
 		.ls-slidebar-light .ls-slidebar {
 			height: 8px;
@@ -555,7 +555,7 @@
 
 
 
-	 Thumbnails 
+	/* Thumbnails */
 
 		.ls-tn {
 			display: none !important;
@@ -659,7 +659,7 @@
 
 
 
-	 Shadow 
+	/* Shadow */
 
 		.ls-shadow {
 			display: none;
@@ -682,7 +682,7 @@
 
 
 
- Media 
+/* Media */
 
 	.ls-media-layer {
 		overflow: hidden;
@@ -721,7 +721,7 @@
 
 
 
- Mobile features 
+/* Mobile features */
 
 	.ls-forcehide {
 		display: none !important;
@@ -729,7 +729,7 @@
 
 
 
- YourLogo 
+/* YourLogo */
 
 	.ls-yourlogo {
 		position: absolute;
@@ -738,9 +738,9 @@
 
 
 
- Slide transitions 
+/* Slide transitions */
 
-	 .ls-lt-container 
+	/* .ls-lt-container */
 	.ls-slide-transition-wrapper {
 		width: 100%;
 		height: 100%;
@@ -850,7 +850,7 @@
 
 
 
- Misc. 
+/* Misc. */
 
 	.ls-fullsize:not(.ls-hidden),
 	.ls-fullwidth:not(.ls-hidden) {
@@ -962,7 +962,7 @@
 
 
 
- Removing all default global styles of WordPress themes 
+/* Removing all default global styles of WordPress themes */
 
 	html body .ls-nav-prev,
 	#ls-global .ls-nav-prev,
@@ -1086,7 +1086,7 @@
 		max-width: none;
 	}
 
-	 direction: ltr 
+	/* direction: ltr */
 
 	html body .ls-container,
 	#ls-global .ls-container,
@@ -1105,7 +1105,7 @@
 		direction: ltr !important;
 	}
 
-	 float: none 
+	/* float: none */
 
 	html body .ls-container,
 	#ls-global .ls-container {
@@ -1114,7 +1114,7 @@
 
 
 
- Notification 
+/* Notification */
 
 	.ls-slider-notification {
 		position: relative;
@@ -1165,7 +1165,7 @@
 
 
 
- Device Responsiveness 
+/* Device Responsiveness */
 
 @media screen and (max-width: 767px) {
 	.ls-container .ls-layers > .ls-hide-on-phone,
@@ -1211,7 +1211,7 @@
 
 
 
- Hacks, Optimization 
+/* Hacks, Optimization */
 
 	@media (transform-3d), (-ms-transform-3d), (-webkit-transform-3d) {
 		#ls-test3d {
@@ -1229,4 +1229,4 @@
 	.ls-loop {
 		will-change: transform;
 	}
-*/
+

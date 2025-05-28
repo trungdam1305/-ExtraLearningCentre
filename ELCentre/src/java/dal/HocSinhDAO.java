@@ -5,10 +5,9 @@ package dal;
  *
  * @author wrx_Chur04
  */
-import java.sql.Connection ; 
-import java.sql.SQLException ; 
-import java.sql.ResultSet ; 
-import java.sql.PreparedStatement ; 
+import java.sql.PreparedStatement ;
+import java.sql.ResultSet ;
+import java.sql.SQLException ;
 import java.util.ArrayList ; 
 import model.HocSinh ; 
 
@@ -16,41 +15,33 @@ public class HocSinhDAO {
     public static ArrayList<HocSinh> adminGetAllHocSinh(){
         DBContext db = DBContext.getInstance() ; 
         ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>() ; 
-        
-        try {
-            String sql = """
+        String sql = """
                          select * from HocSinh 
                          """ ; 
-            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
-            ResultSet rs = statement.executeQuery() ; 
-            
-            while (rs.next()) {
-                HocSinh hocsinh = new HocSinh(
-                        rs.getInt("ID_HocSinh"), 
-                        rs.getInt("ID_TaiKhoan") , 
-                        rs.getInt("ID_LopHoc") ,
-                        rs.getString("HoTen") , 
-                        rs.getDate("NgaySinh").toLocalDate(),
-                        rs.getString("GioiTinh") , 
-                        rs.getString("DiaChi") , 
-                        rs.getString("SDT_PhuHuynh") , 
-                        rs.getString("TruongHoc") , 
-                        rs.getString("GhiChu") , 
-                        rs.getString("TrangThai") , 
-                        rs.getTimestamp("NgayTao").toLocalDateTime()
-                ) ; 
-                hocsinhs.add(hocsinh) ; 
+            try (PreparedStatement statement = db.getConnection().prepareStatement(sql);
+                 ResultSet rs = statement.executeQuery()) {
+
+                while (rs.next()) {
+                    HocSinh hocsinh = new HocSinh(
+                            rs.getInt("ID_HocSinh"), 
+                            rs.getInt("ID_TaiKhoan") , 
+                            rs.getString("HoTen") , 
+                            rs.getDate("NgaySinh").toLocalDate(),
+                            rs.getString("GioiTinh") , 
+                            rs.getString("DiaChi") , 
+                            rs.getString("SDT_PhuHuynh") , 
+                            rs.getString("TruongHoc") , 
+                            rs.getString("GhiChu") , 
+                            rs.getString("TrangThai") , 
+                            rs.getTimestamp("NgayTao").toLocalDateTime()
+                    ) ; 
+                    hocsinhs.add(hocsinh) ; 
+                }
             }
-        } catch  (SQLException e ) {
-            e.printStackTrace(); 
-            return null ; 
+        catch  (SQLException e ) {
+            // Exception ignored 
         }
-        
-        if (hocsinhs.isEmpty()){
-            return null ; 
-        } else {
             return hocsinhs ; 
-        }
     }
     
     public static ArrayList<HocSinh> adminGetHocSinhByID(String id) {
@@ -70,7 +61,7 @@ public class HocSinhDAO {
                 HocSinh hocsinh = new HocSinh(
                         rs.getInt("ID_HocSinh"), 
                         rs.getInt("ID_TaiKhoan") , 
-                        rs.getInt("ID_LopHoc") ,
+                        
                         rs.getString("HoTen") , 
                         rs.getDate("NgaySinh").toLocalDate(),
                         rs.getString("GioiTinh") , 
@@ -91,6 +82,29 @@ public class HocSinhDAO {
             return null; 
         } else {
             return hocsinhs ; 
+        }
+    }
+    
+    public static boolean adminEnableHocSinh(String id) {
+        DBContext db = DBContext.getInstance() ; 
+        int rs = 0 ; 
+        try {
+            String sql = """
+                         UPDATE HocSinh
+                         SET TrangThai = 'Active'
+                         WHERE ID_TaiKhoan = ?;
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, id);
+            rs = statement.executeUpdate() ; 
+        } catch (SQLException e ) {
+            e.printStackTrace();
+             
+        }
+        if (rs == 0 ){
+            return false ; 
+        } else {
+            return true ; 
         }
     }
     

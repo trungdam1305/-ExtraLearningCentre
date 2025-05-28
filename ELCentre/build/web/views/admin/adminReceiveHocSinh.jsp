@@ -23,7 +23,7 @@
                         <tr>
                             <th>ID_HocSinh</th>
                             <th>ID_TaiKhoan</th>
-                            <th>ID_LopHoc</th>
+                            
                             <th>HoTen</th>
                             <th>NgaySinh</th>
                             <th>GioiTinh</th>
@@ -41,7 +41,7 @@
                             <tr>
                                 <td>${hocsinh.getID_HocSinh()}</td>
                                 <td>${hocsinh.getID_TaiKhoan()}</td>
-                                <td>${hocsinh.getID_LopHoc()}</td>
+
                                 <td>${hocsinh.getHoTen()}</td>
                                 <td>${hocsinh.getNgaySinh()}</td>
                                 <td>${hocsinh.getGioiTinh()}</td>

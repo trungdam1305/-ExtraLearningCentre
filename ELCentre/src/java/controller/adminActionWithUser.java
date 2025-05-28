@@ -6,13 +6,15 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList ; 
-import model.GiaoVien ; 
-import model.HocSinh ; 
-import dal.HocSinhDAO ; 
-import dal.GiaoVienDAO ; 
-import model.PhuHuynh ; 
-import dal.PhuHuynhDAO ; 
+import java.util.ArrayList;
+import model.GiaoVien;
+import model.HocSinh;
+import dal.HocSinhDAO;
+import dal.GiaoVienDAO;
+import model.PhuHuynh;
+import dal.PhuHuynhDAO;
+import model.TaiKhoan;
+import dal.TaiKhoanDAO;
 
 /**
  *
@@ -41,14 +43,16 @@ public class adminActionWithUser extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        PrintWriter out = response.getWriter() ; 
+        PrintWriter out = response.getWriter();
+        String type = request.getParameter("type");
+        String id = request.getParameter("id");
         switch (action) {
+
             case "view":
-                String type = request.getParameter("type") ; 
-                String id = request.getParameter("id");
+
                 if (type.equalsIgnoreCase("GiaoVien")) {
-            
-                    ArrayList<GiaoVien> giaoviens = GiaoVienDAO.adminGetGiaoVienByID(id) ; 
+
+                    ArrayList<GiaoVien> giaoviens = GiaoVienDAO.adminGetGiaoVienByID(id);
                     if (giaoviens.isEmpty()) {
                         out.print("huhuhuhu");
                     } else {
@@ -56,15 +60,15 @@ public class adminActionWithUser extends HttpServlet {
                     }
 
                 } else if (type.equalsIgnoreCase("HocSinh")) {
-                    ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>() ;
-                    hocsinhs = HocSinhDAO.adminGetHocSinhByID(id) ; 
-                    if (hocsinhs.isEmpty()){
+                    ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>();
+                    hocsinhs = HocSinhDAO.adminGetHocSinhByID(id);
+                    if (hocsinhs.isEmpty()) {
                         out.print("huhuhu");
                     } else {
                         out.print("okokokk");
                     }
                 } else if (type.equalsIgnoreCase("PhuHuynh")) {
-                    ArrayList<PhuHuynh> phuhuynhs = PhuHuynhDAO.adminGetPhuHuynhByID(id) ; 
+                    ArrayList<PhuHuynh> phuhuynhs = PhuHuynhDAO.adminGetPhuHuynhByID(id);
                     if (phuhuynhs.isEmpty()) {
                         out.print("huhuhuhu");
                     } else {
@@ -75,12 +79,21 @@ public class adminActionWithUser extends HttpServlet {
                     if (giaoviens.isEmpty()) {
                         out.print("huhuhuhu");
                     } else {
-                        out.print("okokok");    
+                        out.print("okokok");
                     }
                 }
                 break;
 
             case "disable":
+                if (type.equalsIgnoreCase("GiaoVien")) {
+
+                } else if (type.equalsIgnoreCase("HocSinh")) {
+                    
+                } else if (type.equalsIgnoreCase("PhuHuynh")) {
+                    
+                } else if (type.equalsIgnoreCase("Staff")) {
+                    
+                }
                 break;
 
             case "update":

@@ -44,7 +44,17 @@
                                 <td>${taikhoan.getTrangThai()}</td>
                                 <td>
                                     <a href="${pageContext.request.contextPath}/adminActionWithUser?action=view&id=${taikhoan.getID_TaiKhoan()}&type=${taikhoan.getUserType()}">View Details</a><br>
-                                    <a href="${pageContext.request.contextPath}/adminActionWithUser?action=disable&id=${item.id}&type=${item.type}">Disable</a><br>
+                                    <c:choose>
+                                        <c:when test="${taikhoan.getTrangThai() == 'Active'}">
+                                            <a href="${pageContext.request.contextPath}/adminActionWithUser?action=disable&id=${taikhoan.getID_TaiKhoan()}&type=${taikhoan.getUserType()}">Disable</a><br>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="${pageContext.request.contextPath}/adminActionWithUser?action=enable&id=${taikhoan.getID_TaiKhoan()}&type=${taikhoan.getUserType()}">Enable</a><br>
+                                        </c:otherwise>
+                                    </c:choose>
+
+
+
                                     <a href="${pageContext.request.contextPath}/adminActionWithUser?action=update&id=${item.id}&type=${item.type}">Update</a>
                                 </td>
                             </tr>   

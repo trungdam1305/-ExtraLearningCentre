@@ -1,4 +1,4 @@
-package model;
+ package model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 public class HocSinh {
     private Integer ID_HocSinh;
     private Integer ID_TaiKhoan;
-    private Integer ID_LopHoc;
     private String HoTen;
     private LocalDate NgaySinh;
     private String GioiTinh;
@@ -21,10 +20,9 @@ public class HocSinh {
     public HocSinh() {
     }
 
-    public HocSinh(Integer ID_HocSinh, Integer ID_TaiKhoan, Integer ID_LopHoc, String HoTen, LocalDate NgaySinh, String GioiTinh, String DiaChi, String SDT_PhuHuynh, String TruongHoc, String GhiChu, String TrangThai, LocalDateTime NgayTao) {
+    public HocSinh(Integer ID_HocSinh, Integer ID_TaiKhoan,  String HoTen, LocalDate NgaySinh, String GioiTinh, String DiaChi, String SDT_PhuHuynh, String TruongHoc, String GhiChu, String TrangThai, LocalDateTime NgayTao) {
         this.ID_HocSinh = ID_HocSinh;
         this.ID_TaiKhoan = ID_TaiKhoan;
-        this.ID_LopHoc = ID_LopHoc;
         this.HoTen = HoTen;
         this.NgaySinh = NgaySinh;
         this.GioiTinh = GioiTinh;
@@ -43,8 +41,7 @@ public class HocSinh {
     public Integer getID_TaiKhoan() { return ID_TaiKhoan; }
     public void setID_TaiKhoan(Integer ID_TaiKhoan) { this.ID_TaiKhoan = ID_TaiKhoan; }
 
-    public Integer getID_LopHoc() { return ID_LopHoc; }
-    public void setID_LopHoc(Integer ID_LopHoc) { this.ID_LopHoc = ID_LopHoc; }
+    
 
     public String getHoTen() { return HoTen; }
     public void setHoTen(String HoTen) { this.HoTen = HoTen; }
