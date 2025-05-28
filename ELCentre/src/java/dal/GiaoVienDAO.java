@@ -56,5 +56,45 @@ public class GiaoVienDAO {
             return giaoviens ;
         }
     }
+    public static ArrayList<GiaoVien> adminGetGiaoVienByID(String id) {
+        DBContext db = DBContext.getInstance() ; 
+        ArrayList<GiaoVien> giaoviens = new ArrayList<GiaoVien>() ; 
+        
+        try {
+            String sql = """
+                         select * from GiaoVien 
+                         where ID_TaiKhoan = ? 
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, id);
+            ResultSet rs = statement.executeQuery() ; 
+            
+             while (rs.next()) {
+                GiaoVien giaovien = new GiaoVien(
+                        rs.getInt("ID_GiaoVien"),
+                        rs.getInt("ID_TaiKhoan"),
+                        rs.getString("HoTen"),
+                        rs.getString("ChuyenMon"),
+                        rs.getString("SDT"),
+                        rs.getString("TruongGiangDay"),
+                        rs.getBigDecimal("Luong"),
+                        rs.getString("GhiChu"),
+                        rs.getString("TrangThai"),
+                        rs.getTimestamp("NgayTao").toLocalDateTime()
+                ) ; 
+                giaoviens.add(giaovien) ; 
+            }
+             
+        } catch (SQLException e ) {
+            e.printStackTrace();
+            return null ; 
+        }
+        
+        if (giaoviens.isEmpty()){
+            return null ; 
+        } else {
+            return giaoviens ; 
+        }
+    }
 
 }

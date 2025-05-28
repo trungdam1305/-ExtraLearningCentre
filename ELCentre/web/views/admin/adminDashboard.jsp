@@ -112,46 +112,74 @@
             </ul>
 
 
+
+
+
+            <hr class="sidebar-items">
+            <div> Quản lý tài chính</div>
+            <ul>
+                <li>
+                    <a>
+                        <i></i>
+                        Học phí
+                    </a>
+                </li>
+            </ul>
+            
+            
+            
             <hr class="sidebar-items">
             <div>Quản lý học tập</div>
             <ul>
                 <li>
                     <a>
                         <i></i>
-                        Khóa học
-                    </a>
-                </li>
-
-                <li>
-                    <a >
-                        <i></i>
-                        Điểm danh
-                    </a>                                                                                                                                                    
-                </li>
-                <li>
-                    <a>
-                        <i></i>
-                        Điểm số
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <i></i>
-                        Lịch học
+                        Course
                     </a>
                 </li>
             </ul>
-
-
-
-
+            
             <hr class="sidebar-items">
-            <div>Tài chính</div>
+            <div>Hệ thống</div>
             <ul>
                 <li>
                     <a>
                         <i></i>
-                        Học phí
+                        Cài đặt
+                    </a>
+                </li>
+            </ul>
+
+            
+            <hr class="sidebar-items">
+            
+            <ul>
+                <li>
+                    <a>
+                        <i></i>
+                        Thông báo
+                    </a>
+                </li>
+            </ul>
+            
+            <hr class="sidebar-items">
+            
+            <ul>
+                <li>
+                    <a>
+                        <i></i>
+                        Blog
+                    </a>
+                </li>
+            </ul>
+            
+            <hr class="sidebar-items">
+            
+            <ul>
+                <li>
+                    <a>
+                        <i></i>
+                        Logout
                     </a>
                 </li>
             </ul>

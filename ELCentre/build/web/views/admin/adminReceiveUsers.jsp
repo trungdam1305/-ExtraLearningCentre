@@ -13,7 +13,7 @@
         <title>All User Use System</title>
     </head>
     <body>
-        <h2>All Users</h2>
+        <h2>Quản lý tài khoản</h2>
 
         <c:choose>
             <c:when test = "${not empty taikhoans}">
@@ -23,12 +23,12 @@
                         <tr>
                             <th>ID_TaiKhoan</th>
                             <th>Email</th>
-                            <th>MatKhau</th>
-                            <th>ID_VaiTro</th>
+
+
                             <th>UserType</th>
                             <th>SoDienThoai</th>
                             <th>TrangThai</th>
-                            <th>NgayTao</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
 
@@ -37,12 +37,16 @@
                             <tr>
                                 <td>${taikhoan.getID_TaiKhoan()}</td>
                                 <td>${taikhoan.getEmail()}</td>
-                                <td>${taikhoan.getMatKhau()}</td>
-                                <td>${taikhoan.getID_VaiTro()}</td>
+
+
                                 <td>${taikhoan.getUserType()}</td>
                                 <td>${taikhoan.getSoDienThoai()}</td>
                                 <td>${taikhoan.getTrangThai()}</td>
-                                <td>${taikhoan.getNgayTao()}</td>
+                                <td>
+                                    <a href="${pageContext.request.contextPath}/adminActionWithUser?action=view&id=${taikhoan.getID_TaiKhoan()}&type=${taikhoan.getUserType()}">View Details</a><br>
+                                    <a href="${pageContext.request.contextPath}/adminActionWithUser?action=disable&id=${item.id}&type=${item.type}">Disable</a><br>
+                                    <a href="${pageContext.request.contextPath}/adminActionWithUser?action=update&id=${item.id}&type=${item.type}">Update</a>
+                                </td>
                             </tr>   
                         </c:forEach>
                     </tbody>
@@ -53,10 +57,10 @@
                     <p>Ồ! Lỗi rồi</p>
                 </div>
             </c:otherwise>
-            </c:choose>
-        
+        </c:choose>
+
         <div class="back-button">
-                    <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
+            <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
         </div>
-        </body>
-    </html>
+    </body>
+</html>

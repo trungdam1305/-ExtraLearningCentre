@@ -20,6 +20,7 @@ public class TaiKhoanDAO {
         try {
             String sql  = """
                           select * from TaiKhoan 
+                          WHERE UserType != 'Staff' AND UserType != 'Admin'
                           """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
             ResultSet rs = statement.executeQuery() ; 

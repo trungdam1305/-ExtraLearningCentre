@@ -53,5 +53,46 @@ public class HocSinhDAO {
         }
     }
     
+    public static ArrayList<HocSinh> adminGetHocSinhByID(String id) {
+        DBContext db = DBContext.getInstance() ; 
+        ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>() ;
+        
+        try {
+            String sql = """
+                         select * from HocSinh
+                         where ID_TaiKhoan = ? 
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, id);
+            ResultSet rs = statement.executeQuery() ; 
+            
+            while(rs.next()){
+                HocSinh hocsinh = new HocSinh(
+                        rs.getInt("ID_HocSinh"), 
+                        rs.getInt("ID_TaiKhoan") , 
+                        rs.getInt("ID_LopHoc") ,
+                        rs.getString("HoTen") , 
+                        rs.getDate("NgaySinh").toLocalDate(),
+                        rs.getString("GioiTinh") , 
+                        rs.getString("DiaChi") , 
+                        rs.getString("SDT_PhuHuynh") , 
+                        rs.getString("TruongHoc") , 
+                        rs.getString("GhiChu") , 
+                        rs.getString("TrangThai") , 
+                        rs.getTimestamp("NgayTao").toLocalDateTime()
+                ) ; 
+                hocsinhs.add(hocsinh) ; 
+            }
+        } catch(SQLException e ) {
+            e.printStackTrace();
+            return null  ; 
+        }
+        if (hocsinhs.isEmpty()){
+            return null; 
+        } else {
+            return hocsinhs ; 
+        }
+    }
+    
     
 }

@@ -12,6 +12,10 @@
         <servlet-name>adminGetFromDashboard</servlet-name>
         <servlet-class>controller.adminGetFromDashboard</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>adminActionWithUser</servlet-name>
+        <servlet-class>controller.adminActionWithUser</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -23,5 +27,9 @@
     <servlet-mapping>
         <servlet-name>adminGetFromDashboard</servlet-name>
         <url-pattern>/adminGetFromDashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminActionWithUser</servlet-name>
+        <url-pattern>/adminActionWithUser</url-pattern>
     </servlet-mapping>
 </web-app>
