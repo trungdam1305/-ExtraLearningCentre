@@ -4,8 +4,16 @@ import java.sql.*;
 import model.TaiKhoan;
 import java.time.LocalDateTime;
 
-public class TaiKhoanDAO {
 
+public class TaiKhoanDAO {
+    private Connection getConnection() throws Exception {
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        String url = "jdbc:sqlserver://Klynh\\KLYNHYTS:1433;databaseName=SWP;encrypt=true;trustServerCertificate=true";
+        String user = "sa";
+        String password = "123"; // sửa theo thông tin thực tế
+        return DriverManager.getConnection(url, user, password);
+    }
+    
     public static TaiKhoan login(String email, String password) throws SQLException {
         String sql = "SELECT * FROM TaiKhoan WHERE Email = ? AND MatKhau = ? AND TrangThai = 'Active'";
         
@@ -75,21 +83,25 @@ public class TaiKhoanDAO {
     }
 
     public boolean register(TaiKhoan user) {
-        String sql = "INSERT INTO TaiKhoan (Email, MatKhau, ID_VaiTro, TrangThai, NgayTao, UserType, HoTen) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO TaiKhoan (Email, MatKhau, ID_VaiTro, TrangThai, NgayTao, UserType) " +
+                     "VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBContext.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, user.getEmail());
-            stmt.setString(2, user.getMatKhau());
+            stmt.setString(2, user.getMatKhau()); // plaintext hoặc hashed tùy bạn
             stmt.setInt(3, user.getID_VaiTro());
             stmt.setString(4, user.getTrangThai());
             stmt.setTimestamp(5, Timestamp.valueOf(user.getNgayTao()));
             stmt.setString(6, user.getUserType());
-            return stmt.executeUpdate() > 0;
+
+            int rows = stmt.executeUpdate();
+            return rows > 0;
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // bạn có thể log lỗi kỹ hơn nếu muốn
+            return false;
         }
-        return false;
     }
 
     public boolean checkEmailExists(String email) {
@@ -98,10 +110,26 @@ public class TaiKhoanDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
-            return rs.next(); 
+            return rs.next(); // nếu tồn tại email → trả về true
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
+    }
+    
+    public String getUserTypeByRoleId(int roleId) {
+        String userType = "Local"; // fallback
+        try (Connection conn = getConnection()) {
+            String sql = "SELECT TenVaiTro FROM VaiTro WHERE ID_VaiTro = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, roleId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                userType = rs.getString("TenVaiTro");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return userType;
     }
 }

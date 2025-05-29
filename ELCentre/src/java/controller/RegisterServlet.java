@@ -28,7 +28,6 @@ public class RegisterServlet extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
-
         String action = request.getParameter("action");
 
         if ("register".equals(action)) {
@@ -37,8 +36,9 @@ public class RegisterServlet extends HttpServlet {
             String password = request.getParameter("password");
             String confirm = request.getParameter("confirm");
             String roleStr = request.getParameter("vaitro");
-
             int roleId = 0;
+
+            
             try {
                 roleId = Integer.parseInt(roleStr);
             } catch (NumberFormatException e) {
@@ -71,14 +71,19 @@ public class RegisterServlet extends HttpServlet {
 
             // Xác định trạng thái tài khoản
             String trangThai = (roleId == 2) ? "Inactive" : "Active";
+            
+            // Tạo đối tượng tài khoản
             TaiKhoan user = new TaiKhoan();
             user.setEmail(email);
             user.setMatKhau(password);
             user.setID_VaiTro(roleId);
             user.setTrangThai(trangThai);
             user.setNgayTao(LocalDateTime.now());
-            user.setUserType("Local");
-
+            // Lấy userType theo Id_vaitro
+            String userType = dao.getUserTypeByRoleId(roleId);
+            user.setUserType(userType);
+            
+            // Gọi TaiKhoanDAO lên để lưu user
             boolean success = dao.register(user);
 
             if (success) {
