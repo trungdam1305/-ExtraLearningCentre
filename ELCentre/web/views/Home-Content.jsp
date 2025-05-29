@@ -3,7 +3,7 @@
     Created on : May 21, 2025, 6:24:33 PM
     Author     : admin
 --%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -103,13 +103,12 @@
                               <div class="dt-sc-subscribe-wrapper">
                                   <h2 style="font-family:'Open Sans'; font-weight: bold" >Hãy trở thành một phần của chúng tôi. Đăng Kí để được tư vấn
                                   </h2>
-                                  <form name="#" method="post" class="dt-sc-subscribe-frm">
-                                      <input type="text" name="dt_mc_fname" id="dt_mc_fname" placeholder="Nhập Tên" />
-                                      <input type="email" name="dt_mc_emailid" id="dt_mc_emailid" required placeholder="Nhập Email" />
-                                      <input type='hidden' name='dt_mc_apikey' id='dt_mc_apikey' value='' />
-                                      <input type='hidden' name='dt_mc_listid' id='dt_mc_listid' value='' />
-                                      <input type="submit" name="submit" class="dt-sc-button small" value="Đăng Ký" />
+                                  <form id="formRegister" action="${pageContext.request.contextPath}/SendEmailServlet" method="post" class="dt-sc-subscribe-frm">
+                                    <input type="text" name="regName" id="regName" placeholder="Nhập Tên" required />
+                                    <input type="email" name="regEmail" id="regEmail" required placeholder="Nhập Email" />
+                                    <input type="submit" name="btnSubmit" class="dt-sc-button small" value="Đăng Ký" />
                                   </form>
+
                                   <p></p>
                                   <div id="ajax_newsletter_msg">
                                       
@@ -184,132 +183,97 @@
                                         <span></span>
                                     </div>
                                 </div>
-                                <div class="column dt-sc-one-fifth first">
-                                    <div class="dt-sc-team">
-                                        <div class="dt-sc-entry-thumb">
-                                            <img fetchpriority="high" decoding="async" width="420" height="420" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team1.jpg" class="attachment-full size-full wp-post-image" alt="" title="Mickey Rorey" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team1.jpg 420w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team1-100x100.jpg 100w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team1-150x150.jpg 150w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team1-300x300.jpg 300w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team1-54x54.jpg 54w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team1-60x60.jpg 60w" sizes="(max-width: 420px) 100vw, 420px" />
-                                            <div class="dt-sc-image-overlay">
-                                                <ul class="dt-sc-social-icons">
-                                                    <li>
-                                                        <a class="fa fa-github" href="#" title="GitHub"></a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="fa fa-facebook" href="http://fb.com/" title="Facebook"></a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="fa fa-linkedin-square" href="#" title="Linkedin"></a>
-                                                    </li>
-                                                </ul>
+                                <!-- Phần hiển thị giáo viên theo tên -->
+                                <c:if test="${not empty giaoVien1}">
+                                    <div class="column dt-sc-one-fifth first">
+                                        <div class="dt-sc-team">
+                                            <div class="dt-sc-entry-thumb">
+                                                <img fetchpriority="high" decoding="async" width="420" height="420"
+                                                     src="${pageContext.request.contextPath}/img/avatar/${giaoVien1.avatar}"
+                                                     class="attachment-full size-full wp-post-image"
+                                                     alt="${giaoVien1.hoTen}" title="${giaoVien1.hoTen}"
+                                                     sizes="(max-width: 420px) 100vw, 420px" />
+                                            </div>
+                                            <div class="dt-sc-entry-title">
+                                                <h2><a href="#" style= "font-family:'Open Sans'">${giaoVien1.hoTen}</a></h2>
+                                                <h6>${giaoVien1.chuyenMon}</h6>
                                             </div>
                                         </div>
-                                        <div class="dt-sc-entry-title">
-                                        <h2>
-                                            <a href="https://dtguru.wpengine.com/dt_teachers/mickey-rorey/">Trung Dam Quang</a>
-                                        </h2>
-                                        <h6>Founder</h6>
-                                        </div>
                                     </div>
-                                </div>
-                                <div class="column dt-sc-one-fifth">
-                                    <div class="dt-sc-team">
-                                        <div class="dt-sc-entry-thumb">
-                                            <img decoding="async" width="420" height="420" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team2.jpg" class="attachment-full size-full wp-post-image" alt="" title="Damie Glendell" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team2.jpg 420w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team2-100x100.jpg 100w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team2-150x150.jpg 150w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team2-300x300.jpg 300w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team2-54x54.jpg 54w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team2-60x60.jpg 60w" sizes="(max-width: 420px) 100vw, 420px" />
-                                            <div class="dt-sc-image-overlay">
-                                                <ul class="dt-sc-social-icons">
-                                                    <li>
-                                                        <a class="fa fa-github" href="#" title="GitHub"></a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="fa fa-facebook" href="http://fb.com/" title="Facebook"></a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="fa fa-linkedin-square" href="#" title="Linkedin"></a>
-                                                    </li>
-                                                </ul>
+                                </c:if>
+
+                                <c:if test="${not empty giaoVien2}">
+                                    <div class="column dt-sc-one-fifth">
+                                        <div class="dt-sc-team">
+                                            <div class="dt-sc-entry-thumb">
+                                                <img fetchpriority="high" decoding="async" width="420" height="420"
+                                                     src="${pageContext.request.contextPath}/img/avatar/${giaoVien2.avatar}"
+                                                     class="attachment-full size-full wp-post-image"
+                                                     alt="${giaoVien2.hoTen}" title="${giaoVien2.hoTen}"
+                                                     sizes="(max-width: 420px) 100vw, 420px" />
+                                            </div>
+                                            <div class="dt-sc-entry-title">
+                                                <h2><a href="#" style= "font-family:'Open Sans'">${giaoVien2.hoTen}</a></h2>
+                                                <h6>${giaoVien2.chuyenMon}</h6>
                                             </div>
                                         </div>
-                                        <div class="dt-sc-entry-title">
-                                            <h2><a href="https://dtguru.wpengine.com/dt_teachers/damie-glendell/">Chu Vu Van</a>
-                                            </h2>
-                                            <h6>Co-Director</h6>
+                                    </div>
+                                </c:if>
+
+                                <c:if test="${not empty giaoVien3}">
+                                    <div class="column dt-sc-one-fifth">
+                                        <div class="dt-sc-team">
+                                            <div class="dt-sc-entry-thumb">
+                                                <img fetchpriority="high" decoding="async" width="420" height="420"
+                                                     src="${pageContext.request.contextPath}/img/avatar/${giaoVien3.avatar}"
+                                                     class="attachment-full size-full wp-post-image"
+                                                     alt="${giaoVien3.hoTen}" title="${giaoVien3.hoTen}"
+                                                     sizes="(max-width: 420px) 100vw, 420px" />
+                                            </div>
+                                            <div class="dt-sc-entry-title">
+                                                <h2><a href="#" style= "font-family:'Open Sans'">${giaoVien3.hoTen}</a></h2>
+                                                <h6>${giaoVien3.chuyenMon}</h6>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                               <div class="column dt-sc-one-fifth">
-                                   <div class="dt-sc-team">
-                                       <div class="dt-sc-entry-thumb">
-                                           <img decoding="async" width="420" height="420" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team3.jpg" class="attachment-full size-full wp-post-image" alt="" title="Jenny Sheen" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team3.jpg 420w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team3-100x100.jpg 100w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team3-150x150.jpg 150w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team3-300x300.jpg 300w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team3-54x54.jpg 54w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team3-60x60.jpg 60w" sizes="(max-width: 420px) 100vw, 420px" />
-                                           <div class="dt-sc-image-overlay">
-                                               <ul class="dt-sc-social-icons">
-                                                   <li>
-                                                       <a class="fa fa-github" href="#" title="GitHub"></a>
-                                                   </li>
-                                                   <li>
-                                                       <a class="fa fa-facebook" href="http://fb.com/" title="Facebook"></a>
-                                                   </li>
-                                                   <li>
-                                                       <a class="fa fa-linkedin-square" href="#" title="Linkedin"></a>
-                                                   </li>
-                                               </ul>
-                                           </div>
-                                       </div>
-                                           <div class="dt-sc-entry-title">
-                                               <h2><a href="https://dtguru.wpengine.com/dt_teachers/jenny-sheen/">Do Huy Do</a>
-                                               </h2>
-                                               <h6>Marketing Director</h6>
-                                           </div>
-                                   </div>
-                               </div>
-                               <div class="column dt-sc-one-fifth">
-                                   <div class="dt-sc-team">
-                                       <div class="dt-sc-entry-thumb">
-                                           <img loading="lazy" decoding="async" width="420" height="420" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team4.jpg" class="attachment-full size-full wp-post-image" alt="" title="James Catwin" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team4.jpg 420w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team4-100x100.jpg 100w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team4-150x150.jpg 150w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team4-300x300.jpg 300w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team4-54x54.jpg 54w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team4-60x60.jpg 60w" sizes="auto, (max-width: 420px) 100vw, 420px" />
-                                           <div class="dt-sc-image-overlay">
-                                               <ul class="dt-sc-social-icons">
-                                                   <li>
-                                                       <a class="fa fa-github" href="#" title="GitHub"></a>
-                                                   </li>
-                                                   <li>
-                                                       <a class="fa fa-facebook" href="http://fb.com/" title="Facebook"></a>
-                                                   </li>
-                                                   <li>
-                                                       <a class="fa fa-linkedin-square" href="#" title="Linkedin"></a>
-                                                   </li>
-                                               </ul>
-                                           </div>
-                                       </div>
-                                        <div class="dt-sc-entry-title">
-                                        <h2><a href="https://dtguru.wpengine.com/dt_teachers/james-catwin/">Hoang Vu Minh</a>
-                                        </h2>
-                                        <h6>Art Director</h6>
+                                </c:if>
+
+                                <c:if test="${not empty giaoVien4}">
+                                    <div class="column dt-sc-one-fifth">
+                                        <div class="dt-sc-team">
+                                            <div class="dt-sc-entry-thumb">
+                                                <img fetchpriority="high" decoding="async" width="420" height="420"
+                                                     src="${pageContext.request.contextPath}/img/avatar/${giaoVien4.avatar}"
+                                                     class="attachment-full size-full wp-post-image"
+                                                     alt="${giaoVien4.hoTen}" title="${giaoVien4.hoTen}"
+                                                     sizes="(max-width: 420px) 100vw, 420px" />
+                                            </div>
+                                            <div class="dt-sc-entry-title">
+                                                <h2><a href="#" style= "font-family:'Open Sans'">${giaoVien4.hoTen}</a></h2>
+                                                <h6>${giaoVien4.chuyenMon}</h6>
+                                            </div>
                                         </div>
-                                   </div>
-                               </div>
-                                <div class="column dt-sc-one-fifth">
-                                   <div class="dt-sc-team">
-                                       <div class="dt-sc-entry-thumb">
-                                           <img loading="lazy" decoding="async" width="420" height="420" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team4.jpg" class="attachment-full size-full wp-post-image" alt="" title="James Catwin" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team4.jpg 420w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team4-100x100.jpg 100w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team4-150x150.jpg 150w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team4-300x300.jpg 300w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team4-54x54.jpg 54w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/team4-60x60.jpg 60w" sizes="auto, (max-width: 420px) 100vw, 420px" />
-                                           <div class="dt-sc-image-overlay">
-                                               <ul class="dt-sc-social-icons">
-                                                   <li>
-                                                       <a class="fa fa-github" href="#" title="GitHub"></a>
-                                                   </li>
-                                                   <li>
-                                                       <a class="fa fa-facebook" href="http://fb.com/" title="Facebook"></a>
-                                                   </li>
-                                                   <li>
-                                                       <a class="fa fa-linkedin-square" href="#" title="Linkedin"></a>
-                                                   </li>
-                                               </ul>
-                                           </div>
-                                       </div>
-                                        <div class="dt-sc-entry-title">
-                                        <h2><a href="https://dtguru.wpengine.com/dt_teachers/james-catwin/">Hoang Vu Minh</a>
-                                        </h2>
-                                        <h6>Art Director</h6>
+                                    </div>
+                                </c:if>
+
+                                <c:if test="${not empty giaoVien5}">
+                                    <div class="column dt-sc-one-fifth">
+                                        <div class="dt-sc-team">
+                                            <div class="dt-sc-entry-thumb">
+                                                <img fetchpriority="high" decoding="async" width="420" height="420"
+                                                     src="${pageContext.request.contextPath}/img/avatar/${giaoVien5.avatar}"
+                                                     class="attachment-full size-full wp-post-image"
+                                                     alt="${giaoVien5.hoTen}" title="${giaoVien5.hoTen}"
+                                                     sizes="(max-width: 420px) 100vw, 420px" />
+                                            </div>
+                                            <div class="dt-sc-entry-title">
+                                                <h2><a href="#" style= "font-family:'Open Sans'">${giaoVien5.hoTen}</a></h2>
+                                                <h6>${giaoVien5.chuyenMon}</h6>
+                                            </div>
                                         </div>
-                                   </div>
-                               </div>           
+                                    </div>
+                                </c:if>
+           
                                 <div class='dt-sc-hr-invisible-medium  '>
 
                                 </div>	
@@ -373,7 +337,7 @@
 
                                 </div>
                                 <div class='hr-title'>
-                                    <h2 style= "font-family:'Open Sans'">Các Khóa Học nổi bật</h2>
+                                    <h2 style= "font-family:'Open Sans'" >Các lớp học nổi bật</h2>
                                     <div class='title-sep'>
                                         <span></span>
                                     </div>
@@ -491,82 +455,13 @@
                                                        <div class='dt-sc-hr-invisible  '>
 
                                                        </div>
-                                <div class='hr-title'>
-                                    <h2>Upcoming Events</h2>
+                                <div class='hr-title' style= "font-family:'Open Sans'" >
+                                    
                                     <div class='title-sep'>
                                         <span></span>
                                     </div>
                                 </div>
-                                <div class="dt-events-wrapper">
-                                    <div class="dt-event-carousel">
-                                        <div class="dt-sc-one-column column" id="post-3639">
-                                            <div class="event-container"><div class="event-thumb">
-                                                    <a href="  " title="Fast Track Course Opening">
-                                                        <img loading="lazy" decoding="async" width="100" height="100" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events1-100x100.jpg" class="attachment-small-thumb size-small-thumb wp-post-image" alt="" title="Fast Track Course Opening" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events1-100x100.jpg 100w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events1-150x150.jpg 150w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events1-420x420.jpg 420w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events1-54x54.jpg 54w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events1-470x470.jpg 470w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events1-460x460.jpg 460w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events1-60x60.jpg 60w" sizes="auto, (max-width: 100px) 100vw, 100px" />
-                                                    </a>
-                                                </div>
-                                                        <div class="event-content">
-                                                            <h2>
-                                                                <a href="https://dtguru.wpengine.com/event/fast-track-course-opening/">Fast Track Course Opening</a>
-                                                            </h2>
-                                                            <div class="event-meta">17 Sep 2019
-                                                            </div>
-                                                            <div class="event-excerpt">
-                                                                <p>Pellentesque ut porta libero. Curabitur non auctor nisi. Maecenas turpis diam, egestas eget dictum id, condimentum nunc. Fusce tempor in purus sed mattis. Nulla cursus eleifend eros sit amet tempor. 
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                            </div>
-                                        </div>
-                                        <div class="dt-sc-one-column column" id="post-3633">
-                                            <div class="event-container">
-                                                <div class="event-thumb">
-                                                    <a href="https://dtguru.wpengine.com/event/free-seminar-at-london/" title="Free Seminar at London">
-                                                        <img loading="lazy" decoding="async" width="100" height="100" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events3-100x100.jpg" class="attachment-small-thumb size-small-thumb wp-post-image" alt="" title="Free Seminar at London" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events3-100x100.jpg 100w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events3-150x150.jpg 150w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events3-420x420.jpg 420w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events3-54x54.jpg 54w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events3-470x470.jpg 470w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events3-460x460.jpg 460w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events3-60x60.jpg 60w" sizes="auto, (max-width: 100px) 100vw, 100px" />
-                                                    </a>
-                                                </div>
-                                                <div class="event-content">
-                                                    <h2>
-                                                        <a href="https://dtguru.wpengine.com/event/free-seminar-at-london/">Free Seminar at London
-                                                        </a>
-                                                    </h2>
-                                                    <div class="event-meta">15 Oct 2019
-                                                    </div>
-                                                    <div class="event-excerpt">
-                                                        <p>Quisque tortor nisi, tristique sit amet commodo vel, commodo at mauris. Vestibulum vel justo neque, non pharetra orci. Integer nec est mauris, in vestibulum elit. Nulla facilisi. Praesent eu dolor 
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="dt-sc-one-column column" id="post-3636">
-                                            <div class="event-container">
-                                                <div class="event-thumb">
-                                                    <a href="https://dtguru.wpengine.com/event/welcoming-28th-batch/" title="Welcoming 28th Batch">
-                                                        <img loading="lazy" decoding="async" width="100" height="100" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events2-100x100.jpg" class="attachment-small-thumb size-small-thumb wp-post-image" alt="" title="Welcoming 28th Batch" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events2-100x100.jpg 100w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events2-150x150.jpg 150w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events2-420x420.jpg 420w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events2-54x54.jpg 54w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events2-470x470.jpg 470w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events2-460x460.jpg 460w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/events2-60x60.jpg 60w" sizes="auto, (max-width: 100px) 100vw, 100px" />
-                                                    </a>
-                                                </div>
-                                                <div class="event-content">
-                                                    <h2>
-                                                        <a href="https://dtguru.wpengine.com/event/welcoming-28th-batch/">Welcoming 28th Batch</a>
-                                                    </h2>
-                                                    <div class="event-meta">24 Dec 2019
-                                                    </div>
-                                                    <div class="event-excerpt">
-                                                        <p>Morbi quis tellus erat, ac accumsan sapien. Nam sed nulla sed sapien porttitor vehicula. Etiam suscipit vehicula congue. Integer sodales diam vitae lacus posuere sollicitudin. Proin rhoncus, sapien sed tincidunt 
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class='dt-sc-hr-invisible  '>
-                                </div>	
-                            </div>      
-                        </div>
-                    </div>
-                                        
+                                                       
                     <div class='fullwidth-section  dt-sc-parallax-section'  style="background-color:#ffffff;background-image:url(${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/paralax-bg.jpg);background-repeat:repeat;background-position:left top;background-attachment:fixed; ">
                         <div class="fullwidth-bg">	
                             <div class="container">
@@ -766,7 +661,7 @@
     </div><!-- content ends here -->
     
     
-    
+
     <script>
 		( function ( body ) {
 			'use strict';
