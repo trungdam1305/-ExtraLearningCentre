@@ -22,6 +22,8 @@ import model.HocPhi;
 import dal.HocPhiDAO;
 import model.ThongBao ; 
 import dal.ThongBaoDAO ; 
+import dal.KhoaHocDAO ; 
+import model.KhoaHoc ; 
 
 /**
  *
@@ -116,6 +118,19 @@ public class adminGetFromDashboard extends HttpServlet {
                         request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);
                     }
                     break;
+                    
+                    
+                case "khoahoc" : 
+                    ArrayList<KhoaHoc> khoahocs = KhoaHocDAO.adminGetAllKhoaHoc() ; 
+                    if (khoahocs.isEmpty()) {
+                        request.setAttribute("message", "Không có thông báo nào đã được gửi.");
+                        request.getRequestDispatcher("/views/admin/adminReceiveHocPhi.jsp").forward(request, response);
+                    } else {
+                        request.setAttribute("khoahocs",   khoahocs);
+                        request.getRequestDispatcher("/views/admin/adminReceiveKhoaHoc.jsp").forward(request, response);
+                    }
+                    break;
+                    
 
         }
 
