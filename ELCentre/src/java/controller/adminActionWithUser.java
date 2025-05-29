@@ -15,6 +15,7 @@ import model.PhuHuynh;
 import dal.PhuHuynhDAO;
 import model.TaiKhoan;
 import dal.TaiKhoanDAO;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -42,6 +43,7 @@ public class adminActionWithUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         String action = request.getParameter("action");
         PrintWriter out = response.getWriter();
         String type = request.getParameter("type");
@@ -54,32 +56,80 @@ public class adminActionWithUser extends HttpServlet {
 
                     ArrayList<GiaoVien> giaoviens = GiaoVienDAO.adminGetGiaoVienByID(id);
                     if (giaoviens.isEmpty()) {
-                        out.print("huhuhuhu");
+                        request.setAttribute("message", "Không tìm thấy thông tin giáo viên này.");
+                        request.getRequestDispatcher("/views/admin/adminReceiveTeacherInfor.jsp").forward(request, response);
+
                     } else {
-                        out.print("okokko");
+                        request.setAttribute("giaoviens", giaoviens);
+                        request.getRequestDispatcher("/views/admin/adminReceiveTeacherInfor.jsp").forward(request, response);
                     }
 
                 } else if (type.equalsIgnoreCase("HocSinh")) {
                     ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>();
                     hocsinhs = HocSinhDAO.adminGetHocSinhByID(id);
                     if (hocsinhs.isEmpty()) {
-                        out.print("huhuhu");
+                        request.setAttribute("message", "Không tìm thấy thông tin học sinh này.");
+                        request.getRequestDispatcher("/views/admin/adminReceiveTeacherInfor.jsp").forward(request, response);
                     } else {
-                        out.print("okokokk");
+                        request.setAttribute("hocsinhs", hocsinhs);
+                        request.getRequestDispatcher("/views/admin/adminReceiveStudentInfor.jsp").forward(request, response);
                     }
                 } else if (type.equalsIgnoreCase("PhuHuynh")) {
                     ArrayList<PhuHuynh> phuhuynhs = PhuHuynhDAO.adminGetPhuHuynhByID(id);
                     if (phuhuynhs.isEmpty()) {
-                        out.print("huhuhuhu");
+                        request.setAttribute("message", "Không tìm thấy thông tin phụ huyunh này.");
+                        request.getRequestDispatcher("/views/admin/adminReceiveParentInfor.jsp").forward(request, response);
                     } else {
-                        out.print("okokok");
+                        request.setAttribute("phuhuynhs", phuhuynhs);
+                        request.getRequestDispatcher("/views/admin/adminReceiveParentInfor.jsp").forward(request, response);
+                    }
+                }
+                break;
+
+            case "enable":
+                if (type.equalsIgnoreCase("GiaoVien")) {
+
+                    boolean b2 = TaiKhoanDAO.adminEnableAccountUser(id);
+                    boolean b1 = GiaoVienDAO.adminEnableGiaoVien(id);
+                    if (b1 == true && b2 == true) {
+                        ArrayList<TaiKhoan> taikhoans = TaiKhoanDAO.adminGetAllTaiKhoan();
+                        session.setAttribute("taikhoans", taikhoans);
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+                    } else {
+                        request.setAttribute("message", "Không có tài khoản nào.");
+
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+                    }
+                } else if (type.equalsIgnoreCase("HocSinh")) {
+                    boolean b1 = TaiKhoanDAO.adminEnableAccountUser(id);
+                    boolean b2 = HocSinhDAO.adminEnableHocSinh(id);
+                    if (b1 == true && b2 == true) {
+                        ArrayList<TaiKhoan> taikhoans = TaiKhoanDAO.adminGetAllTaiKhoan();
+                        session.setAttribute("taikhoans", taikhoans);
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+                    } else {
+                        request.setAttribute("message", "Không có tài khoản nào.");
+
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+                    }
+                } else if (type.equalsIgnoreCase("PhuHuynh")) {
+                    boolean b1 = TaiKhoanDAO.adminEnableAccountUser(id);
+                    boolean b2 = PhuHuynhDAO.adminEnablePhuHuynh(id);
+                    if (b1 == true && b2 == true) {
+                        ArrayList<TaiKhoan> taikhoans = TaiKhoanDAO.adminGetAllTaiKhoan();
+                        session.setAttribute("taikhoans", taikhoans);
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+                    } else {
+                        request.setAttribute("message", "Không có tài khoản nào.");
+
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
                     }
                 } else if (type.equalsIgnoreCase("Staff")) {
-                    ArrayList<GiaoVien> giaoviens = GiaoVienDAO.adminGetGiaoVienByID(id);
-                    if (giaoviens.isEmpty()) {
-                        out.print("huhuhuhu");
+                    boolean b1 = TaiKhoanDAO.adminEnableAccountUser(id);
+                    if (b1 == true) {
+                        out.print("okok123");
                     } else {
-                        out.print("okokok");
+                        out.print("huhuhu");
                     }
                 }
                 break;
@@ -87,17 +137,45 @@ public class adminActionWithUser extends HttpServlet {
             case "disable":
                 if (type.equalsIgnoreCase("GiaoVien")) {
 
+                    boolean b2 = TaiKhoanDAO.adminDisableAccountUser(id);
+                    boolean b1 = GiaoVienDAO.adminDisableGiaoVien(id);
+                    if (b1 == true && b2 == true) {
+                        ArrayList<TaiKhoan> taikhoans = TaiKhoanDAO.adminGetAllTaiKhoan();
+                        session.setAttribute("taikhoans", taikhoans);
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+                    } else {
+                        out.print("huhuhu");
+                    }
                 } else if (type.equalsIgnoreCase("HocSinh")) {
-                    
+                    boolean b1 = TaiKhoanDAO.adminDisableAccountUser(id);
+                    boolean b2 = HocSinhDAO.adminDisableHocSinh(id);
+                    if (b1 == true && b2 == true) {
+                        ArrayList<TaiKhoan> taikhoans = TaiKhoanDAO.adminGetAllTaiKhoan();
+                        session.setAttribute("taikhoans", taikhoans);
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+                    } else {
+                        out.print("huhuhu");
+                    }
                 } else if (type.equalsIgnoreCase("PhuHuynh")) {
-                    
+                    boolean b1 = TaiKhoanDAO.adminDisableAccountUser(id);
+                    boolean b2 = PhuHuynhDAO.adminDisablePhuHuynh(id);
+                    if (b1 == true && b2 == true) {
+                        ArrayList<TaiKhoan> taikhoans = TaiKhoanDAO.adminGetAllTaiKhoan();
+                        session.setAttribute("taikhoans", taikhoans);
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+                    } else {
+                        out.print("huhuhu");
+                    }
                 } else if (type.equalsIgnoreCase("Staff")) {
-                    
+                    boolean b1 = TaiKhoanDAO.adminDisableAccountUser(id);
+                    if (b1 == true) {
+                        out.print("okok123");
+                    } else {
+                        out.print("huhuhu");
+                    }
                 }
                 break;
 
-            case "update":
-                break;
         }
     }
 

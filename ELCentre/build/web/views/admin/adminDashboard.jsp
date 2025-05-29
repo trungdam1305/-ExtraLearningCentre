@@ -119,7 +119,7 @@
             <div> Quản lý tài chính</div>
             <ul>
                 <li>
-                    <a>
+                    <a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocphi">
                         <i></i>
                         Học phí
                     </a>
@@ -134,7 +134,7 @@
                 <li>
                     <a>
                         <i></i>
-                        Course
+                        Khoá học
                     </a>
                 </li>
             </ul>
@@ -155,7 +155,7 @@
             
             <ul>
                 <li>
-                    <a>
+                     <a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=thongbao">
                         <i></i>
                         Thông báo
                     </a>

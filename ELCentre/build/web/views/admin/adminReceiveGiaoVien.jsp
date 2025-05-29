@@ -11,10 +11,68 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>All Teacher</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f6f8;
+                color: #333;
+                padding: 20px;
+            }
+
+            h2 {
+                color: #1F4E79;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+                background-color: #fff;
+            }
+
+            th, td {
+                border: 1px solid #ccc;
+                padding: 8px 12px;
+                text-align: left;
+            }
+
+            th {
+                background-color: #1F4E79;
+                color: #fff;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+
+            .no-reports-message {
+                margin-top: 20px;
+                padding: 10px;
+                background-color: #ffefef;
+                border: 1px solid #e0a8a8;
+                color: #cc0000;
+            }
+
+            .back-button {
+                margin-top: 30px;
+            }
+
+            .back-button a {
+                text-decoration: none;
+                padding: 8px 16px;
+                background-color: #1F4E79;
+                color: white;
+                border-radius: 4px;
+            }
+
+            .back-button a:hover {
+                background-color: #163c5b;
+            }
+        </style>
     </head>
     <body>
         <h2>All Teachers</h2>
-        
+
         <c:choose>
             <c:when test = "${not empty giaoviens}">
                 <table>
@@ -31,7 +89,7 @@
                             <th>GhiChu</th>
                             <th>TrangThai</th>
                             <th>NgayTao</th>
-                            
+
                         </tr>
                     </thead>
 
@@ -49,21 +107,24 @@
 
                                 <td>${giaovien.getTrangThai()}</td>
                                 <td>${giaovien.getNgayTao()}</td>
-                                
+
                             </tr>   
                         </c:forEach>
                     </tbody>
-                </table>
+                </table>    
             </c:when>
             <c:otherwise>   
                 <div class="no-reports-message">
-                    <p>Ồ! Lỗi rồi</p>
+                    <c:if test="${not empty message}">
+                        <p style="color: red;">${message}</p>
+                    </c:if>
+                    <p>Không có dữ liệu giáo viên để hiển thị.</p>
                 </div>
             </c:otherwise>
-            </c:choose>
-        
+        </c:choose>
+
         <div class="back-button">
-                    <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
+            <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
         </div>
     </body>
 </html>

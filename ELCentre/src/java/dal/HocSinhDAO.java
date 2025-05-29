@@ -108,5 +108,28 @@ public class HocSinhDAO {
         }
     }
     
+    public static boolean adminDisableHocSinh(String id) {
+        DBContext db = DBContext.getInstance() ; 
+        int rs = 0 ; 
+        try {
+            String sql = """
+                         UPDATE HocSinh
+                         SET TrangThai = 'Inactive'
+                         WHERE ID_TaiKhoan = ?;
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, id);
+            rs = statement.executeUpdate() ; 
+        } catch (SQLException e ) {
+            e.printStackTrace();
+             
+        }
+        if (rs == 0 ){
+            return false ; 
+        } else {
+            return true ; 
+        }
+    }
+    
     
 }

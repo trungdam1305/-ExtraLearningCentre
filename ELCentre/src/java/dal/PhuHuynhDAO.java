@@ -75,4 +75,27 @@ public class PhuHuynhDAO {
             return true ; 
         }
     }
+    
+    public static boolean adminDisablePhuHuynh(String id) {
+        DBContext db = DBContext.getInstance() ; 
+        int rs = 0 ; 
+        try {
+            String sql = """
+                         UPDATE PhuHuynh
+                         SET TrangThai = 'Inactive'
+                         WHERE ID_TaiKhoan = ?;
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, id);
+            rs = statement.executeUpdate() ; 
+        } catch (SQLException e ) {
+            e.printStackTrace();
+             
+        }
+        if (rs == 0 ){
+            return false ; 
+        } else {
+            return true ; 
+        }
+    }
 }
