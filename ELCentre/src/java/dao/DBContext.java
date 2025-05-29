@@ -22,13 +22,14 @@ public class DBContext {
     public Connection getConnection() {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://localhost:1433;databaseName=ELC";
+            String url = "jdbc:sqlserver://Klynh\\KLYNHYTS:1433;databaseName=ELCentre";
             String user = "sa";
             String password = "123";
             connection = DriverManager.getConnection(url, user, password);
             return connection;
         } catch (SQLException | ClassNotFoundException e) {
             System.err.println("Error " + e.getMessage() + " at DBContext");
+            e.printStackTrace();
             return null;
         }
     }
