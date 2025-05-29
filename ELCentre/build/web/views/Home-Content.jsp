@@ -7,18 +7,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <!-- Link thư viện swiper -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <!-- Slider -->
     <div class="banner">
-        <script type="text/javascript">
-            jQuery(function() { 
-                _initLayerSlider( 
-                        '#layerslider_1_5r4q8o8aqo3t', {sliderVersion: '6.11.2', type: 'fullwidth', responsiveUnder: 940, allowFullscreen: false, slideBGSize: 'auto', pauseOnHover: 'disabled', skin: 'noskin', globalBGColor: 'transparent', globalBGSize: 'cover', yourLogoStyle: 'left: 10px; top: 10px;', skinsPath: 'https://dtguru.wpengine.com/wp-content/plugins/LayerSlider/assets/static/layerslider/skins/'}); });
-        </script>
         <div id="layerslider_1_5r4q8o8aqo3t" class="ls-wp-container fitvidsignore" style="width:1000px;height:630px;margin:0 auto;margin-bottom: 0px;">
             <div class="ls-slide" data-ls="duration:9000;transition2d:1,4;timeshift:-1000;kenburnsscale:1.2;">
-              
+                <!-- Slider 1 -->
                 <img 
                   width="1920" 
                   height="630" 
@@ -29,11 +22,6 @@
                   fetchpriority="high" 
                   srcset="
                     https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg2.jpg 1920w,
-                    https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg2-520x171.jpg 520w,
-                    https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg2-300x98.jpg 300w,
-                    https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg2-768x252.jpg 768w,
-                    https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg2-1024x336.jpg 1024w,
-                    https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg2-100x33.jpg 100w
                   " 
                   sizes="(max-width: 1920px) 100vw, 1920px"
                 />
@@ -54,10 +42,10 @@
                 <p style="font-weight:bold; text-transform:uppercase; ;font-size:39px;color:#355c7d;top:269px;left:-60px;" class="ls-l" data-ls="durationin:3000;delayin:3000;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Chuyên Gia
                 </p>
             </div>
-
+            <!-- Slider 2 -->
             <div class="ls-slide" data-ls="duration:9000;transition2d:1,4;timeshift:-1000;">
-                <img width="1920" height="630" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg3.jpg" class="ls-bg" alt="" decoding="async" loading="lazy" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg3.jpg 1920w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg3-520x171.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg3-300x98.jpg 300w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg3-768x252.jpg 768w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg3-1024x336.jpg 1024w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg3-100x33.jpg 100w" sizes="auto, (max-width: 1920px) 100vw, 1920px" />
-                <img width="818" height="723" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/woman1.png" class="ls-l" alt="" decoding="async" loading="lazy" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/woman1.png 818w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/woman1-520x460.png 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/woman1-300x265.png 300w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/woman1-768x679.png 768w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/woman1-100x88.png 100w" sizes="auto, (max-width: 818px) 100vw, 818px" style="top:-20px;left:328px;" data-ls="offsetxin:-200;durationin:2000;offsetxout:-200;durationout:400;parallaxlevel:0;">
+                <img width="1920" height="630" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg3.jpg" class="ls-bg" alt="" decoding="async" loading="lazy" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg3.jpg 1920w" sizes="auto, (max-width: 1920px) 100vw, 1920px" />
+                <img width="818" height="723" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/woman1.png" class="ls-l" alt="" decoding="async" loading="lazy" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/woman1.png 818w" sizes="auto, (max-width: 818px) 100vw, 818px" style="top:-20px;left:328px;" data-ls="offsetxin:-200;durationin:2000;offsetxout:-200;durationout:400;parallaxlevel:0;">
                 <p style="font-weight:bold; text-transform:uppercase; ;font-size:60px;color:#355c7d;top:109px;left:-1px;" class="ls-l" data-ls="durationin:3000;delayin:2000;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Khóa Học 
                 </p>
                 <a style="" class="ls-l" href="#2" target="_self" data-ls="offsetxin:-50;delayin:6500;offsetxout:-50;durationout:400;parallaxlevel:0;">
@@ -78,15 +66,15 @@
         </div>
     </div>      
                 
-	  <!-- content starts here -->
+	  <!-- Main Content -->
     <div class="content">
           <section class="content-full-width" id="primary">
               <article id="post-8" class="post-8 page type-page status-publish hentry">
+                  <!-- Register for Email Consultant-->
                   <div class='fullwidth-section bottom-bg '  style="background-color:#f9f9f9;">
                       <div class="fullwidth-bg">	
                           <div class="container">
-                              <div class="margin30">
-                                  
+                              <div class="margin30">    
                               </div>
                               <div class="dt-sc-subscribe-wrapper">
                                   <h2 style="font-family:'Open Sans'; font-weight: bold" >Hãy trở thành một phần của chúng tôi. Đăng Kí để được tư vấn
@@ -102,12 +90,13 @@
                                       
                                   </div>    
                               </div>
-                              <div class="margin10">
-                                  
+                              <div class="margin10"> 
                               </div>	
                           </div>
                       </div> 
                   </div>
+                                    
+                        <!--Slogan and Commitment -->                
                     <div class='fullwidth-section  '  style="background-repeat:no-repeat;background-position:left top;">
                         <div class="fullwidth-bg">	
                             <div class="container" >
@@ -164,23 +153,25 @@
                                     </div>
                                 </div>
                                 <div class='dt-sc-hr-invisible  '>
-                                </div>
+                                </div>           
+                    <!-- Team Member and Specialised Teacher -->            
                                 <div class='hr-title'>
                                     <h2>Our Team</h2>
                                     <div class='title-sep'>
                                         <span></span>
                                     </div>
-                                </div>
-                                <!-- Phần hiển thị giáo viên theo tên -->
+                                </div>     
+                                <!-- Display Teacher by Name and Link to their profile -->
                                 <c:if test="${not empty giaoVien1}">
                                     <div class="column dt-sc-one-fifth first">
                                         <div class="dt-sc-team">
                                             <div class="dt-sc-entry-thumb">
-                                                <img fetchpriority="high" decoding="async" width="420" height="420"
+                                                <a href="#" style= "font-family:'Open Sans'"><img fetchpriority="high" decoding="async" width="420" height="420"
                                                      src="${pageContext.request.contextPath}/img/avatar/${giaoVien1.avatar}"
                                                      class="attachment-full size-full wp-post-image"
                                                      alt="${giaoVien1.hoTen}" title="${giaoVien1.hoTen}"
                                                      sizes="(max-width: 420px) 100vw, 420px" />
+                                                </a>
                                             </div>
                                             <div class="dt-sc-entry-title">
                                                 <h2><a href="#" style= "font-family:'Open Sans'">${giaoVien1.hoTen}</a></h2>
@@ -194,11 +185,13 @@
                                     <div class="column dt-sc-one-fifth">
                                         <div class="dt-sc-team">
                                             <div class="dt-sc-entry-thumb">
+                                                <a href="#" style= "font-family:'Open Sans'">
                                                 <img fetchpriority="high" decoding="async" width="420" height="420"
                                                      src="${pageContext.request.contextPath}/img/avatar/${giaoVien2.avatar}"
                                                      class="attachment-full size-full wp-post-image"
                                                      alt="${giaoVien2.hoTen}" title="${giaoVien2.hoTen}"
                                                      sizes="(max-width: 420px) 100vw, 420px" />
+                                                </a>
                                             </div>
                                             <div class="dt-sc-entry-title">
                                                 <h2><a href="#" style= "font-family:'Open Sans'">${giaoVien2.hoTen}</a></h2>
@@ -212,11 +205,13 @@
                                     <div class="column dt-sc-one-fifth">
                                         <div class="dt-sc-team">
                                             <div class="dt-sc-entry-thumb">
+                                                <a href="#" style= "font-family:'Open Sans'">
                                                 <img fetchpriority="high" decoding="async" width="420" height="420"
                                                      src="${pageContext.request.contextPath}/img/avatar/${giaoVien3.avatar}"
                                                      class="attachment-full size-full wp-post-image"
                                                      alt="${giaoVien3.hoTen}" title="${giaoVien3.hoTen}"
                                                      sizes="(max-width: 420px) 100vw, 420px" />
+                                                </a>
                                             </div>
                                             <div class="dt-sc-entry-title">
                                                 <h2><a href="#" style= "font-family:'Open Sans'">${giaoVien3.hoTen}</a></h2>
@@ -230,12 +225,15 @@
                                     <div class="column dt-sc-one-fifth">
                                         <div class="dt-sc-team">
                                             <div class="dt-sc-entry-thumb">
+                                                <a href="#" style= "font-family:'Open Sans'">
                                                 <img fetchpriority="high" decoding="async" width="420" height="420"
                                                      src="${pageContext.request.contextPath}/img/avatar/${giaoVien4.avatar}"
                                                      class="attachment-full size-full wp-post-image"
                                                      alt="${giaoVien4.hoTen}" title="${giaoVien4.hoTen}"
                                                      sizes="(max-width: 420px) 100vw, 420px" />
+                                                </a>
                                             </div>
+                                                
                                             <div class="dt-sc-entry-title">
                                                 <h2><a href="#" style= "font-family:'Open Sans'">${giaoVien4.hoTen}</a></h2>
                                                 <h6>${giaoVien4.chuyenMon}</h6>
@@ -248,11 +246,13 @@
                                     <div class="column dt-sc-one-fifth">
                                         <div class="dt-sc-team">
                                             <div class="dt-sc-entry-thumb">
+                                                <a href="#" style= "font-family:'Open Sans'">
                                                 <img fetchpriority="high" decoding="async" width="420" height="420"
                                                      src="${pageContext.request.contextPath}/img/avatar/${giaoVien5.avatar}"
                                                      class="attachment-full size-full wp-post-image"
                                                      alt="${giaoVien5.hoTen}" title="${giaoVien5.hoTen}"
                                                      sizes="(max-width: 420px) 100vw, 420px" />
+                                                </a>
                                             </div>
                                             <div class="dt-sc-entry-title">
                                                 <h2><a href="#" style= "font-family:'Open Sans'">${giaoVien5.hoTen}</a></h2>
@@ -263,15 +263,16 @@
                                 </c:if>
            
                                 <div class='dt-sc-hr-invisible-medium  '>
-
                                 </div>	
                             </div>
                         </div> 
                     </div>
+                                            <!--<!-- Centre's Achivement  -->
                     <div class='fullwidth-section dt-sc-skin '  style="background-color:#355C7D;">
                         <div class="fullwidth-bg">	
                             <div class="container">
                                 <div class='dt-sc-hr-invisible'></div>
+                                <!--Number of Studied Students -->>
                                 <div class='column dt-sc-one-third first'>
                                     <div class="dt-sc-animate-num">
                                         <div class="dt-sc-icon">
@@ -281,6 +282,7 @@
                                         <h3>Số học sinh đã được trung tâm đào tạo</h3>
                                     </div>
                                 </div>
+                                <!-- Number of Activating Class-->
                                 <div class='column dt-sc-one-third'>
                                     <div class="dt-sc-animate-num">
                                         <div class="dt-sc-icon">
@@ -290,6 +292,7 @@
                                         <h3>Số lớp học đã và đang hoạt động</h3>
                                     </div>
                                 </div>
+                                <!-- Number of available Courses-->
                                 <div class='column dt-sc-one-third'>
                                     <div class="dt-sc-animate-num">
                                         <div class="dt-sc-icon">
@@ -301,14 +304,10 @@
                                 </div>
                                 <div class='dt-sc-hr-invisible'></div>	
                             </div>
-                        </div>
-                        
-
-                                        
+                        </div>                   
                     </div>
-                                        <div class="swiper-container">
-  <!-- Swiper -->
-
+                         
+                         <!--Featured Class-->               
                     <div class='fullwidth-section  '  style="background-repeat:no-repeat;background-position:left top;">
                         <div class="fullwidth-bg">	
                             <div class="container">
@@ -322,19 +321,20 @@
                                     </div>
                                 </div>
                                 <div class="dt-courses-wrapper">
+                                    <!--Arrow to next and prev-->
                                     <div class="course-carousel-arrows">
                                         <a class="prev-arrow fa fa-angle-left"></a>
                                         <a class="next-arrow fa fa-angle-right"></a>
                                     </div>
+                                    <!--Information of Class-->
                                     <div class="dt-courses-carousel">
                                         <c:forEach var="lopHoc" items="${lopHoc}" varStatus="status">
                                             <div class="column dt-sc-one-third">
                                                 <!-- Course Starts -->
                                                 <article id="post-${lopHoc.ID_LopHoc}" class="dt-sc-course post-${lopHoc.ID_LopHoc} course type-course status-publish has-post-thumbnail hentry course-category-general post">
                                                     <div class="dt-sc-course-thumb">
-                                                        <a href="#" title="${lopHoc.TenLopHoc}">
-                                                            <!-- Thay ảnh bằng div giữ chỗ -->
-                                                            <div style="width:420px; height:250px; background-color:#f0f0f0;"></div>
+                                                        <a href="#" title="${lopHoc.getTenLopHoc()}">
+                                                            <img src="${pageContext.request.contextPath}/img/avatar/${lopHoc.getImage()}" alt="${lopHoc.getTenLopHoc()}" style="width:420px; height:250px; object-fit: cover; border-radius: 5px;" />
                                                         </a>
                                                     </div>
                                                     <div class="dt-sc-course-content">
@@ -342,11 +342,10 @@
                                                             <a href="#" rel="tag">Khóa học ID: ${lopHoc.ID_KhoaHoc}</a>
                                                         </p>
                                                         <h2 class="dt-sc-course-title">
-                                                            <a href="#" title="${lopHoc.TenLopHoc}">${lopHoc.TenLopHoc}</a>
+                                                            <a href="#" style= "font-family:'Open Sans'" title="${lopHoc.getTenLopHoc()}">${lopHoc.getTenLopHoc()}</a>
                                                         </h2>
-                                                        <a href="#" class="dt-sc-course-price">${lopHoc.SoTien} VNĐ</a>
-                                                        <span class="dt-sc-lessons">Sĩ số: ${lopHoc.SiSo}</span><br/>
-                                                        <span class="dt-sc-lessons">Thời gian học: ${lopHoc.ThoiGianHoc}</span>
+                                                        <a href="#" style= "font-family:'Open Sans'"  class="dt-sc-course-price">${lopHoc.getSoTien()} VNĐ</a>
+                                                        <span class="dt-sc-lessons">Thời gian học: ${lopHoc.getThoiGianHoc()}</span>
                                                     </div>
                                                 </article>
                                             </div>
@@ -354,209 +353,142 @@
                                     </div>
                                 </div>
 
-                                </div>
-                                                       <div class='dt-sc-hr-invisible  '>
-
-                                                       </div>
-                                <div class='hr-title' style= "font-family:'Open Sans'" >
-                                    
+                            </div>
+                            <!-- High-School Course Category-->
+                            <div class="container">  
+                                <div class='hr-title'>
+                                    <h2 style= "font-family:'Open Sans'" >Trung Học Phổ Thông</h2>
                                     <div class='title-sep'>
                                         <span></span>
                                     </div>
                                 </div>
-                                                       
+                                <!--><!-- List from Database -->
+                                    <c:forEach var="listKhoi" items="${listKhoi}" varStatus="status">
+                                        <c:if test="${listKhoi.ID_Khoi > 4}">
+                                            <div class="column dt-sc-one-third first">
+                                            <!-- Course Starts -->
+                                            <article id="post-${listKhoi.getTenKhoi()}" class="dt-sc-course post-${listKhoi.getTenKhoi()} course type-course status-publish has-post-thumbnail hentry course-category-general post">
+
+                                                <div class="dt-sc-course-thumb">
+                                                    <a href="#" title="${listKhoi.getTenKhoi()}">
+                                                        <img src="${pageContext.request.contextPath}/img/avatar/avatarTeacher.jpg" alt="${listKhoi.getTenKhoi()}" style="width:420px; height:250px; object-fit: cover; border-radius: 5px;" />
+                                                    </a>
+                                                </div>
+                                                    <p class="dt-sc-course-meta">
+                                                    <a href="#" rel="tag" style="font-size: 20px; font-weight: bold; display: block; text-align: center">${listKhoi.getTenKhoi()}</a>
+                                                </p>
+                                                <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Toán:
+                                                    <a href="#" rel="tag" style="color: #007bff; text-decoration: none;"> ${listKhoi.getTenKhoi()}</a>
+                                                </p>
+                                                <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Văn:
+                                                    <a href="#" rel="tag" style="color: #007bff; text-decoration: none;"> ${listKhoi.getTenKhoi()}</a>
+                                                </p>
+                                                <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Các môn khác:
+                                                    <a href="#" rel="tag" style="color: #007bff; text-decoration: none;"> ${listKhoi.getTenKhoi()}</a>
+                                                </p>
+                                            </article>
+                                        </div>
+                                    </c:if>
+                                </c:forEach>
+                            
+                            </div>
+                            
+                            <!-- Secondary-School Course Category-->
+                            <div class="container">
+                                <div class='hr-title'>
+                                    <h2 style= "font-family:'Open Sans'" >Trung Học Cơ Sở</h2>
+                                    <div class='title-sep'>
+                                        <span></span>
+                                    </div>
+                                </div>
+                                <div class = "container" >
+                                    <!-- List from Database -->
+                                    <c:forEach var="listKhoi" items="${listKhoi}" varStatus="status">
+                                        <c:if test="${listKhoi.ID_Khoi <= 4}">
+                                            <div class="column dt-sc-one-fourth first">
+                                                <!-- Course Starts -->
+                                                <article id="post-${listKhoi.getTenKhoi()}" class="dt-sc-course post-${listKhoi.getTenKhoi()} course type-course status-publish has-post-thumbnail hentry course-category-general post">
+                                                    <div class="dt-sc-course-thumb">
+                                                        <a href="#" title="${listKhoi.getTenKhoi()}">
+                                                            <img src="${pageContext.request.contextPath}/img/avatar/avatarTeacher.jpg" alt="${listKhoi.getTenKhoi()}" style="width:440px; height:250px; object-fit: cover; border-radius: 5px;" />
+                                                        </a>
+                                                    </div>
+                                                    <p class="dt-sc-course-meta">
+                                                        <a href="#" rel="tag" style="font-size: 20px; font-weight: bold; display: block; text-align: center">${listKhoi.getTenKhoi()}</a>
+                                                    </p>
+                                                    <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Toán:
+                                                            <a href="#" rel="tag" style="color: #007bff; text-decoration: none;"> ${listKhoi.getTenKhoi()}</a>
+                                                        </p>
+                                                    <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Văn:
+                                                            <a href="#" rel="tag" style="color: #007bff; text-decoration: none;"> ${listKhoi.getTenKhoi()}</a>
+                                                        </p>
+                                                    <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Các môn khác:
+                                                            <a href="#" rel="tag" style="color: #007bff; text-decoration: none;"> ${listKhoi.getTenKhoi()}</a>
+                                                    </p>
+                                                </article>
+                                            </div>
+                                        </c:if>
+                                    </c:forEach>
+                                </div>
+                            </div>
+                                          
+                            <div class='hr-title' style= "font-family:'Open Sans'" >
+                                <div class='title-sep'>
+                                        <span></span>
+                                </div>
+                            </div>
+                            
                     <div class='fullwidth-section  dt-sc-parallax-section'  style="background-color:#ffffff;background-image:url(${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/paralax-bg.jpg);background-repeat:repeat;background-position:left top;background-attachment:fixed; ">
                         <div class="fullwidth-bg">	
                             <div class="container">
                                 <div class='dt-sc-hr-invisible  '>
-
                                 </div>
-                        <h2 style="text-align: center;">OUR BLOG
-                        </h2>
+                                <!-- Blog for Student -->
+                        <h2 style="text-align: center;">OUR BLOG</h2>
                         <div class="margin25"></div>
-                        <div class="column dt-sc-one-half first">
-                            <!-- Post Starts -->
-                            <article id="post-2729" class="blog-post post-2729 post type-post status-publish format-link has-post-thumbnail hentry category-design post_format-post-format-link">
-                                <div class="post-details">
-                                    <!-- Post Details Starts -->
-                                    <div class="date">
-                                        <p>
-                                            <span>20</span>
-                                            <br>May&nbsp;2016
-                                        </p>
-                                    </div>
-                                    <div class="post-comments">
-                                        <a href="">
-                                            <i class="fa fa-comment">
-                                            </i> 0
-                                        </a>
-                                    </div>
-                                </div>
-                                <!-- Post Details ends -->
-                                <div class="post-content">
-                                    <!-- Post Content Starts -->
-                                    <div class="entry-thumb">
-                                        <a href="" title="Five Training Roles of the CEO">
-                                            <img loading="lazy" decoding="async" width="470" height="190" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog3-470x190.jpg" class="attachment-blog-twocol size-blog-twocol wp-post-image" alt="" title="Five Training Roles of the CEO" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog3-470x190.jpg 470w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog3-520x210.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog3-300x121.jpg 300w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog3-768x310.jpg 768w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog3-1024x413.jpg 1024w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog3-100x40.jpg 100w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog3-1067x431.jpg 1067w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog3-750x303.jpg 750w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog3-335x135.jpg 335w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog3.jpg 1070w" sizes="auto, (max-width: 470px) 100vw, 470px" />
-                                        </a>
-                                    </div>
-                                    <div class="entry-detail">
-                                        <h2>
-                                            <a href="https://dtguru.wpengine.com/five-training-roles-of-the-ceo/">Five Training Roles of the CEO
-                                            </a>
-                                        </h2>
-                                        <p>Cras venenatis erat ac massa ultricies, sollici tudin ullamc orper justo elementum. Donec eu molestie odio, et congue enim....
-                                        </p>
-                                    </div>
-                                    <div class="post-meta">
-                                        <div class="post-format">
-                                            <span class="post-icon-format"> 
-                                            </span>
+                        <!--Blog information-->
+                        <c:forEach var="blog" items="${listBlog}">
+                            <div class="column dt-sc-one-half first">
+                                <article id="post-${blog.getID_Blog()}" class="blog-post post-${blog.getID_Blog()} post type-post status-publish format-link has-post-thumbnail hentry category-design post_format-post-format-link">
+                                    <div class="post-details" style="transform: translateX(25px); border-radius: 5px ">
+                                        <div class="date">
+                                            <p>
+                                                <span>${blog.getBlogDate().dayOfMonth}</span>
+                                                ${blog.getBlogDate().month.name()}&nbsp;${blog.getBlogDate().year}
+                                            </p>
                                         </div>
-                                        <ul>
-                                            <li>
-                                                <span class="fa fa-user">
+                                    </div>
 
-                                                </span>
-                                                <a href="https://dtguru.wpengine.com/author/ram/">ram
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <span class="fa fa-thumb-tack"></span>
-                                                <a href="https://dtguru.wpengine.com/category/design/" title="View all posts in Design">Design
-                                                </a>
-                                            </li>
-                                        </ul>
+                                    <div class="post-content">
+                                        <div class="entry-thumb">
+                                            <a href="#" title="${blog.getBlogTitle()}">
+                                                <img loading="lazy" decoding="async" width="200" height="90" src="${pageContext.request.contextPath}/img/avatar/${blog.getImage()}" alt="${blog.getBlogTitle()}" title="${blog.getBlogTitle()}" />
+                                            </a>
+                                        </div>
+                                        <div class="entry-detail">
+                                            <h2>
+                                                <a href="#" style= "font-family:'Open Sans'" title="${blog.getBlogTitle()}">${blog.getBlogTitle()}</a>
+                                            </h2>
+                                            <p>${blog.getBlogDescription()}</p>
+                                        </div>
+                                        <div class="post-meta">
+                                            <div class="post-format">
+                                                <span class="post-icon-format"></span>
+                                            </div>
+                                            <ul>
+                                                <li>
+                                                    <span class="fa fa-thumb-tack"></span>
+                                                    <a href="#"></a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- Post Content Ends -->
-                            </article>
-                        </div><!-- Post Ends -->
-                                <div class="column dt-sc-one-half">
-                                    <!-- Post Starts -->
-                                    <article id="post-2727" class="blog-post post-2727 post type-post status-publish format-image has-post-thumbnail hentry category-learning post_format-post-format-image">
-                                        <div class="post-details">
-                                            <!-- Post Details Starts -->
-                                            <div class="date">
-                                                <p>
-                                                    <span>21</span>
-                                                    <br>Apr&nbsp;2016
-                                                </p>
-                                            </div>
-                                            <div class="post-comments">
-                                                <a href="https://dtguru.wpengine.com/corporate-training-myths//#comments">
-                                                    <i class="fa fa-comment"></i> 2
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <!-- Post Details ends -->
-                                        <div class="post-content">
-                                            <!-- Post Content Starts -->
-                                            <div class="entry-thumb">
-                                                <a href="https://dtguru.wpengine.com/corporate-training-myths/" title="Corporate Training Myths"><img loading="lazy" decoding="async" width="470" height="190" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog7-470x190.jpg" class="attachment-blog-twocol size-blog-twocol wp-post-image" alt="" title="Corporate Training Myths" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog7-470x190.jpg 470w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog7-520x210.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog7-300x121.jpg 300w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog7-768x310.jpg 768w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog7-1024x413.jpg 1024w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog7-100x40.jpg 100w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog7-1067x431.jpg 1067w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog7-750x303.jpg 750w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog7-335x135.jpg 335w, https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/blog7.jpg 1070w" sizes="auto, (max-width: 470px) 100vw, 470px" />
-                                                </a>
-                                            </div>
-                                                <div class="entry-detail">
-                                                    <h2>
-                                                        <a href="https://dtguru.wpengine.com/corporate-training-myths/">Corporate Training Myths
-                                                        </a>
-                                                    </h2>
-                                                    <p>Nam faucibus imperdiet lacus, vitae dictum leo non. Curabitur sed velit. Nunc tempor velit at purus mollis venenatis. In...
-                                                    </p>
-                                                </div>
-                                                <div class="post-meta">
-                                                    <div class="post-format">
-                                                        <span class="post-icon-format"> 
-                                                        </span>
-                                                    </div>
-                                                    <ul>
-                                                        <li>
-                                                            <span class="fa fa-user"></span>
-                                                            <a href="https://dtguru.wpengine.com/author/ram/">ram
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <span class="fa fa-thumb-tack"></span>
-                                                            <a href="https://dtguru.wpengine.com/category/learning/" title="View all posts in Learning">Learning
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                        </div>
-                                                <!-- Post Content Ends -->
-                                    </article>
-                                </div><!-- Post Ends -->
+                                </article>
+                            </div>
+                        </c:forEach>
                             <div class='dt-sc-hr-invisible  '>
                             </div>	
                             </div>    
-                        </div>
-                    </div>
-                    <div class='fullwidth-section  '  style="background-repeat:no-repeat;background-position:left top;">
-                        <div class="fullwidth-bg">	
-                            <div class="container">
-                                <div class='dt-sc-hr-invisible-medium  '>
-
-                                </div>
-                                <div class='dt-sc-tabs-container'>
-                                    <ul class="dt-sc-tabs-frame">
-                                        <li>
-                                            <a href="#">Responsiveness</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Certificates</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Graduates</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Security Features</a>
-                                        </li>
-                                    </ul>
-                                    <div class="dt-sc-tabs-frame-content">
-                                        <p>
-                                            <img loading="lazy" decoding="async" class="alignright size-full wp-image-4488" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2013/12/responsive-img.png" alt="responsive-img" width="467" height="311" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/12/responsive-img.png 467w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/12/responsive-img-300x200.png 300w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/12/responsive-img-100x67.png 100w" sizes="auto, (max-width: 467px) 100vw, 467px" />
-                                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Roin a bibendum nibh. Nunc fermentum sit amet mi nec consequat.
-                                        </p>
-                                        <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.
-                                        </p>
-                                    </div>
-                                    <div class="dt-sc-tabs-frame-content">
-                                        <p>Aliquam euismod feugiat est, congue elementum justo condimentum sit amet. Nullam vitae risus ut velit condimentum egestas vitae eget enim. Vivamus cursus, sem sed tristique posuere, libero tellus dictum nisl, nec rhoncus odio odio et orci. Ut placerat aliquam elit, id egestas sem. Sed tristique eu libero et malesuada. Pellentesque non pharetra dui. Aliquam vel augue eu augue ornare ullamcorper.
-                                        </p>
-                                    </div>
-                                    <div class="dt-sc-tabs-frame-content">
-                                        <ul class='dt-sc-fancy-list   book'>
-                                            <li>Vivamus cursus, sem sed tristique posuere, libero tellus dictum nisl, nec rhoncus odio odio et orc
-                                            </li>
-                                            <li>Ut placerat aliquam elit, id egestas sem. Sed tristique eu libero et malesuada Pellentesque non.
-                                            </li>
-                                            <li>Fusce sed lorem at orci pretium viverra ut sit amet nunc. Aliquam euismod feugiat est
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="dt-sc-tabs-frame-content">
-                                        <p>Nunc euismod nibh sit amet justo porta, at blandit metus bibendum. Nunc pharetra justo sed nulla imperdiet, quis adipiscing turpis bibendum. Nulla venenatis vehicula augue. Praesent vulputate ipsum vel consectetur tincidunt. Aliquam egestas, velit malesuada sagittis iaculis, tortor erat vestibulum velit, eu malesuada metus lorem a metus.
-                                        </p>
-                                        <p>Ut suscipit, lorem quis bibendum placerat, sem arcu rutrum arcu, non consequat dolor ligula quis urna. Ut lectus nisi, commodo id aliquam ac, posuere in lacus. Integer a nisl sapien.
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class='dt-sc-hr-invisible  '></div>
-                                <div class='intro-text type1 '>
-                                    <h4>The Best Courses like Elsewhere. Come get trained. Guaranteed Placements.</h4>
-                                    <h5>You&#8217;ll get what you came for!</h5>
-                                    <a href=''  class='dt-sc-button  small  ' >Read More</a>
-                                </div>	
-                            </div>
-                        </div>
-                    </div>     
-                    <div style="background-repeat:no-repeat;background-position:left top;" class="fullwidth-section">
-                        <div class="fullwidth-bg">
-                        <div class="container">
-                            <div class="social-bookmark">
-
-                            </div>                          
-                        </div>
                         </div>
                     </div>
                 </article>
@@ -565,6 +497,11 @@
     
     
     <!-- JavaScript -->
+<script type="text/javascript">
+            jQuery(function() { 
+                _initLayerSlider( 
+                        '#layerslider_1_5r4q8o8aqo3t', {sliderVersion: '6.11.2', type: 'fullwidth', responsiveUnder: 940, allowFullscreen: false, slideBGSize: 'auto', pauseOnHover: 'disabled', skin: 'noskin', globalBGColor: 'transparent', globalBGSize: 'cover', yourLogoStyle: 'left: 10px; top: 10px;', skinsPath: 'https://dtguru.wpengine.com/wp-content/plugins/LayerSlider/assets/static/layerslider/skins/'}); });
+        </script>
 <script>
   const swiper = new Swiper('.swiper-container', {
     navigation: {

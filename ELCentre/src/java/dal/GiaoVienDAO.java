@@ -56,8 +56,8 @@ public class GiaoVienDAO {
             return giaoviens ;
         }
     }
-    
-    public static ArrayList<GiaoVien> HomePageGetGiaoVien() {
+    //Get All information from teacher contain Avatar
+    public ArrayList<GiaoVien> HomePageGetGiaoVien() {
         DBContext db = DBContext.getInstance();
         ArrayList<GiaoVien> giaoviens = new ArrayList<GiaoVien>();
 
@@ -97,7 +97,7 @@ public class GiaoVienDAO {
             return giaoviens ;
         }
     }
-    
+    //Get Teacher by Name to have Specialised Teacher
     public GiaoVien getGiaoVienByHoTen(String hoTen) {
     DBContext db = DBContext.getInstance();
     GiaoVien gv = null;
@@ -126,13 +126,13 @@ public class GiaoVienDAO {
     return gv;
 }
 
-    
+    //Debugging DAO
     public static void main(String[] args) {
         GiaoVienDAO dao = new GiaoVienDAO();
 
-        // Tên giáo viên cần tìm (có thể thay đổi để test)
+        //Just for Testing
         String tenCanTim = "Vũ Văn Chủ";
-
+        
         GiaoVien gv = dao.getGiaoVienByHoTen(tenCanTim);
 
         System.out.println(gv.getHoTen() + " " + gv.getChuyenMon() + " " + gv.getAvatar());

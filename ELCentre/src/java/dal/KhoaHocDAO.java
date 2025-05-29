@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import model.KhoiHoc;
 
 /**
  *
@@ -686,5 +687,39 @@ public static List<KhoaHoc> getCoursesByTrangThai(String trangThai, int offset, 
     }
     return khoaHocList;
 }
+    public List<KhoaHoc> getKhoaHocByKhoi(int idKhoi){
+        List<KhoaHoc> list = new ArrayList<>();
+        String sql = "SELECT * From KhoaHoc JOIN KhoiHoc On KhoaHoc.ID_Khoi = KhoiHoc.ID_Khoi";
+        DBContext db = DBContext.getInstance();
+        try (PreparedStatement statement = db.getConnection().prepareStatement(sql);) {
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                 KhoaHoc khoaHoc = new KhoaHoc();
+            khoaHoc.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+            khoaHoc.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
+            khoaHoc.setMoTa(rs.getString("MoTa"));
+            khoaHoc.setThoiGianBatDau(rs.getDate("ThoiGianBatDau") != null ? rs.getDate("ThoiGianBatDau").toLocalDate() : null);
+            khoaHoc.setThoiGianKetThuc(rs.getDate("ThoiGianKetThuc") != null ? rs.getDate("ThoiGianKetThuc").toLocalDate() : null);
+            khoaHoc.setGhiChu(rs.getString("GhiChu"));
+            khoaHoc.setTrangThai(rs.getString("TrangThai"));
+            khoaHoc.setNgayTao(rs.getTimestamp("NgayTao") != null ? rs.getTimestamp("NgayTao").toLocalDateTime() : null);
+            khoaHoc.setID_Khoi(rs.getInt("ID_Khoi"));
+                list.add(khoaHoc);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public static void main(String[] args) {
+        List<KhoaHoc> list = new ArrayList<>();
+        KhoaHocDAO dao = new KhoaHocDAO();
+        list = dao.getKhoaHocByKhoi(1);
+        for (KhoaHoc kh : list){
+            System.out.println(kh.getID_Khoi());
+        }
+    }
 
 }

@@ -9,6 +9,7 @@ import model.LopHoc;
 
 public class LopHocDAO {
 
+    //Listing all Class from the Database
     public List<LopHoc> getAllLopHoc() {
         DBContext db = DBContext.getInstance();
         List<LopHoc> list = new ArrayList<>();
@@ -26,6 +27,7 @@ public class LopHocDAO {
                 lh.setTrangThai(rs.getString("TrangThai"));
                 lh.setSoTien(rs.getString("SoTien"));
                 lh.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+                lh.setImage(rs.getString("Image"));
                 list.add(lh);
             }
 
@@ -35,6 +37,7 @@ public class LopHocDAO {
         return list;
     }
     
+    //Call the Sum of Class 
     public static int getTotalLopHoc() {
         DBContext db = DBContext.getInstance();
         int total = 0;
@@ -55,6 +58,7 @@ public class LopHocDAO {
         return total;
     }
     
+    //Debugging
     public static void main(String[] args) {
         List<LopHoc> lop = new LopHocDAO().getAllLopHoc();
         for (LopHoc lops : lop){

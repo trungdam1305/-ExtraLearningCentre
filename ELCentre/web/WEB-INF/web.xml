@@ -5,10 +5,6 @@
         <servlet-class>controller.SendEmailServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SearchCourses</servlet-name>
-        <servlet-class>controller.SearchCourses</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>adminGetFromDashboard</servlet-name>
         <servlet-class>controller.adminGetFromDashboard</servlet-class>
     </servlet>
@@ -43,10 +39,6 @@
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SearchCourses</servlet-name>
-        <url-pattern>/SearchCourses</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>adminGetFromDashboard</servlet-name>

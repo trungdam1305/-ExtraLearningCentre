@@ -60,7 +60,7 @@ public class ManaCour2 extends HttpServlet {
             throws ServletException, IOException {
         List<KhoaHoc> list = KhoaHocDAO.getKhoaHoc();
         request.setAttribute("list", list);
-        request.getRequestDispatcher("ManagerCourses2.jsp").forward(request, response);
+        request.getRequestDispatcher("views/ManagerCourses2.jsp").forward(request, response);
     }
 
     /** 
