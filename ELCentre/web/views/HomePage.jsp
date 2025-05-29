@@ -1,4 +1,4 @@
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
@@ -16,7 +16,7 @@
 
 	<script>document.documentElement.className = document.documentElement.className + ' yes-js js_active js'</script>
 	<title>Extra Learning Centre</title>
-<link href='${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/images/favicon.png' rel='shortcut icon' type='image/x-icon' />
+<link href='${pageContext.request.contextPath}/img/SieuLogo.png' rel='shortcut icon' type='image/x-icon' />
 <link href='${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/images/apple-touch-icon.png' rel='apple-touch-icon-precomposed'/>
 <link href='${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/images/apple-touch-icon-114x114.png' sizes='114x114' rel='apple-touch-icon-precomposed'/>
 <link href='${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/images/apple-touch-icon-72x72.png' sizes='72x72' rel='apple-touch-icon-precomposed'/>
@@ -24,7 +24,7 @@
 <link rel='dns-prefetch' href='http://fonts.googleapis.com/' />
 <link rel="alternate" type="application/rss+xml" title="Extra Learning Centre; Feed" href="https://dtguru.wpengine.com/feed/" />
 <link rel="alternate" type="application/rss+xml" title="Extra Learning Centre; Comments Feed" href="https://dtguru.wpengine.com/comments/feed/" />
-<link rel="alternate" type="text/calendar" title="Extra Learning Centreo; iCal Feed" href="https://dtguru.wpengine.com/events/?ical=1" />
+<link rel="alternate" type="text/calendar" title="Extra Learning Centre; iCal Feed" href="https://dtguru.wpengine.com/events/?ical=1" />
 <link rel="alternate" type="application/rss+xml" title="Extra Learning Centre; Home Comments Feed" href="https://dtguru.wpengine.com/home/feed/" />
 <link rel='stylesheet' id='dt-sc-css-css' href='${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/plugins/designthemes-core-features/shortcodes/css/shortcodes9704.css?ver=6.7.1' type='text/css' media='all' />
 <link rel='stylesheet' id='layerslider-css' href='${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/plugins/LayerSlider/assets/static/layerslider/css/layersliderce67.css?ver=6.11.2' type='text/css' media='all' />
@@ -58,7 +58,7 @@
 <link rel='stylesheet' id='guru-shortcode-css' href='${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/css/shortcode9704.css?ver=6.7.1' type='text/css' media='all' />
 <link rel='stylesheet' id='guru-skin-css' href='${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/skins/dark-blue/style9704.css?ver=6.7.1' type='text/css' media='all' />
 <link rel='stylesheet' id='guru-gutenberg-css' href='${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/css/gutenbergd7b7.css?ver=4.3' type='text/css' media='all' />
-<style id='guru-gutenberg-inline-css' type='text/css'>
+<style id='guru-gutenberg-inlinae-css' type='text/css'>
 .has-primary-background-color { background-color:#355c7d; }.has-primary-color { color:#355c7d; }.has-secondary-background-color { background-color:#d95b43; }.has-secondary-color { color:#d95b43; }.has-tertiary-background-color { background-color:#497faf; }.has-tertiary-color { color:#497faf; }
 </style>
 <link rel='stylesheet' id='animations-css' href='${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/css/animations9704.css?ver=6.7.1' type='text/css' media='all' />
