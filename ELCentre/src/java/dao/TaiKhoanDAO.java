@@ -10,7 +10,7 @@ public class TaiKhoanDAO {
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         String url = "jdbc:sqlserver://Klynh\\KLYNHYTS:1433;databaseName=SWP;encrypt=true;trustServerCertificate=true";
         String user = "sa";
-        String password = "123"; // sửa theo thông tin thực tế
+        String password = "123"; 
         return DriverManager.getConnection(url, user, password);
     }
     
@@ -89,7 +89,7 @@ public class TaiKhoanDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, user.getEmail());
-            stmt.setString(2, user.getMatKhau()); // plaintext hoặc hashed tùy bạn
+            stmt.setString(2, user.getMatKhau()); 
             stmt.setInt(3, user.getID_VaiTro());
             stmt.setString(4, user.getTrangThai());
             stmt.setTimestamp(5, Timestamp.valueOf(user.getNgayTao()));
@@ -99,7 +99,7 @@ public class TaiKhoanDAO {
             return rows > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace(); // bạn có thể log lỗi kỹ hơn nếu muốn
+            e.printStackTrace(); 
             return false;
         }
     }
@@ -110,7 +110,7 @@ public class TaiKhoanDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
-            return rs.next(); // nếu tồn tại email → trả về true
+            return rs.next(); 
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -131,5 +131,43 @@ public class TaiKhoanDAO {
             e.printStackTrace();
         }
         return userType;
+    }
+    
+    public TaiKhoan findByEmail(String email) {
+        TaiKhoan user = null;
+        String sql = "SELECT * FROM TaiKhoan WHERE Email = ?";
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                user = new TaiKhoan();
+                user.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
+                user.setEmail(rs.getString("Email"));
+                user.setMatKhau(rs.getString("MatKhau"));
+                user.setID_VaiTro(rs.getInt("ID_VaiTro"));
+                user.setTrangThai(rs.getString("TrangThai"));
+                user.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+                user.setUserType(rs.getString("UserType"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+    
+    public boolean updatePassword(String email, String newPassword) {
+        String sql = "UPDATE TaiKhoan SET MatKhau = ? WHERE Email = ?";
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            // String hashed = BCrypt.hashpw(newPassword, BCrypt.gensalt());
+            // stmt.setString(1, hashed);
+            stmt.setString(1, newPassword); 
+            stmt.setString(2, email);
+            return stmt.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
-
 package controller;
 
 import java.io.IOException;
@@ -11,6 +6,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import dao.TaiKhoanDAO;
+import model.TaiKhoan;
+import jakarta.servlet.http.*;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 /**
  *
@@ -66,16 +66,48 @@ public class ForgotPasswordServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+         request.setCharacterEncoding("UTF-8");
+
+        String action = request.getParameter("action");
+        TaiKhoanDAO dao = new TaiKhoanDAO();
+
+        if ("search".equals(action)) {
+            String email = request.getParameter("email");
+            TaiKhoan user = dao.findByEmail(email);
+
+            if (user != null) {
+                request.setAttribute("foundUser", user);
+                request.setAttribute("email", email);
+                request.getRequestDispatcher("/views/forgotPassword.jsp").forward(request, response);
+            } else {
+                String error = "Không tìm thấy tài khoản với email này.";
+                response.sendRedirect(request.getContextPath() + "/views/forgotPassword.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
+            }
+
+        } else if ("reset".equals(action)) {
+            String email = request.getParameter("email");
+            String newPassword = request.getParameter("newPassword");
+            String confirmPassword = request.getParameter("confirmPassword");
+
+            if (!newPassword.equals(confirmPassword)) {
+                String error = "Mật khẩu xác nhận không khớp.";
+                response.sendRedirect(request.getContextPath() + "/views/forgotPassword.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
+                return;
+            }
+
+            boolean success = dao.updatePassword(email, newPassword);
+            if (success) {
+                String successMsg = "Mật khẩu đã được cập nhật. Hãy đăng nhập lại.";
+                response.sendRedirect(request.getContextPath() + "/views/login.jsp?success=" + URLEncoder.encode(successMsg, "UTF-8"));
+            } else {
+                String error = "Cập nhật mật khẩu thất bại. Vui lòng thử lại.";
+                response.sendRedirect(request.getContextPath() + "/views/forgotPassword.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
+            }
+        }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Xử lý chức năng quên mật khẩu";
+    }
 }
