@@ -63,6 +63,11 @@
             background-color: #DB4437; /* Màu đỏ Google */
             color: white;
         }
+        .footer-chat {
+            position: fixed; bottom: 0; right: 0;
+            background-color: #1877F2; color: white;
+            padding: 8px 16px; border-top-left-radius: 8px;
+        }
 
     </style>
 </head>
@@ -95,6 +100,14 @@
                 <input type="email" name="email" class="form-control" placeholder="Email" >
                 <input type="password" name="password" class="form-control" placeholder="Mật khẩu" >
                 <input type="password" name="confirm" class="form-control" placeholder="Xác nhận mật khẩu" >
+                <select name="vaitro" class="form-control" required>
+                    <option value="">-- Chọn vai trò --</option>
+                    <option value="2">Staff</option>
+                    <option value="3">Giáo viên</option>
+                    <option value="4">Học sinh</option>
+                    <option value="5">Phụ huynh</option>
+                </select>
+
 
                 <button type="submit" name="action" value="register" class="btn btn-register mt-2">Đăng kí</button>
             </form>
@@ -111,8 +124,8 @@
                 </div>
             </div>
 
-            <div class="mt-4 text-end">
-                <a href="#" class="btn btn-secondary btn-sm">Liên hệ với Extra Learning Centre</a>
+            <div class="footer-chat">
+                Chat với Extra Learning Centre
             </div>
         </div>
     </div>

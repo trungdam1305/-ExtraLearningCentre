@@ -2,21 +2,23 @@ package dao;
 
 import java.sql.*;
 import model.TaiKhoan;
+import java.time.LocalDateTime;
 
 public class TaiKhoanDAO {
+
     public static TaiKhoan login(String email, String password) throws SQLException {
         String sql = """
                      SELECT * FROM TaiKhoan
-                     WHERE Email = ? AND Matkhau = ? AND TrangThai = 'HoatDong'
+                     WHERE Email = ? AND MatKhau = ? AND TrangThai = 'Active'
                      """;
-        
+
         try (Connection conn = DBContext.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, email);
             stmt.setString(2, password);
-
             ResultSet rs = stmt.executeQuery();
+
             if (rs.next()) {
                 TaiKhoan tk = new TaiKhoan();
                 tk.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
@@ -40,6 +42,7 @@ public class TaiKhoanDAO {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
+
             if (rs.next()) {
                 TaiKhoan user = new TaiKhoan();
                 user.setEmail(email);
@@ -48,10 +51,12 @@ public class TaiKhoanDAO {
                 user.setTrangThai(rs.getString("TrangThai"));
                 return user;
             } else {
-                sql = "INSERT INTO TaiKhoan (Email, MatKhau, ID_VaiTro, TrangThai) VALUES (?, '', 2, 'HoatDong')";
+                sql = "INSERT INTO TaiKhoan (Email, MatKhau, ID_VaiTro, TrangThai, NgayTao, UserType) VALUES (?, '', 2, 'Active', ?, 'Facebook')";
                 ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, email);
+                ps.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
                 ps.executeUpdate();
+
                 ResultSet keys = ps.getGeneratedKeys();
                 if (keys.next()) {
                     int newId = keys.getInt(1);
@@ -59,7 +64,9 @@ public class TaiKhoanDAO {
                     user.setEmail(email);
                     user.setID_TaiKhoan(newId);
                     user.setID_VaiTro(2);
-                    user.setTrangThai("HoatDong");
+                    user.setTrangThai("Active");
+                    user.setNgayTao(LocalDateTime.now());
+                    user.setUserType("Facebook");
                     return user;
                 }
             }
@@ -68,48 +75,32 @@ public class TaiKhoanDAO {
         }
         return null;
     }
-    
-        public boolean register(TaiKhoan user) {
-        String sql = "INSERT INTO TaiKhoan (Email, MatKhau, ID_VaiTro, TrangThai, NgayTao, UserType) VALUES (?, ?, ?, ?, ?, ?)";
+
+    public boolean register(TaiKhoan user) {
+        String sql = "INSERT INTO TaiKhoan (Email, MatKhau, ID_VaiTro, TrangThai, NgayTao, UserType, HoTen) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBContext.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, user.getEmail());
             stmt.setString(2, user.getMatKhau());
-            stmt.setInt(3, user.getID_VaiTro()); 
-            stmt.setString(4, user.getTrangThai()); 
+            stmt.setInt(3, user.getID_VaiTro());
+            stmt.setString(4, user.getTrangThai());
             stmt.setTimestamp(5, Timestamp.valueOf(user.getNgayTao()));
-            stmt.setString(6, user.getUserType()); 
-
+            stmt.setString(6, user.getUserType());
             return stmt.executeUpdate() > 0;
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
-        
-        public boolean isEmailExists(String email) {
-        String sql = "SELECT 1 FROM TaiKhoan WHERE Email = ?";
-        try (Connection conn = DBContext.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, email);
-            ResultSet rs = stmt.executeQuery();
-            return rs.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-        
-        public boolean checkEmailExists(String email) {
-        String sql = "SELECT 1 FROM TaiKhoan WHERE Email = ?";
-        try (Connection conn = DBContext.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
+    public boolean checkEmailExists(String email) {
+        String sql = "SELECT 1 FROM TaiKhoan WHERE Email = ?";
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
-            return rs.next(); // true nếu tồn tại
+            return rs.next(); 
         } catch (SQLException e) {
             e.printStackTrace();
         }

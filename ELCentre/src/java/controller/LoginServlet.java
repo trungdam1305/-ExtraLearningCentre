@@ -44,6 +44,13 @@ public class LoginServlet extends HttpServlet {
             TaiKhoan user = TaiKhoanDAO.login(email, password);
 
             if (user != null) {
+                // Kiểm tra trạng thái tài khoản
+                if (!"Inactive".equalsIgnoreCase(user.getTrangThai())) {
+                    String errorMsg = "Tài khoản của bạn đang chờ phê duyệt.";
+                    response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
+                    return;
+                }
+                
                 // Lưu session
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
@@ -55,8 +62,12 @@ public class LoginServlet extends HttpServlet {
                 log.setThoiGian(LocalDateTime.now());
                 UserLogsDAO.insertLog(log);
 
-                // Chuyển đến trang chính
-                response.sendRedirect(request.getContextPath() + "/views/HomePage.jsp");
+                // Điều hướng đăng nhập
+                if (user.getID_VaiTro() == 1) {
+                    response.sendRedirect(request.getContextPath() + "/admin/adminDashboard.jsp");
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/views/HomePage.jsp");
+                }
             } else {
                 String errorMsg = "Thông tin đăng nhập không đúng hoặc tài khoản đã bị khóa.";
                 response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
