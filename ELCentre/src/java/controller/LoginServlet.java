@@ -45,12 +45,12 @@ public class LoginServlet extends HttpServlet {
 
             if (user != null) {
                 // Kiểm tra trạng thái tài khoản
-                if (!"Inactive".equalsIgnoreCase(user.getTrangThai())) {
+                if ("Inactive".equalsIgnoreCase(user.getTrangThai())) {
                     String errorMsg = "Tài khoản của bạn đang chờ phê duyệt.";
                     response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
                     return;
                 }
-                
+        
                 // Lưu session
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
@@ -64,7 +64,7 @@ public class LoginServlet extends HttpServlet {
 
                 // Điều hướng đăng nhập
                 if (user.getID_VaiTro() == 1) {
-                    response.sendRedirect(request.getContextPath() + "/admin/adminDashboard.jsp");
+                    response.sendRedirect(request.getContextPath() + "/views/admin/adminDashboard.jsp");
                 } else {
                     response.sendRedirect(request.getContextPath() + "/views/HomePage.jsp");
                 }

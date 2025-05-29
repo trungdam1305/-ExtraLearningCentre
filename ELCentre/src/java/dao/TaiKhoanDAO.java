@@ -7,18 +7,16 @@ import java.time.LocalDateTime;
 public class TaiKhoanDAO {
 
     public static TaiKhoan login(String email, String password) throws SQLException {
-        String sql = """
-                     SELECT * FROM TaiKhoan
-                     WHERE Email = ? AND MatKhau = ? AND TrangThai = 'Active'
-                     """;
-
+        String sql = "SELECT * FROM TaiKhoan WHERE Email = ? AND MatKhau = ? AND TrangThai = 'Active'";
+        
         try (Connection conn = DBContext.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+            
             stmt.setString(1, email);
-            stmt.setString(2, password);
+            stmt.setString(2, password); 
+            
             ResultSet rs = stmt.executeQuery();
-
+            
             if (rs.next()) {
                 TaiKhoan tk = new TaiKhoan();
                 tk.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
