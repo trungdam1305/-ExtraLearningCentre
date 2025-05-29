@@ -16,6 +16,14 @@
         <servlet-name>HomePage</servlet-name>
         <servlet-class>controller.HomePage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FacebookLoginServlet</servlet-name>
+        <servlet-class>controller.FacebookLoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>controller.LoginServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -31,5 +39,13 @@
     <servlet-mapping>
         <servlet-name>HomePage</servlet-name>
         <url-pattern>/HomePage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FacebookLoginServlet</servlet-name>
+        <url-pattern>/FacebookLoginServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
     </servlet-mapping>
 </web-app>

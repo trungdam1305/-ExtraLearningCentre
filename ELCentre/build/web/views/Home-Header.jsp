@@ -14,7 +14,7 @@
 						 Tham gia các khóa học của chúng tôi/<a href="#" title="Tham gia khóa học">Enroll</a>                    
                         </div>
                 	<div class="float-right">                            	
-                            <a href="" title="Login Now" style="text-decoration: underline">Đăng nhập tại đây!</a></div>
+                            <a href="../views/Login_Control/login.jsp" title="Login Now" style="text-decoration: underline">Đăng nhập tại đây!</a></div>
                 </div>
             </div>
                 
