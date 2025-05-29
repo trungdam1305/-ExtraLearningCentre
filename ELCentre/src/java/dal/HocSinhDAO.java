@@ -44,5 +44,28 @@ public class HocSinhDAO {
             return hocsinhs ; 
     }
     
+    public static int getTotalHocSinh() {
+        DBContext db = DBContext.getInstance();
+        int total = 0;
+        try {
+            String sql = """
+            SELECT COUNT(*) FROM HocSinh
+        """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+            rs.close();
+            statement.close();
+        } catch (Exception e) {
+            return 0; // hoặc có thể trả về -1 để phân biệt có lỗi
+        }
+        return total;
+    }
     
+    public static void main(String[] args) {
+        int a = getTotalHocSinh();
+        System.out.println(a);
+    }
 }

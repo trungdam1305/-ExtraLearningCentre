@@ -5,6 +5,22 @@
         <servlet-class>controller.SendEmailServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>SearchCourses</servlet-name>
+        <servlet-class>controller.SearchCourses</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>adminGetFromDashboard</servlet-name>
+        <servlet-class>controller.adminGetFromDashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HomePage</servlet-name>
+        <servlet-class>controller.HomePage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SendEmailServlet</servlet-name>
+        <servlet-class>controller.SendEmailServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ManaCour2</servlet-name>
         <servlet-class>controller.ManaCour2</servlet-class>
     </servlet>
@@ -24,13 +40,21 @@
         <servlet-name>AddKhoaHoc</servlet-name>
         <servlet-class>controller.AddKhoaHoc</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>adminGetFromDashboard</servlet-name>
-        <servlet-class>controller.adminGetFromDashboard</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchCourses</servlet-name>
+        <url-pattern>/SearchCourses</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminGetFromDashboard</servlet-name>
+        <url-pattern>/adminGetFromDashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomePage</servlet-name>
+        <url-pattern>/HomePage</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ManaCour2</servlet-name>
@@ -52,8 +76,5 @@
         <servlet-name>AddKhoaHoc</servlet-name>
         <url-pattern>/AddKhoaHoc</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>adminGetFromDashboard</servlet-name>
-        <url-pattern>/adminGetFromDashboard</url-pattern>
-    </servlet-mapping>
+    
 </web-app>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Carousel khóa học với nút điều hướng gần slide</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .swiper-container {
+      width: 900px;
+      position: relative;
+    }
+    .swiper-slide img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .course-title {
+      margin-top: 8px;
+      font-weight: bold;
+      text-align: center;
+    }
+    /* Chỉnh nút điều hướng cho sát slide */
+    .swiper-button-prev, .swiper-button-next {
+      top: 50%;
+      width: 30px;
+      height: 30px;
+      margin-top: -15px;
+      background-size: 30px 30px;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+    .swiper-button-prev {
+      left: 10px; /* Đẩy sát bên trái container */
+    }
+    .swiper-button-next {
+      right: 10px; /* Đẩy sát bên phải container */
+    }
+    .swiper-button-prev:hover,
+    .swiper-button-next:hover {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Khóa học tiêu biểu</h2>
+
+<div class="swiper-container">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide">
+      <img src="${pageContext.request.contextPath}/img/avatar/avatarTeacher.jpg" alt="Ôn tập hè lớp 6 lên lớp 7" />
+      <div class="course-title">Ôn tập hè lớp 6 lên lớp 7</div>
+    </div>
+    <div class="swiper-slide">
+      <img src="${pageContext.request.contextPath}/img/avatar/avatarTeacher.jpg" alt="Ôn tập hè lớp 7 lên lớp 8" />
+      <div class="course-title">Ôn tập hè lớp 7 lên lớp 8</div>
+    </div>
+    <div class="swiper-slide">
+      <img src="${pageContext.request.contextPath}/img/avatar/avatarTeacher.jpg" alt="Ôn tập hè lớp 8 lên lớp 9" />
+      <div class="course-title">Ôn tập hè lớp 8 lên lớp 9</div>
+    </div>
+    <div class="swiper-slide">
+      <img src="${pageContext.request.contextPath}/img/avatar/avatarTeacher.jpg" alt="Ôn tập hè lớp 1 lên lớp 2" />
+      <div class="course-title">Ôn tập hè lớp 1 lên lớp 2</div>
+    </div>
+  </div>
+  <!-- Nút điều hướng -->
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
+<script>
+  const swiper = new Swiper('.swiper-container', {
+    slidesPerView: 3,
+    spaceBetween: 20,
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+  });
+</script>
+
+</body>
+</html>
