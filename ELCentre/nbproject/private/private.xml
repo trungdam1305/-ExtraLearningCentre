@@ -2,8 +2,15 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group name="SWP">
-            <file>file:/C:/Users/admin/Desktop/-ExtraLearningCentre/ELCentre/web/dtguru.wpenginepowered.com/wp-includes/css/dist/block-library/style.min9704.css</file>
+        <group name="SWP"/>
+        <group name="SWT">
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/dal/GiaoVienDAO.java</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/HomePage.jsp</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/Home-Content.jsp</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/model/GiaoVien.java</file>
+        </group>
+        <group>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/Git/-ExtraLearningCentre/ELCentre/web/index.html</file>
         </group>
     </open-files>
 </project-private>

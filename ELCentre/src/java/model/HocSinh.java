@@ -1,136 +1,72 @@
-package model ; 
+ package model;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+// 5. HocSinh.java
 public class HocSinh {
-    private int idHocSinh;
-    private int idTaiKhoan;
-    private String hoTen;
-    private LocalDate ngaySinh;
-    private String gioiTinh;
-    private String diaChi;
-    private String sdtPhuHuynh;
-    private int idLopHoc;
-    private String truongHoc;
-    private String ghiChu;
-    private String trangThai;
-    private LocalDateTime ngayTao;
+    private Integer ID_HocSinh;
+    private Integer ID_TaiKhoan;
+    private String HoTen;
+    private LocalDate NgaySinh;
+    private String GioiTinh;
+    private String DiaChi;
+    private String SDT_PhuHuynh;
+    private String TruongHoc;
+    private String GhiChu;
+    private String TrangThai;
+    private LocalDateTime NgayTao;
 
-    // Constructors
     public HocSinh() {
-        this.trangThai = "Active";
-        this.ngayTao = LocalDateTime.now();
     }
 
-    public HocSinh(int idTaiKhoan, String hoTen, LocalDate ngaySinh, String gioiTinh, String diaChi,
-                   String sdtPhuHuynh, int idLopHoc, String truongHoc, String ghiChu) {
-        this.idTaiKhoan = idTaiKhoan;
-        this.hoTen = hoTen;
-        this.ngaySinh = ngaySinh;
-        this.gioiTinh = gioiTinh;
-        this.diaChi = diaChi;
-        this.sdtPhuHuynh = sdtPhuHuynh;
-        this.idLopHoc = idLopHoc;
-        this.truongHoc = truongHoc;
-        this.ghiChu = ghiChu;
-        this.trangThai = "Active";
-        this.ngayTao = LocalDateTime.now();
+    public HocSinh(Integer ID_HocSinh, Integer ID_TaiKhoan,  String HoTen, LocalDate NgaySinh, String GioiTinh, String DiaChi, String SDT_PhuHuynh, String TruongHoc, String GhiChu, String TrangThai, LocalDateTime NgayTao) {
+        this.ID_HocSinh = ID_HocSinh;
+        this.ID_TaiKhoan = ID_TaiKhoan;
+        this.HoTen = HoTen;
+        this.NgaySinh = NgaySinh;
+        this.GioiTinh = GioiTinh;
+        this.DiaChi = DiaChi;
+        this.SDT_PhuHuynh = SDT_PhuHuynh;
+        this.TruongHoc = TruongHoc;
+        this.GhiChu = GhiChu;
+        this.TrangThai = TrangThai;
+        this.NgayTao = NgayTao;
     }
 
-    // Getters and Setters
-    public int getIdHocSinh() {
-        return idHocSinh;
-    }
+    
+    public Integer getID_HocSinh() { return ID_HocSinh; }
+    public void setID_HocSinh(Integer ID_HocSinh) { this.ID_HocSinh = ID_HocSinh; }
 
-    public void setIdHocSinh(int idHocSinh) {
-        this.idHocSinh = idHocSinh;
-    }
+    public Integer getID_TaiKhoan() { return ID_TaiKhoan; }
+    public void setID_TaiKhoan(Integer ID_TaiKhoan) { this.ID_TaiKhoan = ID_TaiKhoan; }
 
-    public int getIdTaiKhoan() {
-        return idTaiKhoan;
-    }
+    
 
-    public void setIdTaiKhoan(int idTaiKhoan) {
-        this.idTaiKhoan = idTaiKhoan;
-    }
+    public String getHoTen() { return HoTen; }
+    public void setHoTen(String HoTen) { this.HoTen = HoTen; }
 
-    public String getHoTen() {
-        return hoTen;
-    }
+    public LocalDate getNgaySinh() { return NgaySinh; }
+    public void setNgaySinh(LocalDate NgaySinh) { this.NgaySinh = NgaySinh; }
 
-    public void setHoTen(String hoTen) {
-        this.hoTen = hoTen;
-    }
+    public String getGioiTinh() { return GioiTinh; }
+    public void setGioiTinh(String GioiTinh) { this.GioiTinh = GioiTinh; }
 
-    public LocalDate getNgaySinh() {
-        return ngaySinh;
-    }
+    public String getDiaChi() { return DiaChi; }
+    public void setDiaChi(String DiaChi) { this.DiaChi = DiaChi; }
 
-    public void setNgaySinh(LocalDate ngaySinh) {
-        this.ngaySinh = ngaySinh;
-    }
+    public String getSDT_PhuHuynh() { return SDT_PhuHuynh; }
+    public void setSDT_PhuHuynh(String SDT_PhuHuynh) { this.SDT_PhuHuynh = SDT_PhuHuynh; }
 
-    public String getGioiTinh() {
-        return gioiTinh;
-    }
+    public String getTruongHoc() { return TruongHoc; }
+    public void setTruongHoc(String TruongHoc) { this.TruongHoc = TruongHoc; }
 
-    public void setGioiTinh(String gioiTinh) {
-        this.gioiTinh = gioiTinh;
-    }
+    public String getGhiChu() { return GhiChu; }
+    public void setGhiChu(String GhiChu) { this.GhiChu = GhiChu; }
 
-    public String getDiaChi() {
-        return diaChi;
-    }
+    public String getTrangThai() { return TrangThai; }
+    public void setTrangThai(String TrangThai) { this.TrangThai = TrangThai; }
 
-    public void setDiaChi(String diaChi) {
-        this.diaChi = diaChi;
-    }
-
-    public String getSdtPhuHuynh() {
-        return sdtPhuHuynh;
-    }
-
-    public void setSdtPhuHuynh(String sdtPhuHuynh) {
-        this.sdtPhuHuynh = sdtPhuHuynh;
-    }
-
-    public int getIdLopHoc() {
-        return idLopHoc;
-    }
-
-    public void setIdLopHoc(int idLopHoc) {
-        this.idLopHoc = idLopHoc;
-    }
-
-    public String getTruongHoc() {
-        return truongHoc;
-    }
-
-    public void setTruongHoc(String truongHoc) {
-        this.truongHoc = truongHoc;
-    }
-
-    public String getGhiChu() {
-        return ghiChu;
-    }
-
-    public void setGhiChu(String ghiChu) {
-        this.ghiChu = ghiChu;
-    }
-
-    public String getTrangThai() {
-        return trangThai;
-    }
-
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
-    }
-
-    public LocalDateTime getNgayTao() {
-        return ngayTao;
-    }
-
-    public void setNgayTao(LocalDateTime ngayTao) {
-        this.ngayTao = ngayTao;
-    }
+    public LocalDateTime getNgayTao() { return NgayTao; }
+    public void setNgayTao(LocalDateTime NgayTao) { this.NgayTao = NgayTao; }
 }
