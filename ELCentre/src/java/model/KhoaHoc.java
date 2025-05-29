@@ -4,14 +4,30 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class KhoaHoc {
-    private Integer ID_KhoaHoc;
-    private String TenKhoaHoc;
-    private String MoTa;
-    private LocalDate ThoiGianBatDau;
-    private LocalDate ThoiGianKetThuc;
-    private String GhiChu;
-    private String TrangThai;
-    private LocalDateTime NgayTao;
+    private Integer ID_KhoaHoc;//1
+    private String TenKhoaHoc;//2
+    private String MoTa;//3
+    private LocalDate ThoiGianBatDau;//4
+    private LocalDate ThoiGianKetThuc;//5
+    private String GhiChu;//6
+    private String TrangThai;//7
+    private LocalDateTime NgayTao;//8
+
+    public KhoaHoc() {
+    }
+
+    public KhoaHoc(Integer ID_KhoaHoc, String TenKhoaHoc, String MoTa, LocalDate ThoiGianBatDau, LocalDate ThoiGianKetThuc, String GhiChu, String TrangThai, LocalDateTime NgayTao) {
+        this.ID_KhoaHoc = ID_KhoaHoc;
+        this.TenKhoaHoc = TenKhoaHoc;
+        this.MoTa = MoTa;
+        this.ThoiGianBatDau = ThoiGianBatDau;
+        this.ThoiGianKetThuc = ThoiGianKetThuc;
+        this.GhiChu = GhiChu;
+        this.TrangThai = TrangThai;
+        this.NgayTao = NgayTao;
+    }
+    
+    
 
     public Integer getID_KhoaHoc() { return ID_KhoaHoc; }
     public void setID_KhoaHoc(Integer ID_KhoaHoc) { this.ID_KhoaHoc = ID_KhoaHoc; }

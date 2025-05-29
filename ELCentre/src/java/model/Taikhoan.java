@@ -2,7 +2,7 @@ package model;
 
 import java.time.LocalDateTime;
 
-public class TaiKhoan {
+public class Taikhoan {
     private Integer ID_TaiKhoan;
     private String Email;
     private String MatKhau;

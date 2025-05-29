@@ -5,18 +5,23 @@
 
 package controller;
 
+import dal.KhoaHocDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import model.KhoaHoc;
 
 /**
  *
- * @author admin
+ * @author Vuh26
  */
-public class SearchCourses extends HttpServlet {
+public class SearchCourse extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,10 +38,10 @@ public class SearchCourses extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SearchCourses</title>");  
+            out.println("<title>Servlet SearchCourse</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SearchCourses at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet SearchCourse at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -52,22 +57,31 @@ public class SearchCourses extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
-    } 
+        throws ServletException, IOException {
+    request.setCharacterEncoding("UTF-8");
+    response.setContentType("text/html;charset=UTF-8");
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
+    String name = request.getParameter("name");
+
+    // Kiểm tra xem có nhập từ khóa không
+    if (name == null || name.trim().isEmpty()) {
+        response.getWriter().println("Vui lòng nhập tên khóa học cần tìm.");
+        return;
     }
+
+    // Gọi DAO để tìm danh sách khóa học theo tên (tìm gần đúng)
+    List<KhoaHoc> list = KhoaHocDAO.getKhoaHocByName(name);
+
+    // Kiểm tra kết quả tìm kiếm
+    if (list == null || list.isEmpty()) {
+        response.getWriter().println("Không tìm thấy khóa học nào với tên chứa: " + name);
+    } else {
+        request.setAttribute("list", list);
+        // Forward tới trang JSP để hiển thị danh sách tìm được
+        request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
+
+    }
+}
 
     /** 
      * Returns a short description of the servlet.

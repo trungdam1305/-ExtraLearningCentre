@@ -29,5 +29,20 @@
             <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/model/LichHoc.java</file>
             <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/model/Diem.java</file>
         </group>
+        <group>
+            <file>file:/C:/Users/Vuh26/Desktop/kk/ELCentre/src/java/controller/ManaCour2.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/kk/ELCentre/web/views/update_course.jsp</file>
+            <file>file:/C:/Users/Vuh26/Desktop/kk/ELCentre/web/views/AddCourse.jsp</file>
+            <file>file:/C:/Users/Vuh26/Desktop/kk/ELCentre/src/java/model/KhoaHoc.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/kk/ELCentre/src/java/controller/ManagerCourse.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/kk/ELCentre/src/java/controller/SearchCourse.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/kk/ELCentre/src/java/dal/KhoaHocDAO.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/kk/ELCentre/src/java/dal/DBContext.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/kk/ELCentre/web/views/ManagerCourses2.jsp</file>
+            <file>file:/C:/Users/Vuh26/Desktop/kk/ELCentre/src/java/controller/Sort.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/kk/ELCentre/web/views/Home-Footer.jsp</file>
+            <file>file:/C:/Users/Vuh26/Desktop/kk/ELCentre/src/java/controller/AddKhoaHoc.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/kk/ELCentre/web/views/viewCour.jsp</file>
+        </group>
     </open-files>
 </project-private>
