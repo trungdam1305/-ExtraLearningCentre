@@ -41,6 +41,13 @@
         <url-pattern>/SendEmailServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+<<<<<<< HEAD
+=======
+        <servlet-name>SearchCourses</servlet-name>
+        <url-pattern>/SearchCourses</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+>>>>>>> 8e6eab0ce7d17484e00ce89ec75b83f835935a80
         <servlet-name>adminGetFromDashboard</servlet-name>
         <url-pattern>/adminGetFromDashboard</url-pattern>
     </servlet-mapping>
