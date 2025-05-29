@@ -90,13 +90,13 @@
                 <div class="alert alert-danger"><%= error %></div>
             <% } %>
 
-            <form action="RegisterServlet" method="post">
+            <form action="<%= request.getContextPath() %>/RegisterServlet" method="post">
                 <input type="text" name="fullname" class="form-control" placeholder="Họ và tên" >
                 <input type="email" name="email" class="form-control" placeholder="Email" >
                 <input type="password" name="password" class="form-control" placeholder="Mật khẩu" >
                 <input type="password" name="confirm" class="form-control" placeholder="Xác nhận mật khẩu" >
 
-                <button type="submit" class="btn btn-register mt-2">Đăng kí</button>
+                <button type="submit" name="action" value="register" class="btn btn-register mt-2">Đăng kí</button>
             </form>
 
             <div class="text-center mt-4">

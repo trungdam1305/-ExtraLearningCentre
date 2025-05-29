@@ -97,7 +97,7 @@
                             <a href="forgot_password.jsp" class="small">Quên mật khẩu?</a>
                         </div>
 
-                        <button type="submit" class="btn btn-login">Đăng nhập</button>
+                        <button type="submit" name="action" class="btn btn-login">Đăng nhập</button>
                     </form>
 
                     <div class="text-center mt-4">

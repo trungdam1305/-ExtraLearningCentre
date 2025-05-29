@@ -1,19 +1,12 @@
-
 package controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import dao.TaiKhoanDAO;
 import model.TaiKhoan;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.time.LocalDateTime;
-import jakarta.servlet.annotation.WebServlet;
 
 /**
  *
@@ -22,89 +15,58 @@ import jakarta.servlet.annotation.WebServlet;
 
 public class RegisterServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet RegisterServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet RegisterServlet at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       
+        response.sendRedirect(request.getContextPath() + "/views/register.jsp");
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
-        String fullName = request.getParameter("fullname");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String confirm = request.getParameter("confirm");
+        String action =request.getParameter("action");
         
-        // Kiểm tra mật khẩu và xác nhận
-        if (!password.equals(confirm)) {
-            response.sendRedirect(request.getContextPath() + "/views/register.jsp?error= Mật khẩu không khớp");
-            return;
-        }
-        
-        TaiKhoanDAO dao = new TaiKhoanDAO();
-        
-        // Kiểm tra xem email đã tồn tại hay chưa
-        if (dao.checkEmailExists(email)) {
-            response.sendRedirect(request.getContextPath() + "/views/register.jsp?error=Email đã tồn tại");
-            return;
-        }
-        
-        TaiKhoan user = new TaiKhoan();
-        user.setEmail(email);
-        user.setMatKhau(password);
-        user.setID_VaiTro(2);
-        user.setTrangThai("HoatDong");
-        user.setNgayTao(LocalDateTime.now());
-        user.setUserType("Local");
-        
-        boolean success = dao.register(user);
-        
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/views/login.jsp?success=Đăng ký thành công, hãy đăng nhập");
-        } else {
-            response.sendRedirect(request.getContextPath() + "/views/register.jsp?error=Đăng ký thất bại! Vui lòng thử lại");
+        if("register".equals(action)) {
+            String fullName = request.getParameter("fullname");
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            String confirm = request.getParameter("confirm");
+
+            // Kiểm tra mật khẩu khớp
+            if (!password.equals(confirm)) {
+                String errorMsg = "Mật khẩu không khớp";
+                response.sendRedirect(request.getContextPath() + "/views/register.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
+                return;
+            }
+
+            TaiKhoanDAO dao = new TaiKhoanDAO();
+
+            // Kiểm tra xem email đã tồn tại hay chưa
+            if (dao.checkEmailExists(email)) {
+                String errorMsg = "Email đã tồn tại";
+                response.sendRedirect(request.getContextPath() + "/views/register.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
+                return;
+            }
+
+            TaiKhoan user = new TaiKhoan();
+            user.setEmail(email);
+            user.setMatKhau(password); 
+            user.setID_VaiTro(2);
+            user.setTrangThai("HoatDong");
+            user.setNgayTao(LocalDateTime.now());
+            user.setUserType("Local");
+
+            boolean success = dao.register(user);
+
+            if (success) {
+                String msg = "Đăng ký thành công, hãy đăng nhập";
+                response.sendRedirect(request.getContextPath() + "/views/login.jsp?success=" + URLEncoder.encode(msg, "UTF-8"));
+            } else {
+                String errorMsg = "Đăng ký thất bại! Vui lòng thử lại";
+                response.sendRedirect(request.getContextPath() + "/views/register.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
+            }
         }
     }
 
@@ -114,7 +76,7 @@ public class RegisterServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Xử lý đăng ký tài khoản người dùng mới";
+    }
 }
+    
