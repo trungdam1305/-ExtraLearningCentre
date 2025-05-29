@@ -79,16 +79,16 @@
 
                     <thead>
                         <tr>
-                            <th>ID_GiaoVien</th>
-                            <th>ID_TaiKhoan</th>
-                            <th>HoTen</th>
-                            <th>ChuyenMon</th>
-                            <th>SDT</th>
-                            <th>TruongGiangDay</th>
-                            <th>Luong</th>
-                            <th>GhiChu</th>
-                            <th>TrangThai</th>
-                            <th>NgayTao</th>
+                            <th>Mã Giáo Viên</th>
+                            <th>Mã Tài Khoản</th>
+                            <th>Họ và Tên</th>
+                            <th>Chuyên Môn</th>
+                            <th>Số điện thoại</th>
+                            <th>Trường đang dạy</th>
+                            <th>Lương</th>
+                            <th>Ghi Chú</th>
+                            <th>Trạng Thái</th>
+                            <th>Ngày Tạo</th>
 
                         </tr>
                     </thead>

@@ -12,7 +12,23 @@ public class LopHoc {
     private String TrangThai;
     private String SoTien;
     private LocalDateTime NgayTao;
+    
+    public LopHoc() {
+    }
 
+    public LopHoc(Integer ID_LopHoc, String TenLopHoc, Integer ID_KhoaHoc, Integer SiSo, String ThoiGianHoc, String GhiChu, String TrangThai, String SoTien, LocalDateTime NgayTao) {
+        this.ID_LopHoc = ID_LopHoc;
+        this.TenLopHoc = TenLopHoc;
+        this.ID_KhoaHoc = ID_KhoaHoc;
+        this.SiSo = SiSo;
+        this.ThoiGianHoc = ThoiGianHoc;
+        this.GhiChu = GhiChu;
+        this.TrangThai = TrangThai;
+        this.SoTien = SoTien;
+        this.NgayTao = NgayTao;
+    }
+
+    
     public Integer getID_LopHoc() { return ID_LopHoc; }
     public void setID_LopHoc(Integer ID_LopHoc) { this.ID_LopHoc = ID_LopHoc; }
 

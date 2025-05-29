@@ -79,18 +79,18 @@
 
                     <thead>
                         <tr>
-                            <th>ID_HocSinh</th>
-                            <th>ID_TaiKhoan</th>
+                            <th>Mã Học Sinh</th>
+                            <th>Mã Tài Khoản</th>
 
-                            <th>HoTen</th>
-                            <th>NgaySinh</th>
-                            <th>GioiTinh</th>
-                            <th>DiaChi</th>
-                            <th>SDT_PhuHuynh</th>
-                            <th>TruongHoc</th>
-                            <th>GhiChu</th>
-                            <th>TrangThai</th>
-                            <th>NgayTao</th>
+                            <th>Họ và Tên</th>
+                            <th>Ngày Sinh</th>
+                            <th>Giới Tính</th>
+                            <th>Địa Chỉ</th>
+                            <th>Số điện thoại phụ huynh</th>
+                            <th>Trường học</th>
+                            <th>Ghi Chú</th>
+                            <th>Trạng Thái</th>
+                            <th>Ngày Tạo</th>
                         </tr>
                     </thead>
 

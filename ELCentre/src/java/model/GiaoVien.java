@@ -19,11 +19,12 @@ public class GiaoVien {
     private String GhiChu;
     private String TrangThai;
     private LocalDateTime NgayTao;
+    private String Avatar ; 
 
     public GiaoVien() {
     }
 
-    public GiaoVien(int ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT, String TruongGiangDay, BigDecimal Luong, String GhiChu, String TrangThai, LocalDateTime NgayTao) {
+    public GiaoVien(int ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT, String TruongGiangDay, BigDecimal Luong, String GhiChu, String TrangThai, LocalDateTime NgayTao, String Avatar) {
         this.ID_GiaoVien = ID_GiaoVien;
         this.ID_TaiKhoan = ID_TaiKhoan;
         this.HoTen = HoTen;
@@ -34,7 +35,10 @@ public class GiaoVien {
         this.GhiChu = GhiChu;
         this.TrangThai = TrangThai;
         this.NgayTao = NgayTao;
+        this.Avatar = Avatar;
     }
+
+    
 
     
     public Integer getID_GiaoVien() { return ID_GiaoVien; }
@@ -66,4 +70,14 @@ public class GiaoVien {
 
     public LocalDateTime getNgayTao() { return NgayTao; }
     public void setNgayTao(LocalDateTime NgayTao) { this.NgayTao = NgayTao; }
+
+    public String getAvatar() {
+        return Avatar;
+    }
+
+    public void setAvatar(String Avatar) {
+        this.Avatar = Avatar;
+    }
+    
+    
 }

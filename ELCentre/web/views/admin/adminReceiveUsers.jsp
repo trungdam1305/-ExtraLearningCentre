@@ -86,17 +86,17 @@
     <body>
         <h2>Quản lý tài khoản</h2>
 
-        <div style="text-align: center;">
+        <div style="display: flex; justify-content: flex-end; align-items: center; gap: 15px;">
             <input type="text" id="searchInput" placeholder="Tìm kiếm...">
-            <br>
-            <label for="statusFilter">Lọc theo trạng thái:</label>
+
+            <label for="statusFilter" style="margin: 0;">Lọc theo trạng thái:</label>
             <select id="statusFilter">
                 <option value="all">Tất cả</option>
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
             </select>
-            <br><!-- comment -->
-            <label for="roleFilter">Lọc theo vai trò:</label>
+
+            <label for="roleFilter" style="margin: 0;">Lọc theo vai trò:</label>
             <select id="roleFilter">
                 <option value="all">Tất cả</option>
                 <option value="hocsinh">Học sinh</option>
@@ -104,6 +104,7 @@
                 <option value="phuhuynh">Phụ huynh</option>
             </select>
         </div>
+
 
         <c:choose>
             <c:when test="${not empty sessionScope.taikhoans}">

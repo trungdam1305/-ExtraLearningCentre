@@ -39,7 +39,8 @@ public class GiaoVienDAO {
                         rs.getBigDecimal("Luong"),
                         rs.getString("GhiChu"),
                         rs.getString("TrangThai"),
-                        rs.getTimestamp("NgayTao").toLocalDateTime()
+                        rs.getTimestamp("NgayTao").toLocalDateTime() , 
+                        rs.getString("Avatar")
                 ) ; 
                 giaoviens.add(giaovien) ; 
             }
@@ -79,7 +80,8 @@ public class GiaoVienDAO {
                         rs.getBigDecimal("Luong"),
                         rs.getString("GhiChu"),
                         rs.getString("TrangThai"),
-                        rs.getTimestamp("NgayTao").toLocalDateTime()
+                        rs.getTimestamp("NgayTao").toLocalDateTime() , 
+                        rs.getString("Avatar")
                 ) ; 
                 giaoviens.add(giaovien) ; 
             }
@@ -140,6 +142,26 @@ public class GiaoVienDAO {
         } else {
             return true ; 
         }
+    }
+    
+    public static int adminGetTongSoGiaoVien(){
+        DBContext db = DBContext.getInstance() ; 
+        int tong = 0 ; 
+        try {
+            String sql = """
+                         select count(*) from GiaoVien
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            ResultSet rs = statement.executeQuery() ; 
+            if (rs.next()) {
+                tong = rs.getInt(1);
+                return tong;
+            }
+        } catch (SQLException e ){
+            e.printStackTrace();
+            
+        }
+        return tong ; 
     }
 
 }

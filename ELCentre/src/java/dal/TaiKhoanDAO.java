@@ -33,7 +33,8 @@ public class TaiKhoanDAO {
                         rs.getString("UserType") , 
                         rs.getString("SoDienThoai") , 
                         rs.getString("TrangThai") , 
-                        rs.getTimestamp("NgayTao").toLocalDateTime()
+                        rs.getTimestamp("NgayTao").toLocalDateTime() 
+                        
                 
                 ) ; 
                 taikhoans.add(tk) ; 
