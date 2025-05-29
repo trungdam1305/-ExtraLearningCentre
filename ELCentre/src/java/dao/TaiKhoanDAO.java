@@ -68,4 +68,51 @@ public class TaiKhoanDAO {
         }
         return null;
     }
+    
+        public boolean register(TaiKhoan user) {
+        String sql = "INSERT INTO TaiKhoan (Email, MatKhau, ID_VaiTro, TrangThai, NgayTao, UserType) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, user.getEmail());
+            stmt.setString(2, user.getMatKhau());
+            stmt.setInt(3, user.getID_VaiTro()); 
+            stmt.setString(4, user.getTrangThai()); 
+            stmt.setTimestamp(5, Timestamp.valueOf(user.getNgayTao()));
+            stmt.setString(6, user.getUserType()); 
+
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+        
+        public boolean isEmailExists(String email) {
+        String sql = "SELECT 1 FROM TaiKhoan WHERE Email = ?";
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+        
+        public boolean checkEmailExists(String email) {
+        String sql = "SELECT 1 FROM TaiKhoan WHERE Email = ?";
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next(); // true nếu tồn tại
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

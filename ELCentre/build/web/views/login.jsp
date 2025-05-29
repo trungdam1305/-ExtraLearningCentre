@@ -59,7 +59,7 @@
             <!-- Left Panel -->
             <div class="left-panel text-center">
                 <i class="fas fa-user-circle fa-4x mb-3"></i>
-                <h4><strong>EduPlus Center</strong></h4>
+                <h4><strong>Extra Learning Centre</strong></h4>
                 <div class="mt-5">
                     <div class="bg-light p-4 rounded">
                         <div class="d-flex justify-content-between text-muted small">
@@ -77,14 +77,15 @@
         <!-- Right Panel -->
             <div class="right-panel">
                 <div class="login-box">
-                    <h3 class="fw-bold">Đăng nhập hệ thống</h3>
+                    <h3 class="fw-bold">|Đăng nhập hệ thống</h3>
                     <p class="small">Chưa có tài khoản? <a href="register.jsp">Đăng ký ngay</a></p>
 
                     <% String error = request.getParameter("error");
                        if (error != null) { %>
                         <div class="alert alert-danger"><%= error %></div>
                     <% } %>
-                    <form action="LoginServlet" method="post">
+                    
+                    <form action="<%= request.getContextPath() %>/LoginServlet" method="post">
                         <input type="text" name="email" class="form-control" placeholder="Email">
                         <input type="password" name="password" class="form-control" placeholder="Mật khẩu">
 

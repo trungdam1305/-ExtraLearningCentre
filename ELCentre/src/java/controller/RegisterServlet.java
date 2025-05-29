@@ -1,23 +1,26 @@
+
 package controller;
-
-import dao.TaiKhoanDAO;
-import dao.UserLogsDAO;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-
-import model.TaiKhoan;
-import model.UserLogs;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import dao.TaiKhoanDAO;
+import model.TaiKhoan;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.*;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import jakarta.servlet.annotation.WebServlet;
 
 /**
  *
  * @author vkhan
  */
-public class LoginServlet extends HttpServlet {
+
+public class RegisterServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,10 +37,10 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");
+            out.println("<title>Servlet RegisterServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet RegisterServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -54,9 +57,8 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/views/login.jsp");
+       
     }
-    
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -68,38 +70,41 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        String fullName = request.getParameter("fullname");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-
-        if (email == null || email.trim().isEmpty() || 
-            password == null || password.trim().isEmpty()) {
-            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=Vui lòng nhập email và mật khẩu");
+        String confirm = request.getParameter("confirm");
+        
+        // Kiểm tra mật khẩu và xác nhận
+        if (!password.equals(confirm)) {
+            response.sendRedirect(request.getContextPath() + "/views/register.jsp?error= Mật khẩu không khớp");
             return;
         }
         
-        try {
-            TaiKhoan user = TaiKhoanDAO.login(email, password);
-
-            if (user != null) {
-                // Lưu session
-                HttpSession session = request.getSession();
-                session.setAttribute("user", user);
-                
-                // Ghi log đăng nhập
-                UserLogs log = new UserLogs();
-                log.setID_TaiKhoan(user.getID_TaiKhoan());
-                log.setHanhDong("Đăng nhập hệ thống");
-                log.setThoiGian(LocalDateTime.now());
-                UserLogsDAO.insertLog(log);
-
-                // Chuyển đến trang chính
-                response.sendRedirect(request.getContextPath() + "/views/HomePage.jsp");
-            } else {
-                response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=Thông tin đăng nhập không đúng hoặc tài khoản đã bị khóa.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=Đã xảy ra lỗi hệ thống.");
+        TaiKhoanDAO dao = new TaiKhoanDAO();
+        
+        // Kiểm tra xem email đã tồn tại hay chưa
+        if (dao.checkEmailExists(email)) {
+            response.sendRedirect(request.getContextPath() + "/views/register.jsp?error=Email đã tồn tại");
+            return;
+        }
+        
+        TaiKhoan user = new TaiKhoan();
+        user.setEmail(email);
+        user.setMatKhau(password);
+        user.setID_VaiTro(2);
+        user.setTrangThai("HoatDong");
+        user.setNgayTao(LocalDateTime.now());
+        user.setUserType("Local");
+        
+        boolean success = dao.register(user);
+        
+        if (success) {
+            response.sendRedirect(request.getContextPath() + "/views/login.jsp?success=Đăng ký thành công, hãy đăng nhập");
+        } else {
+            response.sendRedirect(request.getContextPath() + "/views/register.jsp?error=Đăng ký thất bại! Vui lòng thử lại");
         }
     }
 
