@@ -73,15 +73,19 @@ public class ForgotPasswordServlet extends HttpServlet {
 
         if ("search".equals(action)) {
             String email = request.getParameter("email");
-            TaiKhoan user = dao.findByEmail(email);
+            String phone = request.getParameter("phone");
+            
+            TaiKhoan user = dao.findByEmailAndPhone(email, phone);
 
-            if (user != null) {
+            if (user != null && user.getSoDienThoai() != null && user.getSoDienThoai().equals(phone)) {
                 request.setAttribute("foundUser", user);
                 request.setAttribute("email", email);
                 request.getRequestDispatcher("/views/forgotPassword.jsp").forward(request, response);
             } else {
-                String error = "Không tìm thấy tài khoản với email này.";
-                response.sendRedirect(request.getContextPath() + "/views/forgotPassword.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
+                String error = "Email hoặc số điện thoại không chính xác.";
+                response.sendRedirect(request.getContextPath() + "/views/forgotPassword.jsp?error=" + URLEncoder.encode(error, "UTF-8") 
+                    + "&email=" + URLEncoder.encode(email, "UTF-8") 
+                    + "&phone=" + URLEncoder.encode(phone, "UTF-8"));
             }
 
         } else if ("reset".equals(action)) {

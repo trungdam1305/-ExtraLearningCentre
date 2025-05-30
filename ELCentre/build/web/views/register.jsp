@@ -98,6 +98,7 @@
             <form action="<%= request.getContextPath() %>/RegisterServlet" method="post">
                 <input type="text" name="fullname" class="form-control" placeholder="Họ và tên" >
                 <input type="email" name="email" class="form-control" placeholder="Email" >
+                <input type="text" name="phone" class="form-control" placeholder="Số điện thoại" required>
                 <input type="password" name="password" class="form-control" placeholder="Mật khẩu" >
                 <input type="password" name="confirm" class="form-control" placeholder="Xác nhận mật khẩu" >
                 <select name="vaitro" class="form-control" required>
