@@ -121,7 +121,7 @@ public class adminGetFromDashboard extends HttpServlet {
                     
                     
                 case "khoahoc" : 
-                    ArrayList<KhoaHoc> khoahocs = KhoaHocDAO.adminGetAllKhoaHoc() ; 
+                    ArrayList<KhoaHoc> khoahocs = KhoaHocDAO.getKhoaHoc(); 
                     if (khoahocs.isEmpty()) {
                         request.setAttribute("message", "Không có thông báo nào đã được gửi.");
                         request.getRequestDispatcher("/views/admin/adminReceiveHocPhi.jsp").forward(request, response);

@@ -64,25 +64,44 @@ public class SearchCourse extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         String name = request.getParameter("name");
-
-        // Kiểm tra xem có nhập từ khóa không
         if (name == null || name.trim().isEmpty()) {
             response.getWriter().println("Vui lòng nhập tên khóa học cần tìm.");
             return;
         }
+        int totalCourses = KhoaHocDAO.getTotalCoursesByName(name);
 
-        // Gọi DAO để tìm danh sách khóa học theo tên (tìm gần đúng)
-        List<KhoaHoc> list = KhoaHocDAO.getKhoaHocByName(name);
+        int pageSize = 6;
+        int pageNumber = 1;
+        String pageParam = request.getParameter("page");
+        if (pageParam != null) {
+            try {
+                pageNumber = Integer.parseInt(pageParam);
+                if (pageNumber < 1) {
+                    pageNumber = 1;
+                }
+            } catch (NumberFormatException e) {
+                pageNumber = 1;
+            }
+        }
 
-        // Kiểm tra kết quả tìm kiếm
+        int totalPages = (int) Math.ceil((double) totalCourses / pageSize);
+
+        int offset = (pageNumber - 1) * pageSize;
+
+        List<KhoaHoc> list = KhoaHocDAO.getKhoaHocByNamePaging(name, offset, pageSize);
+
         if (list == null || list.isEmpty()) {
-            request.setAttribute("err", "Không thấy khóa học nào có tên như vậy!");
+            request.setAttribute("err", "Không tìm thấy khóa học nào với tên chứa: " + name);
             request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
         } else {
-            request.setAttribute("list", list);
-            // Forward tới trang JSP để hiển thị danh sách tìm được
-            request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
+            request.setAttribute("totalCourses", totalCourses);
 
+            request.setAttribute("pageNumber", pageNumber);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("sortName", "");
+            request.setAttribute("searchName", name);
+            request.setAttribute("list", list);
+            request.getRequestDispatcher("/views/ResultFind.jsp").forward(request, response);
         }
     }
 
@@ -96,4 +115,20 @@ public class SearchCourse extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    public static void main(String[] args) {
+        String testName = "toán"; // Tên khóa học muốn tìm
+
+        List<KhoaHoc> list = KhoaHocDAO.getKhoaHocByName(testName);
+
+        if (list == null) {
+            System.out.println("Lỗi khi truy vấn database hoặc không có kết quả trả về.");
+        } else if (list.isEmpty()) {
+            System.out.println("Không tìm thấy khóa học nào với tên chứa: " + testName);
+        } else {
+            System.out.println("Danh sách khóa học tìm được:");
+            for (KhoaHoc kh : list) {
+                System.out.println("ID: " + kh.getID_KhoaHoc() + ", Tên: " + kh.getTenKhoaHoc());
+            }
+        }
+    }
 }

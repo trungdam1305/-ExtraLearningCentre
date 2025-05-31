@@ -11,17 +11,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import model.KhoaHoc;
-
 
 /**
  *
  * @author Vuh26
  */
-public class Sort extends HttpServlet {
+public class SortForResultFind extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +37,10 @@ public class Sort extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Sort</title>");
+            out.println("<title>Servlet SortForResultFind</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Sort at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SortForResultFind at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,10 +58,13 @@ public class Sort extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         int pageSize = 6;
         int pageNumber = 1;
+
         String pageParam = request.getParameter("page");
         String sortName = request.getParameter("sortName");
+        String searchName = request.getParameter("name"); // lấy từ input hidden name="name"
 
         if (pageParam != null) {
             try {
@@ -81,44 +81,63 @@ public class Sort extends HttpServlet {
         List<KhoaHoc> khoaHocList;
         int totalCourses;
 
-        if (sortName != null && !sortName.isEmpty()) {
-            switch (sortName) {
-                case "ended":
-                    khoaHocList = KhoaHocDAO.getCoursesByTrangThai("đã kết thúc", offset, pageSize);
-                    totalCourses = KhoaHocDAO.countCoursesByTrangThai("đã kết thúc");
+        boolean hasSearchName = searchName != null && !searchName.trim().isEmpty();
+
+        // Lọc theo tên nếu có
+        if (hasSearchName) {
+            switch (sortName != null ? sortName : "") {
+                case "":
+                    // Chỉ tìm theo tên
+                    khoaHocList = KhoaHocDAO.getCoursesByTen(searchName, offset, pageSize);
+                    totalCourses = KhoaHocDAO.getTotalCoursesByTen(searchName);
                     break;
-                case "active":
-                    khoaHocList = KhoaHocDAO.getCoursesByTrangThai("đang hoạt động", offset, pageSize);
-                    totalCourses = KhoaHocDAO.countCoursesByTrangThai("đang hoạt động");
+
+                case "ASCTrang":
+                    khoaHocList = KhoaHocDAO.getCoursesByTrangThaiVaTen("active", searchName, offset, pageSize);
+                    totalCourses = KhoaHocDAO.getTotalCoursesByTrangThaiVaTen("active", searchName);
                     break;
-                case "notStarted":
-                    khoaHocList = KhoaHocDAO.getCoursesByTrangThai("chưa bắt đầu", offset, pageSize);
-                    totalCourses = KhoaHocDAO.countCoursesByTrangThai("chưa bắt đầu");
+                case "DESCTrang":
+                    khoaHocList = KhoaHocDAO.getCoursesByTrangThaiVaTen("inactive", searchName, offset, pageSize);
+                    totalCourses = KhoaHocDAO.getTotalCoursesByTrangThaiVaTen("inactive", searchName);
                     break;
+                default:
+                    // Chỉ tìm theo tên
+                    khoaHocList = KhoaHocDAO.getCoursesByTen(searchName, offset, pageSize);
+                    totalCourses = KhoaHocDAO.getTotalCoursesByTen(searchName);
+                    break;
+            }
+        } else {
+            // Không tìm theo tên
+            switch (sortName != null ? sortName : "") {
                 case "ASC":
                 case "DESC":
                     khoaHocList = KhoaHocDAO.getSortedKhoaHoc(offset, pageSize, sortName);
                     totalCourses = KhoaHocDAO.getTotalCourses();
+                    break;
+                case "ASCTrang":
+                    khoaHocList = KhoaHocDAO.getCoursesByTrangThai("đang hoạt động", offset, pageSize);
+                    totalCourses = KhoaHocDAO.countCoursesByTrangThai("đang hoạt động");
+                    break;
+                case "DESCTrang":
+                    khoaHocList = KhoaHocDAO.getCoursesByTrangThai("chưa hoạt động", offset, pageSize);
+                    totalCourses = KhoaHocDAO.countCoursesByTrangThai("chưa hoạt động");
                     break;
                 default:
                     khoaHocList = KhoaHocDAO.getKhoaHoc(offset, pageSize);
                     totalCourses = KhoaHocDAO.getTotalCourses();
                     break;
             }
-        } else {
-            khoaHocList = KhoaHocDAO.getKhoaHoc(offset, pageSize);
-            totalCourses = KhoaHocDAO.getTotalCourses();
         }
 
         int totalPages = (int) Math.ceil((double) totalCourses / pageSize);
 
-        request.setAttribute("defaultCourses", khoaHocList);
+        request.setAttribute("list", khoaHocList);
         request.setAttribute("pageNumber", pageNumber);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("sortName", sortName);
+        request.setAttribute("searchName", searchName);
 
-        request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
-
+        request.getRequestDispatcher("/views/ResultFind.jsp").forward(request, response);
     }
 
     /**

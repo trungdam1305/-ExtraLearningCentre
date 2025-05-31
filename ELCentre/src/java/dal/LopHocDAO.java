@@ -18,7 +18,7 @@ public class LopHocDAO {
         try (PreparedStatement statement = db.getConnection().prepareStatement(sql);) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                LopHoc lh = new LopHoc();
+                LopHoc lh = new LopHoc();   
                 lh.setID_LopHoc(rs.getInt("ID_LopHoc"));
                 lh.setTenLopHoc(rs.getString("TenLopHoc"));
                 lh.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
