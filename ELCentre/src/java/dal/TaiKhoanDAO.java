@@ -26,7 +26,7 @@ public class TaiKhoanDAO {
             
             while (rs.next()) {
                 TaiKhoan tk = new TaiKhoan(
-                        rs.getInt("ID_TaiKhoan") , 
+                        rs.getInt("ID_TaiKhoan") ,  
                         rs.getString("Email") , 
                         rs.getString("MatKhau") , 
                         rs.getInt("ID_VaiTro") , 
@@ -40,7 +40,7 @@ public class TaiKhoanDAO {
                 taikhoans.add(tk) ; 
             }
         } catch (SQLException e ) {
-            //Exception ignored
+            
             return null ; 
         }
         if (taikhoans.isEmpty()){

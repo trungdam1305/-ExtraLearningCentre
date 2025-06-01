@@ -15,24 +15,24 @@ import model.LopHoc ;
 import java.util.ArrayList ; 
 public class LopHocDAO {
     public static int adminGetTongSoLopHoc() {
-        DBContext db = DBContext.getInstance();
-        int tong = 0;
+            DBContext db = DBContext.getInstance();
+            int tong = 0;
 
-        try {
-            String sql = """
-                          select count(*) from LopHoc
-                         """;
-            PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                tong = rs.getInt(1);
-                return tong;
+            try {
+                String sql = """
+                              select count(*) from LopHoc
+                             """;
+                PreparedStatement statement = db.getConnection().prepareStatement(sql);
+                ResultSet rs = statement.executeQuery();
+                if (rs.next()) {
+                    tong = rs.getInt(1);
+                    return tong;
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-
+            return tong;
         }
-        return tong;
     }
-}
