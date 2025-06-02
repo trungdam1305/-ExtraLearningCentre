@@ -4,13 +4,13 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="SWP"/>
         <group name="SWT">
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/dal/GiaoVienDAO.java</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/HomePage.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/Home-Content.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/model/GiaoVien.java</file>
+            <file>file:/C:/Users/admin/Desktop/kaka/ELCentre/src/java/dal/KhoiHocDAO.java</file>
+            <file>file:/C:/Users/admin/Desktop/kaka/ELCentre/src/java/model/KhoiHoc.java</file>
+            <file>file:/C:/Users/admin/Desktop/kaka/ELCentre/src/java/dal/KhoaHocDAO.java</file>
+            <file>file:/C:/Users/admin/Desktop/kaka/ELCentre/src/java/controller/HomePage.java</file>
         </group>
         <group>
-            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/Git/-ExtraLearningCentre/ELCentre/web/views/forgotPassword.jsp</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/Other/New%20folder/ELCentre/src/java/dal/DBContext.java</file>
         </group>
     </open-files>
 </project-private>

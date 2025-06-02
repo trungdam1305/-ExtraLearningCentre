@@ -11,6 +11,64 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>All Students Learn</title  >
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f6f8;
+                color: #333;
+                padding: 20px;
+            }
+
+            h2 {
+                color: #1F4E79;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+                background-color: #fff;
+            }
+
+            th, td {
+                border: 1px solid #ccc;
+                padding: 8px 12px;
+                text-align: left;
+            }
+
+            th {
+                background-color: #1F4E79;
+                color: #fff;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+
+            .no-reports-message {
+                margin-top: 20px;
+                padding: 10px;
+                background-color: #ffefef;
+                border: 1px solid #e0a8a8;
+                color: #cc0000;
+            }
+
+            .back-button {
+                margin-top: 30px;
+            }
+
+            .back-button a {
+                text-decoration: none;
+                padding: 8px 16px;
+                background-color: #1F4E79;
+                color: white;
+                border-radius: 4px;
+            }
+
+            .back-button a:hover {
+                background-color: #163c5b;
+            }
+        </style>
     </head>
     <body>
         <h2>All Students</h2>
@@ -21,18 +79,18 @@
 
                     <thead>
                         <tr>
-                            <th>ID_HocSinh</th>
-                            <th>ID_TaiKhoan</th>
-                            
-                            <th>HoTen</th>
-                            <th>NgaySinh</th>
-                            <th>GioiTinh</th>
-                            <th>DiaChi</th>
-                            <th>SDT_PhuHuynh</th>
-                            <th>TruongHoc</th>
-                            <th>GhiChu</th>
-                            <th>TrangThai</th>
-                            <th>NgayTao</th>
+                            <th>Mã Học Sinh</th>
+                            <th>Mã Tài Khoản</th>
+
+                            <th>Họ và Tên</th>
+                            <th>Ngày Sinh</th>
+                            <th>Giới Tính</th>
+                            <th>Địa Chỉ</th>
+                            <th>Số điện thoại phụ huynh</th>
+                            <th>Trường học</th>
+                            <th>Ghi Chú</th>
+                            <th>Trạng Thái</th>
+                            <th>Ngày Tạo</th>
                         </tr>
                     </thead>
 
@@ -58,13 +116,16 @@
             </c:when>
             <c:otherwise>   
                 <div class="no-reports-message">
-                    <p>Ồ! Lỗi rồi</p>
+                    <c:if test="${not empty message}">
+                        <p style="color: red;">${message}</p>
+                    </c:if>
+                    <p>Không có dữ liệu học sinh để hiển thị.</p>
                 </div>
             </c:otherwise>
-            </c:choose>
-        
+        </c:choose>
+
         <div class="back-button">
-                    <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
+            <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
         </div>
     </body>
 </html>

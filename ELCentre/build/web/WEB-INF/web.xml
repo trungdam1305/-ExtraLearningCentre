@@ -5,10 +5,6 @@
         <servlet-class>controller.SendEmailServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SearchCourses</servlet-name>
-        <servlet-class>controller.SearchCourses</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>adminGetFromDashboard</servlet-name>
         <servlet-class>controller.adminGetFromDashboard</servlet-class>
     </servlet>
@@ -32,13 +28,37 @@
         <servlet-name>ForgotPasswordServlet</servlet-name>
         <servlet-class>controller.ForgotPasswordServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Sort</servlet-name>
+        <servlet-class>controller.Sort</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchCourse</servlet-name>
+        <servlet-class>controller.SearchCourse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManagerCourse</servlet-name>
+        <servlet-class>controller.ManagerCourse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddKhoaHoc</servlet-name>
+        <servlet-class>controller.AddKhoaHoc</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>adminActionWithUser</servlet-name>
+        <servlet-class>controller.adminActionWithUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>controller.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GoogleLoginServlet</servlet-name>
+        <servlet-class>dao.GoogleLoginServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SearchCourses</servlet-name>
-        <url-pattern>/SearchCourses</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>adminGetFromDashboard</servlet-name>
@@ -47,6 +67,22 @@
     <servlet-mapping>
         <servlet-name>HomePage</servlet-name>
         <url-pattern>/HomePage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Sort</servlet-name>
+        <url-pattern>/Sort</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchCourse</servlet-name>
+        <url-pattern>/SearchCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManagerCourse</servlet-name>
+        <url-pattern>/ManagerCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddKhoaHoc</servlet-name>
+        <url-pattern>/AddKhoaHoc</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>FacebookLoginServlet</servlet-name>
@@ -63,5 +99,17 @@
     <servlet-mapping>
         <servlet-name>ForgotPasswordServlet</servlet-name>
         <url-pattern>/ForgotPasswordServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminActionWithUser</servlet-name>
+        <url-pattern>/adminActionWithUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/LogoutServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GoogleLoginServlet</servlet-name>
+        <url-pattern>/GoogleLoginServlet</url-pattern>
     </servlet-mapping>
 </web-app>

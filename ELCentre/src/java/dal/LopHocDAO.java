@@ -3,16 +3,18 @@ package dal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.LopHoc;
 
 public class LopHocDAO {
 
+    //Listing all Class from the Database
     public List<LopHoc> getAllLopHoc() {
         DBContext db = DBContext.getInstance();
         List<LopHoc> list = new ArrayList<>();
-        String sql = "SELECT [ID_LopHoc], [TenLopHoc], [ID_KhoaHoc], [SiSo], [ThoiGianHoc], [GhiChu], [TrangThai], [SoTien], [NgayTao] FROM [dbo].[LopHoc]";
+        String sql = "SELECT * FROM [dbo].[LopHoc]";
         try (PreparedStatement statement = db.getConnection().prepareStatement(sql);) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
@@ -25,7 +27,8 @@ public class LopHocDAO {
                 lh.setGhiChu(rs.getString("GhiChu"));
                 lh.setTrangThai(rs.getString("TrangThai"));
                 lh.setSoTien(rs.getString("SoTien"));
-                rs.getTimestamp("NgayTao").toLocalDateTime();
+                lh.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+                lh.setImage(rs.getString("Image"));
                 list.add(lh);
             }
 
@@ -35,10 +38,55 @@ public class LopHocDAO {
         return list;
     }
     
+    //Call the Sum of Class 
+    public static int getTotalLopHoc() {
+        DBContext db = DBContext.getInstance();
+        int total = 0;
+        try {
+            String sql = """
+            SELECT COUNT(*) FROM LopHoc
+        """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+            rs.close();
+            statement.close();
+        } catch (Exception e) {
+            return 0; // hoặc có thể trả về -1 để phân biệt có lỗi
+        }
+        return total;
+    }
+    public static int adminGetTongSoLopHoc() {
+        DBContext db = DBContext.getInstance();
+        int tong = 0;
+
+        try {
+            String sql = """
+                          select count(*) from LopHoc
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                tong = rs.getInt(1);
+                return tong;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return tong;
+    }
+    
+    //Debugging
     public static void main(String[] args) {
         List<LopHoc> lop = new LopHocDAO().getAllLopHoc();
         for (LopHoc lops : lop){
-            System.out.println(lops.getID_KhoaHoc() + " " + lops.getID_LopHoc() + " "+ lops.getTenLopHoc());
+            System.out.println(lops);
+            System.out.println(lops.getID_KhoaHoc() + " " + lops.getID_LopHoc() + " "+ lops.getTenLopHoc() + " " + lops.getThoiGianHoc());
         }
+        
     }
 }

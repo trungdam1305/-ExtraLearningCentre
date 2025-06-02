@@ -12,7 +12,44 @@ public class KhoaHoc {
     private String GhiChu;
     private String TrangThai;
     private LocalDateTime NgayTao;
+    private int ID_Khoi;
 
+    public int getID_Khoi() {
+        return ID_Khoi;
+    }
+
+    public void setID_Khoi(int ID_Khoi) {
+        this.ID_Khoi = ID_Khoi;
+    }
+
+    public KhoaHoc(Integer ID_KhoaHoc, String TenKhoaHoc, String MoTa, LocalDate ThoiGianBatDau, LocalDate ThoiGianKetThuc, String GhiChu, String TrangThai, LocalDateTime NgayTao, int ID_Khoi) {
+        this.ID_KhoaHoc = ID_KhoaHoc;
+        this.TenKhoaHoc = TenKhoaHoc;
+        this.MoTa = MoTa;
+        this.ThoiGianBatDau = ThoiGianBatDau;
+        this.ThoiGianKetThuc = ThoiGianKetThuc;
+        this.GhiChu = GhiChu;
+        this.TrangThai = TrangThai;
+        this.NgayTao = NgayTao;
+        this.ID_Khoi = ID_Khoi;
+    }
+
+    public KhoaHoc(Integer ID_KhoaHoc, String TenKhoaHoc, String MoTa, LocalDate ThoiGianBatDau, LocalDate ThoiGianKetThuc, String GhiChu, String TrangThai, LocalDateTime NgayTao) {
+        this.ID_KhoaHoc = ID_KhoaHoc;
+        this.TenKhoaHoc = TenKhoaHoc;
+        this.MoTa = MoTa;
+        this.ThoiGianBatDau = ThoiGianBatDau;
+        this.ThoiGianKetThuc = ThoiGianKetThuc;
+        this.GhiChu = GhiChu;
+        this.TrangThai = TrangThai;
+        this.NgayTao = NgayTao;
+    }
+
+    public KhoaHoc() {
+    }
+
+    
+    
     public Integer getID_KhoaHoc() { return ID_KhoaHoc; }
     public void setID_KhoaHoc(Integer ID_KhoaHoc) { this.ID_KhoaHoc = ID_KhoaHoc; }
 

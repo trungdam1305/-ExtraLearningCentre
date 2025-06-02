@@ -1,4 +1,4 @@
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
@@ -58,7 +58,7 @@
 <link rel='stylesheet' id='guru-shortcode-css' href='${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/css/shortcode9704.css?ver=6.7.1' type='text/css' media='all' />
 <link rel='stylesheet' id='guru-skin-css' href='${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/skins/dark-blue/style9704.css?ver=6.7.1' type='text/css' media='all' />
 <link rel='stylesheet' id='guru-gutenberg-css' href='${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/css/gutenbergd7b7.css?ver=4.3' type='text/css' media='all' />
-<style id='guru-gutenberg-inline-css' type='text/css'>
+<style id='guru-gutenberg-inlinae-css' type='text/css'>
 .has-primary-background-color { background-color:#355c7d; }.has-primary-color { color:#355c7d; }.has-secondary-background-color { background-color:#d95b43; }.has-secondary-color { color:#d95b43; }.has-tertiary-background-color { background-color:#497faf; }.has-tertiary-color { color:#497faf; }
 </style>
 <link rel='stylesheet' id='animations-css' href='${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/css/animations9704.css?ver=6.7.1' type='text/css' media='all' />

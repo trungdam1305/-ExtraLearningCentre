@@ -12,6 +12,21 @@ public class HocPhi {
     private LocalDate NgayThanhToan;
     private String GhiChu;
 
+    public HocPhi() {
+    }
+
+    public HocPhi(Integer ID_HocPhi, Integer ID_HocSinh, Integer ID_LopHoc, String MonHoc, String PhuongThucThanhToan, String TinhTrangThanhToan, LocalDate NgayThanhToan, String GhiChu) {
+        this.ID_HocPhi = ID_HocPhi;
+        this.ID_HocSinh = ID_HocSinh;
+        this.ID_LopHoc = ID_LopHoc;
+        this.MonHoc = MonHoc;
+        this.PhuongThucThanhToan = PhuongThucThanhToan;
+        this.TinhTrangThanhToan = TinhTrangThanhToan;
+        this.NgayThanhToan = NgayThanhToan;
+        this.GhiChu = GhiChu;
+    }
+
+    
     public Integer getID_HocPhi() { return ID_HocPhi; }
     public void setID_HocPhi(Integer ID_HocPhi) { this.ID_HocPhi = ID_HocPhi; }
 

@@ -88,9 +88,10 @@
                         TaiKhoan foundUser = (TaiKhoan) request.getAttribute("foundUser");
                         if (foundUser == null) {
                     %>
-                        <!-- Form xác minh email -->
+                        <!-- Form xác minh email và số điện thoại -->
                         <form action="<%= request.getContextPath() %>/ForgotPasswordServlet" method="post">
                             <input type="email" name="email" class="form-control" placeholder="Nhập email của bạn" required>
+                            <input type="text" name="phone" class="form-control" placeholder="Nhập số điện thoại đã đăng ký" required>
                             <button type="submit" name="action" value="search" class="btn btn-submit mt-2">Xác minh tài khoản</button>
                         </form>
                     <%

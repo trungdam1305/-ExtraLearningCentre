@@ -11,12 +11,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
- * @author admin
+ * @author wrx_Chur04
  */
-public class SearchCourses extends HttpServlet {
+public class LogoutServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,10 +34,10 @@ public class SearchCourses extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SearchCourses</title>");  
+            out.println("<title>Servlet LogoutServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SearchCourses at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet LogoutServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -53,7 +54,13 @@ public class SearchCourses extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession(false); 
+            if (session != null) {
+                session.invalidate();
+            }
+            response.sendRedirect(request.getContextPath() + "/views/HomePage.jsp");
+
+
     } 
 
     /** 
