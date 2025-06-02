@@ -71,7 +71,7 @@
             <div class="right-panel">
                 <div class="register-box">
                     <h3 class="fw-bold">| Quên mật khẩu</h3>
-                    <p class="small">Trở lại <a href="${pageContext.request.contextPath}/views/login.jsp">trang đăng nhập</a></p>
+                    <p class="small">Trở lại <a href="views/login.jsp">trang đăng nhập</a></p>
 
                     <!-- Thông báo -->
                     <% 
@@ -88,9 +88,10 @@
                         TaiKhoan foundUser = (TaiKhoan) request.getAttribute("foundUser");
                         if (foundUser == null) {
                     %>
-                        <!-- Form xác minh email -->
+                        <!-- Form xác minh email và số điện thoại -->
                         <form action="<%= request.getContextPath() %>/ForgotPasswordServlet" method="post">
                             <input type="email" name="email" class="form-control" placeholder="Nhập email của bạn" required>
+                            <input type="text" name="phone" class="form-control" placeholder="Nhập số điện thoại đã đăng ký" required>
                             <button type="submit" name="action" value="search" class="btn btn-submit mt-2">Xác minh tài khoản</button>
                         </form>
                     <%

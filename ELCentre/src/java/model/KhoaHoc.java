@@ -2,6 +2,7 @@ package model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class KhoaHoc {
     private Integer ID_KhoaHoc;
@@ -18,6 +19,8 @@ public class KhoaHoc {
         return ID_Khoi;
     }
 
+    
+    
     public void setID_Khoi(int ID_Khoi) {
         this.ID_Khoi = ID_Khoi;
     }
@@ -45,11 +48,11 @@ public class KhoaHoc {
         this.NgayTao = NgayTao;
     }
 
+    
+
     public KhoaHoc() {
     }
 
-    
-    
     public Integer getID_KhoaHoc() { return ID_KhoaHoc; }
     public void setID_KhoaHoc(Integer ID_KhoaHoc) { this.ID_KhoaHoc = ID_KhoaHoc; }
 
@@ -73,4 +76,21 @@ public class KhoaHoc {
 
     public LocalDateTime getNgayTao() { return NgayTao; }
     public void setNgayTao(LocalDateTime NgayTao) { this.NgayTao = NgayTao; }
+    
+    
+    public String getThoiGianBatDauFormatted() {
+    if (ThoiGianBatDau != null) {
+        return ThoiGianBatDau.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    }
+    return "";
 }
+
+public String getThoiGianKetThucFormatted() {
+    if (ThoiGianKetThuc != null) {
+        return ThoiGianKetThuc.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    }
+    return "";
+}
+}
+
+

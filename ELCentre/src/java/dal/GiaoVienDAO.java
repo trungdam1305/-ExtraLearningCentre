@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import model.GiaoVien;
 
 public class GiaoVienDAO {
@@ -125,6 +126,34 @@ public class GiaoVienDAO {
     }
     return gv;
 }   
+    //Get Teacher to have Specialised Teacher
+    public ArrayList<GiaoVien> getSpecialised() {
+    DBContext db = DBContext.getInstance();
+    ArrayList<GiaoVien> giaoviens = new ArrayList<GiaoVien>();
+    String sql = "SELECT * FROM GiaoVien WHERE GhiChu IS NOT NULL;";
+    try (PreparedStatement statement = db.getConnection().prepareStatement(sql);) {
+        ResultSet rs = statement.executeQuery();
+        while (rs.next()) {  // Use while to get all records from database
+            GiaoVien gv = new GiaoVien();
+            gv.setID_GiaoVien(rs.getInt("ID_GiaoVien"));
+            gv.setHoTen(rs.getString("HoTen"));
+            gv.setChuyenMon(rs.getString("ChuyenMon"));
+            gv.setSDT(rs.getString("SDT"));
+            gv.setTruongGiangDay(rs.getString("TruongGiangDay"));
+            gv.setLuong(rs.getBigDecimal("Luong"));
+            gv.setGhiChu(rs.getString("GhiChu"));
+            gv.setTrangThai(rs.getString("TrangThai"));
+            gv.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+            gv.setAvatar(rs.getString("Avatar"));
+            giaoviens.add(gv);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return giaoviens;
+}
+
+    
     
     public static ArrayList<GiaoVien> adminGetGiaoVienByID(String id) {
         DBContext db = DBContext.getInstance() ; 
@@ -239,12 +268,11 @@ public class GiaoVienDAO {
         GiaoVienDAO dao = new GiaoVienDAO();
 
         //Just for Testing
-        String tenCanTim = "Vũ Văn Chủ";
         
-        GiaoVien gv = dao.getGiaoVienByHoTen(tenCanTim);
-
-        System.out.println(gv.getHoTen() + " " + gv.getChuyenMon() + " " + gv.getAvatar());
-        
+        ArrayList<GiaoVien> gv = dao.getSpecialised();
+        for (GiaoVien g : gv){
+        System.out.println(g.getHoTen() + " " + g.getChuyenMon() + " " + g.getAvatar());
+        }
         
     }
 

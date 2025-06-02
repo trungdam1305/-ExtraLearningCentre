@@ -13,7 +13,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import model.KhoaHoc;
+import model.LopHoc;
+import dal.LopHocDAO;
 
 /**
  *
@@ -58,87 +62,102 @@ public class ManagerCourse extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    KhoaHocDAO kd = new KhoaHocDAO();
-    String action = request.getParameter("action");
+            throws ServletException, IOException {
+        KhoaHocDAO kd = new KhoaHocDAO();
+        String action = request.getParameter("action");
 
-    if ("deleteCourse".equals(action)) {
-        try {
-            int id = Integer.parseInt(request.getParameter("ID_KhoaHoc"));
+        if ("deleteCourse".equals(action)) {
+            try {
+                int id = Integer.parseInt(request.getParameter("ID_KhoaHoc"));
 
-            // Lấy khóa học từ DB
-            KhoaHoc khoaHoc = KhoaHocDAO.getKhoaHocById(id);
+                // Lấy khóa học từ DB
+                KhoaHoc khoaHoc = KhoaHocDAO.getKhoaHocById(id);
 
-            if (khoaHoc == null) {
-                // Không tìm thấy khóa học
-                response.sendRedirect(request.getContextPath() + "/views/ManagerCourses2.jsp?message=notFound");
-                return;
-            }
-
-            String trangThai = khoaHoc.getTrangThai();
-
-            // Chỉ cho phép xóa khi trạng thái là "chưa bắt đầu" hoặc "kết thúc"
-            if ("chưa bắt đầu".equalsIgnoreCase(trangThai) || "đã kết thúc".equalsIgnoreCase(trangThai)) {
-                KhoaHoc deleted = KhoaHocDAO.deleteKhoaHoc(khoaHoc);
-
-                if (deleted != null) {
-                    // Xóa thành công
-                    response.sendRedirect(request.getContextPath() + "/views/ManagerCourses2.jsp?message=deleted");
-                } else {
-                    request.setAttribute("err", "Không thể xóa khóa học vì trạng thái không phù hợp! (Chỉ được xóa khi 'chưa bắt đầu' hoặc 'kết thúc')");
-                    request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
+                if (khoaHoc == null) {
+                    response.sendRedirect(request.getContextPath() + "/views/ManagerCourses2.jsp?message=notFound");
                     return;
                 }
-            } else {
-                request.setAttribute("err", "Không thể xóa khóa học vì trạng thái không phù hợp! (Chỉ được xóa khi 'chưa bắt đầu' hoặc 'kết thúc')");
-                request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
-                return;
-            }
+//protected static final String PAGE_MANAGER_COURSES = "/views/ManagerCourses2.jsp";
+                String trangThai = khoaHoc.getTrangThai();
+                LocalDate ketThuc = khoaHoc.getThoiGianKetThuc();
+                LocalDate today = LocalDate.now();
 
-        } catch (NumberFormatException e) {
-            request.setAttribute("err", "ID khóa học không hợp lệ!");
-            request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
-            return;
-        }
-    } else if ("ViewCourse".equals(action)) {
-        String id = request.getParameter("ID_KhoaHoc");
-        int id_cou = Integer.parseInt(id);
-        KhoaHoc khoaHoc = KhoaHocDAO.getKhoaHocById(id_cou);
-        request.setAttribute("khoaHoc", khoaHoc);
-        request.getRequestDispatcher("/views/ViewCourse.jsp").forward(request, response);
-        
-    } else if ("UpdateCourse".equals(action)) {
-        try {
-            int id = Integer.parseInt(request.getParameter("ID_KhoaHoc"));
-            KhoaHoc khoaHoc = KhoaHocDAO.getKhoaHocById(id);
+                // Cho phép xóa nếu:
+                // - Trạng thái là Inactive
+                // - hoặc trạng thái là Active nhưng đã kết thúc
+                if ("Inactive".equalsIgnoreCase(trangThai)
+                        || ("Active".equalsIgnoreCase(trangThai) && ketThuc != null && ketThuc.isBefore(today))) {
 
-            if (khoaHoc == null) {
-                response.sendRedirect(request.getContextPath() + "/views/ManagerCourses2.jsp?message=notFound");
-                return;
-            }
+                    KhoaHoc deleted = KhoaHocDAO.deleteKhoaHoc(khoaHoc);
 
-            String trangThai = khoaHoc.getTrangThai();
+                    if (deleted != null) {
+                        response.sendRedirect(request.getContextPath() + "/views/ManagerCourses2.jsp?message=deleted");
+                    } else {
+                        request.setAttribute("err", "Xóa thất bại! Có thể do ràng buộc dữ liệu.");
+                        request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
+                    }
 
-            // Chỉ cho phép update khi trạng thái là "chưa bắt đầu" hoặc "kết thúc"
-            if ("chưa bắt đầu".equalsIgnoreCase(trangThai) || "đã kết thúc".equalsIgnoreCase(trangThai)) {
-                // Cho phép vào trang cập nhật, gửi đối tượng khóa học để hiển thị form
-                request.setAttribute("khoaHoc", khoaHoc);
-                request.getRequestDispatcher("/views/UpdateCourse.jsp").forward(request, response);
-            } else {
-                // Không được phép cập nhật khóa học đang hoạt động hoặc trạng thái khác
-                request.setAttribute("err", "Không thể cập nhật khóa học vì trạng thái không phù hợp! (Chỉ được cập nhật khi 'chưa bắt đầu' hoặc 'kết thúc')");
+                } else {
+                    request.setAttribute("err", "Không thể xóa khóa học vì trạng thái không phù hợp! (Chỉ được xóa khi Inactive hoặc đã kết thúc)");
+                    request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
+                }
+
+            } catch (NumberFormatException e) {
+                request.setAttribute("err", "ID khóa học không hợp lệ!");
                 request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
             }
-        } catch (NumberFormatException e) {
-            request.setAttribute("err", "ID khóa học không hợp lệ!");
-            request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
+        } else if ("ViewCourse".equals(action)) {
+            try {
+                String id = request.getParameter("ID_Khoi");
+                int id_khoi = Integer.parseInt(id);
+                
+
+                List<LopHoc> danhSachLopHoc;
+                danhSachLopHoc = LopHocDAO.getLopHocByIdKhoa(id_khoi);
+                request.setAttribute("danhSachLopHoc", danhSachLopHoc);
+                request.getRequestDispatcher("/views/ViewCourse.jsp").forward(request, response);
+
+            } catch (NumberFormatException e) {
+                request.setAttribute("err", "ID khối học không hợp lệ!");
+                request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
+            }
+        } else if ("UpdateCourse".equals(action)) {
+            try {
+                int id = Integer.parseInt(request.getParameter("ID_KhoaHoc"));
+                KhoaHoc khoaHoc = KhoaHocDAO.getKhoaHocById(id);
+
+                if (khoaHoc == null) {
+                    response.sendRedirect(request.getContextPath() + "/views/ManagerCourses2.jsp?message=notFound");
+                    return;
+                }
+
+                String trangThai = khoaHoc.getTrangThai();
+                LocalDate ketThuc = khoaHoc.getThoiGianKetThuc();
+                LocalDate today = LocalDate.now();
+
+                // Cho phép cập nhật nếu:
+                // - Trạng thái là Inactive
+                // - hoặc trạng thái là Active nhưng khóa học đã kết thúc
+                if ("Inactive".equalsIgnoreCase(trangThai)
+                        || ("Active".equalsIgnoreCase(trangThai) && ketThuc != null && ketThuc.isBefore(today))) {
+
+                    request.setAttribute("khoaHoc", khoaHoc);
+                    request.getRequestDispatcher("/views/UpdateCourse.jsp").forward(request, response);
+
+                } else {
+                    request.setAttribute("err", "Không thể cập nhật khóa học vì trạng thái không phù hợp! (Chỉ được cập nhật khi khóa học ở trạng thái Inactive hoặc đã kết thúc!)");
+                    request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
+                }
+
+            } catch (NumberFormatException e) {
+                request.setAttribute("err", "ID khóa học không hợp lệ!");
+                request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
+            }
+        } else {
+            // Nếu action không hợp lệ hoặc null
+            response.sendRedirect(request.getContextPath() + "/views/ManagerCourses2.jsp");
         }
-        
-    } else {
-        // Nếu action không hợp lệ hoặc null
-        response.sendRedirect(request.getContextPath() + "/views/ManagerCourses2.jsp");
     }
-}
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -168,28 +187,28 @@ public class ManagerCourse extends HttpServlet {
 
                 String ghiChu = request.getParameter("GhiChu");
                 String trangThai = request.getParameter("TrangThai");
-
+                String ID_Khoi = request.getParameter("ID_Khoi");
+                int id_khoi = Integer.parseInt(ID_Khoi);
                 // Lấy thông tin khóa học cũ
                 KhoaHoc khoaHocCu = KhoaHocDAO.getKhoaHocById(id);
 
-                // 🚫 Không cho phép cập nhật nếu trạng thái hiện tại là "Hoạt động"
-                if ("Hoạt động".equalsIgnoreCase(khoaHocCu.getTrangThai())) {
-                    request.setAttribute("err", "Không thể cập nhật khóa học đang hoạt động!");
+                if (!isTenKhoaHocHopLe(ten)) {
+                    request.setAttribute("err", "Tên khóa học không hợp lệ. Vui lòng chọn tên môn học phổ thông Việt Nam.");
+                    request.getRequestDispatcher("/views/AddCourse.jsp").forward(request, response);
+                    return;
+                }
+
+                // Kiểm tra trùng tên và ID_Khoi nếu bị thay đổi
+                if ((!ten.equalsIgnoreCase(khoaHocCu.getTenKhoaHoc()) || id_khoi != khoaHocCu.getID_Khoi())
+                        && KhoaHocDAO.isDuplicateTenKhoaHocAndIDKhoi(ten, id_khoi)) {
+                    request.setAttribute("err", "Tên khóa học đã tồn tại với Khối học này!");
                     request.setAttribute("khoaHoc", khoaHocCu);
                     request.getRequestDispatcher("/views/UpdateCourse.jsp").forward(request, response);
                     return;
                 }
 
-                // Kiểm tra trùng tên nếu tên bị thay đổi
-                if (!ten.equalsIgnoreCase(khoaHocCu.getTenKhoaHoc()) && KhoaHocDAO.isTenKhoaHocDuplicate(ten)) {
-                    request.setAttribute("err", "Tên khóa học đã tồn tại!");
-                    request.setAttribute("khoaHoc", khoaHocCu);
-                    request.getRequestDispatcher("/views/UpdateCourse.jsp").forward(request, response);
-                    return;
-                }
-                
-                if (!trangThai.equalsIgnoreCase("đã kết thúc") && !trangThai.equalsIgnoreCase("hoạt động") && !trangThai.equalsIgnoreCase("chưa bắt đầu")) {
-                    request.setAttribute("err", "Nhập lại trạng thái của khóa học (Đã kết thúc - hoạt động - chưa bắt đầu) ");
+                if (!trangThai.equalsIgnoreCase("Active") && !trangThai.equalsIgnoreCase("Inactive")) {
+                    request.setAttribute("err", "Nhập lại trạng thái của khóa học (Active - Inactive) ");
                     request.setAttribute("khoaHoc", khoaHocCu);
                     request.getRequestDispatcher("/views/UpdateCourse.jsp").forward(request, response);
                     return;
@@ -203,8 +222,12 @@ public class ManagerCourse extends HttpServlet {
                     return;
                 }
 
+                if (!ten.matches("^[\\p{L}0-9\\s\\-]+$")) { // Cho phép chữ, số, dấu cách, dấu gạch
+                    request.setAttribute("err", "Tên khóa học chỉ được chứa chữ, số và khoảng trắng.");
+                }
+
                 // Tạo đối tượng khóa học mới
-                KhoaHoc khoaHoc = new KhoaHoc(id, ten, moTa, batDau, ketThuc, ghiChu, trangThai, LocalDateTime.now());
+                KhoaHoc khoaHoc = new KhoaHoc(id, ten, moTa, batDau, ketThuc, ghiChu, trangThai, LocalDateTime.MAX, id_khoi);
 
                 // Cập nhật vào DB
                 KhoaHoc khoaHocUpdated = KhoaHocDAO.updateKhoaHoc(khoaHoc);
@@ -225,6 +248,26 @@ public class ManagerCourse extends HttpServlet {
                 request.getRequestDispatcher("/views/UpdateCourse.jsp").forward(request, response);
             }
         }
+    }
+    
+    private void handleDeleteCourse(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+   
+}
+
+    static final List<String> TEN_MON_HOC_HOP_LE = Arrays.asList(
+            "Toán", "Ngữ văn", "Vật lý", "Hóa học", "Sinh học",
+            "Tin học", "Lịch sử", "Địa lý", "Giáo dục công dân",
+            "Tiếng Anh", "Công nghệ", "Thể dục", "Âm nhạc", "Mỹ thuật",
+            "Quốc phòng và An ninh"
+    );
+
+    boolean isTenKhoaHocHopLe(String ten) {
+        if (ten == null) {
+            return false;
+        }
+        return TEN_MON_HOC_HOP_LE.stream()
+                .anyMatch(mon -> mon.equalsIgnoreCase(ten.trim()));
     }
 
     /**

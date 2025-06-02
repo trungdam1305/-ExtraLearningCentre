@@ -11,6 +11,7 @@ import dal.HocSinhDAO;
 import dal.KhoaHocDAO;
 import dal.KhoiHocDAO;
 import dal.LopHocDAO;
+import dal.SliderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -26,6 +27,8 @@ import model.GiaoVien;
 import model.KhoaHoc;
 import model.KhoiHoc;
 import model.LopHoc;
+import model.LopHocTheoNhomDTO;
+import model.Slider;
 
 /**
  *
@@ -68,85 +71,78 @@ public class HomePage extends HttpServlet {
     
     
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+    response.setContentType("text/html;charset=UTF-8");
 
-        //Initialize Session
-        HttpSession session = request.getSession();
-        
-        //Display HomePage Teacher (Specialised Teacher)
-        setGiaoVienCoDinh(session);
-        
-        //Initialize KhoaHocDAO and show number of course
-        KhoaHocDAO khoaHocDAO = new KhoaHocDAO();
-        int numKhoaHoc = khoaHocDAO.getTotalCourses();
-        
-        
-        //Initiaolize HocSinhDAO and show number of student
-        HocSinhDAO hocSinhDAO = new HocSinhDAO();
-        int numHocSinh = hocSinhDAO.getTotalHocSinh();
-        
-        
-        //Initialize LopHocDAo 
-        LopHocDAO lopHocDAO = new LopHocDAO();
-        //show all number of class
-        int numLopHoc = lopHocDAO.getTotalLopHoc();
-        
-        
-        //show all available class
-        List<LopHoc> lopHoc = lopHocDAO.getAllLopHoc();
-        
-        //Initialize KhoiHocDAO
-        KhoiHocDAO khoiHocDAO = new KhoiHocDAO();
-        List<KhoiHoc> listKhoi = khoiHocDAO.getAllKhoiHoc();
-            
-        //Initialize BlogDAO
-        BlogDAO blogDAO = new BlogDAO();
-        List<Blog> listBlog = blogDAO.getAllBlog();
-        
-        //Initialize GiaoVienDAO
-        GiaoVienDAO gvDAO = new GiaoVienDAO();
-        List<GiaoVien> listGiaoVien = gvDAO.HomePageGetGiaoVien();
-        
-        
-        //Set Attribute for request to HomePage
-        request.setAttribute("listGiaoVien", listGiaoVien);
-        request.setAttribute("listBlog", listBlog);
-        request.setAttribute("listKhoi", listKhoi);
-        request.setAttribute("lopHoc", lopHoc);
-        request.setAttribute("numLopHoc", numLopHoc);
-        request.setAttribute("numHocSinh", numHocSinh);
-        request.setAttribute("numKhoaHoc", numKhoaHoc);
-        request.getRequestDispatcher("views/HomePage.jsp").forward(request, response);
-    } 
+    // DAO init
+    GiaoVienDAO gvDAO = new GiaoVienDAO();
+    KhoaHocDAO khoaHocDAO = new KhoaHocDAO();
+    HocSinhDAO hocSinhDAO = new HocSinhDAO();
+    LopHocDAO lopHocDAO = new LopHocDAO();
+    KhoiHocDAO khoiHocDAO = new KhoiHocDAO();
+    BlogDAO blogDAO = new BlogDAO();
+    SliderDAO sliderDAO = new SliderDAO();
+    
+    
+    // Get Data with DAO
+    List<GiaoVien> listSpecialGV = gvDAO.getSpecialised();
+    int numKhoaHoc = khoaHocDAO.getTotalCourses();
+    int numHocSinh = hocSinhDAO.getTotalHocSinh();
+    int numLopHoc = lopHocDAO.getTotalLopHoc();
+    List<LopHoc> lopHoc = lopHocDAO.getAllLopHoc();
+    List<LopHocTheoNhomDTO> listLopHoc = lopHocDAO.getTongLopHocTheoNhomMonHoc();
+    List<KhoiHoc> listKhoi = khoiHocDAO.getAllKhoiHoc();
+    List<Blog> listBlog = blogDAO.getAllBlog();
+    List<GiaoVien> listGiaoVien = gvDAO.HomePageGetGiaoVien();
+    List<Slider> sliders = sliderDAO.getAllSlider();
+    
+
+    // Set data to request and send to jsp
+    request.setAttribute("sliders", sliders);
+    request.setAttribute("listLopHoc", listLopHoc);
+    request.setAttribute("listSpecialGV", listSpecialGV);
+    request.setAttribute("listGiaoVien", listGiaoVien);
+    request.setAttribute("listBlog", listBlog);
+    request.setAttribute("listKhoi", listKhoi);
+    request.setAttribute("lopHoc", lopHoc);
+    request.setAttribute("numLopHoc", numLopHoc);
+    request.setAttribute("numHocSinh", numHocSinh);
+    request.setAttribute("numKhoaHoc", numKhoaHoc);
+
+    // forward to jsp
+    request.getRequestDispatcher("views/HomePage.jsp").forward(request, response);
+}
+
     //Debugging to Test the DAO and Function
     public static void main(String[] args) {
-        LopHocDAO lopHocDAO = new LopHocDAO();
-        List<LopHoc> lop = lopHocDAO.getAllLopHoc();
-        for (LopHoc lops : lop){
-            System.out.println(lops.getID_KhoaHoc() + lops.getImage());
-        }
-        System.out.println("Số lớp học lấy được: " + (lop == null ? "null" : lop.size())); 
-    }
-    
-    //Set Specialised Teacher
-private void setGiaoVienCoDinh(HttpSession session) {
-    String[] tenGiaoVien = {
-        "Đàm Quang Trung",
-        "Vũ Văn Chủ",
-        "Vũ Minh Hoàng",
-        "Đỗ Huy Đô",
-        "Ngô Xuân Tuấn Dũng"
-    };
-    
-    GiaoVienDAO giaoVienDAO = new GiaoVienDAO();
-    
-    for (int i = 0; i < tenGiaoVien.length; i++) {
-        GiaoVien gv = giaoVienDAO.getGiaoVienByHoTen(tenGiaoVien[i]);
-        session.setAttribute("giaoVien" + (i + 1), gv);
-    }
+    GiaoVienDAO gvDAO = new GiaoVienDAO();
+    KhoaHocDAO khoaHocDAO = new KhoaHocDAO();
+    HocSinhDAO hocSinhDAO = new HocSinhDAO();
+    LopHocDAO lopHocDAO = new LopHocDAO();
+    KhoiHocDAO khoiHocDAO = new KhoiHocDAO();
+    BlogDAO blogDAO = new BlogDAO();
+
+    List<GiaoVien> listSpecialGV = gvDAO.getSpecialised();
+    int numKhoaHoc = khoaHocDAO.getTotalCourses();
+    int numHocSinh = hocSinhDAO.getTotalHocSinh();
+    int numLopHoc = lopHocDAO.getTotalLopHoc();
+    List<LopHoc> lopHoc = lopHocDAO.getAllLopHoc();
+    List<LopHocTheoNhomDTO> listLopHoc = lopHocDAO.getTongLopHocTheoNhomMonHoc();
+    List<KhoiHoc> listKhoi = khoiHocDAO.getAllKhoiHoc();
+    List<Blog> listBlog = blogDAO.getAllBlog();
+    List<GiaoVien> listGiaoVien = gvDAO.HomePageGetGiaoVien();
+
+    System.out.println("listLopHoc size: " + (listLopHoc == null ? 0 : listLopHoc.size()));
+    System.out.println("listKhoi size: " + (listKhoi == null ? 0 : listKhoi.size()));
+    System.out.println("listSpecialGV size: " + (listSpecialGV == null ? 0 : listSpecialGV.size()));
+    System.out.println("listGiaoVien size: " + (listGiaoVien == null ? 0 : listGiaoVien.size()));
+    System.out.println("numKhoaHoc: " + numKhoaHoc);
+    System.out.println("numHocSinh: " + numHocSinh);
+    System.out.println("numLopHoc: " + numLopHoc);
 }
+
+    
     /** 
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request

@@ -28,7 +28,6 @@
         <servlet-name>ForgotPasswordServlet</servlet-name>
         <servlet-class>controller.ForgotPasswordServlet</servlet-class>
     </servlet>
-    
     <servlet>
         <servlet-name>Sort</servlet-name>
         <servlet-class>controller.Sort</servlet-class>
@@ -53,6 +52,14 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>controller.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GoogleLoginServlet</servlet-name>
+        <servlet-class>dao.GoogleLoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SortForResultFind</servlet-name>
+        <servlet-class>controller.SortForResultFind</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -65,7 +72,6 @@
         <servlet-name>HomePage</servlet-name>
         <url-pattern>/HomePage</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>Sort</servlet-name>
         <url-pattern>/Sort</url-pattern>
@@ -106,4 +112,14 @@
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/LogoutServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GoogleLoginServlet</servlet-name>
+        <url-pattern>/GoogleLoginServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SortForResultFind</servlet-name>
+        <url-pattern>/SortForResultFind</url-pattern>
+    </servlet-mapping>
+    
+    <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

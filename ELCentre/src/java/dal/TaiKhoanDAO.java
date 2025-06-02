@@ -18,7 +18,8 @@ public class TaiKhoanDAO {
         
         try {
             String sql  = """
-                          select * from TaiKhoan 
+                          select * from TaiKhoan
+                          Where UserType != 'Staff' AND UserType != 'Admin'
                           """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
             ResultSet rs = statement.executeQuery() ; 

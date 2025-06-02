@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.KhoaHoc;
 
+
 /**
  *
  * @author Vuh26
@@ -58,66 +59,68 @@ public class Sort extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    int pageSize = 6;
-    int pageNumber = 1;
-    String pageParam = request.getParameter("page");
-    String sortName = request.getParameter("sortName");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int pageSize = 6;
+        int pageNumber = 1;
+        String pageParam = request.getParameter("page");
+        String sortName = request.getParameter("sortName");
 
-    if (pageParam != null) {
-        try {
-            pageNumber = Integer.parseInt(pageParam);
-            if (pageNumber < 1) {
+        if (pageParam != null) {
+            try {
+                pageNumber = Integer.parseInt(pageParam);
+                if (pageNumber < 1) {
+                    pageNumber = 1;
+                }
+            } catch (NumberFormatException e) {
                 pageNumber = 1;
             }
-        } catch (NumberFormatException e) {
-            pageNumber = 1;
         }
+
+        int offset = (pageNumber - 1) * pageSize;
+        List<KhoaHoc> khoaHocList;
+        int totalCourses;
+
+        if (sortName != null && !sortName.isEmpty()) {
+            switch (sortName) {
+                case "ended":
+                    khoaHocList = KhoaHocDAO.getCoursesByTrangThai("đã kết thúc", offset, pageSize);
+                    totalCourses = KhoaHocDAO.countCoursesByTrangThai("đã kết thúc");
+                    break;
+                case "active":
+                    khoaHocList = KhoaHocDAO.getCoursesByTrangThai("đang hoạt động", offset, pageSize);
+                    totalCourses = KhoaHocDAO.countCoursesByTrangThai("đang hoạt động");
+                    break;
+                case "notStarted":
+                    khoaHocList = KhoaHocDAO.getCoursesByTrangThai("chưa bắt đầu", offset, pageSize);
+                    totalCourses = KhoaHocDAO.countCoursesByTrangThai("chưa bắt đầu");
+                    break;
+                case "ASC":
+                case "DESC":
+                    khoaHocList = KhoaHocDAO.getSortedKhoaHoc(offset, pageSize, sortName);
+                    totalCourses = KhoaHocDAO.getTotalCourses();
+                    break;
+                default:
+                    khoaHocList = KhoaHocDAO.getKhoaHoc(offset, pageSize);
+                    totalCourses = KhoaHocDAO.getTotalCourses();
+                    break;
+            }
+        } else {
+            khoaHocList = KhoaHocDAO.getKhoaHoc(offset, pageSize);
+            totalCourses = KhoaHocDAO.getTotalCourses();
+        }
+
+        int totalPages = (int) Math.ceil((double) totalCourses / pageSize);
+
+        request.setAttribute("defaultCourses", khoaHocList);
+        request.setAttribute("pageNumber", pageNumber);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("sortName", sortName);
+
+        request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
+
     }
 
-    int offset = (pageNumber - 1) * pageSize;
-    List<KhoaHoc> khoaHocList;
-    int totalCourses;
-
-    if (sortName != null && !sortName.isEmpty()) {
-        switch (sortName) {
-            case "ended":
-                khoaHocList = KhoaHocDAO.getCoursesByTrangThai("đã kết thúc", offset, pageSize);
-                totalCourses = KhoaHocDAO.countCoursesByTrangThai("đã kết thúc");
-                break;
-            case "active":
-                khoaHocList = KhoaHocDAO.getCoursesByTrangThai("đang hoạt động", offset, pageSize);
-                totalCourses = KhoaHocDAO.countCoursesByTrangThai("đang hoạt động");
-                break;
-            case "notStarted":
-                khoaHocList = KhoaHocDAO.getCoursesByTrangThai("chưa bắt đầu", offset, pageSize);
-                totalCourses = KhoaHocDAO.countCoursesByTrangThai("chưa bắt đầu");
-                break;
-            case "ASC":
-            case "DESC":
-                khoaHocList = KhoaHocDAO.getSortedKhoaHoc(offset, pageSize, sortName);
-                totalCourses = KhoaHocDAO.getTotalCourses();
-                break;
-            default:
-                khoaHocList = KhoaHocDAO.getKhoaHoc(offset, pageSize);
-                totalCourses = KhoaHocDAO.getTotalCourses();
-                break;
-        }
-    } else {
-        khoaHocList = KhoaHocDAO.getKhoaHoc(offset, pageSize);
-        totalCourses = KhoaHocDAO.getTotalCourses();
-    }
-
-    int totalPages = (int) Math.ceil((double) totalCourses / pageSize);
-
-    request.setAttribute("defaultCourses", khoaHocList);
-    request.setAttribute("pageNumber", pageNumber);
-    request.setAttribute("totalPages", totalPages);
-    request.setAttribute("sortName", sortName);
-
-    request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
-}
     /**
      * Handles the HTTP <code>POST</code> method.
      *

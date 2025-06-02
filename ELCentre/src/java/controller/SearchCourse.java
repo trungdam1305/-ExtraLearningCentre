@@ -59,32 +59,58 @@ public class SearchCourse extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html;charset=UTF-8");
+        throws ServletException, IOException {
+    request.setCharacterEncoding("UTF-8");
+    response.setContentType("text/html;charset=UTF-8");
 
-        String name = request.getParameter("name");
+    String name = request.getParameter("name");
 
-        // Kiểm tra xem có nhập từ khóa không
-        if (name == null || name.trim().isEmpty()) {
-            response.getWriter().println("Vui lòng nhập tên khóa học cần tìm.");
-            return;
-        }
+    if (name == null || name.trim().isEmpty()) {
+        response.getWriter().println("Vui lòng nhập tên khóa học cần tìm.");
+        return;
+    }
 
-        // Gọi DAO để tìm danh sách khóa học theo tên (tìm gần đúng)
-        List<KhoaHoc> list = KhoaHocDAO.getKhoaHocByName(name);
+    // CHUẨN HÓA CHUỖI TÌM KIẾM
+    String normalizedName = name.trim().replaceAll("\\s+", " ");
 
-        // Kiểm tra kết quả tìm kiếm
-        if (list == null || list.isEmpty()) {
-            request.setAttribute("err", "Không thấy khóa học nào có tên như vậy!");
-            request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
-        } else {
-            request.setAttribute("list", list);
-            // Forward tới trang JSP để hiển thị danh sách tìm được
-            request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
+    // Tính tổng số khóa học sau khi tìm kiếm
+    int totalCourses = KhoaHocDAO.getTotalCoursesByName(normalizedName);
 
+    int pageSize = 6;
+    int pageNumber = 1;
+
+    String pageParam = request.getParameter("page");
+    if (pageParam != null) {
+        try {
+            pageNumber = Integer.parseInt(pageParam);
+            if (pageNumber < 1) {
+                pageNumber = 1;
+            }
+        } catch (NumberFormatException e) {
+            pageNumber = 1;
         }
     }
+
+    int totalPages = (int) Math.ceil((double) totalCourses / pageSize);
+    int offset = (pageNumber - 1) * pageSize;
+
+    // Lấy danh sách phân trang
+    List<KhoaHoc> list = KhoaHocDAO.getKhoaHocByNamePaging(normalizedName, offset, pageSize);
+
+    if (list == null || list.isEmpty()) {
+        request.setAttribute("err", "Không tìm thấy khóa học nào với tên chứa: " + normalizedName);
+        request.getRequestDispatcher("/views/ManagerCourses2.jsp").forward(request, response);
+    } else {
+        request.setAttribute("totalCourses", totalCourses);
+        request.setAttribute("pageNumber", pageNumber);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("sortName", "");
+        request.setAttribute("searchName", name); // giữ lại chuỗi gốc người dùng nhập để hiển thị lại
+        request.setAttribute("list", list);
+        request.getRequestDispatcher("/views/ResultFind.jsp").forward(request, response);
+    }
+}
+
 
     /**
      * Returns a short description of the servlet.
@@ -95,5 +121,29 @@ public class SearchCourse extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    public static void main(String[] args) {
+        String testName = "toán"; // Tên khóa học muốn tìm
+
+        List<KhoaHoc> list = KhoaHocDAO.getKhoaHocByName(testName);
+
+        if (list == null) {
+            System.out.println("Lỗi khi truy vấn database hoặc không có kết quả trả về.");
+        } else if (list.isEmpty()) {
+            System.out.println("Không tìm thấy khóa học nào với tên chứa: " + testName);
+        } else {
+            System.out.println("Danh sách khóa học tìm được:");
+            for (KhoaHoc kh : list) {
+                System.out.println("ID: " + kh.getID_KhoaHoc() + ", Tên: " + kh.getTenKhoaHoc());
+            }
+        }
+    }
+
+    private String normalizeSearchString(String input) {
+        // Loại bỏ khoảng trắng đầu/cuối và thay thế nhiều khoảng trắng liên tiếp bằng 1 khoảng trắng
+        return input.trim().replaceAll("\\s+", " ");
+    }
+    
+ 
 
 }

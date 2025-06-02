@@ -28,12 +28,14 @@ public class RegisterServlet extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
+       
         String action = request.getParameter("action");
 
         if ("register".equals(action)) {
             String fullName = request.getParameter("fullname");
             String email = request.getParameter("email");
             String password = request.getParameter("password");
+            String phone = request.getParameter("phone");
             String confirm = request.getParameter("confirm");
             String roleStr = request.getParameter("vaitro");
             int roleId = 0;
@@ -69,13 +71,14 @@ public class RegisterServlet extends HttpServlet {
                 return;
             }
 
-            // Xác định trạng thái tài khoản
-            String trangThai = (roleId == 2) ? "Inactive" : "Active";
-            
+
+  
+            String trangThai = "Inactive";
             // Tạo đối tượng tài khoản
             TaiKhoan user = new TaiKhoan();
             user.setEmail(email);
             user.setMatKhau(password);
+            user.setSoDienThoai(phone);
             user.setID_VaiTro(roleId);
             user.setTrangThai(trangThai);
             user.setNgayTao(LocalDateTime.now());
@@ -85,11 +88,9 @@ public class RegisterServlet extends HttpServlet {
             
             // Gọi TaiKhoanDAO lên để lưu user
             boolean success = dao.register(user);
-
+            
             if (success) {
-                String msg = (roleId == 2)
-                        ? "Yêu cầu đăng ký vai trò Staff đã được gửi. Vui lòng chờ Admin phê duyệt."
-                        : "Đăng ký thành công, hãy đăng nhập.";
+                String msg = "Tài khoản đã được tạo, chờ quản trị viên phê duyệt.";
                 response.sendRedirect(request.getContextPath() + "/views/login.jsp?success=" + URLEncoder.encode(msg, "UTF-8"));
             } else {
                 String errorMsg = "Đăng ký thất bại. Vui lòng thử lại.";
