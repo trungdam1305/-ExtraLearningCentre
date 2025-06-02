@@ -17,6 +17,9 @@ import java.net.HttpURLConnection;
 
 public class GoogleLoginServlet extends HttpServlet {
 
+    //  Thay bằng thông tin thật của bạn
+    private static final String GOOGLE_CLIENT_ID = "a";
+    private static final String GOOGLE_CLIENT_SECRET = "";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

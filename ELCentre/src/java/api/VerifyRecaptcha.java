@@ -8,8 +8,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class VerifyRecaptcha {
-    private static final String SECRET_KEY = "6Ldf8E4rAAAAAH0DHdsWJs0NdSYoogSdZo6neOy_";
-    private static final String VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
+    private static final String SECRET_KEY = "a";
+    private static final String VERIFY_URL = "s";
 
     public static boolean verify(String gRecaptchaResponse) throws IOException {
         if (gRecaptchaResponse == null || gRecaptchaResponse.isEmpty()) {

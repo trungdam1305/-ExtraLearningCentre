@@ -171,7 +171,7 @@
     <script>
       function onGoogleLoginClick() {
         google.accounts.id.initialize({
-          client_id: '',
+          client_id: '495483511522-0e0jq9n40fkng5gpaogj1gifh9a8e7eu.apps.googleusercontent.com',
           callback: handleGoogleResponse
         });
         google.accounts.id.prompt(); // hoặc show popup
