@@ -22,7 +22,7 @@ import java.util.Scanner;
  * @author vkhan
  */
 public class FacebookLoginServlet extends HttpServlet {
-    private final String FB_GRAPH_API = "a";
+    private final String FB_GRAPH_API = "https://graph.facebook.com/me?fields=id,name,email&access_token=";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.

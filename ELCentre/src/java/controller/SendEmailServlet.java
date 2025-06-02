@@ -73,9 +73,9 @@ public class SendEmailServlet extends HttpServlet {
 
     
     private boolean sendEmail(String recipientEmail) {
-    final String senderEmail = "a"; // Thay bằng email của bạn
-    final String senderPassword = ""; // Thay bằng mật khẩu ứng dụng
-    String link = "a";
+    final String senderEmail = "edupluscenterhn@gmail.com"; // Thay bằng email của bạn
+    final String senderPassword = "zvfdc iaus rvmq wrmz"; // Thay bằng mật khẩu ứng dụng
+    String link = "https://www.facebook.com/profile.php?id=61576366144647";
 
     Properties props = new Properties();
     props.put("mail.smtp.auth", "true");

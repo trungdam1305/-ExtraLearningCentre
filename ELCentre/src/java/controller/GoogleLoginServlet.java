@@ -18,8 +18,8 @@ import java.net.HttpURLConnection;
 public class GoogleLoginServlet extends HttpServlet {
 
     //  Thay bằng thông tin thật của bạn
-    private static final String GOOGLE_CLIENT_ID = "a";
-    private static final String GOOGLE_CLIENT_SECRET = "";
+    private static final String GOOGLE_CLIENT_ID = "495483511522-0e0jq9n40fkng5gpaogj1gifh9a8e7eu.apps.googleusercontent.com";
+    private static final String GOOGLE_CLIENT_SECRET = "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";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
