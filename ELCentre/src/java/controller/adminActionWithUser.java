@@ -13,9 +13,11 @@ import dal.HocSinhDAO;
 import dal.GiaoVienDAO;
 import model.PhuHuynh;
 import dal.PhuHuynhDAO;
+import dal.TaiKhoanChiTietDAO;
 import model.TaiKhoan;
 import dal.TaiKhoanDAO;
 import jakarta.servlet.http.HttpSession;
+import model.TaiKhoanChiTiet;
 
 /**
  *
@@ -92,7 +94,7 @@ public class adminActionWithUser extends HttpServlet {
                     boolean b2 = TaiKhoanDAO.adminEnableAccountUser(id); //admin enable in table account
                     boolean b1 = GiaoVienDAO.adminEnableGiaoVien(id);   //admin enable in table of this user
                     if (b1 == true && b2 == true) {                     //if 2 method is access
-                        ArrayList<TaiKhoan> taikhoans = TaiKhoanDAO.adminGetAllTaiKhoan();  //admin call method this to get all account after update
+                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName() ;  //admin call method this to get all account after update
                         session.setAttribute("taikhoans", taikhoans);           //set object for jsp can get it again
                         request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);      //redirect to adminReceiveUsers
                     } else {
@@ -104,7 +106,7 @@ public class adminActionWithUser extends HttpServlet {
                     boolean b1 = TaiKhoanDAO.adminEnableAccountUser(id);        //admin enable in table account
                     boolean b2 = HocSinhDAO.adminEnableHocSinh(id);             //admin enable in table of this user
                     if (b1 == true && b2 == true) {                               //if 2 method is access
-                        ArrayList<TaiKhoan> taikhoans = TaiKhoanDAO.adminGetAllTaiKhoan();      //admin call method this to get all account after update
+                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName() ;    //admin call method this to get all account after update
                         session.setAttribute("taikhoans", taikhoans);           //set object for jsp can get it again
                         request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);       //redirect to adminReceiveUsers
                     } else {
@@ -116,7 +118,7 @@ public class adminActionWithUser extends HttpServlet {
                     boolean b1 = TaiKhoanDAO.adminEnableAccountUser(id);     //admin enable in table account
                     boolean b2 = PhuHuynhDAO.adminEnablePhuHuynh(id);       //admin enable in table of this user
                     if (b1 == true && b2 == true) {                         //if 2 method is access
-                        ArrayList<TaiKhoan> taikhoans = TaiKhoanDAO.adminGetAllTaiKhoan();        //admin call method this to get all account after update
+                       ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName() ;     //admin call method this to get all account after update
                         session.setAttribute("taikhoans", taikhoans);                       //set object for jsp can get it again
                         request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);       //redirect to adminReceiveUsers
                     } else {
@@ -140,7 +142,7 @@ public class adminActionWithUser extends HttpServlet {
                     boolean b2 = TaiKhoanDAO.adminDisableAccountUser(id);    //admin disnable in table account
                     boolean b1 = GiaoVienDAO.adminDisableGiaoVien(id);            //admin disnable in table of this user
                     if (b1 == true && b2 == true) {                           //if 2 method is access
-                        ArrayList<TaiKhoan> taikhoans = TaiKhoanDAO.adminGetAllTaiKhoan();      //admin call method this to get all account after update
+                       ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName() ;   //admin call method this to get all account after update
                         session.setAttribute("taikhoans", taikhoans);            //set object for jsp can get it again
                         request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);       //redirect to adminReceiveUsers  
                     } else {
@@ -150,7 +152,7 @@ public class adminActionWithUser extends HttpServlet {
                     boolean b1 = TaiKhoanDAO.adminDisableAccountUser(id);       //admin disnable in table account
                     boolean b2 = HocSinhDAO.adminDisableHocSinh(id);            //admin disnable in table of this user
                     if (b1 == true && b2 == true) {                             //if 2 method is access
-                        ArrayList<TaiKhoan> taikhoans = TaiKhoanDAO.adminGetAllTaiKhoan();           //admin call method this to get all account after update
+                       ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName() ;        //admin call method this to get all account after update
                         session.setAttribute("taikhoans", taikhoans);               //set object for jsp can get it again
                         request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);      //redirect to adminReceiveUsers  
                     } else {        
@@ -160,7 +162,7 @@ public class adminActionWithUser extends HttpServlet {
                     boolean b1 = TaiKhoanDAO.adminDisableAccountUser(id);    //admin disnable in table account
                     boolean b2 = PhuHuynhDAO.adminDisablePhuHuynh(id);       //admin disnable in table of this user
                     if (b1 == true && b2 == true) {                       //if 2 method is access
-                        ArrayList<TaiKhoan> taikhoans = TaiKhoanDAO.adminGetAllTaiKhoan();       //admin call method this to get all account after update
+                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName() ;     //admin call method this to get all account after update
                         session.setAttribute("taikhoans", taikhoans);                //set object for jsp can get it again
                         request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);       //redirect to adminReceiveUsers  
                     } else {
@@ -175,6 +177,43 @@ public class adminActionWithUser extends HttpServlet {
                     }
                 }
                 break;
+                
+                
+            case "update" : 
+                if (type.equalsIgnoreCase("GiaoVien")) {    //if user is teacher
+
+                    ArrayList<GiaoVien> giaoviens = GiaoVienDAO.adminGetGiaoVienByID(id); // call method to get data from database 
+                    if (giaoviens.isEmpty()) {                                              // if can not get data from database
+                        request.setAttribute("message", "Không tìm thấy thông tin giáo viên này.");
+                        request.getRequestDispatcher("/views/admin/adminUpdateTeacherInfor.jsp").forward(request, response); // redirect to adminReceiveTeacherInfor.jsp
+
+                    } else {
+                        request.setAttribute("giaoviens", giaoviens);   //set object is giaoviens for jsp can get this 
+                        request.setAttribute("type", type);  // set type to send to the jsp and continue send to the servlet
+                        request.getRequestDispatcher("/views/admin/adminUpdateTeacherInfor.jsp").forward(request, response);   // redirect to adminReceiveTeacherInfor.jsp
+                    }
+
+                } else if (type.equalsIgnoreCase("HocSinh")) {  //if user is student
+                    ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>(); // create arraylist to save data 
+                    hocsinhs = HocSinhDAO.adminGetHocSinhByID(id);  // call method to get data from database 
+                    if (hocsinhs.isEmpty()) {                       // if can not get data from database
+                        request.setAttribute("message", "Không tìm thấy thông tin học sinh này.");
+                        request.getRequestDispatcher("/views/admin/adminReceiveStudentInfor.jsp").forward(request, response);   // redirect to adminReceiveStudentInfor.jsp
+                    } else {
+                        request.setAttribute("hocsinhs", hocsinhs);      //set object is hocsinhs for jsp can get this 
+                        request.getRequestDispatcher("/views/admin/adminReceiveStudentInfor.jsp").forward(request, response);    // redirect to adminReceiveStudentInfor.jsp
+                    }
+                } else if (type.equalsIgnoreCase("PhuHuynh")) {     //if user is parent of student  
+                    ArrayList<PhuHuynh> phuhuynhs = PhuHuynhDAO.adminGetPhuHuynhByID(id);       // call method to get data from database 
+                    if (phuhuynhs.isEmpty()) {                                          // if can not get data from database
+                        request.setAttribute("message", "Không tìm thấy thông tin phụ huyunh này.");
+                        request.getRequestDispatcher("/views/admin/adminReceiveParentInfor.jsp").forward(request, response);    // redirect to adminReceiveParentInfor.jsp
+                    } else {
+                        request.setAttribute("phuhuynhs", phuhuynhs);             //set object is phuhuynhs for jsp can get this      
+                        request.getRequestDispatcher("/views/admin/adminReceiveParentInfor.jsp").forward(request, response);    // redirect to adminReceiveParentInfor.jsp
+                    }   
+                }
+                break ; 
 
         }
     }
@@ -182,7 +221,9 @@ public class adminActionWithUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String type = request.getParameter("type") ; 
+        PrintWriter out = response.getWriter() ; 
+       
     }
 
     @Override

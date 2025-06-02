@@ -125,7 +125,7 @@
                             <tr>
                                
                                 <td>${tk.email}</td>
-                                <td>${tk.hoTen}</td>
+                                <td>${tk.getHoTen()}</td>
                                 <td>${tk.userType}</td>
                                 <td>${tk.soDienThoai}</td>
                                 <td>${tk.trangThai}</td>

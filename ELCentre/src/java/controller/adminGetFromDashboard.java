@@ -60,7 +60,7 @@ public class adminGetFromDashboard extends HttpServlet {
             case "taikhoan":            //action with account
                 ArrayList<TaiKhoanChiTiet> taikhoans = new ArrayList<TaiKhoanChiTiet>();  // create arraylist to save data 
                 taikhoans =    TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName() ;            //admin get All acount from database
-                if (taikhoans.isEmpty()) {                                  // get database fail
+                if (taikhoans == null ) {                                  // get database fail
                     request.setAttribute("message", "Không có tài khoản nào.");
                     request.setAttribute("taikhoans", taikhoans);
                     request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
