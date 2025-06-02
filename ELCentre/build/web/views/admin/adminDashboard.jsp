@@ -17,6 +17,7 @@
 <%@ page import="model.UserLogs" %>
 <%@ page import="dal.LichHocDAO" %>
 <%@ page import="model.LichHoc" %>
+<%@ page import="model.UserLogView" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -210,14 +211,14 @@
 
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Dashboard</a></li>           
             </ul>
 
             <div class="sidebar-section-title">Quản lý người dùng</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocsinh">Học sinh</a></li>
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=giaovien">Giáo viên</a></li>
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=taikhoan">Tài khoản</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocsinh">Học sinh</a></li>        
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=giaovien">Giáo viên</a></li>       
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=taikhoan">Tài khoản</a></li>       
             </ul>
 
             <div class="sidebar-section-title">Quản lý tài chính</div>
@@ -282,7 +283,7 @@
                 <div class="data-table-container">
                     <h3 class="section-title">Hoạt động gần đây</h3>
                     <%
-                      ArrayList<UserLogs> userLogsList = (ArrayList) UserLogsDAO.adminGetAllUserLogs();
+                      ArrayList<UserLogView> userLogsList = (ArrayList) UserLogsDAO.adminGetAllUserLogs();
                       request.setAttribute("userLogsList", userLogsList);
                     %>
                     <c:choose>
@@ -290,8 +291,9 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>ID_Log</th>
+
                                         <th>ID_Tài Khoản</th>
+                                        <th>Họ và Tên</th>
                                         <th>Hành Động</th>
                                         <th>Thời Gian</th>
                                     </tr>
@@ -299,8 +301,8 @@
                                 <tbody>
                                     <c:forEach var="log" items="${userLogsList}">
                                         <tr>
-                                            <td>${log.getID_Log()}</td>
                                             <td>${log.getID_TaiKhoan()}</td>
+                                            <td>${log.getHoTen()}</td>
                                             <td>${log.getHanhDong()}</td>
                                             <td>${log.getThoiGian()}</td>
                                         </tr>
@@ -316,9 +318,13 @@
 
                 <!-- Lịch Học -->
                 <div class="data-table-container">
-                    <h3 class="section-title">Lịch Học</h3>
+                    <h3 class="section-title">Lịch Học Hôm Nay</h3>
                     <%
-                      ArrayList<LichHoc> lichHocList = (ArrayList) LichHocDAO.adminGetAllLichHoc();
+                        
+                        
+                        java.time.LocalDate today = java.time.LocalDate.now();
+                        String ngayHienTai = today.toString(); 
+                      ArrayList<LichHoc> lichHocList = (ArrayList) LichHocDAO.adminGetAllLichHoc(ngayHienTai);
                       request.setAttribute("lichHocList", lichHocList);
                     %>
                     <c:choose>

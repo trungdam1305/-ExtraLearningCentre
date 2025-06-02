@@ -8,10 +8,16 @@
 <!DOCTYPE html>
 <html>
     <!--Introduction Bar -->
+    <!--Introduction Bar -->
         <div id="wrapper">
+            <div class="top-bar">
             <div class="top-bar">
                 <div class="container">
                 	<div class="float-left">
+						 Tham gia các khóa học của chúng tôi/<a href="${pageContext.request.contextPath}/views/login.jsp" title="Tham gia khóa học">Enroll</a>                    
+                        </div>
+                	<div class="float-right">                            	
+                            <a href="${pageContext.request.contextPath}/views/login.jsp" title="Login Now" style="text-decoration: underline">Đăng nhập tại đây!</a></div>
 						 Tham gia các khóa học của chúng tôi/<a href="${pageContext.request.contextPath}/views/login.jsp" title="Tham gia khóa học">Enroll</a>                    
                         </div>
                 	<div class="float-right">                            	
@@ -23,7 +29,14 @@
         <div id="header-wrapper">
 	    	<!-- main menu container starts here -->
                 <div class="menu-main-menu-container header1" >
+                <div class="menu-main-menu-container header1" >
                     <div class="container">
+                        <!-- Centre's Logo-->
+                        <div id="logo">	
+                            <a href="${pageContext.request.contextPath}/HomePage" title="Extra Learning Centre Theme">
+				<img width="160" height="90" class="normal_logo" src="${pageContext.request.contextPath}/img/SieuLogo.png" alt="Extra Learning Centre Theme" title="Extra Learning Centre Theme" />
+				<img class="retina_logo" src="${pageContext.request.contextPath}/img/SieuLogo.png" alt="Extra Learning Centre Theme" title="Extra Learning Centre Theme" style="width:174px; height:94px;"/>
+                            </a>                        
                         <!-- Centre's Logo-->
                         <div id="logo">	
                             <a href="${pageContext.request.contextPath}/HomePage" title="Extra Learning Centre Theme">
@@ -44,37 +57,37 @@
                                 <ul id="menu-main-menu" class="menu" style="position: relative; transform: translateY(-10px); display: flex; align-items: center; gap: 30px 20px ;">
                                     <!--HomePage-->
                                     <li id="menu-item-34" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-8 current_page_item menu-item-depth-0 menu-item-simple-parent ">
-                                        <a href="${pageContext.request.contextPath}/views/HomePage.jsp">
+                                        <a href="${pageContext.request.contextPath}/HomePage">
                                             <span class='menu-icon fa fa-home'> </span>Trang chủ
                                         </a>
                                     </li>
                                     <!--Courses-->
                                     <li id="menu-item-66" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-depth-0 menu-item-megamenu-parent  megamenu-3-columns-group">
-                                        <a href="${pageContext.request.contextPath}/views/HomePage.jsp">
+                                        <a href="${pageContext.request.contextPath}/HomePage">
                                             <span class='menu-icon fa fa-shopping-cart'> </span>Khóa Học
                                         </a>
                                     </li>
                                     <!--Learning Materials-->
                                     <li id="menu-item-4081" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-depth-0 menu-item-simple-parent ">
-                                        <a href="">
+                                        <a href="${pageContext.request.contextPath}/HomePage">
                                             <span class='menu-icon fa fa-gift'> </span>Tài Liệu Học
                                         </a>
                                     </li>
                                     <!--Learning Class-->
                                     <li id="menu-item-4140" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-depth-0 menu-item-simple-parent ">
-                                        <a href="">
+                                        <a href="${pageContext.request.contextPath}/HomePage">
                                             <span class='menu-icon fa fa-book'> </span>Học Bài
                                         </a>
                                     </li>
                                     <!--Blog-->
                                     <li id="menu-item-29" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-depth-0 menu-item-megamenu-parent  megamenu-3-columns-group">
-                                        <a href="">
+                                        <a href="${pageContext.request.contextPath}/HomePage">
                                             <span class='menu-icon fa fa-pencil'> </span>Blog
                                         </a>
                                     </li>
                                     <!--About Us-->
                                     <li id="menu-item-26" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-depth-0 menu-item-megamenu-parent  megamenu-4-columns-group">
-                                        <a href="">
+                                        <a href="${pageContext.request.contextPath}/HomePage">
                                             <span class='menu-icon fa fa-picture-o'> </span>Giới thiệu
                                         </a>
                                     </li>
@@ -83,6 +96,8 @@
                     </div>       
                     </div>
                 </div>
+            </div>
+        </div>
             </div>
         </div>
 </html>

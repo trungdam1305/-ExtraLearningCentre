@@ -73,7 +73,7 @@
         </style>
     </head>
     <body>
-        <h2>All Students</h2>
+        <h2>Thông tin học sinh</h2>
 
         <c:choose>
             <c:when test="${not empty hocsinhs}">

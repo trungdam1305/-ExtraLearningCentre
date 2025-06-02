@@ -111,8 +111,9 @@
                 <table id="userTable">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            
                             <th>Email</th>
+                            <th>Họ và Tên</th>
                             <th>Vai Trò</th>
                             <th>Số điện thoại</th>
                             <th>Trạng thái</th>
@@ -122,8 +123,9 @@
                     <tbody>
                         <c:forEach var="tk" items="${sessionScope.taikhoans}">
                             <tr>
-                                <td>${tk.ID_TaiKhoan}</td>
+                               
                                 <td>${tk.email}</td>
+                                <td>${tk.getHoTen()}</td>
                                 <td>${tk.userType}</td>
                                 <td>${tk.soDienThoai}</td>
                                 <td>${tk.trangThai}</td>
@@ -158,76 +160,6 @@
             <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
         </div>
 
-        <script>
-            const searchInput = document.getElementById("searchInput");
-            const statusFilter = document.getElementById("statusFilter");
-            const roleFilter = document.getElementById("roleFilter"); // ✅ dòng này bạn bị thiếu
-            const table = document.querySelector("#userTable tbody");
-            const allRows = Array.from(table.rows);
-            let filteredRows = allRows;
-            let currentPage = 1;
-            const rowsPerPage = 5;
-
-
-            function filterRows() {
-                const keyword = searchInput.value.toLowerCase();
-                const status = statusFilter.value;
-                const role = roleFilter.value;
-
-                filteredRows = allRows.filter(row => {
-                    const cells = row.querySelectorAll("td");
-                    const matchesKeyword = Array.from(cells).slice(0, 4).some(cell =>
-                        cell.textContent.toLowerCase().includes(keyword)
-                    );
-                    const matchesStatus =
-                            status === "all" ||
-                            (status === "active" && cells[4].textContent.toLowerCase() === "active") ||
-                            (status === "inactive" && cells[4].textContent.toLowerCase() !== "active");
-
-                    const matchesRole =
-                            role === "all" ||
-                            cells[2].textContent.toLowerCase() === role;
-
-                    return matchesKeyword && matchesStatus && matchesRole;
-
-                });
-
-                currentPage = 1;
-                renderPage();
-            }
-
-            function renderPage() {
-                table.innerHTML = "";
-                const start = (currentPage - 1) * rowsPerPage;
-                const end = start + rowsPerPage;
-                const pageRows = filteredRows.slice(start, end);
-                pageRows.forEach(row => table.appendChild(row));
-                renderPagination();
-            }
-
-            function renderPagination() {
-                const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
-                const pagination = document.getElementById("pagination");
-                pagination.innerHTML = "";
-
-                for (let i = 1; i <= totalPages; i++) {
-                    const btn = document.createElement("button");
-                    btn.textContent = i;
-                    btn.style.backgroundColor = (i === currentPage) ? "#1F4E79" : "#ddd";
-                    btn.style.color = (i === currentPage) ? "white" : "black";
-                    btn.onclick = () => {
-                        currentPage = i;
-                        renderPage();
-                    };
-                    pagination.appendChild(btn);
-                }
-            }
-
-            searchInput.addEventListener("input", filterRows);
-            statusFilter.addEventListener("change", filterRows);
-            roleFilter.addEventListener("change", filterRows);
-
-            window.onload = () => renderPage();
-        </script>
+       
     </body>
 </html>

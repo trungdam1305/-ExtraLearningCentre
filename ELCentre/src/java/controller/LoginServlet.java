@@ -46,7 +46,7 @@ public class LoginServlet extends HttpServlet {
             String errorMsg = "Vui lòng nhập email và mật khẩu";
             response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
             return;
-        } 
+        }
 
         try {
             TaiKhoan user = TaiKhoanDAO.login(email, password);
@@ -57,7 +57,6 @@ public class LoginServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
                     return;
                 }
-
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
 
@@ -86,7 +85,7 @@ public class LoginServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/HomePage");
                 }
             } else {
-                String errorMsg = "Thông tin đăng nhập không đúng hoặc tài khoản chưa được kích hoạt bởi admin.";
+                String errorMsg = "Thông tin đăng nhập không đúng hoặc tài khoản đã bị khóa.";
                 response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
             }
         } catch (SQLException e) {

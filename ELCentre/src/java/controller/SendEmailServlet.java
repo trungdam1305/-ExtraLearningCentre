@@ -58,21 +58,21 @@ public class SendEmailServlet extends HttpServlet {
     throws ServletException, IOException {
         String regName = request.getParameter("regName");
         String regEmail = request.getParameter("regEmail");
-
-        boolean mailSent = sendEmail(regEmail); // otp = 0 vì bạn không dùng mã OTP thực tế
+        String regBirth = request.getParameter("regBirth");
+        String regPhone = request.getParameter("regPhone");
+        boolean mailSent = sendEmail(regEmail, regName, regBirth, regPhone); // otp = 0 vì bạn không dùng mã OTP thực tế
 
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             if (mailSent) {
-                out.println("<script>alert('Bạn đã đăng ký tư vấn thành công!'); window.location = 'views/HomePage.jsp';</script>");
-            } else {
+                out.println("<script>alert('Bạn đã đăng ký tư vấn thành công!'); window.history.back();</script>");
                 out.println("<script>alert('Gửi email thất bại, vui lòng thử lại!'); window.history.back();</script>");
+
             }
+            
         }
     }
-
-    
-    private boolean sendEmail(String recipientEmail) {
+    private boolean sendEmail(String recipientEmail, String regName, String regBirth, String regPhone) {
     final String senderEmail = "clubmanagementprj@gmail.com"; // Thay bằng email của bạn
     final String senderPassword = "tmll buci lscu wrde"; // Thay bằng mật khẩu ứng dụng
     String link = "https://www.facebook.com/trungdamq";
@@ -99,8 +99,12 @@ public class SendEmailServlet extends HttpServlet {
     MimeMultipart multipart = new MimeMultipart("related");
 
     MimeBodyPart htmlPart = new MimeBodyPart();
-    String htmlContent = "<h3>Xin chào!</h3>"
-    + "<p>Cảm ơn bạn đã đăng ký tư vấn.</p>"
+    String htmlContent = "<h3>Xin chào!" +regName + "</h3>"
+    + "<p>Cảm ơn bạn đã đăng ký tư vấn. Thông tin của bạn như sau: </p>"
+    + "<p>Họ Tên: " + regName + "</p>"
+    + "<p>Gmail: " + recipientEmail + "</p>"
+    + "<p>Số Điện Thoại: " + regPhone + "</p>"
+    + "<p>Năm Sinh: " + regBirth + "</p>"
     + "<img src=\"cid:image1\" alt=\"Logo Trung Tâm\" />"
     + "<p>Hãy kết nối với chúng tôi:</p>"
     + "<a href=\"" + link + "\">" + link + "</a>";

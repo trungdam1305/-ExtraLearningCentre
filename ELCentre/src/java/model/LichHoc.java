@@ -9,6 +9,9 @@ public class LichHoc {
     private Integer ID_LopHoc;
     private String GhiChu;
 
+    public LichHoc() {
+    }
+
     public LichHoc(Integer ID_Schedule, LocalDate NgayHoc, String GioHoc, Integer ID_LopHoc, String GhiChu) {
         this.ID_Schedule = ID_Schedule;
         this.NgayHoc = NgayHoc;
@@ -17,9 +20,7 @@ public class LichHoc {
         this.GhiChu = GhiChu;
     }
 
-    public LichHoc() {
-    }
-
+    
     public Integer getID_Schedule() { return ID_Schedule; }
     public void setID_Schedule(Integer ID_Schedule) { this.ID_Schedule = ID_Schedule; }
 
