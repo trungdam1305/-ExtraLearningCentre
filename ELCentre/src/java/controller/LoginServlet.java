@@ -57,7 +57,6 @@ public class LoginServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
                     return;
                 }
-
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
 

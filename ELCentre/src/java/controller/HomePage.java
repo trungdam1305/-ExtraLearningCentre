@@ -76,14 +76,13 @@ throws ServletException, IOException {
     response.setContentType("text/html;charset=UTF-8");
 
     // DAO init
-    GiaoVienDAO gvDAO = new GiaoVienDAO();
     KhoaHocDAO khoaHocDAO = new KhoaHocDAO();
     HocSinhDAO hocSinhDAO = new HocSinhDAO();
     LopHocDAO lopHocDAO = new LopHocDAO();
     KhoiHocDAO khoiHocDAO = new KhoiHocDAO();
     BlogDAO blogDAO = new BlogDAO();
     SliderDAO sliderDAO = new SliderDAO();
-    
+    GiaoVienDAO gvDAO = new GiaoVienDAO();
     
     // Get Data with DAO
     List<GiaoVien> listSpecialGV = gvDAO.getSpecialised();
@@ -142,14 +141,6 @@ throws ServletException, IOException {
     System.out.println("numLopHoc: " + numLopHoc);
 }
 
-    
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {

@@ -66,13 +66,12 @@ public class SendEmailServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             if (mailSent) {
                 out.println("<script>alert('Bạn đã đăng ký tư vấn thành công!'); window.history.back();</script>");
-            } else {
                 out.println("<script>alert('Gửi email thất bại, vui lòng thử lại!'); window.history.back();</script>");
+
             }
+            
         }
     }
-
-    
     private boolean sendEmail(String recipientEmail, String regName, String regBirth, String regPhone) {
     final String senderEmail = "clubmanagementprj@gmail.com"; // Thay bằng email của bạn
     final String senderPassword = "tmll buci lscu wrde"; // Thay bằng mật khẩu ứng dụng

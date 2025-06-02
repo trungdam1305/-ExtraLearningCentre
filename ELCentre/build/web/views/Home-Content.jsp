@@ -9,6 +9,7 @@
 <html>
     <!-- Slider -->
     <div class="banner">
+<<<<<<< HEAD
   <div id="layerslider_1_5r4q8o8aqo3t" class="ls-wp-container fitvidsignore" style="width:1000px;height:630px;margin:0 auto;margin-bottom: 0px; position: relative;">
     <c:forEach var="slide" items="${sliders}">
       <div class="ls-slide" data-ls="duration:5000;transition2d:1,4;timeshift:-1000;">
@@ -38,6 +39,65 @@
   </div>
 </div>
           
+=======
+        <div id="layerslider_1_5r4q8o8aqo3t" class="ls-wp-container fitvidsignore" style="width:1000px;height:630px;margin:0 auto;margin-bottom: 0px;">
+            <div class="ls-slide" data-ls="duration:9000;transition2d:1,4;timeshift:-1000;kenburnsscale:1.2;">
+                <!-- Slider 1 -->
+                <img 
+                  width="1920" 
+                  height="630" 
+                  src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg2.jpg" 
+                  class="ls-bg" 
+                  alt="" 
+                  decoding="async" 
+                  fetchpriority="high" 
+                  srcset="
+                    https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg2.jpg 1920w,
+                  " 
+                  sizes="(max-width: 1920px) 100vw, 1920px"
+                />
+                <p style="font-weight:bold; text-transform:uppercase; ;font-size:50px;color:#355c7d;top:156px;left:-60px;" class="ls-l" data-ls="durationin:3000;delayin:2000;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Học Cùng Với
+                </p>
+                <a style="" class="ls-l" href="#3" target="_self" data-ls="offsetxin:-50;delayin:5500;offsetxout:-50;durationout:400;parallaxlevel:0;">
+                    <img width="45" height="45" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/prev-arrow.png" class="" alt="" decoding="async" style="top:560px;left:415px;">
+                </a>
+                <a style="" class="ls-l" href="#2" target="_self" data-ls="offsetxin:50;delayin:6000;offsetxout:50;durationout:400;parallaxlevel:0;">
+                    <img width="45" height="45" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/next-arrow.png" class="" alt="" decoding="async" style="top:560px;left:480px;">
+                </a>
+                <a style="" class="ls-l" href="" target="_self" data-ls="delayin:4500;rotatexin:-90;transformoriginin:50% top 0;offsetxout:-80;durationout:400;parallaxlevel:0;">
+                    <p style="color:#fff; font-size: 14px; padding: 20px 20px; background: none repeat scroll 0 0 #355C7D; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: 600; line-height: normal; text-transform: uppercase;top:367px;left:-60px;" class="">Xem Các Khóa Học
+                    </p>
+                </a>
+                <p style="font-weight:bold; text-transform:uppercase; ;font-size:35px;color:#355c7d;top:222px;left:-60px;" class="ls-l" data-ls="durationin:5000;delayin:2500;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Tập Hợp Những 
+                </p>
+                <p style="font-weight:bold; text-transform:uppercase; ;font-size:39px;color:#355c7d;top:269px;left:-60px;" class="ls-l" data-ls="durationin:3000;delayin:3000;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Chuyên Gia
+                </p>
+            </div>
+            <!-- Slider 2 -->
+            <div class="ls-slide" data-ls="duration:9000;transition2d:1,4;timeshift:-1000;">
+                <img width="1920" height="630" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg3.jpg" class="ls-bg" alt="" decoding="async" loading="lazy" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/bg3.jpg 1920w" sizes="auto, (max-width: 1920px) 100vw, 1920px" />
+                <img width="818" height="723" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/woman1.png" class="ls-l" alt="" decoding="async" loading="lazy" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2014/05/woman1.png 818w" sizes="auto, (max-width: 818px) 100vw, 818px" style="top:-20px;left:328px;" data-ls="offsetxin:-200;durationin:2000;offsetxout:-200;durationout:400;parallaxlevel:0;">
+                <p style="font-weight:bold; text-transform:uppercase; ;font-size:60px;color:#355c7d;top:109px;left:-1px;" class="ls-l" data-ls="durationin:3000;delayin:2000;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Khóa Học 
+                </p>
+                <a style="" class="ls-l" href="#2" target="_self" data-ls="offsetxin:-50;delayin:6500;offsetxout:-50;durationout:400;parallaxlevel:0;">
+                    <img width="45" height="45" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/prev-arrow.png" class="" alt="" decoding="async" loading="lazy" style="top:490px;left:0px;">
+                </a>
+                <a style="" class="ls-l" href="#1" target="_self" data-ls="offsetxin:50;delayin:7000;offsetxout:50;durationout:400;parallaxlevel:0;"><img width="45" height="45" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/next-arrow.png" class="" alt="" decoding="async" loading="lazy" style="top:490px;left:65px;">
+                </a>
+                <p style="font-weight:300;font-family:'Open Sans';font-size:24px;color:#272727;top:241px;left:2px;" class="ls-l" data-ls="durationin:3700;delayin:3500;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Trải Nghiệm Học Tuyệt Vời
+                </p>
+                <p style="color:#fff; font-size: 14px; padding: 20px 20px; background: none repeat scroll 0 0 #355C7D; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: 600; line-height: normal; text-transform: uppercase;top:400px;left:0px;" class="ls-l" data-ls="delayin:5500;rotatexin:-90;transformoriginin:50% top 0;offsetxout:-80;durationout:400;parallaxlevel:0;">Đăng kí ngay
+                </p>
+                <p style="font-size:24px;line-height:40px;color:#355c7d;top:292px;left:1px;" class="ls-l" data-ls="durationin:3000;delayin:4500;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Tham Gia Lớp Học Ngay. <br>
+                Tại ELCentre
+                </p>
+                <p style="font-weight:bold; text-transform:uppercase; ;font-size:35px;color:#355c7d;top:182px;left:0px;" class="ls-l" data-ls="durationin:5000;delayin:2500;easingin:easeOutElastic;transformoriginin:50% top 0;offsetxout:-600;durationout:400;parallaxlevel:0;">Hàng Đầu
+                </p>
+            </div>
+        </div>
+    </div>      
+                
+>>>>>>> e79b03e6091d64025696dfedd714e867eca3d73a
 	  <!-- Main Content -->
     <div class="content">
           <section class="content-full-width" id="primary">
@@ -54,9 +114,12 @@
                                   <form id="formRegister" action="${pageContext.request.contextPath}/SendEmailServlet" method="post" class="dt-sc-subscribe-frm">
                                     <input type="text" name="regName" id="regName" placeholder="Nhập Tên" required />
                                     <input type="email" name="regEmail" id="regEmail" required placeholder="Nhập Email" />
+<<<<<<< HEAD
                                     <input type="text" name="regPhone" id="regPhone" required placeholder="Nhập Số Điện Thoại" maxlength="10" />
                                     <input   type="text" name="regBirth" id="regBirth" required placeholder="Nhập Năm Sinh" maxlength="4" pattern="19[5-9][0-9]|20[0-2][0-9]" title="Nhập năm từ 1950 đến năm hiện tại (ví dụ 1950 - 2025)"
 />
+=======
+>>>>>>> e79b03e6091d64025696dfedd714e867eca3d73a
                                     <input type="submit" name="btnSubmit" class="dt-sc-button small" value="Đăng Ký" />
                                   </form>
 
@@ -137,6 +200,7 @@
                                     </div>
                                 </div>     
                                 <!-- Display Teacher by Name and Link to their profile -->
+<<<<<<< HEAD
                                 <c:forEach var="gv" items="${listSpecialGV}" varStatus="status">
                                     <div class="column dt-sc-one-fifth ${status.first ? 'first' : ''}">
                                         <div class="dt-sc-team">
@@ -157,6 +221,107 @@
                                     </div>
                                 </c:forEach>
 
+=======
+                                <c:if test="${not empty giaoVien1}">
+                                    <div class="column dt-sc-one-fifth first">
+                                        <div class="dt-sc-team">
+                                            <div class="dt-sc-entry-thumb">
+                                                <a href="#" style= "font-family:'Open Sans'"><img fetchpriority="high" decoding="async" width="420" height="420"
+                                                     src="${pageContext.request.contextPath}/img/avatar/${giaoVien1.avatar}"
+                                                     class="attachment-full size-full wp-post-image"
+                                                     alt="${giaoVien1.hoTen}" title="${giaoVien1.hoTen}"
+                                                     sizes="(max-width: 420px) 100vw, 420px" />
+                                                </a>
+                                            </div>
+                                            <div class="dt-sc-entry-title">
+                                                <h2><a href="#" style= "font-family:'Open Sans'">${giaoVien1.hoTen}</a></h2>
+                                                <h6>${giaoVien1.chuyenMon}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:if>
+
+                                <c:if test="${not empty giaoVien2}">
+                                    <div class="column dt-sc-one-fifth">
+                                        <div class="dt-sc-team">
+                                            <div class="dt-sc-entry-thumb">
+                                                <a href="#" style= "font-family:'Open Sans'">
+                                                <img fetchpriority="high" decoding="async" width="420" height="420"
+                                                     src="${pageContext.request.contextPath}/img/avatar/${giaoVien2.avatar}"
+                                                     class="attachment-full size-full wp-post-image"
+                                                     alt="${giaoVien2.hoTen}" title="${giaoVien2.hoTen}"
+                                                     sizes="(max-width: 420px) 100vw, 420px" />
+                                                </a>
+                                            </div>
+                                            <div class="dt-sc-entry-title">
+                                                <h2><a href="#" style= "font-family:'Open Sans'">${giaoVien2.hoTen}</a></h2>
+                                                <h6>${giaoVien2.chuyenMon}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:if>
+
+                                <c:if test="${not empty giaoVien3}">
+                                    <div class="column dt-sc-one-fifth">
+                                        <div class="dt-sc-team">
+                                            <div class="dt-sc-entry-thumb">
+                                                <a href="#" style= "font-family:'Open Sans'">
+                                                <img fetchpriority="high" decoding="async" width="420" height="420"
+                                                     src="${pageContext.request.contextPath}/img/avatar/${giaoVien3.avatar}"
+                                                     class="attachment-full size-full wp-post-image"
+                                                     alt="${giaoVien3.hoTen}" title="${giaoVien3.hoTen}"
+                                                     sizes="(max-width: 420px) 100vw, 420px" />
+                                                </a>
+                                            </div>
+                                            <div class="dt-sc-entry-title">
+                                                <h2><a href="#" style= "font-family:'Open Sans'">${giaoVien3.hoTen}</a></h2>
+                                                <h6>${giaoVien3.chuyenMon}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:if>
+
+                                <c:if test="${not empty giaoVien4}">
+                                    <div class="column dt-sc-one-fifth">
+                                        <div class="dt-sc-team">
+                                            <div class="dt-sc-entry-thumb">
+                                                <a href="#" style= "font-family:'Open Sans'">
+                                                <img fetchpriority="high" decoding="async" width="420" height="420"
+                                                     src="${pageContext.request.contextPath}/img/avatar/${giaoVien4.avatar}"
+                                                     class="attachment-full size-full wp-post-image"
+                                                     alt="${giaoVien4.hoTen}" title="${giaoVien4.hoTen}"
+                                                     sizes="(max-width: 420px) 100vw, 420px" />
+                                                </a>
+                                            </div>
+                                                
+                                            <div class="dt-sc-entry-title">
+                                                <h2><a href="#" style= "font-family:'Open Sans'">${giaoVien4.hoTen}</a></h2>
+                                                <h6>${giaoVien4.chuyenMon}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:if>
+
+                                <c:if test="${not empty giaoVien5}">
+                                    <div class="column dt-sc-one-fifth">
+                                        <div class="dt-sc-team">
+                                            <div class="dt-sc-entry-thumb">
+                                                <a href="#" style= "font-family:'Open Sans'">
+                                                <img fetchpriority="high" decoding="async" width="420" height="420"
+                                                     src="${pageContext.request.contextPath}/img/avatar/${giaoVien5.avatar}"
+                                                     class="attachment-full size-full wp-post-image"
+                                                     alt="${giaoVien5.hoTen}" title="${giaoVien5.hoTen}"
+                                                     sizes="(max-width: 420px) 100vw, 420px" />
+                                                </a>
+                                            </div>
+                                            <div class="dt-sc-entry-title">
+                                                <h2><a href="#" style= "font-family:'Open Sans'">${giaoVien5.hoTen}</a></h2>
+                                                <h6>${giaoVien5.chuyenMon}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:if>
+>>>>>>> e79b03e6091d64025696dfedd714e867eca3d73a
            
                                 <div class='dt-sc-hr-invisible-medium  '>
                                 </div>	
@@ -170,12 +335,21 @@
                                 <div class='dt-sc-hr-invisible'></div>
                                 <!--Number of Studied Students -->
                                 <div class='column dt-sc-one-third first'>
+<<<<<<< HEAD
                                     <div class="dt-sc-animate-num" >
                                         <div class="dt-sc-icon">
                                             <i class="fa fa-group"></i>
                                         </div>
                                         <span class="dt-sc-num-count" data-value="${numHocSinh}" >${numHocSinh}</span>
                                         <h3 style="color:white">Số học sinh đã được trung tâm đào tạo</h3>
+=======
+                                    <div class="dt-sc-animate-num">
+                                        <div class="dt-sc-icon">
+                                            <i class="fa fa-group"></i>
+                                        </div>
+                                        <span class="dt-sc-num-count" data-value="${numHocSinh}">${numHocSinh}</span>
+                                        <h3>Số học sinh đã được trung tâm đào tạo</h3>
+>>>>>>> e79b03e6091d64025696dfedd714e867eca3d73a
                                     </div>
                                 </div>
                                 <!-- Number of Activating Class-->
@@ -185,7 +359,11 @@
                                             <i class="fa fa-flag"></i>
                                         </div>
                                         <span class="dt-sc-num-count" data-value="${numLopHoc}">${numLopHoc}</span>
+<<<<<<< HEAD
                                         <h3 style="color:white">Số lớp học đã và đang hoạt động</h3>
+=======
+                                        <h3>Số lớp học đã và đang hoạt động</h3>
+>>>>>>> e79b03e6091d64025696dfedd714e867eca3d73a
                                     </div>
                                 </div>
                                 <!-- Number of available Courses-->
@@ -195,7 +373,11 @@
                                             <i class="fa fa-book"></i>
                                         </div>
                                         <span class="dt-sc-num-count" data-value="${numKhoaHoc}">${numKhoaHoc}</span>
+<<<<<<< HEAD
                                         <h3 style="color:white">Khóa Học sẵn có</h3>
+=======
+                                        <h3>Khóa Học sẵn có</h3>
+>>>>>>> e79b03e6091d64025696dfedd714e867eca3d73a
                                     </div>
                                 </div>
                                 <div class='dt-sc-hr-invisible'></div>	
@@ -250,7 +432,10 @@
                                 </div>
 
                             </div>
+<<<<<<< HEAD
                             
+=======
+>>>>>>> e79b03e6091d64025696dfedd714e867eca3d73a
                             <!-- High-School Course Category-->
                             <div class="container">  
                                 <div class='hr-title'>
@@ -259,6 +444,7 @@
                                         <span></span>
                                     </div>
                                 </div>
+<<<<<<< HEAD
 
                                 <c:forEach var="khoi" items="${listKhoi}">
     <c:if test="${khoi.ID_Khoi > 4}">
@@ -310,6 +496,38 @@
 
                             </div>
 
+=======
+                                <!--><!-- List from Database -->
+                                    <c:forEach var="listKhoi" items="${listKhoi}" varStatus="status">
+                                        <c:if test="${listKhoi.ID_Khoi > 4}">
+                                            <div class="column dt-sc-one-third first">
+                                            <!-- Course Starts -->
+                                            <article id="post-${listKhoi.getTenKhoi()}" class="dt-sc-course post-${listKhoi.getTenKhoi()} course type-course status-publish has-post-thumbnail hentry course-category-general post">
+
+                                                <div class="dt-sc-course-thumb">
+                                                    <a href="#" title="${listKhoi.getTenKhoi()}">
+                                                        <img src="${pageContext.request.contextPath}/img/avatar/avatarTeacher.jpg" alt="${listKhoi.getTenKhoi()}" style="width:420px; height:250px; object-fit: cover; border-radius: 5px;" />
+                                                    </a>
+                                                </div>
+                                                    <p class="dt-sc-course-meta">
+                                                    <a href="#" rel="tag" style="font-size: 20px; font-weight: bold; display: block; text-align: center">${listKhoi.getTenKhoi()}</a>
+                                                </p>
+                                                <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Toán:
+                                                    <a href="#" rel="tag" style="color: #007bff; text-decoration: none;"> ${listKhoi.getTenKhoi()}</a>
+                                                </p>
+                                                <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Văn:
+                                                    <a href="#" rel="tag" style="color: #007bff; text-decoration: none;"> ${listKhoi.getTenKhoi()}</a>
+                                                </p>
+                                                <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Các môn khác:
+                                                    <a href="#" rel="tag" style="color: #007bff; text-decoration: none;"> ${listKhoi.getTenKhoi()}</a>
+                                                </p>
+                                            </article>
+                                        </div>
+                                    </c:if>
+                                </c:forEach>
+                            
+                            </div>
+>>>>>>> e79b03e6091d64025696dfedd714e867eca3d73a
                             
                             <!-- Secondary-School Course Category-->
                             <div class="container">
@@ -321,6 +539,7 @@
                                 </div>
                                 <div class = "container" >
                                     <!-- List from Database -->
+<<<<<<< HEAD
                                     <c:forEach var="khoi" items="${listKhoi}">
     <c:if test="${khoi.ID_Khoi <= 4}">
         <div class="column dt-sc-one-fourth first">
@@ -367,6 +586,34 @@
         </div>
     </c:if>
 </c:forEach>
+=======
+                                    <c:forEach var="listKhoi" items="${listKhoi}" varStatus="status">
+                                        <c:if test="${listKhoi.ID_Khoi <= 4}">
+                                            <div class="column dt-sc-one-fourth first">
+                                                <!-- Course Starts -->
+                                                <article id="post-${listKhoi.getTenKhoi()}" class="dt-sc-course post-${listKhoi.getTenKhoi()} course type-course status-publish has-post-thumbnail hentry course-category-general post">
+                                                    <div class="dt-sc-course-thumb">
+                                                        <a href="#" title="${listKhoi.getTenKhoi()}">
+                                                            <img src="${pageContext.request.contextPath}/img/avatar/avatarTeacher.jpg" alt="${listKhoi.getTenKhoi()}" style="width:440px; height:250px; object-fit: cover; border-radius: 5px;" />
+                                                        </a>
+                                                    </div>
+                                                    <p class="dt-sc-course-meta">
+                                                        <a href="#" rel="tag" style="font-size: 20px; font-weight: bold; display: block; text-align: center">${listKhoi.getTenKhoi()}</a>
+                                                    </p>
+                                                    <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Toán:
+                                                            <a href="#" rel="tag" style="color: #007bff; text-decoration: none;"> ${listKhoi.getTenKhoi()}</a>
+                                                        </p>
+                                                    <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Văn:
+                                                            <a href="#" rel="tag" style="color: #007bff; text-decoration: none;"> ${listKhoi.getTenKhoi()}</a>
+                                                        </p>
+                                                    <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Các môn khác:
+                                                            <a href="#" rel="tag" style="color: #007bff; text-decoration: none;"> ${listKhoi.getTenKhoi()}</a>
+                                                    </p>
+                                                </article>
+                                            </div>
+                                        </c:if>
+                                    </c:forEach>
+>>>>>>> e79b03e6091d64025696dfedd714e867eca3d73a
                                 </div>
                             </div>
                                           
@@ -439,6 +686,7 @@
             jQuery(function() { 
                 _initLayerSlider( 
                         '#layerslider_1_5r4q8o8aqo3t', {sliderVersion: '6.11.2', type: 'fullwidth', responsiveUnder: 940, allowFullscreen: false, slideBGSize: 'auto', pauseOnHover: 'disabled', skin: 'noskin', globalBGColor: 'transparent', globalBGSize: 'cover', yourLogoStyle: 'left: 10px; top: 10px;', skinsPath: 'https://dtguru.wpengine.com/wp-content/plugins/LayerSlider/assets/static/layerslider/skins/'}); });
+<<<<<<< HEAD
             document.getElementById('regPhone').addEventListener('input', function(e) {
   this.value = this.value.replace(/[^0-9]/g, '');
 });
@@ -486,6 +734,9 @@ birthInput.addEventListener('input', function() {
 
 </script>
 
+=======
+        </script>
+>>>>>>> e79b03e6091d64025696dfedd714e867eca3d73a
 <script>
   const swiper = new Swiper('.swiper-container', {
     navigation: {
@@ -575,6 +826,10 @@ var ratings_mouseover_image=new Image();ratings_mouseover_image.src="${pageConte
 <script type="text/javascript" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.prettyPhoto9704.js?ver=6.7.1" id="jquery-prettyphoto-js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.ui.totop.min9704.js?ver=6.7.1" id="jquery-uitotop-js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/plugins/woocommerce/assets/js/jquery-cookie/jquery.cookie.min330a.js?ver=1.4.1" id="jquery-cookie-js"></script>
+<<<<<<< HEAD
+=======
+<script type="text/javascript" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/controlpanel9704.js?ver=6.7.1" id="guru-controlpanel-js"></script>
+>>>>>>> e79b03e6091d64025696dfedd714e867eca3d73a
 <script type="text/javascript" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.meanmenu9704.js?ver=6.7.1" id="jquery-meanmenu-js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/contact9704.js?ver=6.7.1" id="guru-contact-js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.donutchart9704.js?ver=6.7.1" id="jquery-donutchart-js"></script>

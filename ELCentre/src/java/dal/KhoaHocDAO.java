@@ -208,7 +208,7 @@ public class KhoaHocDAO {
 
         return rs > 0 ? khoaHoc : null;
     }
-
+    
     public static int getTotalCourses() {
         DBContext db = DBContext.getInstance();
         int total = 0;

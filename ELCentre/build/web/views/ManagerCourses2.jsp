@@ -163,7 +163,6 @@
      } catch (Exception e) {
          pageNumber = 1;
      }
-
      int offset = (pageNumber - 1) * pageSize;
      String sortName = request.getParameter("sortName");
 
@@ -306,6 +305,5 @@
 
 
         </div>
-
     </body>
 </html>
