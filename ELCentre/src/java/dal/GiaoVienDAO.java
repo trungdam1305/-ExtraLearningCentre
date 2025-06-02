@@ -8,6 +8,7 @@ package dal;
  *
  * @author wrx_Chur04
  */
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -162,6 +163,41 @@ public class GiaoVienDAO {
             
         }
         return tong ; 
+    }
+    
+    
+    public static boolean adminUpdateInformationOfTeacher(String sdt , String truong , BigDecimal luong , String ghichu , int id){
+        DBContext db = DBContext.getInstance() ; 
+        int rs = 0 ; 
+        try {
+            String sql = """
+                         UPDATE GiaoVien
+                         SET
+                        SDT = ?,
+                        TruongGiangDay = ?,
+                        Luong = ?,
+                        GhiChu = ?
+                         WHERE
+                         ID_GiaoVien = ?;
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1 , sdt);
+            statement.setString(2 , truong) ; 
+            statement.setBigDecimal(3, luong);
+            statement.setString(4, ghichu);
+            statement.setInt(5, id);
+            
+            rs = statement.executeUpdate() ; 
+        } catch (SQLException e ){
+            e.printStackTrace();
+            return false ; 
+        }
+        
+        if (rs == 0 ) {
+            return false ; 
+        } else {
+            return true ; 
+        }
     }
 
 }

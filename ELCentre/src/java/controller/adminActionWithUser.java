@@ -17,6 +17,8 @@ import dal.TaiKhoanChiTietDAO;
 import model.TaiKhoan;
 import dal.TaiKhoanDAO;
 import jakarta.servlet.http.HttpSession;
+import java.io.EOFException;
+import java.math.BigDecimal;
 import model.TaiKhoanChiTiet;
 
 /**
@@ -198,19 +200,21 @@ public class adminActionWithUser extends HttpServlet {
                     hocsinhs = HocSinhDAO.adminGetHocSinhByID(id);  // call method to get data from database 
                     if (hocsinhs.isEmpty()) {                       // if can not get data from database
                         request.setAttribute("message", "Không tìm thấy thông tin học sinh này.");
-                        request.getRequestDispatcher("/views/admin/adminReceiveStudentInfor.jsp").forward(request, response);   // redirect to adminReceiveStudentInfor.jsp
+                        request.getRequestDispatcher("/views/admin/adminUpdateStudentInfor.jsp").forward(request, response);   // redirect to adminReceiveStudentInfor.jsp
                     } else {
                         request.setAttribute("hocsinhs", hocsinhs);      //set object is hocsinhs for jsp can get this 
-                        request.getRequestDispatcher("/views/admin/adminReceiveStudentInfor.jsp").forward(request, response);    // redirect to adminReceiveStudentInfor.jsp
+                        request.setAttribute("type", type);  // set type to send to the jsp and continue send to the servlet
+                        request.getRequestDispatcher("/views/admin/adminUpdateStudentInfor.jsp").forward(request, response);    // redirect to adminReceiveStudentInfor.jsp
                     }
                 } else if (type.equalsIgnoreCase("PhuHuynh")) {     //if user is parent of student  
                     ArrayList<PhuHuynh> phuhuynhs = PhuHuynhDAO.adminGetPhuHuynhByID(id);       // call method to get data from database 
                     if (phuhuynhs.isEmpty()) {                                          // if can not get data from database
                         request.setAttribute("message", "Không tìm thấy thông tin phụ huyunh này.");
-                        request.getRequestDispatcher("/views/admin/adminReceiveParentInfor.jsp").forward(request, response);    // redirect to adminReceiveParentInfor.jsp
+                        request.getRequestDispatcher("/views/admin/adminUpdateParentInfor.jsp").forward(request, response);    // redirect to adminReceiveParentInfor.jsp
                     } else {
-                        request.setAttribute("phuhuynhs", phuhuynhs);             //set object is phuhuynhs for jsp can get this      
-                        request.getRequestDispatcher("/views/admin/adminReceiveParentInfor.jsp").forward(request, response);    // redirect to adminReceiveParentInfor.jsp
+                        request.setAttribute("phuhuynhs", phuhuynhs);             //set object is phuhuynhs for jsp can get this     
+                        request.setAttribute("type", type);  // set type to send to the jsp and continue send to the servlet
+                        request.getRequestDispatcher("/views/admin/adminUpdateParentInfor.jsp").forward(request, response);    // redirect to adminReceiveParentInfor.jsp
                     }   
                 }
                 break ; 
@@ -222,8 +226,171 @@ public class adminActionWithUser extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String type = request.getParameter("type") ; 
-        PrintWriter out = response.getWriter() ; 
+        switch(type) {
+            case "GiaoVien" : 
+                updateTeacher(request, response) ; 
+                break ; 
+                
+                
+            case "HocSinh" : 
+                updateStudent(request, response) ; 
+                break ; 
+                
+                
+            case "PhuHuynh" : 
+                updateParentOfStudent(request, response) ; 
+                break ; 
+        }
        
+    }
+    
+    
+    
+    private void updateTeacher(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+                String idtaikhoan = request.getParameter("idtaikhoan") ; 
+                String idgiaovien = request.getParameter("idgiaovien") ; 
+                String SDT = request.getParameter("sdt") ; 
+                String TruongGiangDay = request.getParameter("truong") ; 
+                String Luong = request.getParameter("luong") ; 
+                String GhiChu = request.getParameter("ghichu") ; 
+                HttpSession session = request.getSession() ; 
+                 
+
+                try {
+                    int ID_TaiKhoan = Integer.parseInt(idtaikhoan) ; 
+                    int ID_GiaoVien = Integer.parseInt(idgiaovien) ; 
+                    
+                    if ( SDT.length() != 10 ){
+                        throw new Exception("Số điện thoại phải dài 10 chữ số!") ; 
+                    }
+                    
+                    if (!SDT.startsWith("0") ){
+                        throw new Exception("Số điện thoại phải bắt đầu bằng số 0!") ; 
+                    }
+                    
+                    BigDecimal luongg = new BigDecimal(Luong) ; 
+                    
+                    if (luongg.compareTo(BigDecimal.ZERO) <= 0 ) {
+                        throw new Exception("Lương phải lớn hơn 0!") ; 
+                    }
+                    
+                    
+                    boolean s1 = GiaoVienDAO.adminUpdateInformationOfTeacher(SDT, TruongGiangDay, luongg, GhiChu, ID_GiaoVien) ; 
+                    boolean s2 = TaiKhoanDAO.adminUpdateInformationAccount(SDT, ID_TaiKhoan) ; 
+                    
+                    if (s1 == true && s2 == true ){
+                        request.setAttribute("message", "Thay đổi thành công!");
+                        ArrayList<TaiKhoanChiTiet> taikhoans =  TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName() ;   // create arraylist to save data 
+                        session.setAttribute("taikhoans", taikhoans);
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+                    } else {
+                        request.setAttribute("message", "Thất bại!");   
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+                    }
+                    
+                    
+                    
+                    
+                }catch (Exception e ){
+                    
+                    request.setAttribute("message", e.getMessage());
+                    request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+                }
+    }
+    
+    
+    private void updateStudent(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+                String idtaikhoan = request.getParameter("idtaikhoan") ; 
+                String idhocsinh = request.getParameter("idhocsinh") ; 
+                String DiaChi = request.getParameter("diachi") ; 
+                String TruongHoc = request.getParameter("truonghoc") ; 
+                String GhiChu = request.getParameter("ghichu") ; 
+                HttpSession session = request.getSession() ; 
+                 
+
+                try {
+                    int ID_TaiKhoan = Integer.parseInt(idtaikhoan) ; 
+                    int ID_HocSinh = Integer.parseInt(idhocsinh) ; 
+                    
+                    
+                    
+                    
+                    
+                    
+                    boolean s1 = HocSinhDAO.adminUpdateInformationOfStudent(DiaChi, TruongHoc, GhiChu,  ID_HocSinh) ; 
+                    
+                    
+                    if (s1 == true  ){
+                        request.setAttribute("message", "Thay đổi thành công!");
+                        ArrayList<TaiKhoanChiTiet> taikhoans =  TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName() ;   // create arraylist to save data 
+                        session.setAttribute("taikhoans", taikhoans);
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+                    } else {
+                        request.setAttribute("message", "Thất bại!");   
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+                    }
+                    
+                    
+                    
+                    
+                }catch (Exception e ){
+                    
+                    request.setAttribute("message", e.getMessage());
+                    request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+                }
+    }
+    
+    private void updateParentOfStudent(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+                String idtaikhoan = request.getParameter("idtaikhoan") ; 
+                String idphuhuynh = request.getParameter("idphuhuynh") ; 
+                String SDT = request.getParameter("sdt") ; 
+                String DiaChi = request.getParameter("diachi") ; 
+                
+                String GhiChu = request.getParameter("ghichu") ; 
+                HttpSession session = request.getSession() ; 
+                 
+
+                try {
+                    int ID_TaiKhoan = Integer.parseInt(idtaikhoan) ; 
+                    int ID_PhuHuynh = Integer.parseInt(idphuhuynh) ; 
+                    
+                    if ( SDT.length() != 10 ){
+                        throw new Exception("Số điện thoại phải dài 10 chữ số!") ; 
+                    }
+                    
+                    if (!SDT.startsWith("0") ){
+                        throw new Exception("Số điện thoại phải bắt đầu bằng số 0!") ; 
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                    boolean s1 = PhuHuynhDAO.adminUpdateInformationOfParent(SDT, DiaChi,  GhiChu, ID_PhuHuynh) ; 
+                    boolean s2 = TaiKhoanDAO.adminUpdateInformationAccount(SDT, ID_TaiKhoan) ; 
+                    
+                    if (s1 == true && s2 == true ){
+                        request.setAttribute("message", "Thay đổi thành công!");
+                        ArrayList<TaiKhoanChiTiet> taikhoans =  TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName() ;   // create arraylist to save data 
+                        session.setAttribute("taikhoans", taikhoans);
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+                    } else {
+                        request.setAttribute("message", "Thất bại!");   
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+                    }
+                    
+                    
+                    
+                    
+                }catch (Exception e ){
+                    
+                    request.setAttribute("message", e.getMessage());
+                    request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+                }
     }
 
     @Override

@@ -5,6 +5,7 @@ package dal;
  *
  * @author wrx_Chur04
  */
+import java.math.BigDecimal;
 import java.sql.PreparedStatement ;
 import java.sql.ResultSet ;
 import java.sql.SQLException ; 
@@ -114,6 +115,36 @@ public class TaiKhoanDAO {
              
         }
         if (rs == 0 ){
+            return false ; 
+        } else {
+            return true ; 
+        }
+    }
+    
+    public static boolean adminUpdateInformationAccount(String sdt ,  int id){
+        DBContext db = DBContext.getInstance() ; 
+        int rs = 0 ; 
+        try {
+            String sql = """
+                         UPDATE TaiKhoan
+                         SET
+                        SoDienThoai = ?
+                        
+                         WHERE
+                         ID_TaiKhoan = ?;
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1 , sdt);
+            
+            statement.setInt(2, id);
+            
+            rs = statement.executeUpdate() ; 
+        } catch (SQLException e ){
+            e.printStackTrace();
+            return false ; 
+        }
+        
+        if (rs == 0 ) {
             return false ; 
         } else {
             return true ; 

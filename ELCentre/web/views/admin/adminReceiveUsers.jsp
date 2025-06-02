@@ -111,7 +111,7 @@
                 <table id="userTable">
                     <thead>
                         <tr>
-                            
+
                             <th>Email</th>
                             <th>Họ và Tên</th>
                             <th>Vai Trò</th>
@@ -123,7 +123,7 @@
                     <tbody>
                         <c:forEach var="tk" items="${sessionScope.taikhoans}">
                             <tr>
-                               
+
                                 <td>${tk.email}</td>
                                 <td>${tk.getHoTen()}</td>
                                 <td>${tk.userType}</td>
@@ -149,10 +149,18 @@
             </c:when>
             <c:otherwise>
                 <div class="no-data">
-                    <p>${message != null ? message : 'Không có dữ liệu tài khoản để hiển thị.'}</p>
+
+                    <c:if test="${empty message}">
+                        <p>Không có dữ liệu tài khoản để hiển thị.</p>
+                    </c:if>
                 </div>
             </c:otherwise>
+
         </c:choose>
+
+        <c:if test="${not empty message}">
+            <p style="color: red;">${message}</p>
+        </c:if>
 
         <div id="pagination" style="text-align: center; margin-top: 15px;"></div>
 
@@ -160,6 +168,6 @@
             <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
         </div>
 
-       
+
     </body>
 </html>

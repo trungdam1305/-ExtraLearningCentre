@@ -326,7 +326,7 @@
                         String ngayHienTai = today.toString(); 
                       ArrayList<LichHoc> lichHocList = (ArrayList) LichHocDAO.adminGetAllLichHoc(ngayHienTai);
                       request.setAttribute("lichHocList", lichHocList);
-                    %>
+                    %>  
                     <c:choose>
                         <c:when test="${not empty lichHocList}">
                             <table>
