@@ -53,6 +53,9 @@ public class KhoaHoc {
     public KhoaHoc() {
     }
 
+    
+
+    
     public Integer getID_KhoaHoc() { return ID_KhoaHoc; }
     public void setID_KhoaHoc(Integer ID_KhoaHoc) { this.ID_KhoaHoc = ID_KhoaHoc; }
 

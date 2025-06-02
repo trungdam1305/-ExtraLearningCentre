@@ -111,8 +111,9 @@
                 <table id="userTable">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            
                             <th>Email</th>
+                            <th>Họ và Tên</th>
                             <th>Vai Trò</th>
                             <th>Số điện thoại</th>
                             <th>Trạng thái</th>
@@ -122,8 +123,9 @@
                     <tbody>
                         <c:forEach var="tk" items="${sessionScope.taikhoans}">
                             <tr>
-                                <td>${tk.ID_TaiKhoan}</td>
+                               
                                 <td>${tk.email}</td>
+                                <td>${tk.getHoTen()}</td>
                                 <td>${tk.userType}</td>
                                 <td>${tk.soDienThoai}</td>
                                 <td>${tk.trangThai}</td>
@@ -158,6 +160,6 @@
             <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
         </div>
 
-        
+       
     </body>
 </html>

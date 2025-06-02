@@ -46,6 +46,7 @@ public class GiaoVien {
         this.GhiChu = GhiChu;
         this.TrangThai = TrangThai;
         this.NgayTao = NgayTao;
+    
     }
 
     public String getAvatar() {
@@ -56,6 +57,8 @@ public class GiaoVien {
         this.Avatar = Avatar;
     }
     
+    
+
     
     public Integer getID_GiaoVien() { return ID_GiaoVien; }
     public void setID_GiaoVien(Integer ID_GiaoVien) { this.ID_GiaoVien = ID_GiaoVien; }
@@ -86,4 +89,8 @@ public class GiaoVien {
 
     public LocalDateTime getNgayTao() { return NgayTao; }
     public void setNgayTao(LocalDateTime NgayTao) { this.NgayTao = NgayTao; }
+
+    
+    
+    
 }

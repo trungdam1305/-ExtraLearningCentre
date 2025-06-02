@@ -16,14 +16,16 @@ import model.LichHoc;
 
 public class LichHocDAO {
 
-    public static ArrayList<LichHoc> adminGetAllLichHoc() {
+    public static ArrayList<LichHoc> adminGetAllLichHoc(String ngayHienTai) {
         ArrayList<LichHoc> lichhocs = new ArrayList<LichHoc>();
         DBContext db = DBContext.getInstance();
         try {
             String sql = """
                           select * from LichHoc
+                         where NgayHoc >= ? 
                           """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setString(1, ngayHienTai);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {

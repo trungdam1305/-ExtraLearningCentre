@@ -89,7 +89,7 @@
 
     </head>
 <body>
-    <h2>All Teachers</h2>
+    <h2>Thông tin giáo viên</h2>
 
     <c:choose>
         <c:when test = "${not empty giaoviens}">

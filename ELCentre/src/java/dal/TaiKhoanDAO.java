@@ -18,28 +18,29 @@ public class TaiKhoanDAO {
         
         try {
             String sql  = """
-                          select * from TaiKhoan
-                          Where UserType != 'Staff' AND UserType != 'Admin'
+                          select * from TaiKhoan 
+                          WHERE UserType != 'Staff' AND UserType != 'Admin'
                           """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
             ResultSet rs = statement.executeQuery() ; 
             
             while (rs.next()) {
                 TaiKhoan tk = new TaiKhoan(
-                        rs.getInt("ID_TaiKhoan") , 
+                        rs.getInt("ID_TaiKhoan") ,  
                         rs.getString("Email") , 
                         rs.getString("MatKhau") , 
                         rs.getInt("ID_VaiTro") , 
                         rs.getString("UserType") , 
                         rs.getString("SoDienThoai") , 
                         rs.getString("TrangThai") , 
-                        rs.getTimestamp("NgayTao").toLocalDateTime()
+                        rs.getTimestamp("NgayTao").toLocalDateTime() 
+                        
                 
                 ) ; 
                 taikhoans.add(tk) ; 
             }
         } catch (SQLException e ) {
-            //Exception ignored
+            
             return null ; 
         }
         if (taikhoans.isEmpty()){

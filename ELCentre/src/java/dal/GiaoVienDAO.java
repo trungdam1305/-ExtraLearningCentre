@@ -41,7 +41,8 @@ public class GiaoVienDAO {
                         rs.getBigDecimal("Luong"),
                         rs.getString("GhiChu"),
                         rs.getString("TrangThai"),
-                        rs.getTimestamp("NgayTao").toLocalDateTime()
+                        rs.getTimestamp("NgayTao").toLocalDateTime() , 
+                        rs.getString("Avatar")
                 ) ; 
                 giaoviens.add(giaovien) ; 
             }
