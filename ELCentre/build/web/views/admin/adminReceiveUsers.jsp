@@ -123,6 +123,7 @@
                     <tbody>
                         <c:forEach var="tk" items="${sessionScope.taikhoans}">
                             <tr>
+
                                
                                 <td>${tk.email}</td>
                                 <td>${tk.getHoTen()}</td>
@@ -160,6 +161,5 @@
             <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
         </div>
 
-       
     </body>
 </html>

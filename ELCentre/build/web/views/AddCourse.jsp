@@ -125,9 +125,9 @@
             <label>Ghi chú:</label>
             <input type="text" name="GhiChu" /><br/>
 
+
             <label>ID khối học: </label>
             <input type="text" name="ID_Khoi" placeholder="Từ 1 đến 7 tương ứng với lớp 6-12"/><br/>
-
 
             <button type="submit">Thêm</button>
         </form>
@@ -139,6 +139,7 @@
         <c:if test="${not empty suc}">
             <p style="color: green;">${suc}</p>
         </c:if>
+
 
     </body> 
 </html>

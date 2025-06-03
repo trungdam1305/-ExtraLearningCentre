@@ -11,6 +11,7 @@
         <title>Danh sách khóa học</title>
     </head>
 
+
     <style>
         .pagination a {
             display: inline-block;
@@ -121,6 +122,7 @@
                 <table>
                     <tr>
                         <td>Sắp xếp theo: </td>
+
                         <td>
                             <select name="sortName" onchange="document.getElementById('filterForm').submit();">
                                 <option value="" ${param.sortName == null || param.sortName.isEmpty() ? "selected" : ""}>-- Mặc định --</option>
@@ -171,6 +173,7 @@
 
      if (sortName != null && !sortName.isEmpty()) {
          if ("ASCTrang".equalsIgnoreCase(sortName)) {
+
              // "Đang hoạt động"
              khoaHocList = KhoaHocDAO.getCoursesByTrangThai("active", offset, pageSize);
              totalCourses = KhoaHocDAO.getTotalCoursesByTrangThai("active");
@@ -199,7 +202,9 @@
      request.setAttribute("pageNumber", pageNumber);
      request.setAttribute("totalPages", totalPages);
      request.setAttribute("sortName", sortName);
+
             %>
+
 
 
 
@@ -218,7 +223,6 @@
 
 
             <!-- Danh sách khóa học -->
-
             <p>Tổng số khóa học: <%= totalCourses %>.   &nbsp;&nbsp;      &nbsp; Tổng số trang: <%= totalPages %>.</p>
             <p></p>
 
@@ -233,6 +237,7 @@
                         <th>Ghi chú</th>
                         <th>Trạng thái</th>
                         <th>Ngày tạo</th>
+
                         <th>ID Khối</th> <!-- Thêm cột mới -->
                         <th>Action</th>
                     </tr>
@@ -245,6 +250,7 @@
                                     <td>${course.getID_KhoaHoc()}</td>
                                     <td>${course.getTenKhoaHoc()}</td>
                                     <td>${course.getMoTa()}</td>
+
                                     <td>${course.thoiGianBatDauFormatted}</td>
                                     <td>${course.thoiGianKetThucFormatted}</td>
 
@@ -256,6 +262,7 @@
                                         <button type="button" onclick="return confirmDeleteAndRedirect('${pageContext.request.contextPath}/ManagerCourse?action=deleteCourse&ID_KhoaHoc=${course.ID_KhoaHoc}')">DELETE</button>
                                         <button onclick="location.href = '${pageContext.request.contextPath}/ManagerCourse?action=ViewCourse&ID_Khoi=${course.ID_Khoi}'">View</button>
                                         <button onclick="location.href = '${pageContext.request.contextPath}/ManagerCourse?action=UpdateCourse&ID_KhoaHoc=${course.ID_KhoaHoc}'">Update</button>
+
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -266,6 +273,7 @@
                                     <td>${course.getID_KhoaHoc()}</td>
                                     <td>${course.getTenKhoaHoc()}</td>
                                     <td>${course.getMoTa()}</td>
+
                                     <td>${course.thoiGianBatDauFormatted}</td>
                                     <td>${course.thoiGianKetThucFormatted}</td>
 
