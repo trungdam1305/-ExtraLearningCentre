@@ -1,47 +1,67 @@
+
 package dal;
 
-/**
- *
- * @author wrx_Chur04
- */
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import model.HocSinh;
+import java.sql.Connection;
+import java.sql.PreparedStatement ;
+import java.sql.ResultSet ;
+import java.sql.SQLException ;
+import java.util.ArrayList ; 
+import model.HocSinh ; 
+import model.TaiKhoan;
 
 public class HocSinhDAO {
-
-    public static ArrayList<HocSinh> adminGetAllHocSinh() {
-        DBContext db = DBContext.getInstance();
-        ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>();
+    public static ArrayList<HocSinh> adminGetAllHocSinh(){
+        DBContext db = DBContext.getInstance() ; 
+        ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>() ; 
         String sql = """
                          select * from HocSinh 
-                         """;
-        try (PreparedStatement statement = db.getConnection().prepareStatement(sql); ResultSet rs = statement.executeQuery()) {
+                         """ ; 
+            try (PreparedStatement statement = db.getConnection().prepareStatement(sql);
+                 ResultSet rs = statement.executeQuery()) {
 
-            while (rs.next()) {
-                HocSinh hocsinh = new HocSinh(
-                        rs.getInt("ID_HocSinh"),
-                        rs.getInt("ID_TaiKhoan"),
-                        rs.getString("HoTen"),
-                        rs.getDate("NgaySinh").toLocalDate(),
-                        rs.getString("GioiTinh"),
-                        rs.getString("DiaChi"),
-                        rs.getString("SDT_PhuHuynh"),
-                        rs.getString("TruongHoc"),
-                        rs.getString("GhiChu"),
-                        rs.getString("TrangThai"),
-                        rs.getTimestamp("NgayTao").toLocalDateTime()
-                );
-                hocsinhs.add(hocsinh);
+                while (rs.next()) {
+                    HocSinh hocsinh = new HocSinh(
+                            rs.getInt("ID_HocSinh"), 
+                            rs.getInt("ID_TaiKhoan") , 
+                            rs.getString("HoTen") , 
+                            rs.getDate("NgaySinh").toLocalDate(),
+                            rs.getString("GioiTinh") , 
+                            rs.getString("DiaChi") , 
+                            rs.getString("SDT_PhuHuynh") , 
+                            rs.getString("TruongHoc") , 
+                            rs.getString("GhiChu") , 
+                            rs.getString("TrangThai") , 
+                            rs.getTimestamp("NgayTao").toLocalDateTime()
+                    ) ; 
+                    hocsinhs.add(hocsinh) ; 
+                }
             }
-        } catch (SQLException e) {
+        catch  (SQLException e ) {
             // Exception ignored 
         }
-        return hocsinhs;
+            return hocsinhs ; 
     }
-
+    
+    public static int getTotalHocSinh() {
+        DBContext db = DBContext.getInstance();
+        int total = 0;
+        try {
+            String sql = """
+            SELECT COUNT(*) FROM HocSinh
+        """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+            rs.close();
+            statement.close();
+        } catch (Exception e) {
+            return 0; // hoặc có thể trả về -1 để phân biệt có lỗi
+        }
+        return total;
+    }
+    
     public static ArrayList<HocSinh> adminGetHocSinhByID(String id) {
         DBContext db = DBContext.getInstance();
         ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>();
@@ -150,27 +170,67 @@ public class HocSinhDAO {
         return tong;
     }
     
-    public static int getTotalHocSinh() {
+    public void insertHocSinh(HocSinh hs) throws SQLException {
         DBContext db = DBContext.getInstance();
-        int total = 0;
-        try {
-            String sql = """
-            SELECT COUNT(*) FROM HocSinh
-        """;
-            PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                total = rs.getInt(1);
+        String sql = """
+                     INSERT INTO HocSinh (ID_TaiKhoan, HoTen, NgaySinh, GioiTinh, DiaChi, SDT_PhuHuynh, TruongHoc, GhiChu, TrangThai, NgayTao)
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                     """;
+        try (PreparedStatement statement = db.getConnection().prepareStatement(sql) ) {
+            statement.setInt(1, hs.getID_TaiKhoan());
+            statement.setString(2, hs.getHoTen());
+        
+            if (hs.getNgaySinh() != null) {
+                statement.setDate(3, java.sql.Date.valueOf(hs.getNgaySinh()));
+            } else {
+                statement.setNull(3, java.sql.Types.DATE);
             }
-            rs.close();
-            statement.close();
-        } catch (Exception e) {
-            return 0; // hoặc có thể trả về -1 để phân biệt có lỗi
+
+            if (hs.getGioiTinh() != null) {
+                statement.setString(4, hs.getGioiTinh());
+            } else {
+                statement.setNull(4, java.sql.Types.VARCHAR);
+            }
+
+            if (hs.getDiaChi() != null) {
+                statement.setString(5, hs.getDiaChi());
+            } else {
+                statement.setNull(5, java.sql.Types.VARCHAR);
+            }
+
+            if (hs.getSDT_PhuHuynh() != null) {
+                statement.setString(6, hs.getSDT_PhuHuynh());
+            } else {
+                statement.setNull(6, java.sql.Types.VARCHAR);
+            }
+
+            if (hs.getTruongHoc() != null) {
+                statement.setString(7, hs.getTruongHoc());
+            } else {
+                statement.setNull(7, java.sql.Types.VARCHAR);
+            }
+
+            if (hs.getGhiChu() != null) {
+                statement.setString(8, hs.getGhiChu());
+            } else {
+                statement.setNull(8, java.sql.Types.VARCHAR);
+            }
+
+            statement.setString(9, hs.getTrangThai());
+
+            if (hs.getNgayTao() != null) {
+                statement.setTimestamp(10, java.sql.Timestamp.valueOf(hs.getNgayTao()));
+            } else {
+                statement.setNull(10, java.sql.Types.TIMESTAMP);
+            }
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return total;
     }
     
-   
     
     public static void main(String[] args) {
         int a = getTotalHocSinh();
