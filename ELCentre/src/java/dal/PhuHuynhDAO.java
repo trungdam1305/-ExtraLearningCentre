@@ -5,6 +5,7 @@ package dal;
  *
  * @author wrx_Chur04
  */
+import java.math.BigDecimal;
 import java.sql.SQLException ; 
 import java.util.ArrayList ; 
 import java.sql.ResultSet ; 
@@ -93,6 +94,41 @@ public class PhuHuynhDAO {
              
         }
         if (rs == 0 ){
+            return false ; 
+        } else {
+            return true ; 
+        }
+    }
+    
+    
+    public static boolean adminUpdateInformationOfParent(String sdt , String diachi  , String ghichu , int id){
+        DBContext db = DBContext.getInstance() ; 
+        int rs = 0 ; 
+        try {
+            String sql = """
+                         UPDATE PhuHuynh
+                         SET
+                        SDT = ?,
+                        DiaChi = ?,
+                        
+                        GhiChu = ?
+                         WHERE
+                         ID_PhuHuynh = ?;
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1 , sdt);
+            statement.setString(2 , diachi) ; 
+            
+            statement.setString(3, ghichu);
+            statement.setInt(4, id);
+            
+            rs = statement.executeUpdate() ; 
+        } catch (SQLException e ){
+            e.printStackTrace();
+            return false ; 
+        }
+        
+        if (rs == 0 ) {
             return false ; 
         } else {
             return true ; 
