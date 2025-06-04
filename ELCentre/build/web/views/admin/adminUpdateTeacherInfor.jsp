@@ -11,6 +11,88 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Update Teacher Information</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f6f8;
+                padding: 20px;
+            }
+
+            h2 {
+                color: #1F4E79;
+                margin-bottom: 20px;
+            }
+
+            .table-container {
+                background: #ffffff;
+                border-radius: 8px;
+                padding: 20px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                overflow-x: auto;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            th, td {
+                padding: 12px 15px;
+                border: 1px solid #ccc;
+                text-align: center;
+            }
+
+            th {
+                background-color: #1F4E79;
+                color: white;
+            }
+
+            input[type="text"], input[type="number"], input[type="email"] {
+                width: 100%;
+                padding: 8px;
+                box-sizing: border-box;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            button {
+                background-color: #1F4E79;
+                color: white;
+                padding: 10px 20px;
+                font-size: 16px;
+                border: none;
+                cursor: pointer;
+                margin-top: 20px;
+                border-radius: 5px;
+            }
+
+            button:hover {
+                background-color: #163e5f;
+            }
+
+            .back-button {
+                margin-top: 20px;
+            }
+
+            .back-button a {
+                text-decoration: none;
+                color: #1F4E79;
+                font-weight: bold;
+            }
+
+            .back-button a:hover {
+                text-decoration: underline;
+            }
+
+            .no-reports-message {
+                padding: 20px;
+                background-color: #fff0f0;
+                border: 1px solid #e0b4b4;
+                color: #a94442;
+                border-radius: 5px;
+            }
+        </style>
+
     </head>
     <body>
         <h2>Thông tin giáo viên</h2>
@@ -27,7 +109,7 @@
                                     <th>Thông tin</th>
                                         <c:forEach var="giaovien" items="${giaoviens}">
 
-                                        <th><input type="text" name="id" value="${giaovien.getID_GiaoVien()}" readonly /></th>
+                                        <th><input type="text" name="idgiaovien" value="${giaovien.getID_GiaoVien()}" readonly /></th>
                                         </c:forEach>
                                 </tr>
                             </thead>
@@ -36,7 +118,7 @@
                             <tr>
                                 <td>ID_TàiKhoản</td>
                                 <c:forEach var="giaovien" items="${giaoviens}">
-                                    <td><input type="text" value="${giaovien.getID_TaiKhoan()}" readonly /></td>
+                                    <td><input type="text" name="idtaikhoan" value="${giaovien.getID_TaiKhoan()}" readonly /></td>
 
                                 </c:forEach>
                             </tr>
@@ -57,21 +139,21 @@
                                 <td>SĐT</td>
                                 <c:forEach var="giaovien" items="${giaoviens}">
 
-                                    <td><input type="text" name="sdt" value="${giaovien.getSDT()}" /></td>
+                                    <td><input type="number" name="sdt" value="${giaovien.getSDT()}" required=""/></td>
 
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>Trường giảng dạy</td>
                                 <c:forEach var="giaovien" items="${giaoviens}">
-                                    <td><input type="text" name="truong" value="${giaovien.getTruongGiangDay()}" /></td>
+                                    <td><input type="text" name="truong" value="${giaovien.getTruongGiangDay()}" required="" /></td>
 
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>Lương</td>
                                 <c:forEach var="giaovien" items="${giaoviens}">
-                                    <td><input type="number" name="luong" value="${giaovien.getLuong()}" /></td>
+                                    <td><input type="number" name="luong" value="${giaovien.getLuong()}"  required=""/></td>
 
                                 </c:forEach>
                             </tr>

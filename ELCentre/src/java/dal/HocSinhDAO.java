@@ -175,5 +175,40 @@ public class HocSinhDAO {
     public static void main(String[] args) {
         int a = getTotalHocSinh();
         System.out.println(a);
+
+    }
+
+    public static boolean adminUpdateInformationOfStudent( String diachi  , String truonghoc , String ghichu , int id){
+        DBContext db = DBContext.getInstance() ; 
+        int rs = 0 ; 
+        try {
+            String sql = """
+                         UPDATE HocSinh
+                         SET
+                        
+                        DiaChi = ?,
+                        TruongHoc = ? , 
+                        GhiChu = ?
+                         WHERE
+                         ID_HocSinh = ?;
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1 , diachi);
+            statement.setString(2 , truonghoc) ; 
+            
+            statement.setString(3, ghichu);
+            statement.setInt(4, id);
+            
+            rs = statement.executeUpdate() ; 
+        } catch (SQLException e ){
+            e.printStackTrace();
+            return false ; 
+        }
+        
+        if (rs == 0 ) {
+            return false ; 
+        } else {
+            return true ; 
+        }
     }
 }
