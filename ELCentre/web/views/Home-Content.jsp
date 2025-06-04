@@ -7,37 +7,37 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <!-- Slider -->
-    <div class="banner">
+        <!-- Slider -->
+        <div class="banner">
 
-  <div id="layerslider_1_5r4q8o8aqo3t" class="ls-wp-container fitvidsignore" style="width:1000px;height:630px;margin:0 auto;margin-bottom: 0px; position: relative;">
-    <c:forEach var="slide" items="${sliders}">
-      <div class="ls-slide" data-ls="duration:5000;transition2d:1,4;timeshift:-1000;">
-        <img 
-          src="${pageContext.request.contextPath}/img/slider/${slide.image}" 
-          class="ls-bg" 
-          alt="${slide.title}" 
-          decoding="async" 
-          fetchpriority="high"
-        />
-        <p 
-          class="ls-l" 
-          style="position: absolute;top: 0px;left: 10px;margin: 0;font-weight: bold;text-transform: uppercase;font-size: 35px;color: #355c7d;pointer-events: none;white-space: nowrap;
-          ">
-          ${slide.title}
-        </p>
+      <div id="layerslider_1_5r4q8o8aqo3t" class="ls-wp-container fitvidsignore" style="width:1000px;height:630px;margin:0 auto;margin-bottom: 0px; position: relative;">
+        <c:forEach var="slide" items="${sliders}">
+          <div class="ls-slide" data-ls="duration:5000;transition2d:1,4;timeshift:-1000;">
+            <img 
+              src="${pageContext.request.contextPath}/img/slider/${slide.image}" 
+              class="ls-bg" 
+              alt="${slide.title}" 
+              decoding="async" 
+              fetchpriority="high"
+            />
+            <p 
+              class="ls-l" 
+              style="position: absolute;top: 0px;left: 10px;margin: 0;font-weight: bold;text-transform: uppercase;font-size: 35px;color: #355c7d;pointer-events: none;white-space: nowrap;
+              ">
+              ${slide.title}
+            </p>
 
-        <a href="${slide.backLink}" class="ls-l" 
-           style="
-             position: absolute;top: 5px;left: 840px;padding: 10px 20px;background: rgba(0,0,0,0.5);color: #fff;text-decoration: none;font-weight: bold;white-space: nowrap;
-           ">
-          Xem chi tiết
-        </a>
+            <a href="${slide.backLink}" class="ls-l" 
+               style="
+                 position: absolute;top: 5px;left: 840px;padding: 10px 20px;background: rgba(0,0,0,0.5);color: #fff;text-decoration: none;font-weight: bold;white-space: nowrap;
+               ">
+              Xem chi tiết
+            </a>
+          </div>
+        </c:forEach>
+
       </div>
-    </c:forEach>
-    
-  </div>
-</div>
+    </div>
           
 	  <!-- Main Content -->
     <div class="content">
@@ -57,8 +57,7 @@
                                     <input type="email" name="regEmail" id="regEmail" required placeholder="Nhập Email" />
 
                                     <input type="text" name="regPhone" id="regPhone" required placeholder="Nhập Số Điện Thoại" maxlength="10" />
-                                    <input   type="text" name="regBirth" id="regBirth" required placeholder="Nhập Năm Sinh" maxlength="4" pattern="19[5-9][0-9]|20[0-2][0-9]" title="Nhập năm từ 1950 đến năm hiện tại (ví dụ 1950 - 2025)"
-/>
+                                    <input   type="text" name="regBirth" id="regBirth" required placeholder="Nhập Năm Sinh" maxlength="4" pattern="19[5-9][0-9]|20[0-2][0-9]" title="Nhập năm từ 1950 đến năm hiện tại (ví dụ 1950 - 2025)"/>
                                     <input type="submit" name="btnSubmit" class="dt-sc-button small" value="Đăng Ký" />
                                   </form>
 
@@ -139,7 +138,6 @@
                                     </div>
                                 </div>     
                                 <!-- Display Teacher by Name and Link to their profile -->
-
                                 <c:forEach var="gv" items="${listSpecialGV}" varStatus="status">
                                     <div class="column dt-sc-one-fifth ${status.first ? 'first' : ''}">
                                         <div class="dt-sc-team">
@@ -159,9 +157,6 @@
                                         </div>
                                     </div>
                                 </c:forEach>
-
-
-           
                                 <div class='dt-sc-hr-invisible-medium  '>
                                 </div>	
                             </div>
@@ -216,7 +211,6 @@
                         <div class="fullwidth-bg">	
                             <div class="container">
                                 <div class='dt-sc-hr-invisible-medium  '>
-
                                 </div>
                                 <div class='hr-title'>
                                     <h2 style= "font-family:'Open Sans'" >Các lớp học nổi bật</h2>
@@ -267,53 +261,47 @@
                                         <span></span>
                                     </div>
                                 </div>
-
                                 <c:forEach var="khoi" items="${listKhoi}">
-    <c:if test="${khoi.ID_Khoi > 4}">
-        <div class="column dt-sc-one-third first">
-            <article id="post-${khoi.tenKhoi}" class="dt-sc-course post-${khoi.tenKhoi} course type-course">
-
-                <div class="dt-sc-course-thumb">
-                    <a href="#" title="${khoi.tenKhoi}">
-                        <img src="${pageContext.request.contextPath}/img/avatar/avatarTeacher.jpg" alt="${khoi.tenKhoi}" style="width:420px; height:250px; object-fit: cover; border-radius: 5px;" />
-                    </a>
-                </div>
-
-                <p class="dt-sc-course-meta" style="font-weight: bold; font-size: 20px; text-align: center;">${khoi.tenKhoi}</p>
-
-                <c:set var="toanSoLop" value="0" />
-                <c:set var="vanSoLop" value="0" />
-                <c:set var="khacSoLop" value="0" />
-
-                <c:forEach var="lh" items="${listLopHoc}">
-                    <c:if test="${lh.idKhoi == khoi.ID_Khoi}">
-                        <c:choose>
-                            <c:when test="${lh.nhomMonHoc == 'Toán'}">
-                                <c:set var="toanSoLop" value="${lh.tongSoLopHoc}" />
-                            </c:when>
-                            <c:when test="${lh.nhomMonHoc == 'Văn'}">
-                                <c:set var="vanSoLop" value="${lh.tongSoLopHoc}" />
-                            </c:when>
-                            <c:otherwise>
-                                <c:set var="khacSoLop" value="${lh.tongSoLopHoc}" />
-                            </c:otherwise>
-                        </c:choose>
-                    </c:if>
-                </c:forEach>
-
-                <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Toán:
-                    <a href="#" rel="tag" style="color: #007bff; text-decoration: none; float: right; margin-right: 50px">${toanSoLop} Lớp Học</a>
-                </p>
-                <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Văn:
-                    <a href="#" rel="tag" style="color: #007bff; text-decoration: none; float: right; margin-right: 50px">${vanSoLop} Lớp Học</a>
-                </p>
-                <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Các môn khác:
-                    <a href="#" rel="tag" style="color: #007bff; text-decoration: none; float: right; margin-right: 50px">${khacSoLop} Lớp Học</a>
-                </p>
-            </article>
-        </div>
-    </c:if>
-</c:forEach>
+                                            <c:if test="${khoi.ID_Khoi > 4}">
+                                                <div class="column dt-sc-one-third first">
+                                                    <article id="post-${khoi.tenKhoi}" class="dt-sc-course post-${khoi.tenKhoi} course type-course">
+                                                        <div class="dt-sc-course-thumb">
+                                                            <a href="#" title="${khoi.tenKhoi}">
+                                                                <img src="${pageContext.request.contextPath}/img/avatar/avatarTeacher.jpg" alt="${khoi.tenKhoi}" style="width:420px; height:250px; object-fit: cover; border-radius: 5px;" />
+                                                            </a>
+                                                        </div>
+                                                        <p class="dt-sc-course-meta" style="font-weight: bold; font-size: 20px; text-align: center;">${khoi.tenKhoi}</p>
+                                                        <c:set var="toanSoLop" value="0" />
+                                                        <c:set var="vanSoLop" value="0" />
+                                                        <c:set var="khacSoLop" value="0" />
+                                            <c:forEach var="lh" items="${listLopHoc}">
+                                                <c:if test="${lh.idKhoi == khoi.ID_Khoi}">
+                                                    <c:choose>
+                                                        <c:when test="${lh.nhomMonHoc == 'Toán'}">
+                                                            <c:set var="toanSoLop" value="${lh.tongSoLopHoc}" />
+                                                        </c:when>
+                                                        <c:when test="${lh.nhomMonHoc == 'Văn'}">
+                                                            <c:set var="vanSoLop" value="${lh.tongSoLopHoc}" />
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <c:set var="khacSoLop" value="${lh.tongSoLopHoc}" />
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:if>
+                                            </c:forEach>
+                                                    <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Toán:
+                                                        <a href="#" rel="tag" style="color: #007bff; text-decoration: none; float: right; margin-right: 50px">${toanSoLop} Lớp Học</a>
+                                                    </p>
+                                                    <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Văn:
+                                                        <a href="#" rel="tag" style="color: #007bff; text-decoration: none; float: right; margin-right: 50px">${vanSoLop} Lớp Học</a>
+                                                    </p>
+                                                    <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Các môn khác:
+                                                        <a href="#" rel="tag" style="color: #007bff; text-decoration: none; float: right; margin-right: 50px">${khacSoLop} Lớp Học</a>
+                                                    </p>
+                                                </article>
+                                            </div>
+                                        </c:if>
+                                </c:forEach>
 
 
                             </div>
@@ -329,53 +317,47 @@
                                 </div>
                                 <div class = "container" >
                                     <!-- List from Database -->
-
                                     <c:forEach var="khoi" items="${listKhoi}">
-    <c:if test="${khoi.ID_Khoi <= 4}">
-        <div class="column dt-sc-one-fourth first">
-            <article id="post-${khoi.tenKhoi}" class="dt-sc-course post-${khoi.tenKhoi} course type-course">
-
-                <div class="dt-sc-course-thumb">
-                    <a href="#" title="${khoi.tenKhoi}">
-                        <img src="${pageContext.request.contextPath}/img/avatar/avatarTeacher.jpg" alt="${khoi.tenKhoi}" style="width:420px; height:250px; object-fit: cover; border-radius: 5px;" />
-                    </a>
-                </div>
-
-                <p class="dt-sc-course-meta" style="font-weight: bold; font-size: 20px; text-align: center;">${khoi.tenKhoi}</p>
-
-                <c:set var="toanSoLop" value="0" />
-                <c:set var="vanSoLop" value="0" />
-                <c:set var="khacSoLop" value="0" />
-
-                <c:forEach var="lh" items="${listLopHoc}">
-                    <c:if test="${lh.idKhoi == khoi.ID_Khoi}">
-                        <c:choose>
-                            <c:when test="${lh.nhomMonHoc == 'Toán'}">
-                                <c:set var="toanSoLop" value="${lh.tongSoLopHoc}" />
-                            </c:when>
-                            <c:when test="${lh.nhomMonHoc == 'Văn'}">
-                                <c:set var="vanSoLop" value="${lh.tongSoLopHoc}" />
-                            </c:when>
-                            <c:otherwise>
-                                <c:set var="khacSoLop" value="${lh.tongSoLopHoc}" />
-                            </c:otherwise>
-                        </c:choose>
-                    </c:if>
-                </c:forEach>
-
-                <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Toán:
-                    <a href="#" rel="tag" style="color: #007bff; text-decoration: none; float: right; margin-right: 30px">${toanSoLop} Lớp Học</a>
-                </p>
-                <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Văn:
-                    <a href="#" rel="tag" style="color: #007bff; text-decoration: none; float: right; margin-right: 30px">${vanSoLop} Lớp Học</a>
-                </p>
-                <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Các môn khác:
-                    <a href="#" rel="tag" style="color: #007bff; text-decoration: none; float: right; margin-right: 30px">${khacSoLop} Lớp Học</a>
-                </p>
-            </article>
-        </div>
-    </c:if>
-</c:forEach>
+                                        <c:if test="${khoi.ID_Khoi <= 4}">
+                                            <div class="column dt-sc-one-fourth first">
+                                                <article id="post-${khoi.tenKhoi}" class="dt-sc-course post-${khoi.tenKhoi} course type-course">
+                                                    <div class="dt-sc-course-thumb">
+                                                        <a href="#" title="${khoi.tenKhoi}">
+                                                            <img src="${pageContext.request.contextPath}/img/avatar/avatarTeacher.jpg" alt="${khoi.tenKhoi}" style="width:420px; height:250px; object-fit: cover; border-radius: 5px;" />
+                                                        </a>
+                                                    </div>
+                                                    <p class="dt-sc-course-meta" style="font-weight: bold; font-size: 20px; text-align: center;">${khoi.tenKhoi}</p>
+                                                    <c:set var="toanSoLop" value="0" />
+                                                    <c:set var="vanSoLop" value="0" />
+                                                    <c:set var="khacSoLop" value="0" />
+                                                    <c:forEach var="lh" items="${listLopHoc}">
+                                                        <c:if test="${lh.idKhoi == khoi.ID_Khoi}">
+                                                            <c:choose>
+                                                                <c:when test="${lh.nhomMonHoc == 'Toán'}">
+                                                                    <c:set var="toanSoLop" value="${lh.tongSoLopHoc}" />
+                                                                </c:when>
+                                                                <c:when test="${lh.nhomMonHoc == 'Văn'}">
+                                                                    <c:set var="vanSoLop" value="${lh.tongSoLopHoc}" />
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <c:set var="khacSoLop" value="${lh.tongSoLopHoc}" />
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                    <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Toán:
+                                                        <a href="#" rel="tag" style="color: #007bff; text-decoration: none; float: right; margin-right: 30px">${toanSoLop} Lớp Học</a>
+                                                    </p>
+                                                    <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Văn:
+                                                        <a href="#" rel="tag" style="color: #007bff; text-decoration: none; float: right; margin-right: 30px">${vanSoLop} Lớp Học</a>
+                                                    </p>
+                                                    <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Các môn khác:
+                                                        <a href="#" rel="tag" style="color: #007bff; text-decoration: none; float: right; margin-right: 30px">${khacSoLop} Lớp Học</a>
+                                                    </p>
+                                                </article>
+                                            </div>
+                                        </c:if>
+                                    </c:forEach>
 
                                 </div>
                             </div>
