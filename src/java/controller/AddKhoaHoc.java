@@ -15,6 +15,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import model.KhoaHoc;
 
 /**
@@ -92,6 +94,12 @@ public class AddKhoaHoc extends HttpServlet {
                 request.getRequestDispatcher("/views/AddCourse.jsp").forward(request, response);
                 return;
             }
+            // Nếu là khóa tổng ôn thì ID_Khoi bắt buộc phải là 8
+            if (ten != null && ten.startsWith("Khóa tổng ôn ") && id_khoi != 8) {
+                request.setAttribute("err", "Khóa tổng ôn chỉ áp dụng cho khối 8!");
+                request.getRequestDispatcher("/views/AddCourse.jsp").forward(request, response);
+                return;
+            }
 
             // Kiểm tra trùng tên + ID_Khoi
             if (KhoaHocDAO.isDuplicateTenKhoaHocAndIDKhoi(ten, id_khoi)) {
@@ -140,7 +148,9 @@ public class AddKhoaHoc extends HttpServlet {
             "Tin học", "Lịch sử", "Địa lý", "Giáo dục công dân",
             "Tiếng Anh", "Công nghệ", "Thể dục", "Âm nhạc", "Mỹ thuật",
             "Quốc phòng và An ninh"
-    );
+    ).stream()
+            .flatMap(tenMon -> Stream.of("Khóa " + tenMon, "Khóa tổng ôn " + tenMon))
+            .collect(Collectors.toList());
 
     boolean isTenKhoaHocHopLe(String ten) {
         if (ten == null) {

@@ -100,18 +100,34 @@
             <label>Tên khóa học:</label>
             <select name="TenKhoaHoc" required>
                 <option value="">-- Chọn tên khóa học --</option>
-                <option value="Toán">Toán</option>
-                <option value="Ngữ văn">Ngữ văn</option>
-                <option value="Vật lý">Vật lý</option>
-                <option value="Hóa học">Hóa học</option>
-                <option value="Sinh học">Sinh học</option>
-                <option value="Tin học">Tin học</option>
-                <option value="Lịch sử">Lịch sử</option>
-                <option value="Địa lý">Địa lý</option>
-                <option value="Giáo dục công dân">Giáo dục công dân</option>
-                <option value="Tiếng Anh">Tiếng Anh</option>
-                <option value="Công nghệ">Công nghệ</option>
+
+                <!-- Các khóa cơ bản -->
+                <option value="Toán">Khóa Toán</option>
+                <option value="Ngữ văn">Khóa Ngữ văn</option>
+                <option value="Vật lý">Khóa Vật lý</option>
+                <option value="Hóa học">Khóa Hóa học</option>
+                <option value="Sinh học">Khóa Sinh học</option>
+                <option value="Tin học">Khóa Tin học</option>
+                <option value="Lịch sử">Khóa Lịch sử</option>
+                <option value="Địa lý">Khóa Địa lý</option>
+                <option value="Giáo dục công dân">Khóa Giáo dục công dân</option>
+                <option value="Tiếng Anh">Khóa Tiếng Anh</option>
+                <option value="Công nghệ">Khóa Công nghệ</option>
+
+                <!-- Các khóa tổng ôn -->
+                <option value="Khóa tổng ôn Toán">Khóa tổng ôn Toán</option>
+                <option value="Khóa tổng ôn Ngữ văn">Khóa tổng ôn Ngữ văn</option>
+                <option value="Khóa tổng ôn Vật lý">Khóa tổng ôn Vật lý</option>
+                <option value="Khóa tổng ôn Hóa học">Khóa tổng ôn Hóa học</option>
+                <option value="Khóa tổng ôn Sinh học">Khóa tổng ôn Sinh học</option>
+                <option value="Khóa tổng ôn Tin học">Khóa tổng ôn Tin học</option>
+                <option value="Khóa tổng ôn Lịch sử">Khóa tổng ôn Lịch sử</option>
+                <option value="Khóa tổng ôn Địa lý">Khóa tổng ôn Địa lý</option>
+                <option value="Khóa tổng ôn Giáo dục công dân">Khóa tổng ôn Giáo dục công dân</option>
+                <option value="Khóa tổng ôn Tiếng Anh">Khóa tổng ôn Tiếng Anh</option>
+                <option value="Khóa tổng ôn Công nghệ">Khóa tổng ôn Công nghệ</option>
             </select><br/>
+
             <label>Mô tả:</label>
             <textarea name="MoTa"></textarea><br/>
 
@@ -125,7 +141,7 @@
             <label>Ghi chú:</label>
             <input type="text" name="GhiChu" /><br/>
 
-          <label>ID khối học: </label>
+            <label>ID khối học: </label>
             <select name="ID_Khoi">
                 <option value="">-- Chọn khối học --</option>
                 <option value="1">1 (Lớp 6)</option>

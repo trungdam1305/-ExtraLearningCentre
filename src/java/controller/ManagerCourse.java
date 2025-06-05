@@ -18,6 +18,8 @@ import java.util.List;
 import model.KhoaHoc;
 import model.LopHoc;
 import dal.LopHocDAO;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
@@ -110,7 +112,6 @@ public class ManagerCourse extends HttpServlet {
             try {
                 String id = request.getParameter("ID_Khoi");
                 int id_khoi = Integer.parseInt(id);
-                
 
                 List<LopHoc> danhSachLopHoc;
                 danhSachLopHoc = LopHocDAO.getLopHocByIdKhoa(id_khoi);
@@ -194,7 +195,13 @@ public class ManagerCourse extends HttpServlet {
 
                 if (!isTenKhoaHocHopLe(ten)) {
                     request.setAttribute("err", "Tên khóa học không hợp lệ. Vui lòng chọn tên môn học phổ thông Việt Nam.");
-                    request.getRequestDispatcher("/views/AddCourse.jsp").forward(request, response);
+                    request.getRequestDispatcher("/views/UpdateCourse.jsp").forward(request, response);
+                    return;
+                }
+                // Nếu là khóa tổng ôn thì ID_Khoi bắt buộc phải là 8
+                if (ten != null && ten.startsWith("Khóa tổng ôn ") && id_khoi != 8) {
+                    request.setAttribute("err", "Khóa tổng ôn chỉ áp dụng cho khối 8!");
+                    request.getRequestDispatcher("/views/UpdateCourse.jsp").forward(request, response);
                     return;
                 }
 
@@ -249,18 +256,20 @@ public class ManagerCourse extends HttpServlet {
             }
         }
     }
-    
+
     private void handleDeleteCourse(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-   
-}
+            throws ServletException, IOException {
+
+    }
 
     static final List<String> TEN_MON_HOC_HOP_LE = Arrays.asList(
             "Toán", "Ngữ văn", "Vật lý", "Hóa học", "Sinh học",
             "Tin học", "Lịch sử", "Địa lý", "Giáo dục công dân",
             "Tiếng Anh", "Công nghệ", "Thể dục", "Âm nhạc", "Mỹ thuật",
             "Quốc phòng và An ninh"
-    );
+    ).stream()
+            .flatMap(tenMon -> Stream.of("Khóa " + tenMon, "Khóa tổng ôn " + tenMon))
+            .collect(Collectors.toList());
 
     boolean isTenKhoaHocHopLe(String ten) {
         if (ten == null) {

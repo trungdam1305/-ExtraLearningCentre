@@ -11,11 +11,9 @@
             <file>file:/C:/Users/admin/Desktop/ELCentre/src/java/controller/HomePage.java</file>
         </group>
         <group>
-            <file>file:/C:/Users/Vuh26/Documents/NetBeansProjects/ELCentre1_3/src/java/controller/SortAttribute.java</file>
-            <file>file:/C:/Users/Vuh26/Documents/NetBeansProjects/ELCentre1_3/src/java/controller/SearchCourse.java</file>
-            <file>file:/C:/Users/Vuh26/Documents/NetBeansProjects/ELCentre1_3/src/java/dal/KhoaHocDAO.java</file>
-            <file>file:/C:/Users/Vuh26/Documents/NetBeansProjects/ELCentre1_3/web/views/ResultFind.jsp</file>
+            <file>file:/C:/Users/Vuh26/Documents/NetBeansProjects/ELCentre1_3/src/java/controller/AddKhoaHoc.java</file>
             <file>file:/C:/Users/Vuh26/Documents/NetBeansProjects/ELCentre1_3/web/views/UpdateCourse.jsp</file>
+            <file>file:/C:/Users/Vuh26/Documents/NetBeansProjects/ELCentre1_3/src/java/controller/ManagerCourse.java</file>
         </group>
     </open-files>
 </project-private>
