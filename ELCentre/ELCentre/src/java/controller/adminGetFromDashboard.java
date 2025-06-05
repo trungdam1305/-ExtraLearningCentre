@@ -70,6 +70,33 @@ public class adminGetFromDashboard extends HttpServlet {
                 }
 
                 break;
+                
+            case "pheduyettuvan":
+                ArrayList<ThongBao> tuvanList = ThongBaoDAO.getAllTuVan();
+                request.setAttribute("tuvanList", tuvanList);
+                request.getRequestDispatcher("/views/admin/adminApproveRegisterUser.jsp").forward(request, response);
+          
+                break;
+                
+                
+            case "approveAdvice":
+                int id = Integer.parseInt(request.getParameter("id"));
+                ThongBao tb = ThongBaoDAO.getThongBaoById(id);
+                
+                String content = tb.getNoiDung();
+                String name = extract(content, "Họ tên: ", ", Email:");
+                String email = extract(content, "Email: ", ", SDT:");
+                String phone = extract(content, "SDT: ", ", Nội dung:");
+                String message = extract(content, "Nội dung: ", "");
+                
+                request.setAttribute("tuvanid", id);
+                request.setAttribute("name", name);
+                request.setAttribute("email", email);
+                request.setAttribute(phone, phone);
+                request.setAttribute(message, message);
+                request.getRequestDispatcher("/views/admin/CreateAccountFromAdvice.jsp").forward(request, response);
+                
+                break;
 
             case "hocsinh":       //action with student
                 ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>();          // create arraylist to save data 
@@ -135,7 +162,16 @@ public class adminGetFromDashboard extends HttpServlet {
                     
 
         }
-
+        
+        private String extract(String full, String start, String end) {
+            int s = full.indexOf(start);
+            if (s == -1) return "";
+            s += start.length();
+            int e = end.isEmpty() ? full.length() : full.indexOf(end, s);
+            if (e == -1) e = full.length();
+            return full.substring(s, e).trim();
+        }
+            
     }
 
     @Override

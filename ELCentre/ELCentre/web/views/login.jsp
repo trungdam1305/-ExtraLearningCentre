@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-signin-client_id" content="495483511522-0e0jq9n40fkng5gpaogj1gifh9a8e7eu.apps.googleusercontent.com">
-    <title>Login - EduPlus Center</title>
+    <title>Login - Extra Learning Centre</title>
 
     <!-- Bootstrap & FontAwesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -53,20 +53,41 @@
             background-color: #1877F2; color: white;
             padding: 8px 16px; border-top-left-radius: 8px;
         }
+        
+        .home-link {
+            position: absolute;
+            top: 10px; left: 10px;
+            font-size: 1.2rem; color: #333;
+            text-decoration: none;
+        }
+        
+        
+        .logo {
+            width: 150px; 
+            height: 150px;
+            object-fit: contain; 
+            border-radius: 50%; 
+        }
+
     </style>
 </head>
 
 <body>
+    <a href="HomePage.jsp" class="home-link">
+        <i class="fas fa-home"></i> Trang chủ
+    </a>
+   
     <div class="login-container">
         <!-- Left Panel -->
         <div class="left-panel text-center">
-            <i class="fas fa-user-circle fa-4x mb-3"></i>
+            <img src="../img/SieuLogo-xoaphong.png" alt="SieuLogo xoaphong" class="logo mb-3">
             <h4><strong>Extra Learning Centre</strong></h4>
             <div class="mt-5">
                 <div class="bg-light p-4 rounded">
                     <div class="d-flex justify-content-between text-muted small">
                         <span>Welcome</span><span>Edu</span>
                     </div>
+
                     <div class="mt-3 d-flex justify-content-around">
                         <div style="width: 10px; height: 100px; background-color: #7a7f8c;"></div>
                         <div style="width: 10px; height: 100px; background-color: #7a7f8c;"></div>
@@ -80,7 +101,7 @@
         <div class="right-panel">
             <div class="login-box">
                 <h3 class="fw-bold">|Đăng nhập hệ thống</h3>
-                <p class="small">Chưa có tài khoản? <a href="register.jsp">Đăng ký ngay</a></p>
+                <p class="small">Chưa có tài khoản? <a href="advice.jsp">Đăng ký nhận tư vấn ngay</a></p>
 
                 <% String error = request.getParameter("error");
                    if (error != null) { %>

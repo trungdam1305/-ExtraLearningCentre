@@ -56,9 +56,20 @@
                 padding: 8px 16px;
                 border-top-left-radius: 8px;
             }
+            
+            .home-link {
+                position: absolute;
+                top: 10px; left: 10px;
+                font-size: 1.2rem; color: #333;
+                text-decoration: none;
+            }
         </style>
     </head>
     <body>
+        <a href="HomePage.jsp" class="home-link">
+            <i class="fas fa-home"></i> Trang chủ
+        </a>
+        
         <div class="register-container">
             <!-- Left Panel -->
             <div class="left-panel text-center">

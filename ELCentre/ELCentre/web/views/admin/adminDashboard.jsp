@@ -218,7 +218,7 @@
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocsinh">Học sinh</a></li>        
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=giaovien">Giáo viên</a></li>       
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=taikhoan">Tài khoản</a></li>       
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=taikhoan">Tài khoản</a></li>    
             </ul>
 
             <div class="sidebar-section-title">Quản lý tài chính</div>
@@ -238,6 +238,7 @@
 
             <div class="sidebar-section-title">Khác</div>
             <ul class="sidebar-menu">
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=pheduyettuvan">Phê duyệt tài khoản</a></li>
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=thongbao">Thông báo</a></li>
                 <li><a href="#">Blog</a></li>
                 <li><a href="${pageContext.request.contextPath}/LogoutServlet">Logout</a></li>

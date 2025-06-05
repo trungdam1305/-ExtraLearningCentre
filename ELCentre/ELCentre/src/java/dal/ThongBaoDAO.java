@@ -44,4 +44,39 @@ public class ThongBaoDAO {
             return thongbaos ; 
         }
     }
+    
+    public static void insertThongBaoTuVan(String noiDung) throws SQLException {
+        DBContext db = DBContext.getInstance();
+        String sql = "INSERT INTO ThongBao (ID_TaiKhoan, Noidung, ID_HocPhi, ThoiGian) VALUES (?, ?, NULL, GETDATE())";
+        PreparedStatement ps = db.getConnection().prepareStatement(sql);
+        ps.setNull(1, java.sql.Types.INTEGER); // Vi chua co tai khoan
+        ps.setString(2, noiDung);
+        ps.executeUpdate();
+    }
+    
+    public static ArrayList<ThongBao> getAllTuVan() {
+        ArrayList<ThongBao> list = new ArrayList<>();
+        DBContext db = DBContext.getInstance();
+        try {
+            String sql = "SELECT * FROM ThongBao WHERE NoiDung LIKE '[TƯ VẤN]%'";
+            PreparedStatement ps = db.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                ThongBao tb = new ThongBao(
+                        rs.getInt("ID_ThongBao"),
+                        rs.getInt("ID_TaiKhoan"),
+                        rs.getString("NoiDung"),
+                        rs.getInt("ID_HocPhi"),
+                        rs.getTimestamp("ThoiGian").toLocalDateTime()
+                );
+                list.add(tb);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    
 }
