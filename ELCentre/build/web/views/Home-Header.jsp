@@ -44,37 +44,37 @@
                                 <ul id="menu-main-menu" class="menu" style="position: relative; transform: translateY(-10px); display: flex; align-items: center; gap: 30px 20px ;">
                                     <!--HomePage-->
                                     <li id="menu-item-34" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-8 current_page_item menu-item-depth-0 menu-item-simple-parent ">
-                                        <a href="${pageContext.request.contextPath}/views/HomePage.jsp">
+                                        <a href="${pageContext.request.contextPath}/HomePage">
                                             <span class='menu-icon fa fa-home'> </span>Trang chủ
                                         </a>
                                     </li>
                                     <!--Courses-->
                                     <li id="menu-item-66" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-depth-0 menu-item-megamenu-parent  megamenu-3-columns-group">
-                                        <a href="${pageContext.request.contextPath}/views/HomePage.jsp">
+                                        <a href="${pageContext.request.contextPath}/HomePage">
                                             <span class='menu-icon fa fa-shopping-cart'> </span>Khóa Học
                                         </a>
                                     </li>
                                     <!--Learning Materials-->
                                     <li id="menu-item-4081" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-depth-0 menu-item-simple-parent ">
-                                        <a href="">
+                                        <a href="${pageContext.request.contextPath}/HomePage">
                                             <span class='menu-icon fa fa-gift'> </span>Tài Liệu Học
                                         </a>
                                     </li>
                                     <!--Learning Class-->
                                     <li id="menu-item-4140" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-depth-0 menu-item-simple-parent ">
-                                        <a href="">
+                                        <a href="${pageContext.request.contextPath}/HomePage">
                                             <span class='menu-icon fa fa-book'> </span>Học Bài
                                         </a>
                                     </li>
                                     <!--Blog-->
                                     <li id="menu-item-29" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-depth-0 menu-item-megamenu-parent  megamenu-3-columns-group">
-                                        <a href="">
+                                        <a href="${pageContext.request.contextPath}/HomePage">
                                             <span class='menu-icon fa fa-pencil'> </span>Blog
                                         </a>
                                     </li>
                                     <!--About Us-->
                                     <li id="menu-item-26" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-depth-0 menu-item-megamenu-parent  megamenu-4-columns-group">
-                                        <a href="">
+                                        <a href="${pageContext.request.contextPath}/HomePage">
                                             <span class='menu-icon fa fa-picture-o'> </span>Giới thiệu
                                         </a>
                                     </li>

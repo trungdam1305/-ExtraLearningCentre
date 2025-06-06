@@ -80,7 +80,7 @@
         <div class="right-panel">
             <div class="login-box">
                 <h3 class="fw-bold">|Đăng nhập hệ thống</h3>
-                <p class="small">Chưa có tài khoản? <a href="register.jsp">Đăng ký ngay</a></p>
+                <p class="small">Chưa có tài khoản? <a href="advice.jsp">Đăng ký nhận tư vấn ngay!!!</a></p>
 
                 <% String error = request.getParameter("error");
                    if (error != null) { %>

@@ -56,6 +56,26 @@
         <servlet-name>GoogleLoginServlet</servlet-name>
         <servlet-class>dao.GoogleLoginServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SortForResultFind</servlet-name>
+        <servlet-class>controller.SortForResultFind</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdviceServlet</servlet-name>
+        <servlet-class>dal.AdviceServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Advice</servlet-name>
+        <servlet-class>controller.Advice</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>sendAdviceMail</servlet-name>
+        <servlet-class>controller.sendAdviceMail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SendAdviceMailServlet</servlet-name>
+        <servlet-class>controller.SendAdviceMailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -111,5 +131,25 @@
     <servlet-mapping>
         <servlet-name>GoogleLoginServlet</servlet-name>
         <url-pattern>/GoogleLoginServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SortForResultFind</servlet-name>
+        <url-pattern>/SortForResultFind</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdviceServlet</servlet-name>
+        <url-pattern>/AdviceServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Advice</servlet-name>
+        <url-pattern>/Advice</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>sendAdviceMail</servlet-name>
+        <url-pattern>/sendAdviceMail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendAdviceMailServlet</servlet-name>
+        <url-pattern>/SendAdviceMailServlet</url-pattern>
     </servlet-mapping>
 </web-app>
