@@ -80,7 +80,7 @@
                         <nav id="main-menu">
                             <ul id="menu-main-menu" class="menu" style="position: relative; transform: translateY(-10px); display: flex; align-items: center; gap: 30px 20px;">
                                 <!--HomePage-->
-                                <li class="menu-item <%= (uri.contains("/HomePage")) ? "current-menu-item" : "" %>">
+                                <li class="menu-item <%=  (uri.contains("/HomePage")) ? "current-menu-item" : "" %>">
                                     <a href="<%= context %>/HomePage">
                                         <span class='menu-icon fa fa-home'> </span>Trang chủ
                                     </a>
