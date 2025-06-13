@@ -27,7 +27,6 @@ public class EmailSender {
 
         // Phiên làm việc
         Session session = Session.getInstance(props, new Authenticator() {
-            @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(USERNAME, PASSWORD);
             }
@@ -37,7 +36,7 @@ public class EmailSender {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress(USERNAME, "ELCentre", "UTF-8"));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
-        message.setSubject(jakarta.mail.internet.MimeUtility.encodeText(subject, "UTF-8", "B"));
+        message.setSubject(subject);
         message.setText(body);
         
         // Gửi với charset UTF-8

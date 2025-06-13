@@ -73,7 +73,8 @@ public class Advice extends HttpServlet {
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String noiDung = request.getParameter("NoiDung");
-        
+
+               
         String noiDungThongBao = "[TƯ VẤN] Họ tên: " + hoTen + " | Email: " + email + " | SĐT: " + phone + " | Nội dung: " + noiDung;
 
         try {
@@ -86,7 +87,22 @@ public class Advice extends HttpServlet {
             e.printStackTrace();
             
         }
-    } 
+    }
+    
+    
+    //Validate 
+    
+    public static String isValidHoTen(String hoTen) {
+        if (hoTen == null || hoTen.trim().isEmpty()){
+            return "Tên không thể để trống.";
+        } 
+        hoTen = hoTen.trim();
+        if(hoTen.length() < 2 || hoTen.length()) {
+            return "Tên phải từ 2 đến 50 ký tự.";
+        } 
+        //Regex: Cho phép chữ cái có dấu
+        return null;
+    }
 
     /**
      * Returns a short description of the servlet.
