@@ -439,7 +439,7 @@
                                     <button class="btn-update" type="button" onclick="return confirmDeleteAndRedirect('${pageContext.request.contextPath}/ManagerCourse?action=deleteCourse&ID_KhoaHoc=${course.ID_KhoaHoc}')">DELETE</button>
 
                                     <button class="btn-delete" onclick="location.href = '${pageContext.request.contextPath}/ManagerCourse?action=UpdateCourse&ID_KhoaHoc=${course.ID_KhoaHoc}'">Update</button>
-                                    <button class="btn-view" onclick="location.href = '${pageContext.request.contextPath}/ManagerCourse?action=ViewCourse&ID_Khoi=${course.ID_Khoi}&ID_KhoaHoc=${course.ID_KhoaHoc}'">View</button>
+                                    <button class="btn-view" onclick="location.href = '${pageContext.request.contextPath}/ManagerCourse?action=ViewCourse&ID_Khoi=${course.ID_Khoi}&ID_KhoaHoc=${course.ID_KhoaHoc} '">View</button>
                                 </td>
                             </tr>
                         </c:forEach>

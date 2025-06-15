@@ -312,6 +312,11 @@
      }
      
 
+     String ten = request.getParameter("TenKhoaHoc");
+     if (ten == null) {
+         ten = (String) request.getAttribute("TenKhoaHoc");
+     }
+
          
          
         %>
@@ -329,17 +334,19 @@
         </script>
 
 
-        <!-- Nút quay lại -->
-        <form action="${pageContext.request.contextPath}/ManagerCourse" method="get" style="margin-top: 10px;">
-            <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}" />
-            <input type="hidden" name="ID_Khoi" value="${ID_Khoi}" />
 
-            <button type="submit">Quay lại</button>
-        </form>
+
 
 
         <div>
-            <h1>Trang quản lý lớp học</h1>
+            <c:choose>
+                <c:when test="${ID_Khoi >= 1 && ID_Khoi <= 7}">
+                    <h1>Trang quản lý lớp cho khối lớp: Lớp ${ID_Khoi + 5}</h1>
+                </c:when>
+                <c:otherwise>
+                    <h1>Trang quản lý lớp học cho khối lớp: Tổng ôn</h1>
+                </c:otherwise>
+            </c:choose>
 
 
 
@@ -365,18 +372,18 @@
                         </form> 
                     </td>
                     <td>
-                                        <button type="button" onclick="resetFilter()">Refesh</button>
+                        <button type="button" onclick="resetFilter()">Refesh</button>
 
                     </td>
 
 
-                <td>  <!-- Thêm mới -->
-                    <button style="margin-top: 2px" type="button"
-                            onclick="window.location.href = '<%= request.getContextPath() %>/views/AddClass.jsp?ID_KhoaHoc=<%= idKhoaHoc %>&ID_Khoi=<%= idKhoi %>'">
-                        Thêm lớp học mới
-                    </button>
+                    <td>  <!-- Thêm mới -->
+                        <button  type="button" 
+                                 onclick="window.location.href = '<%= request.getContextPath() %>/views/AddClass.jsp?ID_KhoaHoc=<%= idKhoaHoc %>&ID_Khoi=<%= idKhoi %>'">
+                            Thêm lớp học mới
+                        </button>
 
-                </td>
+                    </td>
                 </tr>
             </table>
 
@@ -535,6 +542,19 @@
             </c:if>
             <hr>
         </div>
+
+        <!-- Nút quay lại (căn giữa màn hình) -->
+        <div style="display: flex; justify-content: center; margin-top: 20px;">
+            <form action="${pageContext.request.contextPath}/ManagerCourse" method="get">
+                <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}" />
+                <input type="hidden" name="ID_Khoi" value="${ID_Khoi}" />
+                <button type="submit"
+                        style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    Quay lại
+                </button>
+            </form>
+        </div>
+
 
     </body>
 </html>
