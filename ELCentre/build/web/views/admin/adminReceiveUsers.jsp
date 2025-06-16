@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>Add commentMore actions
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
@@ -81,6 +81,22 @@
                 border-radius: 4px;
                 cursor: pointer;
             }
+
+            .action-link {
+                background-color: #1F4E79;
+                color: white;
+                padding: 6px 12px;
+                margin: 2px;
+                text-decoration: none;
+                border-radius: 4px;
+                display: inline-block;
+                transition: background-color 0.3s;
+                font-size: 14px;
+            }
+
+            .action-link:hover {
+                background-color: #163b5c;
+            }
         </style>
     </head>
     <body>
@@ -111,9 +127,8 @@
                 <table id="userTable">
                     <thead>
                         <tr>
-
+                            <th>ID</th>
                             <th>Email</th>
-                            <th>Họ và Tên</th>
                             <th>Vai Trò</th>
                             <th>Số điện thoại</th>
                             <th>Trạng thái</th>
@@ -122,25 +137,26 @@
                     </thead>
                     <tbody>
                         <c:forEach var="tk" items="${sessionScope.taikhoans}">
-                            <tr>    
+                            <tr>
+                                <td>${tk.ID_TaiKhoan}</td>
                                 <td>${tk.email}</td>
-                                <td>${tk.getHoTen()}</td>
                                 <td>${tk.userType}</td>
                                 <td>${tk.soDienThoai}</td>
                                 <td>${tk.trangThai}</td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/adminActionWithUser?action=view&id=${tk.ID_TaiKhoan}&type=${tk.userType}">View</a> |
+                                    <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithUser?action=view&id=${tk.ID_TaiKhoan}&type=${tk.userType}">View</a> |
                                     <c:choose>
                                         <c:when test="${tk.trangThai == 'Active'}">
-                                            <a href="${pageContext.request.contextPath}/adminActionWithUser?action=disable&id=${tk.ID_TaiKhoan}&type=${tk.userType}">Disable</a>
+                                            <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithUser?action=disable&id=${tk.ID_TaiKhoan}&type=${tk.userType}">Disable</a>
                                         </c:when>
                                         <c:otherwise>
-                                            <a href="${pageContext.request.contextPath}/adminActionWithUser?action=enable&id=${tk.ID_TaiKhoan}&type=${tk.userType}">Enable</a>
+                                            <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithUser?action=enable&id=${tk.ID_TaiKhoan}&type=${tk.userType}">Enable</a>
                                         </c:otherwise>
                                     </c:choose>
-                                    | 
-                                    <a href="${pageContext.request.contextPath}/adminActionWithUser?action=update&id=${tk.ID_TaiKhoan}&type=${tk.userType}">Update</a>
+                                    |
+                                    <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithUser?action=update&id=${tk.ID_TaiKhoan}&type=${tk.userType}">Update</a>
                                 </td>
+
                             </tr>
                         </c:forEach>
                     </tbody>
@@ -148,18 +164,10 @@
             </c:when>
             <c:otherwise>
                 <div class="no-data">
-
-                    <c:if test="${empty message}">
-                        <p>Không có dữ liệu tài khoản để hiển thị.</p>
-                    </c:if>
+                    <p>${message != null ? message : 'Không có dữ liệu tài khoản để hiển thị.'}</p>
                 </div>
             </c:otherwise>
-
         </c:choose>
-
-        <c:if test="${not empty message}">
-            <p style="color: red;">${message}</p>
-        </c:if>
 
         <div id="pagination" style="text-align: center; margin-top: 15px;"></div>
 
@@ -167,5 +175,76 @@
             <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
         </div>
 
+        <script>
+            const searchInput = document.getElementById("searchInput");
+            const statusFilter = document.getElementById("statusFilter");
+            const roleFilter = document.getElementById("roleFilter"); // ✅ dòng này bạn bị thiếu
+            const table = document.querySelector("#userTable tbody");
+            const allRows = Array.from(table.rows);
+            let filteredRows = allRows;
+            let currentPage = 1;
+            const rowsPerPage = 5;
+
+
+            function filterRows() {
+                const keyword = searchInput.value.toLowerCase();
+                const status = statusFilter.value;
+                const role = roleFilter.value;
+
+                filteredRows = allRows.filter(row => {
+                    const cells = row.querySelectorAll("td");
+                    const matchesKeyword = Array.from(cells).slice(0, 4).some(cell =>
+                        cell.textContent.toLowerCase().includes(keyword)
+                    );
+                    const matchesStatus =
+                            status === "all" ||
+                            (status === "active" && cells[4].textContent.toLowerCase() === "active") ||
+                            (status === "inactive" && cells[4].textContent.toLowerCase() !== "active");
+
+                    const matchesRole =
+                            role === "all" ||
+                            cells[2].textContent.toLowerCase() === role;
+
+                    return matchesKeyword && matchesStatus && matchesRole;
+
+                });
+
+                currentPage = 1;
+                renderPage();
+            }
+
+            function renderPage() {
+                table.innerHTML = "";
+                const start = (currentPage - 1) * rowsPerPage;
+                const end = start + rowsPerPage;
+                const pageRows = filteredRows.slice(start, end);
+                pageRows.forEach(row => table.appendChild(row));
+                renderPagination();
+            }
+
+            function renderPagination() {
+                const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+                const pagination = document.getElementById("pagination");
+                pagination.innerHTML = "";
+
+                for (let i = 1; i <= totalPages; i++) {
+                    const btn = document.createElement("button");
+                    btn.textContent = i;
+                    btn.style.backgroundColor = (i === currentPage) ? "#1F4E79" : "#ddd";
+                    btn.style.color = (i === currentPage) ? "white" : "black";
+                    btn.onclick = () => {
+                        currentPage = i;
+                        renderPage();
+                    };
+                    pagination.appendChild(btn);
+                }
+            }
+
+            searchInput.addEventListener("input", filterRows);
+            statusFilter.addEventListener("change", filterRows);
+            roleFilter.addEventListener("change", filterRows);
+
+            window.onload = () => renderPage();
+        </script>
     </body>
 </html>

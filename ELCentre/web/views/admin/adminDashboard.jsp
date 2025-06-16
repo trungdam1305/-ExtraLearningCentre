@@ -1,9 +1,3 @@
-<%-- 
-    Document   : adminDashboard
-    Created on : May 24, 2025, 2:44:16 PM
-    Author     : wrx_Chur04
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.ArrayList" %>
@@ -19,7 +13,6 @@
 <%@ page import="model.LichHoc" %>
 <%@ page import="model.UserLogView" %>
 <%@ page import="java.time.LocalDate" %>
-
 
 <!DOCTYPE html>
 <html>
@@ -40,19 +33,94 @@
             .header {
                 background-color: #1F4E79;
                 color: white;
-                padding: 15px 40px;
+                padding: 10px 20px;
                 text-align: left;
                 box-shadow: 0 2px 5px rgba(0,0,0,0.1);
                 position: fixed;
                 width: calc(100% - 250px);
                 margin-left: 250px;
                 z-index: 1000;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
             }
 
-            .header h2 {
-                margin: 0;
+            .header .left-title {
                 font-size: 24px;
                 letter-spacing: 1px;
+                display: flex;
+                align-items: center;
+            }
+
+            .header .left-title i {
+                margin-left: 10px;
+            }
+
+            .admin-profile {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                align-items: center; /* Center image and text horizontally */
+                cursor: pointer;
+                margin-left: 50px; /* Shift leftward */
+            }
+
+            .admin-profile .admin-img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%; /* Ensure circular shape */
+                object-fit: cover;
+                border: 2px solid #B0C4DE;
+                margin-bottom: 5px;
+            }
+
+            .admin-profile span {
+                font-size: 16px;
+                color: #B0C4DE;
+                font-weight: 600;
+                max-width: 250px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                margin-right: 40px; /* Extra space from the right */
+            }
+
+            .admin-profile i {
+                color: #B0C4DE;
+                margin-left: 10px;
+            }
+
+            .dropdown-menu {
+                display: none;
+                position: absolute;
+                top: 50px;
+                right: 0;
+                background: #163E5C;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                min-width: 150px;
+                z-index: 1001;
+            }
+
+            .dropdown-menu.active {
+                display: block;
+            }
+
+            .dropdown-menu a {
+                display: block;
+                padding: 10px 15px;
+                color: white;
+                text-decoration: none;
+                font-size: 14px;
+                transition: background-color 0.3s ease;
+            }
+
+            .dropdown-menu a:hover {
+                background-color: #1F4E79;
+            }
+
+            .dropdown-menu a i {
+                margin-right: 8px;
             }
 
             .sidebar {
@@ -68,9 +136,20 @@
             }
 
             .sidebar h4 {
-                margin: 0 0 30px 0;
+                margin: 0 auto; /* Center horizontally in the sidebar column */
                 font-weight: bold;
                 letter-spacing: 1.5px;
+                text-align: center; /* Ensure text is centered */
+            }
+
+            .sidebar-logo {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%; /* Make the logo circular */
+                object-fit: cover;
+                margin: 15px auto;
+                display: block;
+                border: 3px solid #B0C4DE;
             }
 
             .sidebar-section-title {
@@ -113,7 +192,7 @@
 
             .main-content {
                 margin-left: 250px;
-                padding: 80px 40px 20px 40px;
+                padding: 100px 40px 20px 40px; /* Increased padding-top to push content down */
                 flex: 1;
                 min-height: 100vh;
                 display: flex;
@@ -130,7 +209,7 @@
 
             .stat-card {
                 background: linear-gradient(135deg, #ffffff, #f0f4f8);
-                padding: 20px;
+                padding: 30px;
                 border-radius: 10px;
                 box-shadow: 0 2px 5px rgba(0,0,0,0.1);
                 flex: 1 1 220px;
@@ -261,33 +340,45 @@
             .chart-container canvas {
                 max-height: 300px;
             }
+            
+            #pagination button {
+                margin: 0 5px;
+                padding: 5px 10px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
         </style>
     </head>
     <body>
         <div class="header">
-            <h2>Admin Dashboard <i class="fas fa-tachometer-alt"></i></h2>
+            <div class="left-title">
+                Admin Dashboard <i class="fas fa-tachometer-alt"></i>
+            </div>
+            <div class="admin-profile" onclick="toggleDropdown()">
+                <img src="https://png.pngtree.com/png-clipart/20250117/original/pngtree-account-avatar-user-abstract-circle-background-flat-color-icon-png-image_4965046.png" alt="Admin Photo" class="admin-img">
+                <span>Admin Vũ Văn Chủ </span>
+                <i class="fas fa-caret-down"></i>
+                <div class="dropdown-menu" id="adminDropdown">
+                    <a href="#"><i class="fas fa-key"></i> Change Password</a>
+                    <a href="#"><i class="fas fa-user-edit"></i> Update Information</a>
+                </div>
+            </div>
         </div>
-        <div class="sidebar">
-            <h4>EDU ADMIN</h4>
 
+        <div class="sidebar">
+            <h4>EL CENTRE</h4>
+            <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-
-
-                <li><a href="#">Dashboard</a></li>           
-
-
+                <li><a href="#">Dashboard</a></li>
             </ul>
 
             <div class="sidebar-section-title">Quản lý người dùng</div>
             <ul class="sidebar-menu">
-
-
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocsinh">Học sinh</a></li>        
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=giaovien">Giáo viên</a></li>       
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=taikhoan">Tài khoản</a></li>       
-
-
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocsinh">Học sinh</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=giaovien">Giáo viên</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=taikhoan">Tài khoản</a></li>
             </ul>
 
             <div class="sidebar-section-title">Quản lý tài chính</div>
@@ -353,7 +444,6 @@
                     <h3 class="section-title"><i class="fas fa-history"></i> Hoạt động gần đây</h3>
                     <%
                       ArrayList<UserLogView> userLogsList = (ArrayList) UserLogsDAO.adminGetAllUserLogs();
-
                       request.setAttribute("userLogsList", userLogsList);
                     %>
                     <c:choose>
@@ -361,23 +451,17 @@
                             <table>
                                 <thead>
                                     <tr>
-
-
-
-
                                         <th>ID_Tài Khoản</th>
                                         <th>Họ và Tên</th>
                                         <th>Hành Động</th>
                                         <th>Thời Gian</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="userLogTableBody">
                                     <c:forEach var="log" items="${userLogsList}">
                                         <tr>
-
                                             <td>${log.getID_TaiKhoan()}</td>
                                             <td>${log.getHoTen()}</td>
-
                                             <td>${log.getHanhDong()}</td>
                                             <td>${log.getThoiGian()}</td>
                                         </tr>
@@ -389,27 +473,25 @@
                             <p class="no-data">Không có dữ liệu nhật ký để hiển thị.</p>
                         </c:otherwise>
                     </c:choose>
+                            <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
                 </div>
 
                 <!-- Lịch Học -->
                 <div class="data-table-container">
-
-
                     <h3 class="section-title">Lịch Học Hôm Nay</h3>
-
                     <%
                         LocalDate today = LocalDate.now();
-                        String ngayHienTai = today.toString(); 
+                        String ngayHienTai = today.toString();
                         ArrayList<LichHoc> lichHocList = (ArrayList) LichHocDAO.adminGetAllLichHoc(ngayHienTai);
                         request.setAttribute("lichHocList", lichHocList);
-                    %>  
+                    %>
                     <c:choose>
                         <c:when test="${not empty lichHocList}">
                             <table>
                                 <thead>
                                     <tr>
                                         <th>ID Schedule</th>
-                                        <th>Ngày Tạo</th>
+                                        <th>Ngày Học</th>
                                         <th>Giờ Học</th>
                                         <th>ID Lớp Học</th>
                                         <th>Ghi Chú</th>
@@ -466,6 +548,21 @@
         </div>
 
         <script>
+            // Toggle Dropdown Menu
+            function toggleDropdown() {
+                const dropdown = document.getElementById('adminDropdown');
+                dropdown.classList.toggle('active');
+            }
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                const profile = document.querySelector('.admin-profile');
+                const dropdown = document.getElementById('adminDropdown');
+                if (!profile.contains(event.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+
             // Attendance Chart (Enhanced Pie Chart)
             const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
             const attendanceGradient = attendanceCtx.createLinearGradient(0, 0, 200, 0);
@@ -488,13 +585,7 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { 
-                            position: 'top', 
-                            labels: { 
-                                color: '#1F4E79', 
-                                font: { size: 14 } 
-                            } 
-                        },
+                        legend: { position: 'top', labels: { color: '#1F4E79', font: { size: 14 } } },
                         title: {
                             display: true,
                             text: 'Điểm danh ngày <%= today.toString().replaceAll("-", "/") %>',
@@ -533,13 +624,7 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { 
-                            position: 'top', 
-                            labels: { 
-                                color: '#1F4E79', 
-                                font: { size: 14 } 
-                            } 
-                        },
+                        legend: { position: 'top', labels: { color: '#1F4E79', font: { size: 14 } } },
                         title: {
                             display: true,
                             text: 'Mức độ hài lòng tháng <%= today.getMonthValue() %>/<%= today.getYear() %>',
@@ -581,18 +666,10 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Doanh thu (VND)',
-                                color: '#2E7D32'
-                            }
+                            title: { display: true, text: 'Doanh thu (VND)', color: '#2E7D32' }
                         },
                         x: {
-                            title: {
-                                display: true,
-                                text: 'Tháng',
-                                color: '#2E7D32'
-                            }
+                            title: { display: true, text: 'Tháng', color: '#2E7D32' }
                         }
                     },
                     plugins: {
@@ -606,9 +683,60 @@
                     }
                 }
             });
+            
+            
+            
+            // Số dòng muốn hiển thị mỗi trang
+    var soDongMoiTrang = 10;
+
+    // Lấy tất cả dòng (tr) trong bảng giáo viên
+    var tatCaDong = document.querySelectorAll("#userLogTableBody tr");
+
+    // Tổng số trang = tổng số dòng chia cho số dòng mỗi trang (làm tròn lên)
+    var tongSoTrang = Math.ceil(tatCaDong.length / soDongMoiTrang);
+
+    // Nơi hiển thị các nút phân trang
+    var phanTrangDiv = document.getElementById("pagination");
+
+    // Hàm hiển thị trang số "trang"
+    function hienThiTrang(trang) {
+        // Ẩn tất cả dòng
+        for (var i = 0; i < tatCaDong.length; i++) {
+            tatCaDong[i].style.display = "none";
+        }
+
+        // Hiện các dòng thuộc trang đang chọn
+        var batDau = (trang - 1) * soDongMoiTrang;
+        var ketThuc = batDau + soDongMoiTrang;
+        for (var i = batDau; i < ketThuc && i < tatCaDong.length; i++) {
+            tatCaDong[i].style.display = "";
+        }
+
+        // Tạo lại các nút phân trang
+        phanTrangDiv.innerHTML = "";
+        for (var j = 1; j <= tongSoTrang; j++) {
+            var nut = document.createElement("button");
+            nut.innerText = j;
+
+            // Khi bấm vào nút thì sẽ gọi lại chính hàm này với số trang mới
+            nut.onclick = (function(trangDuocChon) {
+                return function() {
+                    hienThiTrang(trangDuocChon);
+                };
+            })(j);
+
+            // Tô màu cho trang đang chọn
+            if (j === trang) {
+                nut.style.backgroundColor = "#1F4E79";
+                nut.style.color = "white";
+            }
+
+            phanTrangDiv.appendChild(nut);
+        }
+    }
+
+    // Lần đầu gọi hàm để hiện trang 1
+    hienThiTrang(1);
         </script>
     </body>
-
-
 </html>
-

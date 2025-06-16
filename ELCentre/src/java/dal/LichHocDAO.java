@@ -22,7 +22,7 @@ public class LichHocDAO {
         try {
             String sql = """
                           select * from LichHoc
-                         where NgayHoc >= ? 
+                         where NgayHoc <= ? 
                           """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             statement.setString(1, ngayHienTai);
