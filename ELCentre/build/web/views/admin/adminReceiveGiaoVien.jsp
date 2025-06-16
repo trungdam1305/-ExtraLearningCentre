@@ -101,7 +101,7 @@
                                 <td>${giaovien.getHoTen()}</td>
                                 <td>${giaovien.getChuyenMon()}</td>
                                 <td>${giaovien.getSDT()}</td>
-                                <td>${giaovien.getTruongGiangDay()}</td>
+                                <td>${giaovien.getTenTruongHoc()}</td>
                                 <td>${giaovien.getLuong()}</td>
                                 <td><c:out value="${giaovien.getGhiChu()}" default="Không có ghi chú" /></td>
 

@@ -16,7 +16,8 @@ public class HocSinhDAO {
         DBContext db = DBContext.getInstance();
         ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>();
         String sql = """
-                         select * from HocSinh 
+                         select * from HocSinh hs JOIN TruongHoc th
+                         ON hs.ID_TruongHoc = th.ID_TruongHoc
                          """;
         try (PreparedStatement statement = db.getConnection().prepareStatement(sql); ResultSet rs = statement.executeQuery()) {
 
@@ -29,10 +30,11 @@ public class HocSinhDAO {
                         rs.getString("GioiTinh"),
                         rs.getString("DiaChi"),
                         rs.getString("SDT_PhuHuynh"),
-                        rs.getString("TruongHoc"),
+                        rs.getInt("ID_TruongHoc"),
                         rs.getString("GhiChu"),
                         rs.getString("TrangThai"),
-                        rs.getTimestamp("NgayTao").toLocalDateTime()
+                        rs.getTimestamp("NgayTao").toLocalDateTime(),
+                        rs.getString("TenTruongHoc")
                 );
                 hocsinhs.add(hocsinh);
             }
@@ -48,7 +50,8 @@ public class HocSinhDAO {
 
         try {
             String sql = """
-                         select * from HocSinh
+                         select * from HocSinh hs JOIN TruongHoc th
+                         ON hs.ID_TruongHoc = th.ID_TruongHoc
                          where ID_TaiKhoan = ? 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
@@ -64,10 +67,11 @@ public class HocSinhDAO {
                         rs.getString("GioiTinh"),
                         rs.getString("DiaChi"),
                         rs.getString("SDT_PhuHuynh"),
-                        rs.getString("TruongHoc"),
+                        rs.getInt("ID_TruongHoc"),
                         rs.getString("GhiChu"),
                         rs.getString("TrangThai"),
-                        rs.getTimestamp("NgayTao").toLocalDateTime()
+                        rs.getTimestamp("NgayTao").toLocalDateTime(),
+                        rs.getString("TenTruongHoc")
                 );
                 hocsinhs.add(hocsinh);
             }

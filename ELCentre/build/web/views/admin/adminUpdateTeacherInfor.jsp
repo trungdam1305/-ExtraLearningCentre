@@ -146,7 +146,7 @@
                             <tr>
                                 <td>Trường giảng dạy</td>
                                 <c:forEach var="giaovien" items="${giaoviens}">
-                                    <td><input type="text" name="truong" value="${giaovien.getTruongGiangDay()}" required="" /></td>
+                                    <td><input type="text" name="truong" value="${giaovien.getTenTruongHoc()}" required="" /></td>
 
                                 </c:forEach>
                             </tr>
