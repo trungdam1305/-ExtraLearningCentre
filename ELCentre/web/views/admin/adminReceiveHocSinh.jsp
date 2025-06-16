@@ -105,7 +105,7 @@
                                 <td>${hocsinh.getGioiTinh()}</td>
                                 <td>${hocsinh.getDiaChi()}</td>
                                 <td>${hocsinh.getSDT_PhuHuynh()}</td>
-                                <td>${hocsinh.getTruongHoc()}</td>
+                                <td>${hocsinh.getTenTruongHoc()}</td>
                                 <td>${hocsinh.getGhiChu()}</td>
                                 <td>${hocsinh.getTrangThai()}</td>
                                 <td>${hocsinh.getNgayTao()}</td>

@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class NopBaiTap {
-    private Integer ID_HocSinh;
+            private Integer ID_HocSinh;
     private Integer ID_BaiTap;
     private String TepNop;
     private LocalDate NgayNop;

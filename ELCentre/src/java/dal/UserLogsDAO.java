@@ -47,7 +47,7 @@ public class UserLogsDAO {
                         rs.getString("HanhDong"),
                         rs.getTimestamp("ThoiGian").toLocalDateTime()
                 );
-                userlogviews.add(userlogview);
+                            userlogviews.add(userlogview);
             }
         } catch (SQLException e) {
             e.printStackTrace();

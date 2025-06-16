@@ -36,7 +36,7 @@ public class LopHocDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return list;
+                    return list;
     }
     
     //Call the Sum of Class 
@@ -78,7 +78,7 @@ public class LopHocDAO {
             e.printStackTrace();
 
         }
-        return tong;
+                    return tong;
     }
     
     public List<LopHocTheoNhomDTO> getTongLopHocTheoNhomMonHoc() {
@@ -128,7 +128,7 @@ public class LopHocDAO {
         e.printStackTrace();
     }
 
-    return result;
+             return result;
 }
 
     
@@ -170,7 +170,7 @@ public class LopHocDAO {
             e.printStackTrace();
         }
 
-        return list;
+                    return list;
     }
     
      public static List<LopHoc> getLopHocByIdKhoi(int idKhoiHoc) {
@@ -201,7 +201,7 @@ public class LopHocDAO {
             e.printStackTrace();
         }
 
-        return list;
+             return list;
     }
     
 }

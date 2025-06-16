@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
  * @author wrx_Chur04
  */
 public class TaiKhoanChiTiet {
-    private Integer ID_TaiKhoan;
+         private Integer ID_TaiKhoan;
     private String Email;
     private String HoTen ; 
     private String UserType;

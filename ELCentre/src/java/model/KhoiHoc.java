@@ -2,7 +2,7 @@
 package model;
 
 public class KhoiHoc {
-    private int ID_Khoi;
+            private int ID_Khoi;
     private String TenKhoi;
     private int Status_Khoi;
 

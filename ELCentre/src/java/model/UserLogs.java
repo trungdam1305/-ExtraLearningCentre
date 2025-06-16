@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDateTime;
 
 public class UserLogs {
-    private Integer ID_Log;
+            private Integer ID_Log;
     private Integer ID_TaiKhoan;
     private String HanhDong;
     private LocalDateTime ThoiGian;

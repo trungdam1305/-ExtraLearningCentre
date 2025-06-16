@@ -35,7 +35,7 @@ public class SliderDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return list;
+                return list;
     }
     
     public static void main(String[] args) {

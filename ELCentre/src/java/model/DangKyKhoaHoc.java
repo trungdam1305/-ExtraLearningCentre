@@ -10,7 +10,7 @@ public class DangKyKhoaHoc {
     private LocalDate NgayDangKy;
     private String TinhTrangHocPhi;
 
-    public DangKyKhoaHoc() {}
+                public DangKyKhoaHoc() {}
 
     public DangKyKhoaHoc(int ID_HocSinh, int ID_KhoaHoc, LocalDate NgayDangKy, String TinhTrangHocPhi) {
         this.ID_HocSinh = ID_HocSinh;

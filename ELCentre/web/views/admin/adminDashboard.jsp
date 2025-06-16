@@ -20,6 +20,7 @@
 <%@ page import="model.UserLogView" %>
 <%@ page import="java.time.LocalDate" %>
 
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -271,14 +272,22 @@
 
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>           
+
+
+                <li><a href="#">Dashboard</a></li>           
+
+
             </ul>
 
             <div class="sidebar-section-title">Quản lý người dùng</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocsinh"><i class="fas fa-users"></i> Học sinh</a></li>        
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=giaovien"><i class="fas fa-chalkboard-teacher"></i> Giáo viên</a></li>       
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=taikhoan"><i class="fas fa-user-shield"></i> Tài khoản</a></li>       
+
+
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocsinh">Học sinh</a></li>        
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=giaovien">Giáo viên</a></li>       
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=taikhoan">Tài khoản</a></li>       
+
+
             </ul>
 
             <div class="sidebar-section-title">Quản lý tài chính</div>
@@ -344,6 +353,7 @@
                     <h3 class="section-title"><i class="fas fa-history"></i> Hoạt động gần đây</h3>
                     <%
                       ArrayList<UserLogView> userLogsList = (ArrayList) UserLogsDAO.adminGetAllUserLogs();
+
                       request.setAttribute("userLogsList", userLogsList);
                     %>
                     <c:choose>
@@ -351,6 +361,10 @@
                             <table>
                                 <thead>
                                     <tr>
+
+
+
+
                                         <th>ID_Tài Khoản</th>
                                         <th>Họ và Tên</th>
                                         <th>Hành Động</th>
@@ -360,8 +374,10 @@
                                 <tbody>
                                     <c:forEach var="log" items="${userLogsList}">
                                         <tr>
+
                                             <td>${log.getID_TaiKhoan()}</td>
                                             <td>${log.getHoTen()}</td>
+
                                             <td>${log.getHanhDong()}</td>
                                             <td>${log.getThoiGian()}</td>
                                         </tr>
@@ -377,7 +393,10 @@
 
                 <!-- Lịch Học -->
                 <div class="data-table-container">
-                    <h3 class="section-title"><i class="fas fa-calendar"></i> Lịch Học Hôm Nay</h3>
+
+
+                    <h3 class="section-title">Lịch Học Hôm Nay</h3>
+
                     <%
                         LocalDate today = LocalDate.now();
                         String ngayHienTai = today.toString(); 
@@ -589,4 +608,7 @@
             });
         </script>
     </body>
+
+
 </html>
+

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class KhoaHoc {
-    private Integer ID_KhoaHoc;
+             private Integer ID_KhoaHoc;
     private String TenKhoaHoc;
     private String MoTa;
     private LocalDate ThoiGianBatDau;

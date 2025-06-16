@@ -27,7 +27,7 @@ public class UserLogsDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+                        return false;
         }
     }
     

@@ -155,7 +155,7 @@
                             <tr>
                                 <td>Trường học</td>
                                 <c:forEach var="hocsinh" items="${hocsinhs}">
-                                    <td><input type="text" name="truonghoc" value="${hocsinh.getTruongHoc()}" required=""/></td>
+                                    <td><input type="text" name="truonghoc" value="${hocsinh.getTenTruongHoc()}" required=""/></td>
                                     </c:forEach>
                             </tr>
                             <tr>

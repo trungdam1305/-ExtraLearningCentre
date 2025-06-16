@@ -24,16 +24,13 @@ public class LopHoc {
         this.TrangThai = TrangThai;
         this.SoTien = SoTien;
         this.NgayTao = NgayTao;
-        this.Image = Image;
+                this.Image = Image;
     }
 
     public LopHoc() {
     }
 
-    @Override
-    public String toString() {
-        return "LopHoc{" + "ID_LopHoc=" + ID_LopHoc + ", TenLopHoc=" + TenLopHoc + ", ID_KhoaHoc=" + ID_KhoaHoc + ", SiSo=" + SiSo + ", ThoiGianHoc=" + ThoiGianHoc + ", GhiChu=" + GhiChu + ", TrangThai=" + TrangThai + ", SoTien=" + SoTien + ", NgayTao=" + NgayTao + ", Image=" + Image + '}';
-    }
+    
 
     public String getImage() {
         return Image;

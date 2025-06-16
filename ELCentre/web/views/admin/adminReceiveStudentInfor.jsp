@@ -128,7 +128,7 @@
                             <tr>
                                 <td>Trường học</td>
                                 <c:forEach var="hocsinh" items="${hocsinhs}">
-                                    <td>${hocsinh.getTruongHoc()}</td>
+                                    <td>${hocsinh.getTenTruongHoc()}</td>
                                 </c:forEach>
                             </tr>
                             <tr>

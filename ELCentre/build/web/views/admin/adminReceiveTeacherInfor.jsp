@@ -133,7 +133,7 @@
                         <tr>
                             <td>Trường giảng dạy</td>
                             <c:forEach var="giaovien" items="${giaoviens}">
-                                <td>${giaovien.getTruongGiangDay()}</td>
+                                <td>${giaovien.getTenTruongHoc()}</td>
                             </c:forEach>
                         </tr>
                         <tr>

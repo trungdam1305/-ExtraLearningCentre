@@ -41,12 +41,12 @@ public class LichHocDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+                        return null;
         }
         if (lichhocs.isEmpty()) {
             return null;
         } else {
-            return lichhocs;
+                    return lichhocs;
         }
 
     }

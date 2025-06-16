@@ -44,7 +44,7 @@ public class Blog {
         BlogTitle = blogTitle;
     }
 
-    public String getBlogDescription() {
+            public String getBlogDescription() {
         return BlogDescription;
     }
 

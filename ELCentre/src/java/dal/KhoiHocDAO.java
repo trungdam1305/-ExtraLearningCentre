@@ -30,7 +30,7 @@ public class KhoiHocDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return list;
+                    return list;
     }
     
     
@@ -42,7 +42,7 @@ public class KhoiHocDAO {
         KhoiHocDAO dao = new KhoiHocDAO();
         khoi = dao.getAllKhoiHoc();
         for (KhoiHoc kh : khoi){
-            System.out.println(kh.getTenKhoi());
+                System.out.println(kh.getTenKhoi());
         }
     } 
 }

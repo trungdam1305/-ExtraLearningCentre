@@ -16,7 +16,8 @@ public class HocSinhDAO {
         DBContext db = DBContext.getInstance();
         ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>();
         String sql = """
-                         select * from HocSinh 
+                         select * from HocSinh hs JOIN TruongHoc th
+                         ON hs.ID_TruongHoc = th.ID_TruongHoc
                          """;
         try (PreparedStatement statement = db.getConnection().prepareStatement(sql); ResultSet rs = statement.executeQuery()) {
 
@@ -29,17 +30,18 @@ public class HocSinhDAO {
                         rs.getString("GioiTinh"),
                         rs.getString("DiaChi"),
                         rs.getString("SDT_PhuHuynh"),
-                        rs.getString("TruongHoc"),
+                        rs.getInt("ID_TruongHoc"),
                         rs.getString("GhiChu"),
                         rs.getString("TrangThai"),
-                        rs.getTimestamp("NgayTao").toLocalDateTime()
+                        rs.getTimestamp("NgayTao").toLocalDateTime(),
+                        rs.getString("TenTruongHoc")
                 );
                 hocsinhs.add(hocsinh);
             }
         } catch (SQLException e) {
             // Exception ignored 
         }
-        return hocsinhs;
+                    return hocsinhs;
     }
 
     public static ArrayList<HocSinh> adminGetHocSinhByID(String id) {
@@ -48,7 +50,8 @@ public class HocSinhDAO {
 
         try {
             String sql = """
-                         select * from HocSinh
+                         select * from HocSinh hs JOIN TruongHoc th
+                         ON hs.ID_TruongHoc = th.ID_TruongHoc
                          where ID_TaiKhoan = ? 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
@@ -64,12 +67,13 @@ public class HocSinhDAO {
                         rs.getString("GioiTinh"),
                         rs.getString("DiaChi"),
                         rs.getString("SDT_PhuHuynh"),
-                        rs.getString("TruongHoc"),
+                        rs.getInt("ID_TruongHoc"),
                         rs.getString("GhiChu"),
                         rs.getString("TrangThai"),
-                        rs.getTimestamp("NgayTao").toLocalDateTime()
+                        rs.getTimestamp("NgayTao").toLocalDateTime(),
+                        rs.getString("TenTruongHoc")
                 );
-                hocsinhs.add(hocsinh);
+                     hocsinhs.add(hocsinh);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -147,7 +151,7 @@ public class HocSinhDAO {
             e.printStackTrace();
 
         }
-        return tong;
+                return tong;
     }
     
     public static int getTotalHocSinh() {
@@ -172,11 +176,7 @@ public class HocSinhDAO {
     
    
     
-    public static void main(String[] args) {
-        int a = getTotalHocSinh();
-        System.out.println(a);
-
-    }
+    
 
     public static boolean adminUpdateInformationOfStudent( String diachi  , String truonghoc , String ghichu , int id){
         DBContext db = DBContext.getInstance() ; 

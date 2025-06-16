@@ -31,13 +31,13 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-//      // Xác thực Captcha
+//        // Xác thực Captcha
 //        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
 //        boolean isValidCaptcha = VerifyRecaptcha.verify(gRecaptchaResponse);
 //
 //        if (!isValidCaptcha) {
 //            String error = "Vui lòng xác nhận bạn không phải là robot.";
-//              response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
+//            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
 //            return;
 //        }
 
@@ -49,7 +49,7 @@ public class LoginServlet extends HttpServlet {
         }
 
         try {
-               TaiKhoan user = TaiKhoanDAO.login(email, password);
+            TaiKhoan user = TaiKhoanDAO.login(email, password);
 
             if (user != null) {
                 if ("Inactive".equalsIgnoreCase(user.getTrangThai())) {
