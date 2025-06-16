@@ -75,6 +75,7 @@
     <body>
         <h2>Thông tin học sinh</h2>
 
+
         <c:choose>
             <c:when test="${not empty hocsinhs}">
                 <div class="table-container">

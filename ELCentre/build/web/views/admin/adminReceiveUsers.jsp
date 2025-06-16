@@ -122,8 +122,7 @@
                     </thead>
                     <tbody>
                         <c:forEach var="tk" items="${sessionScope.taikhoans}">
-                            <tr>
-
+                            <tr>    
                                 <td>${tk.email}</td>
                                 <td>${tk.getHoTen()}</td>
                                 <td>${tk.userType}</td>
@@ -167,7 +166,6 @@
         <div class="back-button">
             <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
         </div>
-
 
     </body>
 </html>

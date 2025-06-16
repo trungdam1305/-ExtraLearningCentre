@@ -150,6 +150,34 @@ public class HocSinhDAO {
         return tong;
     }
     
+    public static int getTotalHocSinh() {
+        DBContext db = DBContext.getInstance();
+        int total = 0;
+        try {
+            String sql = """
+            SELECT COUNT(*) FROM HocSinh
+        """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+            rs.close();
+            statement.close();
+        } catch (Exception e) {
+            return 0; // hoặc có thể trả về -1 để phân biệt có lỗi
+        }
+        return total;
+    }
+    
+   
+    
+    public static void main(String[] args) {
+        int a = getTotalHocSinh();
+        System.out.println(a);
+
+    }
+
     public static boolean adminUpdateInformationOfStudent( String diachi  , String truonghoc , String ghichu , int id){
         DBContext db = DBContext.getInstance() ; 
         int rs = 0 ; 

@@ -55,10 +55,10 @@ public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         HttpSession session = request.getSession(false); 
-            if (session != null) {              
-                session.invalidate();           //destrpy session to log out account
+            if (session != null) {
+                session.invalidate();
             }
-            response.sendRedirect(request.getContextPath() + "/views/HomePage.jsp");            //redirect to home page
+            response.sendRedirect(request.getContextPath() + "/HomePage");
 
 
     } 

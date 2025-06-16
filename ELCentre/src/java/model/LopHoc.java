@@ -12,11 +12,9 @@ public class LopHoc {
     private String TrangThai;
     private String SoTien;
     private LocalDateTime NgayTao;
-    
-    public LopHoc() {
-    }
+    private String Image;
 
-    public LopHoc(Integer ID_LopHoc, String TenLopHoc, Integer ID_KhoaHoc, Integer SiSo, String ThoiGianHoc, String GhiChu, String TrangThai, String SoTien, LocalDateTime NgayTao) {
+    public LopHoc(Integer ID_LopHoc, String TenLopHoc, Integer ID_KhoaHoc, Integer SiSo, String ThoiGianHoc, String GhiChu, String TrangThai, String SoTien, LocalDateTime NgayTao, String Image) {
         this.ID_LopHoc = ID_LopHoc;
         this.TenLopHoc = TenLopHoc;
         this.ID_KhoaHoc = ID_KhoaHoc;
@@ -26,6 +24,23 @@ public class LopHoc {
         this.TrangThai = TrangThai;
         this.SoTien = SoTien;
         this.NgayTao = NgayTao;
+        this.Image = Image;
+    }
+
+    public LopHoc() {
+    }
+
+    @Override
+    public String toString() {
+        return "LopHoc{" + "ID_LopHoc=" + ID_LopHoc + ", TenLopHoc=" + TenLopHoc + ", ID_KhoaHoc=" + ID_KhoaHoc + ", SiSo=" + SiSo + ", ThoiGianHoc=" + ThoiGianHoc + ", GhiChu=" + GhiChu + ", TrangThai=" + TrangThai + ", SoTien=" + SoTien + ", NgayTao=" + NgayTao + ", Image=" + Image + '}';
+    }
+
+    public String getImage() {
+        return Image;
+    }
+
+    public void setImage(String Image) {
+        this.Image = Image;
     }
 
     
