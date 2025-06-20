@@ -1,3 +1,11 @@
+<!-- 
+  Created on: May 24, 2025, 2:44:16 PM
+  Author: wrx_Chur04
+  Purpose: This admin dashboard page for the EL CENTRE system is designed to provide an overview of key 
+  metrics including the number of students, teachers, classes, and revenue. It also tracks recent user activities, today's schedule, 
+  and offers visual charts for attendance, student satisfaction, and monthly revenue analysis.
+-->
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.ArrayList" %>
@@ -348,6 +356,24 @@
                 border-radius: 4px;
                 cursor: pointer;
             }
+
+            /* Footer Styles */
+            .footer {
+                background-color: #1F4E79;
+                color: #B0C4DE;
+                text-align: center;
+                padding: 10px 0;
+                position: fixed;
+                width: calc(100% - 250px);
+                bottom: 0;
+                margin-left: 250px;
+                box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+            }
+
+            .footer p {
+                margin: 0;
+                font-size: 14px;
+            }
         </style>
     </head>
     <body>
@@ -398,6 +424,7 @@
 
             <div class="sidebar-section-title">Khác</div>
             <ul class="sidebar-menu">
+                <li><a href="#"><i class="fas fa-blog"></i>Yêu cầu tư vấn</a></li>
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
                 <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
                 <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
@@ -547,6 +574,11 @@
             </div>
         </div>
 
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
+        </div>
+
         <script>
             // Toggle Dropdown Menu
             function toggleDropdown() {
@@ -581,25 +613,7 @@
                         hoverOffset: 15
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'top', labels: { color: '#1F4E79', font: { size: 14 } } },
-                        title: {
-                            display: true,
-                            text: 'Điểm danh ngày <%= today.toString().replaceAll("-", "/") %>',
-                            color: '#1F4E79',
-                            font: { size: 18, weight: 'bold' }
-                        },
-                        tooltip: {
-                            backgroundColor: '#1F4E79',
-                            titleColor: '#ffffff',
-                            bodyColor: '#ffffff',
-                            caretSize: 0
-                        }
-                    }
-                }
+                
             });
 
             // Student Satisfaction Chart (Doughnut Chart)
@@ -620,25 +634,7 @@
                         hoverOffset: 15
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'top', labels: { color: '#1F4E79', font: { size: 14 } } },
-                        title: {
-                            display: true,
-                            text: 'Mức độ hài lòng tháng <%= today.getMonthValue() %>/<%= today.getYear() %>',
-                            color: '#1F4E79',
-                            font: { size: 18, weight: 'bold' }
-                        },
-                        tooltip: {
-                            backgroundColor: '#8E24AA',
-                            titleColor: '#ffffff',
-                            bodyColor: '#ffffff',
-                            caretSize: 0
-                        }
-                    }
-                }
+                
             });
 
             // Revenue Chart (Bar Chart)
@@ -650,7 +646,7 @@
                 type: 'bar',
                 data: {
                     labels: ['Tháng 1/2025', 'Tháng 2/2025', 'Tháng 3/2025', 'Tháng <%= today.getMonthValue() %>/<%= today.getYear() %>'],
-                    datasets: [{
+                    datasets: [{                                                                                                                                                                                                    
                         label: 'Doanh thu (VND)',
                         data: [1500000, 1800000, 2000000, 2500000],
                         backgroundColor: revenueGradient,
@@ -660,83 +656,64 @@
                         hoverBackgroundColor: '#A5D6A7'
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: { display: true, text: 'Doanh thu (VND)', color: '#2E7D32' }
-                        },
-                        x: {
-                            title: { display: true, text: 'Tháng', color: '#2E7D32' }
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: '#2E7D32',
-                            titleColor: '#ffffff',
-                            bodyColor: '#ffffff',
-                            caretSize: 0
-                        }
-                    }
-                }
+                
             });
-            
-            
+
+
+
+
             
             // Số dòng muốn hiển thị mỗi trang
-    var soDongMoiTrang = 10;
+            var soDongMoiTrang = 10;
 
-    // Lấy tất cả dòng (tr) trong bảng giáo viên
-    var tatCaDong = document.querySelectorAll("#userLogTableBody tr");
+            // Lấy tất cả dòng (tr) trong bảng giáo viên
+            var tatCaDong = document.querySelectorAll("#userLogTableBody tr");
 
-    // Tổng số trang = tổng số dòng chia cho số dòng mỗi trang (làm tròn lên)
-    var tongSoTrang = Math.ceil(tatCaDong.length / soDongMoiTrang);
+            // Tổng số trang = tổng số dòng chia cho số dòng mỗi trang (làm tròn lên)
+            var tongSoTrang = Math.ceil(tatCaDong.length / soDongMoiTrang);
 
-    // Nơi hiển thị các nút phân trang
-    var phanTrangDiv = document.getElementById("pagination");
+            // Nơi hiển thị các nút phân trang
+            var phanTrangDiv = document.getElementById("pagination");
 
-    // Hàm hiển thị trang số "trang"
-    function hienThiTrang(trang) {
-        // Ẩn tất cả dòng
-        for (var i = 0; i < tatCaDong.length; i++) {
-            tatCaDong[i].style.display = "none";
-        }
+            // Hàm hiển thị trang số "trang"
+            function hienThiTrang(trang) {
+                // Ẩn tất cả dòng
+                for (var i = 0; i < tatCaDong.length; i++) {
+                    tatCaDong[i].style.display = "none";
+                }
 
-        // Hiện các dòng thuộc trang đang chọn
-        var batDau = (trang - 1) * soDongMoiTrang;
-        var ketThuc = batDau + soDongMoiTrang;
-        for (var i = batDau; i < ketThuc && i < tatCaDong.length; i++) {
-            tatCaDong[i].style.display = "";
-        }
+                // Hiện các dòng thuộc trang đang chọn
+                var batDau = (trang - 1) * soDongMoiTrang;
+                var ketThuc = batDau + soDongMoiTrang;
+                for (var i = batDau; i < ketThuc && i < tatCaDong.length; i++) {
+                    tatCaDong[i].style.display = "";
+                }
 
-        // Tạo lại các nút phân trang
-        phanTrangDiv.innerHTML = "";
-        for (var j = 1; j <= tongSoTrang; j++) {
-            var nut = document.createElement("button");
-            nut.innerText = j;
+                // Tạo lại các nút phân trang
+                phanTrangDiv.innerHTML = "";
+                for (var j = 1; j <= tongSoTrang; j++) {
+                    var nut = document.createElement("button");
+                    nut.innerText = j;
 
-            // Khi bấm vào nút thì sẽ gọi lại chính hàm này với số trang mới
-            nut.onclick = (function(trangDuocChon) {
-                return function() {
-                    hienThiTrang(trangDuocChon);
-                };
-            })(j);
+                    // Khi bấm vào nút thì sẽ gọi lại chính hàm này với số trang mới
+                    nut.onclick = (function(trangDuocChon) {
+                        return function() {
+                            hienThiTrang(trangDuocChon);
+                        };
+                    })(j);
 
-            // Tô màu cho trang đang chọn
-            if (j === trang) {
-                nut.style.backgroundColor = "#1F4E79";
-                nut.style.color = "white";
+                    // Tô màu cho trang đang chọn
+                    if (j === trang) {
+                        nut.style.backgroundColor = "#1F4E79";
+                        nut.style.color = "white";
+                    }
+
+                    phanTrangDiv.appendChild(nut);
+                }
             }
 
-            phanTrangDiv.appendChild(nut);
-        }
-    }
-
-    // Lần đầu gọi hàm để hiện trang 1
-    hienThiTrang(1);
+            // Lần đầu gọi hàm để hiện trang 1
+            hienThiTrang(1);
         </script>
     </body>
-</html>
+</html> 

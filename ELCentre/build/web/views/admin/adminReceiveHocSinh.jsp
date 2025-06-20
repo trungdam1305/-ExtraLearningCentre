@@ -2,21 +2,30 @@
     Document   : adminReceiveHocSinh
     Created on : May 24, 2025, 11:09:21 PM
     Author     : wrx_Chur04
+    Purpose    : This page displays a list of all students (học sinh) in the EL CENTRE system, 
+                including details like name, birth date, gender, address, parent contact, school, and status. 
+                It supports filtering by gender, searching, and pagination, with action links for viewing details, scores, and editing student records.
+    Parameters:
+    - @Param hocsinhs (ArrayList<HocSinh>): A request attribute containing the list of student objects fetched from the database.
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>All Students Learn</title  >
+        <title>All Students Learn</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
                 background-color: #f4f8fb;
                 color: #1F4E79;
-                margin: 20px;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
             }
 
             h2 {
@@ -103,140 +112,266 @@
             .action-link:hover {
                 background-color: #163b5c;
             }
-            
+
+            /* Header Styles */
+            .header {
+                background-color: #1F4E79;
+                color: white;
+                padding: 10px 20px;
+                text-align: left;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .header .left-title {
+                font-size: 24px;
+                letter-spacing: 1px;
+                display: flex;
+                align-items: center;
+            }
+
+            .header .left-title img {
+                width: 80px;
+                height: 80px;
+                margin-right: 10px;
+                border-radius: 5px;
+                object-fit: contain;
+            }
+
+            .header .left-title i {
+                margin-left: 10px;
+            }
+
+            .admin-profile {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                cursor: pointer;
+            }
+
+            .admin-profile .admin-img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid #B0C4DE;
+                margin-bottom: 5px;
+            }
+
+            .admin-profile span {
+                font-size: 16px;
+                color: #B0C4DE;
+                font-weight: 600;
+                max-width: 250px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .admin-profile i {
+                color: #B0C4DE;
+                margin-left: 10px;
+            }
+
+            .dropdown-menu {
+                display: none;
+                position: absolute;
+                top: 50px;
+                right: 0;
+                background: #163E5C;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                min-width: 150px;
+                z-index: 1001;
+            }
+
+            .dropdown-menu.active {
+                display: block;
+            }
+
+            .dropdown-menu a {
+                display: block;
+                padding: 10px 15px;
+                color: white;
+                text-decoration: none;
+                font-size: 14px;
+                transition: background-color 0.3s ease;
+            }
+
+            .dropdown-menu a:hover {
+                background-color: #1F4E79;
+            }
+
+            .dropdown-menu a i {
+                margin-right: 8px;
+            }
+
+            /* Footer Styles */
+            .footer {
+                background-color: #1F4E79;
+                color: #B0C4DE;
+                text-align: center;
+                padding: 10px 0;
+                margin-top: auto;
+            }
+
+            .footer p {
+                margin: 0;
+                font-size: 14px;
+            }
+
+            /* Ensure main content pushes footer down */
+            .main-content {
+                flex: 1 0 auto;
+                padding-bottom: 40px;
+            }
         </style>
     </head>
     <body>
-        <h2>Quản lý học sinh</h2>
-        
-        <div style="display: flex; justify-content: flex-end; align-items: center; gap: 15px;">
-            <input type="text" id="searchInput" placeholder="Tìm kiếm...">
-
-            <label for="statusFilter" style="margin: 0;">Lọc theo giới tính:</label>
-            <select id="statusFilter">
-                <option value="all">Nam</option>
-                <option value="active">Nữ</option>
-                
-            </select>
-
-            
-        </div>
-        <c:choose>
-            <c:when test = "${not empty hocsinhs}">
-                <table>
-
-                    <thead>
-                        <tr>
-                            
-
-                            <th>Họ và Tên</th>
-                            <th>Ngày Sinh</th>
-                            <th>Giới Tính</th>
-                            <th>Địa Chỉ</th>
-                            <th>Số điện thoại phụ huynh</th>
-                            <th>Trường học</th>
-                            <th>Ghi Chú</th>
-                            <th>Trạng Thái</th>
-                            <th>Ngày Tạo</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="studentTableBody">
-                        <c:forEach var="hocsinh" items="${hocsinhs}">
-                            <tr>
-
-
-                                <td>${hocsinh.getHoTen()}</td>
-                                <td>${hocsinh.getNgaySinh()}</td>
-                                <td>${hocsinh.getGioiTinh()}</td>
-                                <td>${hocsinh.getDiaChi()}</td>
-                                <td>${hocsinh.getSDT_PhuHuynh()}</td>
-                                <td>${hocsinh.getTenTruongHoc()}</td>
-                                <td>${hocsinh.getGhiChu()}</td>
-                                <td>${hocsinh.getTrangThai()}</td>
-                                <td>${hocsinh.getNgayTao()}</td>
-                                 <td>
-                                  <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithStudent?action=view&id=${hocsinh.getID_HocSinh()}">Chi tiết</a> 
-                                    | 
-                                  <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewDiem&id=${hocsinh.getID_HocSinh()}">Điểm số</a>  
-                                    |
-                                  <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithStudent?action=update&id=${hocsinh.getID_HocSinh()}">Chỉnh sửa</a> 
-                                </td>
-                            </tr>   
-                        </c:forEach>
-                    </tbody>
-                </table>
-            </c:when>
-            <c:otherwise>   
-                <div class="no-reports-message">
-                    <c:if test="${not empty message}">
-                        <p style="color: red;">${message}</p>
-                    </c:if>
-                    <p>Không có dữ liệu học sinh để hiển thị.</p>
+        <!-- Header -->
+        <div class="header">
+            <div class="left-title">
+                <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
+                EL CENTRE <i class="fas fa-user-graduate"></i>
+            </div>
+            <div class="admin-profile" onclick="toggleDropdown()">
+                <img src="https://png.pngtree.com/png-clipart/20250117/original/pngtree-account-avatar-user-abstract-circle-background-flat-color-icon-png-image_4965046.png" alt="Admin Photo" class="admin-img">
+                <span>Admin Vũ Văn Chủ</span>
+                <i class="fas fa-caret-down"></i>
+                <div class="dropdown-menu" id="adminDropdown">
+                    <a href="#"><i class="fas fa-key"></i> Change Password</a>
+                    <a href="#"><i class="fas fa-user-edit"></i> Update Information</a>
                 </div>
-            </c:otherwise>
-        </c:choose>
-
-        <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
-        
-        <div class="back-button">
-            <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
+            </div>
         </div>
-        
+
+        <div class="main-content">
+            <h2>Quản lý học sinh</h2>
+            
+            <div style="display: flex; justify-content: flex-end; align-items: center; gap: 15px;">
+                <input type="text" id="searchInput" placeholder="Tìm kiếm...">
+
+                <label for="statusFilter" style="margin: 0;">Lọc theo giới tính:</label>
+                <select id="statusFilter">
+                    <option value="all">Nam</option>
+                    <option value="active">Nữ</option>
+                </select>
+            </div>
+
+            <c:choose>
+                <c:when test="${not empty hocsinhs}">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Họ và Tên</th>
+                                <th>Ngày Sinh</th>
+                                <th>Giới Tính</th>
+                                <th>Địa Chỉ</th>
+                                <th>Số điện thoại phụ huynh</th>
+                                <th>Trường học</th>
+                                <th>Ghi Chú</th>
+                                <th>Trạng Thái</th>
+                                <th>Ngày Tạo</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentTableBody">
+                            <c:forEach var="hocsinh" items="${hocsinhs}">
+                                <tr>
+                                    <td>${hocsinh.getHoTen()}</td>
+                                    <td>${hocsinh.getNgaySinh()}</td>
+                                    <td>${hocsinh.getGioiTinh()}</td>
+                                    <td>${hocsinh.getDiaChi()}</td>
+                                    <td>${hocsinh.getSDT_PhuHuynh()}</td>
+                                    <td>${hocsinh.getTenTruongHoc()}</td>
+                                    <td>${hocsinh.getGhiChu()}</td>
+                                    <td>${hocsinh.getTrangThai()}</td>
+                                    <td>${hocsinh.getNgayTao()}</td>
+                                    <td>
+                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithStudent?action=view&id=${hocsinh.getID_HocSinh()}">Chi tiết</a> | 
+                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewDiem&id=${hocsinh.getID_HocSinh()}">Điểm số</a> | 
+                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithStudent?action=update&id=${hocsinh.getID_HocSinh()}">Chỉnh sửa</a> 
+                                    </td>
+                                </tr>   
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </c:when>
+                <c:otherwise>   
+                    <div class="no-data">
+                        <c:if test="${not empty message}">
+                            <p style="color: red;">${message}</p>
+                        </c:if>
+                        <p>Không có dữ liệu học sinh để hiển thị.</p>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+
+            <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
+            
+            <div class="back-button">
+                <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
+        </div>
+
         <script>
-    // Số dòng muốn hiển thị mỗi trang
-    var soDongMoiTrang = 2;
-
-    // Lấy tất cả dòng (tr) trong bảng giáo viên
-    var tatCaDong = document.querySelectorAll("#studentTableBody tr");
-
-    // Tổng số trang = tổng số dòng chia cho số dòng mỗi trang (làm tròn lên)
-    var tongSoTrang = Math.ceil(tatCaDong.length / soDongMoiTrang);
-
-    // Nơi hiển thị các nút phân trang
-    var phanTrangDiv = document.getElementById("pagination");
-
-    // Hàm hiển thị trang số "trang"
-    function hienThiTrang(trang) {
-        // Ẩn tất cả dòng
-        for (var i = 0; i < tatCaDong.length; i++) {
-            tatCaDong[i].style.display = "none";
-        }
-
-        // Hiện các dòng thuộc trang đang chọn
-        var batDau = (trang - 1) * soDongMoiTrang;
-        var ketThuc = batDau + soDongMoiTrang;
-        for (var i = batDau; i < ketThuc && i < tatCaDong.length; i++) {
-            tatCaDong[i].style.display = "";
-        }
-
-        // Tạo lại các nút phân trang
-        phanTrangDiv.innerHTML = "";
-        for (var j = 1; j <= tongSoTrang; j++) {
-            var nut = document.createElement("button");
-            nut.innerText = j;
-
-            // Khi bấm vào nút thì sẽ gọi lại chính hàm này với số trang mới
-            nut.onclick = (function(trangDuocChon) {
-                return function() {
-                    hienThiTrang(trangDuocChon);
-                };
-            })(j);
-
-            // Tô màu cho trang đang chọn
-            if (j === trang) {
-                nut.style.backgroundColor = "#1F4E79";
-                nut.style.color = "white";
+            // Dropdown Toggle Functionality
+            function toggleDropdown() {
+                const dropdown = document.getElementById('adminDropdown');
+                dropdown.classList.toggle('active');
             }
 
-            phanTrangDiv.appendChild(nut);
-        }
-    }
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                const profile = document.querySelector('.admin-profile');
+                const dropdown = document.getElementById('adminDropdown');
+                if (!profile.contains(event.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
 
-    // Lần đầu gọi hàm để hiện trang 1
-    hienThiTrang(1);
-</script>
+            // Pagination Logic
+            var soDongMoiTrang = 2;
+            var tatCaDong = document.querySelectorAll("#studentTableBody tr");
+            var tongSoTrang = Math.ceil(tatCaDong.length / soDongMoiTrang);
+            var phanTrangDiv = document.getElementById("pagination");
 
+            function hienThiTrang(trang) {
+                for (var i = 0; i < tatCaDong.length; i++) {
+                    tatCaDong[i].style.display = "none";
+                }
+                var batDau = (trang - 1) * soDongMoiTrang;
+                var ketThuc = batDau + soDongMoiTrang;
+                for (var i = batDau; i < ketThuc && i < tatCaDong.length; i++) {
+                    tatCaDong[i].style.display = "";
+                }
+                phanTrangDiv.innerHTML = "";
+                for (var j = 1; j <= tongSoTrang; j++) {
+                    var nut = document.createElement("button");
+                    nut.innerText = j;
+                    nut.onclick = (function(trangDuocChon) {
+                        return function() {
+                            hienThiTrang(trangDuocChon);
+                        };
+                    })(j);
+                    if (j === trang) {
+                        nut.style.backgroundColor = "#1F4E79";
+                        nut.style.color = "white";
+                    }
+                    phanTrangDiv.appendChild(nut);
+                }
+            }
+
+            window.onload = () => hienThiTrang(1);
+        </script>
     </body>
 </html>
