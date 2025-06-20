@@ -64,6 +64,22 @@
         <servlet-name>HomeCourse</servlet-name>
         <servlet-class>controller.HomeCourse</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HomePageCourse</servlet-name>
+        <servlet-class>controller.HomePageCourse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HomePageMaterial</servlet-name>
+        <servlet-class>controller.HomePageMaterial</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HomePageLearning</servlet-name>
+        <servlet-class>controller.HomePageLearning</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HomePageBlog</servlet-name>
+        <servlet-class>controller.HomePageBlog</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -127,6 +143,22 @@
     <servlet-mapping>
         <servlet-name>HomeCourse</servlet-name>
         <url-pattern>/HomeCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomePageCourse</servlet-name>
+        <url-pattern>/HomePageCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomePageMaterial</servlet-name>
+        <url-pattern>/HomePageMaterial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomePageLearning</servlet-name>
+        <url-pattern>/HomePageLearning</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomePageBlog</servlet-name>
+        <url-pattern>/HomePageBlog</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

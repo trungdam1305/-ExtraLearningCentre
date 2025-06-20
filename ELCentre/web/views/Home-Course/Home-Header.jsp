@@ -68,14 +68,9 @@
                             <img class="retina_logo" src="<%= context %>/img/SieuLogo.png" alt="Extra Learning Centre Theme" title="Extra Learning Centre Theme" style="width:174px; height:94px;"/>
                         </a>                        
                     </div>
-                    <!--Search for Courses bar -->
+                    
                     <div id="primary-menu">
-                        <form action="<%= context %>/SearchCourses" method="get" style="display: flex; align-items: center; transform: translateY(20px)">
-                            <input type="text" name="query" placeholder="Tìm Khóa Học..." style="padding: 5px 8px; border-radius: 3px; border: 1px solid #ccc; font-size: 14px;" />
-                            <button type="submit" style="padding: 6px 10px; transform: translateY(-15px); border: none; border-radius: 4px" class="dt-sc-button small">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </form> 
+                        
                         <!--Navigation Bar-->
                         <nav id="main-menu">
                             <ul id="menu-main-menu" class="menu" style="position: relative; transform: translateY(-10px); display: flex; align-items: center; gap: 30px 20px;">
@@ -87,25 +82,25 @@
                                 </li>
                                 <!--Courses-->
                                 <li class="menu-item <%= uri.contains("/Home-Course") ? "current-menu-item" : "" %>">
-                                    <a href="<%= context %>/views/Home-Course/Homepage-Course.jsp">
+                                    <a href="<%= context %>/HomePageCourse">
                                         <span class='menu-icon fa fa-shopping-cart'> </span>Khóa Học
                                     </a>
                                 </li>
                                 <!--Learning Materials-->
                                 <li class="menu-item <%= uri.contains("/Home-Material") ? "current-menu-item" : "" %>">
-                                    <a href="<%= context %>/views/Home-Material/Homepage-Material.jsp">
+                                    <a href="<%= context %>/HomePageMaterial">
                                         <span class='menu-icon fa fa-gift'> </span>Tài Liệu Học
                                     </a>
                                 </li>
                                 <!--Learning Class-->
                                 <li class="menu-item <%= uri.contains("/Home-Learning") ? "current-menu-item" : "" %>">
-                                    <a href="<%= context %>/views/Home-Learning/Homepage-Learning.jsp">
+                                    <a href="<%= context %>/HomePageLearning">
                                         <span class='menu-icon fa fa-book'> </span>Học Bài
                                     </a>
                                 </li>
                                 <!--Blog-->
                                 <li class="menu-item <%= uri.contains("/Home-Blog") ? "current-menu-item" : "" %>">
-                                    <a href="<%= context %>/views/Home-Blog/Homepage-Blog.jsp">
+                                    <a href="<%= context %>/HomePageBlog">
                                         <span class='menu-icon fa fa-pencil'> </span>Blog
                                     </a>
                                 </li>

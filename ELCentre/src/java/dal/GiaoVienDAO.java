@@ -40,7 +40,7 @@ public class GiaoVienDAO {
                         rs.getString("SDT"),
                         rs.getInt("ID_TruongHoc"),
                         rs.getBigDecimal("Luong"),
-                        rs.getString("GhiChu"),
+                        rs.getInt("IsHot"),
                         rs.getString("TrangThai"),
                         rs.getTimestamp("NgayTao").toLocalDateTime() , 
                         rs.getString("Avatar"),
@@ -82,7 +82,7 @@ public class GiaoVienDAO {
                         rs.getString("SDT"),
                         rs.getInt("ID_TruongHoc"),
                         rs.getBigDecimal("Luong"),
-                        rs.getString("GhiChu"),
+                        rs.getInt("IsHot"),
                         rs.getString("TrangThai"),
                         rs.getTimestamp("NgayTao").toLocalDateTime() , 
                         rs.getString("Avatar"),
@@ -121,7 +121,7 @@ public class GiaoVienDAO {
             gv.setSDT(rs.getString("SDT"));
             gv.setTenTruongHoc(rs.getString("TenTruongHoc"));
             gv.setLuong(rs.getBigDecimal("Luong"));
-            gv.setGhiChu(rs.getString("GhiChu"));
+            gv.setIsHot(rs.getInt("IsHot"));
             gv.setTrangThai(rs.getString("TrangThai"));
             gv.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
             gv.setAvatar(rs.getString("Avatar"));
@@ -138,7 +138,7 @@ public class GiaoVienDAO {
     ArrayList<GiaoVien> giaoviens = new ArrayList<>();
     String sql = "SELECT gv.*, th.TenTruongHoc FROM GiaoVien gv "
                + "JOIN TruongHoc th ON gv.ID_TruongHoc = th.ID_TruongHoc "
-               + "WHERE gv.GhiChu IS NOT NULL;";
+               + "ORDER BY gv.IsHot ASC;";
     try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
         ResultSet rs = statement.executeQuery();
         while (rs.next()) {
@@ -149,7 +149,7 @@ public class GiaoVienDAO {
             gv.setSDT(rs.getString("SDT"));
             gv.setTenTruongHoc(rs.getString("TenTruongHoc"));
             gv.setLuong(rs.getBigDecimal("Luong"));
-            gv.setGhiChu(rs.getString("GhiChu"));
+            gv.setIsHot(rs.getInt("IsHot"));
             gv.setTrangThai(rs.getString("TrangThai"));
             gv.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
             gv.setAvatar(rs.getString("Avatar"));
@@ -187,7 +187,7 @@ public class GiaoVienDAO {
                         rs.getString("SDT"),
                         rs.getInt("ID_TruongHoc"),
                         rs.getBigDecimal("Luong"),
-                        rs.getString("GhiChu"),
+                        rs.getInt("IsHot"),
                         rs.getString("TrangThai"),
                         rs.getTimestamp("NgayTao").toLocalDateTime() , 
                         rs.getString("Avatar"),

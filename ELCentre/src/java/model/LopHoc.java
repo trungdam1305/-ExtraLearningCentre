@@ -7,19 +7,19 @@ public class LopHoc {
     private String TenLopHoc;
     private Integer ID_KhoaHoc;
     private Integer SiSo;
-    private String ThoiGianHoc;
+    private int ID_ThoiGian;
     private String GhiChu;
     private String TrangThai;
     private String SoTien;
     private LocalDateTime NgayTao;
     private String Image;
 
-    public LopHoc(Integer ID_LopHoc, String TenLopHoc, Integer ID_KhoaHoc, Integer SiSo, String ThoiGianHoc, String GhiChu, String TrangThai, String SoTien, LocalDateTime NgayTao, String Image) {
+    public LopHoc(Integer ID_LopHoc, String TenLopHoc, Integer ID_KhoaHoc, Integer SiSo, int ID_ThoiGian, String GhiChu, String TrangThai, String SoTien, LocalDateTime NgayTao, String Image) {
         this.ID_LopHoc = ID_LopHoc;
         this.TenLopHoc = TenLopHoc;
         this.ID_KhoaHoc = ID_KhoaHoc;
         this.SiSo = SiSo;
-        this.ThoiGianHoc = ThoiGianHoc;
+        this.ID_ThoiGian = ID_ThoiGian;
         this.GhiChu = GhiChu;
         this.TrangThai = TrangThai;
         this.SoTien = SoTien;
@@ -32,7 +32,7 @@ public class LopHoc {
 
     @Override
     public String toString() {
-        return "LopHoc{" + "ID_LopHoc=" + ID_LopHoc + ", TenLopHoc=" + TenLopHoc + ", ID_KhoaHoc=" + ID_KhoaHoc + ", SiSo=" + SiSo + ", ThoiGianHoc=" + ThoiGianHoc + ", GhiChu=" + GhiChu + ", TrangThai=" + TrangThai + ", SoTien=" + SoTien + ", NgayTao=" + NgayTao + ", Image=" + Image + '}';
+        return "LopHoc{" + "ID_LopHoc=" + ID_LopHoc + ", TenLopHoc=" + TenLopHoc + ", ID_KhoaHoc=" + ID_KhoaHoc + ", SiSo=" + SiSo + ", ID_ThoiGian=" + ID_ThoiGian + ", GhiChu=" + GhiChu + ", TrangThai=" + TrangThai + ", SoTien=" + SoTien + ", NgayTao=" + NgayTao + ", Image=" + Image + '}';
     }
 
     public String getImage() {
@@ -56,8 +56,8 @@ public class LopHoc {
     public Integer getSiSo() { return SiSo; }
     public void setSiSo(Integer SiSo) { this.SiSo = SiSo; }
 
-    public String getThoiGianHoc() { return ThoiGianHoc; }
-    public void setThoiGianHoc(String ThoiGianHoc) { this.ThoiGianHoc = ThoiGianHoc; }
+    public int getID_ThoiGian() { return ID_ThoiGian; }
+    public void setID_ThoiGian(int ID_ThoiGian) { this.ID_ThoiGian = ID_ThoiGian; }
 
     public String getGhiChu() { return GhiChu; }
     public void setGhiChu(String GhiChu) { this.GhiChu = GhiChu; }
