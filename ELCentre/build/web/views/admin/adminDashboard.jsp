@@ -233,7 +233,7 @@
 
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=khoahoc">Khoá học</a></li>
+                <li><a href="${pageContext.request.contextPath}/ManageCourse">Khoá học</a></li>
             </ul>
 
             <div class="sidebar-section-title">Hệ thống</div>

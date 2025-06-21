@@ -19,8 +19,6 @@ public class KhoaHoc {
         return ID_Khoi;
     }
 
-    
-    
     public void setID_Khoi(int ID_Khoi) {
         this.ID_Khoi = ID_Khoi;
     }
@@ -37,24 +35,14 @@ public class KhoaHoc {
         this.ID_Khoi = ID_Khoi;
     }
 
-    public KhoaHoc(Integer ID_KhoaHoc, String TenKhoaHoc, String MoTa, LocalDate ThoiGianBatDau, LocalDate ThoiGianKetThuc, String GhiChu, String TrangThai, LocalDateTime NgayTao) {
-        this.ID_KhoaHoc = ID_KhoaHoc;
-        this.TenKhoaHoc = TenKhoaHoc;
-        this.MoTa = MoTa;
-        this.ThoiGianBatDau = ThoiGianBatDau;
-        this.ThoiGianKetThuc = ThoiGianKetThuc;
-        this.GhiChu = GhiChu;
-        this.TrangThai = TrangThai;
-        this.NgayTao = NgayTao;
-    }
-
     
 
     public KhoaHoc() {
     }
 
     
-
+    
+    
     
     public Integer getID_KhoaHoc() { return ID_KhoaHoc; }
     public void setID_KhoaHoc(Integer ID_KhoaHoc) { this.ID_KhoaHoc = ID_KhoaHoc; }
@@ -94,6 +82,23 @@ public String getThoiGianKetThucFormatted() {
     }
     return "";
 }
+
+public String getNgayTaoFormatted() {
+    if (NgayTao != null) {
+        return NgayTao.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    }
+    return "";
+}
+
+public String getLopTheoKhoi() {
+    if (ID_Khoi >= 1 && ID_Khoi <= 7) {
+        return "Lớp " + (ID_Khoi + 5); // Vì 1 => lớp 6, nên cộng 5
+    } else {
+        return "Tổng ôn";
+    }
+}
+
+
 }
 
 
