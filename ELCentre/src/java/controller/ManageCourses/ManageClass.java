@@ -389,7 +389,7 @@ public class ManageClass extends HttpServlet {
                     return;
                 }
 
-                // Xử lý ảnh
+                // Xử lý ảnh - Lưu vào thư mục cố định trong project
                 Part filePart = request.getPart("Image");
                 String imagePath = "";
                 if (filePart != null && filePart.getSize() > 0) {
@@ -408,14 +408,15 @@ public class ManageClass extends HttpServlet {
                         request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
                         return;
                     }
-                    String uploadPath = getServletContext().getRealPath("") + File.separator + "img" + File.separator + "avatar";
+                    // Đường dẫn cố định trong project (ví dụ: /webapp/static/images/avatar/)
+                    String uploadPath = request.getServletContext().getRealPath("") + "static/images/avatar/";
                     File uploadDir = new File(uploadPath);
                     if (!uploadDir.exists()) {
                         uploadDir.mkdirs();
                     }
-                    String filePath = uploadPath + File.separator + fileName;
+                    String filePath = uploadPath + fileName;
                     filePart.write(filePath);
-                    imagePath = "img/avatar/" + fileName;
+                    imagePath = "static/images/avatar/" + fileName; // Đường dẫn tương đối để hiển thị
                 }
 
                 // Thêm lớp học
@@ -510,7 +511,7 @@ public class ManageClass extends HttpServlet {
                 LopHoc oldData = lopHocDAO.getLopHocById(idLopHoc);
                 String imagePath = oldData.getImage();
 
-                // Xử lý ảnh
+                // Xử lý ảnh - Lưu vào thư mục cố định trong project
                 Part filePart = request.getPart("Image");
                 if (filePart != null && filePart.getSize() > 0) {
                     String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
@@ -530,14 +531,15 @@ public class ManageClass extends HttpServlet {
                         request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
                         return;
                     }
-                    String uploadPath = getServletContext().getRealPath("") + File.separator + "img" + File.separator + "avatar";
+                    // Đường dẫn cố định trong project (ví dụ: /webapp/static/images/avatar/)
+                    String uploadPath = request.getServletContext().getRealPath("") + "static/images/avatar/";
                     File uploadDir = new File(uploadPath);
                     if (!uploadDir.exists()) {
                         uploadDir.mkdirs();
                     }
-                    String filePath = uploadPath + File.separator + fileName;
+                    String filePath = uploadPath + fileName;
                     filePart.write(filePath);
-                    imagePath = "img/avatar/" + fileName;
+                    imagePath = "static/images/avatar/" + fileName; // Đường dẫn tương đối để hiển thị
                 }
 
                 // Cập nhật lịch học
@@ -594,4 +596,4 @@ public class ManageClass extends HttpServlet {
     public String getServletInfo() {
         return "Servlet for managing classes";
     }
-}
+} 

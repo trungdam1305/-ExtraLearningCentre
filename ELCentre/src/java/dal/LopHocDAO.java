@@ -820,4 +820,27 @@ public class LopHocDAO {
         }
         return count;
     }
+
+    // Cập nhật sĩ số của lớp học
+    public boolean updateSiSo(int idLopHoc, int siSo) {
+        DBContext db = DBContext.getInstance();
+        String sql = """
+            UPDATE LopHoc
+            SET SiSo = ?
+            WHERE ID_LopHoc = ?
+        """;
+        List<Object> params = new ArrayList<>();
+        params.add(siSo);
+        params.add(idLopHoc);
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+            for (int i = 0; i < params.size(); i++) {
+                stmt.setObject(i + 1, params.get(i));
+            }
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

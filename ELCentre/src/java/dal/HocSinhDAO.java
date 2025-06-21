@@ -1,13 +1,12 @@
 package dal;
 
-/**
- *
- * @author wrx_Chur04
- */
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import model.HocSinh;
 
 public class HocSinhDAO {
@@ -213,6 +212,67 @@ public class HocSinhDAO {
             return false ; 
         } else {
             return true ; 
+        }
+    }
+    
+         // Phương thức lấy danh sách học sinh dựa trên ID_LopHoc
+    public List<HocSinh> getHocSinhByLopHoc(int idLopHoc) {
+        List<HocSinh> hocSinhList = new ArrayList<>();
+        DBContext db = DBContext.getInstance();
+        String sql = """
+            SELECT hs.*
+            FROM HocSinh hs
+            JOIN LopHoc_HocSinh lhh ON hs.ID_HocSinh = lhh.ID_HocSinh
+            WHERE lhh.ID_LopHoc = ?
+        """;
+        List<Object> params = new ArrayList<>();
+        params.add(idLopHoc);
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+            for (int i = 0; i < params.size(); i++) {
+                stmt.setObject(i + 1, params.get(i));
+            }
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                HocSinh hocSinh = new HocSinh();
+                hocSinh.setID_HocSinh(rs.getInt("ID_HocSinh"));
+                hocSinh.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
+                hocSinh.setHoTen(rs.getString("HoTen"));
+                hocSinh.setNgaySinh(rs.getObject("NgaySinh", LocalDate.class));
+                hocSinh.setGioiTinh(rs.getString("GioiTinh"));
+                hocSinh.setDiaChi(rs.getString("DiaChi"));
+                hocSinh.setSDT_PhuHuynh(rs.getString("SDT_PhuHuynh"));
+                hocSinh.setID_TruongHoc(rs.getInt("ID_TruongHoc"));
+                hocSinh.setGhiChu(rs.getString("GhiChu"));
+                hocSinh.setTrangThai(rs.getString("TrangThai"));
+                hocSinh.setNgayTao(rs.getObject("NgayTao", LocalDateTime.class));
+                // TenTruongHoc không có trong truy vấn, cần lấy từ bảng khác nếu cần
+                hocSinhList.add(hocSinh);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return hocSinhList;
+    }
+    
+    // Thêm học sinh vào lớp học
+    public boolean addStudentToClass(int idHocSinh, int idLopHoc) {
+        DBContext db = DBContext.getInstance();
+        String sql = """
+            INSERT INTO LopHoc_HocSinh (ID_LopHoc, ID_HocSinh)
+            VALUES (?, ?)
+        """;
+        List<Object> params = new ArrayList<>();
+        params.add(idLopHoc);
+        params.add(idHocSinh);
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+            for (int i = 0; i < params.size(); i++) {
+                stmt.setObject(i + 1, params.get(i));
+            }
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

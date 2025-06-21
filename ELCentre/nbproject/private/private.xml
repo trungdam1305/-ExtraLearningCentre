@@ -9,6 +9,12 @@
             <file>file:/C:/Users/admin/Desktop/huhiu/ELCentre/src/java/model/TaiKhoan.java</file>
             <file>file:/C:/Users/admin/Desktop/huhiu/ELCentre/web/views/login.jsp</file>
         </group>
-        <group/>
+        <group>
+            <file>file:/C:/Users/Vuh26/Desktop/backup/-ExtraLearningCentre/ELCentre/web/views/admin/addClass.jsp</file>
+            <file>file:/C:/Users/Vuh26/Desktop/backup/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageClass.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/backup/-ExtraLearningCentre/ELCentre/web/index.html</file>
+            <file>file:/C:/Users/Vuh26/Desktop/backup/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageCourse.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/backup/-ExtraLearningCentre/ELCentre/src/java/dal/GiaoVienDAO.java</file>
+        </group>
     </open-files>
 </project-private>
