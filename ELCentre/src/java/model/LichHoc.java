@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDate;
 
 public class LichHoc {
-            private Integer ID_Schedule;
+    private Integer ID_Schedule;
     private LocalDate NgayHoc;
     private String GioHoc;
     private Integer ID_LopHoc;

@@ -243,7 +243,7 @@
                                                             <a href="#" style= "font-family:'Open Sans'" title="${lopHoc.getTenLopHoc()}">${lopHoc.getTenLopHoc()}</a>
                                                         </h2>
                                                         <a href="#" style= "font-family:'Open Sans'"  class="dt-sc-course-price">${lopHoc.getSoTien()} VNĐ</a>
-                                                        <span class="dt-sc-lessons">Thời gian học: ${lopHoc.getThoiGianHoc()}</span>
+                                                        <span class="dt-sc-lessons">Thời gian học: ${lopHoc.getID_ThoiGian()}</span>
                                                     </div>
                                                 </article>
                                             </div>

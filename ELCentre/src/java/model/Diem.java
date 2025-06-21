@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 
 public class Diem {
-            private Integer ID_Diem;
+    private Integer ID_Diem;
     private Integer ID_HocSinh;
     private Integer ID_LopHoc;
 

@@ -267,28 +267,30 @@
                     <table>
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Họ và Tên</th>
                                 <th>Chuyên Môn</th>
-                                <th>Số điện thoại</th>
+                                
                                 <th>Trường đang dạy</th>
-                                <th>Lương</th>
-                                <th>Ghi Chú</th>
+                                
+                                
                                 <th>Trạng Thái</th>
-                                <th>Ngày Tạo</th>
+                                
                                 <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody id="teacherTableBody">
                             <c:forEach var="giaovien" items="${giaoviens}">
                                 <tr>
+                                    <td>${giaovien.getID_GiaoVien()}</td>
                                     <td>${giaovien.getHoTen()}</td>
                                     <td>${giaovien.getChuyenMon()}</td>
-                                    <td>${giaovien.getSDT()}</td>
+                                    
                                     <td>${giaovien.getTenTruongHoc()}</td>
-                                    <td>${giaovien.getLuong()}</td>
-                                    <td><c:out value="${giaovien.getGhiChu()}" default="Không có ghi chú" /></td>
+                                    
+                                    
                                     <td>${giaovien.getTrangThai()}</td>
-                                    <td>${giaovien.getNgayTao()}</td>
+                                    
                                     <td>
                                         <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=view&id=${giaovien.getID_GiaoVien()}">Chi tiết</a> | 
                                         <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=viewLopHocGiaoVien&id=${giaovien.getID_GiaoVien()}">Lớp đang dạy</a> | 

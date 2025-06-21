@@ -43,7 +43,7 @@ public class SliderDAO {
         List<Slider> li = new ArrayList<>();
         li = dao.getAllSlider();
         for (Slider sl : li){
-            System.out.println(sl.getID_Slider() + sl.getImage());
+              System.out.println(sl.getID_Slider() + sl.getImage());
         }
     }
 }

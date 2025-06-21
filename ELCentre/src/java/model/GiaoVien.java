@@ -6,20 +6,20 @@ import java.time.LocalDateTime;
 // 8. GiaoVien.java
 public class GiaoVien {
 
-            private Integer ID_GiaoVien;
+    private Integer ID_GiaoVien;
     private Integer ID_TaiKhoan;
     private String HoTen;
     private String ChuyenMon;
     private String SDT;
     private int ID_TruongHoc;
     private BigDecimal Luong;
-    private String GhiChu;
+    private int IsHot;
     private String TrangThai;
     private LocalDateTime NgayTao;
     private String Avatar;
     private String TenTruongHoc;
 
-    public GiaoVien(Integer ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT, int ID_TruongHoc, BigDecimal Luong, String GhiChu, String TrangThai, LocalDateTime NgayTao, String Avatar) {
+    public GiaoVien(Integer ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT, int ID_TruongHoc, BigDecimal Luong, int IsHot, String TrangThai, LocalDateTime NgayTao, String Avatar) {
         this.ID_GiaoVien = ID_GiaoVien;
         this.ID_TaiKhoan = ID_TaiKhoan;
         this.HoTen = HoTen;
@@ -27,7 +27,7 @@ public class GiaoVien {
         this.SDT = SDT;
         this.ID_TruongHoc = ID_TruongHoc;
         this.Luong = Luong;
-        this.GhiChu = GhiChu;
+        this.IsHot = IsHot;
         this.TrangThai = TrangThai;
         this.NgayTao = NgayTao;
         this.Avatar = Avatar;
@@ -36,7 +36,7 @@ public class GiaoVien {
     public GiaoVien() {
     }
 
-    public GiaoVien(Integer ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT, int ID_TruongHoc, BigDecimal Luong, String GhiChu, String TrangThai, LocalDateTime NgayTao, String Avatar, String TenTruongHoc) {
+    public GiaoVien(Integer ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT, int ID_TruongHoc, BigDecimal Luong, int IsHot, String TrangThai, LocalDateTime NgayTao, String Avatar, String TenTruongHoc) {
         this.ID_GiaoVien = ID_GiaoVien;
         this.ID_TaiKhoan = ID_TaiKhoan;
         this.HoTen = HoTen;
@@ -44,7 +44,7 @@ public class GiaoVien {
         this.SDT = SDT;
         this.ID_TruongHoc = ID_TruongHoc;
         this.Luong = Luong;
-        this.GhiChu = GhiChu;
+        this.IsHot = IsHot;
         this.TrangThai = TrangThai;
         this.NgayTao = NgayTao;
         this.Avatar = Avatar;
@@ -69,7 +69,7 @@ public class GiaoVien {
 
     
     
-    public GiaoVien(int ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT, int ID_TruongHoc, BigDecimal Luong, String GhiChu, String TrangThai, LocalDateTime NgayTao) {
+    public GiaoVien(int ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT, int ID_TruongHoc, BigDecimal Luong, int IsHot, String TrangThai, LocalDateTime NgayTao) {
         this.ID_GiaoVien = ID_GiaoVien;
         this.ID_TaiKhoan = ID_TaiKhoan;
         this.HoTen = HoTen;
@@ -77,7 +77,7 @@ public class GiaoVien {
         this.SDT = SDT;
         this.ID_TruongHoc = ID_TruongHoc;
         this.Luong = Luong;
-        this.GhiChu = GhiChu;
+        this.IsHot = IsHot;
         this.TrangThai = TrangThai;
         this.NgayTao = NgayTao;
     
@@ -114,8 +114,8 @@ public class GiaoVien {
     public BigDecimal getLuong() { return Luong; }
     public void setLuong(BigDecimal Luong) { this.Luong = Luong; }
 
-    public String getGhiChu() { return GhiChu; }
-    public void setGhiChu(String GhiChu) { this.GhiChu = GhiChu; }
+    public int getIsHot() { return IsHot; }
+    public void setIsHot(int IsHot) { this.IsHot = IsHot; }
 
     public String getTrangThai() { return TrangThai; }
     public void setTrangThai(String TrangThai) { this.TrangThai = TrangThai; }

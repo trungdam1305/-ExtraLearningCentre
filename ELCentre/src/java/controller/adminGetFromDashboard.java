@@ -26,6 +26,7 @@ import dal.KhoaHocDAO ;
 import model.KhoaHoc ; 
 import model.TaiKhoanChiTiet ; 
 import dal.TaiKhoanChiTietDAO ; 
+import model.GiaoVien_TruongHoc;
 
 /**
  *
@@ -85,9 +86,10 @@ public class adminGetFromDashboard extends HttpServlet {
 
                 break;
 
-            case "giaovien":        //action with student
-                ArrayList<GiaoVien> giaoviens = new ArrayList<GiaoVien>();       // create arraylist to save data 
-                giaoviens = GiaoVienDAO.admminGetAllGiaoVien();          //admin get All teacher from database
+            case "giaovien":        //action with teacher 
+                ArrayList<GiaoVien_TruongHoc> giaoviens =  new ArrayList<GiaoVien_TruongHoc>() ; 
+                giaoviens = GiaoVienDAO.admminGetAllGiaoVien() ; 
+                       
                 if (giaoviens == null) {                                 // get database fail
                     request.setAttribute("message", "Không có tài khoản nào.");
                     request.setAttribute("giaoviens", giaoviens);
@@ -128,8 +130,8 @@ public class adminGetFromDashboard extends HttpServlet {
                         request.setAttribute("message", "Không có thông báo nào đã được gửi.");
                         request.getRequestDispatcher("/views/admin/adminReceiveHocPhi.jsp").forward(request, response);
                     } else {                              // get database success    
-                        request.setAttribute("khoahocs",   khoahocs);                //create object is thongbaos to send data for jsp
-                        request.getRequestDispatcher("/views/admin/adminReceiveKhoaHoc.jsp").forward(request, response);         //redirect to adminReceiveThongBao jsp    
+                                request.setAttribute("khoahocs",   khoahocs);                //create object is thongbaos to send data for jsp
+                                 request.getRequestDispatcher("/views/admin/adminReceiveKhoaHoc.jsp").forward(request, response);         //redirect to adminReceiveThongBao jsp    
                     }
                     break;
                     

@@ -56,7 +56,7 @@ public class UserLogsDAO {
         if (userlogviews.isEmpty()) {
             return null;
         } else {
-            return userlogviews;
+               return userlogviews;
         }
 
     }

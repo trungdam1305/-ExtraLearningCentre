@@ -858,6 +858,6 @@ public class KhoaHocDAO {
             e.printStackTrace();
         }
 
-                    return isDuplicate;
+            return isDuplicate;
     }
 }

@@ -154,8 +154,8 @@
             }
 
             .header .left-title img {
-                width: 80px;
-                height: 80px;
+                width: 90px;
+                height: 90px;
                 margin-right: 10px;
                 border-radius: 5px;
                 object-fit: contain;

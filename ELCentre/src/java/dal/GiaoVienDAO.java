@@ -16,12 +16,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.GiaoVien;
+import model.GiaoVien_TruongHoc ; 
 
 public class GiaoVienDAO {
      private Connection conn;
-    public static ArrayList<GiaoVien> admminGetAllGiaoVien() {
+    public static ArrayList<GiaoVien_TruongHoc> admminGetAllGiaoVien() {
         DBContext db = DBContext.getInstance();
-        ArrayList<GiaoVien> giaoviens = new ArrayList<GiaoVien>();
+        ArrayList<GiaoVien_TruongHoc> giaoviens = new ArrayList<GiaoVien_TruongHoc>();
 
         try {
             String sql = """
@@ -32,7 +33,7 @@ public class GiaoVienDAO {
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
-                GiaoVien giaovien = new GiaoVien(
+                GiaoVien_TruongHoc giaovien = new GiaoVien_TruongHoc(
                         rs.getInt("ID_GiaoVien"),
                         rs.getInt("ID_TaiKhoan"),
                         rs.getString("HoTen"),
@@ -40,17 +41,19 @@ public class GiaoVienDAO {
                         rs.getString("SDT"),
                         rs.getInt("ID_TruongHoc"),
                         rs.getBigDecimal("Luong"),
-                        rs.getString("GhiChu"),
+                        rs.getInt("IsHot"),
                         rs.getString("TrangThai"),
                         rs.getTimestamp("NgayTao").toLocalDateTime() , 
                         rs.getString("Avatar"),
-                        rs.getString("TenTruongHoc")
+                        rs.getString("TenTruongHoc") , 
+                        rs.getString("DiaChi") 
                 ) ; 
                 giaoviens.add(giaovien) ; 
             }
         } catch (SQLException e) {
             // Exception ignored    
-            return new ArrayList<GiaoVien>();
+           e.printStackTrace();
+            return null ;
         }
         
         if (giaoviens.isEmpty()){
@@ -82,7 +85,7 @@ public class GiaoVienDAO {
                         rs.getString("SDT"),
                         rs.getInt("ID_TruongHoc"),
                         rs.getBigDecimal("Luong"),
-                        rs.getString("GhiChu"),
+                        rs.getInt("IsHot"),
                         rs.getString("TrangThai"),
                         rs.getTimestamp("NgayTao").toLocalDateTime() , 
                         rs.getString("Avatar"),
@@ -121,7 +124,7 @@ public class GiaoVienDAO {
             gv.setSDT(rs.getString("SDT"));
             gv.setTenTruongHoc(rs.getString("TenTruongHoc"));
             gv.setLuong(rs.getBigDecimal("Luong"));
-            gv.setGhiChu(rs.getString("GhiChu"));
+            gv.setIsHot(rs.getInt("IsHot"));
             gv.setTrangThai(rs.getString("TrangThai"));
             gv.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
             gv.setAvatar(rs.getString("Avatar"));
@@ -138,7 +141,7 @@ public class GiaoVienDAO {
     ArrayList<GiaoVien> giaoviens = new ArrayList<>();
     String sql = "SELECT gv.*, th.TenTruongHoc FROM GiaoVien gv "
                + "JOIN TruongHoc th ON gv.ID_TruongHoc = th.ID_TruongHoc "
-               + "WHERE gv.GhiChu IS NOT NULL;";
+               + "ORDER BY gv.IsHot ASC;";
     try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
         ResultSet rs = statement.executeQuery();
         while (rs.next()) {
@@ -149,7 +152,7 @@ public class GiaoVienDAO {
             gv.setSDT(rs.getString("SDT"));
             gv.setTenTruongHoc(rs.getString("TenTruongHoc"));
             gv.setLuong(rs.getBigDecimal("Luong"));
-            gv.setGhiChu(rs.getString("GhiChu"));
+            gv.setIsHot(rs.getInt("IsHot"));
             gv.setTrangThai(rs.getString("TrangThai"));
             gv.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
             gv.setAvatar(rs.getString("Avatar"));
@@ -164,9 +167,9 @@ public class GiaoVienDAO {
 
     
     
-    public static ArrayList<GiaoVien> adminGetGiaoVienByID(String id) {
+    public static ArrayList<GiaoVien_TruongHoc> adminGetGiaoVienByID(String id) {
         DBContext db = DBContext.getInstance() ; 
-        ArrayList<GiaoVien> giaoviens = new ArrayList<GiaoVien>() ; 
+        ArrayList<GiaoVien_TruongHoc> giaoviens = new ArrayList<GiaoVien_TruongHoc>() ; 
         
         try {
             String sql = """
@@ -179,7 +182,7 @@ public class GiaoVienDAO {
             ResultSet rs = statement.executeQuery() ; 
             
              while (rs.next()) {
-                GiaoVien giaovien = new GiaoVien(
+                GiaoVien_TruongHoc giaovien = new GiaoVien_TruongHoc(
                         rs.getInt("ID_GiaoVien"),
                         rs.getInt("ID_TaiKhoan"),
                         rs.getString("HoTen"),
@@ -187,11 +190,12 @@ public class GiaoVienDAO {
                         rs.getString("SDT"),
                         rs.getInt("ID_TruongHoc"),
                         rs.getBigDecimal("Luong"),
-                        rs.getString("GhiChu"),
+                        rs.getInt("IsHot"),
                         rs.getString("TrangThai"),
                         rs.getTimestamp("NgayTao").toLocalDateTime() , 
                         rs.getString("Avatar"),
-                        rs.getString("TenTruongHoc")
+                        rs.getString("TenTruongHoc") , 
+                        rs.getString("DiaChi")
                 ) ; 
                 giaoviens.add(giaovien) ; 
             }
@@ -321,7 +325,7 @@ public class GiaoVienDAO {
 
     //Debugging DAO
     public static void main(String[] args) {
-        GiaoVienDAO dao = new GiaoVienDAO();
+                 GiaoVienDAO dao = new GiaoVienDAO();
 
         //Just for Testing
         

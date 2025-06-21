@@ -1,10 +1,10 @@
 package model;
 
 public class DiemDanh {
-                private Integer ID_DiemDanh;
+     private Integer ID_DiemDanh;
     private Integer ID_HocSinh;
     private Integer ID_Schedule;
-    private String TrangThai;
+    private String TrangThai;   
     private String LyDoVang;
 
     public Integer getID_DiemDanh() { return ID_DiemDanh; }

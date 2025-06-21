@@ -1,7 +1,7 @@
 package model;
 
 public class HocSinh_LopHoc {
-            private Integer ID_LopHoc;
+     private Integer ID_LopHoc;
     private Integer ID_HocSinh;
     private Integer ID_HSLopHoc;
     private String FeedBack;

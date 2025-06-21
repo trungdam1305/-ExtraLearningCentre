@@ -267,30 +267,32 @@
                     <table>
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Họ và Tên</th>
-                                <th>Ngày Sinh</th>
+                                
                                 <th>Giới Tính</th>
-                                <th>Địa Chỉ</th>
-                                <th>Số điện thoại phụ huynh</th>
+                                
+                                
                                 <th>Trường học</th>
-                                <th>Ghi Chú</th>
+                                
                                 <th>Trạng Thái</th>
-                                <th>Ngày Tạo</th>
+                                
                                 <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody id="studentTableBody">
                             <c:forEach var="hocsinh" items="${hocsinhs}">
                                 <tr>
+                                    <td>${hocsinh.getID_HocSinh()}</td>
                                     <td>${hocsinh.getHoTen()}</td>
-                                    <td>${hocsinh.getNgaySinh()}</td>
+                                    
                                     <td>${hocsinh.getGioiTinh()}</td>
-                                    <td>${hocsinh.getDiaChi()}</td>
-                                    <td>${hocsinh.getSDT_PhuHuynh()}</td>
+                                    
+                                    
                                     <td>${hocsinh.getTenTruongHoc()}</td>
-                                    <td>${hocsinh.getGhiChu()}</td>
+                                    
                                     <td>${hocsinh.getTrangThai()}</td>
-                                    <td>${hocsinh.getNgayTao()}</td>
+                                    
                                     <td>
                                         <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithStudent?action=view&id=${hocsinh.getID_HocSinh()}">Chi tiết</a> | 
                                         <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewDiem&id=${hocsinh.getID_HocSinh()}">Điểm số</a> | 

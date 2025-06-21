@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDate;
 
 public class HocPhi {
-             private Integer ID_HocPhi;
+    private Integer ID_HocPhi;
     private Integer ID_HocSinh;
     private Integer ID_LopHoc;
     private String MonHoc;

@@ -125,8 +125,8 @@
             }
 
             .header .left-title img {
-                width: 40px;
-                height: 40px;
+                width: 90px;
+                height: 90px;
                 margin-right: 10px;
                 border-radius: 5px;
                 object-fit: contain;
@@ -151,54 +151,6 @@
                 object-fit: cover;
                 border: 2px solid #B0C4DE;
                 margin-bottom: 5px;
-            }
-
-            .admin-profile span {
-                font-size: 16px;
-                color: #B0C4DE;
-                font-weight: 600;
-                max-width: 250px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .admin-profile i {
-                color: #B0C4DE;
-                margin-left: 10px;
-            }
-
-            .dropdown-menu {
-                display: none;
-                position: absolute;
-                top: 50px;
-                right: 0;
-                background: #163E5C;
-                border-radius: 5px;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-                min-width: 150px;
-                z-index: 1001;
-            }
-
-            .dropdown-menu.active {
-                display: block;
-            }
-
-            .dropdown-menu a {
-                display: block;
-                padding: 10px 15px;
-                color: white;
-                text-decoration: none;
-                font-size: 14px;
-                transition: background-color 0.3s ease;
-            }
-
-            .dropdown-menu a:hover {
-                background-color: #1F4E79;
-            }
-
-            .dropdown-menu a i {
-                margin-right: 8px;
             }
 
             /* Footer Styles */
@@ -227,16 +179,12 @@
         <div class="header">
             <div class="left-title">
                 <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
-                Thông tin phụ huynh <i class="fas fa-users"></i>
+                EL CENTRE <i class="fas fa-users"></i>
             </div>
             <div class="admin-profile" onclick="toggleDropdown()">
                 <img src="https://png.pngtree.com/png-clipart/20250117/original/pngtree-account-avatar-user-abstract-circle-background-flat-color-icon-png-image_4965046.png" alt="Admin Photo" class="admin-img">
                 <span>Admin Vũ Văn Chủ</span>
-                <i class="fas fa-caret-down"></i>
-                <div class="dropdown-menu" id="adminDropdown">
-                    <a href="#"><i class="fas fa-key"></i> Change Password</a>
-                    <a href="#"><i class="fas fa-user-edit"></i> Update Information</a>
-                </div>
+                
             </div>
         </div>
 
@@ -334,21 +282,6 @@
             <p>© 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
         </div>
 
-        <script>
-            // Dropdown Toggle Functionality
-            function toggleDropdown() {
-                const dropdown = document.getElementById('adminDropdown');
-                dropdown.classList.toggle('active');
-            }
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function(event) {
-                const profile = document.querySelector('.admin-profile');
-                const dropdown = document.getElementById('adminDropdown');
-                if (!profile.contains(event.target)) {
-                    dropdown.classList.remove('active');
-                }
-            });
-        </script>
+       
     </body>
 </html>

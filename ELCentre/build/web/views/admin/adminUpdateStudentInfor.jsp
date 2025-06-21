@@ -157,8 +157,8 @@
             }
 
             .header .left-title img {
-                width: 40px;
-                height: 40px;
+                width: 90px;
+                height: 90px;
                 margin-right: 10px;
                 border-radius: 5px;
                 object-fit: contain;
@@ -185,20 +185,7 @@
                 margin-bottom: 5px;
             }
 
-            .admin-profile span {
-                font-size: 16px;
-                color: #B0C4DE;
-                font-weight: 600;
-                max-width: 250px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .admin-profile i {
-                color: #B0C4DE;
-                margin-left: 10px;
-            }
+     
 
             
 
@@ -233,20 +220,18 @@
         <div class="header">
             <div class="left-title">
                 <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
-                Thông tin học sinh <i class="fas fa-user-graduate"></i>
+                EL CENTRE <i class="fas fa-user-graduate"></i>
             </div>
             <div class="admin-profile" onclick="toggleDropdown()">
                 <img src="https://png.pngtree.com/png-clipart/20250117/original/pngtree-account-avatar-user-abstract-circle-background-flat-color-icon-png-image_4965046.png" alt="Admin Photo" class="admin-img">
                 <span>Admin Vũ Văn Chủ</span>
                 <i class="fas fa-caret-down"></i>
-                <div class="dropdown-menu" id="adminDropdown">
-                   
-                </div>
+               
             </div>
         </div>
 
         <div class="main-content">
-            <h2>Thông tin học sinh</h2>
+            <h2>Cập Nhật Thông Tin Học Sinh</h2>
             <%
                 String type = (String) request.getAttribute("type");
             %>

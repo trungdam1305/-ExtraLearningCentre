@@ -9,7 +9,7 @@ package model;
  * @author admin
  */
 public class LopHocTheoNhomDTO {
-    private int idKhoi;
+            private int idKhoi;
     private String tenKhoi;
     private String nhomMonHoc; // Toán, Văn, Khác
             private int tongSoLopHoc;

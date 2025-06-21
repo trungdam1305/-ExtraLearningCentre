@@ -2,7 +2,7 @@ package model;
 
 // 9. GiaoVien_KhoaHoc.java
 public class GiaoVien_KhoaHoc {
-            private int ID_GiaoVien;
+   private int ID_GiaoVien;
     private int ID_KhoaHoc;
 
     public GiaoVien_KhoaHoc() {}

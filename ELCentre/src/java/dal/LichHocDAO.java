@@ -46,7 +46,7 @@ public class LichHocDAO {
         if (lichhocs.isEmpty()) {
             return null;
         } else {
-                    return lichhocs;
+               return lichhocs;
         }
 
     }

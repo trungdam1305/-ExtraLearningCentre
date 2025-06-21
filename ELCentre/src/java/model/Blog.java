@@ -6,7 +6,7 @@ package model;
 import java.time.LocalDateTime;
 
 public class Blog {
-    private int ID_Blog;
+            private int ID_Blog;
     private String BlogTitle;
     private String BlogDescription;
     private LocalDateTime BlogDate;
