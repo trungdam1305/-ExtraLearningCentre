@@ -269,16 +269,22 @@
                                     <tr>
                                         <td>Trường giảng dạy</td>
                                         <c:forEach var="giaovien" items="${giaoviens}">
-                                            <td><input type="text" name="truong" value="${giaovien.getTenTruongHoc()}" required="" /></td>
+                                            <td><input type="text" name="truong" value="${giaovien.getTenTruongHoc()}" readonly /></td>
                                         </c:forEach>
-                                    </tr>
+                                    </tr>   
                                     <tr>
                                         <td>Lương</td>
                                         <c:forEach var="giaovien" items="${giaoviens}">
                                             <td><input type="number" name="luong" value="${giaovien.getLuong()}" required="" /></td>
                                         </c:forEach>
                                     </tr>
-                                    
+                                   
+                                    <tr>
+                                    <td>Top Hot</td>
+                                    <c:forEach var="giaovien" items="${giaoviens}">
+                                         <td><input type="number" name="hot" value="${giaovien.getIsHot()}" required="" /></td>
+                                    </c:forEach>
+                                </tr>
                                     <tr>
                                         <td>Trạng thái</td>
                                         <c:forEach var="giaovien" items="${giaoviens}">

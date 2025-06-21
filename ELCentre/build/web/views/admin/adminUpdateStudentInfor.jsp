@@ -185,14 +185,14 @@
                 margin-bottom: 5px;
             }
 
-     
 
-            
 
-            
-            
 
-            
+
+
+
+
+
 
             /* Footer Styles */
             .footer {
@@ -225,8 +225,8 @@
             <div class="admin-profile" onclick="toggleDropdown()">
                 <img src="https://png.pngtree.com/png-clipart/20250117/original/pngtree-account-avatar-user-abstract-circle-background-flat-color-icon-png-image_4965046.png" alt="Admin Photo" class="admin-img">
                 <span>Admin Vũ Văn Chủ</span>
-                <i class="fas fa-caret-down"></i>
-               
+
+
             </div>
         </div>
 
@@ -244,73 +244,79 @@
                                 <thead>
                                     <tr>
                                         <th>Thông tin</th>
-                                        <c:forEach var="hocsinh" items="${hocsinhs}">
+                                            <c:forEach var="hocsinh" items="${hocsinhs}">
                                             <th><input type="text" name="idhocsinh" value="${hocsinh.getID_HocSinh()}" readonly /></th>
-                                        </c:forEach>
+                                            </c:forEach>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <input type="hidden" name="type" value="${type}" />
-                                    <tr>
-                                        <td>ID_TàiKhoản</td>
-                                        <c:forEach var="hocsinh" items="${hocsinhs}">
-                                            <td><input type="text" name="idtaikhoan" value="${hocsinh.getID_TaiKhoan()}" readonly /></td>
+                                <input type="hidden" name="type" value="${type}" />
+                                <tr>
+                                    <td>ID_TàiKhoản</td>
+                                    <c:forEach var="hocsinh" items="${hocsinhs}">
+                                        <td><input type="text" name="idtaikhoan" value="${hocsinh.getID_TaiKhoan()}" readonly /></td>
                                         </c:forEach>
-                                    </tr>
-                                    <tr>
-                                        <td>Họ tên</td>
-                                        <c:forEach var="hocsinh" items="${hocsinhs}">
-                                            <td><input type="text" value="${hocsinh.getHoTen()}" readonly /></td>
+                                </tr>
+                                <tr>
+                                    <td>Họ tên</td>
+                                    <c:forEach var="hocsinh" items="${hocsinhs}">
+                                        <td><input type="text" value="${hocsinh.getHoTen()}" readonly /></td>
                                         </c:forEach>
-                                    </tr>
-                                    <tr>
-                                        <td>Ngày sinh</td>
-                                        <c:forEach var="hocsinh" items="${hocsinhs}">
-                                            <td><input type="date" name="ngaysinh" value="${hocsinh.getNgaySinh()}" readonly /></td>
+                                </tr>
+                                <tr>
+                                    <td>Ngày sinh</td>
+                                    <c:forEach var="hocsinh" items="${hocsinhs}">
+                                        <td><input type="date" name="ngaysinh" value="${hocsinh.getNgaySinh()}" readonly /></td>
                                         </c:forEach>
-                                    </tr>
-                                    <tr>
-                                        <td>Giới tính</td>
-                                        <c:forEach var="hocsinh" items="${hocsinhs}">
-                                            <td><input type="text" name="gioitinh" value="${hocsinh.getGioiTinh()}" readonly /></td>
+                                </tr>
+                                <tr>
+                                    <td>Giới tính</td>
+                                    <c:forEach var="hocsinh" items="${hocsinhs}">
+                                        <td><input type="text" name="gioitinh" value="${hocsinh.getGioiTinh()}" readonly /></td>
                                         </c:forEach>
-                                    </tr>
-                                    <tr>
-                                        <td>Địa chỉ</td>
-                                        <c:forEach var="hocsinh" items="${hocsinhs}">
-                                            <td><input type="text" name="diachi" value="${hocsinh.getDiaChi()}" required="" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Địa chỉ</td>
+                                    <c:forEach var="hocsinh" items="${hocsinhs}">
+                                        <td><input type="text" name="diachi" value="${hocsinh.getDiaChi()}" required="" /></td>
                                         </c:forEach>
-                                    </tr>
-                                    <tr>
-                                        <td>SĐT phụ huynh</td>
-                                        <c:forEach var="hocsinh" items="${hocsinhs}">
-                                            <td><input type="text" value="${hocsinh.getSDT_PhuHuynh()}" readonly /></td>
+                                </tr>
+                                <tr>
+                                    <td>Số điện thoại</td>
+                                    <td><input type="number" name="sdt" value="${sodienthoai}" required /></td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>SĐT phụ huynh</td>
+                                    <c:forEach var="hocsinh" items="${hocsinhs}">
+                                        <td><input type="number" name ="sdtph" value="${hocsinh.getSDT_PhuHuynh()}" readonly /></td>
                                         </c:forEach>
-                                    </tr>
-                                    <tr>
-                                        <td>Trường học</td>
-                                        <c:forEach var="hocsinh" items="${hocsinhs}">
-                                            <td><input type="text" name="truonghoc" value="${hocsinh.getTenTruongHoc()}" required="" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Trường học</td>
+                                    <c:forEach var="hocsinh" items="${hocsinhs}">
+                                        <td><input type="text" name="truonghoc" value="${hocsinh.getTenTruongHoc()}" readonly /></td>
                                         </c:forEach>
-                                    </tr>
-                                    <tr>
-                                        <td>Ghi chú</td>
-                                        <c:forEach var="hocsinh" items="${hocsinhs}">
-                                            <td><input type="text" name="ghichu" value="<c:out value='${hocsinh.getGhiChu()}' default='Không có ghi chú' />" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Ghi chú</td>
+                                    <c:forEach var="hocsinh" items="${hocsinhs}">
+                                        <td><input type="text" name="ghichu" value="<c:out value='${hocsinh.getGhiChu()}' default='Không có ghi chú' />" /></td>
                                         </c:forEach>
-                                    </tr>
-                                    <tr>
-                                        <td>Trạng thái</td>
-                                        <c:forEach var="hocsinh" items="${hocsinhs}">
-                                            <td><input type="text" value="${hocsinh.getTrangThai()}" readonly /></td>
+                                </tr>
+                                <tr>
+                                    <td>Trạng thái</td>
+                                    <c:forEach var="hocsinh" items="${hocsinhs}">
+                                        <td><input type="text" value="${hocsinh.getTrangThai()}" readonly /></td>
                                         </c:forEach>
-                                    </tr>
-                                    <tr>
-                                        <td>Ngày tạo</td>
-                                        <c:forEach var="hocsinh" items="${hocsinhs}">
-                                            <td><input type="text" value="${hocsinh.getNgayTao()}" readonly /></td>
+                                </tr>
+                                <tr>
+                                    <td>Ngày tạo</td>
+                                    <c:forEach var="hocsinh" items="${hocsinhs}">
+                                        <td><input type="text" value="${hocsinh.getNgayTao()}" readonly /></td>
                                         </c:forEach>
-                                    </tr>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -336,6 +342,6 @@
             <p>© 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
         </div>
 
-        
+
     </body>
 </html>

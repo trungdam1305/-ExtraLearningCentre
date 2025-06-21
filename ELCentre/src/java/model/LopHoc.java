@@ -7,7 +7,7 @@ public class LopHoc {
          private String TenLopHoc;
     private Integer ID_KhoaHoc;
     private Integer SiSo;
-    private int ID_Schedule;
+      private int ID_Schedule;
     private String GhiChu;
     private String TrangThai;
     private String SoTien;

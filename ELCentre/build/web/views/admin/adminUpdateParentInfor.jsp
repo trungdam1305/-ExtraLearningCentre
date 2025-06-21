@@ -277,9 +277,9 @@
                                         </c:forEach>
                                     </tr>
                                     <tr>
-                                        <td>ID_Học Sinh</td>
-                                        <c:forEach var="ph" items="${phuhuynhs}">
-                                            <td><input type="text" value="${ph.getID_HocSinh()}" readonly /></td>
+                                        <td>Phụ Huynh Của</td>
+                                        <c:forEach var="tenCon" items="${name}">
+                                            <td><input type="text" value="${tenCon}" readonly /></td>
                                         </c:forEach>
                                     </tr>
                                     <tr>

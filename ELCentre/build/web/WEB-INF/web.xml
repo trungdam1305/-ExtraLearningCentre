@@ -80,6 +80,14 @@
         <servlet-name>HomePageBlog</servlet-name>
         <servlet-class>controller.HomePageBlog</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>adminActionWithStudent</servlet-name>
+        <servlet-class>controller.adminActionWithStudent</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>adminActionWithTeacher</servlet-name>
+        <servlet-class>controller.adminActionWithTeacher</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -159,6 +167,14 @@
     <servlet-mapping>
         <servlet-name>HomePageBlog</servlet-name>
         <url-pattern>/HomePageBlog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminActionWithStudent</servlet-name>
+        <url-pattern>/adminActionWithStudent</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminActionWithTeacher</servlet-name>
+        <url-pattern>/adminActionWithTeacher</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

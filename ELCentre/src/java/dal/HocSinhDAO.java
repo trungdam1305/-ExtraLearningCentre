@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import model.HocSinh;
 
 public class HocSinhDAO {
@@ -178,7 +179,7 @@ public class HocSinhDAO {
     
     
 
-    public static boolean adminUpdateInformationOfStudent( String diachi  , String truonghoc , String ghichu , int id){
+    public static boolean adminUpdateInformationOfStudent( String diachi   , String ghichu , int id){
         DBContext db = DBContext.getInstance() ; 
         int rs = 0 ; 
         try {
@@ -187,17 +188,17 @@ public class HocSinhDAO {
                          SET
                         
                         DiaChi = ?,
-                        TruongHoc = ? , 
+                       
                         GhiChu = ?
                          WHERE
                          ID_HocSinh = ?;
                          """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
             statement.setString(1 , diachi);
-            statement.setString(2 , truonghoc) ; 
             
-            statement.setString(3, ghichu);
-            statement.setInt(4, id);
+            
+            statement.setString(2, ghichu);
+            statement.setInt(3, id);
             
             rs = statement.executeUpdate() ; 
         } catch (SQLException e ){
@@ -209,6 +210,35 @@ public class HocSinhDAO {
                      return false ; 
         } else {
             return true ; 
+        }
+    }
+    
+    public static List<String> nameofStudentDependPH (String idPhuHuynh){
+        List<String> ListName = new ArrayList<String>() ; 
+        DBContext db = DBContext.getInstance()  ; 
+        
+        try {
+            String sql = """
+                         select HS.HoTen from HocSinh HS
+                         join PhuHuynh PH 
+                         on HS.ID_HocSinh = PH.ID_HocSinh 
+                         where PH.ID_TaiKhoan = ? 
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, idPhuHuynh);
+            ResultSet rs = statement.executeQuery() ; 
+            while(rs.next()){
+                String name = rs.getString("HoTen"); 
+                ListName.add(name) ; 
+            }
+        } catch (SQLException e ) {
+            e.printStackTrace();
+            return null ; 
+        }
+        if (ListName == null ) {
+            return null ; 
+        } else {
+            return ListName ; 
         }
     }
 }

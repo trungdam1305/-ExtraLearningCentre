@@ -250,7 +250,12 @@
                                         <td>${giaovien.getLuong()}</td>
                                     </c:forEach>
                                 </tr>
-                                
+                                <tr>
+                                    <td>Top Hot</td>
+                                    <c:forEach var="giaovien" items="${giaoviens}">
+                                        <td>${giaovien.getIsHot()}</td>
+                                    </c:forEach>
+                                </tr>
                                 <tr>
                                     <td>Trạng thái</td>
                                     <c:forEach var="giaovien" items="${giaoviens}">

@@ -714,6 +714,6 @@
 
             // Lần đầu gọi hàm để hiện trang 1
             hienThiTrang(1);
-        </script>
+        </script>   
     </body>
 </html> 
