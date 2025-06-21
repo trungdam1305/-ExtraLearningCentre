@@ -14,46 +14,43 @@ public class LopHoc {
     private String TenLopHoc;
     private Integer ID_KhoaHoc;
     private Integer SiSo;
-    private String ThoiGianHoc;
+    private int ID_Schedule;
     private String GhiChu;
     private String TrangThai;
     private String SoTien;
     private LocalDateTime NgayTao;
     private String Image;
-    private int ID_Khoi;         // Đã có, nhưng cần getter/setter
-    private String TenKhoaHoc;   // Thêm trường này
+    private int ID_Khoi;         
+    private String TenKhoaHoc;    
+     private Integer SiSoToiDa;
 
     public LopHoc() {
     }
 
-    public LopHoc(Integer ID_LopHoc, String TenLopHoc, Integer ID_KhoaHoc, Integer SiSo, String ThoiGianHoc,
-            String GhiChu, String TrangThai, String SoTien, LocalDateTime NgayTao, String Image) {
+    public Integer getSiSoToiDa() {
+        return SiSoToiDa;
+    }
+
+    public void setSiSoToiDa(Integer SiSoToiDa) {
+        this.SiSoToiDa = SiSoToiDa;
+    }
+
+    
+
+    public LopHoc(Integer ID_LopHoc, String TenLopHoc, Integer ID_KhoaHoc, Integer SiSo, int ID_Schedule, String GhiChu, String TrangThai, String SoTien, LocalDateTime NgayTao, String Image, int ID_Khoi, String TenKhoaHoc, Integer SiSoToiDa) {
         this.ID_LopHoc = ID_LopHoc;
         this.TenLopHoc = TenLopHoc;
         this.ID_KhoaHoc = ID_KhoaHoc;
         this.SiSo = SiSo;
-        this.ThoiGianHoc = ThoiGianHoc;
+        this.ID_Schedule = ID_Schedule;
         this.GhiChu = GhiChu;
         this.TrangThai = TrangThai;
         this.SoTien = SoTien;
         this.NgayTao = NgayTao;
         this.Image = Image;
-    }
-
-    @Override
-    public String toString() {
-        return "LopHoc{" + "ID_LopHoc=" + ID_LopHoc + ", TenLopHoc=" + TenLopHoc + ", ID_KhoaHoc=" + ID_KhoaHoc
-                + ", SiSo=" + SiSo + ", ThoiGianHoc=" + ThoiGianHoc + ", GhiChu=" + GhiChu + ", TrangThai=" + TrangThai
-                + ", SoTien=" + SoTien + ", NgayTao=" + NgayTao + ", Image=" + Image + ", ID_Khoi=" + ID_Khoi
-                + ", TenKhoaHoc=" + TenKhoaHoc + '}';
-    }
-
-    public String getImage() {
-        return Image;
-    }
-
-    public void setImage(String Image) {
-        this.Image = Image;
+        this.ID_Khoi = ID_Khoi;
+        this.TenKhoaHoc = TenKhoaHoc;
+        this.SiSoToiDa = SiSoToiDa;
     }
 
     public Integer getID_LopHoc() {
@@ -88,12 +85,12 @@ public class LopHoc {
         this.SiSo = SiSo;
     }
 
-    public String getThoiGianHoc() {
-        return ThoiGianHoc;
+    public int getID_Schedule() {
+        return ID_Schedule;
     }
 
-    public void setThoiGianHoc(String ThoiGianHoc) {
-        this.ThoiGianHoc = ThoiGianHoc;
+    public void setID_Schedule(int ID_Schedule) {
+        this.ID_Schedule = ID_Schedule;
     }
 
     public String getGhiChu() {
@@ -128,14 +125,14 @@ public class LopHoc {
         this.NgayTao = NgayTao;
     }
 
-    public String getNgayTaoFormatted() {
-        if (NgayTao != null) {
-            return NgayTao.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        }
-        return "";
+    public String getImage() {
+        return Image;
     }
 
-    // Thêm getter và setter cho ID_Khoi
+    public void setImage(String Image) {
+        this.Image = Image;
+    }
+
     public int getID_Khoi() {
         return ID_Khoi;
     }
@@ -144,7 +141,6 @@ public class LopHoc {
         this.ID_Khoi = ID_Khoi;
     }
 
-    // Thêm getter và setter cho TenKhoaHoc
     public String getTenKhoaHoc() {
         return TenKhoaHoc;
     }
@@ -152,42 +148,7 @@ public class LopHoc {
     public void setTenKhoaHoc(String TenKhoaHoc) {
         this.TenKhoaHoc = TenKhoaHoc;
     }
-
     
-    public List<String> getThoiGianHocFormatted() {
-    List<String> result = new ArrayList<>();
-
-    if (this.ThoiGianHoc != null && !this.ThoiGianHoc.trim().isEmpty()) {
-        String[] entries = this.ThoiGianHoc.split(";");
-        for (String entry : entries) {
-            String[] parts = entry.trim().split(" ");
-            if (parts.length == 2) {
-                String thu = parts[0];
-                String gioPhut = parts[1];
-
-                try {
-                    // Parse định dạng 24h từ DB
-                    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HH:mm");
-                    LocalTime time = LocalTime.parse(gioPhut, inputFormatter);
-
-                    // Hiển thị ra định dạng 12h có AM/PM
-                    DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.US);
-                    String formattedTime = time.format(outputFormatter);
-
-                    // Kết hợp
-                    result.add(formattedTime + " - " + thu);
-                } catch (DateTimeParseException e) {
-                    result.add(entry); // fallback nếu parse lỗi
-                }
-            } else {
-                result.add(entry); // fallback nếu format không đúng
-            }
-        }
-    }
-
-    return result;
-}
-
-   
+    
 
 }

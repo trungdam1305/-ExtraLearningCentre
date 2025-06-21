@@ -5,6 +5,7 @@ package dal;
  *
  * @author wrx_Chur04
  */
+import java.math.BigDecimal;
 import java.sql.PreparedStatement ;
 import java.sql.ResultSet ;
 import java.sql.SQLException ; 
@@ -18,28 +19,29 @@ public class TaiKhoanDAO {
         
         try {
             String sql  = """
-                          select * from TaiKhoan
-                          Where UserType != 'Staff' AND UserType != 'Admin'
+                          select * from TaiKhoan 
+                          WHERE UserType != 'Staff' AND UserType != 'Admin'
                           """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
             ResultSet rs = statement.executeQuery() ; 
             
             while (rs.next()) {
                 TaiKhoan tk = new TaiKhoan(
-                        rs.getInt("ID_TaiKhoan") , 
+                        rs.getInt("ID_TaiKhoan") ,  
                         rs.getString("Email") , 
                         rs.getString("MatKhau") , 
                         rs.getInt("ID_VaiTro") , 
                         rs.getString("UserType") , 
                         rs.getString("SoDienThoai") , 
                         rs.getString("TrangThai") , 
-                        rs.getTimestamp("NgayTao").toLocalDateTime()
+                        rs.getTimestamp("NgayTao").toLocalDateTime() 
+                        
                 
                 ) ; 
                 taikhoans.add(tk) ; 
             }
         } catch (SQLException e ) {
-            //Exception ignored
+            
             return null ; 
         }
         if (taikhoans.isEmpty()){
@@ -113,6 +115,36 @@ public class TaiKhoanDAO {
              
         }
         if (rs == 0 ){
+            return false ; 
+        } else {
+            return true ; 
+        }
+    }
+    
+    public static boolean adminUpdateInformationAccount(String sdt ,  int id){
+        DBContext db = DBContext.getInstance() ; 
+        int rs = 0 ; 
+        try {
+            String sql = """
+                         UPDATE TaiKhoan
+                         SET
+                        SoDienThoai = ?
+                        
+                         WHERE
+                         ID_TaiKhoan = ?;
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1 , sdt);
+            
+            statement.setInt(2, id);
+            
+            rs = statement.executeUpdate() ; 
+        } catch (SQLException e ){
+            e.printStackTrace();
+            return false ; 
+        }
+        
+        if (rs == 0 ) {
             return false ; 
         } else {
             return true ; 

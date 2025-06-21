@@ -30,19 +30,19 @@
     </servlet>
     <servlet>
         <servlet-name>Sort</servlet-name>
-        <servlet-class>controller.Course_Sort</servlet-class>
+        <servlet-class>controller.Sort</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SearchCourse</servlet-name>
-        <servlet-class>controller.Course_SearchCourse</servlet-class>
+        <servlet-class>controller.SearchCourse</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ManagerCourse</servlet-name>
-        <servlet-class>controller.Course_ManagerCourse</servlet-class>
+        <servlet-class>controller.ManagerCourse</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddKhoaHoc</servlet-name>
-        <servlet-class>controller.Course_AddKhoaHoc</servlet-class>
+        <servlet-class>controller.AddKhoaHoc</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>adminActionWithUser</servlet-name>
@@ -58,27 +58,19 @@
     </servlet>
     <servlet>
         <servlet-name>SortForResultFind</servlet-name>
-        <servlet-class>controller.Course_SortForResultFind</servlet-class>
+        <servlet-class>controller.SortForResultFind</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SortAttribute</servlet-name>
-        <servlet-class>controller.Course_SortAttribute</servlet-class>
+        <servlet-name>HomeCourse</servlet-name>
+        <servlet-class>controller.HomeCourse</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Class_AddClass</servlet-name>
-        <servlet-class>controller.Class_AddClass</servlet-class>
+        <servlet-name>ManageCourse</servlet-name>
+        <servlet-class>controller.ManageCourses.ManageCourse</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Class_ManagerClass</servlet-name>
-        <servlet-class>controller.Class_ManagerClass</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Class_SortAttribute</servlet-name>
-        <servlet-class>controller.Class_SortAttribute</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Class_SearchFilter</servlet-name>
-        <servlet-class>controller.Class_SearchFilter</servlet-class>
+        <servlet-name>ManageClass</servlet-name>
+        <servlet-class>controller.ManageCourses.ManageClass</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
@@ -141,24 +133,16 @@
         <url-pattern>/SortForResultFind</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SortAttribute</servlet-name>
-        <url-pattern>/SortAttribute</url-pattern>
+        <servlet-name>HomeCourse</servlet-name>
+        <url-pattern>/HomeCourse</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Class_AddClass</servlet-name>
-        <url-pattern>/Class_AddClass</url-pattern>
+        <servlet-name>ManageCourse</servlet-name>
+        <url-pattern>/ManageCourse</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Class_ManagerClass</servlet-name>
-        <url-pattern>/Class_ManagerClass</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Class_SortAttribute</servlet-name>
-        <url-pattern>/Class_SortAttribute</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Class_SearchFilter</servlet-name>
-        <url-pattern>/Class_SearchFilter</url-pattern>
+        <servlet-name>ManageClass</servlet-name>
+        <url-pattern>/ManageClass</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

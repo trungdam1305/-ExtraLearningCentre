@@ -3,35 +3,84 @@ package model;
 import java.time.LocalDate;
 
 public class LichHoc {
-    private Integer ID_Schedule;
-    private LocalDate NgayHoc;
-    private String GioHoc;
-    private Integer ID_LopHoc;
-    private String GhiChu;
+    private Integer idSchedule;
+    private LocalDate ngayHoc;
+    private Integer idSlotHoc;
+    private Integer idLopHoc;
+    private String ghiChu;
+    private String slotThoiGian; // Lấy từ bảng SlotHoc
 
-    public LichHoc(Integer ID_Schedule, LocalDate NgayHoc, String GioHoc, Integer ID_LopHoc, String GhiChu) {
-        this.ID_Schedule = ID_Schedule;
-        this.NgayHoc = NgayHoc;
-        this.GioHoc = GioHoc;
-        this.ID_LopHoc = ID_LopHoc;
-        this.GhiChu = GhiChu;
-    }
-
+    // Constructor mặc định
     public LichHoc() {
     }
 
-    public Integer getID_Schedule() { return ID_Schedule; }
-    public void setID_Schedule(Integer ID_Schedule) { this.ID_Schedule = ID_Schedule; }
+    // Constructor đầy đủ
+    public LichHoc(Integer idSchedule, LocalDate ngayHoc, Integer idSlotHoc, Integer idLopHoc, String ghiChu) {
+        this.idSchedule = idSchedule;
+        this.ngayHoc = ngayHoc;
+        this.idSlotHoc = idSlotHoc;
+        this.idLopHoc = idLopHoc;
+        this.ghiChu = ghiChu;
+    }
 
-    public LocalDate getNgayHoc() { return NgayHoc; }
-    public void setNgayHoc(LocalDate NgayHoc) { this.NgayHoc = NgayHoc; }
+    // Getters và Setters
+    public Integer getIdSchedule() {
+        return idSchedule;
+    }
 
-    public String getGioHoc() { return GioHoc; }
-    public void setGioHoc(String GioHoc) { this.GioHoc = GioHoc; }
+    public void setIdSchedule(Integer idSchedule) {
+        this.idSchedule = idSchedule;
+    }
 
-    public Integer getID_LopHoc() { return ID_LopHoc; }
-    public void setID_LopHoc(Integer ID_LopHoc) { this.ID_LopHoc = ID_LopHoc; }
+    public LocalDate getNgayHoc() {
+        return ngayHoc;
+    }
 
-    public String getGhiChu() { return GhiChu; }
-    public void setGhiChu(String GhiChu) { this.GhiChu = GhiChu; }
+    public void setNgayHoc(LocalDate ngayHoc) {
+        this.ngayHoc = ngayHoc;
+    }
+
+    public Integer getIdSlotHoc() {
+        return idSlotHoc;
+    }
+
+    public void setIdSlotHoc(Integer idSlotHoc) {
+        this.idSlotHoc = idSlotHoc;
+    }
+
+    public Integer getIdLopHoc() {
+        return idLopHoc;
+    }
+
+    public void setIdLopHoc(Integer idLopHoc) {
+        this.idLopHoc = idLopHoc;
+    }
+
+    public String getGhiChu() {
+        return ghiChu;
+    }
+
+    public void setGhiChu(String ghiChu) {
+        this.ghiChu = ghiChu;
+    }
+
+    public String getSlotThoiGian() {
+        return slotThoiGian;
+    }
+
+    public void setSlotThoiGian(String slotThoiGian) {
+        this.slotThoiGian = slotThoiGian;
+    }
+
+    @Override
+    public String toString() {
+        return "LichHoc{" +
+                "idSchedule=" + idSchedule +
+                ", ngayHoc=" + ngayHoc +
+                ", idSlotHoc=" + idSlotHoc +
+                ", idLopHoc=" + idLopHoc +
+                ", ghiChu='" + ghiChu + '\'' +
+                ", slotThoiGian='" + slotThoiGian + '\'' +
+                '}';
+    }
 }

@@ -55,7 +55,45 @@ public class RegisterServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/views/register.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
                 return;
             }
+            
+            //Kiểm tra mật khẩu 
+            if (password.length() < 8) {
+                String errorMsg = "Mật khẩu phải có ít nhất 8 ký tự.";
+                response.sendRedirect(request.getContextPath() + "/views/register.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
+                return;
+            }
 
+            if (password.contains(" ")) {
+                String errorMsg = "Mật khẩu không được chứa khoảng trắng.";
+                response.sendRedirect(request.getContextPath() + "/views/register.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
+                return;
+            }
+
+            if (!password.matches(".*[a-z].*")) {
+                String errorMsg = "Mật khẩu phải chứa ít nhất một chữ thường (a-z).";
+                response.sendRedirect(request.getContextPath() + "/views/register.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
+                return;
+            }
+
+            if (!password.matches(".*[A-Z].*")) {
+                String errorMsg = "Mật khẩu phải chứa ít nhất một chữ hoa (A-Z).";
+                response.sendRedirect(request.getContextPath() + "/views/register.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
+                return;
+            }
+
+            if (!password.matches(".*[0-9].*")) {
+                String errorMsg = "Mật khẩu phải chứa ít nhất một chữ số (0-9).";
+                response.sendRedirect(request.getContextPath() + "/views/register.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
+                return;
+            }
+
+            if (!password.matches(".*[!@#$%^&*()_+\\-={}\\[\\]:;\"'<>,.?/\\\\|].*")) {
+                String errorMsg = "Mật khẩu phải chứa ít nhất một ký tự đặc biệt.";
+                response.sendRedirect(request.getContextPath() + "/views/register.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
+                return;
+            }
+            
+            // Kiểm tra nhập lại mật khẩu
             if (!password.equals(confirm)) {
                 String errorMsg = "Mật khẩu xác nhận không khớp.";
                 response.sendRedirect(request.getContextPath() + "/views/register.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));

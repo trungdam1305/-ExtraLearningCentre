@@ -14,6 +14,10 @@ import model.HocPhi;
 
 public class HocPhiDAO {
 
+    private HocPhiDAO() {
+
+    }
+
     public static ArrayList<HocPhi> adminGetHocPhi() {
         DBContext db = DBContext.getInstance();
         ArrayList<HocPhi> hocphis = new ArrayList<HocPhi>();

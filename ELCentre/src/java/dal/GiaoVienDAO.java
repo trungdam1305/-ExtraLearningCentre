@@ -9,6 +9,7 @@ package dal;
  * @author wrx_Chur04
  */
 import java.sql.Connection;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,7 +25,7 @@ public class GiaoVienDAO {
 
         try {
             String sql = """
-                          select * from GiaoVien 
+                          select * from GiaoVien gv JOIN TruongHoc th ON gv.ID_TruongHoc = th.ID_TruongHoc
                           """;
 
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
@@ -37,11 +38,13 @@ public class GiaoVienDAO {
                         rs.getString("HoTen"),
                         rs.getString("ChuyenMon"),
                         rs.getString("SDT"),
-                        rs.getString("TruongGiangDay"),
+                        rs.getInt("ID_TruongHoc"),
                         rs.getBigDecimal("Luong"),
                         rs.getString("GhiChu"),
                         rs.getString("TrangThai"),
-                        rs.getTimestamp("NgayTao").toLocalDateTime()
+                        rs.getTimestamp("NgayTao").toLocalDateTime() , 
+                        rs.getString("Avatar"),
+                        rs.getString("TenTruongHoc")
                 ) ; 
                 giaoviens.add(giaovien) ; 
             }
@@ -77,12 +80,13 @@ public class GiaoVienDAO {
                         rs.getString("HoTen"),
                         rs.getString("ChuyenMon"),
                         rs.getString("SDT"),
-                        rs.getString("TruongGiangDay"),
+                        rs.getInt("ID_TruongHoc"),
                         rs.getBigDecimal("Luong"),
                         rs.getString("GhiChu"),
                         rs.getString("TrangThai"),
-                        rs.getTimestamp("NgayTao").toLocalDateTime(),
-                            rs.getString("Avatar")
+                        rs.getTimestamp("NgayTao").toLocalDateTime() , 
+                        rs.getString("Avatar"),
+                        rs.getString("TenTruongHoc")
                 ); 
                 giaoviens.add(giaovien) ; 
             }
@@ -102,7 +106,9 @@ public class GiaoVienDAO {
     public GiaoVien getGiaoVienByHoTen(String hoTen) {
     DBContext db = DBContext.getInstance();
     GiaoVien gv = null;
-    String sql = "SELECT * FROM GiaoVien WHERE HoTen COLLATE Latin1_General_CI_AI = ?";
+    String sql = "SELECT * FROM GiaoVien gv JOIN TruongHoc th"
+            + "ON gv.ID_TruongHoc = th.ID_TruongHoc"
+            + " WHERE HoTen COLLATE Latin1_General_CI_AI = ?";
     try (PreparedStatement statement = db.getConnection().prepareStatement(sql);) {
         statement.setString(1, hoTen.trim()); // loại bỏ khoảng trắng đầu cuối trước khi set
         ResultSet rs = statement.executeQuery();
@@ -113,7 +119,7 @@ public class GiaoVienDAO {
             gv.setHoTen(rs.getString("HoTen"));
             gv.setChuyenMon(rs.getString("ChuyenMon"));
             gv.setSDT(rs.getString("SDT"));
-            gv.setTruongGiangDay(rs.getString("TruongGiangDay"));
+            gv.setTenTruongHoc(rs.getString("TenTruongHoc"));
             gv.setLuong(rs.getBigDecimal("Luong"));
             gv.setGhiChu(rs.getString("GhiChu"));
             gv.setTrangThai(rs.getString("TrangThai"));
@@ -129,17 +135,19 @@ public class GiaoVienDAO {
     //Get Teacher to have Specialised Teacher
     public ArrayList<GiaoVien> getSpecialised() {
     DBContext db = DBContext.getInstance();
-    ArrayList<GiaoVien> giaoviens = new ArrayList<GiaoVien>();
-    String sql = "SELECT * FROM GiaoVien WHERE GhiChu IS NOT NULL;";
-    try (PreparedStatement statement = db.getConnection().prepareStatement(sql);) {
+    ArrayList<GiaoVien> giaoviens = new ArrayList<>();
+    String sql = "SELECT gv.*, th.TenTruongHoc FROM GiaoVien gv "
+               + "JOIN TruongHoc th ON gv.ID_TruongHoc = th.ID_TruongHoc "
+               + "WHERE gv.GhiChu IS NOT NULL;";
+    try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
         ResultSet rs = statement.executeQuery();
-        while (rs.next()) {  // Use while to get all records from database
+        while (rs.next()) {
             GiaoVien gv = new GiaoVien();
             gv.setID_GiaoVien(rs.getInt("ID_GiaoVien"));
             gv.setHoTen(rs.getString("HoTen"));
             gv.setChuyenMon(rs.getString("ChuyenMon"));
             gv.setSDT(rs.getString("SDT"));
-            gv.setTruongGiangDay(rs.getString("TruongGiangDay"));
+            gv.setTenTruongHoc(rs.getString("TenTruongHoc"));
             gv.setLuong(rs.getBigDecimal("Luong"));
             gv.setGhiChu(rs.getString("GhiChu"));
             gv.setTrangThai(rs.getString("TrangThai"));
@@ -153,6 +161,7 @@ public class GiaoVienDAO {
     return giaoviens;
 }
 
+
     
     
     public static ArrayList<GiaoVien> adminGetGiaoVienByID(String id) {
@@ -161,7 +170,8 @@ public class GiaoVienDAO {
         
         try {
             String sql = """
-                         select * from GiaoVien 
+                         select * from GiaoVien gv JOIN TruongHoc th 
+                         ON gv.ID_TruongHoc = th.ID_TruongHoc
                          where ID_TaiKhoan = ? 
                          """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
@@ -175,12 +185,13 @@ public class GiaoVienDAO {
                         rs.getString("HoTen"),
                         rs.getString("ChuyenMon"),
                         rs.getString("SDT"),
-                        rs.getString("TruongGiangDay"),
+                        rs.getInt("ID_TruongHoc"),
                         rs.getBigDecimal("Luong"),
                         rs.getString("GhiChu"),
                         rs.getString("TrangThai"),
                         rs.getTimestamp("NgayTao").toLocalDateTime() , 
-                        rs.getString("Avatar")
+                        rs.getString("Avatar"),
+                        rs.getString("TenTruongHoc")
                 ) ; 
                 giaoviens.add(giaovien) ; 
             }
@@ -262,6 +273,51 @@ public class GiaoVienDAO {
         }
         return tong ; 
     }
+    
+    
+    public static boolean adminUpdateInformationOfTeacher(String sdt, String tenTruong, BigDecimal luong, String ghichu, int idGiaoVien) {
+    DBContext db = DBContext.getInstance();
+    
+    String getIdTruongSql = "SELECT ID_TruongHoc FROM TruongHoc WHERE TenTruongHoc = ?";
+    String updateGiaoVienSql = """
+        UPDATE GiaoVien
+        SET SDT = ?,
+            ID_TruongHoc = ?,
+            Luong = ?,
+            GhiChu = ?
+        WHERE ID_GiaoVien = ?
+    """;
+    
+    try (
+        PreparedStatement getTruongStmt = db.getConnection().prepareStatement(getIdTruongSql);
+        PreparedStatement updateGvStmt = db.getConnection().prepareStatement(updateGiaoVienSql)
+    ) {
+        // Lấy ID_TruongHoc từ TenTruongHoc
+        getTruongStmt.setString(1, tenTruong);
+        ResultSet rs = getTruongStmt.executeQuery();
+        
+        if (!rs.next()) {
+            // Không tìm thấy trường học
+            return false;
+        }
+        
+        int idTruongHoc = rs.getInt("ID_TruongHoc");
+        
+        // Tiến hành cập nhật giáo viên
+        updateGvStmt.setString(1, sdt);
+        updateGvStmt.setInt(2, idTruongHoc);
+        updateGvStmt.setBigDecimal(3, luong);
+        updateGvStmt.setString(4, ghichu);
+        updateGvStmt.setInt(5, idGiaoVien);
+        
+        int affected = updateGvStmt.executeUpdate();
+        return affected > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
 
     //Debugging DAO
     public static void main(String[] args) {

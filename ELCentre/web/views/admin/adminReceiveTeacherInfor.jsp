@@ -89,7 +89,9 @@
 
     </head>
 <body>
-    <h2>All Teachers</h2>
+
+    <h2>Thông tin giáo viên</h2>
+
 
     <c:choose>
         <c:when test = "${not empty giaoviens}">
@@ -131,7 +133,7 @@
                         <tr>
                             <td>Trường giảng dạy</td>
                             <c:forEach var="giaovien" items="${giaoviens}">
-                                <td>${giaovien.getTruongGiangDay()}</td>
+                                <td>${giaovien.getTenTruongHoc()}</td>
                             </c:forEach>
                         </tr>
                         <tr>
