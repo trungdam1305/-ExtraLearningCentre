@@ -17,8 +17,8 @@
 <%@ page import="model.LopHoc" %>
 <%@ page import="dal.UserLogsDAO" %>
 <%@ page import="model.UserLogs" %>
-<%@ page import="dal.LichHocDAO" %>
-<%@ page import="model.LichHoc" %>
+<%@ page import="dal.HoTroDAO" %>
+<%@ page import="model.HoTro" %>
 <%@ page import="model.UserLogView" %>
 <%@ page import="java.time.LocalDate" %>
 
@@ -348,7 +348,7 @@
             .chart-container canvas {
                 max-height: 300px;
             }
-            
+
             #pagination button {
                 margin: 0 5px;
                 padding: 5px 10px;
@@ -459,8 +459,8 @@
                 </div>
 
                 <div class="stat-card">
-                    <h3><i class="fas fa-money-bill"></i> Tổng doanh thu</h3>
-                    <p>300.000</p>
+                    <h3><i class="fas fa-money-bill"></i> Tổng đơn đăng ký tư vấn chưa duyệt</h3>
+                    <p>15</p>
                 </div>
             </div>
 
@@ -468,7 +468,7 @@
             <div class="tables-wrapper">
                 <!-- Hoạt động gần đây -->
                 <div class="data-table-container">
-                    <h3 class="section-title"><i class="fas fa-history"></i> Hoạt động gần đây</h3>
+                    <h3 class="section-title"><i class="fas fa-history"></i> Request/Thay Đổi Trong Hệ Thống</h3>
                     <%
                       ArrayList<UserLogView> userLogsList = (ArrayList) UserLogsDAO.adminGetAllUserLogs();
                       request.setAttribute("userLogsList", userLogsList);
@@ -500,49 +500,51 @@
                             <p class="no-data">Không có dữ liệu nhật ký để hiển thị.</p>
                         </c:otherwise>
                     </c:choose>
-                            <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
+                    <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
                 </div>
 
                 <!-- Lịch Học -->
                 <div class="data-table-container">
-                    <h3 class="section-title">Lịch Học Hôm Nay</h3>
+                    <h3 class="section-title">Yêu Cầu Hỗ Trợ Từ Người Dùng</h3>
                     <%
-                        LocalDate today = LocalDate.now();
-                        String ngayHienTai = today.toString();
-                        ArrayList<LichHoc> lichHocList = (ArrayList) LichHocDAO.adminGetAllLichHoc(ngayHienTai);
-                        request.setAttribute("lichHocList", lichHocList);
+                        
+                        ArrayList<HoTro> HoTroList = (ArrayList) HoTroDAO.adminGetHoTroDashBoard();
+                        request.setAttribute("HoTroList", HoTroList);
                     %>
                     <c:choose>
-                        <c:when test="${not empty lichHocList}">
+                        <c:when test="${not empty HoTroList}">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>ID Schedule</th>
-                                        <th>Ngày Học</th>
-                                        <th>Giờ Học</th>
-                                        <th>ID Lớp Học</th>
-                                        <th>Ghi Chú</th>
+                                        <th>ID Hỗ Trợ</th>
+                                        <th>Họ Tên</th>
+                                        <th>Yêu Cầu</th>
+                                        <th>Mô Tả</th>
+                                        <th>Thời Gian</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach var="lich" items="${lichHocList}">
+                                    <c:forEach var="sp" items="${HoTroList}">
                                         <tr>
-                                            <td>${lich.getID_Schedule()}</td>
-                                            <td>${lich.getNgayHoc()}</td>
-                                            <td>${lich.getGioHoc()}</td>
-                                            <td>${lich.getID_LopHoc()}</td>
-                                            <td>${lich.getGhiChu()}</td>
+                                            <td>${sp.getID_HoTro()}</td>
+                                            <td>${sp.getHoTen()}</td>
+                                            <td>${sp.getTenHoTro()}</td>
+                                            <td>${sp.getMoTa()}</td>
+                                            <td>${sp.getThoiGian()}</td>
                                         </tr>
                                     </c:forEach>
                                 </tbody>
                             </table>
                         </c:when>
                         <c:otherwise>
-                            <p class="no-data">Không có dữ liệu lịch học để hiển thị.</p>
+                            <p class="no-data">Không có dữ liệu yêu cầu hỗ trợ để hiển thị.</p>
                         </c:otherwise>
                     </c:choose>
                 </div>
             </div>
+            <%
+             LocalDate today = LocalDate.now();
+            %>
 
             <!-- Charts Wrapper (Top Row) -->
             <div class="charts-wrapper">
@@ -587,7 +589,7 @@
             }
 
             // Close dropdown when clicking outside
-            document.addEventListener('click', function(event) {
+            document.addEventListener('click', function (event) {
                 const profile = document.querySelector('.admin-profile');
                 const dropdown = document.getElementById('adminDropdown');
                 if (!profile.contains(event.target)) {
@@ -605,15 +607,15 @@
                 data: {
                     labels: ['Học sinh có mặt', 'Học sinh vắng'],
                     datasets: [{
-                        data: [45, 5],
-                        backgroundColor: [attendanceGradient, '#E57373'],
-                        borderColor: '#ffffff',
-                        borderWidth: 3,
-                        borderRadius: 5,
-                        hoverOffset: 15
-                    }]
+                            data: [45, 5],
+                            backgroundColor: [attendanceGradient, '#E57373'],
+                            borderColor: '#ffffff',
+                            borderWidth: 3,
+                            borderRadius: 5,
+                            hoverOffset: 15
+                        }]
                 },
-                
+
             });
 
             // Student Satisfaction Chart (Doughnut Chart)
@@ -626,15 +628,15 @@
                 data: {
                     labels: ['Hài lòng', 'Không hài lòng'],
                     datasets: [{
-                        data: [80, 20],
-                        backgroundColor: [satisfactionGradient, '#F06292'],
-                        borderColor: '#ffffff',
-                        borderWidth: 3,
-                        borderRadius: 5,
-                        hoverOffset: 15
-                    }]
+                            data: [80, 20],
+                            backgroundColor: [satisfactionGradient, '#F06292'],
+                            borderColor: '#ffffff',
+                            borderWidth: 3,
+                            borderRadius: 5,
+                            hoverOffset: 15
+                        }]
                 },
-                
+
             });
 
             // Revenue Chart (Bar Chart)
@@ -646,23 +648,23 @@
                 type: 'bar',
                 data: {
                     labels: ['Tháng 1/2025', 'Tháng 2/2025', 'Tháng 3/2025', 'Tháng <%= today.getMonthValue() %>/<%= today.getYear() %>'],
-                    datasets: [{                                                                                                                                                                                                    
-                        label: 'Doanh thu (VND)',
-                        data: [1500000, 1800000, 2000000, 2500000],
-                        backgroundColor: revenueGradient,
-                        borderColor: '#2E7D32',
-                        borderWidth: 2,
-                        borderRadius: 5,
-                        hoverBackgroundColor: '#A5D6A7'
-                    }]
+                    datasets: [{
+                            label: 'Doanh thu (VND)',
+                            data: [1500000, 1800000, 2000000, 2500000],
+                            backgroundColor: revenueGradient,
+                            borderColor: '#2E7D32',
+                            borderWidth: 2,
+                            borderRadius: 5,
+                            hoverBackgroundColor: '#A5D6A7'
+                        }]
                 },
-                
+
             });
 
 
 
 
-            
+
             // Số dòng muốn hiển thị mỗi trang
             var soDongMoiTrang = 10;
 
@@ -696,8 +698,8 @@
                     nut.innerText = j;
 
                     // Khi bấm vào nút thì sẽ gọi lại chính hàm này với số trang mới
-                    nut.onclick = (function(trangDuocChon) {
-                        return function() {
+                    nut.onclick = (function (trangDuocChon) {
+                        return function () {
                             hienThiTrang(trangDuocChon);
                         };
                     })(j);

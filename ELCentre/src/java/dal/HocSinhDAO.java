@@ -42,7 +42,7 @@ public class HocSinhDAO {
         } catch (SQLException e) {
             // Exception ignored 
         }
-                    return hocsinhs;
+        return hocsinhs;
     }
 
     public static ArrayList<HocSinh> adminGetHocSinhByID(String id) {
@@ -74,7 +74,7 @@ public class HocSinhDAO {
                         rs.getTimestamp("NgayTao").toLocalDateTime(),
                         rs.getString("TenTruongHoc")
                 );
-                     hocsinhs.add(hocsinh);
+                hocsinhs.add(hocsinh);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -152,9 +152,9 @@ public class HocSinhDAO {
             e.printStackTrace();
 
         }
-                return tong;
+        return tong;
     }
-    
+
     public static int getTotalHocSinh() {
         DBContext db = DBContext.getInstance();
         int total = 0;
@@ -174,14 +174,10 @@ public class HocSinhDAO {
         }
         return total;
     }
-    
-   
-    
-    
 
-    public static boolean adminUpdateInformationOfStudent( String diachi   , String ghichu , int id){
-        DBContext db = DBContext.getInstance() ; 
-        int rs = 0 ; 
+    public static boolean adminUpdateInformationOfStudent(String diachi, String ghichu, int id) {
+        DBContext db = DBContext.getInstance();
+        int rs = 0;
         try {
             String sql = """
                          UPDATE HocSinh
@@ -192,53 +188,52 @@ public class HocSinhDAO {
                         GhiChu = ?
                          WHERE
                          ID_HocSinh = ?;
-                         """ ; 
-            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
-            statement.setString(1 , diachi);
-            
-            
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setString(1, diachi);
+
             statement.setString(2, ghichu);
             statement.setInt(3, id);
-            
-            rs = statement.executeUpdate() ; 
-        } catch (SQLException e ){
+
+            rs = statement.executeUpdate();
+        } catch (SQLException e) {
             e.printStackTrace();
-            return false ; 
+            return false;
         }
-        
-        if (rs == 0 ) {
-                     return false ; 
+
+        if (rs == 0) {
+            return false;
         } else {
-            return true ; 
+            return true;
         }
     }
-    
-    public static List<String> nameofStudentDependPH (String idPhuHuynh){
-        List<String> ListName = new ArrayList<String>() ; 
-        DBContext db = DBContext.getInstance()  ; 
-        
+
+    public static List<String> nameofStudentDependPH(String idPhuHuynh) {
+        List<String> ListName = new ArrayList<String>();
+        DBContext db = DBContext.getInstance();
+
         try {
             String sql = """
                          select HS.HoTen from HocSinh HS
                          join PhuHuynh PH 
                          on HS.ID_HocSinh = PH.ID_HocSinh 
                          where PH.ID_TaiKhoan = ? 
-                         """ ; 
-            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
             statement.setString(1, idPhuHuynh);
-            ResultSet rs = statement.executeQuery() ; 
-            while(rs.next()){
-                String name = rs.getString("HoTen"); 
-                ListName.add(name) ; 
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("HoTen");
+                ListName.add(name);
             }
-        } catch (SQLException e ) {
+        } catch (SQLException e) {
             e.printStackTrace();
-            return null ; 
+            return null;
         }
-        if (ListName == null ) {
-            return null ; 
+        if (ListName == null) {
+            return null;
         } else {
-            return ListName ; 
+            return ListName;
         }
     }
 }

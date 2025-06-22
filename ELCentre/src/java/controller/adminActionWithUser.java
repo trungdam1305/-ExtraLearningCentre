@@ -25,6 +25,9 @@ import model.TaiKhoanChiTiet;
 import model.GiaoVien_TruongHoc;
 import model.TruongHoc;
 import dal.TruongHocDAO;
+import dao.UserLogsDAO;
+import java.time.LocalDateTime;
+import model.UserLogs;
 
 /**
  *
@@ -106,6 +109,10 @@ public class adminActionWithUser extends HttpServlet {
                     boolean b2 = TaiKhoanDAO.adminEnableAccountUser(id); //admin enable in table account
                     boolean b1 = GiaoVienDAO.adminEnableGiaoVien(id);   //admin enable in table of this user
                     if (b1 == true && b2 == true) {                     //if 2 method is access
+                        int ID_TaiKhoan = Integer.parseInt(id) ; 
+                        UserLogs log = new UserLogs(0 , 1 , "Mở tài khoản giáo viên có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
+                                    
+                        UserLogsDAO.insertLog(log);
                         ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();  //admin call method this to get all account after update
                         session.setAttribute("taikhoans", taikhoans);           //set object for jsp can get it again
                         request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);      //redirect to adminReceiveUsers
@@ -118,6 +125,10 @@ public class adminActionWithUser extends HttpServlet {
                     boolean b1 = TaiKhoanDAO.adminEnableAccountUser(id);        //admin enable in table account
                     boolean b2 = HocSinhDAO.adminEnableHocSinh(id);             //admin enable in table of this user
                     if (b1 == true && b2 == true) {                               //if 2 method is access
+                        int ID_TaiKhoan = Integer.parseInt(id) ; 
+                        UserLogs log = new UserLogs(0 , 1 , "Mở tài khoản học sinh có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
+                                    
+                        UserLogsDAO.insertLog(log);
                         ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();    //admin call method this to get all account after update
                         session.setAttribute("taikhoans", taikhoans);           //set object for jsp can get it again
                         request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);       //redirect to adminReceiveUsers
@@ -130,6 +141,10 @@ public class adminActionWithUser extends HttpServlet {
                     boolean b1 = TaiKhoanDAO.adminEnableAccountUser(id);     //admin enable in table account
                     boolean b2 = PhuHuynhDAO.adminEnablePhuHuynh(id);       //admin enable in table of this user
                     if (b1 == true && b2 == true) {                         //if 2 method is access
+                        int ID_TaiKhoan = Integer.parseInt(id) ; 
+                        UserLogs log = new UserLogs(0 , 1 , "Mở tài khoản phụ huynh có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
+                                    
+                        UserLogsDAO.insertLog(log);
                         ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();     //admin call method this to get all account after update
                         session.setAttribute("taikhoans", taikhoans);                       //set object for jsp can get it again
                         request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);       //redirect to adminReceiveUsers
@@ -154,6 +169,10 @@ public class adminActionWithUser extends HttpServlet {
                     boolean b2 = TaiKhoanDAO.adminDisableAccountUser(id);    //admin disnable in table account
                     boolean b1 = GiaoVienDAO.adminDisableGiaoVien(id);            //admin disnable in table of this user
                     if (b1 == true && b2 == true) {                           //if 2 method is access
+                        int ID_TaiKhoan = Integer.parseInt(id) ; 
+                        UserLogs log = new UserLogs(0 , 1 , "Vô hiệu hóa tài khoản giáo viên có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
+                                    
+                        UserLogsDAO.insertLog(log);
                         ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();   //admin call method this to get all account after update
                         session.setAttribute("taikhoans", taikhoans);            //set object for jsp can get it again
                         request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);       //redirect to adminReceiveUsers  
@@ -164,6 +183,10 @@ public class adminActionWithUser extends HttpServlet {
                     boolean b1 = TaiKhoanDAO.adminDisableAccountUser(id);       //admin disnable in table account
                     boolean b2 = HocSinhDAO.adminDisableHocSinh(id);            //admin disnable in table of this user
                     if (b1 == true && b2 == true) {                             //if 2 method is access
+                        int ID_TaiKhoan = Integer.parseInt(id) ; 
+                        UserLogs log = new UserLogs(0 , 1 , "Vô hiệu hóa tài khoản học sinh có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
+                                    
+                        UserLogsDAO.insertLog(log);
                         ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();        //admin call method this to get all account after update
                         session.setAttribute("taikhoans", taikhoans);               //set object for jsp can get it again
                         request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);      //redirect to adminReceiveUsers  
@@ -174,6 +197,10 @@ public class adminActionWithUser extends HttpServlet {
                     boolean b1 = TaiKhoanDAO.adminDisableAccountUser(id);    //admin disnable in table account
                     boolean b2 = PhuHuynhDAO.adminDisablePhuHuynh(id);       //admin disnable in table of this user
                     if (b1 == true && b2 == true) {                       //if 2 method is access
+                        int ID_TaiKhoan = Integer.parseInt(id) ; 
+                        UserLogs log = new UserLogs(0 , 1 , "Vô hiệu hóa tài khoản phụ huynh có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
+                                    
+                        UserLogsDAO.insertLog(log);
                         ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();     //admin call method this to get all account after update
                         session.setAttribute("taikhoans", taikhoans);                //set object for jsp can get it again
                         request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);       //redirect to adminReceiveUsers  
@@ -295,6 +322,9 @@ public class adminActionWithUser extends HttpServlet {
 
             if (s1 == true && s2 == true) {
                 request.setAttribute("message", "Thay đổi thành công!");
+                UserLogs log = new UserLogs(0 , 1 , "Thay đổi thông tin giáo viên có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
+                
+                UserLogsDAO.insertLog(log);
                 ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();   // create arraylist to save data 
                 session.setAttribute("taikhoans", taikhoans);
                 request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
@@ -337,6 +367,9 @@ public class adminActionWithUser extends HttpServlet {
             boolean s2 = TaiKhoanDAO.adminUpdateInformationAccount(sdt, ID_TaiKhoan) ; 
             if (s1 == true && s2 == true ) {
                 request.setAttribute("message", "Thay đổi thành công!");
+                UserLogs log = new UserLogs(0 , 1 , "Thay đổi thông tin học sinh có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
+                
+                UserLogsDAO.insertLog(log);
                 ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();   // create arraylist to save data 
                 session.setAttribute("taikhoans", taikhoans);
                 request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
@@ -379,6 +412,9 @@ public class adminActionWithUser extends HttpServlet {
 
             if (s1 == true && s2 == true) {
                 request.setAttribute("message", "Thay đổi thành công!");
+                UserLogs log = new UserLogs(0 , 1 , "Thay đổi thông tin phụ huynh có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
+                
+                UserLogsDAO.insertLog(log);
                 ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();   // create arraylist to save data 
                 session.setAttribute("taikhoans", taikhoans);
                 request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);

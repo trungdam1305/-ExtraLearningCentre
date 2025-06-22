@@ -173,6 +173,26 @@ public class TaiKhoanDAO {
 
     }
     
+    public static int adminGetIDTaiKhoanByEmail(String email){
+        DBContext db = DBContext.getInstance() ; 
+        try {
+            String sql = """
+                         select ID_TaiKhoan from TaiKhoan 
+                         where Email = ? 
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, email);
+            ResultSet rs = statement.executeQuery() ; 
+            if (rs.next()){
+                return rs.getInt("ID_TaiKhoan") ; 
+            } 
+        } catch(SQLException e){
+            e.printStackTrace();
+            
+        }
+        return -1 ; 
+    }
+    
     public static void main(String[]args) {
         String id = "4" ; 
         System.out.println(admingetSDTTaiKhoanByID(id));

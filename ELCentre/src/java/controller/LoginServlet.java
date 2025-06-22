@@ -57,11 +57,7 @@ public class LoginServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
                     return;
                 }
-                UserLogs log = new UserLogs();
-                log.setID_TaiKhoan(user.getID_TaiKhoan());
-                log.setHanhDong("Đăng nhập hệ thống");
-                log.setThoiGian(LocalDateTime.now());
-                UserLogsDAO.insertLog(log);
+
 
                 // ✅ Gửi email thông báo đăng nhập
                 try {
