@@ -252,6 +252,9 @@ public class adminActionWithUser extends HttpServlet {
                 String idgiaovien = request.getParameter("idgiaovien") ; 
                 String SDT = request.getParameter("sdt") ; 
                 String TruongGiangDay = request.getParameter("truong") ; 
+                
+                
+                        int isHot= Integer.parseInt(request.getParameter("ghichu"));
                 String Luong = request.getParameter("luong") ; 
                 String GhiChu = request.getParameter("ghichu") ; 
                 HttpSession session = request.getSession() ; 
@@ -276,7 +279,7 @@ public class adminActionWithUser extends HttpServlet {
                     }
                     
                     
-                    boolean s1 = GiaoVienDAO.adminUpdateInformationOfTeacher(SDT, TruongGiangDay, luongg, GhiChu, ID_GiaoVien) ; 
+                    boolean s1 = GiaoVienDAO.adminUpdateInformationOfTeacher(SDT, TruongGiangDay, luongg, isHot, ID_GiaoVien) ; 
                     boolean s2 = TaiKhoanDAO.adminUpdateInformationAccount(SDT, ID_TaiKhoan) ; 
                     
                     if (s1 == true && s2 == true ){
