@@ -119,6 +119,22 @@
             </div>
         </c:otherwise>
     </c:choose>
+    <div style="text-align:center; margin-top: 20px;">
+        <c:if test="${totalPages > 1}">
+            <c:forEach begin="1" end="${totalPages}" var="i">
+                <c:choose>
+                    <c:when test="${i == currentPage}">
+                        <span style="margin: 0 5px; font-weight: bold; color: #1F4E79;">${i}</span>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="${pageContext.request.contextPath}/adminApproveRegisterUser.jsp?page=${i}"
+                           style="margin: 0 5px; color: #1F4E79; text-decoration: none;">${i}</a>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+        </c:if>
+    </div>
+
 
     <div class="back-button">
         <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>

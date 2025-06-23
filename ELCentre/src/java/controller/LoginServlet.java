@@ -60,6 +60,8 @@ public class LoginServlet extends HttpServlet {
 
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
+                System.out.println("Session created. User: " + session.getAttribute("user"));
+
 
                 // Ghi log đăng nhập
                 UserLogs log = new UserLogs();
@@ -82,6 +84,8 @@ public class LoginServlet extends HttpServlet {
                 // Điều hướng sau khi login
                 if (user.getID_VaiTro() == 1) {
                     response.sendRedirect(request.getContextPath() + "/views/admin/adminDashboard.jsp");
+                } if (user.getID_VaiTro() == 4) {
+                    response.sendRedirect(request.getContextPath() + "/views/student/home.jsp");
                 } else {
                     response.sendRedirect(request.getContextPath() + "/HomePage");
                 }

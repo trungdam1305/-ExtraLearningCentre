@@ -97,9 +97,7 @@ public class Advice extends HttpServlet {
             return "Tên không thể để trống.";
         } 
         hoTen = hoTen.trim();
-        if(hoTen.length() < 2 || hoTen.length()) {
-            return "Tên phải từ 2 đến 50 ký tự.";
-        } 
+ 
         //Regex: Cho phép chữ cái có dấu
         return null;
     }
