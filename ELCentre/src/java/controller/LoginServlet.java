@@ -85,9 +85,9 @@ public class LoginServlet extends HttpServlet {
                 if (user.getID_VaiTro() == 1) {
                     response.sendRedirect(request.getContextPath() + "/views/admin/adminDashboard.jsp");
                 } if (user.getID_VaiTro() == 4) {
-                    response.sendRedirect(request.getContextPath() + "/views/student/home.jsp");
+                    response.sendRedirect(request.getContextPath() + "/views/student/studentDashboard.jsp");
                 } else {
-                    response.sendRedirect(request.getContextPath() + "/HomePage");
+                    response.sendRedirect(request.getContextPath() + "/login.jsp");
                 }
             } else {
                 String errorMsg = "Thông tin đăng nhập không đúng hoặc tài khoản chưa được kích hoạt bởi admin.";

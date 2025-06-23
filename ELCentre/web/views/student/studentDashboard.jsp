@@ -1,195 +1,165 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Trang học sinh</title>
+    <title>Student Dashboard</title>
     <style>
         body {
-            margin: 0;
+            display: flex;
             font-family: Arial, sans-serif;
+            margin: 0;
         }
-
-        .container {
-            display: flex;
-            height: 100vh;
-        }
-
         .sidebar {
-            width: 80px;
+            width: 200px;
             background-color: #f5f5f5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 20px;
+            height: 100vh;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
         }
-
-        .sidebar .logo img {
-            width: 40px;
-            margin-bottom: 30px;
-        }
-
-        .nav li {
-            list-style: none;
-            margin: 20px 0;
-        }
-
-        .nav li a img {
-            width: 24px;
+        .sidebar a {
             display: block;
+            padding: 10px 0;
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
         }
-
-        .nav li.active {
-            border-left: 4px solid #000;
-            background-color: #ddd;
+        .sidebar a:hover {
+            color: #007bff;
         }
-
         .main-content {
             flex: 1;
             padding: 30px;
+            background-color: #fff;
         }
-
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
         .account {
             position: relative;
-            display: inline-block;
         }
-
         .account-name {
             cursor: pointer;
             font-weight: bold;
         }
-
         .dropdown-content {
             display: none;
             position: absolute;
             right: 0;
-            background-color: #fff;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
             min-width: 160px;
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
             z-index: 1;
-            border-radius: 4px;
-            overflow: hidden;
         }
-
         .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
+            padding: 10px;
             display: block;
+            color: #333;
+            text-decoration: none;
         }
-
         .dropdown-content a:hover {
             background-color: #f1f1f1;
         }
 
-        .dropdown-content.show {
-            display: block;
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background-color: #fefefe;
         }
-
-        .class-list {
-            display: flex;
-            gap: 40px;
-            margin-top: 30px;
-        }
-
-        .class-card {
-            width: 180px;
-            background-color: #f0f0f0;
-            padding: 15px;
-            border-radius: 8px;
+        th, td {
+            padding: 12px;
+            border: 1px solid #ccc;
             text-align: center;
         }
-
-        .image-placeholder {
-            height: 100px;
-            background-color: #ddd;
-            border-radius: 4px;
-            margin-bottom: 15px;
+        .sections {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
         }
-
-        .class-info h3 {
-            margin: 10px 0 5px;
-        }
-
-        .stars {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #ffaa00;
+        .section-box {
+            flex: 1;
+            padding: 15px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
     </style>
     <script>
         function toggleDropdown() {
-            const dropdown = document.getElementById("accountDropdown");
-            dropdown.classList.toggle("show");
-        }
-
-        window.onclick = function(event) {
-            if (!event.target.matches('.account-name')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    dropdowns[i].classList.remove('show');
-                }
-            }
+            var dropdown = document.getElementById("accountDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         }
     </script>
 </head>
 <body>
-    <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="logo">
-                <img src="images/logo.png" alt="Logo" />
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <img src="${pageContext.request.contextPath}/assets/logo.png" style="width: 100%; margin-bottom: 20px;" />
+        <a href="${pageContext.request.contextPath}/StudentDashboard.jsp">Trang chủ</a>
+        <a href="${pageContext.request.contextPath}/DangKyHocServlet">Đăng kí học</a>
+        <a href="${pageContext.request.contextPath}/LopHocServlet">Lớp học</a>
+        <a href="${pageContext.request.contextPath}/LichHocServlet">Lịch học</a>
+        <a href="${pageContext.request.contextPath}/HocPhiServlet">Học phí</a>
+        <a href="${pageContext.request.contextPath}/ThongBaoServlet">Thông báo</a>
+        <a href="${pageContext.request.contextPath}/TaiKhoanServlet">Tài khoản</a>
+        <a href="${pageContext.request.contextPath}/LogoutServlet">Đăng xuất</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h2>Student Dashboard</h2>
+            <div class="account">
+                <span class="account-name" onclick="toggleDropdown()">Xin chào, ${sessionScope.hoten} &#9662;</span>
+                <div class="dropdown-content" id="accountDropdown">
+                    <a href="${pageContext.request.contextPath}/views/user/editProfile.jsp">Chỉnh sửa hồ sơ</a>
+                    <a href="${pageContext.request.contextPath}/views/user/changePassword.jsp">Đổi mật khẩu</a>
+                    <a href="${pageContext.request.contextPath}/LogoutServlet">Đăng xuất</a>
+                </div>
             </div>
-            <ul class="nav">
-                <li class="active"><a href="studentDashboard.jsp" title="Lớp học"><img src="images/icon-classes.png" alt="Lớp học"></a></li>
-                <li><a href="tuition.jsp" title="Học phí"><img src="images/icon-payment.png" alt="Thanh toán"></a></li>
-                <li><a href="classmates.jsp" title="Bạn học"><img src="images/icon-users.png" alt="Người dùng"></a></li>
-                <li><a href="report.jsp" title="Báo cáo"><img src="images/icon-report.png" alt="Báo cáo"></a></li>
-                <li><a href="settings.jsp" title="Cài đặt"><img src="images/icon-setting.png" alt="Cài đặt"></a></li>
-            </ul>
         </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="header">
-                <h2>Lớp học đang tham gia</h2>
-                <div class="account">
-                    <span class="account-name" onclick="toggleDropdown()">Xin chào &#9662;</span>
-                    <div class="dropdown-content" id="accountDropdown">
-                        <a href="editProfile.jsp">Chỉnh sửa hồ sơ</a>
-                        <a href="changePassword.jsp">Đổi mật khẩu</a>
-                        <a href="logout">Đăng xuất</a>
-                    </div>
-                </div>
+        <!-- Lớp học đã đăng ký -->
+        <h3>Lớp học đã đăng ký</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên Lớp học</th>
+                    <th>Khóa Học</th>
+                    <th>Thời gian</th>
+                    <th>Ghi chú</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="lop" items="${sessionScope.dsLopHoc}" varStatus="i">
+                    <tr>
+                        <td>${i.index + 1}</td>
+                        <td>${lop.tenLop}</td>
+                        <td>${lop.khoaHoc}</td>
+                        <td>${lop.thoiGian}</td>
+                        <td><a href="${pageContext.request.contextPath}/XemGhiChuServlet?id=${lop.id}">✎</a></td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+
+        <!-- Thông báo & Lịch học sắp tới -->
+        <div class="sections">
+            <div class="section-box">
+                <h4>Thông báo</h4>
+                <c:forEach var="tb" items="${sessionScope.dsThongBao}">
+                    <p>- ${tb.noiDung}</p>
+                </c:forEach>
             </div>
-
-            <div class="class-list">
-                <div class="class-card">
-                    <div class="image-placeholder"></div>
-                    <div class="class-info">
-                        <h3>Toán 9</h3>
-                        <p>Giáo viên</p>
-                        <p>Status</p>
-                        <div class="stars">★★★★☆</div>
-                    </div>
-                </div>
-
-                <div class="class-card">
-                    <div class="image-placeholder"></div>
-                    <div class="class-info">
-                        <h3>Văn 10</h3>
-                        <p>Giáo viên</p>
-                        <p>Status</p>
-                        <div class="stars">★★★★☆</div>
-                    </div>
-                </div>
+            <div class="section-box">
+                <h4>Lịch học sắp diễn ra</h4>
+                <c:forEach var="lich" items="${sessionScope.dsLichHocSapToi}">
+                    <p>Thứ ${lich.thu} - Ngày ${lich.ngay}: ${lich.tenLop} Slot ${lich.slot}</p>
+                </c:forEach>
             </div>
         </div>
     </div>
