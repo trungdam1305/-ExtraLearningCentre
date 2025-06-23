@@ -24,7 +24,7 @@ public class LopHocDAO {
                 lh.setTenLopHoc(rs.getString("TenLopHoc"));
                 lh.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
                 lh.setSiSo(rs.getInt("SiSo"));
-                lh.setID_ThoiGian(rs.getInt("ID_ThoiGian"));
+                lh.setID_Schedule(rs.getInt("ID_Schedule"));
                 lh.setGhiChu(rs.getString("GhiChu"));
                 lh.setTrangThai(rs.getString("TrangThai"));
                 lh.setSoTien(rs.getString("SoTien"));
@@ -36,7 +36,7 @@ public class LopHocDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return list;
+                    return list;
     }
     
     //Call the Sum of Class 
@@ -78,7 +78,7 @@ public class LopHocDAO {
             e.printStackTrace();
 
         }
-        return tong;
+                    return tong;
     }
     
     public List<LopHocTheoNhomDTO> getTongLopHocTheoNhomMonHoc() {
@@ -128,7 +128,7 @@ public class LopHocDAO {
         e.printStackTrace();
     }
 
-    return result;
+             return result;
 }
 
     
@@ -137,7 +137,7 @@ public class LopHocDAO {
         List<LopHoc> lop = new LopHocDAO().getAllLopHoc();
         for (LopHoc lops : lop){
             System.out.println(lops);
-            System.out.println(lops.getID_KhoaHoc() + " " + lops.getID_LopHoc() + " "+ lops.getTenLopHoc() + " " + lops.getID_ThoiGian());
+            System.out.println(lops.getID_KhoaHoc() + " " + lops.getID_LopHoc() + " "+ lops.getTenLopHoc() + " " + lops.getID_Schedule());
         }
         
     }
@@ -157,7 +157,7 @@ public class LopHocDAO {
                 lh.setTenLopHoc(rs.getString("TenLopHoc"));
                 lh.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
                 lh.setSiSo(rs.getInt("SiSo"));
-                lh.setID_ThoiGian(rs.getInt("ID_ThoiGian"));
+                lh.setID_Schedule(rs.getInt("ID_Schedule"));
                 lh.setGhiChu(rs.getString("GhiChu"));
                 lh.setTrangThai(rs.getString("TrangThai"));
                 lh.setSoTien(rs.getString("SoTien"));
@@ -170,7 +170,7 @@ public class LopHocDAO {
             e.printStackTrace();
         }
 
-        return list;
+                    return list;
     }
     
      public static List<LopHoc> getLopHocByIdKhoi(int idKhoiHoc) {
@@ -188,7 +188,7 @@ public class LopHocDAO {
                 lh.setTenLopHoc(rs.getString("TenLopHoc"));
                 lh.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
                 lh.setSiSo(rs.getInt("SiSo"));
-                lh.setID_ThoiGian(rs.getInt("ID_ThoiGian"));
+                lh.setID_Schedule(rs.getInt("ID_Schedule"));
                 lh.setGhiChu(rs.getString("GhiChu"));
                 lh.setTrangThai(rs.getString("TrangThai"));
                 lh.setSoTien(rs.getString("SoTien"));
@@ -201,7 +201,7 @@ public class LopHocDAO {
             e.printStackTrace();
         }
 
-        return list;
+             return list;
     }
     
 }

@@ -336,7 +336,7 @@ public class KhoaHocDAO {
             return Collections.emptyList();
         }
 
-        return khoaHocList;
+                return khoaHocList;
     }
 
     public static List<KhoaHoc> getSortedByName(String sortName) {
@@ -374,7 +374,7 @@ public class KhoaHocDAO {
             return Collections.emptyList();
         }
 
-        return khoaHocList;
+                return khoaHocList;
     }
 
     public static List<KhoaHoc> getSortedByTrangThai(String sortOrder) {
@@ -408,7 +408,7 @@ public class KhoaHocDAO {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return Collections.emptyList();
+                        return Collections.emptyList();
         }
 
         return khoaHocList;
@@ -452,7 +452,7 @@ public class KhoaHocDAO {
             return Collections.emptyList();
         }
 
-        return khoaHocList;
+                    return khoaHocList;
     }
 
     public static boolean isTenKhoaHocDuplicate(String tenKhoaHoc) {
@@ -503,7 +503,7 @@ public class KhoaHocDAO {
             e.printStackTrace();
         }
 
-        return isDuplicate;
+                    return isDuplicate;
     }
 
     public static int getTotalCoursesByTrangThai(String trangThai) {
@@ -560,7 +560,7 @@ public class KhoaHocDAO {
             e.printStackTrace();
             return null; // hoặc Collections.emptyList()
         }
-        return khoaHocList;
+                    return khoaHocList;
     }
 
     public static int countCoursesByTrangThai(String trangThai) {
@@ -616,7 +616,7 @@ public class KhoaHocDAO {
             e.printStackTrace();
             return null;
         }
-        return khoaHocList;
+                    return khoaHocList;
     }
 
     public static List<KhoaHoc> getKhoaHocByNamePaging(String name, int offset, int pageSize) {
@@ -654,7 +654,7 @@ public class KhoaHocDAO {
                 list.add(kh);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+                        e.printStackTrace();
         }
         return list;
     }
@@ -742,7 +742,7 @@ public class KhoaHocDAO {
         // Chuẩn hóa tên tìm kiếm: loại bỏ dấu, bỏ khoảng trắng thừa
         String normalizedTen = removeAccent(tenKhoaHoc.trim().replaceAll("\\s+", " "));
 
-        String sql = "SELECT COUNT(*) FROM KhoaHoc " +
+            String sql = "SELECT COUNT(*) FROM KhoaHoc " +
                      "WHERE TrangThai = ? " +
                      "AND REPLACE(TenKhoaHoc, 'đ', 'd') COLLATE Latin1_General_CI_AI LIKE ?";
 
@@ -817,7 +817,7 @@ public class KhoaHocDAO {
                 khoaHoc.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
                 khoaHoc.setMoTa(rs.getString("MoTa"));
                 khoaHoc.setThoiGianBatDau(rs.getDate("ThoiGianBatDau") != null ? rs.getDate("ThoiGianBatDau").toLocalDate() : null);
-                khoaHoc.setThoiGianKetThuc(rs.getDate("ThoiGianKetThuc") != null ? rs.getDate("ThoiGianKetThuc").toLocalDate() : null);
+                     khoaHoc.setThoiGianKetThuc(rs.getDate("ThoiGianKetThuc") != null ? rs.getDate("ThoiGianKetThuc").toLocalDate() : null);
                 khoaHoc.setGhiChu(rs.getString("GhiChu"));
                 khoaHoc.setTrangThai(rs.getString("TrangThai"));
                 khoaHoc.setNgayTao(rs.getTimestamp("NgayTao") != null ? rs.getTimestamp("NgayTao").toLocalDateTime() : null);
@@ -858,6 +858,6 @@ public class KhoaHocDAO {
             e.printStackTrace();
         }
 
-        return isDuplicate;
+            return isDuplicate;
     }
 }

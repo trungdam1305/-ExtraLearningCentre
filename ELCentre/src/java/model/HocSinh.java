@@ -101,5 +101,5 @@ public class HocSinh {
     public void setTrangThai(String TrangThai) { this.TrangThai = TrangThai; }
 
     public LocalDateTime getNgayTao() { return NgayTao; }
-    public void setNgayTao(LocalDateTime NgayTao) { this.NgayTao = NgayTao; }
+            public void setNgayTao(LocalDateTime NgayTao) { this.NgayTao = NgayTao; }
 }

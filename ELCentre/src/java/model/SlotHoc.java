@@ -9,7 +9,7 @@ package model;
  * @author admin
  */
 public class SlotHoc {
-    private int ID_SlotHoc;
+            private int ID_SlotHoc;
     private String SlotThoiGian;
 
     public SlotHoc(int ID_SlotHoc, String SlotThoiGian) {

@@ -2,130 +2,429 @@
     Document   : adminReceiveHocSinh
     Created on : May 24, 2025, 11:09:21 PM
     Author     : wrx_Chur04
+    Purpose    : This page displays a list of all students (học sinh) in the EL CENTRE system, 
+                including details like name, birth date, gender, address, parent contact, school, and status. 
+                It supports filtering by gender, searching, and pagination, with action links for viewing details, scores, and editing student records.
+    Parameters:
+    - @Param hocsinhs (ArrayList<HocSinh>): A request attribute containing the list of student objects fetched from the database.
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>All Students Learn</title  >
+        <title>All Students Learn</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
-                background-color: #f4f6f8;
-                color: #333;
-                padding: 20px;
+                background-color: #f4f8fb;
+                color: #1F4E79;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
             }
 
             h2 {
+                text-align: center;
                 color: #1F4E79;
             }
 
             table {
                 width: 100%;
                 border-collapse: collapse;
-                margin-top: 20px;
-                background-color: #fff;
+                margin: 20px auto;
+                background-color: #ffffff;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
             }
 
             th, td {
-                border: 1px solid #ccc;
-                padding: 8px 12px;
-                text-align: left;
+                padding: 10px 12px;
+                border: 1px solid #d0d7de;
+                text-align: center;
             }
 
             th {
                 background-color: #1F4E79;
-                color: #fff;
+                color: white;
             }
 
             tr:nth-child(even) {
-                background-color: #f9f9f9;
+                background-color: #f0f4f8;
             }
 
-            .no-reports-message {
-                margin-top: 20px;
-                padding: 10px;
-                background-color: #ffefef;
-                border: 1px solid #e0a8a8;
-                color: #cc0000;
+            tr:hover {
+                background-color: #d9e4f0;
+            }
+
+            .no-data {
+                text-align: center;
+                margin: 30px;
+                color: red;
             }
 
             .back-button {
+                text-align: center;
                 margin-top: 30px;
             }
 
             .back-button a {
-                text-decoration: none;
-                padding: 8px 16px;
                 background-color: #1F4E79;
                 color: white;
-                border-radius: 4px;
+                padding: 10px 20px;
+                text-decoration: none;
+                border-radius: 5px;
             }
 
             .back-button a:hover {
-                background-color: #163c5b;
+                background-color: #163b5c;
+            }
+
+            input[type="text"], select {
+                padding: 8px;
+                font-size: 16px;
+                margin-bottom: 15px;
+            }
+
+            #pagination button {
+                margin: 0 5px;
+                padding: 5px 10px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .action-link {
+                background-color: #1F4E79;
+                color: white;
+                padding: 6px 12px;
+                margin: 2px;
+                text-decoration: none;
+                border-radius: 4px;
+                display: inline-block;
+                transition: background-color 0.3s;
+                font-size: 14px;
+            }
+
+            .action-link:hover {
+                background-color: #163b5c;
+            }
+
+            /* Header Styles */
+            .header {
+                background-color: #1F4E79;
+                color: white;
+                padding: 10px 20px;
+                text-align: left;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .header .left-title {
+                font-size: 24px;
+                letter-spacing: 1px;
+                display: flex;
+                align-items: center;
+            }
+
+            .header .left-title img {
+                width: 80px;
+                height: 80px;
+                margin-right: 10px;
+                border-radius: 5px;
+                object-fit: contain;
+            }
+
+            .header .left-title i {
+                margin-left: 10px;
+            }
+
+            .admin-profile {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                cursor: pointer;
+            }
+
+            .admin-profile .admin-img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid #B0C4DE;
+                margin-bottom: 5px;
+            }
+
+            .admin-profile span {
+                font-size: 16px;
+                color: #B0C4DE;
+                font-weight: 600;
+                max-width: 250px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .admin-profile i {
+                color: #B0C4DE;
+                margin-left: 10px;
+            }
+
+            .dropdown-menu {
+                display: none;
+                position: absolute;
+                top: 50px;
+                right: 0;
+                background: #163E5C;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                min-width: 150px;
+                z-index: 1001;
+            }
+
+            .dropdown-menu.active {
+                display: block;
+            }
+
+            .dropdown-menu a {
+                display: block;
+                padding: 10px 15px;
+                color: white;
+                text-decoration: none;
+                font-size: 14px;
+                transition: background-color 0.3s ease;
+            }
+
+            .dropdown-menu a:hover {
+                background-color: #1F4E79;
+            }
+
+            .dropdown-menu a i {
+                margin-right: 8px;
+            }
+
+            /* Footer Styles */
+            .footer {
+                background-color: #1F4E79;
+                color: #B0C4DE;
+                text-align: center;
+                padding: 10px 0;
+                margin-top: auto;
+            }
+
+            .footer p {
+                margin: 0;
+                font-size: 14px;
+            }
+
+            /* Ensure main content pushes footer down */
+            .main-content {
+                flex: 1 0 auto;
+                padding-bottom: 40px;
             }
         </style>
     </head>
     <body>
-        <h2>All Students</h2>
-
-        <c:choose>
-            <c:when test = "${not empty hocsinhs}">
-                <table>
-
-                    <thead>
-                        <tr>
-                            <th>Mã Học Sinh</th>
-                            <th>Mã Tài Khoản</th>
-
-                            <th>Họ và Tên</th>
-                            <th>Ngày Sinh</th>
-                            <th>Giới Tính</th>
-                            <th>Địa Chỉ</th>
-                            <th>Số điện thoại phụ huynh</th>
-                            <th>Trường học</th>
-                            <th>Ghi Chú</th>
-                            <th>Trạng Thái</th>
-                            <th>Ngày Tạo</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <c:forEach var="hocsinh" items="${hocsinhs}">
-                            <tr>
-                                <td>${hocsinh.getID_HocSinh()}</td>
-                                <td>${hocsinh.getID_TaiKhoan()}</td>
-
-                                <td>${hocsinh.getHoTen()}</td>
-                                <td>${hocsinh.getNgaySinh()}</td>
-                                <td>${hocsinh.getGioiTinh()}</td>
-                                <td>${hocsinh.getDiaChi()}</td>
-                                <td>${hocsinh.getSDT_PhuHuynh()}</td>
-                                <td>${hocsinh.getTenTruongHoc()}</td>
-                                <td>${hocsinh.getGhiChu()}</td>
-                                <td>${hocsinh.getTrangThai()}</td>
-                                <td>${hocsinh.getNgayTao()}</td>
-                            </tr>   
-                        </c:forEach>
-                    </tbody>
-                </table>
-            </c:when>
-            <c:otherwise>   
-                <div class="no-reports-message">
-                    <c:if test="${not empty message}">
-                        <p style="color: red;">${message}</p>
-                    </c:if>
-                    <p>Không có dữ liệu học sinh để hiển thị.</p>
+        <!-- Header -->
+        <div class="header">
+            <div class="left-title">
+                <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
+                EL CENTRE <i class="fas fa-user-graduate"></i>
+            </div>
+            <div class="admin-profile" onclick="toggleDropdown()">
+                <img src="https://png.pngtree.com/png-clipart/20250117/original/pngtree-account-avatar-user-abstract-circle-background-flat-color-icon-png-image_4965046.png" alt="Admin Photo" class="admin-img">
+                <span>Admin Vũ Văn Chủ</span>
+                <i class="fas fa-caret-down"></i>
+                <div class="dropdown-menu" id="adminDropdown">
+                    <a href="#"><i class="fas fa-key"></i> Change Password</a>
+                    <a href="#"><i class="fas fa-user-edit"></i> Update Information</a>
                 </div>
-            </c:otherwise>
-        </c:choose>
-
-        <div class="back-button">
-            <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
+            </div>
         </div>
+
+        <div class="main-content">
+            <h2>Quản lý học sinh</h2>
+
+            <div style="display: flex; justify-content: flex-end; align-items: center; gap: 15px;">
+                <input type="text" id="searchInput" placeholder="Tìm kiếm...">
+
+                <label for="genderFilter" style="margin: 0;">Lọc theo giới tính:</label>
+                <select id="genderFilter">
+                    <option value="all">Tất cả</option>
+                    <option value="Nam">Nam</option>
+                    <option value="Nữ">Nữ</option>
+                </select>
+
+                <label for="birthYearFilter" style="margin: 0;">Lọc theo năm sinh:</label>
+                <select id="birthYearFilter">
+                    <option value="all">Tất cả</option>
+                    <option value="2007">2007</option>
+                    <option value="2008">2008</option>
+                    <option value="2009">2009</option>
+                    <option value="2010">2010</option>
+                </select>
+
+            </div>
+
+            <c:choose>
+                <c:when test="${not empty sessionScope.hocsinhs}">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Họ và Tên</th>
+
+                                <th>Giới Tính</th>
+
+                                <th>Ngày Sinh</th>
+                                <th>Trường học</th>
+
+                                <th>Trạng Thái</th>
+
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentTableBody">
+                            <c:forEach var="hocsinh" items="${sessionScope.hocsinhs}">
+                                <tr>
+                                    <td>${hocsinh.getID_HocSinh()}</td>
+                                    <td>${hocsinh.getHoTen()}</td>
+
+                                    <td>${hocsinh.getGioiTinh()}</td>
+                                    <td>${hocsinh.getNgaySinh()}</td>
+
+                                    <td>${hocsinh.getTenTruongHoc()}</td>
+
+                                    <td>${hocsinh.getTrangThai()}</td>
+
+                                    <td>
+                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithStudent?action=view&id=${hocsinh.getID_HocSinh()}&idtaikhoan=${hocsinh.getID_TaiKhoan()}">Chi tiết</a> | 
+                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewDiem&id=${hocsinh.getID_HocSinh()}">Điểm số</a> | 
+                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithStudent?action=update&id=${hocsinh.getID_HocSinh()}">Chỉnh sửa</a> 
+                                    </td>
+                                </tr>   
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </c:when>
+                <c:otherwise>   
+                    <div class="no-data">
+                        <c:if test="${not empty message}">
+                            <p style="color: red;">${message}</p>
+                        </c:if>
+                        <p>Không có dữ liệu học sinh để hiển thị.</p>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+
+            <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
+
+            <div class="back-button">
+                <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
+        </div>
+
+        <script>
+    function toggleDropdown() {
+        const dropdown = document.getElementById('adminDropdown');
+        dropdown.classList.toggle('active');
+    }
+
+    document.addEventListener('click', function (event) {
+        const profile = document.querySelector('.admin-profile');
+        const dropdown = document.getElementById('adminDropdown');
+        if (!profile.contains(event.target)) {
+            dropdown.classList.remove('active');
+        }
+    });
+
+    const searchInput = document.getElementById("searchInput");
+    const genderFilter = document.getElementById("genderFilter");
+    const birthYearFilter = document.getElementById("birthYearFilter");
+    const tableBody = document.getElementById("studentTableBody");
+    const pagination = document.getElementById("pagination");
+
+    let allRows = [];
+    let filteredRows = [];
+    let currentPage = 1;
+    const rowsPerPage = 3;
+
+   
+    window.onload = () => {
+        allRows = Array.from(tableBody.querySelectorAll("tr"));
+        filteredRows = [...allRows];
+        renderPage();
+        addEventListeners();
+    };
+
+    function addEventListeners() {
+        searchInput.addEventListener("input", filterRows);
+        genderFilter.addEventListener("change", filterRows);
+        birthYearFilter.addEventListener("change", filterRows);
+    }
+
+    function filterRows() {
+        const keyword = searchInput.value.toLowerCase();
+        const gender = genderFilter.value;
+        const birthYear = birthYearFilter.value;
+
+        filteredRows = allRows.filter(row => {
+            const cells = row.querySelectorAll("td");
+            const name = cells[1].textContent.toLowerCase();
+            const rowGender = cells[2].textContent.trim();
+            const birthdate = cells[3].textContent.trim(); 
+
+            const year = birthdate.split("/").reverse()[0]; 
+
+            const matchName = name.includes(keyword);
+            const matchGender = (gender === "all") || (rowGender === gender);
+            const matchBirth = (birthYear === "all") || (year === birthYear);
+
+            return matchName && matchGender && matchBirth;
+        });
+
+        currentPage = 1;
+        renderPage();
+    }
+
+    function renderPage() {
+        tableBody.innerHTML = "";
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const pageRows = filteredRows.slice(start, end);
+        pageRows.forEach(row => tableBody.appendChild(row));
+        renderPagination();
+    }
+
+    function renderPagination() {
+        const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+        pagination.innerHTML = "";
+
+        for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement("button");
+            btn.textContent = i;
+            btn.style.backgroundColor = (i === currentPage) ? "#1F4E79" : "#ddd";
+            btn.style.color = (i === currentPage) ? "white" : "black";
+            btn.onclick = () => {
+                currentPage = i;
+                renderPage();
+            };
+            pagination.appendChild(btn);
+        }
+    }
+</script>
+
     </body>
 </html>

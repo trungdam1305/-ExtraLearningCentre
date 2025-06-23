@@ -27,11 +27,11 @@ public class UserLogsDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+                        return false;
         }
     }
     
-    public static void insertLog(UserLogs log) throws SQLException {
+    public static void insertLog(UserLogs log)  {
         String sql = "INSERT INTO UserLogs (ID_TaiKhoan, HanhDong, ThoiGian) VALUES (?, ?, ?)";
         try (Connection conn = DBContext.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -42,7 +42,7 @@ public class UserLogsDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+              e.printStackTrace();
         }
     }
 }

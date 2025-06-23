@@ -12,7 +12,7 @@ import java.util.Properties;
 
 public class EmailSender {
 
-    private static final String USERNAME = "edupluscenterhn@gmail.com"; // thay bằng gmail bạn
+            private static final String USERNAME = "edupluscenterhn@gmail.com"; // thay bằng gmail bạn
     private static final String PASSWORD = "zvfdc iaus rvmq wrmz"; // app password bạn dán ở đây
 
     public static void sendEmail(String toEmail, String subject, String body) throws MessagingException {

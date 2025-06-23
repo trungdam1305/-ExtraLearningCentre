@@ -38,6 +38,7 @@ public class TaiKhoanChiTietDAO {
                           LEFT JOIN GiaoVien GV ON T.ID_TaiKhoan = GV.ID_TaiKhoan
                           LEFT JOIN PhuHuynh PH ON T.ID_TaiKhoan = PH.ID_TaiKhoan 
                           where T.UserType != 'Staff' and T.UserType != 'Admin' 
+
                           """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
             ResultSet rs = statement.executeQuery() ; 
@@ -66,7 +67,7 @@ public class TaiKhoanChiTietDAO {
         if (taikhoans.isEmpty()){
             return null ; 
         } else {
-            return taikhoans ; 
+             return taikhoans ; 
         }
     }
 }

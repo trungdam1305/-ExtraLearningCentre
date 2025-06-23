@@ -31,15 +31,15 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        // Xác thực Captcha
-        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
-        boolean isValidCaptcha = VerifyRecaptcha.verify(gRecaptchaResponse);
-
-        if (!isValidCaptcha) {
-            String error = "Vui lòng xác nhận bạn không phải là robot.";
-            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
-            return;
-        }
+//        // Xác thực Captcha
+//        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+//        boolean isValidCaptcha = VerifyRecaptcha.verify(gRecaptchaResponse);
+//
+//        if (!isValidCaptcha) {
+//            String error = "Vui lòng xác nhận bạn không phải là robot.";
+//            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
+//            return;
+//        }
 
         if (email == null || email.trim().isEmpty() ||
             password == null || password.trim().isEmpty()) {
@@ -57,11 +57,7 @@ public class LoginServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
                     return;
                 }
-                UserLogs log = new UserLogs();
-                log.setID_TaiKhoan(user.getID_TaiKhoan());
-                log.setHanhDong("Đăng nhập hệ thống");
-                log.setThoiGian(LocalDateTime.now());
-                UserLogsDAO.insertLog(log);
+
 
                 // ✅ Gửi email thông báo đăng nhập
                 try {

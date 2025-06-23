@@ -35,13 +35,13 @@ public class ThongBaoDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+                    return null;
         }
         
         if (thongbaos.isEmpty()){
             return null ; 
         } else {
-            return thongbaos ; 
+               return thongbaos ; 
         }
     }
 }
