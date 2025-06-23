@@ -3,9 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/wrx_Chur04/Desktop/code/-ExtraLearningCentre/ELCentre/src/java/dal/HocSinhDAO.java</file>
-            <file>file:/C:/Users/wrx_Chur04/Desktop/code/-ExtraLearningCentre/ELCentre/web/views/admin/adminUpdateStudentInfor.jsp</file>
-            <file>file:/C:/Users/wrx_Chur04/Desktop/code/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithUser.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/code/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithTeacher.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/code/-ExtraLearningCentre/ELCentre/web/views/admin/adminViewDiemHocSinh.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/code/-ExtraLearningCentre/ELCentre/web/views/admin/adminViewLopHocGiaoVien.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/code/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveUsers.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/code/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveHocSinh.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/code/-ExtraLearningCentre/ELCentre/src/java/model/HocSinh.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/code/-ExtraLearningCentre/ELCentre/src/java/model/GiaoVien_ChiTietDay.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/code/-ExtraLearningCentre/ELCentre/web/views/admin/adminViewGiaoVienChiTiet.jsp</file>
         </group>
     </open-files>
 </project-private>
