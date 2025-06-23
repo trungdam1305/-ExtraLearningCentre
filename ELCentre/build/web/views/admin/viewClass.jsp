@@ -300,35 +300,46 @@
                 <div class="section-title">Danh sách học sinh</div>
                 <!-- Debug kích thước danh sách học sinh -->
                 <c:out value="HocSinhList size: ${hocSinhList != null ? hocSinhList.size() : 'null'}"/>
-                <c:choose>
-                    <c:when test="${not empty hocSinhList}">
-                        <table class="student-table">
-                            <thead>
-                                <tr>
-                                    <th>Họ và tên</th>
-                                    <th>Giới tính</th>
-                                    <th>SĐT phụ huynh</th>
-                                    <th>Trường học</th> 
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach var="hocSinh" items="${hocSinhList}">
-                                    <tr>
-                                        <td>${hocSinh.hoTen != null ? hocSinh.hoTen : 'Chưa có'}</td>
-                                        <td>${hocSinh.gioiTinh != null ? hocSinh.gioiTinh : 'Chưa có'}</td>
-                                        <td>${hocSinh.SDT_PhuHuynh != null ? hocSinh.SDT_PhuHuynh : 'Chưa có'}</td>
-                                        <td>${hocSinh.tenTruongHoc != null ? hocSinh.tenTruongHoc : 'Chưa có'}</td> <!-- Hiển thị Trường học -->
-
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
-                        </table>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="alert alert-warning" role="alert">Chưa có học sinh nào trong lớp.</div>
-                    </c:otherwise>
-                </c:choose>
+               <c:choose>
+    <c:when test="${not empty hocSinhList}">
+        <table class="student-table">
+            <thead>
+                <tr>
+                    <th>Họ và tên</th>
+                    <th>Giới tính</th>
+                    <th>SĐT phụ huynh</th>
+                    <th>Trường học</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="hocSinh" items="${hocSinhList}">
+                    <tr>
+                        <td>${hocSinh.hoTen != null ? hocSinh.hoTen : 'Chưa có'}</td>
+                        <td>${hocSinh.gioiTinh != null ? hocSinh.gioiTinh : 'Chưa có'}</td>
+                        <td>${hocSinh.SDT_PhuHuynh != null ? hocSinh.SDT_PhuHuynh : 'Chưa có'}</td>
+                        <td>${hocSinh.tenTruongHoc != null ? hocSinh.tenTruongHoc : 'Chưa có'}</td>
+                        <td>
+                            <form action="${pageContext.request.contextPath}/ManageClassDetail" method="post" style="display:inline;">
+                                <input type="hidden" name="action" value="moveOutStudent">
+                                <input type="hidden" name="ID_LopHoc" value="${lopHoc.ID_LopHoc}">
+                                <input type="hidden" name="ID_HocSinh" value="${hocSinh.ID_HocSinh}">
+                                <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}">
+                                <input type="hidden" name="ID_Khoi" value="${ID_Khoi}">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa học sinh ${hocSinh.hoTen} khỏi lớp?');">
+                                    <i class="bi bi-trash"></i> Xóa
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </c:when>
+    <c:otherwise>
+        <div class="alert alert-warning" role="alert">Chưa có học sinh nào trong lớp.</div>
+    </c:otherwise>
+</c:choose>
                 <button id="showStudentsBtn" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#studentModal">
                     <i class="bi bi-plus-circle"></i> Thêm học sinh
                 </button>

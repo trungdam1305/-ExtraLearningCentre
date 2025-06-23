@@ -95,6 +95,9 @@ public class ManageClassDetail extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
         String action = request.getParameter("action");
         int idLopHoc;
         int idKhoaHoc;
@@ -132,7 +135,7 @@ public class ManageClassDetail extends HttpServlet {
                 try {
                     int idGiaoVien = Integer.parseInt(request.getParameter("ID_GiaoVien"));
                     GiaoVien currentTeacher = giaoVienDAO.getGiaoVienByLopHoc(idLopHoc);
-                    boolean success;
+                    boolean success = false;
 
                     if (currentTeacher != null && currentTeacher.getID_GiaoVien() != idGiaoVien) {
                         // Cập nhật phân công
@@ -140,8 +143,15 @@ public class ManageClassDetail extends HttpServlet {
                         System.out.println("Kết quả cập nhật phân công giáo viên: " + success);
                     } else if (currentTeacher == null) {
                         // Thêm phân công mới
-                        success = giaoVienDAO.assignTeacherToClass(idLopHoc, idGiaoVien);
-                        System.out.println("Kết quả thêm phân công giáo viên: " + success);
+                        LichHoc lichHocCheck = lichHocDAO.getLichHocByLopHoc(idLopHoc);
+                        if (lichHocCheck == null) {
+                            request.setAttribute("teacherErr", "Không thể phân công giáo viên vì lớp học chưa có lịch học!");
+                        } else if (giaoVienDAO.hasSlotConflict(idGiaoVien, idLopHoc, lichHocCheck.getIdSlotHoc(), lichHocCheck.getNgayHoc())) {
+                            request.setAttribute("teacherErr", "Không thể phân công giáo viên do xung đột thời gian slot học!");
+                        } else {
+                            success = giaoVienDAO.assignTeacherToClass(idLopHoc, idGiaoVien);
+                            System.out.println("Kết quả thêm phân công giáo viên: " + success);
+                        }
                     } else {
                         // Giáo viên đã được phân công
                         request.setAttribute("teacherErr", "Giáo viên này đã được phân công cho lớp!");
@@ -151,15 +161,6 @@ public class ManageClassDetail extends HttpServlet {
 
                     if (success) {
                         request.setAttribute("teacherSuc", "Giáo viên đã được phân công thành công!");
-                    } else if (request.getAttribute("teacherErr") == null) {
-                        LichHoc lichHocCheck = lichHocDAO.getLichHocByLopHoc(idLopHoc);
-                        if (lichHocCheck == null) {
-                            request.setAttribute("teacherErr", "Không thể phân công giáo viên vì lớp học chưa có lịch học!");
-                        } else if (giaoVienDAO.hasSlotConflict(idGiaoVien, idLopHoc, lichHocCheck.getIdSlotHoc(), lichHocCheck.getNgayHoc())) {
-                            request.setAttribute("teacherErr", "Không thể phân công giáo viên do xung đột thời gian slot học!");
-                        } else {
-                            request.setAttribute("teacherErr", "Không thể phân công giáo viên do lỗi dữ liệu hoặc hệ thống!");
-                        }
                     }
                 } catch (NumberFormatException e) {
                     request.setAttribute("teacherErr", "Vui lòng chọn một giáo viên hợp lệ!");
@@ -170,21 +171,52 @@ public class ManageClassDetail extends HttpServlet {
                     int idHocSinh = Integer.parseInt(request.getParameter("ID_HocSinh"));
                     if (lopHoc.getSiSo() >= lopHoc.getSiSoToiDa()) {
                         request.setAttribute("studentErr", "Lớp đã đạt sĩ số tối đa!");
+                    } else if (hocSinhDAO.isStudentInClass(idHocSinh, idLopHoc)) {
+                        request.setAttribute("studentErr", "Học sinh đã có trong lớp này!");
+                    } else if (hocSinhDAO.hasSchoolConflict(idHocSinh, idLopHoc)) {
+                        request.setAttribute("studentErr", "Không thể thêm học sinh vì giáo viên của lớp học cùng trường với học sinh!");
                     } else {
-                        if (hocSinhDAO.hasSchoolConflict(idHocSinh, idLopHoc)) {
-                            request.setAttribute("studentErr", "Không thể thêm học sinh vì giáo viên của lớp học cùng trường với học sinh!");
-                        } else {
-                            boolean studentAdded = hocSinhDAO.addStudentToClass(idHocSinh, idLopHoc);
-                            if (studentAdded) {
-                                boolean siSoUpdated = lopHocDAO.updateSiSo(idLopHoc, lopHoc.getSiSo() + 1);
-                                if (siSoUpdated) {
-                                    request.setAttribute("studentSuc", "Học sinh đã được thêm vào lớp thành công!");
-                                } else {
-                                    request.setAttribute("studentErr", "Lỗi khi cập nhật sĩ số lớp!");
-                                }
+                        boolean studentAdded = hocSinhDAO.addStudentToClass(idHocSinh, idLopHoc);
+                        if (studentAdded) {
+                            boolean siSoUpdated = lopHocDAO.updateSiSo(idLopHoc, lopHoc.getSiSo() + 1);
+                            if (siSoUpdated) {
+                                request.setAttribute("studentSuc", "Học sinh đã được thêm vào lớp thành công!");
                             } else {
-                                request.setAttribute("studentErr", "Không thể thêm học sinh vào lớp. Học sinh có thể đã trong lớp hoặc không tồn tại!");
+                                request.setAttribute("studentErr", "Lỗi khi cập nhật sĩ số lớp!");
                             }
+                        } else {
+                            request.setAttribute("studentErr", "Không thể thêm học sinh vào lớp. Học sinh có thể không tồn tại!");
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    request.setAttribute("studentErr", "Vui lòng chọn một học sinh hợp lệ!");
+                    System.out.println("ID_HocSinh không hợp lệ: " + e.getMessage());
+                }
+            } else if ("moveOutStudent".equalsIgnoreCase(action)) {
+                try {
+                    int idHocSinh = Integer.parseInt(request.getParameter("ID_HocSinh"));
+
+                    // Kiểm tra học sinh có trong lớp
+                    boolean isStudentInClass = hocSinhDAO.isStudentInClass(idHocSinh, idLopHoc);
+                    if (!isStudentInClass) {
+                        request.setAttribute("studentErr", "Học sinh không thuộc lớp này.");
+                    } else {
+                        // Xóa học sinh khỏi lớp
+                        boolean removed = hocSinhDAO.removeStudentFromClass(idHocSinh, idLopHoc);
+                        if (removed) {
+                            // Cập nhật sĩ số
+                            int newSiSo = lopHoc.getSiSo() - 1;
+                            if (newSiSo < 0) {
+                                newSiSo = 0;
+                            }
+                            boolean siSoUpdated = lopHocDAO.updateSiSo(idLopHoc, newSiSo);
+                            if (siSoUpdated) {
+                                request.setAttribute("studentSuc", "Xóa học sinh khỏi lớp thành công!");
+                            } else {
+                                request.setAttribute("studentErr", "Xóa học sinh thành công nhưng không thể cập nhật sĩ số.");
+                            }
+                        } else {
+                            request.setAttribute("studentErr", "Không thể xóa học sinh khỏi lớp.");
                         }
                     }
                 } catch (NumberFormatException e) {

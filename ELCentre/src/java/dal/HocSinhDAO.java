@@ -10,7 +10,7 @@ import java.util.List;
 import model.HocSinh;
 
 public class HocSinhDAO {
-    
+
     public static List<HocSinh> adminGetAllHocSinh1() {
         DBContext db = DBContext.getInstance();
         List<HocSinh> hocSinhList = new ArrayList<>();
@@ -19,8 +19,7 @@ public class HocSinhDAO {
             FROM HocSinh hs
             LEFT JOIN TruongHoc th ON hs.ID_TruongHoc = th.ID_TruongHoc
         """;
-        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 HocSinh hocSinh = new HocSinh();
                 hocSinh.setID_HocSinh(rs.getInt("ID_HocSinh"));
@@ -254,84 +253,84 @@ public class HocSinhDAO {
     }
 
     public boolean addStudentToClass(int idHocSinh, int idLopHoc) {
-    DBContext db = DBContext.getInstance();
+        DBContext db = DBContext.getInstance();
 
-    // Check for valid IDs
-    if (idHocSinh <= 0 || idLopHoc <= 0) {
-        System.out.println("Invalid ID: ID_HocSinh = " + idHocSinh + ", ID_LopHoc = " + idLopHoc);
-        return false;
-    }
-
-    // Check if student and class exist
-    String checkHocSinhSql = "SELECT COUNT(*) FROM HocSinh WHERE ID_HocSinh = ?";
-    String checkLopHocSql = "SELECT COUNT(*) FROM LopHoc WHERE ID_LopHoc = ?";
-    String checkExistSql = "SELECT COUNT(*) FROM HocSinh_LopHoc WHERE ID_LopHoc = ? AND ID_HocSinh = ?";
-    String insertSql = "INSERT INTO HocSinh_LopHoc (ID_LopHoc, ID_HocSinh) VALUES (?, ?)";
-
-    try (PreparedStatement stmt = db.getConnection().prepareStatement(checkHocSinhSql)) {
-        stmt.setInt(1, idHocSinh);
-        ResultSet rs = stmt.executeQuery();
-        if (!rs.next() || rs.getInt(1) == 0) {
-            System.out.println("HocSinh ID " + idHocSinh + " does not exist");
+        // Check for valid IDs
+        if (idHocSinh <= 0 || idLopHoc <= 0) {
+            System.out.println("Invalid ID: ID_HocSinh = " + idHocSinh + ", ID_LopHoc = " + idLopHoc);
             return false;
         }
-    } catch (SQLException e) {
-        System.out.println("SQL Error in check HocSinh: " + e.getMessage());
-        e.printStackTrace();
-        return false;
-    }
 
-    try (PreparedStatement stmt = db.getConnection().prepareStatement(checkLopHocSql)) {
-        stmt.setInt(1, idLopHoc);
-        ResultSet rs = stmt.executeQuery();
-        if (!rs.next() || rs.getInt(1) == 0) {
-            System.out.println("LopHoc ID " + idLopHoc + " does not exist");
+        // Check if student and class exist
+        String checkHocSinhSql = "SELECT COUNT(*) FROM HocSinh WHERE ID_HocSinh = ?";
+        String checkLopHocSql = "SELECT COUNT(*) FROM LopHoc WHERE ID_LopHoc = ?";
+        String checkExistSql = "SELECT COUNT(*) FROM HocSinh_LopHoc WHERE ID_LopHoc = ? AND ID_HocSinh = ?";
+        String insertSql = "INSERT INTO HocSinh_LopHoc (ID_LopHoc, ID_HocSinh) VALUES (?, ?)";
+
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(checkHocSinhSql)) {
+            stmt.setInt(1, idHocSinh);
+            ResultSet rs = stmt.executeQuery();
+            if (!rs.next() || rs.getInt(1) == 0) {
+                System.out.println("HocSinh ID " + idHocSinh + " does not exist");
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in check HocSinh: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
-    } catch (SQLException e) {
-        System.out.println("SQL Error in check LopHoc: " + e.getMessage());
-        e.printStackTrace();
-        return false;
-    }
 
-    // Check if student is already in the class
-    try (PreparedStatement checkStmt = db.getConnection().prepareStatement(checkExistSql)) {
-        checkStmt.setInt(1, idLopHoc);
-        checkStmt.setInt(2, idHocSinh);
-        ResultSet rs = checkStmt.executeQuery();
-        if (rs.next() && rs.getInt(1) > 0) {
-            System.out.println("HocSinh ID " + idHocSinh + " already exists in LopHoc ID " + idLopHoc);
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(checkLopHocSql)) {
+            stmt.setInt(1, idLopHoc);
+            ResultSet rs = stmt.executeQuery();
+            if (!rs.next() || rs.getInt(1) == 0) {
+                System.out.println("LopHoc ID " + idLopHoc + " does not exist");
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in check LopHoc: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
-    } catch (SQLException e) {
-        System.out.println("SQL Error in check student: " + e.getMessage());
-        e.printStackTrace();
-        return false;
+
+        // Check if student is already in the class
+        try (PreparedStatement checkStmt = db.getConnection().prepareStatement(checkExistSql)) {
+            checkStmt.setInt(1, idLopHoc);
+            checkStmt.setInt(2, idHocSinh);
+            ResultSet rs = checkStmt.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                System.out.println("HocSinh ID " + idHocSinh + " already exists in LopHoc ID " + idLopHoc);
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in check student: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+
+        // Check for school conflict
+        if (hasSchoolConflict(idHocSinh, idLopHoc)) {
+            System.out.println("School conflict: HocSinh ID " + idHocSinh + " cannot join LopHoc ID " + idLopHoc + " due to same school as teacher");
+            return false;
+        }
+
+        // Add student to class
+        try (PreparedStatement insertStmt = db.getConnection().prepareStatement(insertSql)) {
+            insertStmt.setInt(1, idLopHoc);
+            insertStmt.setInt(2, idHocSinh);
+            int rowsAffected = insertStmt.executeUpdate();
+            System.out.println("Rows affected in addStudentToClass: " + rowsAffected);
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println("SQL Error in addStudentToClass: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    // Check for school conflict
-    if (hasSchoolConflict(idHocSinh, idLopHoc)) {
-        System.out.println("School conflict: HocSinh ID " + idHocSinh + " cannot join LopHoc ID " + idLopHoc + " due to same school as teacher");
-        return false;
-    }
-
-    // Add student to class
-    try (PreparedStatement insertStmt = db.getConnection().prepareStatement(insertSql)) {
-        insertStmt.setInt(1, idLopHoc);
-        insertStmt.setInt(2, idHocSinh);
-        int rowsAffected = insertStmt.executeUpdate();
-        System.out.println("Rows affected in addStudentToClass: " + rowsAffected);
-        return rowsAffected > 0;
-    } catch (SQLException e) {
-        System.out.println("SQL Error in addStudentToClass: " + e.getMessage());
-        e.printStackTrace();
-        return false;
-    }
-}
-    
     public boolean hasSchoolConflict(int idHocSinh, int idLopHoc) {
-    DBContext db = DBContext.getInstance();
-    String sql = """
+        DBContext db = DBContext.getInstance();
+        String sql = """
         SELECT COUNT(*)
         FROM HocSinh hs
         JOIN GiaoVien_LopHoc glh ON glh.ID_LopHoc = ?
@@ -339,17 +338,42 @@ public class HocSinhDAO {
         WHERE hs.ID_HocSinh = ?
         AND hs.ID_TruongHoc = g.ID_TruongHoc
         """;
-    try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
-        stmt.setInt(1, idLopHoc);
-        stmt.setInt(2, idHocSinh);
-        ResultSet rs = stmt.executeQuery();
-        if (rs.next()) {
-            return rs.getInt(1) > 0; // Conflict if count > 0
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, idLopHoc);
+            stmt.setInt(2, idHocSinh);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Conflict if count > 0
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in hasSchoolConflict: " + e.getMessage());
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        System.out.println("SQL Error in hasSchoolConflict: " + e.getMessage());
-        e.printStackTrace();
+        return false;
     }
-    return false;
-}
+
+    public boolean isStudentInClass(int idHocSinh, int idLopHoc) throws SQLException {
+        DBContext db = DBContext.getInstance();
+        String sql = "SELECT COUNT(*) FROM HocSinh_LopHoc WHERE ID_HocSinh = ? AND ID_LopHoc = ?";
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, idHocSinh);
+            stmt.setInt(2, idLopHoc);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+
+    public boolean removeStudentFromClass(int idHocSinh, int idLopHoc) throws SQLException {
+        DBContext db = DBContext.getInstance();
+        String sql = "DELETE FROM HocSinh_LopHoc WHERE ID_HocSinh = ? AND ID_LopHoc = ?";
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, idHocSinh);
+            stmt.setInt(2, idLopHoc);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        }
+    }
 }
