@@ -2,7 +2,7 @@
   Created on: May 24, 2025, 2:44:16 PM
   Author: wrx_Chur04
   Purpose: This admin dashboard page for the EL CENTRE system is designed to provide an overview of key 
-  metrics including the number of students, teachers, classes, and revenue. It also tracks recent user activities, today's schedule, 
+  metrics including the number of students, teachers, classes, and revenue. It also tracks recent user activities, today's support, 
   and offers visual charts for attendance, student satisfaction, and monthly revenue analysis.
 -->
 
@@ -17,8 +17,8 @@
 <%@ page import="model.LopHoc" %>
 <%@ page import="dal.UserLogsDAO" %>
 <%@ page import="model.UserLogs" %>
-<%@ page import="dal.LichHocDAO" %>
-<%@ page import="model.LichHoc" %>
+<%@ page import="dal.HoTroDAO" %>
+<%@ page import="model.HoTro" %>
 <%@ page import="model.UserLogView" %>
 <%@ page import="java.time.LocalDate" %>
 
@@ -68,15 +68,15 @@
                 position: relative;
                 display: flex;
                 flex-direction: column;
-                align-items: center; /* Center image and text horizontally */
+                align-items: center; 
                 cursor: pointer;
-                margin-left: 50px; /* Shift leftward */
+                margin-left: 50px; 
             }
 
             .admin-profile .admin-img {
                 width: 40px;
                 height: 40px;
-                border-radius: 50%; /* Ensure circular shape */
+                border-radius: 50%; 
                 object-fit: cover;
                 border: 2px solid #B0C4DE;
                 margin-bottom: 5px;
@@ -90,7 +90,7 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                margin-right: 40px; /* Extra space from the right */
+                margin-right: 40px; 
             }
 
             .admin-profile i {
@@ -144,16 +144,16 @@
             }
 
             .sidebar h4 {
-                margin: 0 auto; /* Center horizontally in the sidebar column */
+                margin: 0 auto; 
                 font-weight: bold;
                 letter-spacing: 1.5px;
-                text-align: center; /* Ensure text is centered */
+                text-align: center; 
             }
 
             .sidebar-logo {
                 width: 100px;
                 height: 100px;
-                border-radius: 50%; /* Make the logo circular */
+                border-radius: 50%; 
                 object-fit: cover;
                 margin: 15px auto;
                 display: block;
@@ -200,7 +200,7 @@
 
             .main-content {
                 margin-left: 250px;
-                padding: 100px 40px 20px 40px; /* Increased padding-top to push content down */
+                padding: 100px 40px 20px 40px;  
                 flex: 1;
                 min-height: 100vh;
                 display: flex;
@@ -348,7 +348,7 @@
             .chart-container canvas {
                 max-height: 300px;
             }
-            
+
             #pagination button {
                 margin: 0 5px;
                 padding: 5px 10px;
@@ -357,7 +357,7 @@
                 cursor: pointer;
             }
 
-            /* Footer Styles */
+          
             .footer {
                 background-color: #1F4E79;
                 color: #B0C4DE;
@@ -459,16 +459,16 @@
                 </div>
 
                 <div class="stat-card">
-                    <h3><i class="fas fa-money-bill"></i> Tổng doanh thu</h3>
-                    <p>300.000</p>
+                    <h3><i class="fas fa-money-bill"></i> Tổng đơn đăng ký tư vấn chưa duyệt</h3>
+                    <p>15</p>
                 </div>
             </div>
 
-            <!-- User Logs and Schedule -->
+            
             <div class="tables-wrapper">
-                <!-- Hoạt động gần đây -->
+               
                 <div class="data-table-container">
-                    <h3 class="section-title"><i class="fas fa-history"></i> Hoạt động gần đây</h3>
+                    <h3 class="section-title"><i class="fas fa-history"></i> Request/Thay Đổi Trong Hệ Thống</h3>
                     <%
                       ArrayList<UserLogView> userLogsList = (ArrayList) UserLogsDAO.adminGetAllUserLogs();
                       request.setAttribute("userLogsList", userLogsList);
@@ -500,53 +500,55 @@
                             <p class="no-data">Không có dữ liệu nhật ký để hiển thị.</p>
                         </c:otherwise>
                     </c:choose>
-                            <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
+                    <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
                 </div>
 
-                <!-- Lịch Học -->
+                
                 <div class="data-table-container">
-                    <h3 class="section-title">Lịch Học Hôm Nay</h3>
+                    <h3 class="section-title">Yêu Cầu Hỗ Trợ Từ Người Dùng</h3>
                     <%
-                        LocalDate today = LocalDate.now();
-                        String ngayHienTai = today.toString();
-                        ArrayList<LichHoc> lichHocList = (ArrayList) LichHocDAO.adminGetAllLichHoc(ngayHienTai);
-                        request.setAttribute("lichHocList", lichHocList);
+                        
+                        ArrayList<HoTro> HoTroList = (ArrayList) HoTroDAO.adminGetHoTroDashBoard();
+                        request.setAttribute("HoTroList", HoTroList);
                     %>
                     <c:choose>
-                        <c:when test="${not empty lichHocList}">
+                        <c:when test="${not empty HoTroList}">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>ID Schedule</th>
-                                        <th>Ngày Học</th>
-                                        <th>Giờ Học</th>
-                                        <th>ID Lớp Học</th>
-                                        <th>Ghi Chú</th>
+                                        <th>ID Hỗ Trợ</th>
+                                        <th>Họ Tên</th>
+                                        <th>Yêu Cầu</th>
+                                        <th>Mô Tả</th>
+                                        <th>Thời Gian</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach var="lich" items="${lichHocList}">
+                                    <c:forEach var="sp" items="${HoTroList}">
                                         <tr>
-                                            <td>${lich.getID_Schedule()}</td>
-                                            <td>${lich.getNgayHoc()}</td>
-                                            <td>${lich.getGioHoc()}</td>
-                                            <td>${lich.getID_LopHoc()}</td>
-                                            <td>${lich.getGhiChu()}</td>
+                                            <td>${sp.getID_HoTro()}</td>
+                                            <td>${sp.getHoTen()}</td>
+                                            <td>${sp.getTenHoTro()}</td>
+                                            <td>${sp.getMoTa()}</td>
+                                            <td>${sp.getThoiGian()}</td>
                                         </tr>
                                     </c:forEach>
                                 </tbody>
                             </table>
                         </c:when>
                         <c:otherwise>
-                            <p class="no-data">Không có dữ liệu lịch học để hiển thị.</p>
+                            <p class="no-data">Không có dữ liệu yêu cầu hỗ trợ để hiển thị.</p>
                         </c:otherwise>
                     </c:choose>
                 </div>
             </div>
+            <%
+             LocalDate today = LocalDate.now();
+            %>
 
-            <!-- Charts Wrapper (Top Row) -->
+            
             <div class="charts-wrapper">
-                <!-- Attendance Report Chart -->
+                
                 <div class="data-table-container chart-container">
                     <h3 class="section-title"><i class="fas fa-chart-pie"></i> Báo cáo điểm danh</h3>
                     <div class="chart-container">
@@ -554,7 +556,7 @@
                     </div>
                 </div>
 
-                <!-- Student Satisfaction Report Chart -->
+                
                 <div class="data-table-container chart-container">
                     <h3 class="section-title"><i class="fas fa-chart-pie"></i> Báo cáo mức độ hài lòng của học sinh</h3>
                     <div class="chart-container">
@@ -563,7 +565,7 @@
                 </div>
             </div>
 
-            <!-- Charts Bottom (Revenue Report) -->
+            
             <div class="charts-bottom">
                 <div class="data-table-container chart-container">
                     <h3 class="section-title"><i class="fas fa-chart-bar"></i> Báo cáo thống kê doanh thu theo tháng</h3>
@@ -574,20 +576,20 @@
             </div>
         </div>
 
-        <!-- Footer -->
+        
         <div class="footer">
             <p>&copy; 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
         </div>
 
         <script>
-            // Toggle Dropdown Menu
+            
             function toggleDropdown() {
                 const dropdown = document.getElementById('adminDropdown');
                 dropdown.classList.toggle('active');
             }
 
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function(event) {
+            
+            document.addEventListener('click', function (event) {
                 const profile = document.querySelector('.admin-profile');
                 const dropdown = document.getElementById('adminDropdown');
                 if (!profile.contains(event.target)) {
@@ -595,7 +597,7 @@
                 }
             });
 
-            // Attendance Chart (Enhanced Pie Chart)
+            
             const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
             const attendanceGradient = attendanceCtx.createLinearGradient(0, 0, 200, 0);
             attendanceGradient.addColorStop(0, '#1F4E79');
@@ -605,18 +607,18 @@
                 data: {
                     labels: ['Học sinh có mặt', 'Học sinh vắng'],
                     datasets: [{
-                        data: [45, 5],
-                        backgroundColor: [attendanceGradient, '#E57373'],
-                        borderColor: '#ffffff',
-                        borderWidth: 3,
-                        borderRadius: 5,
-                        hoverOffset: 15
-                    }]
+                            data: [90, 5],
+                            backgroundColor: [attendanceGradient, '#E57373'],
+                            borderColor: '#ffffff',
+                            borderWidth: 3,
+                            borderRadius: 5,
+                            hoverOffset: 15
+                        }]
                 },
-                
+
             });
 
-            // Student Satisfaction Chart (Doughnut Chart)
+            
             const satisfactionCtx = document.getElementById('satisfactionChart').getContext('2d');
             const satisfactionGradient = satisfactionCtx.createLinearGradient(0, 0, 200, 0);
             satisfactionGradient.addColorStop(0, '#8E24AA');
@@ -626,18 +628,18 @@
                 data: {
                     labels: ['Hài lòng', 'Không hài lòng'],
                     datasets: [{
-                        data: [80, 20],
-                        backgroundColor: [satisfactionGradient, '#F06292'],
-                        borderColor: '#ffffff',
-                        borderWidth: 3,
-                        borderRadius: 5,
-                        hoverOffset: 15
-                    }]
+                            data: [80, 20],
+                            backgroundColor: [satisfactionGradient, '#F06292'],
+                            borderColor: '#ffffff',
+                            borderWidth: 3,
+                            borderRadius: 5,
+                            hoverOffset: 15
+                        }]
                 },
-                
+
             });
 
-            // Revenue Chart (Bar Chart)
+            
             const revenueCtx = document.getElementById('revenueChart').getContext('2d');
             const revenueGradient = revenueCtx.createLinearGradient(0, 0, 0, 400);
             revenueGradient.addColorStop(0, '#2E7D32');
@@ -646,63 +648,63 @@
                 type: 'bar',
                 data: {
                     labels: ['Tháng 1/2025', 'Tháng 2/2025', 'Tháng 3/2025', 'Tháng <%= today.getMonthValue() %>/<%= today.getYear() %>'],
-                    datasets: [{                                                                                                                                                                                                    
-                        label: 'Doanh thu (VND)',
-                        data: [1500000, 1800000, 2000000, 2500000],
-                        backgroundColor: revenueGradient,
-                        borderColor: '#2E7D32',
-                        borderWidth: 2,
-                        borderRadius: 5,
-                        hoverBackgroundColor: '#A5D6A7'
-                    }]
+                    datasets: [{
+                            label: 'Doanh thu (VND)',
+                            data: [1500000, 1800000, 2000000, 2500000],
+                            backgroundColor: revenueGradient,
+                            borderColor: '#2E7D32',
+                            borderWidth: 2,
+                            borderRadius: 5,
+                            hoverBackgroundColor: '#A5D6A7'
+                        }]
                 },
-                
+
             });
 
 
 
 
+
             
-            // Số dòng muốn hiển thị mỗi trang
             var soDongMoiTrang = 10;
 
-            // Lấy tất cả dòng (tr) trong bảng giáo viên
+           
             var tatCaDong = document.querySelectorAll("#userLogTableBody tr");
 
-            // Tổng số trang = tổng số dòng chia cho số dòng mỗi trang (làm tròn lên)
+            
             var tongSoTrang = Math.ceil(tatCaDong.length / soDongMoiTrang);
 
-            // Nơi hiển thị các nút phân trang
+            
             var phanTrangDiv = document.getElementById("pagination");
 
-            // Hàm hiển thị trang số "trang"
+            
             function hienThiTrang(trang) {
-                // Ẩn tất cả dòng
+                
                 for (var i = 0; i < tatCaDong.length; i++) {
                     tatCaDong[i].style.display = "none";
                 }
 
-                // Hiện các dòng thuộc trang đang chọn
+                
                 var batDau = (trang - 1) * soDongMoiTrang;
                 var ketThuc = batDau + soDongMoiTrang;
                 for (var i = batDau; i < ketThuc && i < tatCaDong.length; i++) {
                     tatCaDong[i].style.display = "";
                 }
 
-                // Tạo lại các nút phân trang
+               
                 phanTrangDiv.innerHTML = "";
                 for (var j = 1; j <= tongSoTrang; j++) {
                     var nut = document.createElement("button");
                     nut.innerText = j;
 
-                    // Khi bấm vào nút thì sẽ gọi lại chính hàm này với số trang mới
-                    nut.onclick = (function(trangDuocChon) {
-                        return function() {
+                    
+                    nut.onclick = (function (trangDuocChon) {
+                        return function () {
                             hienThiTrang(trangDuocChon);
                         };
                     })(j);
 
-                    // Tô màu cho trang đang chọn
+                    
                     if (j === trang) {
                         nut.style.backgroundColor = "#1F4E79";
                         nut.style.color = "white";
@@ -712,8 +714,8 @@
                 }
             }
 
-            // Lần đầu gọi hàm để hiện trang 1
+            
             hienThiTrang(1);
-        </script>
+        </script>   
     </body>
 </html> 

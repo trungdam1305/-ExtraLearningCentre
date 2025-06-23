@@ -1,6 +1,6 @@
 <%-- 
     Document   : adminUpdateParentInfor
-    Created on : June 19, 2025, 12:58 AM
+    Created on : Jun 2, 2025, 9:32:33 PM
     Author     : wrx_Chur04
     Purpose    : This page allows admin users to update information for parents (phụ huynh) in the EL CENTRE system, 
                  including phone number, address, and notes, while displaying read-only fields 
@@ -32,7 +32,7 @@
             h2 {
                 color: #1F4E79;
                 margin-bottom: 20px;
-                text-align: center; /* Center the title */
+                text-align: center; 
             }
 
             .table-container {
@@ -42,9 +42,9 @@
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                 overflow-x: auto;
                 display: flex;
-                justify-content: center; /* Center the table horizontally */
-                margin: 20px auto; /* Center and add margin */
-                max-width: 90%; /* Limit width for better presentation */
+                justify-content: center; 
+                margin: 20px auto; 
+                max-width: 90%; 
             }
 
             table {
@@ -56,8 +56,8 @@
             th, td {
                 padding: 12px 15px;
                 border: 1px solid #ccc;
-                text-align: center; /* Center text in cells */
-                vertical-align: middle; /* Vertically center text */
+                text-align: center; 
+                vertical-align: middle; 
             }
 
             th {
@@ -69,7 +69,7 @@
             }
 
             td {
-                background-color: #f8f8f8; /* Light background for all cells */
+                background-color: #f8f8f8; 
             }
 
             input[type="text"], input[type="number"], input[type="email"] {
@@ -79,11 +79,11 @@
                 border: 1px solid #ccc;
                 border-radius: 4px;
                 font-size: 14px;
-                text-align: center; /* Center input text */
+                text-align: center; 
             }
 
             input[readonly] {
-                background-color: #e9ecef; /* Lighter background for read-only fields */
+                background-color: #e9ecef; 
                 cursor: not-allowed;
             }
 
@@ -96,7 +96,7 @@
                 cursor: pointer;
                 margin-top: 20px;
                 border-radius: 5px;
-                display: block; /* Center the button */
+                display: block; 
                 margin-left: auto;
                 margin-right: auto;
             }
@@ -107,7 +107,7 @@
 
             .back-button {
                 margin-top: 20px;
-                text-align: center; /* Center the back button */
+                text-align: center; 
             }
 
             .back-button a {
@@ -131,12 +131,12 @@
                 border: 1px solid #e0b4b4;
                 color: #a94442;
                 border-radius: 5px;
-                text-align: center; /* Center the message */
+                text-align: center; 
                 margin: 20px auto;
-                max-width: 600px; /* Limit width for better centering */
+                max-width: 600px; 
             }
 
-            /* Header Styles */
+            
             .header {
                 background-color: #1F4E79;
                 color: white;
@@ -190,7 +190,7 @@
             
            
 
-            /* Footer Styles */
+            
             .footer {
                 background-color: #1F4E79;
                 color: #B0C4DE;
@@ -204,7 +204,7 @@
                 font-size: 14px;
             }
 
-            /* Ensure main content pushes footer down */
+            
             .main-content {
                 flex: 1 0 auto;
                 padding-bottom: 40px;
@@ -277,9 +277,9 @@
                                         </c:forEach>
                                     </tr>
                                     <tr>
-                                        <td>ID_Học Sinh</td>
-                                        <c:forEach var="ph" items="${phuhuynhs}">
-                                            <td><input type="text" value="${ph.getID_HocSinh()}" readonly /></td>
+                                        <td>Phụ Huynh Của</td>
+                                        <c:forEach var="tenCon" items="${name}">
+                                            <td><input type="text" value="${tenCon}" readonly /></td>
                                         </c:forEach>
                                     </tr>
                                     <tr>
@@ -322,7 +322,7 @@
             </div>
         </div>
 
-        <!-- Footer -->
+        
         <div class="footer">
             <p>© 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
         </div>
