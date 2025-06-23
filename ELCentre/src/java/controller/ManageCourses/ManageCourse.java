@@ -96,7 +96,7 @@ public class ManageCourse extends HttpServlet {
                 new Object[]{action, name, sortName, sortColumn, sortOrder, pageParam});
 
         // Xử lý phân trang
-        int pageSize = 8;
+        int pageSize = 10;
         int pageNumber = 1;
         try {
             if (pageParam != null && !pageParam.trim().isEmpty()) {

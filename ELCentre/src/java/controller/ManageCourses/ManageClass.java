@@ -1,5 +1,6 @@
 package controller.ManageCourses;
 
+import dal.GiaoVienDAO;
 import dal.LichHocDAO;
 import dal.LopHocDAO;
 import dal.SlotHocDAO;
@@ -9,6 +10,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import model.GiaoVien;
 import model.LichHoc;
 import model.LopHoc;
 import model.SlotHoc;
@@ -18,16 +20,18 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
-import javax.imageio.ImageIO;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 @MultipartConfig
 public class ManageClass extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private static final int PAGE_SIZE = 5;
+    private static final int PAGE_SIZE = 10;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -36,7 +40,9 @@ public class ManageClass extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         LopHocDAO lopHocDAO = new LopHocDAO();
+        LichHocDAO lichHocDAO = new LichHocDAO();
         SlotHocDAO slotHocDAO = new SlotHocDAO();
+        GiaoVienDAO giaoVienDAO = new GiaoVienDAO();
         String action = request.getParameter("action");
 
         // Lấy danh sách slot học
@@ -57,7 +63,13 @@ public class ManageClass extends HttpServlet {
         if (name == null || name.isEmpty()) {
             name = null;
         }
-        String filterStatus = request.getParameter("filterStatus");
+        String sortName = request.getParameter("sortName");
+        String filterStatus = null;
+        if ("ASCTrang".equalsIgnoreCase(sortName)) {
+            filterStatus = "Active";
+        } else if ("DESCTrang".equalsIgnoreCase(sortName)) {
+            filterStatus = "Inactive";
+        }
         String sortColumn = request.getParameter("sortColumn");
         String sortOrder = request.getParameter("sortOrder");
         String pageStr = request.getParameter("page");
@@ -69,7 +81,7 @@ public class ManageClass extends HttpServlet {
         int idKhoi = (idKhoiStr != null && !idKhoiStr.isEmpty()) ? Integer.parseInt(idKhoiStr) : -1;
 
         // Debug tham số
-        System.out.println("Debug: idKhoaHoc = " + idKhoaHoc + ", idKhoi = " + idKhoi);
+        System.out.println("doGet: idKhoaHoc = " + idKhoaHoc + ", idKhoi = " + idKhoi + ", action = " + action);
 
         if (sortColumn == null) {
             sortColumn = "TenLopHoc";
@@ -80,104 +92,38 @@ public class ManageClass extends HttpServlet {
 
         // Xử lý theo action
         try {
+            List<LopHoc> danhSachLopHoc = null;
+            int totalItems = 0;
+            int totalPages = 0;
+
             if ("search".equalsIgnoreCase(action) || "filterStatus".equalsIgnoreCase(action) || action == null) {
-                String sortName = request.getParameter("sortName");
-                if ("ASCTrang".equalsIgnoreCase(sortName)) {
-                    filterStatus = "Active";
-                } else if ("DESCTrang".equalsIgnoreCase(sortName)) {
-                    filterStatus = "Inactive";
-                }
-                List<LopHoc> danhSachLopHoc = lopHocDAO.searchAndFilterLopHoc(name, filterStatus, page, PAGE_SIZE, idKhoaHoc, idKhoi);
-                int totalItems = lopHocDAO.countClasses(name, filterStatus, idKhoaHoc, idKhoi);
-                int totalPages = (int) Math.ceil((double) totalItems / PAGE_SIZE);
-
-                System.out.println("Debug: danhSachLopHoc size = " + (danhSachLopHoc != null ? danhSachLopHoc.size() : "null"));
-                request.setAttribute("danhSachLopHoc", danhSachLopHoc);
-                request.setAttribute("totalItems", totalItems);
-                request.setAttribute("totalPages", totalPages);
-                request.setAttribute("page", page);
-                request.setAttribute("ID_KhoaHoc", idKhoaHoc);
-                request.setAttribute("ID_Khoi", idKhoi);
-                request.setAttribute("searchName", name);
-                request.setAttribute("filterStatus", filterStatus);
-                request.setAttribute("sortName", sortName);
-
-                if (danhSachLopHoc == null || danhSachLopHoc.isEmpty()) {
-                    request.setAttribute("err", "Không có lớp nào với tên và trạng thái bạn đang tìm");
-                }
-                request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
-            } else if ("sort".equalsIgnoreCase(action)) {
-                List<LopHoc> danhSachLopHoc = lopHocDAO.getClassesSortedPaged(sortColumn, sortOrder, name, page, PAGE_SIZE, idKhoaHoc, idKhoi);
-                int totalItems = lopHocDAO.countClasses(name, filterStatus, idKhoaHoc, idKhoi);
-                int totalPages = (int) Math.ceil((double) totalItems / PAGE_SIZE);
-
-                System.out.println("Debug: danhSachLopHoc size = " + (danhSachLopHoc != null ? danhSachLopHoc.size() : "null"));
-                request.setAttribute("danhSachLopHoc", danhSachLopHoc);
-                request.setAttribute("totalItems", totalItems);
-                request.setAttribute("totalPages", totalPages);
-                request.setAttribute("page", page);
-                request.setAttribute("sortColumn", sortColumn);
-                request.setAttribute("sortOrder", sortOrder);
-                request.setAttribute("ID_KhoaHoc", idKhoaHoc);
-                request.setAttribute("ID_Khoi", idKhoi);
-                request.setAttribute("searchName", name);
-                request.setAttribute("filterStatus", filterStatus);
-                request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
-            } else if ("paginate".equalsIgnoreCase(action)) {
-                List<LopHoc> danhSachLopHoc = lopHocDAO.getClassesSortedPaged(sortColumn, sortOrder, name, page, PAGE_SIZE, idKhoaHoc, idKhoi);
-                int totalItems = lopHocDAO.countClasses(name, filterStatus, idKhoaHoc, idKhoi);
-                int totalPages = (int) Math.ceil((double) totalItems / PAGE_SIZE);
-
-                System.out.println("Debug: danhSachLopHoc size = " + (danhSachLopHoc != null ? danhSachLopHoc.size() : "null"));
-                request.setAttribute("danhSachLopHoc", danhSachLopHoc);
-                request.setAttribute("totalItems", totalItems);
-                request.setAttribute("totalPages", totalPages);
-                request.setAttribute("page", page);
-                request.setAttribute("sortColumn", sortColumn);
-                request.setAttribute("sortOrder", sortOrder);
-                request.setAttribute("ID_KhoaHoc", idKhoaHoc);
-                request.setAttribute("ID_Khoi", idKhoi);
-                request.setAttribute("searchName", name);
-                request.setAttribute("filterStatus", filterStatus);
-                request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
+                danhSachLopHoc = lopHocDAO.searchAndFilterLopHoc(name, filterStatus, page, PAGE_SIZE, idKhoaHoc, idKhoi);
+                totalItems = lopHocDAO.countClasses(name, filterStatus, idKhoaHoc, idKhoi);
+            } else if ("sort".equalsIgnoreCase(action) || "paginate".equalsIgnoreCase(action) || "refresh".equalsIgnoreCase(action)) {
+                danhSachLopHoc = lopHocDAO.getClassesSortedPaged(sortColumn, sortOrder, name, page, PAGE_SIZE, idKhoaHoc, idKhoi);
+                totalItems = lopHocDAO.countClasses(name, filterStatus, idKhoaHoc, idKhoi);
             } else if ("updateClass".equalsIgnoreCase(action)) {
                 int idLopHoc = Integer.parseInt(request.getParameter("ID_LopHoc"));
                 LopHoc lopHoc = lopHocDAO.getLopHocById(idLopHoc);
                 if (lopHoc != null) {
                     request.setAttribute("lopHoc", lopHoc);
-                    request.setAttribute("idKhoaHoc", idKhoaHoc);
-                    request.setAttribute("idKhoi", idKhoi);
+                    request.setAttribute("ID_KhoaHoc", idKhoaHoc);
+                    request.setAttribute("ID_Khoi", idKhoi);
                     request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
+                    return;
                 } else {
                     response.sendRedirect(request.getContextPath() + "/ManageClass?message=notFound&ID_KhoaHoc=" + idKhoaHoc + "&ID_Khoi=" + idKhoi);
+                    return;
                 }
-            } else if ("refresh".equalsIgnoreCase(action)) {
-                List<LopHoc> danhSachLopHoc = lopHocDAO.getClassesSortedPaged(sortColumn, sortOrder, name, page, PAGE_SIZE, idKhoaHoc, idKhoi);
-                int totalItems = lopHocDAO.countClasses(name, filterStatus, idKhoaHoc, idKhoi);
-                int totalPages = (int) Math.ceil((double) totalItems / PAGE_SIZE);
-
-                System.out.println("Debug: danhSachLopHoc size = " + (danhSachLopHoc != null ? danhSachLopHoc.size() : "null"));
-                request.setAttribute("danhSachLopHoc", danhSachLopHoc);
-                request.setAttribute("totalItems", totalItems);
-                request.setAttribute("totalPages", totalPages);
-                request.setAttribute("page", page);
-                request.setAttribute("sortColumn", sortColumn);
-                request.setAttribute("sortOrder", sortOrder);
-                request.setAttribute("ID_KhoaHoc", idKhoaHoc);
-                request.setAttribute("ID_Khoi", idKhoi);
-                request.setAttribute("searchName", name);
-                request.setAttribute("filterStatus", filterStatus);
-                request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
             } else if ("showAddClass".equalsIgnoreCase(action)) {
                 request.setAttribute("ID_KhoaHoc", idKhoaHoc);
                 request.setAttribute("ID_Khoi", idKhoi);
                 request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
+                return;
             } else if ("viewClass".equalsIgnoreCase(action)) {
                 int idLopHoc = Integer.parseInt(request.getParameter("ID_LopHoc"));
                 LopHoc lopHoc = lopHocDAO.getLopHocById(idLopHoc);
                 if (lopHoc != null) {
-                    // Lấy lịch học liên quan nếu có
-                    LichHocDAO lichHocDAO = new LichHocDAO();
                     LichHoc lichHoc = null;
                     if (lopHoc.getID_Schedule() > 0) {
                         lichHoc = lichHocDAO.getLichHocById(lopHoc.getID_Schedule());
@@ -187,10 +133,50 @@ public class ManageClass extends HttpServlet {
                     request.setAttribute("ID_KhoaHoc", idKhoaHoc);
                     request.setAttribute("ID_Khoi", idKhoi);
                     request.getRequestDispatcher("/views/admin/viewClass.jsp").forward(request, response);
+                    return;
                 } else {
                     response.sendRedirect(request.getContextPath() + "/ManageClass?message=notFound&ID_KhoaHoc=" + idKhoaHoc + "&ID_Khoi=" + idKhoi);
+                    return;
                 }
             }
+
+            // Tạo lichHocMap và giaoVienMap
+            Map<Integer, LichHoc> lichHocMap = new HashMap<>();
+            Map<Integer, GiaoVien> giaoVienMap = new HashMap<>();
+            if (danhSachLopHoc != null) {
+                for (LopHoc lopHoc : danhSachLopHoc) {
+                    if (lopHoc.getID_Schedule() > 0) {
+                        LichHoc lichHoc = lichHocDAO.getLichHocById(lopHoc.getID_Schedule());
+                        if (lichHoc != null) {
+                            lichHocMap.put(lopHoc.getID_LopHoc(), lichHoc);
+                        }
+                    }
+                    GiaoVien giaoVien = giaoVienDAO.getGiaoVienByLopHoc(lopHoc.getID_LopHoc());
+                    if (giaoVien != null) {
+                        giaoVienMap.put(lopHoc.getID_LopHoc(), giaoVien);
+                    }
+                }
+            }
+
+            totalPages = (int) Math.ceil((double) totalItems / PAGE_SIZE);
+
+            System.out.println("doGet: danhSachLopHoc size = " + (danhSachLopHoc != null ? danhSachLopHoc.size() : "null"));
+            request.setAttribute("danhSachLopHoc", danhSachLopHoc);
+            request.setAttribute("lichHocMap", lichHocMap);
+            request.setAttribute("giaoVienMap", giaoVienMap);
+            request.setAttribute("totalItems", totalItems);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("page", page);
+            request.setAttribute("sortColumn", sortColumn);
+            request.setAttribute("sortOrder", sortOrder);
+            request.setAttribute("ID_KhoaHoc", idKhoaHoc);
+            request.setAttribute("ID_Khoi", idKhoi);
+            request.setAttribute("searchName", name);
+            request.setAttribute("sortName", sortName);
+            if (danhSachLopHoc == null || danhSachLopHoc.isEmpty()) {
+                request.setAttribute("err", "Không tìm thấy lớp học nào.");
+            }
+            request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
         } catch (Exception e) {
             Logger.getLogger(ManageClass.class.getName()).log(Level.SEVERE, "Error in doGet: " + e.getMessage(), e);
             throw new ServletException("Lỗi xử lý yêu cầu: " + e.getMessage(), e);
@@ -206,6 +192,7 @@ public class ManageClass extends HttpServlet {
         LopHocDAO lopHocDAO = new LopHocDAO();
         LichHocDAO lichHocDAO = new LichHocDAO();
         SlotHocDAO slotHocDAO = new SlotHocDAO();
+        GiaoVienDAO giaoVienDAO = new GiaoVienDAO();
         String action = request.getParameter("action");
 
         // Lấy danh sách slot học
@@ -234,7 +221,13 @@ public class ManageClass extends HttpServlet {
                 if (name == null || name.isEmpty()) {
                     name = null;
                 }
-                String filterStatus = request.getParameter("filterStatus");
+                String sortName = request.getParameter("sortName");
+                String filterStatus = null;
+                if ("ASCTrang".equalsIgnoreCase(sortName)) {
+                    filterStatus = "Active";
+                } else if ("DESCTrang".equalsIgnoreCase(sortName)) {
+                    filterStatus = "Inactive";
+                }
                 String sortColumn = request.getParameter("sortColumn");
                 String sortOrder = request.getParameter("sortOrder");
                 String pageStr = request.getParameter("page");
@@ -257,7 +250,7 @@ public class ManageClass extends HttpServlet {
                 if ("Inactive".equalsIgnoreCase(trangThai)) {
                     // Xóa lịch học liên quan
                     int idSchedule = lopHoc.getID_Schedule();
-                    if (idSchedule > 0) { // Kiểm tra idSchedule hợp lệ
+                    if (idSchedule > 0) {
                         boolean deletedLichHoc = lichHocDAO.deleteLichHoc(idSchedule);
                         if (!deletedLichHoc) {
                             throw new SQLException("Không thể xóa lịch học liên quan.");
@@ -267,42 +260,14 @@ public class ManageClass extends HttpServlet {
                     // Xóa lớp học
                     LopHoc deleted = lopHocDAO.deleteLopHoc(lopHoc);
                     if (deleted != null) {
-                        int totalItems = lopHocDAO.countClasses(name, filterStatus, idKhoaHoc, idKhoi);
-                        int totalPages = (int) Math.ceil((double) totalItems / PAGE_SIZE);
-                        List<LopHoc> danhSachLopHoc = lopHocDAO.getClassesSortedPaged(sortColumn, sortOrder, name, page, PAGE_SIZE, idKhoaHoc, idKhoi);
-
-                        request.setAttribute("danhSachLopHoc", danhSachLopHoc);
-                        request.setAttribute("totalItems", totalItems);
-                        request.setAttribute("totalPages", totalPages);
-                        request.setAttribute("page", page);
-                        request.setAttribute("sortColumn", sortColumn);
-                        request.setAttribute("sortOrder", sortOrder);
-                        request.setAttribute("ID_KhoaHoc", idKhoaHoc);
-                        request.setAttribute("ID_Khoi", idKhoi);
-                        request.setAttribute("searchName", name);
-                        request.setAttribute("filterStatus", filterStatus);
-                        request.setAttribute("suc", "Xóa lớp học thành công!");
-                        request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
+                        response.sendRedirect(request.getContextPath() + "/ManageClass?message=deleted&ID_KhoaHoc=" + idKhoaHoc + "&ID_Khoi=" + idKhoi);
+                        return;
                     } else {
                         throw new SQLException("Không thể xóa lớp học.");
                     }
                 } else {
-                    int totalItems = lopHocDAO.countClasses(name, filterStatus, idKhoaHoc, idKhoi);
-                    int totalPages = (int) Math.ceil((double) totalItems / PAGE_SIZE);
-                    List<LopHoc> danhSachLopHoc = lopHocDAO.getClassesSortedPaged(sortColumn, sortOrder, name, page, PAGE_SIZE, idKhoaHoc, idKhoi);
-
-                    request.setAttribute("danhSachLopHoc", danhSachLopHoc);
-                    request.setAttribute("totalItems", totalItems);
-                    request.setAttribute("totalPages", totalPages);
-                    request.setAttribute("page", page);
-                    request.setAttribute("sortColumn", sortColumn);
-                    request.setAttribute("sortOrder", sortOrder);
-                    request.setAttribute("ID_KhoaHoc", idKhoaHoc);
-                    request.setAttribute("ID_Khoi", idKhoi);
-                    request.setAttribute("searchName", name);
-                    request.setAttribute("filterStatus", filterStatus);
-                    request.setAttribute("Notdelete", "Không thể xóa do trạng thái hoặc có tham số không phù hợp!");
-                    request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
+                    response.sendRedirect(request.getContextPath() + "/ManageClass?message=Notdeleted&ID_KhoaHoc=" + idKhoaHoc + "&ID_Khoi=" + idKhoi);
+                    return;
                 }
             } catch (Exception e) {
                 Logger.getLogger(ManageClass.class.getName()).log(Level.SEVERE, "Error in deleteClass action: " + e.getMessage(), e);
@@ -321,7 +286,7 @@ public class ManageClass extends HttpServlet {
             String idKhoaHoc = request.getParameter("ID_KhoaHoc");
             String idKhoi = request.getParameter("ID_Khoi");
 
-            // Lưu các giá trị đã nhập để hiển thị lại trong form
+            // Lưu các giá trị đã nhập để hiển thị lại nếu có lỗi
             request.setAttribute("tenLopHoc", tenLopHoc);
             request.setAttribute("idSlotHoc", idSlotHocStr);
             request.setAttribute("ngayHoc", ngayHoc);
@@ -359,10 +324,11 @@ public class ManageClass extends HttpServlet {
 
             try {
                 int idKhoaHocInt = Integer.parseInt(idKhoaHoc);
+                int idKhoiInt = Integer.parseInt(idKhoi);
                 int idSlotHoc = Integer.parseInt(idSlotHocStr);
                 int siSoToiDa = Integer.parseInt(siSoToiDaStr);
 
-                // Kiểm tra ngày học không được trước ngày hiện tại
+                // Kiểm tra ngày học
                 LocalDate ngayHocDate = LocalDate.parse(ngayHoc);
                 LocalDate currentDate = LocalDate.now();
                 if (ngayHocDate.isBefore(currentDate)) {
@@ -372,7 +338,7 @@ public class ManageClass extends HttpServlet {
                 }
 
                 // Kiểm tra tên lớp không trùng
-                List<LopHoc> existingClasses = lopHocDAO.getLopHocByKhoaHocAndKhoi(idKhoaHocInt, Integer.parseInt(idKhoi));
+                List<LopHoc> existingClasses = lopHocDAO.getLopHocByKhoaHocAndKhoi(idKhoaHocInt, idKhoiInt);
                 for (LopHoc existingClass : existingClasses) {
                     if (existingClass.getTenLopHoc().equalsIgnoreCase(tenLopHoc)) {
                         request.setAttribute("err", "Tên lớp '" + tenLopHoc + "' đã tồn tại trong khóa học và khối này.");
@@ -408,14 +374,14 @@ public class ManageClass extends HttpServlet {
                         request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
                         return;
                     }
-                    String uploadPath = getServletContext().getRealPath("") + File.separator + "img" + File.separator + "avatar";
+                    String uploadPath = request.getServletContext().getRealPath("") + "static/images/avatar/";
                     File uploadDir = new File(uploadPath);
                     if (!uploadDir.exists()) {
                         uploadDir.mkdirs();
                     }
-                    String filePath = uploadPath + File.separator + fileName;
+                    String filePath = uploadPath + fileName;
                     filePart.write(filePath);
-                    imagePath = "img/avatar/" + fileName;
+                    imagePath = "static/images/avatar/" + fileName;
                 }
 
                 // Thêm lớp học
@@ -530,14 +496,14 @@ public class ManageClass extends HttpServlet {
                         request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
                         return;
                     }
-                    String uploadPath = getServletContext().getRealPath("") + File.separator + "img" + File.separator + "avatar";
+                    String uploadPath = request.getServletContext().getRealPath("") + "static/images/avatar/";
                     File uploadDir = new File(uploadPath);
                     if (!uploadDir.exists()) {
                         uploadDir.mkdirs();
                     }
-                    String filePath = uploadPath + File.separator + fileName;
+                    String filePath = uploadPath + fileName;
                     filePart.write(filePath);
-                    imagePath = "img/avatar/" + fileName;
+                    imagePath = "static/images/avatar/" + fileName;
                 }
 
                 // Cập nhật lịch học
@@ -564,24 +530,13 @@ public class ManageClass extends HttpServlet {
                 // Cập nhật lớp học
                 LopHoc updated = lopHocDAO.updateLopHoc(idLopHoc, tenLopHoc, idKhoaHoc, siSo, idSchedule, ghiChu, trangThai, "0", imagePath, siSoToiDa);
                 if (updated != null) {
-                    request.setAttribute("suc", "Cập nhật thành công!");
-                    // Tải lại danh sách để hiển thị ngay
-                    List<LopHoc> danhSachLopHoc = lopHocDAO.getClassesSortedPaged("TenLopHoc", "asc", null, 1, PAGE_SIZE, idKhoaHoc, idKhoi);
-                    int totalItems = lopHocDAO.countClasses(null, null, idKhoaHoc, idKhoi);
-                    int totalPages = (int) Math.ceil((double) totalItems / PAGE_SIZE);
-                    request.setAttribute("danhSachLopHoc", danhSachLopHoc);
-                    request.setAttribute("totalItems", totalItems);
-                    request.setAttribute("totalPages", totalPages);
-                    request.setAttribute("page", 1);
-                    request.setAttribute("sortColumn", "TenLopHoc");
-                    request.setAttribute("sortOrder", "asc");
-                    request.setAttribute("ID_KhoaHoc", idKhoaHoc);
-                    request.setAttribute("ID_Khoi", idKhoi);
+                    response.sendRedirect(request.getContextPath() + "/ManageClass?message=updated&ID_KhoaHoc=" + idKhoaHoc + "&ID_Khoi=" + idKhoi);
+                    return;
                 } else {
                     request.setAttribute("err", "Cập nhật thất bại.");
                     request.setAttribute("lopHoc", oldData);
+                    request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
                 }
-                request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
             } catch (Exception e) {
                 Logger.getLogger(ManageClass.class.getName()).log(Level.SEVERE, "Error in submitUpdateClass action: " + e.getMessage(), e);
                 request.setAttribute("err", "Lỗi hệ thống: " + e.getMessage());

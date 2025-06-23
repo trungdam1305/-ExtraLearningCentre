@@ -72,6 +72,10 @@
         <servlet-name>ManageClass</servlet-name>
         <servlet-class>controller.ManageCourses.ManageClass</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageClassDetail</servlet-name>
+        <servlet-class>controller.ManageCourses.ManageClassDetail</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -143,6 +147,10 @@
     <servlet-mapping>
         <servlet-name>ManageClass</servlet-name>
         <url-pattern>/ManageClass</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageClassDetail</servlet-name>
+        <url-pattern>/ManageClassDetail</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

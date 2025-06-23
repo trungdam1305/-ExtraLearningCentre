@@ -189,15 +189,17 @@
 
                 </div>
 
-                <!-- Nút quay lại -->
-                <div class="back-button" >
-                    <button class="btn btn-secondary" style="display: flex">
-                        <a href="${pageContext.request.contextPath}/ManageClass?action=refresh&ID_Khoi=<%= idKhoi != null ? idKhoi : "" %>&ID_KhoaHoc=<%= idKhoaHoc != null ? idKhoaHoc : "" %>" class="text-white text-decoration-none">
-                            <i class="bi bi-arrow-left"></i> Quay lại trang danh sách lớp học
-                        </a>
-                    </button>
-                </div>
+
             </form>
+        </div>
+
+        <!-- Nút quay lại -->
+        <div class="back-button" >
+            <button class="btn btn-secondary" >
+                <a href="${pageContext.request.contextPath}/ManageClass?action=refresh&ID_Khoi=<%= idKhoi != null ? idKhoi : "" %>&ID_KhoaHoc=<%= idKhoaHoc != null ? idKhoaHoc : "" %>" class="text-white text-decoration-none">
+                    <i class="bi bi-arrow-left"></i> Quay lại trang danh sách lớp học
+                </a>
+            </button>
         </div>
 
 

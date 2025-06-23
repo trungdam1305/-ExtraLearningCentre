@@ -47,8 +47,7 @@ public class LichHocDAO {
             INSERT INTO [dbo].[LichHoc] (NgayHoc, ID_SlotHoc, GhiChu)
             VALUES (?, ?, ?)
         """;
-        try (Connection conn = db.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setDate(1, java.sql.Date.valueOf(ngayHoc));
             stmt.setInt(2, idSlotHoc);
             stmt.setString(3, ghiChu);
@@ -174,27 +173,54 @@ public class LichHocDAO {
         }
         return lichHocs.isEmpty() ? null : lichHocs;
     }
+
+    public LichHoc getLichHocByLopHoc(int idLopHoc) {
+        LichHoc lichHoc = null;
+        DBContext db = DBContext.getInstance();
+        String sql = """
+            SELECT lh.*, sh.SlotThoiGian
+            FROM [dbo].[LichHoc] lh
+            LEFT JOIN [dbo].[SlotHoc] sh ON lh.ID_SlotHoc = sh.ID_SlotHoc
+            WHERE lh.ID_LopHoc = ?
+        """;
+        try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, idLopHoc);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                lichHoc = new LichHoc();
+                lichHoc.setIdSchedule(rs.getInt("ID_Schedule"));
+                lichHoc.setNgayHoc(rs.getDate("NgayHoc").toLocalDate());
+                lichHoc.setIdSlotHoc(rs.getInt("ID_SlotHoc"));
+                lichHoc.setIdLopHoc(rs.getInt("ID_LopHoc"));
+                lichHoc.setGhiChu(rs.getString("GhiChu"));
+                lichHoc.setSlotThoiGian(rs.getString("SlotThoiGian"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return lichHoc;
+    }
     
-    public static void main(String[] args) {
-        // Khởi tạo DAO
-        LichHocDAO dao = new LichHocDAO();
+      public static void main(String[] args) {
+        // Tạo đối tượng DAO
+        LichHocDAO lichHocDAO = new LichHocDAO();
 
-        // ID cần kiểm tra — bạn có thể thay bằng ID có sẵn trong DB
-        int idSchedule = 3;
+        // Gọi hàm getLichHocByLopHoc với ID_LopHoc cần test
+        int idLopHocTest = 35; // bạn thay bằng ID lớp học hợp lệ trong DB
 
-        // Gọi phương thức getLichHocById
-        LichHoc lich = dao.getLichHocById(idSchedule);
+        LichHoc lichHoc = lichHocDAO.getLichHocByLopHoc(idLopHocTest);
 
-        // Kiểm tra kết quả
-        if (lich != null) {
-            System.out.println(">>> Lịch học tìm được:");
-            System.out.println("ID: " + lich.getIdSchedule());
-            System.out.println("Ngày học: " + lich.getNgayHoc());
-            System.out.println("Slot học: " + lich.getIdSlotHoc() + " (" + lich.getSlotThoiGian() + ")");
-            System.out.println("Lớp học ID: " + lich.getIdLopHoc());
-            System.out.println("Ghi chú: " + lich.getGhiChu());
+        // Kiểm tra kết quả trả về
+        if (lichHoc != null) {
+            System.out.println("ID_Schedule: " + lichHoc.getIdSchedule());
+            System.out.println("Ngày học: " + lichHoc.getNgayHoc());
+            System.out.println("ID_SlotHoc: " + lichHoc.getIdSlotHoc());
+            System.out.println("ID_LopHoc: " + lichHoc.getIdLopHoc());
+            System.out.println("Ghi chú: " + lichHoc.getGhiChu());
+            System.out.println("Slot thời gian: " + lichHoc.getSlotThoiGian());
         } else {
-            System.out.println("Không tìm thấy lịch học với ID_Schedule = " + idSchedule);
+            System.out.println("Không tìm thấy lịch học cho lớp có ID = " + idLopHocTest);
         }
     }
 }

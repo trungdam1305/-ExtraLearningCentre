@@ -117,15 +117,13 @@ public class LopHocDAO {
                 khoc.ID_Khoi,
                 NhomMonHoc
         """;
-        try (Connection conn = DBContext.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = DBContext.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 LopHocTheoNhomDTO dto = new LopHocTheoNhomDTO(
-                    rs.getInt("ID_Khoi"),
-                    rs.getString("TenKhoi"),
-                    rs.getString("NhomMonHoc"),
-                    rs.getInt("TongSoLopHoc")
+                        rs.getInt("ID_Khoi"),
+                        rs.getString("TenKhoi"),
+                        rs.getString("NhomMonHoc"),
+                        rs.getInt("TongSoLopHoc")
                 );
                 result.add(dto);
             }
@@ -280,125 +278,149 @@ public class LopHocDAO {
     }
 
     // Thêm lớp học mới và tạo lịch học
-    public LopHoc addLopHoc(String tenLopHoc, int idKhoaHoc, int siSo, int idSlotHoc, String ngayHoc,
-            String ghiChu, String trangThai, String soTien, String image, int siSoToiDa) {
-        DBContext db = DBContext.getInstance();
-        LocalDateTime ngayTao = LocalDateTime.now();
-        Connection connection = null;
+   public LopHoc addLopHoc(String tenLopHoc, int idKhoaHoc, int siSo, int idSlotHoc, String ngayHoc,
+        String ghiChu, String trangThai, String soTien, String image, int siSoToiDa) {
+    DBContext db = DBContext.getInstance();
+    LocalDateTime ngayTao = LocalDateTime.now();
+    Connection connection = null;
 
-        try {
-            connection = db.getConnection();
-            connection.setAutoCommit(false);
+    try {
+        connection = db.getConnection();
+        connection.setAutoCommit(false);
 
-            // Thêm bản ghi vào bảng LichHoc
-            String sqlLichHoc = """
-                INSERT INTO LichHoc (NgayHoc, ID_SlotHoc, GhiChu)
-                VALUES (?, ?, ?)
-            """;
-            PreparedStatement stmtLichHoc = connection.prepareStatement(sqlLichHoc, java.sql.Statement.RETURN_GENERATED_KEYS);
-            stmtLichHoc.setDate(1, java.sql.Date.valueOf(ngayHoc));
-            stmtLichHoc.setInt(2, idSlotHoc);
-            stmtLichHoc.setString(3, ghiChu);
-            stmtLichHoc.executeUpdate();
+        // Thêm bản ghi vào bảng LopHoc trước
+        String sqlInsert = """
+            INSERT INTO LopHoc (
+                TenLopHoc, ID_KhoaHoc, SiSo, GhiChu,
+                TrangThai, SoTien, NgayTao, Image, SiSoToiDa
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """;
+        PreparedStatement statement = connection.prepareStatement(sqlInsert, java.sql.Statement.RETURN_GENERATED_KEYS);
+        statement.setString(1, tenLopHoc);
+        statement.setInt(2, idKhoaHoc);
+        statement.setInt(3, siSo);
+        statement.setString(4, ghiChu);
+        statement.setString(5, trangThai);
+        statement.setString(6, soTien);
+        statement.setTimestamp(7, Timestamp.valueOf(ngayTao));
+        statement.setString(8, image);
+        statement.setInt(9, siSoToiDa);
 
-            // Lấy ID_Schedule vừa tạo
-            ResultSet rsLichHoc = stmtLichHoc.getGeneratedKeys();
-            int idSchedule = -1;
-            if (rsLichHoc.next()) {
-                idSchedule = rsLichHoc.getInt(1);
+        int rs = statement.executeUpdate();
+        int newId = -1;
+        if (rs > 0) {
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                newId = generatedKeys.getInt(1);
             }
-            rsLichHoc.close();
-            stmtLichHoc.close();
+            generatedKeys.close();
+        }
+        statement.close();
 
-            if (idSchedule == -1) {
-                connection.rollback();
-                return null;
-            }
-
-            // Thêm bản ghi vào bảng LopHoc
-            String sqlInsert = """
-                INSERT INTO LopHoc (
-                    TenLopHoc, ID_KhoaHoc, SiSo, ID_Schedule, GhiChu,
-                    TrangThai, SoTien, NgayTao, Image, SiSoToiDa
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """;
-            PreparedStatement statement = connection.prepareStatement(sqlInsert, java.sql.Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, tenLopHoc);
-            statement.setInt(2, idKhoaHoc);
-            statement.setInt(3, siSo);
-            statement.setInt(4, idSchedule);
-            statement.setString(5, ghiChu);
-            statement.setString(6, trangThai);
-            statement.setString(7, soTien);
-            statement.setTimestamp(8, Timestamp.valueOf(ngayTao));
-            statement.setString(9, image);
-            statement.setInt(10, siSoToiDa);
-
-            int rs = statement.executeUpdate();
-            if (rs > 0) {
-                ResultSet generatedKeys = statement.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    int newId = generatedKeys.getInt(1);
-                    String sqlSelect = """
-                        SELECT lh.*, kh.TenKhoaHoc, kh.ID_Khoi, sh.SlotThoiGian
-                        FROM LopHoc lh
-                        JOIN KhoaHoc kh ON lh.ID_KhoaHoc = kh.ID_KhoaHoc
-                        LEFT JOIN LichHoc lich ON lh.ID_Schedule = lich.ID_Schedule
-                        LEFT JOIN SlotHoc sh ON lich.ID_SlotHoc = sh.ID_SlotHoc
-                        WHERE lh.ID_LopHoc = ?
-                    """;
-                    PreparedStatement selectStmt = connection.prepareStatement(sqlSelect);
-                    selectStmt.setInt(1, newId);
-                    ResultSet rsSelect = selectStmt.executeQuery();
-                    if (rsSelect.next()) {
-                        LopHoc result = new LopHoc();
-                        result.setID_LopHoc(rsSelect.getInt("ID_LopHoc"));
-                        result.setTenLopHoc(rsSelect.getString("TenLopHoc"));
-                        result.setID_KhoaHoc(rsSelect.getInt("ID_KhoaHoc"));
-                        result.setSiSo(rsSelect.getInt("SiSo"));
-                        result.setID_Schedule(rsSelect.getInt("ID_Schedule"));
-                        result.setGhiChu(rsSelect.getString("GhiChu"));
-                        result.setTrangThai(rsSelect.getString("TrangThai"));
-                        result.setSoTien(rsSelect.getString("SoTien"));
-                        Timestamp ts = rsSelect.getTimestamp("NgayTao");
-                        if (ts != null) {
-                            result.setNgayTao(ts.toLocalDateTime());
-                        }
-                        result.setImage(rsSelect.getString("Image"));
-                        result.setSiSoToiDa(rsSelect.getInt("SiSoToiDa"));
-                        result.setTenKhoaHoc(rsSelect.getString("TenKhoaHoc"));
-                        result.setID_Khoi(rsSelect.getInt("ID_Khoi"));
-                        connection.commit();
-                        return result;
-                    }
-                    selectStmt.close();
-                }
-                generatedKeys.close();
-            }
-            statement.close();
+        if (newId == -1) {
+            System.out.println("Lỗi: Không thể tạo ID_LopHoc cho lớp học");
             connection.rollback();
             return null;
-        } catch (SQLException e) {
-            try {
-                if (connection != null) {
-                    connection.rollback();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-            e.printStackTrace();
+        }
+
+        // Thêm bản ghi vào bảng LichHoc
+        String sqlLichHoc = """
+            INSERT INTO LichHoc (NgayHoc, ID_SlotHoc, GhiChu, ID_LopHoc)
+            VALUES (?, ?, ?, ?)
+        """;
+        PreparedStatement stmtLichHoc = connection.prepareStatement(sqlLichHoc, java.sql.Statement.RETURN_GENERATED_KEYS);
+        stmtLichHoc.setDate(1, java.sql.Date.valueOf(ngayHoc));
+        stmtLichHoc.setInt(2, idSlotHoc);
+        stmtLichHoc.setString(3, ghiChu);
+        stmtLichHoc.setInt(4, newId);
+        stmtLichHoc.executeUpdate();
+
+        // Lấy ID_Schedule vừa tạo
+        ResultSet rsLichHoc = stmtLichHoc.getGeneratedKeys();
+        int idSchedule = -1;
+        if (rsLichHoc.next()) {
+            idSchedule = rsLichHoc.getInt(1);
+        }
+        rsLichHoc.close();
+        stmtLichHoc.close();
+
+        if (idSchedule == -1) {
+            System.out.println("Lỗi: Không thể tạo ID_Schedule cho lịch học");
+            connection.rollback();
             return null;
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.setAutoCommit(true);
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+        }
+
+        // Cập nhật ID_Schedule trong LopHoc
+        String sqlUpdateLopHoc = """
+            UPDATE LopHoc
+            SET ID_Schedule = ?
+            WHERE ID_LopHoc = ?
+        """;
+        PreparedStatement stmtUpdateLopHoc = connection.prepareStatement(sqlUpdateLopHoc);
+        stmtUpdateLopHoc.setInt(1, idSchedule);
+        stmtUpdateLopHoc.setInt(2, newId);
+        stmtUpdateLopHoc.executeUpdate();
+        stmtUpdateLopHoc.close();
+
+        // Lấy thông tin lớp học vừa tạo
+        String sqlSelect = """
+            SELECT lh.*, kh.TenKhoaHoc, kh.ID_Khoi, sh.SlotThoiGian
+            FROM LopHoc lh
+            JOIN KhoaHoc kh ON lh.ID_KhoaHoc = kh.ID_KhoaHoc
+            LEFT JOIN LichHoc lich ON lh.ID_Schedule = lich.ID_Schedule
+            LEFT JOIN SlotHoc sh ON lich.ID_SlotHoc = sh.ID_SlotHoc
+            WHERE lh.ID_LopHoc = ?
+        """;
+        PreparedStatement selectStmt = connection.prepareStatement(sqlSelect);
+        selectStmt.setInt(1, newId);
+        ResultSet rsSelect = selectStmt.executeQuery();
+        if (rsSelect.next()) {
+            LopHoc result = new LopHoc();
+            result.setID_LopHoc(rsSelect.getInt("ID_LopHoc"));
+            result.setTenLopHoc(rsSelect.getString("TenLopHoc"));
+            result.setID_KhoaHoc(rsSelect.getInt("ID_KhoaHoc"));
+            result.setSiSo(rsSelect.getInt("SiSo"));
+            result.setID_Schedule(rsSelect.getInt("ID_Schedule"));
+            result.setGhiChu(rsSelect.getString("GhiChu"));
+            result.setTrangThai(rsSelect.getString("TrangThai"));
+            result.setSoTien(rsSelect.getString("SoTien"));
+            Timestamp ts = rsSelect.getTimestamp("NgayTao");
+            if (ts != null) {
+                result.setNgayTao(ts.toLocalDateTime());
             }
+            result.setImage(rsSelect.getString("Image"));
+            result.setSiSoToiDa(rsSelect.getInt("SiSoToiDa"));
+            result.setTenKhoaHoc(rsSelect.getString("TenKhoaHoc"));
+            result.setID_Khoi(rsSelect.getInt("ID_Khoi"));
+            connection.commit();
+            return result;
+        }
+        selectStmt.close();
+        connection.rollback();
+        System.out.println("Lỗi: Không thể lấy thông tin lớp học vừa tạo");
+        return null;
+    } catch (SQLException e) {
+        System.out.println("Lỗi SQL khi thêm lớp học: " + e.getMessage() + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+        try {
+            if (connection != null) {
+                connection.rollback();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        e.printStackTrace();
+        return null;
+    } finally {
+        try {
+            if (connection != null) {
+                connection.setAutoCommit(true);
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
+}
 
     // Xóa lớp học
     public LopHoc deleteLopHoc(LopHoc lopHoc) {
@@ -644,8 +666,7 @@ public class LopHocDAO {
                 TrangThai = ?, SoTien = ?, Image = ?, SiSoToiDa = ?
             WHERE ID_LopHoc = ?
         """;
-        try (Connection connection = db.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sqlUpdate)) {
+        try (Connection connection = db.getConnection(); PreparedStatement statement = connection.prepareStatement(sqlUpdate)) {
             statement.setString(1, tenLopHoc);
             statement.setInt(2, idKhoaHoc);
             statement.setInt(3, siSo);
@@ -819,5 +840,28 @@ public class LopHocDAO {
             e.printStackTrace();
         }
         return count;
+    }
+
+    // Cập nhật sĩ số của lớp học
+    public boolean updateSiSo(int idLopHoc, int siSo) {
+        DBContext db = DBContext.getInstance();
+        String sql = """
+            UPDATE LopHoc
+            SET SiSo = ?
+            WHERE ID_LopHoc = ?
+        """;
+        List<Object> params = new ArrayList<>();
+        params.add(siSo);
+        params.add(idLopHoc);
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+            for (int i = 0; i < params.size(); i++) {
+                stmt.setObject(i + 1, params.get(i));
+            }
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
