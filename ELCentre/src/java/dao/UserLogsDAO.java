@@ -27,7 +27,7 @@ public class UserLogsDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+                        return false;
         }
     }
     
@@ -42,7 +42,7 @@ public class UserLogsDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+              e.printStackTrace();
         }
     }
 }

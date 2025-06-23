@@ -31,15 +31,15 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        // Xác thực Captcha
-        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
-        boolean isValidCaptcha = VerifyRecaptcha.verify(gRecaptchaResponse);
-
-        if (!isValidCaptcha) {
-            String error = "Vui lòng xác nhận bạn không phải là robot.";
-            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
-            return;
-        }
+//        // Xác thực Captcha
+//        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+//        boolean isValidCaptcha = VerifyRecaptcha.verify(gRecaptchaResponse);
+//
+//        if (!isValidCaptcha) {
+//            String error = "Vui lòng xác nhận bạn không phải là robot.";
+//            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
+//            return;
+//        }
 
         if (email == null || email.trim().isEmpty() ||
             password == null || password.trim().isEmpty()) {
@@ -62,7 +62,11 @@ public class LoginServlet extends HttpServlet {
                 log.setHanhDong("Đăng nhập hệ thống");
                 log.setThoiGian(LocalDateTime.now());
                 UserLogsDAO.insertLog(log);
-
+                HttpSession session = request.getSession();
+                
+                session.setAttribute("user", user);
+                session.setAttribute("userID", user.getID_TaiKhoan());
+                session.setAttribute("userEmail", user.getEmail());
                 // ✅ Gửi email thông báo đăng nhập
                 try {
                     String subject = "Thông báo đăng nhập thành công";
@@ -77,7 +81,9 @@ public class LoginServlet extends HttpServlet {
                 // Điều hướng sau khi login
                 if (user.getID_VaiTro() == 1) {
                     response.sendRedirect(request.getContextPath() + "/views/admin/adminDashboard.jsp");
-                } else {
+                } else if (user.getID_VaiTro() == 3) {
+                    response.sendRedirect(request.getContextPath() + "/TeacherDashboard");
+                }else {
                     response.sendRedirect(request.getContextPath() + "/HomePage");
                 }
             } else {

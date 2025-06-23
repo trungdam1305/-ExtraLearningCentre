@@ -21,6 +21,7 @@ public class TaiKhoanDAO {
             String sql  = """
                           select * from TaiKhoan 
                           WHERE UserType != 'Staff' AND UserType != 'Admin'
+                          
                           """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
             ResultSet rs = statement.executeQuery() ; 
@@ -47,7 +48,7 @@ public class TaiKhoanDAO {
         if (taikhoans.isEmpty()){
             return null ; 
         } else {
-            return taikhoans ; 
+                        return taikhoans ; 
         }
     }
     
@@ -147,7 +148,7 @@ public class TaiKhoanDAO {
         if (rs == 0 ) {
             return false ; 
         } else {
-            return true ; 
+               return true ; 
         }
     }
 }

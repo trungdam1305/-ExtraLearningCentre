@@ -16,40 +16,44 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.GiaoVien;
+import model.GiaoVien_TruongHoc ; 
 
 public class GiaoVienDAO {
      private Connection conn;
-    public static ArrayList<GiaoVien> admminGetAllGiaoVien() {
+    public static ArrayList<GiaoVien_TruongHoc> admminGetAllGiaoVien() {
         DBContext db = DBContext.getInstance();
-        ArrayList<GiaoVien> giaoviens = new ArrayList<GiaoVien>();
+        ArrayList<GiaoVien_TruongHoc> giaoviens = new ArrayList<GiaoVien_TruongHoc>();
 
         try {
             String sql = """
-                          select * from GiaoVien 
+                          select * from GiaoVien gv JOIN TruongHoc th ON gv.ID_TruongHoc = th.ID_TruongHoc
                           """;
 
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
-                GiaoVien giaovien = new GiaoVien(
+                GiaoVien_TruongHoc giaovien = new GiaoVien_TruongHoc(
                         rs.getInt("ID_GiaoVien"),
                         rs.getInt("ID_TaiKhoan"),
                         rs.getString("HoTen"),
                         rs.getString("ChuyenMon"),
                         rs.getString("SDT"),
-                        rs.getString("TruongGiangDay"),
+                        rs.getInt("ID_TruongHoc"),
                         rs.getBigDecimal("Luong"),
-                        rs.getString("GhiChu"),
+                        rs.getInt("IsHot"),
                         rs.getString("TrangThai"),
                         rs.getTimestamp("NgayTao").toLocalDateTime() , 
-                        rs.getString("Avatar")
+                        rs.getString("Avatar"),
+                        rs.getString("TenTruongHoc") , 
+                        rs.getString("DiaChi") 
                 ) ; 
                 giaoviens.add(giaovien) ; 
             }
         } catch (SQLException e) {
             // Exception ignored    
-            return new ArrayList<GiaoVien>();
+           e.printStackTrace();
+            return null ;
         }
         
         if (giaoviens.isEmpty()){
@@ -79,12 +83,13 @@ public class GiaoVienDAO {
                         rs.getString("HoTen"),
                         rs.getString("ChuyenMon"),
                         rs.getString("SDT"),
-                        rs.getString("TruongGiangDay"),
+                        rs.getInt("ID_TruongHoc"),
                         rs.getBigDecimal("Luong"),
-                        rs.getString("GhiChu"),
+                        rs.getInt("IsHot"),
                         rs.getString("TrangThai"),
-                        rs.getTimestamp("NgayTao").toLocalDateTime(),
-                            rs.getString("Avatar")
+                        rs.getTimestamp("NgayTao").toLocalDateTime() , 
+                        rs.getString("Avatar"),
+                        rs.getString("TenTruongHoc")
                 ); 
                 giaoviens.add(giaovien) ; 
             }
@@ -104,7 +109,9 @@ public class GiaoVienDAO {
     public GiaoVien getGiaoVienByHoTen(String hoTen) {
     DBContext db = DBContext.getInstance();
     GiaoVien gv = null;
-    String sql = "SELECT * FROM GiaoVien WHERE HoTen COLLATE Latin1_General_CI_AI = ?";
+    String sql = "SELECT * FROM GiaoVien gv JOIN TruongHoc th"
+            + "ON gv.ID_TruongHoc = th.ID_TruongHoc"
+            + " WHERE HoTen COLLATE Latin1_General_CI_AI = ?";
     try (PreparedStatement statement = db.getConnection().prepareStatement(sql);) {
         statement.setString(1, hoTen.trim()); // loại bỏ khoảng trắng đầu cuối trước khi set
         ResultSet rs = statement.executeQuery();
@@ -115,9 +122,9 @@ public class GiaoVienDAO {
             gv.setHoTen(rs.getString("HoTen"));
             gv.setChuyenMon(rs.getString("ChuyenMon"));
             gv.setSDT(rs.getString("SDT"));
-            gv.setTruongGiangDay(rs.getString("TruongGiangDay"));
+            gv.setTenTruongHoc(rs.getString("TenTruongHoc"));
             gv.setLuong(rs.getBigDecimal("Luong"));
-            gv.setGhiChu(rs.getString("GhiChu"));
+            gv.setIsHot(rs.getInt("IsHot"));
             gv.setTrangThai(rs.getString("TrangThai"));
             gv.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
             gv.setAvatar(rs.getString("Avatar"));
@@ -130,20 +137,22 @@ public class GiaoVienDAO {
 }   
     //Get Teacher to have Specialised Teacher
     public ArrayList<GiaoVien> getSpecialised() {
-    DBContext db = DBContext.getInstance();
-    ArrayList<GiaoVien> giaoviens = new ArrayList<GiaoVien>();
-    String sql = "SELECT * FROM GiaoVien WHERE GhiChu IS NOT NULL;";
-    try (PreparedStatement statement = db.getConnection().prepareStatement(sql);) {
+            DBContext db = DBContext.getInstance();
+    ArrayList<GiaoVien> giaoviens = new ArrayList<>();
+    String sql = "SELECT gv.*, th.TenTruongHoc FROM GiaoVien gv "
+               + "JOIN TruongHoc th ON gv.ID_TruongHoc = th.ID_TruongHoc "
+               + "ORDER BY gv.IsHot ASC;";
+    try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
         ResultSet rs = statement.executeQuery();
-        while (rs.next()) {  // Use while to get all records from database
+        while (rs.next()) {
             GiaoVien gv = new GiaoVien();
             gv.setID_GiaoVien(rs.getInt("ID_GiaoVien"));
             gv.setHoTen(rs.getString("HoTen"));
             gv.setChuyenMon(rs.getString("ChuyenMon"));
             gv.setSDT(rs.getString("SDT"));
-            gv.setTruongGiangDay(rs.getString("TruongGiangDay"));
+            gv.setTenTruongHoc(rs.getString("TenTruongHoc"));
             gv.setLuong(rs.getBigDecimal("Luong"));
-            gv.setGhiChu(rs.getString("GhiChu"));
+            gv.setIsHot(rs.getInt("IsHot"));
             gv.setTrangThai(rs.getString("TrangThai"));
             gv.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
             gv.setAvatar(rs.getString("Avatar"));
@@ -155,15 +164,17 @@ public class GiaoVienDAO {
     return giaoviens;
 }
 
+
     
     
-    public static ArrayList<GiaoVien> adminGetGiaoVienByID(String id) {
+    public static ArrayList<GiaoVien_TruongHoc> adminGetGiaoVienByID(String id) {
         DBContext db = DBContext.getInstance() ; 
-        ArrayList<GiaoVien> giaoviens = new ArrayList<GiaoVien>() ; 
+        ArrayList<GiaoVien_TruongHoc> giaoviens = new ArrayList<GiaoVien_TruongHoc>() ; 
         
         try {
             String sql = """
-                         select * from GiaoVien 
+                         select * from GiaoVien gv JOIN TruongHoc th 
+                         ON gv.ID_TruongHoc = th.ID_TruongHoc
                          where ID_TaiKhoan = ? 
                          """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
@@ -171,18 +182,20 @@ public class GiaoVienDAO {
             ResultSet rs = statement.executeQuery() ; 
             
              while (rs.next()) {
-                GiaoVien giaovien = new GiaoVien(
+                GiaoVien_TruongHoc giaovien = new GiaoVien_TruongHoc(
                         rs.getInt("ID_GiaoVien"),
                         rs.getInt("ID_TaiKhoan"),
                         rs.getString("HoTen"),
                         rs.getString("ChuyenMon"),
                         rs.getString("SDT"),
-                        rs.getString("TruongGiangDay"),
+                        rs.getInt("ID_TruongHoc"),
                         rs.getBigDecimal("Luong"),
-                        rs.getString("GhiChu"),
+                        rs.getInt("IsHot"),
                         rs.getString("TrangThai"),
                         rs.getTimestamp("NgayTao").toLocalDateTime() , 
-                        rs.getString("Avatar")
+                        rs.getString("Avatar"),
+                        rs.getString("TenTruongHoc") , 
+                        rs.getString("DiaChi")
                 ) ; 
                 giaoviens.add(giaovien) ; 
             }
@@ -266,51 +279,78 @@ public class GiaoVienDAO {
     }
     
     
-    public static boolean adminUpdateInformationOfTeacher(String sdt , String truong , BigDecimal luong , String ghichu , int id){
-        DBContext db = DBContext.getInstance() ; 
-        int rs = 0 ; 
-        try {
-            String sql = """
-                         UPDATE GiaoVien
-                         SET
-                        SDT = ?,
-                        TruongGiangDay = ?,
-                        Luong = ?,
-                        GhiChu = ?
-                         WHERE
-                         ID_GiaoVien = ?;
-                         """ ; 
-            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
-            statement.setString(1 , sdt);
-            statement.setString(2 , truong) ; 
-            statement.setBigDecimal(3, luong);
-            statement.setString(4, ghichu);
-            statement.setInt(5, id);
-            
-            rs = statement.executeUpdate() ; 
-        } catch (SQLException e ){
-            e.printStackTrace();
-            return false ; 
+    public static boolean adminUpdateInformationOfTeacher(String sdt, String tenTruong, BigDecimal luong, String ghichu, int idGiaoVien) {
+    DBContext db = DBContext.getInstance();
+    
+    String getIdTruongSql = "SELECT ID_TruongHoc FROM TruongHoc WHERE TenTruongHoc = ?";
+    String updateGiaoVienSql = """
+        UPDATE GiaoVien
+        SET SDT = ?,
+            ID_TruongHoc = ?,
+            Luong = ?,
+            GhiChu = ?
+        WHERE ID_GiaoVien = ?
+    """;
+    
+    try (
+        PreparedStatement getTruongStmt = db.getConnection().prepareStatement(getIdTruongSql);
+        PreparedStatement updateGvStmt = db.getConnection().prepareStatement(updateGiaoVienSql)
+    ) {
+        // Lấy ID_TruongHoc từ TenTruongHoc
+        getTruongStmt.setString(1, tenTruong);
+        ResultSet rs = getTruongStmt.executeQuery();
+        
+        if (!rs.next()) {
+            // Không tìm thấy trường học
+            return false;
         }
         
-        if (rs == 0 ) {
-            return false ; 
-        } else {
-            return true ; 
-        }
+        int idTruongHoc = rs.getInt("ID_TruongHoc");
+        
+        // Tiến hành cập nhật giáo viên
+        updateGvStmt.setString(1, sdt);
+        updateGvStmt.setInt(2, idTruongHoc);
+        updateGvStmt.setBigDecimal(3, luong);
+        updateGvStmt.setString(4, ghichu);
+        updateGvStmt.setInt(5, idGiaoVien);
+        
+        int affected = updateGvStmt.executeUpdate();
+        return affected > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
     }
+}
+    
+    public double getLuongTheoTaiKhoan(int idTaiKhoan) {
+    DBContext db = DBContext.getInstance();
+    double luong = -1;
+
+    String sql = "SELECT GiaoVien.Luong FROM GiaoVien join TaiKhoan\n" +
+"  ON GiaoVien.ID_TaiKhoan  = TaiKhoan.ID_TaiKhoan\n" +
+"  WHERE GiaoVien.ID_TaiKhoan = ?";
+
+    try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
+        statement.setInt(1, idTaiKhoan);
+        ResultSet rs = statement.executeQuery();
+
+        if (rs.next()) {
+            luong = rs.getDouble("Luong"); 
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return luong;
+}
+
+    
 
     //Debugging DAO
     public static void main(String[] args) {
-        GiaoVienDAO dao = new GiaoVienDAO();
-
-        //Just for Testing
-        
-        ArrayList<GiaoVien> gv = dao.getSpecialised();
-        for (GiaoVien g : gv){
-        System.out.println(g.getHoTen() + " " + g.getChuyenMon() + " " + g.getAvatar());
-        }
-        
+                 GiaoVienDAO dao = new GiaoVienDAO();
+                 double a = dao.getLuongTheoTaiKhoan(11);
+        System.out.println(a);
     }
 
 }

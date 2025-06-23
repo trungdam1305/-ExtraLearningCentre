@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.EOFException;
 import java.math.BigDecimal;
 import model.TaiKhoanChiTiet;
+import model.GiaoVien_TruongHoc ; 
 
 /**
  *
@@ -58,7 +59,7 @@ public class adminActionWithUser extends HttpServlet {
 
                 if (type.equalsIgnoreCase("GiaoVien")) {    //if user is teacher
 
-                    ArrayList<GiaoVien> giaoviens = GiaoVienDAO.adminGetGiaoVienByID(id); // call method to get data from database 
+                    ArrayList<GiaoVien_TruongHoc> giaoviens = GiaoVienDAO.adminGetGiaoVienByID(id); // call method to get data from database 
                     if (giaoviens.isEmpty()) {                                              // if can not get data from database
                         request.setAttribute("message", "Không tìm thấy thông tin giáo viên này.");
                         request.getRequestDispatcher("/views/admin/adminReceiveTeacherInfor.jsp").forward(request, response); // redirect to adminReceiveTeacherInfor.jsp
@@ -70,8 +71,8 @@ public class adminActionWithUser extends HttpServlet {
 
                 } else if (type.equalsIgnoreCase("HocSinh")) {  //if user is student
                     ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>(); // create arraylist to save data 
-                    hocsinhs = HocSinhDAO.adminGetHocSinhByID(id);  // call method to get data from database 
-                    if (hocsinhs.isEmpty()) {                       // if can not get data from database
+                        hocsinhs = HocSinhDAO.adminGetHocSinhByID(id);  // call method to get data from database 
+                        if (hocsinhs.isEmpty()) {                       // if can not get data from database
                         request.setAttribute("message", "Không tìm thấy thông tin học sinh này.");
                         request.getRequestDispatcher("/views/admin/adminReceiveStudentInfor.jsp").forward(request, response);   // redirect to adminReceiveStudentInfor.jsp
                     } else {
@@ -184,7 +185,7 @@ public class adminActionWithUser extends HttpServlet {
             case "update" : 
                 if (type.equalsIgnoreCase("GiaoVien")) {    //if user is teacher
 
-                    ArrayList<GiaoVien> giaoviens = GiaoVienDAO.adminGetGiaoVienByID(id); // call method to get data from database 
+                    ArrayList<GiaoVien_TruongHoc> giaoviens = GiaoVienDAO.adminGetGiaoVienByID(id); // call method to get data from database 
                     if (giaoviens.isEmpty()) {                                              // if can not get data from database
                         request.setAttribute("message", "Không tìm thấy thông tin giáo viên này.");
                         request.getRequestDispatcher("/views/admin/adminUpdateTeacherInfor.jsp").forward(request, response); // redirect to adminReceiveTeacherInfor.jsp
@@ -370,8 +371,8 @@ public class adminActionWithUser extends HttpServlet {
                     
                     
                     
-                    boolean s1 = PhuHuynhDAO.adminUpdateInformationOfParent(SDT, DiaChi,  GhiChu, ID_PhuHuynh) ; 
-                    boolean s2 = TaiKhoanDAO.adminUpdateInformationAccount(SDT, ID_TaiKhoan) ; 
+                       boolean s1 = PhuHuynhDAO.adminUpdateInformationOfParent(SDT, DiaChi,  GhiChu, ID_PhuHuynh) ; 
+                       boolean s2 = TaiKhoanDAO.adminUpdateInformationAccount(SDT, ID_TaiKhoan) ; 
                     
                     if (s1 == true && s2 == true ){
                         request.setAttribute("message", "Thay đổi thành công!");
@@ -388,8 +389,8 @@ public class adminActionWithUser extends HttpServlet {
                     
                 }catch (Exception e ){
                     
-                    request.setAttribute("message", e.getMessage());
-                    request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+                            request.setAttribute("message", e.getMessage());
+                            request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
                 }
     }
 

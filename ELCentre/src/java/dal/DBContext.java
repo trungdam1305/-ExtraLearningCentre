@@ -29,7 +29,7 @@ public class DBContext {
             return connection;
         } catch (SQLException | ClassNotFoundException e) {
             System.err.println("Error " + e.getMessage() + " at DBContext");
-            return null;
+                    return null;
         }
     }
 
