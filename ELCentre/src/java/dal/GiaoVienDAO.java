@@ -646,6 +646,60 @@ public boolean hasSlotConflict(int idGiaoVien, int idLopHoc, int idSlotHoc, Loca
     return false;
 }
 
+public String findConflictingClassName(int idGiaoVien, int idLopHoc, int idSlotHoc, LocalDate ngayHoc) {
+    DBContext db = DBContext.getInstance();
+    String sql = """
+        SELECT lh.TenLopHoc, sh.SlotThoiGian
+        FROM GiaoVien_LopHoc glh
+        JOIN LopHoc lh ON glh.ID_LopHoc = lh.ID_LopHoc
+        JOIN LichHoc lich ON lh.ID_Schedule = lich.ID_Schedule
+        JOIN SlotHoc sh ON lich.ID_SlotHoc = sh.ID_SlotHoc
+        WHERE glh.ID_GiaoVien = ?
+        AND glh.ID_LopHoc != ?
+        AND lich.NgayHoc = ?
+    """;
+    try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+        stmt.setInt(1, idGiaoVien);
+        stmt.setInt(2, idLopHoc);
+        stmt.setDate(3, java.sql.Date.valueOf(ngayHoc));
+        ResultSet rs = stmt.executeQuery();
+
+        // Lấy SlotThoiGian của lớp mới
+        String sqlSlot = "SELECT SlotThoiGian FROM SlotHoc WHERE ID_SlotHoc = ?";
+        try (PreparedStatement stmtSlot = db.getConnection().prepareStatement(sqlSlot)) {
+            stmtSlot.setInt(1, idSlotHoc);
+            ResultSet rsSlot = stmtSlot.executeQuery();
+            if (rsSlot.next()) {
+                String newSlotThoiGian = rsSlot.getString("SlotThoiGian");
+                if (newSlotThoiGian == null || newSlotThoiGian.trim().isEmpty()) {
+                    System.err.println("SlotThoiGian không hợp lệ cho ID_SlotHoc = " + idSlotHoc);
+                    return null;
+                }
+                while (rs.next()) {
+                    String tenLopHoc = rs.getString("TenLopHoc");
+                    String existingSlotThoiGian = rs.getString("SlotThoiGian");
+                    if (existingSlotThoiGian == null || existingSlotThoiGian.trim().isEmpty()) {
+                        System.err.println("SlotThoiGian không hợp lệ trong lịch dạy của giáo viên ID " + idGiaoVien + " cho ngày " + ngayHoc);
+                        continue;
+                    }
+                    if (isTimeConflict(newSlotThoiGian, existingSlotThoiGian)) {
+                        System.out.println("Phát hiện xung đột khung giờ cho giáo viên ID " + idGiaoVien + " với lớp học '" + tenLopHoc + "' vào ngày " + ngayHoc);
+                        return tenLopHoc;
+                    }
+                }
+            } else {
+                System.err.println("Không tìm thấy SlotHoc cho ID_SlotHoc = " + idSlotHoc);
+                return null;
+            }
+        }
+    } catch (SQLException e) {
+        System.err.println("Lỗi SQL trong findConflictingClassName: " + e.getMessage() + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+        e.printStackTrace();
+        return null;
+    }
+    return null; // Không có xung đột
+}
+
  public static void main(String[] args) {
         GiaoVienDAO dao = new GiaoVienDAO(); // Giả sử bạn có class này
 
@@ -663,6 +717,8 @@ public boolean hasSlotConflict(int idGiaoVien, int idLopHoc, int idSlotHoc, Loca
             System.out.println("✅ Không có xung đột.");
         }
     }
+ 
+ 
 
     
 

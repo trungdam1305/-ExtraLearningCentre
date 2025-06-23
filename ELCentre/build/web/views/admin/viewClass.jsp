@@ -294,9 +294,7 @@
                 </div>
 
                 
-                <c:if test="${not empty studentSuc}">
-                    <div class="alert alert-success" role="alert">${studentSuc}</div>
-                </c:if>
+                
 
                 <!-- Danh sách học sinh -->
                 <div class="section-title">Danh sách học sinh</div>

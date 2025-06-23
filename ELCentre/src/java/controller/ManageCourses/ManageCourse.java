@@ -1,6 +1,8 @@
 package controller.ManageCourses;
 
+import dal.GiaoVienDAO;
 import dal.KhoaHocDAO;
+import dal.LichHocDAO;
 import dal.LopHocDAO;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -16,9 +18,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.GiaoVien;
 import model.KhoaHoc;
+import model.LichHoc;
 import model.LopHoc;
 
 /**
@@ -247,7 +253,6 @@ public class ManageCourse extends HttpServlet {
             return;
         } else if ("ViewCourse".equalsIgnoreCase(action)) {
             try {
-
                 String idKhoaStr = request.getParameter("ID_KhoaHoc");
                 String idKhoiStr = request.getParameter("ID_Khoi");
                 if (idKhoaStr == null || idKhoiStr == null || idKhoaStr.trim().isEmpty() || idKhoiStr.trim().isEmpty()) {
@@ -262,9 +267,16 @@ public class ManageCourse extends HttpServlet {
                 // Lưu ID_KhoaHoc và ID_Khoi làm attribute để JSP sử dụng
                 request.setAttribute("ID_KhoaHoc", idKhoaHoc);
                 request.setAttribute("ID_Khoi", idKhoi);
-                LopHocDAO lhd = new LopHocDAO();
 
-                String pageStr = request.getParameter("page"); // Khai báo pageStr
+                LopHocDAO lopHocDAO = new LopHocDAO();
+                GiaoVienDAO giaoVienDAO = new GiaoVienDAO();
+                LichHocDAO lichHocDAO = new LichHocDAO();
+
+                // Đặt các tham số mặc định giống hành động refresh
+                String filterStatus = null; // Không lọc trạng thái
+
+                // Xử lý phân trang nếu có tham số page
+                String pageStr = request.getParameter("page");
                 try {
                     if (pageStr != null && !pageStr.trim().isEmpty()) {
                         pageNumber = Integer.parseInt(pageStr);
@@ -277,25 +289,50 @@ public class ManageCourse extends HttpServlet {
                     Logger.getLogger(ManageCourse.class.getName()).log(Level.WARNING, "Invalid page param for ViewCourse: {0}", pageStr);
                 }
 
-                List<LopHoc> danhSachLopHoc = lhd.getLopHocByKhoaHocAndKhoi(idKhoaHoc, idKhoi, pageNumber, pageSize);
-                if (danhSachLopHoc.isEmpty() || danhSachLopHoc == null) {
-                    request.setAttribute("err", "Chưa có lớp học nào được khởi tạo");
-                }
-                int totalItems = lhd.countClasses(null, idKhoaHoc, idKhoi);
+                // Lấy danh sách lớp học
+                List<LopHoc> danhSachLopHoc = lopHocDAO.getClassesSortedPaged(sortColumn, sortOrder, name, pageNumber, pageSize, idKhoaHoc, idKhoi);
+                int totalItems = lopHocDAO.countClasses(name, filterStatus, idKhoaHoc, idKhoi);
                 int totalPages = (int) Math.ceil((double) totalItems / pageSize);
 
+                // Tạo lichHocMap và giaoVienMap giống như trong ManageClass
+                Map<Integer, LichHoc> lichHocMap = new HashMap<>();
+                Map<Integer, GiaoVien> giaoVienMap = new HashMap<>();
+                if (danhSachLopHoc != null) {
+                    for (LopHoc lopHoc : danhSachLopHoc) {
+                        if (lopHoc.getID_Schedule() > 0) {
+                            LichHoc lichHoc = lichHocDAO.getLichHocById(lopHoc.getID_Schedule());
+                            if (lichHoc != null) {
+                                lichHocMap.put(lopHoc.getID_LopHoc(), lichHoc);
+                            }
+                        }
+                        GiaoVien giaoVien = giaoVienDAO.getGiaoVienByLopHoc(lopHoc.getID_LopHoc());
+                        if (giaoVien != null) {
+                            giaoVienMap.put(lopHoc.getID_LopHoc(), giaoVien);
+                        }
+                    }
+                }
+
+                // Đặt các thuộc tính cho JSP
                 request.setAttribute("danhSachLopHoc", danhSachLopHoc);
+                request.setAttribute("lichHocMap", lichHocMap);
+                request.setAttribute("giaoVienMap", giaoVienMap);
                 request.setAttribute("totalItems", totalItems);
                 request.setAttribute("totalPages", totalPages);
-                request.setAttribute("pageNumber", pageNumber);
+                request.setAttribute("page", pageNumber);
+                request.setAttribute("sortColumn", sortColumn);
+                request.setAttribute("sortOrder", sortOrder);
+                request.setAttribute("searchName", name);
+                request.setAttribute("sortName", sortName);
 
+                if (danhSachLopHoc == null || danhSachLopHoc.isEmpty()) {
+                    request.setAttribute("err", "Chưa có lớp học nào được khởi tạo cho khóa học và khối này.");
+                }
+
+                // Chuyển tiếp đến manageClass.jsp
                 request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
             } catch (NumberFormatException e) {
+                Logger.getLogger(ManageCourse.class.getName()).log(Level.SEVERE, "Invalid ID_KhoaHoc or ID_Khoi: {0}", e.getMessage());
                 request.setAttribute("err", "ID_KhoaHoc hoặc ID_Khoi không hợp lệ!");
-                request.getRequestDispatcher("/views/admin/manageCourses.jsp").forward(request, response);
-            } catch (SQLException ex) {
-                Logger.getLogger(ManageCourse.class.getName()).log(Level.SEVERE, null, ex);
-                request.setAttribute("err", "Lỗi truy vấn cơ sở dữ liệu!");
                 request.getRequestDispatcher("/views/admin/manageCourses.jsp").forward(request, response);
             }
             return;

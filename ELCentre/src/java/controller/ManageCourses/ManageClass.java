@@ -462,6 +462,7 @@ public class ManageClass extends HttpServlet {
                 int idSlotHoc = Integer.parseInt(idSlotHocStr);
                 int siSo = Integer.parseInt(siSoStr);
                 int siSoToiDa = Integer.parseInt(siSoToiDaStr);
+                LocalDate ngayHocDate = LocalDate.parse(ngayHoc);
 
                 // Kiểm tra ID_SlotHoc hợp lệ
                 SlotHoc slotHoc = slotHocDAO.getSlotHocById(idSlotHoc);
@@ -472,9 +473,31 @@ public class ManageClass extends HttpServlet {
                     return;
                 }
 
+                // Kiểm tra ngày học
+                LocalDate currentDate = LocalDate.now();
+                if (ngayHocDate.isBefore(currentDate)) {
+                    request.setAttribute("err", "Ngày học không được trước ngày hiện tại (" + currentDate + ").");
+                    request.setAttribute("lopHoc", lopHocDAO.getLopHocById(idLopHoc));
+                    request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
+                    return;
+                }
+
                 // Lấy thông tin lớp học hiện tại
                 LopHoc oldData = lopHocDAO.getLopHocById(idLopHoc);
                 String imagePath = oldData.getImage();
+
+                // Kiểm tra xung đột lịch dạy của giáo viên
+                GiaoVien giaoVien = giaoVienDAO.getGiaoVienByLopHoc(idLopHoc);
+                if (giaoVien != null) {
+                    String conflictingClass = giaoVienDAO.findConflictingClassName(giaoVien.getID_GiaoVien(), idLopHoc, idSlotHoc, ngayHocDate);
+                    if (conflictingClass != null) {
+                        request.setAttribute("err", "Không thể cập nhật vì giáo viên " + giaoVien.getHoTen()
+                                + " có lịch dạy trùng với lớp '" + conflictingClass + "' vào ngày " + ngayHoc + ".");
+                        request.setAttribute("lopHoc", oldData);
+                        request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
+                        return;
+                    }
+                }
 
                 // Xử lý ảnh
                 Part filePart = request.getPart("Image");
@@ -509,7 +532,7 @@ public class ManageClass extends HttpServlet {
                 // Cập nhật lịch học
                 int idSchedule = oldData.getID_Schedule();
                 if (idSchedule <= 0) {
-                    LichHoc lichHoc = lichHocDAO.addLichHoc(LocalDate.parse(ngayHoc), idSlotHoc, ghiChu);
+                    LichHoc lichHoc = lichHocDAO.addLichHoc(ngayHocDate, idSlotHoc, ghiChu);
                     if (lichHoc == null) {
                         request.setAttribute("err", "Không thể tạo lịch học.");
                         request.setAttribute("lopHoc", oldData);
@@ -518,7 +541,7 @@ public class ManageClass extends HttpServlet {
                     }
                     idSchedule = lichHoc.getIdSchedule();
                 } else {
-                    boolean updatedLichHoc = lichHocDAO.updateLichHoc(idSchedule, LocalDate.parse(ngayHoc), idSlotHoc, ghiChu);
+                    boolean updatedLichHoc = lichHocDAO.updateLichHoc(idSchedule, ngayHocDate, idSlotHoc, ghiChu);
                     if (!updatedLichHoc) {
                         request.setAttribute("err", "Không thể cập nhật lịch học.");
                         request.setAttribute("lopHoc", oldData);
@@ -530,8 +553,9 @@ public class ManageClass extends HttpServlet {
                 // Cập nhật lớp học
                 LopHoc updated = lopHocDAO.updateLopHoc(idLopHoc, tenLopHoc, idKhoaHoc, siSo, idSchedule, ghiChu, trangThai, "0", imagePath, siSoToiDa);
                 if (updated != null) {
-                    response.sendRedirect(request.getContextPath() + "/ManageClass?message=updated&ID_KhoaHoc=" + idKhoaHoc + "&ID_Khoi=" + idKhoi);
-                    return;
+                    request.setAttribute("suc", "Cập nhật lớp học thành công!");
+                    request.setAttribute("lopHoc", updated);
+                    request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
                 } else {
                     request.setAttribute("err", "Cập nhật thất bại.");
                     request.setAttribute("lopHoc", oldData);
@@ -540,6 +564,7 @@ public class ManageClass extends HttpServlet {
             } catch (Exception e) {
                 Logger.getLogger(ManageClass.class.getName()).log(Level.SEVERE, "Error in submitUpdateClass action: " + e.getMessage(), e);
                 request.setAttribute("err", "Lỗi hệ thống: " + e.getMessage());
+                request.setAttribute("lopHoc", lopHocDAO.getLopHocById(Integer.parseInt(request.getParameter("ID_LopHoc"))));
                 request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
             }
         }
