@@ -151,4 +151,47 @@ public class TaiKhoanDAO {
                return true ; 
         }
     }
+    public static String admingetSDTTaiKhoanByID(String id) {
+        DBContext db = DBContext.getInstance();
+
+        try {
+            String sql = """
+                         SELECT SoDienThoai FROM TaiKhoan 
+                         where ID_TaiKhoan = ? 
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setString(1, id);
+
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getString("SoDienThoai"); 
+            } else {
+                return null; 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+    
+    public static int adminGetIDTaiKhoanByEmail(String email){
+        DBContext db = DBContext.getInstance() ; 
+        try {
+            String sql = """
+                         select ID_TaiKhoan from TaiKhoan 
+                         where Email = ? 
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, email);
+            ResultSet rs = statement.executeQuery() ; 
+            if (rs.next()){
+                return rs.getInt("ID_TaiKhoan") ; 
+            } 
+        } catch(SQLException e){
+            e.printStackTrace();
+            
+        }
+        return -1 ; 
+    }
 }

@@ -279,48 +279,38 @@ public class GiaoVienDAO {
     }
     
     
-    public static boolean adminUpdateInformationOfTeacher(String sdt, String tenTruong, BigDecimal luong, String ghichu, int idGiaoVien) {
-    DBContext db = DBContext.getInstance();
-    
-    String getIdTruongSql = "SELECT ID_TruongHoc FROM TruongHoc WHERE TenTruongHoc = ?";
-    String updateGiaoVienSql = """
-        UPDATE GiaoVien
-        SET SDT = ?,
-            ID_TruongHoc = ?,
-            Luong = ?,
-            GhiChu = ?
-        WHERE ID_GiaoVien = ?
-    """;
-    
-    try (
-        PreparedStatement getTruongStmt = db.getConnection().prepareStatement(getIdTruongSql);
-        PreparedStatement updateGvStmt = db.getConnection().prepareStatement(updateGiaoVienSql)
-    ) {
-        // Lấy ID_TruongHoc từ TenTruongHoc
-        getTruongStmt.setString(1, tenTruong);
-        ResultSet rs = getTruongStmt.executeQuery();
-        
-        if (!rs.next()) {
-            // Không tìm thấy trường học
-            return false;
-        }
-        
-        int idTruongHoc = rs.getInt("ID_TruongHoc");
-        
-        // Tiến hành cập nhật giáo viên
-        updateGvStmt.setString(1, sdt);
-        updateGvStmt.setInt(2, idTruongHoc);
-        updateGvStmt.setBigDecimal(3, luong);
-        updateGvStmt.setString(4, ghichu);
-        updateGvStmt.setInt(5, idGiaoVien);
-        
-        int affected = updateGvStmt.executeUpdate();
-        return affected > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return false;
+    public static boolean adminUpdateInformationOfTeacher(String sdt, BigDecimal luong, int ishot, int idGiaoVien) {
+            DBContext db = DBContext.getInstance() ; 
+            int rs = 0 ; 
+            
+            try {
+                String sql = """
+                             UPDATE GiaoVien 
+                             SET 
+                             SDT = ?  , 
+                             Luong = ? , 
+                             IsHot = ? 
+                             where ID_GiaoVien = ? 
+                             """ ; 
+                PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+                statement.setString(1, sdt);
+                statement.setBigDecimal(2, luong);
+                statement.setInt(3 , ishot) ; 
+                statement.setInt(4, idGiaoVien);
+                rs = statement.executeUpdate() ; 
+                
+            } catch (SQLException e){
+                e.printStackTrace();
+                
+            }
+            
+            if (rs == 0 ) {
+                return false ; 
+            } else {
+                return true ; 
+            }
     }
-}
+
     
     public double getLuongTheoTaiKhoan(int idTaiKhoan) {
     DBContext db = DBContext.getInstance();

@@ -1,6 +1,6 @@
 <%-- 
     Document   : adminReceiveGiaoVien
-    Created on : May 24, 2025, 11:28:36 PM
+    Created on : May 29, 2025, 16:22:36 PM
     Author     : wrx_Chur04
     Purpose    : This page displays a list of all teachers (giáo viên) in the EL CENTRE system, including details like name, specialization, 
                  contact info, salary, and status. It supports filtering by specialization, searching, and pagination, 
@@ -96,7 +96,7 @@
                 border-radius: 4px;
                 cursor: pointer;
             }
-            
+
             .action-link {
                 background-color: #1F4E79;
                 color: white;
@@ -254,45 +254,46 @@
             <div style="display: flex; justify-content: flex-end; align-items: center; gap: 15px;">
                 <input type="text" id="searchInput" placeholder="Tìm kiếm...">
 
-                <label for="statusFilter" style="margin: 0;">Lọc theo chuyên môn:</label>
-                <select id="statusFilter">
-                    <option value="all">Toán học</option>
-                    <option value="active">Lý</option>
-                    <option value="inactive">Hóa</option>
+                <label for="specializationFilter" style="margin: 0;">Lọc theo chuyên môn:</label>
+                <select id="specializationFilter">
+                    <option value="all">Tất cả</option>
+                    <option value="Toán học">Toán học</option>
+                    <option value="Lý">Lý</option>
+                    <option value="Hóa">Hóa</option>
                 </select>
             </div>
 
             <c:choose>
-                <c:when test="${not empty giaoviens}">
+                <c:when test="${not empty sessionScope.giaoviens}">
                     <table>
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Họ và Tên</th>
                                 <th>Chuyên Môn</th>
-                                
+
                                 <th>Trường đang dạy</th>
-                                
-                                
+
+
                                 <th>Trạng Thái</th>
-                                
+
                                 <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody id="teacherTableBody">
-                            <c:forEach var="giaovien" items="${giaoviens}">
+                            <c:forEach var="giaovien" items="${sessionScope.giaoviens}">
                                 <tr>
                                     <td>${giaovien.getID_GiaoVien()}</td>
                                     <td>${giaovien.getHoTen()}</td>
                                     <td>${giaovien.getChuyenMon()}</td>
-                                    
+
                                     <td>${giaovien.getTenTruongHoc()}</td>
-                                    
-                                    
+
+
                                     <td>${giaovien.getTrangThai()}</td>
-                                    
+
                                     <td>
-                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=view&id=${giaovien.getID_GiaoVien()}">Chi tiết</a> | 
+                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=view&id=${giaovien.getID_GiaoVien()}&idTaiKhoan=${giaovien.getID_TaiKhoan()}">Chi tiết</a> | 
                                         <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=viewLopHocGiaoVien&id=${giaovien.getID_GiaoVien()}">Lớp đang dạy</a> | 
                                         <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=update&id=${giaovien.getID_GiaoVien()}">Chỉnh sửa</a> 
                                     </td>
@@ -323,54 +324,87 @@
         </div>
 
         <script>
-            // Dropdown Toggle Functionality
-            function toggleDropdown() {
-                const dropdown = document.getElementById('adminDropdown');
-                dropdown.classList.toggle('active');
-            }
+    function toggleDropdown() {
+        const dropdown = document.getElementById('adminDropdown');
+        dropdown.classList.toggle('active');
+    }
 
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function(event) {
-                const profile = document.querySelector('.admin-profile');
-                const dropdown = document.getElementById('adminDropdown');
-                if (!profile.contains(event.target)) {
-                    dropdown.classList.remove('active');
-                }
-            });
+    document.addEventListener('click', function (event) {
+        const profile = document.querySelector('.admin-profile');
+        const dropdown = document.getElementById('adminDropdown');
+        if (!profile.contains(event.target)) {
+            dropdown.classList.remove('active');
+        }
+    });
 
-            // Pagination Logic
-            var soDongMoiTrang = 2;
-            var tatCaDong = document.querySelectorAll("#teacherTableBody tr");
-            var tongSoTrang = Math.ceil(tatCaDong.length / soDongMoiTrang);
-            var phanTrangDiv = document.getElementById("pagination");
+    const searchInput = document.getElementById("searchInput");
+    const specializationFilter = document.getElementById("specializationFilter");
+    const tableBody = document.getElementById("teacherTableBody");
+    const pagination = document.getElementById("pagination");
 
-            function hienThiTrang(trang) {
-                for (var i = 0; i < tatCaDong.length; i++) {
-                    tatCaDong[i].style.display = "none";
-                }
-                var batDau = (trang - 1) * soDongMoiTrang;
-                var ketThuc = batDau + soDongMoiTrang;
-                for (var i = batDau; i < ketThuc && i < tatCaDong.length; i++) {
-                    tatCaDong[i].style.display = "";
-                }
-                phanTrangDiv.innerHTML = "";
-                for (var j = 1; j <= tongSoTrang; j++) {
-                    var nut = document.createElement("button");
-                    nut.innerText = j;
-                    nut.onclick = (function(trangDuocChon) {
-                        return function() {
-                            hienThiTrang(trangDuocChon);
-                        };
-                    })(j);
-                    if (j === trang) {
-                        nut.style.backgroundColor = "#1F4E79";
-                        nut.style.color = "white";
-                    }
-                    phanTrangDiv.appendChild(nut);
-                }
-            }
-            
-            window.onload = () => hienThiTrang(1);
-        </script>
+    let allRows = [];
+    let filteredRows = [];
+    let currentPage = 1;
+    const rowsPerPage = 3;
+
+    window.onload = () => {
+        allRows = Array.from(tableBody.querySelectorAll("tr"));
+        filteredRows = [...allRows];
+        renderPage();
+        addEventListeners();
+    };
+
+    function addEventListeners() {
+        searchInput.addEventListener("input", filterRows);
+        specializationFilter.addEventListener("change", filterRows);
+    }
+
+    function filterRows() {
+        const keyword = searchInput.value.toLowerCase();
+        const specialization = specializationFilter.value;
+
+        filteredRows = allRows.filter(row => {
+            const cells = row.querySelectorAll("td");
+            const name = cells[1].textContent.toLowerCase();
+            const spec = cells[2].textContent.trim();
+
+            const matchName = name.includes(keyword);
+            const matchSpec = specialization === "all" || spec === specialization;
+
+            return matchName && matchSpec;
+        });
+
+        currentPage = 1;
+        renderPage();
+    }
+
+    function renderPage() {
+        tableBody.innerHTML = "";
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const pageRows = filteredRows.slice(start, end);
+        pageRows.forEach(row => tableBody.appendChild(row));
+        renderPagination();
+    }
+
+    function renderPagination() {
+        const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+        pagination.innerHTML = "";
+
+        for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement("button");
+            btn.textContent = i;
+            btn.style.backgroundColor = (i === currentPage) ? "#1F4E79" : "#ddd";
+            btn.style.color = (i === currentPage) ? "white" : "black";
+            btn.onclick = () => {
+                currentPage = i;
+                renderPage();
+            };
+            pagination.appendChild(btn);
+        }
+    }
+</script>
+
+
     </body>
 </html>
