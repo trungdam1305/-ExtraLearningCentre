@@ -1,7 +1,7 @@
 package model;
 
 public class GiaoVien_LopHoc {
-     private Integer ID_GiaoVien;
+    private Integer ID_GiaoVien;
     private Integer ID_LopHoc;
 
     public Integer getID_GiaoVien() { return ID_GiaoVien; }

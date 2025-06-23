@@ -1,6 +1,6 @@
 <%-- 
     Document   : adminReceiveTeacherInfor
-    Created on : June 19, 2025, 12:35 AM
+    Created on : May 29, 2025, 1:37:53 PM
     Author     : wrx_Chur04
     Purpose    : This page displays detailed information about specific teachers (giáo viên) in the EL CENTRE system, 
                 including account ID, name, specialization, contact details, school, salary, and status. 
@@ -29,14 +29,14 @@
 
             h2 {
                 color: #1F4E79;
-                text-align: center; /* Center the title */
+                text-align: center; 
             }
 
             .table-container {
                 overflow-x: auto;
                 margin-top: 20px;
                 display: flex;
-                justify-content: center; /* Center the table horizontally */
+                justify-content: center; 
             }
 
             table {
@@ -51,8 +51,8 @@
             th, td {
                 border: 1px solid #ddd;
                 padding: 12px 15px;
-                text-align: center; /* Center all text in cells */
-                vertical-align: middle; /* Vertically center text */
+                text-align: center; 
+                vertical-align: middle; 
                 font-size: 14px;
             }
 
@@ -68,7 +68,7 @@
                 background-color: #f0f0f0;
                 font-weight: bold;
                 color: #1F4E79;
-                text-align: center; /* Center the label column */
+                text-align: center; 
             }
 
             tr td:first-child {
@@ -76,7 +76,7 @@
                 font-weight: bold;
                 width: 180px;
                 padding-left: 20px;
-                text-align: center; /* Center the first column */
+                text-align: center; 
             }
 
             .no-reports-message {
@@ -89,7 +89,7 @@
                 max-width: 600px;
                 margin-left: auto;
                 margin-right: auto;
-                text-align: center; /* Center the no-data message */
+                text-align: center; 
             }
 
             .back-button {
@@ -111,7 +111,7 @@
                 background-color: #163c5b;
             }
 
-            /* Header Styles */
+          
             .header {
                 background-color: #1F4E79;
                 color: white;
@@ -162,7 +162,7 @@
 
            
 
-            /* Footer Styles */
+           
             .footer {
                 background-color: #1F4E79;
                 color: #B0C4DE;
@@ -176,7 +176,7 @@
                 font-size: 14px;
             }
 
-            /* Ensure main content pushes footer down */
+       
             .main-content {
                 flex: 1 0 auto;
                 padding-bottom: 40px;
@@ -287,7 +287,7 @@
             </div>
         </div>
 
-        <!-- Footer -->
+       
         <div class="footer">
             <p>© 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
         </div>

@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 
 public class LopHoc {
     private Integer ID_LopHoc;
-         private String TenLopHoc;
+    private String TenLopHoc;
     private Integer ID_KhoaHoc;
     private Integer SiSo;
-      private int ID_Schedule;
+    private int ID_Schedule;
     private String GhiChu;
     private String TrangThai;
     private String SoTien;

@@ -30,7 +30,10 @@ import java.time.LocalDateTime;
 import model.UserLogs;
 
 /**
- *
+ * This servlet handle all the action of admin when admin click button manage account users 
+ * like view details account user , disnable / enable account user or update information of account user 
+ * and after handle logic , this servlet can send information to specific JSP if need
+ * May 28 , 2025 11:14:38 PM
  * @author wrx_Chur04
  */
 public class adminActionWithUser extends HttpServlet {
@@ -52,6 +55,10 @@ public class adminActionWithUser extends HttpServlet {
         }
     }
 
+    
+    
+    //This method hadle some case when admin click to hyper link view account users , disnable/enable account users , update account user 
+    // In the case update , servlet send direct to update JSP and admin can change information in that JSP 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -266,26 +273,35 @@ public class adminActionWithUser extends HttpServlet {
         }
     }
 
+    
+    
+     //This method handle the information from specific jsp ( update information of user JSP ) and call method handle that
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String type = request.getParameter("type");
         switch (type) {
             case "GiaoVien":
+                // call the medthod update teacher when admin want to update teacher
                 updateTeacher(request, response);
                 break;
 
             case "HocSinh":
+                //call the method update student when admin want to update student
                 updateStudent(request, response);
                 break;
 
             case "PhuHuynh":
+                //call the method update parent of student when admin want to update parent of student
                 updateParentOfStudent(request, response);
                 break;
         }
 
     }
 
+    
+    //medthod update teacher
     private void updateTeacher(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idtaikhoan = request.getParameter("idtaikhoan");
@@ -340,6 +356,8 @@ public class adminActionWithUser extends HttpServlet {
         }
     }
 
+    
+     //medthod update student
     private void updateStudent(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idtaikhoan = request.getParameter("idtaikhoan");
@@ -385,6 +403,8 @@ public class adminActionWithUser extends HttpServlet {
         }
     }
 
+    
+     //medthod update parent of student
     private void updateParentOfStudent(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idtaikhoan = request.getParameter("idtaikhoan");

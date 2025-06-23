@@ -1,4 +1,4 @@
-     package model;
+ package model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 // 5. HocSinh.java
 public class HocSinh {
     private Integer ID_HocSinh;
-         private Integer ID_TaiKhoan;
+    private Integer ID_TaiKhoan;
     private String HoTen;
     private LocalDate NgaySinh;
     private String GioiTinh;

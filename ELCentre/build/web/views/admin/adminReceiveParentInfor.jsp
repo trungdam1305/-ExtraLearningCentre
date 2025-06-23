@@ -1,6 +1,6 @@
 <%-- 
     Document   : adminReceiveParentInfor
-    Created on : June 19, 2025, 12:48 AM
+    Created on : May 29, 2025, 2:18:27 PM
     Author     : wrx_Chur04
     Purpose    : This page displays detailed information about parents (phụ huynh) in the EL CENTRE system, 
                  including account ID, name, contact details, address, associated student IDs, and status.
@@ -29,47 +29,47 @@
 
             h2 {
                 color: #1F4E79;
-                text-align: center; /* Center the title */
+                text-align: center; 
             }
 
             .table-container {
                 overflow-x: auto;
                 margin-top: 20px;
                 display: flex;
-                justify-content: center; /* Center the table horizontally */
+                justify-content: center; 
             }
 
             table {
                 border-collapse: collapse;
                 min-width: 800px;
                 background-color: #fff;
-                border-radius: 8px; /* Rounded corners for a modern look */
-                overflow: hidden; /* Ensure rounded corners apply to content */
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Softer shadow for depth */
+                border-radius: 8px; 
+                overflow: hidden; 
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
             }
 
             th, td {
-                border: 1px solid #ddd; /* Lighter border for better contrast */
-                padding: 12px 15px; /* Increased padding for readability */
-                text-align: center; /* Center all text in cells */
-                vertical-align: middle; /* Vertically center text */
-                font-size: 14px; /* Consistent font size */
+                border: 1px solid #ddd; 
+                padding: 12px 15px; 
+                text-align: center; 
+                vertical-align: middle; 
+                font-size: 14px; 
             }
 
             th {
                 background-color: #1F4E79;
                 color: #fff;
                 white-space: nowrap;
-                text-transform: uppercase; /* Uppercase for headers */
-                font-weight: 600; /* Slightly bolder headers */
+                text-transform: uppercase; 
+                font-weight: 600; 
             }
 
             tr td:first-child {
                 background-color: #f8f8f8;
                 font-weight: bold;
                 width: 180px;
-                padding-left: 20px; /* Extra padding for the label column */
-                text-align: center; /* Center the first column */
+                padding-left: 20px; 
+                text-align: center;
             }
 
             .no-reports-message {
@@ -78,11 +78,11 @@
                 background-color: #ffefef;
                 border: 1px solid #e0a8a8;
                 color: #cc0000;
-                border-radius: 8px; /* Rounded corners for consistency */
-                max-width: 600px; /* Limit width for better centering */
+                border-radius: 8px; 
+                max-width: 600px; 
                 margin-left: auto;
                 margin-right: auto;
-                text-align: center; /* Center the no-data message */
+                text-align: center; 
             }
 
             .back-button {
@@ -95,7 +95,7 @@
                 padding: 10px 20px;
                 background-color: #1F4E79;
                 color: white;
-                border-radius: 6px; /* Slightly larger radius */
+                border-radius: 6px; 
                 font-size: 14px;
                 transition: background-color 0.3s ease;
             }
@@ -104,7 +104,7 @@
                 background-color: #163c5b;
             }
 
-            /* Header Styles */
+            
             .header {
                 background-color: #1F4E79;
                 color: white;
@@ -153,7 +153,7 @@
                 margin-bottom: 5px;
             }
 
-            /* Footer Styles */
+            
             .footer {
                 background-color: #1F4E79;
                 color: #B0C4DE;
@@ -167,7 +167,7 @@
                 font-size: 14px;
             }
 
-            /* Ensure main content pushes footer down */
+            
             .main-content {
                 flex: 1 0 auto;
                 padding-bottom: 40px;
@@ -277,7 +277,7 @@
             </div>
         </div>
 
-        <!-- Footer -->
+        
         <div class="footer">
             <p>© 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
         </div>

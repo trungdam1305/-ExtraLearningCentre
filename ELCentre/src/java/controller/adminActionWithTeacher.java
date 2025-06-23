@@ -1,15 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
+    
 package controller;
 
+import dal.GiaoVienDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import model.GiaoVien;
+import model.GiaoVien_TruongHoc;
+import model.GiaoVien_ChiTietDay ; 
+import dal.GiaoVien_ChiTietDayDAO ; 
 
 /**
  *
@@ -42,10 +45,11 @@ public class adminActionWithTeacher extends HttpServlet {
                 
         switch (action) {
             case "view":
-                
+                doView(request, response) ; 
                 break;
 
             case "viewLopHocGiaoVien":
+                doViewLopHocGiaoVien(request, response) ; 
                 break;
 
             case "update":
@@ -64,4 +68,28 @@ public class adminActionWithTeacher extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    
+    
+    protected void doView(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String ID = request.getParameter("id") ; 
+        String ID_TaiKhoan = request.getParameter("idTaiKhoan") ; 
+        ArrayList<GiaoVien_TruongHoc> giaoviens = GiaoVienDAO.adminGetGiaoVienByID(ID_TaiKhoan) ; 
+        if (giaoviens != null ) {
+            request.setAttribute("giaoviens", giaoviens);
+            request.getRequestDispatcher("/views/admin/adminViewGiaoVienChiTiet.jsp").forward(request, response);
+        }
+    }
+    
+    
+    protected void doViewLopHocGiaoVien(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String ID = request.getParameter("id") ; 
+        
+        ArrayList<GiaoVien_ChiTietDay> giaoviens = GiaoVien_ChiTietDayDAO.adminGetAllLopHocGiaoVien(ID) ; 
+        if (giaoviens != null ) {
+            request.setAttribute("giaoviens", giaoviens);
+            request.getRequestDispatcher("/views/admin/adminViewLopHocGiaoVien.jsp").forward(request, response);
+        }
+    }
 }

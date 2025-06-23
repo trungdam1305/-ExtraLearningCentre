@@ -96,7 +96,7 @@
                 border-radius: 4px;
                 cursor: pointer;
             }
-            
+
             .action-link {
                 background-color: #1F4E79;
                 color: white;
@@ -251,50 +251,61 @@
 
         <div class="main-content">
             <h2>Quản lý học sinh</h2>
-            
+
             <div style="display: flex; justify-content: flex-end; align-items: center; gap: 15px;">
                 <input type="text" id="searchInput" placeholder="Tìm kiếm...">
 
-                <label for="statusFilter" style="margin: 0;">Lọc theo giới tính:</label>
-                <select id="statusFilter">
-                    <option value="all">Nam</option>
-                    <option value="active">Nữ</option>
+                <label for="genderFilter" style="margin: 0;">Lọc theo giới tính:</label>
+                <select id="genderFilter">
+                    <option value="all">Tất cả</option>
+                    <option value="Nam">Nam</option>
+                    <option value="Nữ">Nữ</option>
                 </select>
+
+                <label for="birthYearFilter" style="margin: 0;">Lọc theo năm sinh:</label>
+                <select id="birthYearFilter">
+                    <option value="all">Tất cả</option>
+                    <option value="2007">2007</option>
+                    <option value="2008">2008</option>
+                    <option value="2009">2009</option>
+                    <option value="2010">2010</option>
+                </select>
+
             </div>
 
             <c:choose>
-                <c:when test="${not empty hocsinhs}">
+                <c:when test="${not empty sessionScope.hocsinhs}">
                     <table>
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Họ và Tên</th>
-                                
+
                                 <th>Giới Tính</th>
-                                
-                                
+
+                                <th>Ngày Sinh</th>
                                 <th>Trường học</th>
-                                
+
                                 <th>Trạng Thái</th>
-                                
+
                                 <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody id="studentTableBody">
-                            <c:forEach var="hocsinh" items="${hocsinhs}">
+                            <c:forEach var="hocsinh" items="${sessionScope.hocsinhs}">
                                 <tr>
                                     <td>${hocsinh.getID_HocSinh()}</td>
                                     <td>${hocsinh.getHoTen()}</td>
-                                    
+
                                     <td>${hocsinh.getGioiTinh()}</td>
-                                    
-                                    
+                                    <td>${hocsinh.getNgaySinh()}</td>
+
                                     <td>${hocsinh.getTenTruongHoc()}</td>
-                                    
+
                                     <td>${hocsinh.getTrangThai()}</td>
-                                    
+
                                     <td>
-                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithStudent?action=view&id=${hocsinh.getID_HocSinh()}">Chi tiết</a> | 
+                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithStudent?action=view&id=${hocsinh.getID_HocSinh()}&idtaikhoan=${hocsinh.getID_TaiKhoan()}">Chi tiết</a> | 
                                         <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewDiem&id=${hocsinh.getID_HocSinh()}">Điểm số</a> | 
                                         <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithStudent?action=update&id=${hocsinh.getID_HocSinh()}">Chỉnh sửa</a> 
                                     </td>
@@ -314,7 +325,7 @@
             </c:choose>
 
             <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
-            
+
             <div class="back-button">
                 <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
             </div>
@@ -326,54 +337,94 @@
         </div>
 
         <script>
-            // Dropdown Toggle Functionality
-            function toggleDropdown() {
-                const dropdown = document.getElementById('adminDropdown');
-                dropdown.classList.toggle('active');
-            }
+    function toggleDropdown() {
+        const dropdown = document.getElementById('adminDropdown');
+        dropdown.classList.toggle('active');
+    }
 
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function(event) {
-                const profile = document.querySelector('.admin-profile');
-                const dropdown = document.getElementById('adminDropdown');
-                if (!profile.contains(event.target)) {
-                    dropdown.classList.remove('active');
-                }
-            });
+    document.addEventListener('click', function (event) {
+        const profile = document.querySelector('.admin-profile');
+        const dropdown = document.getElementById('adminDropdown');
+        if (!profile.contains(event.target)) {
+            dropdown.classList.remove('active');
+        }
+    });
 
-            // Pagination Logic
-            var soDongMoiTrang = 2;
-            var tatCaDong = document.querySelectorAll("#studentTableBody tr");
-            var tongSoTrang = Math.ceil(tatCaDong.length / soDongMoiTrang);
-            var phanTrangDiv = document.getElementById("pagination");
+    const searchInput = document.getElementById("searchInput");
+    const genderFilter = document.getElementById("genderFilter");
+    const birthYearFilter = document.getElementById("birthYearFilter");
+    const tableBody = document.getElementById("studentTableBody");
+    const pagination = document.getElementById("pagination");
 
-            function hienThiTrang(trang) {
-                for (var i = 0; i < tatCaDong.length; i++) {
-                    tatCaDong[i].style.display = "none";
-                }
-                var batDau = (trang - 1) * soDongMoiTrang;
-                var ketThuc = batDau + soDongMoiTrang;
-                for (var i = batDau; i < ketThuc && i < tatCaDong.length; i++) {
-                    tatCaDong[i].style.display = "";
-                }
-                phanTrangDiv.innerHTML = "";
-                for (var j = 1; j <= tongSoTrang; j++) {
-                    var nut = document.createElement("button");
-                    nut.innerText = j;
-                    nut.onclick = (function(trangDuocChon) {
-                        return function() {
-                            hienThiTrang(trangDuocChon);
-                        };
-                    })(j);
-                    if (j === trang) {
-                        nut.style.backgroundColor = "#1F4E79";
-                        nut.style.color = "white";
-                    }
-                    phanTrangDiv.appendChild(nut);
-                }
-            }
+    let allRows = [];
+    let filteredRows = [];
+    let currentPage = 1;
+    const rowsPerPage = 3;
 
-            window.onload = () => hienThiTrang(1);
-        </script>
+   
+    window.onload = () => {
+        allRows = Array.from(tableBody.querySelectorAll("tr"));
+        filteredRows = [...allRows];
+        renderPage();
+        addEventListeners();
+    };
+
+    function addEventListeners() {
+        searchInput.addEventListener("input", filterRows);
+        genderFilter.addEventListener("change", filterRows);
+        birthYearFilter.addEventListener("change", filterRows);
+    }
+
+    function filterRows() {
+        const keyword = searchInput.value.toLowerCase();
+        const gender = genderFilter.value;
+        const birthYear = birthYearFilter.value;
+
+        filteredRows = allRows.filter(row => {
+            const cells = row.querySelectorAll("td");
+            const name = cells[1].textContent.toLowerCase();
+            const rowGender = cells[2].textContent.trim();
+            const birthdate = cells[3].textContent.trim(); 
+
+            const year = birthdate.split("/").reverse()[0]; 
+
+            const matchName = name.includes(keyword);
+            const matchGender = (gender === "all") || (rowGender === gender);
+            const matchBirth = (birthYear === "all") || (year === birthYear);
+
+            return matchName && matchGender && matchBirth;
+        });
+
+        currentPage = 1;
+        renderPage();
+    }
+
+    function renderPage() {
+        tableBody.innerHTML = "";
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const pageRows = filteredRows.slice(start, end);
+        pageRows.forEach(row => tableBody.appendChild(row));
+        renderPagination();
+    }
+
+    function renderPagination() {
+        const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+        pagination.innerHTML = "";
+
+        for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement("button");
+            btn.textContent = i;
+            btn.style.backgroundColor = (i === currentPage) ? "#1F4E79" : "#ddd";
+            btn.style.color = (i === currentPage) ? "white" : "black";
+            btn.onclick = () => {
+                currentPage = i;
+                renderPage();
+            };
+            pagination.appendChild(btn);
+        }
+    }
+</script>
+
     </body>
 </html>

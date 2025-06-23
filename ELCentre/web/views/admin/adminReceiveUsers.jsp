@@ -40,8 +40,8 @@
                 margin: 20px auto;
                 background-color: #ffffff;
                 box-shadow: 0 0 10px rgba(0,0,0,0.1);
-                max-height: 70vh; /* Prevent table from taking over entire space */
-                overflow-y: auto; /* Allow scrolling if content exceeds */
+                max-height: 70vh; 
+                overflow-y: auto; 
             }
 
             th, td {
@@ -69,9 +69,9 @@
                 color: red;
                 display: block;
                 flex: 0 0 auto;
-                z-index: 1000; /* Higher z-index to ensure it stays on top */
-                position: relative; /* Ensure it respects layout */
-                background-color: rgba(255, 255, 255, 0.8); /* Temporary background to debug visibility */
+                z-index: 1000; 
+                position: relative; 
+                background-color: rgba(255, 255, 255, 0.8); 
             }
 
             .back-button {
@@ -133,7 +133,7 @@
                 background-color: #163b5c;
             }
 
-            /* Header Styles */
+            
             .header {
                 background-color: #1F4E79;
                 color: white;
@@ -230,7 +230,7 @@
                 margin-right: 8px;
             }
 
-            /* Footer Styles */
+            
             .footer {
                 background-color: #1F4E79;
                 color: #B0C4DE;
@@ -244,10 +244,10 @@
                 font-size: 14px;
             }
 
-            /* Ensure main content pushes footer down */
+            
             .main-content {
                 flex: 1 0 auto;
-                padding-bottom: 60px; /* Increased padding to ensure space for message */
+                padding-bottom: 60px; 
             }
         </style>
     </head>
@@ -291,7 +291,7 @@
                 </select>
             </div>
 
-            <!-- Debug and Message Display -->
+            
             <c:if test="${not empty message}">
                 <div class="no-data">
                     <p>${message}</p>
@@ -351,19 +351,19 @@
             </div>
         </div>
 
-        <!-- Footer -->
+        
         <div class="footer">
             <p>© 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
         </div>
 
         <script>
-            // Dropdown Toggle Functionality
+            
             function toggleDropdown() {
                 const dropdown = document.getElementById('adminDropdown');
                 dropdown.classList.toggle('active');
             }
 
-            // Close dropdown when clicking outside
+            
             document.addEventListener('click', function (event) {
                 const profile = document.querySelector('.admin-profile');
                 const dropdown = document.getElementById('adminDropdown');
