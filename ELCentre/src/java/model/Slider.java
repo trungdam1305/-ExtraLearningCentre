@@ -9,7 +9,7 @@ package model;
  * @author admin
  */
 public class Slider {
-   private int ID_Slider;
+    private int ID_Slider;
     private String Title;
     private String Image;
     private String BackLink;

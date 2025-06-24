@@ -1,7 +1,7 @@
 package model;
 
 public class HocSinh_PhuHuynh {
-     private Integer ID_HocSinh;
+    private Integer ID_HocSinh;
     private Integer ID_PhuHuynh;
 
     public Integer getID_HocSinh() { return ID_HocSinh; }

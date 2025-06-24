@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.math.BigDecimal;
 
 public class DangKyLopHoc {
-         private Integer ID_HocSinh;
+    private Integer ID_HocSinh;
     private Integer ID_LopHoc;
     private LocalDate NgayDangKy;
     private String TinhTrangHocPhi;

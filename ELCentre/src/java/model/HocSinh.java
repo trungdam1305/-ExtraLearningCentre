@@ -12,16 +12,15 @@ public class HocSinh {
     private String GioiTinh;
     private String DiaChi;
     private String SDT_PhuHuynh;
-    private int ID_TruongHoc;
+    private String TruongHoc;
     private String GhiChu;
     private String TrangThai;
     private LocalDateTime NgayTao;
-    private String TenTruongHoc;
 
     public HocSinh() {
     }
 
-    public HocSinh(Integer ID_HocSinh, Integer ID_TaiKhoan, String HoTen, LocalDate NgaySinh, String GioiTinh, String DiaChi, String SDT_PhuHuynh, int ID_TruongHoc, String GhiChu, String TrangThai, LocalDateTime NgayTao, String TenTruongHoc) {
+    public HocSinh(Integer ID_HocSinh, Integer ID_TaiKhoan,  String HoTen, LocalDate NgaySinh, String GioiTinh, String DiaChi, String SDT_PhuHuynh, String TruongHoc, String GhiChu, String TrangThai, LocalDateTime NgayTao) {
         this.ID_HocSinh = ID_HocSinh;
         this.ID_TaiKhoan = ID_TaiKhoan;
         this.HoTen = HoTen;
@@ -29,44 +28,11 @@ public class HocSinh {
         this.GioiTinh = GioiTinh;
         this.DiaChi = DiaChi;
         this.SDT_PhuHuynh = SDT_PhuHuynh;
-        this.ID_TruongHoc = ID_TruongHoc;
-        this.GhiChu = GhiChu;
-        this.TrangThai = TrangThai;
-        this.NgayTao = NgayTao;
-        this.TenTruongHoc = TenTruongHoc;
-    }
-
-    public String getTenTruongHoc() {
-        return TenTruongHoc;
-    }
-
-    public void setTenTruongHoc(String TenTruongHoc) {
-        this.TenTruongHoc = TenTruongHoc;
-    }
-    
-    public HocSinh(Integer ID_HocSinh, Integer ID_TaiKhoan, String HoTen, LocalDate NgaySinh, String GioiTinh, String DiaChi, String SDT_PhuHuynh, int ID_TruongHoc, String GhiChu, String TrangThai, LocalDateTime NgayTao) {
-        this.ID_HocSinh = ID_HocSinh;
-        this.ID_TaiKhoan = ID_TaiKhoan;
-        this.HoTen = HoTen;
-        this.NgaySinh = NgaySinh;
-        this.GioiTinh = GioiTinh;
-        this.DiaChi = DiaChi;
-        this.SDT_PhuHuynh = SDT_PhuHuynh;
-        this.ID_TruongHoc = ID_TruongHoc;
+        this.TruongHoc = TruongHoc;
         this.GhiChu = GhiChu;
         this.TrangThai = TrangThai;
         this.NgayTao = NgayTao;
     }
-
-    public void setID_TruongHoc(int ID_TruongHoc) {
-        this.ID_TruongHoc = ID_TruongHoc;
-    }
-
-    public int getID_TruongHoc() {
-        return ID_TruongHoc;
-    }
-
-    
 
     
     public Integer getID_HocSinh() { return ID_HocSinh; }
@@ -92,7 +58,8 @@ public class HocSinh {
     public String getSDT_PhuHuynh() { return SDT_PhuHuynh; }
     public void setSDT_PhuHuynh(String SDT_PhuHuynh) { this.SDT_PhuHuynh = SDT_PhuHuynh; }
 
-    
+    public String getTruongHoc() { return TruongHoc; }
+    public void setTruongHoc(String TruongHoc) { this.TruongHoc = TruongHoc; }
 
     public String getGhiChu() { return GhiChu; }
     public void setGhiChu(String GhiChu) { this.GhiChu = GhiChu; }
@@ -101,5 +68,5 @@ public class HocSinh {
     public void setTrangThai(String TrangThai) { this.TrangThai = TrangThai; }
 
     public LocalDateTime getNgayTao() { return NgayTao; }
-            public void setNgayTao(LocalDateTime NgayTao) { this.NgayTao = NgayTao; }
+    public void setNgayTao(LocalDateTime NgayTao) { this.NgayTao = NgayTao; }
 }

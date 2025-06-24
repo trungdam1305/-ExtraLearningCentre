@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  * @author wrx_Chur04
  */
 public class UserLogView {
-     private int ID_TaiKhoan;
+    private int ID_TaiKhoan;
     private String HoTen;
     private String HanhDong;
     private LocalDateTime ThoiGian;

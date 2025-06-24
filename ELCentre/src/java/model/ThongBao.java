@@ -3,16 +3,14 @@ package model;
 import java.time.LocalDateTime;
 
 public class ThongBao {
-     private Integer ID_ThongBao;
+    private Integer ID_ThongBao;
     private Integer ID_TaiKhoan;
     private String NoiDung;
     private Integer ID_HocPhi;
     private LocalDateTime ThoiGian;
 
-
     public ThongBao() {
     }
-
 
     public ThongBao(Integer ID_ThongBao, Integer ID_TaiKhoan, String NoiDung, Integer ID_HocPhi, LocalDateTime ThoiGian) {
         this.ID_ThongBao = ID_ThongBao;
@@ -22,6 +20,7 @@ public class ThongBao {
         this.ThoiGian = ThoiGian;
     }
 
+    
     public Integer getID_ThongBao() { return ID_ThongBao; }
     public void setID_ThongBao(Integer ID_ThongBao) { this.ID_ThongBao = ID_ThongBao; }
 

@@ -1,5 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" language="java" %>
-<%@ page session="true" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
