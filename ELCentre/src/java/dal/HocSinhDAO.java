@@ -169,6 +169,26 @@ public class HocSinhDAO {
         }
         return tong;
     }
+
+    public static HocSinh getByTaiKhoanId(int idTaiKhoan) throws SQLException {
+        DBContext db = DBContext.getInstance();
+        String sql = "SELECT * FROM HocSinh WHERE ID_TaiKhoan = ?";
+        try (Connection con = db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idTaiKhoan);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    HocSinh hs = new HocSinh();
+                    hs.setID_HocSinh(rs.getInt("ID_HocSinh"));
+                    hs.setHoTen(rs.getString("HoTen"));
+                    //hs.setNgaySinh(rs.getDate("NgaySinh"));
+                    hs.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
+                    return hs;
+                }
+            }
+        }
+        return null;
+    }
     
     public void insertHocSinh(HocSinh hs) throws SQLException {
         DBContext db = DBContext.getInstance();

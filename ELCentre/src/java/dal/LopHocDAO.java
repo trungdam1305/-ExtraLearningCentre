@@ -11,6 +11,32 @@ import model.LopHocTheoNhomDTO;
 
 public class LopHocDAO {
 
+    public static List<LopHoc> getLopHocByHocSinhId(int idHocSinh) throws SQLException {
+        List<LopHoc> list = new ArrayList<>();
+        DBContext db = DBContext.getInstance();
+        String sql = """
+            SELECT lh.* FROM LopHoc lh
+            JOIN DangKyLopHoc dk ON lh.ID_LopHoc = dk.ID_LopHoc
+            WHERE dk.ID_HocSinh = ?
+        """;
+        try (Connection con = db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idHocSinh);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    LopHoc lh = new LopHoc();
+                    lh.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                    //lh.setTenLop(rs.getString("TenLop"));
+                    lh.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                    lh.setTrangThai(rs.getString("TrangThai"));
+                    //lh.setThoiGian(rs.getString("ThoiGian"));
+                    list.add(lh);
+                }
+            }
+        }
+        return list;
+    }
+
     //Listing all Class from the Database
     public List<LopHoc> getAllLopHoc() {
         DBContext db = DBContext.getInstance();

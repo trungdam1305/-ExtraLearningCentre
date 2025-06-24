@@ -9,10 +9,10 @@ package model;
  * @author admin
  */
 public class LopHocTheoNhomDTO {
-    private int idKhoi;
+            private int idKhoi;
     private String tenKhoi;
     private String nhomMonHoc; // Toán, Văn, Khác
-    private int tongSoLopHoc;
+            private int tongSoLopHoc;
 
     // Constructor
     public LopHocTheoNhomDTO(int idKhoi, String tenKhoi, String nhomMonHoc, int tongSoLopHoc) {
@@ -23,7 +23,7 @@ public class LopHocTheoNhomDTO {
     }
 
     // Getters và setters
-    public int getIdKhoi() { return idKhoi; }
+        public int getIdKhoi() { return idKhoi; }
     public void setIdKhoi(int idKhoi) { this.idKhoi = idKhoi; }
 
     public String getTenKhoi() { return tenKhoi; }

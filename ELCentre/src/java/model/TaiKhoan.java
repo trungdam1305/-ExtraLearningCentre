@@ -11,7 +11,6 @@ public class TaiKhoan {
     private String SoDienThoai;
     private String TrangThai;
     private LocalDateTime NgayTao;
-    
 
     public TaiKhoan() {
     }
@@ -26,10 +25,6 @@ public class TaiKhoan {
         this.TrangThai = TrangThai;
         this.NgayTao = NgayTao;
     }
-
-    
-
-    
 
     
     public Integer getID_TaiKhoan() { return ID_TaiKhoan; }

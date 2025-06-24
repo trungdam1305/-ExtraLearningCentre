@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ThongBaoDAO {
 
@@ -101,6 +102,27 @@ public class ThongBaoDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return list;
+    }
+
+    public static List<ThongBao> getByTaiKhoanId(int idTaiKhoan) throws SQLException {
+        List<ThongBao> list = new ArrayList<>();
+        DBContext db = DBContext.getInstance();
+        String sql = "SELECT * FROM ThongBao WHERE ID_TaiKhoan = ?";
+        try (Connection con = db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idTaiKhoan);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    ThongBao tb = new ThongBao();
+                    tb.setID_ThongBao(rs.getInt("ID_ThongBao"));
+                    tb.setNoiDung(rs.getString("NoiDung"));
+                    //tb.setNgayTao(rs.getTimestamp("NgayTao"));
+                    tb.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
+                    list.add(tb);
+                }
+            }
         }
         return list;
     }

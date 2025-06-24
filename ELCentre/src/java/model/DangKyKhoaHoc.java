@@ -5,12 +5,12 @@ import java.time.LocalDateTime;
 
 // 10. DangKyKhoaHoc.java
 public class DangKyKhoaHoc {
-    private int ID_HocSinh;
+            private int ID_HocSinh;
     private int ID_KhoaHoc;
     private LocalDate NgayDangKy;
     private String TinhTrangHocPhi;
 
-    public DangKyKhoaHoc() {}
+                public DangKyKhoaHoc() {}
 
     public DangKyKhoaHoc(int ID_HocSinh, int ID_KhoaHoc, LocalDate NgayDangKy, String TinhTrangHocPhi) {
         this.ID_HocSinh = ID_HocSinh;

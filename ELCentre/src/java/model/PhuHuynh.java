@@ -14,8 +14,10 @@ public class PhuHuynh {
     private String TrangThai;
     private LocalDateTime NgayTao;
 
+
     public PhuHuynh() {
     }
+
 
     public PhuHuynh(Integer ID_PhuHuynh, Integer ID_TaiKhoan, String HoTen, String SDT, String Email, String DiaChi, String GhiChu, Integer ID_HocSinh, String TrangThai, LocalDateTime NgayTao) {
         this.ID_PhuHuynh = ID_PhuHuynh;
@@ -30,9 +32,9 @@ public class PhuHuynh {
         this.NgayTao = NgayTao;
     }
 
-    
     public Integer getID_PhuHuynh() { return ID_PhuHuynh; }
     public void setID_PhuHuynh(Integer ID_PhuHuynh) { this.ID_PhuHuynh = ID_PhuHuynh; }
+
 
     public Integer getID_TaiKhoan() { return ID_TaiKhoan; }
     public void setID_TaiKhoan(Integer ID_TaiKhoan) { this.ID_TaiKhoan = ID_TaiKhoan; }

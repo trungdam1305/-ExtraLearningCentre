@@ -115,8 +115,8 @@
             <div class="account">
                 <span class="account-name" onclick="toggleDropdown()">Xin chào, ${sessionScope.hoten} &#9662;</span>
                 <div class="dropdown-content" id="accountDropdown">
-                    <a href="${pageContext.request.contextPath}/views/user/editProfile.jsp">Chỉnh sửa hồ sơ</a>
-                    <a href="${pageContext.request.contextPath}/views/user/changePassword.jsp">Đổi mật khẩu</a>
+                    <a href="${pageContext.request.contextPath}/views/student/studentEditProfile.jsp">Chỉnh sửa hồ sơ</a>
+                    <a href="${pageContext.request.contextPath}/views/student/studentChangePassword.jsp">Đổi mật khẩu</a>
                     <a href="${pageContext.request.contextPath}/LogoutServlet">Đăng xuất</a>
                 </div>
             </div>
