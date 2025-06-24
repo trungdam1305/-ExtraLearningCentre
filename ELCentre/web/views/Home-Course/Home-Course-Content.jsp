@@ -87,28 +87,28 @@
                         <div class="widget-title"><h3>Phân loại khóa học</h3><div class="title-sep"><span></span></div>
                         </div>
                         <li>
-                            <a href="#" title="View all products under Clothing">Toán <span>${numToan}</span></a> 
+                            <a href="#" title="">Toán <span>${numToan}</span></a> 
                         </li>
                         <li>
-                            <a href="#" title="View all products under Courses">Văn <span>${numVan}</span></a> 
+                            <a href="#" title="">Văn <span>${numVan}</span></a> 
                         </li>
                         <li>
-                            <a href="#" title="View all products under Hoodies">Anh <span>${numAnh}</span></a> 
+                            <a href="#" title="">Anh <span>${numAnh}</span></a> 
                         </li>
                         <li>
-                            <a href="#" title="View all products under Hoodies">Lý <span>${numLy}</span></a> 
+                            <a href="#" title="">Lý <span>${numLy}</span></a> 
                         </li>
                         <li>
-                            <a href="#" title="View all products under Posters">Hóa <span>${numHoa}</span></a> 
+                            <a href="#" title="">Hóa <span>${numHoa}</span></a> 
                         </li>
                         <li>
-                            <a href="#" title="View all products under Singles">Sinh <span>${numSinh}</span></a> 
+                            <a href="#" title="">Sinh <span>${numSinh}</span></a> 
                         </li>
                         <li>
-                            <a href="#" title="View all products under T-shirts">Sử <span>${numSu}</span></a> 
+                            <a href="#" title="">Sử <span>${numSu}</span></a> 
                         </li>
                         <li>
-                            <a href="#" title="View all products under Uncategorized">Địa <span>${numDia}</span></a> 
+                            <a href="#" title="">Địa <span>${numDia}</span></a> 
                         </li>
                     </aside>
               </section>

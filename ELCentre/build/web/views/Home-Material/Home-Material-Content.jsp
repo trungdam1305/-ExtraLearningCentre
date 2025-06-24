@@ -20,12 +20,12 @@
                                             <div class="product-wrapper" style="display: flex; flex-direction: column; height: 90%;">
                                                 <!-- Image of Material -->
                                                 <div class="product-thumb" style="text-align: center;">
-                                                    <a href="${pageContext.request.contextPath}/download?file=${taiLieu.duongDan}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                    <a href="#" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                         <img src="${pageContext.request.contextPath}/img/avatar/${taiLieu.image}"
                                                              alt="${taiLieu.tenTaiLieu}" width="100%" height="auto"
                                                              style="object-fit: cover; height: 200px;" />
                                                     </a>
-                                                    <a href="${pageContext.request.contextPath}/download?file=${taiLieu.duongDan}" 
+                                                    <a href="#" 
                                                        class="small button product_type_simple add_to_cart_button ajax_add_to_cart" 
                                                        style="font-size: 12px; padding: 5px;" rel="nofollow">
                                                         Tải Về Tài Liệu
@@ -47,7 +47,7 @@
                                                     <span class="price" style="margin-top: auto;">
                                                         <span class="woocommerce-Price-amount amount">
                                                             <bdi>
-                                                                <a href="${pageContext.request.contextPath}/download?file=${taiLieu.duongDan}" class="woocommerce-Price-currencySymbol">
+                                                                <a href="#" class="woocommerce-Price-currencySymbol">
                                                                     Xem Chi Tiết
                                                                 </a>
                                                             </bdi>
@@ -106,15 +106,15 @@
                         </div>
                         <!--Num of Math Material-->
                         <li>
-                            <a href="#" title="View all products under Clothing">Toán <span>${numToan}</span></a> 
+                            <a href="#" title="">Toán <span>${numToan}</span></a> 
                         </li>
                         <!--Num of Literature Material-->
                         <li>
-                            <a href="#" title="View all products under Courses">Văn <span>${numVan}</span></a> 
+                            <a href="#" title="">Văn <span>${numVan}</span></a> 
                         </li>
                         <!--Num of English Material-->
                         <li>
-                            <a href="#" title="View all products under Hoodies">Anh <span>${numAnh}</span></a> 
+                            <a href="#" title="">Anh <span>${numAnh}</span></a> 
                         </li>
                     </aside>
               </section>
