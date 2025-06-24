@@ -47,6 +47,8 @@ public class LichHoc {
     public LichHoc() {
     }
 
+    
+    
     /**
      * Constructor with full parameters including time slot text and class name.
      */
@@ -60,16 +62,13 @@ public class LichHoc {
         this.TenLopHoc = TenLopHoc;
     }
 
-    /**
-     * Constructor with parameters excluding class name.
-     */
-    public LichHoc(int ID_Schedule, LocalDate NgayHoc, int ID_SlotHoc, int ID_LopHoc, String GhiChu, String SlotThoiGian) {
-        this.ID_Schedule = ID_Schedule;
-        this.NgayHoc = NgayHoc;
-        this.ID_SlotHoc = ID_SlotHoc;
-        this.ID_LopHoc = ID_LopHoc;
-        this.GhiChu = GhiChu;
-        this.SlotThoiGian = SlotThoiGian;
+   // Constructor đầy đủ
+    public LichHoc(Integer idSchedule, LocalDate ngayHoc, Integer idSlotHoc, Integer idLopHoc, String ghiChu) {
+        this.ID_Schedule = idSchedule;
+        this.NgayHoc = ngayHoc;
+        this.ID_SlotHoc = idSlotHoc;
+        this.ID_LopHoc = idLopHoc;
+        this.GhiChu = ghiChu;
     }
 
     /**
@@ -140,4 +139,7 @@ public class LichHoc {
     public void setTenLopHoc(String TenLopHoc) {
         this.TenLopHoc = TenLopHoc;
     }
+    
+    
+    
 }

@@ -25,6 +25,22 @@ public class KhoaHoc {
 
     // Constructors
     public KhoaHoc() {}
+    
+     public KhoaHoc(Integer ID_KhoaHoc, String TenKhoaHoc, String MoTa, LocalDate ThoiGianBatDau, LocalDate ThoiGianKetThuc, String GhiChu, String TrangThai, LocalDateTime NgayTao, int ID_Khoi) {
+        this.ID_KhoaHoc = ID_KhoaHoc;
+        this.TenKhoaHoc = TenKhoaHoc;
+        this.MoTa = MoTa;
+        this.ThoiGianBatDau = ThoiGianBatDau;
+        this.ThoiGianKetThuc = ThoiGianKetThuc;
+        this.GhiChu = GhiChu;
+        this.TrangThai = TrangThai;
+        this.NgayTao = NgayTao;
+        this.ID_Khoi = ID_Khoi;
+    }
+     
+    
+
+      
 
     public KhoaHoc(Integer ID_KhoaHoc, String TenKhoaHoc, String MoTa, LocalDate ThoiGianBatDau,
                    LocalDate ThoiGianKetThuc, String GhiChu, String TrangThai,
@@ -40,13 +56,10 @@ public class KhoaHoc {
         this.ID_Khoi = ID_Khoi;
         this.Image = Image;
     }
+    
+     
 
-    public KhoaHoc(Integer ID_KhoaHoc, String TenKhoaHoc, String MoTa, LocalDate ThoiGianBatDau,
-                   LocalDate ThoiGianKetThuc, String GhiChu, String TrangThai,
-                   LocalDateTime NgayTao, int ID_Khoi) {
-        this(ID_KhoaHoc, TenKhoaHoc, MoTa, ThoiGianBatDau, ThoiGianKetThuc, GhiChu, TrangThai, NgayTao, ID_Khoi, null);
-    }
-
+    
     public KhoaHoc(Integer ID_KhoaHoc, String TenKhoaHoc, String MoTa, LocalDate ThoiGianBatDau,
                    LocalDate ThoiGianKetThuc, String GhiChu, String TrangThai,
                    LocalDateTime NgayTao) {
@@ -150,4 +163,21 @@ public class KhoaHoc {
     public String getThoiGianKetThucFormatted() {
         return (ThoiGianKetThuc != null) ? ThoiGianKetThuc.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
     }
+    
+     
+
+public String getNgayTaoFormatted() {
+    if (NgayTao != null) {
+        return NgayTao.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    }
+    return "";
+}
+
+public String getLopTheoKhoi() {
+    if (ID_Khoi >= 1 && ID_Khoi <= 7) {
+        return "Lớp " + (ID_Khoi + 5); // Vì 1 => lớp 6, nên cộng 5
+    } else {
+        return "Tổng ôn";
+    }
+}
 }

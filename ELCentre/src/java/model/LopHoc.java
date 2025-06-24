@@ -34,6 +34,51 @@ public class LopHoc {
     private LocalDateTime NgayTao;      // Date and time of class creation
     private String Image;               // URL or filename of the class image
 
+    
+    private int ID_Khoi;         
+    private String TenKhoaHoc;    
+     private Integer SiSoToiDa;
+
+     
+     public LopHoc(Integer ID_LopHoc, String TenLopHoc, Integer ID_KhoaHoc, Integer SiSo, int ID_Schedule, String GhiChu, String TrangThai, String SoTien, LocalDateTime NgayTao, String Image, int ID_Khoi, String TenKhoaHoc, Integer SiSoToiDa) {
+        this.ID_LopHoc = ID_LopHoc;
+        this.TenLopHoc = TenLopHoc;
+        this.ID_KhoaHoc = ID_KhoaHoc;
+        this.SiSo = SiSo;
+        this.ID_Schedule = ID_Schedule;
+        this.GhiChu = GhiChu;
+        this.TrangThai = TrangThai;
+        this.SoTien = SoTien;
+        this.NgayTao = NgayTao;
+        this.Image = Image;
+        this.ID_Khoi = ID_Khoi;
+        this.TenKhoaHoc = TenKhoaHoc;
+        this.SiSoToiDa = SiSoToiDa;
+    }
+
+    public int getID_Khoi() {
+        return ID_Khoi;
+    }
+
+    public void setID_Khoi(int ID_Khoi) {
+        this.ID_Khoi = ID_Khoi;
+    }
+
+    public String getTenKhoaHoc() {
+        return TenKhoaHoc;
+    }
+
+    public void setTenKhoaHoc(String TenKhoaHoc) {
+        this.TenKhoaHoc = TenKhoaHoc;
+    }
+
+    public Integer getSiSoToiDa() {
+        return SiSoToiDa;
+    }
+
+    public void setSiSoToiDa(Integer SiSoToiDa) {
+        this.SiSoToiDa = SiSoToiDa;
+    }
     /**
      * Default constructor.
      */

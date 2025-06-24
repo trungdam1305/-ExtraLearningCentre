@@ -88,7 +88,7 @@
         <servlet-name>teacherGetFromDashboard</servlet-name>
         <servlet-class>controller.teacherGetFromDashboard</servlet-class>
     </servlet>
-     <servlet>
+    <servlet>
         <servlet-name>adminActionWithStudent</servlet-name>
         <servlet-class>controller.adminActionWithStudent</servlet-class>
     </servlet>
@@ -192,5 +192,31 @@
         <servlet-name>adminActionWithTeacher</servlet-name>
         <url-pattern>/adminActionWithTeacher</url-pattern>
     </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>ManageCourse</servlet-name>
+        <url-pattern>/ManageCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageClass</servlet-name>
+        <url-pattern>/ManageClass</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageClassDetail</servlet-name>
+        <url-pattern>/ManageClassDetail</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>ManageCourse</servlet-name>
+        <servlet-class>controller.ManageCourses.ManageCourse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageClass</servlet-name>
+        <servlet-class>controller.ManageCourses.ManageClass</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageClassDetail</servlet-name>
+        <servlet-class>controller.ManageCourses.ManageClassDetail</servlet-class>
+    </servlet>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

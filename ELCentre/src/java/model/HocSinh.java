@@ -71,6 +71,10 @@ public class HocSinh {
         this.NgayTao = NgayTao;
         this.TenTruongHoc = TenTruongHoc;
     }
+    
+    
+    
+    
 
     /**
      * Constructor without school name
@@ -188,4 +192,7 @@ public class HocSinh {
     public void setTenTruongHoc(String TenTruongHoc) {
         this.TenTruongHoc = TenTruongHoc;
     }
+    
+    
+       
 }

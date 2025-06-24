@@ -13,24 +13,21 @@
                 <ul id="menu-another-menu" class="menu">
                     <!--HomePage-->
                     <li id="menu-item-4446" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home page_item page-item-8 menu-item-4446">
-                        <a href="index.html">Trang chủ</a>
+                        <a href="${pageContext.request.contextPath}/HomePage">Trang chủ</a>
                     </li>
                     <!--About Us-->
                     <li id="menu-item-4447" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4447">
-                        <a href="">Về Chúng Tôi</a>
+                        <a href="${pageContext.request.contextPath}/views/Home-Introduction/Homepage-Introduction.jsp"">Về Chúng Tôi</a>
                     </li>
                     <!--Courses-->
                     <li id="menu-item-4448" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4448">
-                        <a href="">Khóa Học</a>
+                        <a href="${pageContext.request.contextPath}/HomePageCourse"">Khóa Học</a>
                     </li>
                     <!--Blog-->
                     <li id="menu-item-4449" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4449">
-                        <a href="">Blog</a>
+                        <a href="${pageContext.request.contextPath}/HomePageBlog"">Blog</a>
                     </li>
-                    <!--Contact-->
-                    <li id="menu-item-4451" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4451">
-                        <a href="">Liên Hệ</a>
-                    </li>
+                    
                 </ul>                
             </div>
         </div>
