@@ -8,15 +8,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="dal.HocSinhDAO" %>
+<%@ page import="dao.HocSinhDAO" %>
 <%@ page import="model.HocSinh" %>
-<%@ page import="dal.GiaoVienDAO" %>
+<%@ page import="dao.GiaoVienDAO" %>
 <%@ page import="model.GiaoVien" %>
-<%@ page import="dal.LopHocDAO" %>
+<%@ page import="dao.LopHocDAO" %>
 <%@ page import="model.LopHoc" %>
-<%@ page import="dal.UserLogsDAO" %>
+<%@ page import="dao.UserLogsDAO" %>
 <%@ page import="model.UserLogs" %>
-<%@ page import="dal.LichHocDAO" %>
+<%@ page import="dao.LichHocDAO" %>
 <%@ page import="model.LichHoc" %>
 <%@ page import="model.UserLogView" %>
 <%@ page import="java.time.LocalDate" %>

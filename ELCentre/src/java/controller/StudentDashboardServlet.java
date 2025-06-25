@@ -7,6 +7,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import dao.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import model.*;
+import java.util.List;
 
 /**
  *
@@ -48,9 +53,30 @@ public class StudentDashboardServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
+        throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        TaiKhoan user = (TaiKhoan) session.getAttribute("user");
+
+        if (user == null || user.getID_VaiTro() != 4) {
+            response.sendRedirect(request.getContextPath() + "/views/login.jsp");
+            return;
+        }
+
+        int idTaiKhoan = user.getID_TaiKhoan();
+//        int idHocSinh = HocSinhDAO.getHocSinhIdByTaiKhoanId(idTaiKhoan);
+
+//        List<LopHoc> dsLopHoc = DangKyLopHocDAO.getLopHocByHocSinhId(idHocSinh);
+//        List<ThongBao> dsThongBao = ThongBaoDAO.getThongBaoByTaiKhoanId(idTaiKhoan);
+//        List<LichHoc> lichHocSapToi = LichHocDAO.getUpcomingScheduleByHocSinhId(idHocSinh);
+
+//        request.setAttribute("dsLopHoc", dsLopHoc);
+//        request.setAttribute("dsThongBao", dsThongBao);
+//        request.setAttribute("lichHocSapToi", lichHocSapToi);
+
+        request.getRequestDispatcher("/views/student/studentDashboard.jsp").forward(request, response);
     }
+
 
     /**
      * Handles the HTTP <code>POST</code> method.

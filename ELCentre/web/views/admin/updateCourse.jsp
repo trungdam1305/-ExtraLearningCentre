@@ -1,7 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.KhoaHoc"%>
-<%@page import="dal.KhoaHocDAO"%>
+<%@page import="dao.KhoaHocDAO"%>
 <%@page import="java.util.*"%>
 <%@page import="java.time.LocalDate"%>
 

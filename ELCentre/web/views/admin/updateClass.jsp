@@ -8,7 +8,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.LopHoc"%>
 <%@page import="model.LichHoc"%>
-<%@page import="dal.LichHocDAO"%>
+<%@page import="dao.LichHocDAO"%>
 <%@page import="java.util.*"%>
 <%@page session="true" %> <!-- Bật session -->
 <!DOCTYPE html>

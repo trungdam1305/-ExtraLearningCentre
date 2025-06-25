@@ -288,18 +288,18 @@
             background-color: #0056b3;
         }
 
-        /* Modal styling */
-        .modal-content {
+        /* Modao styling */
+        .modao-content {
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-        .modal-header {
+        .modao-header {
             background-color: #003087;
             color: white;
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
         }
-        .modal-footer .btn {
+        .modao-footer .btn {
             border-radius: 6px;
             padding: 8px 16px;
         }
@@ -517,7 +517,7 @@
                                         </c:if>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="${lopHoc.ID_LopHoc}" aria-label="Xóa lớp học">
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modao" data-bs-target="#deleteModao" data-id="${lopHoc.ID_LopHoc}" aria-label="Xóa lớp học">
                                             <i class="bi bi-trash"></i> Xóa
                                         </button>
                                         <a href="${pageContext.request.contextPath}/ManageClass?action=updateClass&ID_LopHoc=${lopHoc.ID_LopHoc}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="btn btn-danger btn-sm" aria-label="Cập nhật lớp học">
@@ -593,19 +593,19 @@
         </div>
     </div>
 
-    <!-- Modal xác nhận xóa -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Modao xác nhận xóa -->
+    <div class="modao fade" id="deleteModao" tabindex="-1" aria-labelledby="deleteModaoLabel" aria-hidden="true">
+        <div class="modao-dialog">
+            <div class="modao-content">
+                <div class="modao-header">
+                    <h5 class="modao-title" id="deleteModaoLabel">Xác nhận xóa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modao" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modao-body">
                     Bạn có chắc muốn xóa lớp học này không?
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <div class="modao-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modao">Hủy</button>
                     <form action="${pageContext.request.contextPath}/ManageClass" method="post" id="deleteForm">
                         <input type="hidden" name="action" value="deleteClass">
                         <input type="hidden" name="ID_LopHoc" id="deleteClassId">
@@ -641,9 +641,9 @@
             window.scrollTo({top: 0, behavior: "smooth"});
         }
 
-        // Cập nhật ID lớp học trong modal xóa
-        const deleteModal = document.getElementById('deleteModal');
-        deleteModal.addEventListener('show.bs.modal', function (event) {
+        // Cập nhật ID lớp học trong modao xóa
+        const deleteModao = document.getElementById('deleteModao');
+        deleteModao.addEventListener('show.bs.modao', function (event) {
             const button = event.relatedTarget;
             const id = button.getAttribute('data-id');
             document.getElementById('deleteClassId').value = id;
