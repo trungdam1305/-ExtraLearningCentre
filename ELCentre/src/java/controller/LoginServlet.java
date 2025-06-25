@@ -1,7 +1,5 @@
 package controller;
 
-import dao.TaiKhoanDAO;
-import dao.UserLogsDAO;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import model.TaiKhoan;
@@ -14,6 +12,8 @@ import java.net.URLEncoder;
 
 import api.VerifyRecaptcha;
 import api.EmailSender; 
+import dao.TaiKhoanDAO;
+import dao.UserLogsDAO;
 import jakarta.mail.MessagingException; 
 
 public class LoginServlet extends HttpServlet {
@@ -90,7 +90,7 @@ public class LoginServlet extends HttpServlet {
                     case 3 -> //teacher    
                         response.sendRedirect(request.getContextPath() + "/views/teacher/teacherDashboard.jsp");
                     case 4 -> //student
-                        response.sendRedirect(request.getContextPath() + "/views/student/studentDashboard.jsp");
+                        response.sendRedirect(request.getContextPath() + "/StudentDashboardServlet");
                     case 5 -> //parent
                         response.sendRedirect(request.getContextPath() + "/views/parent/parentDashboard.jsp");
                     default -> response.sendRedirect(request.getContextPath() + "/views/login.jsp");

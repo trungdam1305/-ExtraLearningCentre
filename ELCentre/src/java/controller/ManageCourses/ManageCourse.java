@@ -1,9 +1,9 @@
 package controller.ManageCourses;
 
-import dal.GiaoVienDAO;
-import dal.KhoaHocDAO;
-import dal.LichHocDAO;
-import dal.LopHocDAO;
+import dao.GiaoVienDAO;
+import dao.KhoaHocDAO;
+import dao.LichHocDAO;
+import dao.LopHocDAO;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

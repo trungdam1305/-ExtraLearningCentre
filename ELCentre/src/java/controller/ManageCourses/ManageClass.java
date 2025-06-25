@@ -1,9 +1,9 @@
 package controller.ManageCourses;
 
-import dal.GiaoVienDAO;
-import dal.LichHocDAO;
-import dal.LopHocDAO;
-import dal.SlotHocDAO;
+import dao.GiaoVienDAO;
+import dao.LichHocDAO;
+import dao.LopHocDAO;
+import dao.SlotHocDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;

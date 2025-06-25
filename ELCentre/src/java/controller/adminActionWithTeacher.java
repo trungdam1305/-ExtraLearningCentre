@@ -1,7 +1,7 @@
     
 package controller;
 
-import dal.GiaoVienDAO;
+import dao.GiaoVienDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import model.GiaoVien;
 import model.GiaoVien_TruongHoc;
 import model.GiaoVien_ChiTietDay ; 
-import dal.GiaoVien_ChiTietDayDAO ; 
+import dao.GiaoVien_ChiTietDayDAO ; 
 
 /**
  *

@@ -19,7 +19,7 @@ public class DBContext {
         return instance;
     }
 
-            public Connection getConnection() {
+    public Connection getConnection() {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String url = "jdbc:sqlserver://localhost:1433;databaseName=SWPV1";
@@ -29,8 +29,7 @@ public class DBContext {
             return connection;
         } catch (SQLException | ClassNotFoundException e) {
             System.err.println("Error " + e.getMessage() + " at DBContext");
-            e.printStackTrace();
-            return null;
+                    return null;
         }
     }
 

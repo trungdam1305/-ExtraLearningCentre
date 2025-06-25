@@ -5,8 +5,8 @@
 
 package controller;
 
-import dal.BlogDAO;
-import dal.PhanLoaiBlogDAO;
+import dao.BlogDAO;
+import dao.PhanLoaiBlogDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;

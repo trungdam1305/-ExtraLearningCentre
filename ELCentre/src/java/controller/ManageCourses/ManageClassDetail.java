@@ -1,10 +1,10 @@
 package controller.ManageCourses;
 
-import dal.GiaoVienDAO;
-import dal.HocSinhDAO;
-import dal.KhoaHocDAO;
-import dal.LichHocDAO;
-import dal.LopHocDAO;
+import dao.GiaoVienDAO;
+import dao.HocSinhDAO;
+import dao.KhoaHocDAO;
+import dao.LichHocDAO;
+import dao.LopHocDAO;
 import model.GiaoVien;
 import model.HocSinh;
 import model.KhoaHoc;

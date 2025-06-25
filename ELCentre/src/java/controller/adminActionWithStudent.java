@@ -11,11 +11,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.HocSinh;
-import dal.HocSinhDAO;
+import dao.HocSinhDAO;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import model.HocSinh_ChiTietHoc ; 
-import dal.HocSinh_ChiTietDAO ; 
+import dao.HocSinh_ChiTietDAO ; 
 
 /**
  *

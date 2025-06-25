@@ -1,13 +1,13 @@
 package controller;
 
+import dao.TaiKhoanDAO;
+import dao.UserLogsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import dao.TaiKhoanDAO;
-import dao.UserLogsDAO;
 import model.TaiKhoan;
 import jakarta.servlet.http.*;
 import java.net.URLDecoder;
@@ -106,8 +106,8 @@ public class ForgotPasswordServlet extends HttpServlet {
             if (success) {
                 String successMsg = "Mật khẩu đã được cập nhật. Hãy đăng nhập lại.";
                 UserLogs log = new UserLogs();
-                log.setID_TaiKhoan(dal.TaiKhoanDAO.adminGetIDTaiKhoanByEmail(email));
-                log.setHanhDong("Reset mật khẩu tài khoản có ID tài khoản " + dal.TaiKhoanDAO.adminGetIDTaiKhoanByEmail(email));
+                log.setID_TaiKhoan(TaiKhoanDAO.adminGetIDTaiKhoanByEmail(email));
+                log.setHanhDong("Reset mật khẩu tài khoản có ID tài khoản " + TaiKhoanDAO.adminGetIDTaiKhoanByEmail(email));
                 log.setThoiGian(LocalDateTime.now());
                 UserLogsDAO.insertLog(log);
                 response.sendRedirect(request.getContextPath() + "/views/login.jsp?success=" + URLEncoder.encode(successMsg, "UTF-8"));
