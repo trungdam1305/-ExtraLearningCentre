@@ -87,7 +87,7 @@
                     <br>
                     <a href="advice.jsp">Gửi yêu cầu tư vấn ngay!</a>
                     <br>
-                    <a href="HomePage.jsp">Quay lại trang chủ</a>
+                    <a href="${pageContext.request.contextPath}/HomePage">Quay lại trang chủ</a>
                 </p>
                 <% String error = request.getParameter("error");
                    if (error != null) { %>
