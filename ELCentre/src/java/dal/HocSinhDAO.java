@@ -429,4 +429,70 @@ public class HocSinhDAO {
             return rowsAffected > 0;
         }
     }
+
+    public void insertHocSinh(HocSinh hs) throws SQLException {
+        DBContext db = DBContext.getInstance();
+        String sql = """
+                     INSERT INTO HocSinh (ID_TaiKhoan, HoTen, NgaySinh, GioiTinh, DiaChi, SDT_PhuHuynh, TruongHoc, GhiChu, TrangThai, NgayTao)
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                     """;
+        try (PreparedStatement statement = db.getConnection().prepareStatement(sql) ) {
+            statement.setInt(1, hs.getID_TaiKhoan());
+            statement.setString(2, hs.getHoTen());
+        
+            if (hs.getNgaySinh() != null) {
+                statement.setDate(3, java.sql.Date.valueOf(hs.getNgaySinh()));
+            } else {
+                statement.setNull(3, java.sql.Types.DATE);
+            }
+
+            if (hs.getGioiTinh() != null) {
+                statement.setString(4, hs.getGioiTinh());
+            } else {
+                statement.setNull(4, java.sql.Types.VARCHAR);
+            }
+
+            if (hs.getDiaChi() != null) {
+                statement.setString(5, hs.getDiaChi());
+            } else {
+                statement.setNull(5, java.sql.Types.VARCHAR);
+            }
+
+            if (hs.getSDT_PhuHuynh() != null) {
+                statement.setString(6, hs.getSDT_PhuHuynh());
+            } else {
+                statement.setNull(6, java.sql.Types.VARCHAR);
+            }
+
+            if (hs.getTenTruongHoc() != null) {
+                statement.setString(7, hs.getTenTruongHoc());
+            } else {
+                statement.setNull(7, java.sql.Types.VARCHAR);
+            }
+
+            if (hs.getGhiChu() != null) {
+                statement.setString(8, hs.getGhiChu());
+            } else {
+                statement.setNull(8, java.sql.Types.VARCHAR);
+            }
+
+            statement.setString(9, hs.getTrangThai());
+
+            if (hs.getNgayTao() != null) {
+                statement.setTimestamp(10, java.sql.Timestamp.valueOf(hs.getNgayTao()));
+            } else {
+                statement.setNull(10, java.sql.Types.TIMESTAMP);
+            }
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void main(String[] args) {
+        int a = getTotalHocSinh();
+        System.out.println(a);
+    }
 }

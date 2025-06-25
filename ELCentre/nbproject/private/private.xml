@@ -16,11 +16,16 @@
             <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/web/views/Home-Blog/Home-Blog-Content.jsp</file>
         </group>
         <group>
-            <file>file:/C:/Users/Vuh26/Documents/NetBeansProjects/ELCentre/src/java/model/SlotHoc.java</file>
-            <file>file:/C:/Users/Vuh26/Documents/NetBeansProjects/ELCentre/src/java/controller/ManageCourses/ManageClassDetail.java</file>
-            <file>file:/C:/Users/Vuh26/Documents/NetBeansProjects/ELCentre/src/java/model/LichHoc.java</file>
-            <file>file:/C:/Users/Vuh26/Documents/NetBeansProjects/ELCentre/web/views/admin/viewClass.jsp</file>
-            <file>file:/C:/Users/Vuh26/Documents/NetBeansProjects/ELCentre/web/views/admin/updateClass.jsp</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/src/java/dal/ThongBaoDAO.java</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/web/views/admin/adminDashboard.jsp</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/web/views/admin/adminApproveRegisterUser.jsp</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/web/views/sendAdviceMail.jsp</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/src/java/controller/SendEmailServlet.java</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/src/java/controller/SendAdviceMailServlet.java</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/src/java/controller/HomePage.java</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithTeacher.java</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/src/java/controller/adminGetFromDashboard.java</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/src/java/model/ThongBao.java</file>
         </group>
     </open-files>
 </project-private>

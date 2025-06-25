@@ -96,6 +96,14 @@
         <servlet-name>adminActionWithTeacher</servlet-name>
         <servlet-class>controller.adminActionWithTeacher</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Advice</servlet-name>
+        <servlet-class>controller.Advice</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SendAdviceMailServlet</servlet-name>
+        <servlet-class>controller.SendAdviceMailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -192,7 +200,6 @@
         <servlet-name>adminActionWithTeacher</servlet-name>
         <url-pattern>/adminActionWithTeacher</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>ManageCourse</servlet-name>
         <url-pattern>/ManageCourse</url-pattern>
@@ -205,7 +212,6 @@
         <servlet-name>ManageClassDetail</servlet-name>
         <url-pattern>/ManageClassDetail</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>ManageCourse</servlet-name>
         <servlet-class>controller.ManageCourses.ManageCourse</servlet-class>
@@ -218,5 +224,13 @@
         <servlet-name>ManageClassDetail</servlet-name>
         <servlet-class>controller.ManageCourses.ManageClassDetail</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>Advice</servlet-name>
+        <url-pattern>/Advice</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendAdviceMailServlet</servlet-name>
+        <url-pattern>/SendAdviceMailServlet</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>
