@@ -2,10 +2,30 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group name="SWT">
+            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/web/views/Home-Learning/Homepage-Learning.jsp</file>
+            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/src/java/model/Blog.java</file>
+            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/src/java/dao/DBContext.java</file>
+            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/web/views/Home-Material/Home-Material-Content.jsp</file>
+            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/src/java/model/DangTaiLieu.java</file>
+            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/src/java/controller/RegisterServlet.java</file>
+            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/src/java/dal/DangTaiLieuDAO.java</file>
+            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/src/java/controller/HomePageMaterial.java</file>
+            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithUser.java</file>
+            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/src/java/dal/DBContext.java</file>
+            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/web/views/Home-Blog/Home-Blog-Content.jsp</file>
+        </group>
         <group>
-            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/Git/New%20folder/ELCentre/web/views/student/home.jsp</file>
-            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/Git/New%20folder/ELCentre/web/views/login.jsp</file>
-            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/Git/New%20folder/ELCentre/src/java/controller/LoginServlet.java</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/src/java/dal/ThongBaoDAO.java</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/web/views/admin/adminDashboard.jsp</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/web/views/admin/adminApproveRegisterUser.jsp</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/web/views/sendAdviceMail.jsp</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/src/java/controller/SendEmailServlet.java</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/src/java/controller/SendAdviceMailServlet.java</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/src/java/controller/HomePage.java</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithTeacher.java</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/src/java/controller/adminGetFromDashboard.java</file>
+            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/merge%20code/-ExtraLearningCentre/ELCentre/src/java/model/ThongBao.java</file>
         </group>
     </open-files>
 </project-private>

@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dal.KhoaHocDAO;
+import dao.KhoaHocDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,7 +15,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import model.KhoaHoc;
-
 
 /**
  *

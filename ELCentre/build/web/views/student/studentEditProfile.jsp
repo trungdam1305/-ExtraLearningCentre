@@ -178,7 +178,7 @@
     <a href="${pageContext.request.contextPath}/views/student/studentViewNotification.jsp">Thông báo</a>
     <a href="${pageContext.request.contextPath}/views/student/studentEditProfile.jsp"><strong>Tài khoản</strong></a>
 
-    <a href="${pageContext.request.contextPath}/logout" class="logout-link">Đăng xuất</a>
+    <a href="${pageContext.request.contextPath}/LogoutServlet" class="logout-link">Đăng xuất</a>
 </div>
 
 <!-- Main Content -->

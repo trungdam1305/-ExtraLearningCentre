@@ -70,7 +70,7 @@
                         <div class="alert alert-danger"><%= error %></div>
                     <% } %>
                     
-                    <!-- Thay thế AAAA bằng advice servlet mothod post --> 
+                    <!-- Gọi tới Advice Servlet --> 
                     <form action="<%= request.getContextPath() %>/Advice" method="post">
                         <!-- Input Họ và tên -->
                         <input type="text" name="fullName" class="form-control" placeholder="Họ và tên" required>

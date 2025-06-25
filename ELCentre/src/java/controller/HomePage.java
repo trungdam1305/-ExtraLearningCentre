@@ -5,13 +5,13 @@
 
 package controller;
 
-import dal.BlogDAO;
-import dal.GiaoVienDAO;
-import dal.HocSinhDAO;
-import dal.KhoaHocDAO;
-import dal.KhoiHocDAO;
-import dal.LopHocDAO;
-import dal.SliderDAO;
+import dao.BlogDAO;
+import dao.GiaoVienDAO;
+import dao.HocSinhDAO;
+import dao.KhoaHocDAO;
+import dao.KhoiHocDAO;
+import dao.LopHocDAO;
+import dao.SliderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -76,25 +76,25 @@ throws ServletException, IOException {
     response.setContentType("text/html;charset=UTF-8");
 
     // DAO init
-    KhoaHocDAO khoaHocDAO = new KhoaHocDAO();
-    HocSinhDAO hocSinhDAO = new HocSinhDAO();
-    LopHocDAO lopHocDAO = new LopHocDAO();
-    KhoiHocDAO khoiHocDAO = new KhoiHocDAO();
-    BlogDAO blogDAO = new BlogDAO();
-    SliderDAO sliderDAO = new SliderDAO();
-    GiaoVienDAO gvDAO = new GiaoVienDAO();
+    KhoaHocDAO khoaHocDAO = new KhoaHocDAO();//Initiallize KhoaHocDAO
+    HocSinhDAO hocSinhDAO = new HocSinhDAO();//Initiallize HocSinhDAO
+    LopHocDAO lopHocDAO = new LopHocDAO();//Initiallize LopHocDAO
+    KhoiHocDAO khoiHocDAO = new KhoiHocDAO();//Initiallize KhoiHocDAO
+    BlogDAO blogDAO = new BlogDAO();//Initiallize BlogDAO
+    SliderDAO sliderDAO = new SliderDAO();//Initiallize SliderDAO
+    GiaoVienDAO gvDAO = new GiaoVienDAO();//Initiallize GiaoVienDAO
     
     // Get Data with DAO
-    List<GiaoVien> listSpecialGV = gvDAO.getSpecialised();
-    int numKhoaHoc = khoaHocDAO.getTotalCourses();
-    int numHocSinh = hocSinhDAO.getTotalHocSinh();
-    int numLopHoc = lopHocDAO.getTotalLopHoc();
-    List<LopHoc> lopHoc = lopHocDAO.getAllLopHoc();
-    List<LopHocTheoNhomDTO> listLopHoc = lopHocDAO.getTongLopHocTheoNhomMonHoc();
-    List<KhoiHoc> listKhoi = khoiHocDAO.getAllKhoiHoc();
-    List<Blog> listBlog = blogDAO.getAllBlog();
-    List<GiaoVien> listGiaoVien = gvDAO.HomePageGetGiaoVien();
-    List<Slider> sliders = sliderDAO.getAllSlider();
+    List<GiaoVien> listSpecialGV = gvDAO.getSpecialised(); //get Hot Teacher
+    int numKhoaHoc = khoaHocDAO.getTotalCourses();  //get num of Course in centre
+    int numHocSinh = hocSinhDAO.getTotalHocSinh(); //get num of Student in centre
+    int numLopHoc = lopHocDAO.getTotalLopHoc(); //get num of classes in centre
+    List<LopHoc> lopHoc = lopHocDAO.getAllFeaturedLopHoc();//get List Feature Class
+    List<LopHocTheoNhomDTO> listLopHoc = lopHocDAO.getTongLopHocTheoNhomMonHoc();//get List Class divided by Subject
+    List<KhoiHoc> listKhoi = khoiHocDAO.getAllKhoiHoc();//get List Grade
+    List<Blog> listBlog = blogDAO.getBlogsByTrungTam("Trung Tâm");//get ListBlog that refer to centre
+    List<GiaoVien> listGiaoVien = gvDAO.HomePageGetGiaoVien();//get List Teacher
+    List<Slider> sliders = sliderDAO.getAllSlider();//get List Slide
     
 
     // Set data to request and send to jsp
@@ -126,7 +126,7 @@ throws ServletException, IOException {
     int numKhoaHoc = khoaHocDAO.getTotalCourses();
     int numHocSinh = hocSinhDAO.getTotalHocSinh();
     int numLopHoc = lopHocDAO.getTotalLopHoc();
-    List<LopHoc> lopHoc = lopHocDAO.getAllLopHoc();
+    List<LopHoc> lopHoc = lopHocDAO.getAllFeaturedLopHoc();
     List<LopHocTheoNhomDTO> listLopHoc = lopHocDAO.getTongLopHocTheoNhomMonHoc();
     List<KhoiHoc> listKhoi = khoiHocDAO.getAllKhoiHoc();
     List<Blog> listBlog = blogDAO.getAllBlog();

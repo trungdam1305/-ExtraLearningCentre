@@ -8,28 +8,30 @@
 <!DOCTYPE html>
 <html>
     <footer id="footer">
-        	<div class="footer-top-links">
-                    <div class="container">
-                        <ul id="menu-another-menu" class="menu">
-                            <!--HomePage-->
-                            <li id="menu-item-4446" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-8 current_page_item menu-item-4446">
-                                <a href="index.html" aria-current="page">Trang chủ</a>
-                            </li>
-                            <!-- <!--About Us-->
-                            <li id="menu-item-4447" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4447"><a href="">Về Chúng Tôi</a>
-                            </li>
-                            <!--Courses-->
-                            <li id="menu-item-4448" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4448"><a href="">Khóa Học</a>
-                            </li>
-                            <!--Blog-->
-                            <li id="menu-item-4449" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4449"><a href="">Blog</a>
-                            </li>
-                            <!--Contact-->
-                            <li id="menu-item-4451" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4451"><a href="">Liên Hệ</a>
-                            </li>
-                        </ul>                
-                    </div>
-		</div>
+        <div class="footer-top-links">
+            <div class="container">
+                <ul id="menu-another-menu" class="menu">
+                    <!--HomePage-->
+                    <li id="menu-item-4446" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home page_item page-item-8 menu-item-4446">
+                        <a href="${pageContext.request.contextPath}/HomePage">Trang chủ</a>
+                    </li>
+                    <!--About Us-->
+                    <li id="menu-item-4447" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4447">
+                        <a href="${pageContext.request.contextPath}/views/Home-Introduction/Homepage-Introduction.jsp"">Về Chúng Tôi</a>
+                    </li>
+                    <!--Courses-->
+                    <li id="menu-item-4448" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4448">
+                        <a href="${pageContext.request.contextPath}/HomePageCourse"">Khóa Học</a>
+                    </li>
+                    <!--Blog-->
+                    <li id="menu-item-4449" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4449">
+                        <a href="${pageContext.request.contextPath}/HomePageBlog"">Blog</a>
+                    </li>
+                    
+                </ul>                
+            </div>
+        </div>
+
         
                 <div class="footer-widgets">
                     <div class="container">
@@ -50,7 +52,9 @@
                                 <div class="textwidget">
                                     <p> 
                                         <span class='fa fa-map-marker'> </span>
-                                        <b>Address: </b>Khu Công nghệ cao Hòa Lạc, Km29 Đại lộ Thăng Long, Hà Nội
+                                        <b>Address: </b>
+                                        <a href="https://maps.app.goo.gl/J9TwyUbTK6o4tj8XA">Khu Công nghệ cao Hòa Lạc, Km29 Đại lộ Thăng Long, Hà Nội
+                                            </a>
                                     </p>
                                     <p class='text-with-icon'> 
                                         <span class='fa fa-envelope'> </span>

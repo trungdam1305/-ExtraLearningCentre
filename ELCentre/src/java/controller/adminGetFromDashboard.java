@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import java.io.IOException;
@@ -13,22 +9,27 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import model.TaiKhoan;
-import dal.TaiKhoanDAO;
+import dao.TaiKhoanDAO;
 import model.HocSinh;
-import dal.HocSinhDAO;
+import dao.HocSinhDAO;
 import model.GiaoVien;
-import dal.GiaoVienDAO;
+import dao.GiaoVienDAO;
 import model.HocPhi;
-import dal.HocPhiDAO;
-import model.ThongBao ; 
-import dal.ThongBaoDAO ; 
-import dal.KhoaHocDAO ; 
-import model.KhoaHoc ; 
-import model.TaiKhoanChiTiet ; 
-import dal.TaiKhoanChiTietDAO ; 
+import dao.HocPhiDAO;
+import model.ThongBao;
+import dao.ThongBaoDAO;
+import dao.KhoaHocDAO;
+import model.KhoaHoc;
+import model.TaiKhoanChiTiet;
+import dao.TaiKhoanChiTietDAO;
+import model.GiaoVien_TruongHoc;
 
 /**
- *
+ * This servlet do all action admin do in dashboard , like when admin click in
+ * manage Users or all thing in admin dashboard , servlet can create ArrayList
+ * to save data from database and send this data to specific JSP to show for
+ * admin
+ * May 24 , 2025 11:48:56 PM
  * @author wrx_Chur04
  */
 public class adminGetFromDashboard extends HttpServlet {
@@ -37,7 +38,7 @@ public class adminGetFromDashboard extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -59,8 +60,8 @@ public class adminGetFromDashboard extends HttpServlet {
         switch (action) {
             case "taikhoan":            //action with account
                 ArrayList<TaiKhoanChiTiet> taikhoans = new ArrayList<TaiKhoanChiTiet>();  // create arraylist to save data 
-                taikhoans =    TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName() ;            //admin get All acount from database
-                if (taikhoans == null ) {                                  // get database fail
+                taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();            //admin get All acount from database
+                if (taikhoans == null) {                                  // get database fail
                     request.setAttribute("message", "Không có tài khoản nào.");
                     request.setAttribute("taikhoans", taikhoans);
                     request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
@@ -79,21 +80,22 @@ public class adminGetFromDashboard extends HttpServlet {
                     request.setAttribute("hocsinhs", hocsinhs);
                     request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);
                 } else {                                                    // get database success
-                    request.setAttribute("hocsinhs", hocsinhs);          //create object is hocsinhs to send data for jsp
+                    session.setAttribute("hocsinhs", hocsinhs);          //create object is hocsinhs to send data for jsp
                     request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);          //redirect to  adminReceiveHocSinh jsp
                 }
 
                 break;
 
-            case "giaovien":        //action with student
-                ArrayList<GiaoVien> giaoviens = new ArrayList<GiaoVien>();       // create arraylist to save data 
-                giaoviens = GiaoVienDAO.admminGetAllGiaoVien();          //admin get All teacher from database
+            case "giaovien":        //action with teacher 
+                ArrayList<GiaoVien_TruongHoc> giaoviens = new ArrayList<GiaoVien_TruongHoc>();
+                giaoviens = GiaoVienDAO.admminGetAllGiaoVien();
+
                 if (giaoviens == null) {                                 // get database fail
                     request.setAttribute("message", "Không có tài khoản nào.");
                     request.setAttribute("giaoviens", giaoviens);
                     request.getRequestDispatcher("/views/admin/adminReceiveGiaoVien.jsp").forward(request, response);
                 } else {                                                // get database success
-                    request.setAttribute("giaoviens", giaoviens);            //create object is giaoviens to send data for jsp
+                    session.setAttribute("giaoviens", giaoviens);            //create object is giaoviens to send data for jsp
                     request.getRequestDispatcher("/views/admin/adminReceiveGiaoVien.jsp").forward(request, response);      //redirect to adminReceiveGiaoVien jsp
                 }
 
@@ -111,24 +113,23 @@ public class adminGetFromDashboard extends HttpServlet {
                 break;
 
             case "thongbao":            //action with notifications
-                ArrayList<ThongBao> thongbaos = ThongBaoDAO.adminXemThongBao() ;        //admin get All notifications from database
+                ArrayList<ThongBao> thongbaos = ThongBaoDAO.adminXemThongBao();        //admin get All notifications from database
                 if (thongbaos.isEmpty()) {                                              // get database fail
                     request.setAttribute("message", "Không có thông báo nào đã được gửi.");
                     request.getRequestDispatcher("/views/admin/adminReceiveHocPhi.jsp").forward(request, response);
                 } else {                     // get database success    
-                    request.setAttribute("thongbaos",   thongbaos);             //create object is thongbaos to send data for jsp
+                    request.setAttribute("thongbaos", thongbaos);             //create object is thongbaos to send data for jsp
                     request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);            //redirect to adminReceiveThongBao jsp    
                 }
                 break;
-                    
-                    
-            case "khoahoc" :         //action with course
-                ArrayList<KhoaHoc> khoahocs = KhoaHocDAO.adminGetAllKhoaHoc() ;      //admin get All course from database     
+
+            case "khoahoc":         //action with course
+                ArrayList<KhoaHoc> khoahocs = KhoaHocDAO.adminGetAllKhoaHoc();      //admin get All course from database     
                 if (khoahocs.isEmpty()) {                                     // get database fail
                     request.setAttribute("message", "Không có thông báo nào đã được gửi.");
                     request.getRequestDispatcher("/views/admin/adminReceiveHocPhi.jsp").forward(request, response);
                 } else {                              // get database success    
-                    request.setAttribute("khoahocs",   khoahocs);                //create object is thongbaos to send data for jsp
+                    request.setAttribute("khoahocs", khoahocs);                //create object is thongbaos to send data for jsp
                     request.getRequestDispatcher("/views/admin/adminReceiveKhoaHoc.jsp").forward(request, response);         //redirect to adminReceiveThongBao jsp    
                 }
                 break;
@@ -141,9 +142,9 @@ public class adminGetFromDashboard extends HttpServlet {
                 } else {
                     request.setAttribute("listTuVan", listTuVan);
                     request.getRequestDispatcher("/views/admin/adminApproveRegisterUser.jsp").forward(request, response);
+
                 }
-                break;
-                    
+                break;                
 
         }
 
@@ -158,6 +159,6 @@ public class adminGetFromDashboard extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

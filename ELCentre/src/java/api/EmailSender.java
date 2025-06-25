@@ -15,7 +15,7 @@ import java.util.Properties;
 public class EmailSender {
 
     private static final String USERNAME = "edupluscenterhn@gmail.com"; 
-    private static final String PASSWORD = "wpzo gbxt mpoe ljqx"; 
+    private static final String PASSWORD = "zqlx legn nzvt anok"; 
 
     public static void sendEmail(String toEmail, String subject, String body) throws MessagingException, UnsupportedEncodingException {
         // Cấu hình SMTP server

@@ -71,7 +71,9 @@
             <div class="right-panel">
                 <div class="register-box">
                     <h3 class="fw-bold">| Quên mật khẩu</h3>
+
                     <p class="small">Trở lại <a href="login.jsp">trang đăng nhập</a></p>
+
 
                     <!-- Thông báo -->
                     <% 

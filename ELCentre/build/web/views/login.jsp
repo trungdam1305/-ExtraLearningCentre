@@ -14,6 +14,8 @@
     <!-- Google Identity -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
+
+
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -80,8 +82,13 @@
         <div class="right-panel">
             <div class="login-box">
                 <h3 class="fw-bold">|Đăng nhập hệ thống</h3>
-                <p class="small">Chưa có tài khoản? <a href="advice.jsp">Đăng ký nhận tư vấn ngay!!!</a></p>
-
+                <p class="small">
+                    Bạn đang quan tâm tới khóa học của chúng tôi? 
+                    <br>
+                    <a href="advice.jsp">Gửi yêu cầu tư vấn ngay!</a>
+                    <br>
+                    <a href="HomePage.jsp">Quay lại trang chủ</a>
+                </p>
                 <% String error = request.getParameter("error");
                    if (error != null) { %>
                     <div class="alert alert-danger"><%= error %></div>

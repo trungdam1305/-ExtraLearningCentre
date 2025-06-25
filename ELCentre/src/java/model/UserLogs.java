@@ -8,6 +8,7 @@ public class UserLogs {
     private String HanhDong;
     private LocalDateTime ThoiGian;
 
+
     public UserLogs() {
     }
 
@@ -18,7 +19,6 @@ public class UserLogs {
         this.ThoiGian = ThoiGian;
     }
 
-    
     public Integer getID_Log() { return ID_Log; }
     public void setID_Log(Integer ID_Log) { this.ID_Log = ID_Log; }
 

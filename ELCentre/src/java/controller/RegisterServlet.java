@@ -1,6 +1,6 @@
 package controller;
 
-import dal.HocSinhDAO;
+import dao.HocSinhDAO;
 import dao.TaiKhoanDAO;
 import model.TaiKhoan;
 import model.HocSinh;
@@ -106,7 +106,7 @@ public class RegisterServlet extends HttpServlet {
             hs.setGioiTinh(null);
             hs.setDiaChi(null);
             hs.setSDT_PhuHuynh(null);
-            hs.setTruongHoc(null);
+            hs.setTenTruongHoc(null);
             hs.setGhiChu(null);
 
             try {
