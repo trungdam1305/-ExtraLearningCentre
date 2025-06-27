@@ -70,4 +70,6 @@ public class TaiKhoanChiTietDAO {
              return taikhoans ; 
         }
     }
+     
+   
 }

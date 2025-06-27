@@ -133,6 +133,18 @@ public class adminGetFromDashboard extends HttpServlet {
                     request.getRequestDispatcher("/views/admin/adminReceiveKhoaHoc.jsp").forward(request, response);         //redirect to adminReceiveThongBao jsp    
                 }
                 break;
+                
+            case "yeucautuvan" : //action xử lý phê duyệt yêu cầu
+                ArrayList<ThongBao> listTuVan = ThongBaoDAO.getAllTuVan();
+                if (listTuVan == null || listTuVan.isEmpty()) {
+                    request.setAttribute("message", "Không có yêu cầu tư vấn nào.");
+                    request.getRequestDispatcher("/views/admin/adminApproveRegisterUser.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("listTuVan", listTuVan);
+                    request.getRequestDispatcher("/views/admin/adminApproveRegisterUser.jsp").forward(request, response);
+
+                }
+                break;                
 
         }
 

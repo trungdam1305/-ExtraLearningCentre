@@ -15,7 +15,6 @@ import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import model.UserLogs;
 
-
 /**
  *
  * @author vkhan
@@ -116,6 +115,7 @@ public class ForgotPasswordServlet extends HttpServlet {
                 String error = "Cập nhật mật khẩu thất bại. Vui lòng thử lại.";
                 response.sendRedirect(request.getContextPath() + "/views/forgotPassword.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
             }
+
         }
     }
 

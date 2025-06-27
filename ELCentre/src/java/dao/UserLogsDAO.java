@@ -31,7 +31,7 @@ public class UserLogsDAO {
         }
     }
     
-    public static void insertLog(UserLogs log)  {
+    public static void insertLog(UserLogs log) {
         String sql = "INSERT INTO UserLogs (ID_TaiKhoan, HanhDong, ThoiGian) VALUES (?, ?, ?)";
         try (Connection conn = DBContext.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {

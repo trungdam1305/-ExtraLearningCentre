@@ -42,7 +42,7 @@ public class KhoiHocDAO {
         KhoiHocDAO dao = new KhoiHocDAO();
         khoi = dao.getAllKhoiHoc();
         for (KhoiHoc kh : khoi){
-            System.out.println(kh.getTenKhoi());
+            System.out.println(kh.getTenKhoi() + " " + kh.getStatus_Khoi());
         }
     } 
 }

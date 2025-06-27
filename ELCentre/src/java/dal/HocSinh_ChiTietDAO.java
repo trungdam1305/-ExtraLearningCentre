@@ -30,7 +30,7 @@ public class HocSinh_ChiTietDAO {
                          JOIN GiaoVien GV 
                          on GV.ID_GiaoVien = GVLH.ID_GiaoVien
                          JOIN SlotHoc SH 
-                         ON SH.ID_SlotHoc = LH.ID_ThoiGian
+                         ON SH.ID_SlotHoc = LH.ID_Schedule
                          WHERE HSLH.ID_HocSinh = ? ;
                          """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 

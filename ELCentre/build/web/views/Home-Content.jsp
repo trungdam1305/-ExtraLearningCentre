@@ -9,35 +9,33 @@
 <html>
         <!-- Slider -->
         <div class="banner">
-
-      <div id="layerslider_1_5r4q8o8aqo3t" class="ls-wp-container fitvidsignore" style="width:1000px;height:630px;margin:0 auto;margin-bottom: 0px; position: relative;">
-        <c:forEach var="slide" items="${sliders}">
-          <div class="ls-slide" data-ls="duration:5000;transition2d:1,4;timeshift:-1000;">
-            <img 
-              src="${pageContext.request.contextPath}/img/slider/${slide.image}" 
-              class="ls-bg" 
-              alt="${slide.title}" 
-              decoding="async" 
-              fetchpriority="high"
-            />
-            <p 
-              class="ls-l" 
-              style="position: absolute;top: 0px;left: 10px;margin: 0;font-weight: bold;text-transform: uppercase;font-size: 35px;color: #355c7d;pointer-events: none;white-space: nowrap;
-              ">
-              ${slide.title}
-            </p>
-
-            <a href="${slide.backLink}" class="ls-l" 
-               style="
-                 position: absolute;top: 5px;left: 840px;padding: 10px 20px;background: rgba(0,0,0,0.5);color: #fff;text-decoration: none;font-weight: bold;white-space: nowrap;
-               ">
-              Xem chi tiết
-            </a>
-          </div>
-        </c:forEach>
-
-      </div>
-    </div>
+            <div id="layerslider_1_5r4q8o8aqo3t" class="ls-wp-container fitvidsignore" style="width:1000px;height:630px;margin:0 auto;margin-bottom: 0px; position: relative;">
+                <!--Get all slider from database-->
+                <c:forEach var="slide" items="${sliders}">
+                  <div class="ls-slide" data-ls="duration:5000;transition2d:1,4;timeshift:-1000;">
+                    <img 
+                      src="${pageContext.request.contextPath}/img/slider/${slide.image}" 
+                      class="ls-bg" 
+                      alt="${slide.title}" 
+                      decoding="async" 
+                      fetchpriority="high"
+                    />
+                    <p 
+                      class="ls-l" 
+                      style="position: absolute;top: 0px;left: 10px;margin: 0;font-weight: bold;text-transform: uppercase;font-size: 35px;color: #355c7d;pointer-events: none;white-space: nowrap;
+                      ">
+                      ${slide.title}
+                    </p>
+                    <a href="${slide.backLink}" class="ls-l" 
+                       style="
+                         position: absolute;top: 5px;left: 840px;padding: 10px 20px;background: rgba(0,0,0,0.5);color: #fff;text-decoration: none;font-weight: bold;white-space: nowrap;
+                       ">
+                      Xem chi tiết
+                    </a>
+                  </div>
+                </c:forEach>
+            </div>
+        </div>
           
 	  <!-- Main Content -->
     <div class="content">
@@ -52,19 +50,14 @@
                               <div class="dt-sc-subscribe-wrapper">
                                   <h2 style="font-family:'Open Sans'; font-weight: bold" >Hãy trở thành một phần của chúng tôi. Đăng Kí để được tư vấn
                                   </h2>
+                                  <!--Get data from form and request to Servlet-->
                                   <form id="formRegister" action="${pageContext.request.contextPath}/SendEmailServlet" method="post" class="dt-sc-subscribe-frm">
                                     <input type="text" name="regName" id="regName" placeholder="Nhập Tên" required />
                                     <input type="email" name="regEmail" id="regEmail" required placeholder="Nhập Email" />
-
                                     <input type="text" name="regPhone" id="regPhone" required placeholder="Nhập Số Điện Thoại" maxlength="10" />
                                     <input   type="text" name="regBirth" id="regBirth" required placeholder="Nhập Năm Sinh" maxlength="4" pattern="19[5-9][0-9]|20[0-2][0-9]" title="Nhập năm từ 1950 đến năm hiện tại (ví dụ 1950 - 2025)"/>
                                     <input type="submit" name="btnSubmit" class="dt-sc-button small" value="Đăng Ký" />
-                                  </form>
-
-                                  <p></p>
-                                  <div id="ajax_newsletter_msg">
-                                      
-                                  </div>    
+                                  </form>  
                               </div>
                               <div class="margin10"> 
                               </div>	
@@ -76,9 +69,6 @@
                     <div class='fullwidth-section  '  style="background-repeat:no-repeat;background-position:left top;">
                         <div class="fullwidth-bg">	
                             <div class="container" >
-                                <div class='dt-sc-hr-invisible  '>
-
-                                </div>
                                 <div  class='column dt-sc-one-fourth  first' >
                                     <div class="dt-sc-services" >
                                         <div class="dt-sc-iconbox">
@@ -162,7 +152,7 @@
                             </div>
                         </div> 
                     </div>
-                                            <!--<!-- Centre's Achivement  -->
+                    <!-- Centre's Achivement  -->
                     <div class='fullwidth-section dt-sc-skin '  style="background-color:#355C7D;">
                         <div class="fullwidth-bg">	
                             <div class="container">
@@ -226,33 +216,31 @@
                                     </div>
                                     <!--Information of Class-->
                                     <div class="dt-courses-carousel">
-                                        <c:forEach var="lopHoc" items="${lopHoc}" varStatus="status">
+                                        <c:forEach var="lop" items="${lopHoc}" varStatus="status">
                                             <div class="column dt-sc-one-third">
-                                                <!-- Course Starts -->
-                                                <article id="post-${lopHoc.ID_LopHoc}" class="dt-sc-course post-${lopHoc.ID_LopHoc} course type-course status-publish has-post-thumbnail hentry course-category-general post">
+                                                <article class="dt-sc-course">
                                                     <div class="dt-sc-course-thumb">
-                                                        <a href="#" title="${lopHoc.getTenLopHoc()}">
-                                                            <img src="${pageContext.request.contextPath}/img/avatar/${lopHoc.getImage()}" alt="${lopHoc.getTenLopHoc()}" style="width:420px; height:250px; object-fit: cover; border-radius: 5px;" />
+                                                        <a href="#">
+                                                            <img src="${pageContext.request.contextPath}/img/avatar/${lop.image}" 
+                                                                 alt="${lop.tenLopHoc}" 
+                                                                 style="width:420px; height:250px; object-fit: cover; border-radius: 5px;" />
                                                         </a>
                                                     </div>
                                                     <div class="dt-sc-course-content">
                                                         <p class="dt-sc-course-meta">
-                                                            <a href="#" rel="tag">Khóa học ID: ${lopHoc.ID_KhoaHoc}</a>
+                                                            <a href="#">Khóa học ID: ${lop.ID_KhoaHoc}</a>
                                                         </p>
                                                         <h2 class="dt-sc-course-title">
-                                                            <a href="#" style= "font-family:'Open Sans'" title="${lopHoc.getTenLopHoc()}">${lopHoc.getTenLopHoc()}</a>
+                                                            <a href="#" style= "font-family:'Open Sans'; font-weight: bold;" >${lop.tenLopHoc}</a>
                                                         </h2>
-                                                        <a href="#" style= "font-family:'Open Sans'"  class="dt-sc-course-price">${lopHoc.getSoTien()} VNĐ</a>
-                                                        <span class="dt-sc-lessons">Thời gian học: ${lopHoc.getID_ThoiGian()}</span>
+                                                         <span class="dt-sc-lessons">Thời gian học: ${lop.ID_Schedule}</span> <!-- Gợi ý đổi thành slotThoiGian -->
                                                     </div>
                                                 </article>
                                             </div>
                                         </c:forEach>
                                     </div>
                                 </div>
-
                             </div>
-
                             <!-- High-School Course Category-->
                             <div class="container">  
                                 <div class='hr-title'>
@@ -302,11 +290,7 @@
                                             </div>
                                         </c:if>
                                 </c:forEach>
-
-
                             </div>
-
-                            
                             <!-- Secondary-School Course Category-->
                             <div class="container">
                                 <div class='hr-title'>
@@ -362,11 +346,6 @@
                                 </div>
                             </div>
                                           
-                            <div class='hr-title' style= "font-family:'Open Sans'" >
-                                <div class='title-sep'>
-                                        <span></span>
-                                </div>
-                            </div>
                             
                     <div class='fullwidth-section  dt-sc-parallax-section'  style="background-color:#ffffff;background-image:url(${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/paralax-bg.jpg);background-repeat:repeat;background-position:left top;background-attachment:fixed; ">
                         <div class="fullwidth-bg">	
@@ -408,7 +387,7 @@
                                             <ul>
                                                 <li>
                                                     <span class="fa fa-thumb-tack"></span>
-                                                    <a href="#"></a>
+                                                    <a href="#" > ${blog.getPhanLoai()}</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -424,7 +403,6 @@
                 </article>
           </section>
     </div><!-- content ends here -->
-    
     
     <!-- JavaScript -->
 <script type="text/javascript">
@@ -577,4 +555,5 @@ var ratings_mouseover_image=new Image();ratings_mouseover_image.src="${pageConte
 <script type="text/javascript" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.animateNumber.min9704.js?ver=6.7.1" id="jquery-animateNumber-js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/custom9704.js?ver=6.7.1" id="guru-custom-js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/magnific/jquery.magnific-popup.min9704.js?ver=6.7.1" id="jquery-magnific-popup-js"></script>
+<a href="#" id="toTop" style="display: none;"><span id="toTopHover"></span>To Top</a><div id="extension-mmplj"></div></body>    
 </html>

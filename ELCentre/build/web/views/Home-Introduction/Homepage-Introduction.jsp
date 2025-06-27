@@ -97,7 +97,7 @@ var BP_Confirm = {"are_you_sure":"Are you sure?"};
         <jsp:include page="Home-Header.jsp"></jsp:include>
 
         <!-- main content -->
-        
+        <jsp:include page="Home-Intro-Content.jsp"></jsp:include>
             
         <!-- main footer -->
         <jsp:include page="Home-Footer.jsp"></jsp:include>	           

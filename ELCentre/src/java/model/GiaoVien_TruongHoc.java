@@ -1,36 +1,70 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
+ * Represents a teacher along with the school they belong to.
+ * Combines teacher information with related school data such as school name and address.
  *
- * @author wrx_Chur04
+ * Author: wrx_Chur04
+ * 
+ * Updated day 23/06/2025: trungdam 
+ * Description: update comment 
  */
 public class GiaoVien_TruongHoc {
-    private Integer ID_GiaoVien;
-    private Integer ID_TaiKhoan;
-    private String HoTen;
-    private String ChuyenMon;
-    private String SDT;
-    private int ID_TruongHoc;
-    private BigDecimal Luong;
-    private int IsHot;
-    private String TrangThai;
-    private LocalDateTime NgayTao;
-    private String Avatar;
-    
-    private String TenTruongHoc ; 
-    private String DiaChi ; 
 
+    // Unique ID of the teacher
+    private Integer ID_GiaoVien;
+
+    // Linked account ID of the teacher
+    private Integer ID_TaiKhoan;
+
+    // Full name of the teacher
+    private String HoTen;
+
+    // Teacher's specialization or subject
+    private String ChuyenMon;
+
+    // Phone number
+    private String SDT;
+
+    // ID of the associated school
+    private int ID_TruongHoc;
+
+    // Salary of the teacher
+    private BigDecimal Luong;
+
+    // Indicates if the teacher is highlighted or featured (1 = yes, 0 = no)
+    private int IsHot;
+
+    // Current status (e.g., Active, Inactive)
+    private String TrangThai;
+
+    // Timestamp when the teacher profile was created
+    private LocalDateTime NgayTao;
+
+    // Avatar image path or URL
+    private String Avatar;
+
+    // Name of the school
+    private String TenTruongHoc;
+
+    // Address of the school
+    private String DiaChi;
+
+    /**
+     * Default constructor
+     */
     public GiaoVien_TruongHoc() {
     }
 
-    public GiaoVien_TruongHoc(Integer ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT, int ID_TruongHoc, BigDecimal Luong, int IsHot, String TrangThai, LocalDateTime NgayTao, String Avatar, String TenTruongHoc, String DiaChi) {
+    /**
+     * Full constructor to initialize all fields
+     */
+    public GiaoVien_TruongHoc(Integer ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT,
+                               int ID_TruongHoc, BigDecimal Luong, int IsHot, String TrangThai,
+                               LocalDateTime NgayTao, String Avatar, String TenTruongHoc, String DiaChi) {
         this.ID_GiaoVien = ID_GiaoVien;
         this.ID_TaiKhoan = ID_TaiKhoan;
         this.HoTen = HoTen;
@@ -45,6 +79,8 @@ public class GiaoVien_TruongHoc {
         this.TenTruongHoc = TenTruongHoc;
         this.DiaChi = DiaChi;
     }
+
+    // Getters
 
     public Integer getID_GiaoVien() {
         return ID_GiaoVien;
@@ -98,6 +134,8 @@ public class GiaoVien_TruongHoc {
         return DiaChi;
     }
 
+    // Setters
+
     public void setID_GiaoVien(Integer ID_GiaoVien) {
         this.ID_GiaoVien = ID_GiaoVien;
     }
@@ -149,6 +187,4 @@ public class GiaoVien_TruongHoc {
     public void setDiaChi(String DiaChi) {
         this.DiaChi = DiaChi;
     }
-    
-    
 }

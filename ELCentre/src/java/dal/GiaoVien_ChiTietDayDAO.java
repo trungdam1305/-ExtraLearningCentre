@@ -24,7 +24,7 @@ public class GiaoVien_ChiTietDayDAO {
                          join LopHoc LH 
                          on GVLH.ID_LopHoc = LH.ID_LopHoc 
                          JOIN SlotHoc SL
-                         on SL.ID_SlotHoc = LH.ID_ThoiGian 
+                         on SL.ID_SlotHoc = LH.ID_Schedule 
                          JOIN GiaoVien GV 
                          ON GVLH.ID_GiaoVien = GV.ID_GiaoVien
                          JOIN TruongHoc TH 

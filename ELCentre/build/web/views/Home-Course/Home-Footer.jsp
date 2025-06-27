@@ -7,6 +7,11 @@
     <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <!DOCTYPE html>
     <html>
+        <style>
+    #footer a {
+        text-decoration: none;
+    }
+</style>
         <footer id="footer">
             <div class="footer-top-links">
                 <div class="container">
@@ -55,7 +60,9 @@
                                     <div class="textwidget">
                                         <p> 
                                             <span class='fa fa-map-marker'> </span>
-                                            <b>Address: </b>Khu Công nghệ cao Hòa Lạc, Km29 Đại lộ Thăng Long, Hà Nội
+                                            <b>Address: </b>
+                                            <a href="https://maps.app.goo.gl/J9TwyUbTK6o4tj8XA">Khu Công nghệ cao Hòa Lạc, Km29 Đại lộ Thăng Long, Hà Nội
+                                            </a>
                                         </p>
                                         <p class='text-with-icon'> 
                                             <span class='fa fa-envelope'> </span>

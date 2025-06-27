@@ -10,264 +10,115 @@
           <div class="container">
               <section class="with-left-sidebar" id="primary">
                   <article id="post-2385" class="post-2385 page type-page status-publish hentry">
-                      <div class="woocommerce columns-4 ">
-                          <ul class="products columns-4">
-                              <li class="post pif-has-gallery product type-product post-93 status-publish first instock product_cat-music product_cat-singles has-post-thumbnail downloadable shipping-taxable purchasable product-type-simple">
-                                <div class=" dt-sc-one-fourth column  in-stock-product ">
-                                    <div class="product-wrapper">
-                                        <a href="https://dtguru.wpengine.com/product/woo-single-1/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                                        </a>
-                                        <div class="product-thumb">
-                                            <a href="https://dtguru.wpengine.com/product/woo-single-1/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                                                <img fetchpriority="high" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product4-520x535.jpg" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product4.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product4-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product4-97x100.jpg 97w" sizes="(max-width: 520px) 100vw, 520px">
-                                                <img decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product2.jpg" class="secondary-image attachment-shop-catalog" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product2.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product2-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product2-97x100.jpg 97w" sizes="(max-width: 520px) 100vw, 520px">
-                                            </a>
-                                            <div class="yith-wcwl-add-to-wishlist add-to-wishlist-93  wishlist-fragment on-first-load" data-fragment-ref="93" data-fragment-options="{&quot;base_url&quot;:&quot;&quot;,&quot;in_default_wishlist&quot;:false,&quot;is_single&quot;:false,&quot;show_exists&quot;:false,&quot;product_id&quot;:93,&quot;parent_product_id&quot;:93,&quot;product_type&quot;:&quot;simple&quot;,&quot;show_view&quot;:false,&quot;browse_wishlist_text&quot;:&quot;Browse Wishlist&quot;,&quot;already_in_wishslist_text&quot;:&quot;The product is already in the wishlist!&quot;,&quot;product_added_text&quot;:&quot;Product added!&quot;,&quot;heading_icon&quot;:&quot;&quot;,&quot;available_multi_wishlist&quot;:false,&quot;disable_wishlist&quot;:false,&quot;show_count&quot;:false,&quot;ajax_loading&quot;:false,&quot;loop_position&quot;:false,&quot;item&quot;:&quot;add_to_wishlist&quot;}">
-                                                <a href="https://dtguru.wpengine.com/product/woo-single-1/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-			
-                                                <!-- ADD TO WISHLIST -->
-			
-                                                </a>
-                                                <div class="yith-wcwl-add-button">
-                                                    <a href="https://dtguru.wpengine.com/product/woo-single-1/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                      <div class="woocommerce columns-4">
+                                <ul class="products columns-4" style="display: flex; flex-wrap: wrap; gap: 3px; padding: 0; list-style: none;">
+                                    <c:forEach var="khoaHoc" items="${khoaHocList}">
+                                        <li class="post product type-product post-${khoaHoc.ID_KhoaHoc} status-publish instock has-post-thumbnail product-type-simple"
+                                            style="flex: 0 0 calc(25% - 20px); box-sizing: border-box; display: flex; flex-direction: column; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background-color: #fff; min-height: 300px;" data-idkhoi="${khoaHoc.ID_Khoi}">
+                                            <div class="product-wrapper" style="display: flex; flex-direction: column; height: 100%;">
+                                                <div class="product-thumb" style="text-align: center;">
+                                                    <a href="#" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                        <img src="${pageContext.request.contextPath}/img/avatar/${khoaHoc.image}"
+                                                             alt="${khoaHoc.tenKhoaHoc}" width="100%" height="auto"
+                                                             style="object-fit: cover; height: 200px;" />
                                                     </a>
-                                                    <a href="?add_to_wishlist=93" rel="nofollow" data-product-id="93" data-product-type="simple" data-original-product-id="93" class="add_to_wishlist single_add_to_wishlist" data-title="Add to Wishlist">
-                                                        <span>Add to Wishlist</span>
+                                                    <a href="#" class="small button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="${khoaHoc.ID_KhoaHoc}" rel="nofollow" style="font-size: 12px; padding: 5px;"> 
+                                                        Đăng Ký Nhận Tư Vấn 
                                                     </a>
                                                 </div>
-                                                <!-- COUNT TEXT -->
+
+                                                <div class="product-title" style="padding: 10px; flex-grow: 0;">
+                                                    <a href="#">
+                                                        <h2 class="woocommerce-loop-product__title" style="font-size: 16px; min-height: 48px;">${khoaHoc.tenKhoaHoc}</h2>
+                                                    </a>
+                                                </div>
+
+                                                <div class="product-details" style="padding: 0 10px 10px 10px; flex-grow: 1;">
+                                                    <p style="font-size: 14px; max-height: 60px; overflow: hidden; text-overflow: ellipsis;">${khoaHoc.moTa}</p>
+                                                    <span class="price" style="margin-top: auto;">
+                                                        <span class="woocommerce-Price-amount amount">
+                                                            <bdi>
+                                                                <a href="#" class="woocommerce-Price-currencySymbol">Xem Chi Tiết Khóa Học</a>
+                                                            </bdi>
+                                                        </span>
+                                                    </span>
+                                                </div>
                                             </div>
-                                            <a href="?add-to-cart=93" data-quantity="1" class="small button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="93" data-product_sku="" aria-label="Add “Woo Single #1” to your cart" rel="nofollow">
-                                                Add to cart</a>
-                                        </div>
-                                        <div class="product-title">
-                                            <a href="https://dtguru.wpengine.com/product/woo-single-1/">
-                                                <h2 class="woocommerce-loop-product__title">Woo Single #1</h2>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                                    <div class="pagination" style="text-align: center; margin-top: 20px;">
+                                        <c:forEach begin="1" end="${totalPage}" var="i">
+                                            <a href="?page=${i}" style="
+                                                display: inline-block;
+                                                margin: 0 5px;
+                                                padding: 8px 12px;
+                                                background-color: ${i == currentPage ? '#007bff' : '#f0f0f0'};
+                                                color: ${i == currentPage ? 'white' : 'black'};
+                                                text-decoration: none;
+                                                border-radius: 4px;
+                                            ">
+                                                ${i}
                                             </a>
-                                        </div>
-                                        <div class="product-details">
-                                            <span class="price">
-                                                <span class="woocommerce-Price-amount amount">
-                                                    <bdi>
-                                                        <span class="woocommerce-Price-currencySymbol">£
-                                                        </span>3.00
-                                                    </bdi>
-                                                </span>      
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                              </li>
-<li class="post pif-has-gallery product type-product post-87 status-publish instock product_cat-albums product_cat-music has-post-thumbnail downloadable shipping-taxable purchasable product-type-simple">
-	<div class=" dt-sc-one-fourth column  in-stock-product "><div class="product-wrapper"><a href="https://dtguru.wpengine.com/product/woo-album-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"></a><div class="product-thumb"><a href="https://dtguru.wpengine.com/product/woo-album-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product13-520x535.jpg" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product13.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product13-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product13-97x100.jpg 97w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product13-52x54.jpg 52w" sizes="(max-width: 520px) 100vw, 520px"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product5.jpg" class="secondary-image attachment-shop-catalog" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product5.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product5-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product5-97x100.jpg 97w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product5-52x54.jpg 52w" sizes="auto, (max-width: 520px) 100vw, 520px">
-</a><div class="yith-wcwl-add-to-wishlist add-to-wishlist-87  wishlist-fragment on-first-load" data-fragment-ref="87" data-fragment-options="{&quot;base_url&quot;:&quot;&quot;,&quot;in_default_wishlist&quot;:false,&quot;is_single&quot;:false,&quot;show_exists&quot;:false,&quot;product_id&quot;:87,&quot;parent_product_id&quot;:87,&quot;product_type&quot;:&quot;simple&quot;,&quot;show_view&quot;:false,&quot;browse_wishlist_text&quot;:&quot;Browse Wishlist&quot;,&quot;already_in_wishslist_text&quot;:&quot;The product is already in the wishlist!&quot;,&quot;product_added_text&quot;:&quot;Product added!&quot;,&quot;heading_icon&quot;:&quot;&quot;,&quot;available_multi_wishlist&quot;:false,&quot;disable_wishlist&quot;:false,&quot;show_count&quot;:false,&quot;ajax_loading&quot;:false,&quot;loop_position&quot;:false,&quot;item&quot;:&quot;add_to_wishlist&quot;}"><a href="https://dtguru.wpengine.com/product/woo-album-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-			
-			<!-- ADD TO WISHLIST -->
-			
-</a><div class="yith-wcwl-add-button"><a href="https://dtguru.wpengine.com/product/woo-album-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-	</a><a href="?add_to_wishlist=87" rel="nofollow" data-product-id="87" data-product-type="simple" data-original-product-id="87" class="add_to_wishlist single_add_to_wishlist" data-title="Add to Wishlist">
-				<span>Add to Wishlist</span>
-	</a>
-</div>
-			<!-- COUNT TEXT -->
-			
-			</div><a href="?add-to-cart=87" data-quantity="1" class="small button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="87" data-product_sku="" aria-label="Add “Woo Album #2” to your cart" rel="nofollow">Add to cart</a></div><div class="product-title"><a href="https://dtguru.wpengine.com/product/woo-album-2/"><h2 class="woocommerce-loop-product__title">Woo Album #2</h2></a></div><div class="product-details">
-	<span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">£</span>9.00</bdi></span></span>
-</div></div></div></li>
-<li class="post pif-has-gallery product type-product post-83 status-publish instock product_cat-albums product_cat-music has-post-thumbnail downloadable shipping-taxable purchasable product-type-simple">
-	<div class=" dt-sc-one-fourth column  in-stock-product "><div class="product-wrapper"><a href="https://dtguru.wpengine.com/product/woo-album-1/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"></a><div class="product-thumb"><a href="https://dtguru.wpengine.com/product/woo-album-1/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product16-520x535.jpg" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product16.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product16-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product16-97x100.jpg 97w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product16-52x54.jpg 52w" sizes="auto, (max-width: 520px) 100vw, 520px"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product15.jpg" class="secondary-image attachment-shop-catalog" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product15.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product15-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product15-97x100.jpg 97w" sizes="auto, (max-width: 520px) 100vw, 520px">
-</a><div class="yith-wcwl-add-to-wishlist add-to-wishlist-83  wishlist-fragment on-first-load" data-fragment-ref="83" data-fragment-options="{&quot;base_url&quot;:&quot;&quot;,&quot;in_default_wishlist&quot;:false,&quot;is_single&quot;:false,&quot;show_exists&quot;:false,&quot;product_id&quot;:83,&quot;parent_product_id&quot;:83,&quot;product_type&quot;:&quot;simple&quot;,&quot;show_view&quot;:false,&quot;browse_wishlist_text&quot;:&quot;Browse Wishlist&quot;,&quot;already_in_wishslist_text&quot;:&quot;The product is already in the wishlist!&quot;,&quot;product_added_text&quot;:&quot;Product added!&quot;,&quot;heading_icon&quot;:&quot;&quot;,&quot;available_multi_wishlist&quot;:false,&quot;disable_wishlist&quot;:false,&quot;show_count&quot;:false,&quot;ajax_loading&quot;:false,&quot;loop_position&quot;:false,&quot;item&quot;:&quot;add_to_wishlist&quot;}"><a href="https://dtguru.wpengine.com/product/woo-album-1/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-			
-			<!-- ADD TO WISHLIST -->
-			
-</a><div class="yith-wcwl-add-button"><a href="https://dtguru.wpengine.com/product/woo-album-1/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-	</a><a href="?add_to_wishlist=83" rel="nofollow" data-product-id="83" data-product-type="simple" data-original-product-id="83" class="add_to_wishlist single_add_to_wishlist" data-title="Add to Wishlist">
-				<span>Add to Wishlist</span>
-	</a>
-</div>
-			<!-- COUNT TEXT -->
-			
-			</div><a href="?add-to-cart=83" data-quantity="1" class="small button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="83" data-product_sku="" aria-label="Add “Woo Album #1” to your cart" rel="nofollow">Add to cart</a></div><div class="product-title"><a href="https://dtguru.wpengine.com/product/woo-album-1/"><h2 class="woocommerce-loop-product__title">Woo Album #1</h2></a></div><div class="product-details">
-	<span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">£</span>9.00</bdi></span></span>
-</div></div></div></li>
-<li class="post pif-has-gallery product type-product post-73 status-publish last instock product_cat-posters has-post-thumbnail sale shipping-taxable purchasable product-type-simple">
-	<div class=" dt-sc-one-fourth column  on-sale-product  in-stock-product "><div class="product-wrapper"><a href="https://dtguru.wpengine.com/product/premium-quality-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><span class="onsale"><span>Sale!</span></span></a><div class="product-thumb"><a href="https://dtguru.wpengine.com/product/premium-quality-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product10-520x535.jpg" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product10.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product10-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product10-97x100.jpg 97w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product10-52x54.jpg 52w" sizes="auto, (max-width: 520px) 100vw, 520px"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product3.jpg" class="secondary-image attachment-shop-catalog" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product3.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product3-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product3-97x100.jpg 97w" sizes="auto, (max-width: 520px) 100vw, 520px">
-</a><div class="yith-wcwl-add-to-wishlist add-to-wishlist-73  wishlist-fragment on-first-load" data-fragment-ref="73" data-fragment-options="{&quot;base_url&quot;:&quot;&quot;,&quot;in_default_wishlist&quot;:false,&quot;is_single&quot;:false,&quot;show_exists&quot;:false,&quot;product_id&quot;:73,&quot;parent_product_id&quot;:73,&quot;product_type&quot;:&quot;simple&quot;,&quot;show_view&quot;:false,&quot;browse_wishlist_text&quot;:&quot;Browse Wishlist&quot;,&quot;already_in_wishslist_text&quot;:&quot;The product is already in the wishlist!&quot;,&quot;product_added_text&quot;:&quot;Product added!&quot;,&quot;heading_icon&quot;:&quot;&quot;,&quot;available_multi_wishlist&quot;:false,&quot;disable_wishlist&quot;:false,&quot;show_count&quot;:false,&quot;ajax_loading&quot;:false,&quot;loop_position&quot;:false,&quot;item&quot;:&quot;add_to_wishlist&quot;}"><a href="https://dtguru.wpengine.com/product/premium-quality-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-			
-			<!-- ADD TO WISHLIST -->
-			
-</a><div class="yith-wcwl-add-button"><a href="https://dtguru.wpengine.com/product/premium-quality-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-	</a><a href="?add_to_wishlist=73" rel="nofollow" data-product-id="73" data-product-type="simple" data-original-product-id="73" class="add_to_wishlist single_add_to_wishlist" data-title="Add to Wishlist">
-				<span>Add to Wishlist</span>
-	</a>
-</div>
-			<!-- COUNT TEXT -->
-			
-			</div><a href="?add-to-cart=73" data-quantity="1" class="small button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="73" data-product_sku="" aria-label="Add “Premium Quality” to your cart" rel="nofollow">Add to cart</a></div><div class="product-title"><a href="https://dtguru.wpengine.com/product/premium-quality-2/"><h2 class="woocommerce-loop-product__title">Premium Quality</h2></a></div><div class="product-details">
-	<span class="price"><del><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">£</span>15.00</bdi></span></del> <ins><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">£</span>12.00</bdi></span></ins></span>
-</div></div></div></li>
-<li class="post pif-has-gallery product type-product post-67 status-publish first instock product_cat-posters has-post-thumbnail shipping-taxable purchasable product-type-simple">
-	<div class=" dt-sc-one-fourth column  in-stock-product "><div class="product-wrapper"><a href="https://dtguru.wpengine.com/product/ship-your-idea-3/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"></a><div class="product-thumb"><a href="https://dtguru.wpengine.com/product/ship-your-idea-3/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product8-520x535.jpg" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product8.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product8-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product8-97x100.jpg 97w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product8-52x54.jpg 52w" sizes="auto, (max-width: 520px) 100vw, 520px"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product6.jpg" class="secondary-image attachment-shop-catalog" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product6.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product6-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product6-97x100.jpg 97w" sizes="auto, (max-width: 520px) 100vw, 520px">
-</a><div class="yith-wcwl-add-to-wishlist add-to-wishlist-67  wishlist-fragment on-first-load" data-fragment-ref="67" data-fragment-options="{&quot;base_url&quot;:&quot;&quot;,&quot;in_default_wishlist&quot;:false,&quot;is_single&quot;:false,&quot;show_exists&quot;:false,&quot;product_id&quot;:67,&quot;parent_product_id&quot;:67,&quot;product_type&quot;:&quot;simple&quot;,&quot;show_view&quot;:false,&quot;browse_wishlist_text&quot;:&quot;Browse Wishlist&quot;,&quot;already_in_wishslist_text&quot;:&quot;The product is already in the wishlist!&quot;,&quot;product_added_text&quot;:&quot;Product added!&quot;,&quot;heading_icon&quot;:&quot;&quot;,&quot;available_multi_wishlist&quot;:false,&quot;disable_wishlist&quot;:false,&quot;show_count&quot;:false,&quot;ajax_loading&quot;:false,&quot;loop_position&quot;:false,&quot;item&quot;:&quot;add_to_wishlist&quot;}"><a href="https://dtguru.wpengine.com/product/ship-your-idea-3/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-			
-			<!-- ADD TO WISHLIST -->
-			
-</a><div class="yith-wcwl-add-button"><a href="https://dtguru.wpengine.com/product/ship-your-idea-3/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-	</a><a href="?add_to_wishlist=67" rel="nofollow" data-product-id="67" data-product-type="simple" data-original-product-id="67" class="add_to_wishlist single_add_to_wishlist" data-title="Add to Wishlist">
-				<span>Add to Wishlist</span>
-	</a>
-</div>
-			<!-- COUNT TEXT -->
-			
-			</div><a href="?add-to-cart=67" data-quantity="1" class="small button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="67" data-product_sku="" aria-label="Add “Ship Your Idea” to your cart" rel="nofollow">Add to cart</a></div><div class="product-title"><a href="https://dtguru.wpengine.com/product/ship-your-idea-3/"><h2 class="woocommerce-loop-product__title">Ship Your Idea</h2></a></div><div class="product-details">
-	<span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">£</span>15.00</bdi></span></span>
-</div></div></div></li>
-<li class="post pif-has-gallery product type-product post-3919 status-publish instock product_cat-clothing product_cat-hoodies has-post-thumbnail shipping-taxable purchasable product-type-simple">
-	<div class=" dt-sc-one-fourth column  in-stock-product "><div class="product-wrapper"><a href="https://dtguru.wpengine.com/product/ninja-silhouette-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"></a><div class="product-thumb"><a href="https://dtguru.wpengine.com/product/ninja-silhouette-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product5-520x535.jpg" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product5.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product5-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product5-97x100.jpg 97w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product5-52x54.jpg 52w" sizes="auto, (max-width: 520px) 100vw, 520px"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product12.jpg" class="secondary-image attachment-shop-catalog" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product12.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product12-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product12-97x100.jpg 97w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product12-52x54.jpg 52w" sizes="auto, (max-width: 520px) 100vw, 520px">
-</a><div class="yith-wcwl-add-to-wishlist add-to-wishlist-3919  wishlist-fragment on-first-load" data-fragment-ref="3919" data-fragment-options="{&quot;base_url&quot;:&quot;&quot;,&quot;in_default_wishlist&quot;:false,&quot;is_single&quot;:false,&quot;show_exists&quot;:false,&quot;product_id&quot;:3919,&quot;parent_product_id&quot;:3919,&quot;product_type&quot;:&quot;simple&quot;,&quot;show_view&quot;:false,&quot;browse_wishlist_text&quot;:&quot;Browse Wishlist&quot;,&quot;already_in_wishslist_text&quot;:&quot;The product is already in the wishlist!&quot;,&quot;product_added_text&quot;:&quot;Product added!&quot;,&quot;heading_icon&quot;:&quot;&quot;,&quot;available_multi_wishlist&quot;:false,&quot;disable_wishlist&quot;:false,&quot;show_count&quot;:false,&quot;ajax_loading&quot;:false,&quot;loop_position&quot;:false,&quot;item&quot;:&quot;add_to_wishlist&quot;}"><a href="https://dtguru.wpengine.com/product/ninja-silhouette-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-			
-			<!-- ADD TO WISHLIST -->
-			
-</a><div class="yith-wcwl-add-button"><a href="https://dtguru.wpengine.com/product/ninja-silhouette-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-	</a><a href="?add_to_wishlist=3919" rel="nofollow" data-product-id="3919" data-product-type="simple" data-original-product-id="3919" class="add_to_wishlist single_add_to_wishlist" data-title="Add to Wishlist">
-				<span>Add to Wishlist</span>
-	</a>
-</div>
-			<!-- COUNT TEXT -->
-			
-			</div><a href="?add-to-cart=3919" data-quantity="1" class="small button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="3919" data-product_sku="" aria-label="Add “Ninja Silhouette” to your cart" rel="nofollow">Add to cart</a></div><div class="product-title"><a href="https://dtguru.wpengine.com/product/ninja-silhouette-2/"><h2 class="woocommerce-loop-product__title">Ninja Silhouette</h2></a></div><div class="product-details">
-	<span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">£</span>35.00</bdi></span></span>
-</div></div></div></li>
-<li class="post pif-has-gallery product type-product post-3917 status-publish instock product_cat-clothing product_cat-hoodies has-post-thumbnail shipping-taxable purchasable product-type-simple">
-	<div class=" dt-sc-one-fourth column  in-stock-product "><div class="product-wrapper"><a href="https://dtguru.wpengine.com/product/woo-ninja-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"></a><div class="product-thumb"><a href="https://dtguru.wpengine.com/product/woo-ninja-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product9-520x535.jpg" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product9.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product9-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product9-97x100.jpg 97w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product9-52x54.jpg 52w" sizes="auto, (max-width: 520px) 100vw, 520px"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product1.jpg" class="secondary-image attachment-shop-catalog" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product1.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product1-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product1-97x100.jpg 97w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product1-52x54.jpg 52w" sizes="auto, (max-width: 520px) 100vw, 520px">
-</a><div class="yith-wcwl-add-to-wishlist add-to-wishlist-3917  wishlist-fragment on-first-load" data-fragment-ref="3917" data-fragment-options="{&quot;base_url&quot;:&quot;&quot;,&quot;in_default_wishlist&quot;:false,&quot;is_single&quot;:false,&quot;show_exists&quot;:false,&quot;product_id&quot;:3917,&quot;parent_product_id&quot;:3917,&quot;product_type&quot;:&quot;simple&quot;,&quot;show_view&quot;:false,&quot;browse_wishlist_text&quot;:&quot;Browse Wishlist&quot;,&quot;already_in_wishslist_text&quot;:&quot;The product is already in the wishlist!&quot;,&quot;product_added_text&quot;:&quot;Product added!&quot;,&quot;heading_icon&quot;:&quot;&quot;,&quot;available_multi_wishlist&quot;:false,&quot;disable_wishlist&quot;:false,&quot;show_count&quot;:false,&quot;ajax_loading&quot;:false,&quot;loop_position&quot;:false,&quot;item&quot;:&quot;add_to_wishlist&quot;}"><a href="https://dtguru.wpengine.com/product/woo-ninja-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-			
-			<!-- ADD TO WISHLIST -->
-			
-</a><div class="yith-wcwl-add-button"><a href="https://dtguru.wpengine.com/product/woo-ninja-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-	</a><a href="?add_to_wishlist=3917" rel="nofollow" data-product-id="3917" data-product-type="simple" data-original-product-id="3917" class="add_to_wishlist single_add_to_wishlist" data-title="Add to Wishlist">
-				<span>Add to Wishlist</span>
-	</a>
-</div>
-			<!-- COUNT TEXT -->
-			
-			</div><a href="?add-to-cart=3917" data-quantity="1" class="small button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="3917" data-product_sku="" aria-label="Add “Woo Ninja” to your cart" rel="nofollow">Add to cart</a></div><div class="product-title"><a href="https://dtguru.wpengine.com/product/woo-ninja-2/"><h2 class="woocommerce-loop-product__title">Woo Ninja</h2></a></div><div class="product-details">
-	<span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">£</span>35.00</bdi></span></span>
-</div></div></div></li>
-<li class="post pif-has-gallery product type-product post-40 status-publish last instock product_cat-clothing product_cat-hoodies has-post-thumbnail sale featured shipping-taxable purchasable product-type-variable has-default-attributes">
-	<div class=" dt-sc-one-fourth column  featured-product  on-sale-product  in-stock-product "><div class="product-wrapper"><a href="https://dtguru.wpengine.com/product/ship-your-idea-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><span class="onsale"><span>Sale!</span></span><span class="featured-tag"><span>Featured</span></span></a><div class="product-thumb"><a href="https://dtguru.wpengine.com/product/ship-your-idea-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product14-520x535.jpg" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product14.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product14-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product14-97x100.jpg 97w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product14-52x54.jpg 52w" sizes="auto, (max-width: 520px) 100vw, 520px"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product16.jpg" class="secondary-image attachment-shop-catalog" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product16.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product16-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product16-97x100.jpg 97w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product16-52x54.jpg 52w" sizes="auto, (max-width: 520px) 100vw, 520px">
-</a><div class="yith-wcwl-add-to-wishlist add-to-wishlist-40  wishlist-fragment on-first-load" data-fragment-ref="40" data-fragment-options="{&quot;base_url&quot;:&quot;&quot;,&quot;in_default_wishlist&quot;:false,&quot;is_single&quot;:false,&quot;show_exists&quot;:false,&quot;product_id&quot;:40,&quot;parent_product_id&quot;:40,&quot;product_type&quot;:&quot;variable&quot;,&quot;show_view&quot;:false,&quot;browse_wishlist_text&quot;:&quot;Browse Wishlist&quot;,&quot;already_in_wishslist_text&quot;:&quot;The product is already in the wishlist!&quot;,&quot;product_added_text&quot;:&quot;Product added!&quot;,&quot;heading_icon&quot;:&quot;&quot;,&quot;available_multi_wishlist&quot;:false,&quot;disable_wishlist&quot;:false,&quot;show_count&quot;:false,&quot;ajax_loading&quot;:false,&quot;loop_position&quot;:false,&quot;item&quot;:&quot;add_to_wishlist&quot;}"><a href="https://dtguru.wpengine.com/product/ship-your-idea-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-			
-			<!-- ADD TO WISHLIST -->
-			
-</a><div class="yith-wcwl-add-button"><a href="https://dtguru.wpengine.com/product/ship-your-idea-2/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-	</a><a href="?add_to_wishlist=40" rel="nofollow" data-product-id="40" data-product-type="variable" data-original-product-id="40" class="add_to_wishlist single_add_to_wishlist" data-title="Add to Wishlist">
-				<span>Add to Wishlist</span>
-	</a>
-</div>
-			<!-- COUNT TEXT -->
-			
-			</div><a href="https://dtguru.wpengine.com/product/ship-your-idea-2/" data-quantity="1" class="small button product_type_variable add_to_cart_button" data-product_id="40" data-product_sku="" aria-label="Select options for “Ship Your Idea”" rel="nofollow">Select options</a></div><div class="product-title"><a href="https://dtguru.wpengine.com/product/ship-your-idea-2/"><h2 class="woocommerce-loop-product__title">Ship Your Idea</h2></a></div><div class="product-details">
-	<span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">£</span>30.00</bdi></span> – <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">£</span>35.00</bdi></span></span>
-</div></div></div></li>
-<li class="post pif-has-gallery product type-product post-3916 status-publish first instock product_cat-clothing product_cat-t-shirts has-post-thumbnail shipping-taxable purchasable product-type-simple">
-	<div class=" dt-sc-one-fourth column  in-stock-product "><div class="product-wrapper"><a href="https://dtguru.wpengine.com/product/happy-ninja/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"></a><div class="product-thumb"><a href="https://dtguru.wpengine.com/product/happy-ninja/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product11-520x535.jpg" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product11.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product11-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product11-97x100.jpg 97w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product11-52x54.jpg 52w" sizes="auto, (max-width: 520px) 100vw, 520px"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product17.jpg" class="secondary-image attachment-shop-catalog" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product17.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product17-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product17-97x100.jpg 97w" sizes="auto, (max-width: 520px) 100vw, 520px">
-</a><div class="yith-wcwl-add-to-wishlist add-to-wishlist-3916  wishlist-fragment on-first-load" data-fragment-ref="3916" data-fragment-options="{&quot;base_url&quot;:&quot;&quot;,&quot;in_default_wishlist&quot;:false,&quot;is_single&quot;:false,&quot;show_exists&quot;:false,&quot;product_id&quot;:3916,&quot;parent_product_id&quot;:3916,&quot;product_type&quot;:&quot;simple&quot;,&quot;show_view&quot;:false,&quot;browse_wishlist_text&quot;:&quot;Browse Wishlist&quot;,&quot;already_in_wishslist_text&quot;:&quot;The product is already in the wishlist!&quot;,&quot;product_added_text&quot;:&quot;Product added!&quot;,&quot;heading_icon&quot;:&quot;&quot;,&quot;available_multi_wishlist&quot;:false,&quot;disable_wishlist&quot;:false,&quot;show_count&quot;:false,&quot;ajax_loading&quot;:false,&quot;loop_position&quot;:false,&quot;item&quot;:&quot;add_to_wishlist&quot;}"><a href="https://dtguru.wpengine.com/product/happy-ninja/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-			
-			<!-- ADD TO WISHLIST -->
-			
-</a><div class="yith-wcwl-add-button"><a href="https://dtguru.wpengine.com/product/happy-ninja/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-	</a><a href="?add_to_wishlist=3916" rel="nofollow" data-product-id="3916" data-product-type="simple" data-original-product-id="3916" class="add_to_wishlist single_add_to_wishlist" data-title="Add to Wishlist">
-				<span>Add to Wishlist</span>
-	</a>
-</div>
-			<!-- COUNT TEXT -->
-			
-			</div><a href="?add-to-cart=3916" data-quantity="1" class="small button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="3916" data-product_sku="" aria-label="Add “Happy Ninja” to your cart" rel="nofollow">Add to cart</a></div><div class="product-title"><a href="https://dtguru.wpengine.com/product/happy-ninja/"><h2 class="woocommerce-loop-product__title">Happy Ninja</h2></a></div><div class="product-details">
-	<span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">£</span>18.00</bdi></span></span>
-</div></div></div></li>
-<li class="post pif-has-gallery product type-product post-3913 status-publish instock product_cat-clothing product_cat-t-shirts has-post-thumbnail shipping-taxable purchasable product-type-variable">
-	<div class=" dt-sc-one-fourth column  in-stock-product "><div class="product-wrapper"><a href="https://dtguru.wpengine.com/product/ship-your-idea/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"></a><div class="product-thumb"><a href="https://dtguru.wpengine.com/product/ship-your-idea/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product7-520x535.jpg" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product7.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product7-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product7-97x100.jpg 97w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product7-52x54.jpg 52w" sizes="auto, (max-width: 520px) 100vw, 520px"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product5.jpg" class="secondary-image attachment-shop-catalog" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product5.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product5-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product5-97x100.jpg 97w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product5-52x54.jpg 52w" sizes="auto, (max-width: 520px) 100vw, 520px">
-</a><div class="yith-wcwl-add-to-wishlist add-to-wishlist-3913  wishlist-fragment on-first-load" data-fragment-ref="3913" data-fragment-options="{&quot;base_url&quot;:&quot;&quot;,&quot;in_default_wishlist&quot;:false,&quot;is_single&quot;:false,&quot;show_exists&quot;:false,&quot;product_id&quot;:3913,&quot;parent_product_id&quot;:3913,&quot;product_type&quot;:&quot;variable&quot;,&quot;show_view&quot;:false,&quot;browse_wishlist_text&quot;:&quot;Browse Wishlist&quot;,&quot;already_in_wishslist_text&quot;:&quot;The product is already in the wishlist!&quot;,&quot;product_added_text&quot;:&quot;Product added!&quot;,&quot;heading_icon&quot;:&quot;&quot;,&quot;available_multi_wishlist&quot;:false,&quot;disable_wishlist&quot;:false,&quot;show_count&quot;:false,&quot;ajax_loading&quot;:false,&quot;loop_position&quot;:false,&quot;item&quot;:&quot;add_to_wishlist&quot;}"><a href="https://dtguru.wpengine.com/product/ship-your-idea/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-			
-			<!-- ADD TO WISHLIST -->
-			
-</a><div class="yith-wcwl-add-button"><a href="https://dtguru.wpengine.com/product/ship-your-idea/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-	</a><a href="?add_to_wishlist=3913" rel="nofollow" data-product-id="3913" data-product-type="variable" data-original-product-id="3913" class="add_to_wishlist single_add_to_wishlist" data-title="Add to Wishlist">
-				<span>Add to Wishlist</span>
-	</a>
-</div>
-			<!-- COUNT TEXT -->
-			
-			</div><a href="https://dtguru.wpengine.com/product/ship-your-idea/" data-quantity="1" class="small button product_type_variable add_to_cart_button" data-product_id="3913" data-product_sku="" aria-label="Select options for “Ship Your Idea”" rel="nofollow">Select options</a></div><div class="product-title"><a href="https://dtguru.wpengine.com/product/ship-your-idea/"><h2 class="woocommerce-loop-product__title">Ship Your Idea</h2></a></div><div class="product-details">
-	<span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">£</span>20.00</bdi></span></span>
-</div></div></div></li>
-<li class="post pif-has-gallery product type-product post-19 status-publish instock product_cat-clothing product_cat-t-shirts has-post-thumbnail featured shipping-taxable purchasable product-type-simple">
-	<div class=" dt-sc-one-fourth column  featured-product  in-stock-product "><div class="product-wrapper"><a href="https://dtguru.wpengine.com/product/premium-quality/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><span class="featured-tag"><span>Featured</span></span></a><div class="product-thumb"><a href="https://dtguru.wpengine.com/product/premium-quality/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product1-520x535.jpg" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product1.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product1-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product1-97x100.jpg 97w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product1-52x54.jpg 52w" sizes="auto, (max-width: 520px) 100vw, 520px"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product11.jpg" class="secondary-image attachment-shop-catalog" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product11.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product11-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product11-97x100.jpg 97w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product11-52x54.jpg 52w" sizes="auto, (max-width: 520px) 100vw, 520px">
-</a><div class="yith-wcwl-add-to-wishlist add-to-wishlist-19  wishlist-fragment on-first-load" data-fragment-ref="19" data-fragment-options="{&quot;base_url&quot;:&quot;&quot;,&quot;in_default_wishlist&quot;:false,&quot;is_single&quot;:false,&quot;show_exists&quot;:false,&quot;product_id&quot;:19,&quot;parent_product_id&quot;:19,&quot;product_type&quot;:&quot;simple&quot;,&quot;show_view&quot;:false,&quot;browse_wishlist_text&quot;:&quot;Browse Wishlist&quot;,&quot;already_in_wishslist_text&quot;:&quot;The product is already in the wishlist!&quot;,&quot;product_added_text&quot;:&quot;Product added!&quot;,&quot;heading_icon&quot;:&quot;&quot;,&quot;available_multi_wishlist&quot;:false,&quot;disable_wishlist&quot;:false,&quot;show_count&quot;:false,&quot;ajax_loading&quot;:false,&quot;loop_position&quot;:false,&quot;item&quot;:&quot;add_to_wishlist&quot;}"><a href="https://dtguru.wpengine.com/product/premium-quality/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-			
-			<!-- ADD TO WISHLIST -->
-			
-</a><div class="yith-wcwl-add-button"><a href="https://dtguru.wpengine.com/product/premium-quality/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-	</a><a href="?add_to_wishlist=19" rel="nofollow" data-product-id="19" data-product-type="simple" data-original-product-id="19" class="add_to_wishlist single_add_to_wishlist" data-title="Add to Wishlist">
-				<span>Add to Wishlist</span>
-	</a>
-</div>
-			<!-- COUNT TEXT -->
-			
-			</div><a href="?add-to-cart=19" data-quantity="1" class="small button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="19" data-product_sku="" aria-label="Add “Premium Quality” to your cart" rel="nofollow">Add to cart</a></div><div class="product-title"><a href="https://dtguru.wpengine.com/product/premium-quality/"><h2 class="woocommerce-loop-product__title">Premium Quality</h2></a></div><div class="product-details">
-	<span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">£</span>20.00</bdi></span></span>
-</div></div></div></li>
-<li class="post pif-has-gallery product type-product post-15 status-publish last instock product_cat-clothing product_cat-t-shirts has-post-thumbnail sale shipping-taxable purchasable product-type-simple">
-	<div class=" dt-sc-one-fourth column  on-sale-product  in-stock-product "><div class="product-wrapper"><a href="https://dtguru.wpengine.com/product/woo-logo/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><span class="onsale"><span>Sale!</span></span></a><div class="product-thumb"><a href="https://dtguru.wpengine.com/product/woo-logo/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product2-520x535.jpg" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product2.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product2-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product2-97x100.jpg 97w" sizes="auto, (max-width: 520px) 100vw, 520px"><img loading="lazy" decoding="async" width="520" height="535" src="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product10.jpg" class="secondary-image attachment-shop-catalog" alt="" srcset="https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product10.jpg 520w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product10-292x300.jpg 292w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product10-97x100.jpg 97w, https://dtguru.wpenginepowered.com/wp-content/uploads/2013/06/product10-52x54.jpg 52w" sizes="auto, (max-width: 520px) 100vw, 520px">
-</a><div class="yith-wcwl-add-to-wishlist add-to-wishlist-15  wishlist-fragment on-first-load" data-fragment-ref="15" data-fragment-options="{&quot;base_url&quot;:&quot;&quot;,&quot;in_default_wishlist&quot;:false,&quot;is_single&quot;:false,&quot;show_exists&quot;:false,&quot;product_id&quot;:15,&quot;parent_product_id&quot;:15,&quot;product_type&quot;:&quot;simple&quot;,&quot;show_view&quot;:false,&quot;browse_wishlist_text&quot;:&quot;Browse Wishlist&quot;,&quot;already_in_wishslist_text&quot;:&quot;The product is already in the wishlist!&quot;,&quot;product_added_text&quot;:&quot;Product added!&quot;,&quot;heading_icon&quot;:&quot;&quot;,&quot;available_multi_wishlist&quot;:false,&quot;disable_wishlist&quot;:false,&quot;show_count&quot;:false,&quot;ajax_loading&quot;:false,&quot;loop_position&quot;:false,&quot;item&quot;:&quot;add_to_wishlist&quot;}"><a href="https://dtguru.wpengine.com/product/woo-logo/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-			
-			<!-- ADD TO WISHLIST -->
-			
-</a><div class="yith-wcwl-add-button"><a href="https://dtguru.wpengine.com/product/woo-logo/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-	</a><a href="?add_to_wishlist=15" rel="nofollow" data-product-id="15" data-product-type="simple" data-original-product-id="15" class="add_to_wishlist single_add_to_wishlist" data-title="Add to Wishlist">
-				<span>Add to Wishlist</span>
-	</a>
-</div>
-			<!-- COUNT TEXT -->
-			
-			</div><a href="?add-to-cart=15" data-quantity="1" class="small button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="15" data-product_sku="" aria-label="Add “Woo Logo” to your cart" rel="nofollow">Add to cart</a></div><div class="product-title"><a href="https://dtguru.wpengine.com/product/woo-logo/"><h2 class="woocommerce-loop-product__title">Woo Logo</h2></a></div><div class="product-details">
-	<span class="price"><del><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">£</span>20.00</bdi></span></del> <ins><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">£</span>18.00</bdi></span></ins></span>
-</div></div></div></li>
-</ul>
-</div>
-<div class="social-bookmark"></div>                  </article>
+                                        </c:forEach>
+                                    </div>                 
+                            </div>
+                <div class="social-bookmark"></div>                  
+                  </article>
               </section>
-                                <section class="left-sidebar" id="secondary"><aside id="woocommerce_product_search-4" class="widget woocommerce widget_product_search"><div class="widget-title"><h3>Tìm kiếm Khóa Học</h3><div class="title-sep"><span></span></div></div><form role="search" method="get" class="woocommerce-product-search" action="https://dtguru.wpengine.com/">
-	<label class="screen-reader-text" for="woocommerce-product-search-field-0">Tìm Kiếm Khóa Học:</label>
-	<input type="search" id="woocommerce-product-search-field-0" class="search-field" placeholder="Tìm Khóa Học" value="" name="s">
-	<button type="submit" value="Search">Tìm Khóa Học</button>
-	<input type="hidden" name="post_type" value="product">
-</form>
-</aside><aside id="woocommerce_product_categories-7" class="widget woocommerce widget_product_categories"><div class="widget-title"><h3>Phân loại khóa học</h3><div class="title-sep"><span></span></div></div>
-</li>
-	<li><a href="https://dtguru.wpengine.com/product-category/clothing/" title="View all products under Clothing">Toán <span>(7)</span></a> 
-</li>
-	<li><a href="https://dtguru.wpengine.com/product-category/courses/" title="View all products under Courses">Văn <span>(1)</span></a> 
-</li>
-	<li><a href="https://dtguru.wpengine.com/product-category/clothing/hoodies/" title="View all products under Hoodies">Anh <span>(3)</span></a> 
-</li>
-	<li><a href="https://dtguru.wpengine.com/product-category/music/" title="View all products under Music">Lý <span>(3)</span></a> 
-</li>
-	<li><a href="https://dtguru.wpengine.com/product-category/posters/" title="View all products under Posters">Hóa <span>(2)</span></a> 
-</li>
-	<li><a href="https://dtguru.wpengine.com/product-category/music/singles/" title="View all products under Singles">Sinh <span>(1)</span></a> 
-</li>
-	<li><a href="https://dtguru.wpengine.com/product-category/clothing/t-shirts/" title="View all products under T-shirts">Sử <span>(4)</span></a> 
-</li>
-	<li><a href="https://dtguru.wpengine.com/product-category/uncategorized/" title="View all products under Uncategorized">Địa <span>(0)</span></a> 
-</li>
-</ul></aside></section>
+              <section class="left-sidebar" id="secondary">
+                  <div><h3>Tìm kiếm Khóa Học</h3>
+                          
+                      </div>
+                    <form method="get" action="HomePageCourse">
+                        <select name="ID_Khoi" style="margin-top: 10px; width: 100%; padding: 6px;">
+                            <option value="">-- Tất Cả Khối Học --</option>
+                            <c:forEach var="mh" items="${allKhoi}">
+                                <option value="${mh.ID_Khoi}" ${param.ID_Khoi == mh.ID_Khoi ? 'selected' : ''}>
+                                    ${mh.tenKhoi}
+                                </option>
+                            </c:forEach>
+                        </select>
+
+                        <input type="text" name="keyword" placeholder="Tìm Khóa Học" value="${param.keyword}" />
+                        <button type="submit">Lọc / Tìm</button>
+                    </form>
+                  <aside id="woocommerce_product_categories-7" class="widget woocommerce widget_product_categories">
+                        <div class="widget-title"><h3>Phân loại khóa học</h3><div class="title-sep"><span></span></div>
+                        </div>
+                        <li>
+                            <a href="#" title="">Toán <span>${numToan}</span></a> 
+                        </li>
+                        <li>
+                            <a href="#" title="">Văn <span>${numVan}</span></a> 
+                        </li>
+                        <li>
+                            <a href="#" title="">Anh <span>${numAnh}</span></a> 
+                        </li>
+                        <li>
+                            <a href="#" title="">Lý <span>${numLy}</span></a> 
+                        </li>
+                        <li>
+                            <a href="#" title="">Hóa <span>${numHoa}</span></a> 
+                        </li>
+                        <li>
+                            <a href="#" title="">Sinh <span>${numSinh}</span></a> 
+                        </li>
+                        <li>
+                            <a href="#" title="">Sử <span>${numSu}</span></a> 
+                        </li>
+                        <li>
+                            <a href="#" title="">Địa <span>${numDia}</span></a> 
+                        </li>
+                    </aside>
+              </section>
                       	
           </div>
       </div>
     </div>
 </div>
+
+    
 		<script>
 		( function ( body ) {
 			'use strict';
@@ -347,7 +198,6 @@ var ratings_mouseover_image=new Image();ratings_mouseover_image.src="https://dtg
 <script type="text/javascript" src="https://dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.prettyPhoto.js?ver=6.7.1" id="jquery-prettyphoto-js"></script>
 <script type="text/javascript" src="https://dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.ui.totop.min.js?ver=6.7.1" id="jquery-uitotop-js"></script>
 <script type="text/javascript" src="https://dtguru.wpenginepowered.com/wp-content/plugins/woocommerce/assets/js/jquery-cookie/jquery.cookie.min.js?ver=1.4.1" id="jquery-cookie-js"></script>
-<script type="text/javascript" src="https://dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/controlpanel.js?ver=6.7.1" id="guru-controlpanel-js"></script>
 <script type="text/javascript" src="https://dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.meanmenu.js?ver=6.7.1" id="jquery-meanmenu-js"></script>
 <script type="text/javascript" src="https://dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/contact.js?ver=6.7.1" id="guru-contact-js"></script>
 <script type="text/javascript" src="https://dtguru.wpenginepowered.com/wp-content/themes/guru/framework/js/public/jquery.donutchart.js?ver=6.7.1" id="jquery-donutchart-js"></script>

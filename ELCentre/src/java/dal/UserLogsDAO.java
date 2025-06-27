@@ -35,6 +35,7 @@ public class UserLogsDAO {
                             LEFT JOIN PhuHuynh PH ON PH.ID_TaiKhoan = U.ID_TaiKhoan
                                                   LEFT JOIN Admin AD ON AD.ID_TaiKhoan = U.ID_TaiKhoan
                                                   LEFT JOIN Staff ST ON ST.ID_TaiKhoan = U.ID_TaiKhoan
+                            
                             order by U.ThoiGian DESC
                           """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
