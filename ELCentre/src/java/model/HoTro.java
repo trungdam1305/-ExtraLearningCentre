@@ -14,18 +14,32 @@ public class HoTro {
     private LocalDateTime ThoiGian;
     private String MoTa;
     private int ID_TaiKhoan;
+    private boolean DaDuyet ; 
 
     public HoTro() {
     }
 
-    public HoTro(int ID_HoTro, String HoTen, String TenHoTro, LocalDateTime ThoiGian, String MoTa, int ID_TaiKhoan) {
+    public HoTro(int ID_HoTro, String HoTen, String TenHoTro, LocalDateTime ThoiGian, String MoTa, int ID_TaiKhoan, boolean DaDuyet) {
         this.ID_HoTro = ID_HoTro;
         this.HoTen = HoTen;
         this.TenHoTro = TenHoTro;
         this.ThoiGian = ThoiGian;
         this.MoTa = MoTa;
         this.ID_TaiKhoan = ID_TaiKhoan;
+        this.DaDuyet = DaDuyet;
     }
+
+    public void setDaDuyet(boolean DaDuyet) {
+        this.DaDuyet = DaDuyet;
+    }
+
+    public boolean isDaDuyet() {
+        return DaDuyet;
+    }
+
+   
+
+    
 
     public int getID_HoTro() {
         return ID_HoTro;

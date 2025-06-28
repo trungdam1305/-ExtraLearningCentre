@@ -28,6 +28,7 @@ import dal.TruongHocDAO;
 import dao.UserLogsDAO;
 import java.time.LocalDateTime;
 import model.UserLogs;
+import dal.HoTroDAO ; 
 
 /**
  * This servlet handle all the action of admin when admin click button manage account users 
@@ -269,6 +270,14 @@ public class adminActionWithUser extends HttpServlet {
                     }
                 }
                 break;
+                
+            case "danhdau" : 
+                String id_HoTro = request.getParameter("id") ; 
+                boolean ok = HoTroDAO.adminDanhDauDaDocHoTro(id_HoTro) ; 
+                if (ok) {
+                    request.getRequestDispatcher("/views/admin/adminDashboard.jsp").forward(request, response);
+                }
+                break ; 
 
         }
     }

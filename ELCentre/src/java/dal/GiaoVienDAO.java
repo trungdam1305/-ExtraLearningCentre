@@ -264,12 +264,14 @@ public class GiaoVienDAO {
         }
     }
 
-    public static int adminGetTongSoGiaoVien() {
+    public static int adminGetTongSoGiaoVienDangDay() {
         DBContext db = DBContext.getInstance();
         int tong = 0;
         try {
             String sql = """
-                         select count(*) from GiaoVien
+                         SELECT COUNT(*) 
+                         FROM GiaoVien
+                         WHERE TrangThaiDay LIKE N'%Đang Dạy%';
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             ResultSet rs = statement.executeQuery();

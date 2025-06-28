@@ -38,4 +38,52 @@ public class HocSinh_LopHocDAO {
         }
         return tong ; 
     }   
+    
+    public static int adminGetSoHocSinhHaiLong() {
+        DBContext db = DBContext.getInstance();
+        int tong = 0;
+
+        try {
+            String sql = """
+                         select COUNT (*) 
+                         from HocSinh_LopHoc
+                         where Status_FeedBack = 1 ; 
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                tong = rs.getInt(1);
+                return tong;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return tong;
+    }
+    
+    public static int adminGetSoHocSinhKhongHaiLong() {
+        DBContext db = DBContext.getInstance();
+        int tong = 0;
+
+        try {
+            String sql = """
+                         select COUNT (*) 
+                         from HocSinh_LopHoc
+                         where Status_FeedBack = 0 ; 
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                tong = rs.getInt(1);
+                return tong;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return tong;
+    }
 }

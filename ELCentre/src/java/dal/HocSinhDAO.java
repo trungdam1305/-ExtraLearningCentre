@@ -172,13 +172,15 @@ public class HocSinhDAO {
         }
     }
 
-    public static int adminGetTongSoHocSinh() {
+    public static int adminGetTongSoHocSinhDangHoc() {
         DBContext db = DBContext.getInstance();
         int tong = 0;
 
         try {
             String sql = """
-                          select count(*) from HocSinh
+                         SELECT COUNT(*) 
+                          FROM HocSinh
+                          WHERE TrangThaiHoc LIKE N'%Đang Học%'; 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
@@ -209,7 +211,7 @@ public class HocSinhDAO {
             rs.close();
             statement.close();
         } catch (Exception e) {
-            return 0; // hoặc có thể trả về -1 để phân biệt có lỗi
+            return 0; 
         }
         return total;
     }
@@ -497,6 +499,30 @@ public class HocSinhDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public static int adminGetTongSoHocSinhChoHoc() {
+        DBContext db = DBContext.getInstance();
+        int tong = 0;
+
+        try {
+            String sql = """
+                         SELECT COUNT(*) 
+                         FROM HocSinh
+                         WHERE TrangThaiHoc LIKE N'%Chờ Học%';
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                tong = rs.getInt(1);
+                return tong;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return tong;
     }
     
     public static void main(String[] args) {

@@ -65,13 +65,15 @@ public class LopHocDAO {
         return total;
     }
 
-    public static int adminGetTongSoLopHoc() {
+    public static int adminGetTongSoLopHocDangHoc() {
         DBContext db = DBContext.getInstance();
         int tong = 0;
 
         try {
             String sql = """
-                          select count(*) from LopHoc
+                          SELECT COUNT(*) 
+                          FROM LopHoc
+                          WHERE TrangThai LIKE N'%Đang Học%';
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
