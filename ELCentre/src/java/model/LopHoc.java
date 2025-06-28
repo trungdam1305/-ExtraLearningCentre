@@ -37,7 +37,7 @@ public class LopHoc {
     private String SoTien;              // Tuition fee (as string for formatting reasons)
     private LocalDateTime NgayTao;      // Date and time of class creation
     private String Image;               // URL or filename of the class image
-    private String Order ; 
+    private int Order ; 
 
     public LopHoc(Integer ID_LopHoc, String ClassCode, String TenLopHoc, Integer ID_KhoaHoc, Integer SiSo, Integer SiSoToiDa, Integer SiSoToiThieu, int ID_Schedule, int ID_PhongHoc, String GhiChu, String TrangThai, String SoTien, LocalDateTime NgayTao, String Image, int Order) {
         this.ID_LopHoc = ID_LopHoc;

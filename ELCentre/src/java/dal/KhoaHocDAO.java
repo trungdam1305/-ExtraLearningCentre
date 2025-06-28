@@ -48,7 +48,7 @@ public class KhoaHocDAO {
                         rs.getTimestamp("NgayTao").toLocalDateTime() , 
                         rs.getInt("ID_Khoi") , 
                         rs.getString("Image") , 
-                        rs.getString("Order")
+                        rs.getInt("Order")
                         
                 
                 ) ; 
