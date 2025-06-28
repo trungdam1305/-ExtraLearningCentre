@@ -23,7 +23,7 @@ public class KhoaHoc {
     private LocalDateTime NgayTao;       // Date the course was created
     private int ID_Khoi;                 // Educational level ID (e.g., primary, secondary)
     private String Image;                // URL or path to course image
-    private String Order ; 
+    private int  Order ; 
 
     // Constructors
     public KhoaHoc() {}
@@ -40,7 +40,7 @@ public class KhoaHoc {
         this.ID_Khoi = ID_Khoi;
     }
 
-    public KhoaHoc(Integer ID_KhoaHoc, String CourseCode, String TenKhoaHoc, String MoTa, LocalDate ThoiGianBatDau, LocalDate ThoiGianKetThuc, String GhiChu, String TrangThai, LocalDateTime NgayTao, int ID_Khoi, String Image, String Order) {
+    public KhoaHoc(Integer ID_KhoaHoc, String CourseCode, String TenKhoaHoc, String MoTa, LocalDate ThoiGianBatDau, LocalDate ThoiGianKetThuc, String GhiChu, String TrangThai, LocalDateTime NgayTao, int ID_Khoi, String Image, int Order) {
         this.ID_KhoaHoc = ID_KhoaHoc;
         this.CourseCode = CourseCode;
         this.TenKhoaHoc = TenKhoaHoc;
@@ -54,6 +54,8 @@ public class KhoaHoc {
         this.Image = Image;
         this.Order = Order;
     }
+
+    
 
    
 
