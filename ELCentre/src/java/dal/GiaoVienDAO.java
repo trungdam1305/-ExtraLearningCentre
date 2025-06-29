@@ -52,7 +52,9 @@ public class GiaoVienDAO {
                         rs.getTimestamp("NgayTao").toLocalDateTime(),
                         rs.getString("Avatar"),
                         rs.getString("TenTruongHoc"),
-                        rs.getString("DiaChi")
+                        rs.getString("BangCap") , 
+                        rs.getString("LopDangDayTrenTruong") , 
+                        rs.getString("TrangThaiDay")
                 );
                 giaoviens.add(giaovien);
             }
@@ -201,7 +203,10 @@ public class GiaoVienDAO {
                         rs.getTimestamp("NgayTao").toLocalDateTime(),
                         rs.getString("Avatar"),
                         rs.getString("TenTruongHoc"),
-                        rs.getString("DiaChi")
+                        rs.getString("BangCap") , 
+                        rs.getString("LopDangDayTrenTruong") , 
+                        rs.getString("TrangThaiDay")
+                        
                 );
                 giaoviens.add(giaovien);
             }

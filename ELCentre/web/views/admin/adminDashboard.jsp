@@ -634,12 +634,12 @@
                 </div>
 
                 <div class="stat-card stat-tuvan">
-                    <h3><i class="fas fa-money-bill"></i> Tổng đơn đăng ký tư vấn chưa duyệt</h3>
+                    <h3><i class="fas fa-envelope-open-text"></i> Tổng đơn đăng ký tư vấn chưa duyệt</h3>
                     <p>15</p>
                 </div>
                 
                 <div class="stat-card stat-hocsinh">
-                    <h3><i class="fas fa-money-bill"></i> Tổng số học sinh đang chờ lớp</h3>
+                    <h3><i class="fas fa-user-clock"></i> Tổng số học sinh đang chờ lớp</h3>
                     <%
                         Integer tongSoHocSinhChoHoc = HocSinhDAO.adminGetTongSoHocSinhChoHoc();
                     %>

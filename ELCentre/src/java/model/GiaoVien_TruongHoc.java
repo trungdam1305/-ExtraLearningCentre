@@ -50,8 +50,9 @@ public class GiaoVien_TruongHoc {
     // Name of the school
     private String TenTruongHoc;
 
-    // Address of the school
-    private String DiaChi;
+    private String BangCap ; 
+    private String LopDangDayTrenTruong ; 
+    private String TrangThaiDay ; 
 
     /**
      * Default constructor
@@ -59,12 +60,7 @@ public class GiaoVien_TruongHoc {
     public GiaoVien_TruongHoc() {
     }
 
-    /**
-     * Full constructor to initialize all fields
-     */
-    public GiaoVien_TruongHoc(Integer ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT,
-                               int ID_TruongHoc, BigDecimal Luong, int IsHot, String TrangThai,
-                               LocalDateTime NgayTao, String Avatar, String TenTruongHoc, String DiaChi) {
+    public GiaoVien_TruongHoc(Integer ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT, int ID_TruongHoc, BigDecimal Luong, int IsHot, String TrangThai, LocalDateTime NgayTao, String Avatar, String TenTruongHoc, String BangCap, String LopDangDayTrenTruong, String TrangThaiDay) {
         this.ID_GiaoVien = ID_GiaoVien;
         this.ID_TaiKhoan = ID_TaiKhoan;
         this.HoTen = HoTen;
@@ -77,11 +73,12 @@ public class GiaoVien_TruongHoc {
         this.NgayTao = NgayTao;
         this.Avatar = Avatar;
         this.TenTruongHoc = TenTruongHoc;
-        this.DiaChi = DiaChi;
+        this.BangCap = BangCap;
+        this.LopDangDayTrenTruong = LopDangDayTrenTruong;
+        this.TrangThaiDay = TrangThaiDay;
     }
 
     // Getters
-
     public Integer getID_GiaoVien() {
         return ID_GiaoVien;
     }
@@ -130,11 +127,21 @@ public class GiaoVien_TruongHoc {
         return TenTruongHoc;
     }
 
-    public String getDiaChi() {
-        return DiaChi;
+    public String getBangCap() {
+        return BangCap;
     }
 
-    // Setters
+    public String getLopDangDayTrenTruong() {
+        return LopDangDayTrenTruong;
+    }
+
+    public String getTrangThaiDay() {
+        return TrangThaiDay;
+    }
+
+    
+
+   
 
     public void setID_GiaoVien(Integer ID_GiaoVien) {
         this.ID_GiaoVien = ID_GiaoVien;
@@ -184,7 +191,5 @@ public class GiaoVien_TruongHoc {
         this.TenTruongHoc = TenTruongHoc;
     }
 
-    public void setDiaChi(String DiaChi) {
-        this.DiaChi = DiaChi;
-    }
+   
 }

@@ -210,9 +210,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>ID_TàiKhoản</td>
+                                    <td>Mã học sinh</td>
                                     <c:forEach var="hocsinh" items="${hocsinhs}">
-                                        <td>${hocsinh.getID_TaiKhoan()}</td>
+                                        <td>${hocsinh.getMaHocSinh()}</td>
                                     </c:forEach>
                                 </tr>
                                 <tr>
@@ -240,17 +240,30 @@
                                     </c:forEach>
                                 </tr>
                                 <tr>
-                                    <td>SĐT phụ huynh</td>
-                                    <c:forEach var="hocsinh" items="${hocsinhs}">
-                                        <td>${hocsinh.getSDT_PhuHuynh()}</td>
-                                    </c:forEach>
-                                </tr>
-                                <tr>
                                     <td>Trường học</td>
                                     <c:forEach var="hocsinh" items="${hocsinhs}">
                                         <td>${hocsinh.getTenTruongHoc()}</td>
                                     </c:forEach>
                                 </tr>
+                                <tr>
+                                    <td>Lớp đang học trên trường</td>
+                                    <c:forEach var="hocsinh" items="${hocsinhs}">
+                                        <td>${hocsinh.getLopDangHocTrenTruong()}</td>
+                                    </c:forEach>
+                                </tr>
+                                <tr>
+                                    <td>Trạng thái học tại EL CENTRE</td>
+                                    <c:forEach var="hocsinh" items="${hocsinhs}">
+                                        <td>${hocsinh.getTrangThaiHoc()}</td>
+                                    </c:forEach>
+                                </tr>
+                                <tr>
+                                    <td>SĐT phụ huynh</td>
+                                    <c:forEach var="hocsinh" items="${hocsinhs}">
+                                        <td>${hocsinh.getSDT_PhuHuynh()}</td>
+                                    </c:forEach>
+                                </tr>
+                                
                                 <tr>
                                     <td>Ghi chú</td>
                                     <c:forEach var="hocsinh" items="${hocsinhs}">

@@ -209,7 +209,7 @@
                                 <tr>
                                     <th>Thông tin</th>
                                     <c:forEach var="giaovien" items="${giaoviens}">
-                                        <th>GV ${giaovien.getID_GiaoVien()}</th>
+                                        <th>Giáo Viên ${giaovien.getID_GiaoVien()}</th>
                                     </c:forEach>
                                 </tr>
                             </thead>
@@ -233,6 +233,12 @@
                                     </c:forEach>
                                 </tr>
                                 <tr>
+                                    <td>Bằng cấp</td>
+                                    <c:forEach var="giaovien" items="${giaoviens}">
+                                        <td>${giaovien.getBangCap()}</td>
+                                    </c:forEach>
+                                </tr>
+                                <tr>
                                     <td>SĐT</td>
                                     <c:forEach var="giaovien" items="${giaoviens}">
                                         <td>${giaovien.getSDT()}</td>
@@ -242,6 +248,12 @@
                                     <td>Trường giảng dạy</td>
                                     <c:forEach var="giaovien" items="${giaoviens}">
                                         <td>${giaovien.getTenTruongHoc()}</td>
+                                    </c:forEach>
+                                </tr>
+                                <tr>
+                                    <td>Lớp đang dạy trên trường</td>
+                                    <c:forEach var="giaovien" items="${giaoviens}">
+                                        <td>${giaovien.getLopDangDayTrenTruong()}</td>
                                     </c:forEach>
                                 </tr>
                                 <tr>
@@ -257,7 +269,13 @@
                                     </c:forEach>
                                 </tr>
                                 <tr>
-                                    <td>Trạng thái</td>
+                                    <td>Trạng thái dạy tại EL CENTRE</td>
+                                    <c:forEach var="giaovien" items="${giaoviens}">
+                                        <td>${giaovien.getTrangThaiDay()}</td>
+                                    </c:forEach>
+                                </tr>
+                                <tr>
+                                    <td>Trạng thái tài khoản</td>
                                     <c:forEach var="giaovien" items="${giaoviens}">
                                         <td>${giaovien.getTrangThai()}</td>
                                     </c:forEach>

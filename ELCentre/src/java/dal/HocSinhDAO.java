@@ -256,9 +256,11 @@ public class HocSinhDAO {
         try {
             String sql = """
                          select HS.HoTen from HocSinh HS
-                         join PhuHuynh PH 
-                         on HS.ID_HocSinh = PH.ID_HocSinh 
-                         where PH.ID_TaiKhoan = ? 
+                                                  join HocSinh_PhuHuynh PH 
+                                                  on HS.ID_HocSinh = PH.ID_HocSinh 
+                         						 join PhuHuynh PHU 
+                         						 ON PHU.ID_PhuHuynh = PH.ID_PhuHuynh
+                                                  where PHU.ID_TaiKhoan = ? ; 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             statement.setString(1, idPhuHuynh);
