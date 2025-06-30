@@ -2,6 +2,10 @@
     Document   : adminReceiveKhoaHoc
     Created on : May 29, 2025, 10:54:36 PM
     Author     : wrx_Chur04
+    Purpose    : This page displays a list of all courses (khóa học) in the EL CENTRE system, including details like course ID, name, 
+                 description, start/end dates, status, and creation date. 
+    Parameters:
+    - @Param khoahocs (ArrayList<KhoaHoc>): A request attribute containing the list of course objects fetched from the database.
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

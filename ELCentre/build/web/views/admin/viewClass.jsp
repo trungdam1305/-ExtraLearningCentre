@@ -247,7 +247,7 @@
                                     <c:when test="${not empty availableTeachers}">
                                         <div class="mb-3">
                                             <label for="teacherSearch" class="form-label">Tìm kiếm giáo viên:</label>
-                                            <input type="text" id="teacherSearch" class="form-control" placeholder="Nhập tên hoặc mã giáo viên..." value="${param.teacherSearch}">
+                                            <input type="text" id="teacherSearch" class="form-control" placeholder="Nhập tên giáo viên" value="${param.teacherSearch}">
                                         </div>
                                         <form id="assignTeacherForm" action="${pageContext.request.contextPath}/ManageClassDetail" method="post">
                                             <input type="hidden" name="action" value="assignTeacher">
@@ -356,7 +356,7 @@
 
                                 <div class="mb-3">
                                     <label for="studentSearch" class="form-label">Tìm kiếm học sinh:</label>
-                                    <input type="text" id="studentSearch" class="form-control" placeholder="Nhập tên hoặc mã học sinh..." value="${param.studentSearch}">
+                                    <input type="text" id="studentSearch" class="form-control" placeholder="Nhập tên học sinh" value="${param.studentSearch}">
                                 </div>
                                 <c:if test="${not empty allStudents}">
                                     <form id="addStudentForm" action="${pageContext.request.contextPath}/ManageClassDetail" method="post">

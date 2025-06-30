@@ -87,25 +87,25 @@
                                 </li>
                                 <!--Courses-->
                                 <li class="menu-item <%= uri.contains("/Home-Course") ? "current-menu-item" : "" %>">
-                                    <a href="<%= context %>/views/Home-Course/Homepage-Course.jsp">
+                                    <a href="<%= context %>/HomePageCourse">
                                         <span class='menu-icon fa fa-shopping-cart'> </span>Khóa Học
                                     </a>
                                 </li>
                                 <!--Learning Materials-->
                                 <li class="menu-item <%= uri.contains("/Home-Material") ? "current-menu-item" : "" %>">
-                                    <a href="<%= context %>/views/Home-Material/Homepage-Material.jsp">
+                                    <a href="<%= context %>/HomePageMaterial">
                                         <span class='menu-icon fa fa-gift'> </span>Tài Liệu Học
                                     </a>
                                 </li>
                                 <!--Learning Class-->
                                 <li class="menu-item <%= uri.contains("/Home-Learning") ? "current-menu-item" : "" %>">
-                                    <a href="<%= context %>/views/Home-Learning/Homepage-Learning.jsp">
+                                    <a href="<%= context %>/HomePageLearning">
                                         <span class='menu-icon fa fa-book'> </span>Học Bài
                                     </a>
                                 </li>
                                 <!--Blog-->
                                 <li class="menu-item <%= uri.contains("/Home-Blog") ? "current-menu-item" : "" %>">
-                                    <a href="<%= context %>/views/Home-Blog/Homepage-Blog.jsp">
+                                    <a href="<%= context %>/HomePageBlog">
                                         <span class='menu-icon fa fa-pencil'> </span>Blog
                                     </a>
                                 </li>

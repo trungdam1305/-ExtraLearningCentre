@@ -1,48 +1,55 @@
 package dal;
 
+/**
+ *
+ * @author wrx_Chur04
+ */
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import model.HocSinh;
 
 public class HocSinhDAO {
 
-    public static List<HocSinh> adminGetAllHocSinh1() {
+    public static ArrayList<HocSinh> adminGetAllHocSinh() {
         DBContext db = DBContext.getInstance();
-        List<HocSinh> hocSinhList = new ArrayList<>();
+        ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>();
         String sql = """
-            SELECT hs.*, th.TenTruongHoc
-            FROM HocSinh hs
-            LEFT JOIN TruongHoc th ON hs.ID_TruongHoc = th.ID_TruongHoc
-        """;
-        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+                         select * from HocSinh hs JOIN TruongHoc th
+                         ON hs.ID_TruongHoc = th.ID_TruongHoc
+                         """;
+        try (PreparedStatement statement = db.getConnection().prepareStatement(sql); ResultSet rs = statement.executeQuery()) {
+
             while (rs.next()) {
-                HocSinh hocSinh = new HocSinh();
-                hocSinh.setID_HocSinh(rs.getInt("ID_HocSinh"));
-                hocSinh.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
-                hocSinh.setHoTen(rs.getString("HoTen"));
-                hocSinh.setNgaySinh(rs.getDate("NgaySinh") != null ? rs.getDate("NgaySinh").toLocalDate() : null);
-                hocSinh.setGioiTinh(rs.getString("GioiTinh"));
-                hocSinh.setDiaChi(rs.getString("DiaChi"));
-                hocSinh.setSDT_PhuHuynh(rs.getString("SDT_PhuHuynh"));
-                hocSinh.setID_TruongHoc(rs.getInt("ID_TruongHoc"));
-                hocSinh.setTrangThai(rs.getString("TrangThai"));
-                hocSinh.setNgayTao(rs.getTimestamp("NgayTao") != null ? rs.getTimestamp("NgayTao").toLocalDateTime() : null);
-                hocSinh.setTenTruongHoc(rs.getString("TenTruongHoc")); // Lấy tên trường học
-                hocSinhList.add(hocSinh);
+                HocSinh hocsinh = new HocSinh(
+                        rs.getInt("ID_HocSinh"),
+                        rs.getString("MaHocSinh") , 
+                        rs.getInt("ID_TaiKhoan"),
+                        rs.getString("HoTen"),
+                        rs.getDate("NgaySinh").toLocalDate(),
+                        rs.getString("GioiTinh"),
+                        rs.getString("DiaChi"),
+                        rs.getString("SDT_PhuHuynh"),
+                        rs.getInt("ID_TruongHoc"),
+                        rs.getString("GhiChu"),
+                        rs.getString("TrangThai"),
+                        rs.getTimestamp("NgayTao").toLocalDateTime(),
+                        rs.getString("TenTruongHoc") , 
+                        rs.getString("LopDangHocTrenTruong") , 
+                        rs.getString("TrangThaiHoc") , 
+                        rs.getString("Avatar")
+                );
+                hocsinhs.add(hocsinh);
             }
         } catch (SQLException e) {
-            System.err.println("Lỗi SQL trong adminGetAllHocSinh: " + e.getMessage() + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
-            e.printStackTrace();
+            // Exception ignored 
         }
-        return hocSinhList;
+        return hocsinhs;
     }
 
-    public static ArrayList<HocSinh> adminGetAllHocSinh() {
+    public static ArrayList<HocSinh> adminGetAllHocSinh1() {
         DBContext db = DBContext.getInstance();
         ArrayList<HocSinh> hocsinhs = new ArrayList<>();
         String sql = """
@@ -75,7 +82,7 @@ public class HocSinhDAO {
 
     public static ArrayList<HocSinh> adminGetHocSinhByID(String id) {
         DBContext db = DBContext.getInstance();
-        ArrayList<HocSinh> hocsinhs = new ArrayList<>();
+        ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>();
 
         try {
             String sql = """
@@ -88,19 +95,24 @@ public class HocSinhDAO {
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
-                HocSinh hocsinh = new HocSinh();
-                hocsinh.setID_HocSinh(rs.getInt("ID_HocSinh"));
-                hocsinh.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
-                hocsinh.setHoTen(rs.getString("HoTen"));
-                hocsinh.setNgaySinh(rs.getDate("NgaySinh") != null ? rs.getDate("NgaySinh").toLocalDate() : null);
-                hocsinh.setGioiTinh(rs.getString("GioiTinh"));
-                hocsinh.setDiaChi(rs.getString("DiaChi"));
-                hocsinh.setSDT_PhuHuynh(rs.getString("SDT_PhuHuynh"));
-                hocsinh.setID_TruongHoc(rs.getInt("ID_TruongHoc"));
-                hocsinh.setGhiChu(rs.getString("GhiChu"));
-                hocsinh.setTrangThai(rs.getString("TrangThai"));
-                hocsinh.setNgayTao(rs.getTimestamp("NgayTao") != null ? rs.getTimestamp("NgayTao").toLocalDateTime() : null);
-                hocsinh.setTenTruongHoc(rs.getString("TenTruongHoc"));
+                HocSinh hocsinh = new HocSinh(
+                        rs.getInt("ID_HocSinh"),
+                        rs.getString("MaHocSinh") , 
+                        rs.getInt("ID_TaiKhoan"),
+                        rs.getString("HoTen"),
+                        rs.getDate("NgaySinh").toLocalDate(),
+                        rs.getString("GioiTinh"),
+                        rs.getString("DiaChi"),
+                        rs.getString("SDT_PhuHuynh"),
+                        rs.getInt("ID_TruongHoc"),
+                        rs.getString("GhiChu"),
+                        rs.getString("TrangThai"),
+                        rs.getTimestamp("NgayTao").toLocalDateTime(),
+                        rs.getString("TenTruongHoc") , 
+                        rs.getString("LopDangHocTrenTruong") , 
+                        rs.getString("TrangThaiHoc") , 
+                        rs.getString("Avatar")
+                );
                 hocsinhs.add(hocsinh);
             }
         } catch (SQLException e) {
@@ -128,8 +140,13 @@ public class HocSinhDAO {
             rs = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+
         }
-        return rs > 0;
+        if (rs == 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public static boolean adminDisableHocSinh(String id) {
@@ -146,13 +163,19 @@ public class HocSinhDAO {
             rs = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+
         }
-        return rs > 0;
+        if (rs == 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public static int adminGetTongSoHocSinh() {
         DBContext db = DBContext.getInstance();
         int tong = 0;
+
         try {
             String sql = """
                           select count(*) from HocSinh
@@ -161,9 +184,12 @@ public class HocSinhDAO {
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 tong = rs.getInt(1);
+                return tong;
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
+
         }
         return tong;
     }
@@ -182,37 +208,72 @@ public class HocSinhDAO {
             }
             rs.close();
             statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return 0;
+        } catch (Exception e) {
+            return 0; // hoặc có thể trả về -1 để phân biệt có lỗi
         }
         return total;
     }
 
-    public static boolean adminUpdateInformationOfStudent(String diachi, String truonghoc, String ghichu, int id) {
+    public static boolean adminUpdateInformationOfStudent(String diachi, String ghichu, int id) {
         DBContext db = DBContext.getInstance();
         int rs = 0;
         try {
             String sql = """
                          UPDATE HocSinh
                          SET
-                         DiaChi = ?,
-                         ID_TruongHoc = ?,
-                         GhiChu = ?
+                        
+                        DiaChi = ?,
+                       
+                        GhiChu = ?
                          WHERE
                          ID_HocSinh = ?;
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             statement.setString(1, diachi);
-            statement.setString(2, truonghoc);
-            statement.setString(3, ghichu);
-            statement.setInt(4, id);
+
+            statement.setString(2, ghichu);
+            statement.setInt(3, id);
+
             rs = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
-        return rs > 0;
+
+        if (rs == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static List<String> nameofStudentDependPH(String idPhuHuynh) {
+        List<String> ListName = new ArrayList<String>();
+        DBContext db = DBContext.getInstance();
+
+        try {
+            String sql = """
+                         select HS.HoTen from HocSinh HS
+                         join PhuHuynh PH 
+                         on HS.ID_HocSinh = PH.ID_HocSinh 
+                         where PH.ID_TaiKhoan = ? 
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setString(1, idPhuHuynh);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("HoTen");
+                ListName.add(name);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (ListName == null) {
+            return null;
+        } else {
+            return ListName;
+        }
     }
 
     public List<HocSinh> getHocSinhByLopHoc(int idLopHoc) {
@@ -250,6 +311,44 @@ public class HocSinhDAO {
             e.printStackTrace();
         }
         return hocSinhList;
+    }
+
+    public boolean isStudentInClass(int idHocSinh, int idLopHoc) throws SQLException {
+        DBContext db = DBContext.getInstance();
+        String sql = "SELECT COUNT(*) FROM HocSinh_LopHoc WHERE ID_HocSinh = ? AND ID_LopHoc = ?";
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, idHocSinh);
+            stmt.setInt(2, idLopHoc);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasSchoolConflict(int idHocSinh, int idLopHoc) {
+        DBContext db = DBContext.getInstance();
+        String sql = """
+        SELECT COUNT(*)
+        FROM HocSinh hs
+        JOIN GiaoVien_LopHoc glh ON glh.ID_LopHoc = ?
+        JOIN GiaoVien g ON glh.ID_GiaoVien = g.ID_GiaoVien
+        WHERE hs.ID_HocSinh = ?
+        AND hs.ID_TruongHoc = g.ID_TruongHoc
+        """;
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, idLopHoc);
+            stmt.setInt(2, idHocSinh);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Conflict if count > 0
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in hasSchoolConflict: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public boolean addStudentToClass(int idHocSinh, int idLopHoc) {
@@ -328,44 +427,6 @@ public class HocSinhDAO {
         }
     }
 
-    public boolean hasSchoolConflict(int idHocSinh, int idLopHoc) {
-        DBContext db = DBContext.getInstance();
-        String sql = """
-        SELECT COUNT(*)
-        FROM HocSinh hs
-        JOIN GiaoVien_LopHoc glh ON glh.ID_LopHoc = ?
-        JOIN GiaoVien g ON glh.ID_GiaoVien = g.ID_GiaoVien
-        WHERE hs.ID_HocSinh = ?
-        AND hs.ID_TruongHoc = g.ID_TruongHoc
-        """;
-        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
-            stmt.setInt(1, idLopHoc);
-            stmt.setInt(2, idHocSinh);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0; // Conflict if count > 0
-            }
-        } catch (SQLException e) {
-            System.out.println("SQL Error in hasSchoolConflict: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean isStudentInClass(int idHocSinh, int idLopHoc) throws SQLException {
-        DBContext db = DBContext.getInstance();
-        String sql = "SELECT COUNT(*) FROM HocSinh_LopHoc WHERE ID_HocSinh = ? AND ID_LopHoc = ?";
-        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
-            stmt.setInt(1, idHocSinh);
-            stmt.setInt(2, idLopHoc);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-        }
-        return false;
-    }
-
     public boolean removeStudentFromClass(int idHocSinh, int idLopHoc) throws SQLException {
         DBContext db = DBContext.getInstance();
         String sql = "DELETE FROM HocSinh_LopHoc WHERE ID_HocSinh = ? AND ID_LopHoc = ?";
@@ -375,5 +436,71 @@ public class HocSinhDAO {
             int rowsAffected = stmt.executeUpdate();
             return rowsAffected > 0;
         }
+    }
+
+    public void insertHocSinh(HocSinh hs) throws SQLException {
+        DBContext db = DBContext.getInstance();
+        String sql = """
+                     INSERT INTO HocSinh (ID_TaiKhoan, HoTen, NgaySinh, GioiTinh, DiaChi, SDT_PhuHuynh, TruongHoc, GhiChu, TrangThai, NgayTao)
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                     """;
+        try (PreparedStatement statement = db.getConnection().prepareStatement(sql) ) {
+            statement.setInt(1, hs.getID_TaiKhoan());
+            statement.setString(2, hs.getHoTen());
+        
+            if (hs.getNgaySinh() != null) {
+                statement.setDate(3, java.sql.Date.valueOf(hs.getNgaySinh()));
+            } else {
+                statement.setNull(3, java.sql.Types.DATE);
+            }
+
+            if (hs.getGioiTinh() != null) {
+                statement.setString(4, hs.getGioiTinh());
+            } else {
+                statement.setNull(4, java.sql.Types.VARCHAR);
+            }
+
+            if (hs.getDiaChi() != null) {
+                statement.setString(5, hs.getDiaChi());
+            } else {
+                statement.setNull(5, java.sql.Types.VARCHAR);
+            }
+
+            if (hs.getSDT_PhuHuynh() != null) {
+                statement.setString(6, hs.getSDT_PhuHuynh());
+            } else {
+                statement.setNull(6, java.sql.Types.VARCHAR);
+            }
+
+            if (hs.getTenTruongHoc() != null) {
+                statement.setString(7, hs.getTenTruongHoc());
+            } else {
+                statement.setNull(7, java.sql.Types.VARCHAR);
+            }
+
+            if (hs.getGhiChu() != null) {
+                statement.setString(8, hs.getGhiChu());
+            } else {
+                statement.setNull(8, java.sql.Types.VARCHAR);
+            }
+
+            statement.setString(9, hs.getTrangThai());
+
+            if (hs.getNgayTao() != null) {
+                statement.setTimestamp(10, java.sql.Timestamp.valueOf(hs.getNgayTao()));
+            } else {
+                statement.setNull(10, java.sql.Types.TIMESTAMP);
+            }
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void main(String[] args) {
+        int a = getTotalHocSinh();
+        System.out.println(a);
     }
 }

@@ -39,6 +39,7 @@
                 align-items: center;
                 gap: 10px;
                 margin-bottom: 20px;
+                flex-wrap: nowrap; /* Prevent wrapping to keep all elements in one row */
             }
             .action-search-row .form-control,
             .action-search-row .form-select {
@@ -48,6 +49,7 @@
                 transition: border-color 0.3s ease;
                 height: 38px;
                 font-size: 0.95rem;
+                width: 150px; /* Fixed width for consistency */
             }
             .action-search-row .form-control:focus,
             .action-search-row .form-select:focus {
@@ -59,6 +61,7 @@
                 display: flex;
                 align-items: center;
                 padding: 0 16px;
+                white-space: nowrap; /* Prevent text wrapping in buttons */
             }
 
             /* Custom button styling */
@@ -95,7 +98,6 @@
             }
             .table {
                 width: 100%;
-                min-width: 1200px;
                 border-radius: 8px;
                 overflow: hidden;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -103,9 +105,6 @@
             }
             .table thead {
                 background-color: #2196F3;
-            }
-            .table thead:hover {
-                background-color: #1976D2;
             }
             .table thead th {
                 padding: 15px 20px;
@@ -116,11 +115,26 @@
                 font-size: 1.1rem;
                 color: black;
                 text-align: center;
+                min-width: 100px;
             }
             .table tbody td {
                 padding: 15px 20px;
                 vertical-align: middle;
                 text-align: center;
+            }
+            /* Cột Mô tả: Giới hạn chiều rộng và hiển thị ellipsis */
+            .description-column {
+                max-width: 200px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .description-column:hover {
+                overflow: visible;
+                white-space: normal;
+                background-color: #f8f9fa;
+                z-index: 1;
+                position: relative;
             }
 
             /* Sort styling */
@@ -128,7 +142,6 @@
                 border: 3px solid #2563eb;
                 background-color: #bfdbfe;
             }
-          
             .table th a.sort-link {
                 color: black;
                 text-decoration: none;
@@ -148,15 +161,6 @@
                 background-color: #007bff;
                 color: white;
                 border-color: #007bff;
-            }
-            .table th a.sort-link:focus {
-                outline: none;
-            }
-            .table th a.sort-link:active {
-                color: #0288d1;
-                background-color: rgba(2, 136, 209, 0.3);
-                border-color: #0288d1;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             }
 
             /* Action buttons in table */
@@ -193,8 +197,38 @@
                 background-color: #4b5563;
                 border-color: #4b5563;
             }
+            .btn-info {
+                background-color: #17a2b8;
+                border-color: #17a2b8;
+            }
+            .btn-info:hover {
+                background-color: #117a8b;
+                border-color: #117a8b;
+            }
 
-            /* Pagination styling */
+            /* Collapsible row styling */
+            .details-row {
+                display: none;
+                background-color: #f8f9fa;
+            }
+            .details-row td {
+                padding: 20px;
+                border-top: 1px solid #dee2e6;
+            }
+            .details-content {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+            .details-content div {
+                flex: 1 1 45%;
+                font-size: 0.95rem;
+            }
+            .details-content div strong {
+                color: #003087;
+            }
+
+            /* Pagination, Alerts, Modal, Scroll to Top */
             .pagination-container {
                 display: flex;
                 justify-content: flex-end;
@@ -217,8 +251,6 @@
                 background-color: #e6f0fa;
                 color: #00215a;
             }
-
-            /* Alerts */
             .alert-custom-success {
                 background-color: #22c55e;
                 border-color: #22c55e;
@@ -243,28 +275,6 @@
                 padding: 15px;
                 margin-bottom: 20px;
             }
-
-            /* Debug info */
-            .debug-info {
-                background-color: #f8f9fa;
-                padding: 10px;
-                margin-bottom: 20px;
-                border: 1px solid #dee2e6;
-                border-radius: 8px;
-            }
-
-            /* Dashboard button */
-            .dashboard-button {
-                text-align: center;
-                margin-top: 20px;
-            }
-            .dashboard-button .btn {
-                border-radius: 8px;
-                padding: 10px 20px;
-                font-size: 1rem;
-            }
-
-            /* Scroll to top button */
             #scrollToTopBtn {
                 display: none;
                 position: fixed;
@@ -285,8 +295,6 @@
             #scrollToTopBtn:hover {
                 background-color: #0056b3;
             }
-
-            /* Modal styling */
             .modal-content {
                 border-radius: 8px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -326,6 +334,9 @@
                     padding: 10px 15px;
                     font-size: 0.9rem;
                 }
+                .description-column {
+                    max-width: 150px;
+                }
                 .pagination-container {
                     justify-content: center;
                 }
@@ -335,6 +346,9 @@
                     width: 40px;
                     height: 40px;
                     font-size: 16px;
+                }
+                .details-content div {
+                    flex: 1 1 100%;
                 }
             }
         </style>
@@ -346,21 +360,40 @@
                 <h2>Danh sách khóa học</h2>
             </div>
 
-            <!-- Nút hành động và form tìm kiếm/lọc trên cùng 1 hàng -->
+            <!-- Nút hành động và form tìm kiếm/lọc -->
             <div class="action-search-row">
                 <a href="${pageContext.request.contextPath}/views/admin/addCourse.jsp" class="btn btn-custom-action"><i class="bi bi-plus-circle"></i> Thêm khóa học mới</a>
                 <a href="${pageContext.request.contextPath}/ManageCourse?action=refresh" class="btn btn-custom-action"><i class="bi bi-arrow-clockwise"></i> Refresh</a>
-                <form action="${pageContext.request.contextPath}/ManageCourse" method="get" id="filterForm" style="display: flex; align-items: center; gap: 10px;">
-                    <input type="hidden" name="action" value="search" />
+                <form action="${pageContext.request.contextPath}/ManageCourse" method="get" id="filterForm" style="display: flex; align-items: center; gap: 10px; flex-wrap: nowrap;">
+                    <input type="hidden" name="action" value="filterByStatusAndName" />
                     <input type="hidden" name="page" value="${pageNumber != null ? pageNumber : 1}" />
-                    <input type="hidden" name="sortColumn" value="${sortColumn != null ? sortColumn : 'TenKhoaHoc'}" />
-                    <input type="hidden" name="sortOrder" value="${sortOrder != null ? sortOrder : 'asc'}" />
                     <input type="text" class="form-control" id="name" name="name" value="${name != null ? name : ''}" placeholder="Nhập tên khóa học">
-                    <select class="form-select" id="sortName" name="sortName" onchange="this.form.action.value = 'filterStatus'; this.form.submit();">
-                        <option value="" ${sortName == null || sortName.isEmpty() ? "selected" : ""}>-- Tất cả --</option>
-                        <option value="ASCTrang" ${"ASCTrang".equals(sortName) ? "selected" : ""}>Đang hoạt động</option>
-                        <option value="DESCTrang" ${"DESCTrang".equals(sortName) ? "selected" : ""}>Chưa hoạt động</option>
+                    <select class="form-select" id="statusFilter" name="statusFilter" onchange="this.form.submit();">
+                        <option value="" ${statusFilter == null || statusFilter.isEmpty() ? "selected" : ""}>-- Tất cả trạng thái --</option>
+                        <option value="Đang hoạt động" ${"Đang hoạt động".equals(statusFilter) ? "selected" : ""}>Đang hoạt động</option>
+                        <option value="Chưa hoạt động" ${"Chưa hoạt động".equals(statusFilter) ? "selected" : ""}>Chưa hoạt động</option>
+                        <option value="Chưa bắt đầu" ${"Chưa bắt đầu".equals(statusFilter) ? "selected" : ""}>Chưa bắt đầu</option>
+                        <option value="Đã kết thúc" ${"Đã kết thúc".equals(statusFilter) ? "selected" : ""}>Đã kết thúc</option>
                     </select>
+                    <select class="form-select" id="khoiFilter" name="khoiFilter" onchange="this.form.submit();">
+                        <option value="" ${khoiFilter == null || khoiFilter.isEmpty() ? "selected" : ""}>-- Tất cả khối --</option>
+                        <option value="1" ${"1".equals(khoiFilter) ? "selected" : ""}>Lớp 6</option>
+                        <option value="2" ${"2".equals(khoiFilter) ? "selected" : ""}>Lớp 7</option>
+                        <option value="3" ${"3".equals(khoiFilter) ? "selected" : ""}>Lớp 8</option>
+                        <option value="4" ${"4".equals(khoiFilter) ? "selected" : ""}>Lớp 9</option>
+                        <option value="5" ${"5".equals(khoiFilter) ? "selected" : ""}>Lớp 10</option>
+                        <option value="6" ${"6".equals(khoiFilter) ? "selected" : ""}>Lớp 11</option>
+                        <option value="7" ${"7".equals(khoiFilter) ? "selected" : ""}>Lớp 12</option>
+                        <option value="8" ${"8".equals(khoiFilter) ? "selected" : ""}>Lớp tổng ôn</option>
+                    </select>
+                    <select class="form-select" id="orderFilter" name="orderFilter" onchange="this.form.submit();">
+                        <option value="" ${orderFilter == null || orderFilter.isEmpty() ? "selected" : ""}>-- Tất cả thứ tự ưu tiên --</option>
+                        <c:forEach var="i" begin="0" end="10">
+                            <option value="${i}" ${orderFilter == i && orderFilter != null && !orderFilter.isEmpty() ? "selected" : ""}>${i}</option>
+                        </c:forEach>
+                    </select>
+                    <input type="date" class="form-control" id="startDate" name="startDate" value="${startDate != null ? startDate : ''}" placeholder="Từ ngày">
+                    <input type="date" class="form-control" id="endDate" name="endDate" value="${endDate != null ? endDate : ''}" placeholder="Đến ngày">
                     <button type="submit" class="btn btn-custom-action"><i class="bi bi-search"></i> Tìm</button>
                 </form>
             </div>
@@ -382,7 +415,7 @@
                 <div class="alert alert-custom-danger" role="alert">Danh sách khóa học (list) chưa được khởi tạo. Kiểm tra servlet ManageCourse.</div>
             </c:if>
 
-            <p>Tổng số khóa học: ${totalCourses != null ? totalCourses : '0'}            Tổng số trang: ${totalPages != null ? totalPages : '0'} .</p>
+            <p>Tổng số khóa học: ${totalCourses != null ? totalCourses : '0'} &nbsp;&nbsp;&nbsp; Tổng số trang: ${totalPages != null ? totalPages : '0'}.</p>
 
             <!-- Bảng khóa học và phân trang -->
             <div class="table-container">
@@ -391,70 +424,104 @@
                         <table class="table table-striped table-bordered table-hover align-middle">
                             <thead>
                                 <tr>
-                                    <th class="${sortColumn == 'TenKhoaHoc' ? 'sorted' : ''} ${sortColumn == 'TenKhoaHoc' ? (sortOrder == 'asc' ? 'sorted-asc' : 'sorted-desc') : ''}">
+                                    <th class="${sortColumn == 'CourseCode' ? 'sorted' : ''}">
+                                        Mã khóa học
+                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=CourseCode&sortOrder=asc&name=${name}&page=${pageNumber}&statusFilter=${statusFilter}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" class="sort-link ${sortColumn == 'CourseCode' && sortOrder == 'asc' ? 'active' : ''}"><i class="bi bi-caret-up-fill"></i></a>
+                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=CourseCode&sortOrder=desc&name=${name}&page=${pageNumber}&statusFilter=${statusFilter}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" class="sort-link ${sortColumn == 'CourseCode' && sortOrder == 'desc' ? 'active' : ''}"><i class="bi bi-caret-down-fill"></i></a>
+                                    </th>
+                                    <th class="${sortColumn == 'TenKhoaHoc' ? 'sorted' : ''}">
                                         Tên khóa học
-                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=TenKhoaHoc&sortOrder=asc&name=${name}&page=${pageNumber}&sortName=${sortName}" class="sort-link ${sortColumn == 'TenKhoaHoc' && sortOrder == 'asc' ? 'active' : ''}"><i class="bi bi-caret-up-fill"></i></a>
-                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=TenKhoaHoc&sortOrder=desc&name=${name}&page=${pageNumber}&sortName=${sortName}" class="sort-link ${sortColumn == 'TenKhoaHoc' && sortOrder == 'desc' ? 'active' : ''}"><i class="bi bi-caret-down-fill"></i></a>
+                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=TenKhoaHoc&sortOrder=asc&name=${name}&page=${pageNumber}&statusFilter=${statusFilter}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" class="sort-link ${sortColumn == 'TenKhoaHoc' && sortOrder == 'asc' ? 'active' : ''}"><i class="bi bi-caret-up-fill"></i></a>
+                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=TenKhoaHoc&sortOrder=desc&name=${name}&page=${pageNumber}&statusFilter=${statusFilter}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" class="sort-link ${sortColumn == 'TenKhoaHoc' && sortOrder == 'desc' ? 'active' : ''}"><i class="bi bi-caret-down-fill"></i></a>
                                     </th>
-                                    <th class="${sortColumn == 'MoTa' ? 'sorted' : ''} ${sortColumn == 'MoTa' ? (sortOrder == 'asc' ? 'sorted-asc' : 'sorted-desc') : ''}">
+                                    <th class="${sortColumn == 'MoTa' ? 'sorted' : ''}">
                                         Mô tả
-                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=MoTa&sortOrder=asc&name=${name}&page=${pageNumber}&sortName=${sortName}" class="sort-link ${sortColumn == 'MoTa' && sortOrder == 'asc' ? 'active' : ''}"><i class="bi bi-caret-up-fill"></i></a>
-                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=MoTa&sortOrder=desc&name=${name}&page=${pageNumber}&sortName=${sortName}" class="sort-link ${sortColumn == 'MoTa' && sortOrder == 'desc' ? 'active' : ''}"><i class="bi bi-caret-down-fill"></i></a>
+                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=MoTa&sortOrder=asc&name=${name}&page=${pageNumber}&statusFilter=${statusFilter}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" class="sort-link ${sortColumn == 'MoTa' && sortOrder == 'asc' ? 'active' : ''}"><i class="bi bi-caret-up-fill"></i></a>
+                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=MoTa&sortOrder=desc&name=${name}&page=${pageNumber}&statusFilter=${statusFilter}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" class="sort-link ${sortColumn == 'MoTa' && sortOrder == 'desc' ? 'active' : ''}"><i class="bi bi-caret-down-fill"></i></a>
                                     </th>
-                                    <th class="${sortColumn == 'ThoiGianBatDau' ? 'sorted' : ''} ${sortColumn == 'ThoiGianBatDau' ? (sortOrder == 'asc' ? 'sorted-asc' : 'sorted-desc') : ''}">
-                                        Ngày bắt đầu
-                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=ThoiGianBatDau&sortOrder=asc&name=${name}&page=${pageNumber}&sortName=${sortName}" class="sort-link ${sortColumn == 'ThoiGianBatDau' && sortOrder == 'asc' ? 'active' : ''}"><i class="bi bi-caret-up-fill"></i></a>
-                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=ThoiGianBatDau&sortOrder=desc&name=${name}&page=${pageNumber}&sortName=${sortName}" class="sort-link ${sortColumn == 'ThoiGianBatDau' && sortOrder == 'desc' ? 'active' : ''}"><i class="bi bi-caret-down-fill"></i></a>
-                                    </th>
-                                    <th class="${sortColumn == 'ThoiGianKetThuc' ? 'sorted' : ''} ${sortColumn == 'ThoiGianKetThuc' ? (sortOrder == 'asc' ? 'sorted-asc' : 'sorted-desc') : ''}">
-                                        Ngày kết thúc
-                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=ThoiGianKetThuc&sortOrder=asc&name=${name}&page=${pageNumber}&sortName=${sortName}" class="sort-link ${sortColumn == 'ThoiGianKetThuc' && sortOrder == 'asc' ? 'active' : ''}"><i class="bi bi-caret-up-fill"></i></a>
-                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=ThoiGianKetThuc&sortOrder=desc&name=${name}&page=${pageNumber}&sortName=${sortName}" class="sort-link ${sortColumn == 'ThoiGianKetThuc' && sortOrder == 'desc' ? 'active' : ''}"><i class="bi bi-caret-down-fill"></i></a>
-                                    </th>
-                                    <th class="${sortColumn == 'GhiChu' ? 'sorted' : ''} ${sortColumn == 'GhiChu' ? (sortOrder == 'asc' ? 'sorted-asc' : 'sorted-desc') : ''}">
-                                        Ghi chú
-                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=GhiChu&sortOrder=asc&name=${name}&page=${pageNumber}&sortName=${sortName}" class="sort-link ${sortColumn == 'GhiChu' && sortOrder == 'asc' ? 'active' : ''}"><i class="bi bi-caret-up-fill"></i></a>
-                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=GhiChu&sortOrder=desc&name=${name}&page=${pageNumber}&sortName=${sortName}" class="sort-link ${sortColumn == 'GhiChu' && sortOrder == 'desc' ? 'active' : ''}"><i class="bi bi-caret-down-fill"></i></a>
-                                    </th>
-                                    <th class="${sortColumn == 'TrangThai' ? 'sorted' : ''} ${sortColumn == 'TrangThai' ? (sortOrder == 'asc' ? 'sorted-asc' : 'sorted-desc') : ''}">
-                                        Trạng thái
-                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=TrangThai&sortOrder=asc&name=${name}&page=${pageNumber}&sortName=${sortName}" class="sort-link ${sortColumn == 'TrangThai' && sortOrder == 'asc' ? 'active' : ''}"><i class="bi bi-caret-up-fill"></i></a>
-                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=TrangThai&sortOrder=desc&name=${name}&page=${pageNumber}&sortName=${sortName}" class="sort-link ${sortColumn == 'TrangThai' && sortOrder == 'desc' ? 'active' : ''}"><i class="bi bi-caret-down-fill"></i></a>
-                                    </th>
-                                    <th class="${sortColumn == 'NgayTao' ? 'sorted' : ''} ${sortColumn == 'NgayTao' ? (sortOrder == 'asc' ? 'sorted-asc' : 'sorted-desc') : ''}">
-                                        Ngày tạo
-                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=NgayTao&sortOrder=asc&name=${name}&page=${pageNumber}&sortName=${sortName}" class="sort-link ${sortColumn == 'NgayTao' && sortOrder == 'asc' ? 'active' : ''}"><i class="bi bi-caret-up-fill"></i></a>
-                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=NgayTao&sortOrder=desc&name=${name}&page=${pageNumber}&sortName=${sortName}" class="sort-link ${sortColumn == 'NgayTao' && sortOrder == 'desc' ? 'active' : ''}"><i class="bi bi-caret-down-fill"></i></a>
-                                    </th>
-                                    <th class="${sortColumn == 'ID_Khoi' ? 'sorted' : ''} ${sortColumn == 'ID_Khoi' ? (sortOrder == 'asc' ? 'sorted-asc' : 'sorted-desc') : ''}">
+                                    <th class="${sortColumn == 'ID_Khoi' ? 'sorted' : ''}">
                                         Khối
-                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=ID_Khoi&sortOrder=asc&name=${name}&page=${pageNumber}&sortName=${sortName}" class="sort-link ${sortColumn == 'ID_Khoi' && sortOrder == 'asc' ? 'active' : ''}"><i class="bi bi-caret-up-fill"></i></a>
-                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=ID_Khoi&sortOrder=desc&name=${name}&page=${pageNumber}&sortName=${sortName}" class="sort-link ${sortColumn == 'ID_Khoi' && sortOrder == 'desc' ? 'active' : ''}"><i class="bi bi-caret-down-fill"></i></a>
+                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=ID_Khoi&sortOrder=asc&name=${name}&page=${pageNumber}&statusFilter=${statusFilter}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" class="sort-link ${sortColumn == 'ID_Khoi' && sortOrder == 'asc' ? 'active' : ''}"><i class="bi bi-caret-up-fill"></i></a>
+                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=ID_Khoi&sortOrder=desc&name=${name}&page=${pageNumber}&statusFilter=${statusFilter}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" class="sort-link ${sortColumn == 'ID_Khoi' && sortOrder == 'desc' ? 'active' : ''}"><i class="bi bi-caret-down-fill"></i></a>
                                     </th>
+                                    <th class="${sortColumn == 'Order' ? 'sorted' : ''}">
+                                        Thứ tự ưu tiên
+                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=Order&sortOrder=asc&name=${name}&page=${pageNumber}&statusFilter=${statusFilter}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" class="sort-link ${sortColumn == 'Order' && sortOrder == 'asc' ? 'active' : ''}"><i class="bi bi-caret-up-fill"></i></a>
+                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=Order&sortOrder=desc&name=${name}&page=${pageNumber}&statusFilter=${statusFilter}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" class="sort-link ${sortColumn == 'Order' && sortOrder == 'desc' ? 'active' : ''}"><i class="bi bi-caret-down-fill"></i></a>
+                                    </th>
+                                    <th class="${sortColumn == 'TrangThai' ? 'sorted' : ''}">
+                                        Trạng thái
+                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=TrangThai&sortOrder=asc&name=${name}&page=${pageNumber}&statusFilter=${statusFilter}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" class="sort-link ${sortColumn == 'TrangThai' && sortOrder == 'asc' ? 'active' : ''}"><i class="bi bi-caret-up-fill"></i></a>
+                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=TrangThai&sortOrder=desc&name=${name}&page=${pageNumber}&statusFilter=${statusFilter}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" class="sort-link ${sortColumn == 'TrangThai' && sortOrder == 'desc' ? 'active' : ''}"><i class="bi bi-caret-down-fill"></i></a>
+                                    </th>
+                                    <th>Ảnh khóa học</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <c:forEach var="course" items="${list}">
                                     <tr>
+                                        <td>${course.getCourseCode()}</td>
                                         <td>${course.getTenKhoaHoc()}</td>
-                                        <td>${course.getMoTa()}</td>
-                                        <td>${course.thoiGianBatDauFormatted}</td>
-                                        <td>${course.thoiGianKetThucFormatted}</td>
-                                        <td>${course.getGhiChu()}</td>
-                                        <td>${course.getTrangThai()}</td>
-                                        <td>${course.getNgayTaoFormatted()}</td>
-                                        <td>${course.getLopTheoKhoi()}</td>
+                                        <td class="description-column" title="${course.getMoTa()}">${course.getMoTa()}</td>
                                         <td>
-                                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="${course.ID_KhoaHoc}">
-                                                <i class="bi bi-trash"></i> Delete
+                                            <c:choose>
+                                                <c:when test="${course.getID_Khoi() == 1}">Lớp 6 (ID: ${course.getID_Khoi()})</c:when>
+                                                <c:when test="${course.getID_Khoi() == 2}">Lớp 7 (ID: ${course.getID_Khoi()})</c:when>
+                                                <c:when test="${course.getID_Khoi() == 3}">Lớp 8 (ID: ${course.getID_Khoi()})</c:when>
+                                                <c:when test="${course.getID_Khoi() == 4}">Lớp 9 (ID: ${course.getID_Khoi()})</c:when>
+                                                <c:when test="${course.getID_Khoi() == 5}">Lớp 10 (ID: ${course.getID_Khoi()})</c:when>
+                                                <c:when test="${course.getID_Khoi() == 6}">Lớp 11 (ID: ${course.getID_Khoi()})</c:when>
+                                                <c:when test="${course.getID_Khoi() == 7}">Lớp 12 (ID: ${course.getID_Khoi()})</c:when>
+                                                <c:when test="${course.getID_Khoi() == 8}">Lớp tổng ôn (ID: ${course.getID_Khoi()})</c:when>
+                                                <c:otherwise>Không xác định (ID: <c:out value="${course.getID_Khoi()}" />)</c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>${course.getOrder()}</td>
+                                        <td>${course.getTrangThai()}</td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${not empty course.image}">
+                                                    <img data-course-image="${pageContext.request.contextPath}${course.image}" src="${pageContext.request.contextPath}${course.image}" alt="${course.tenKhoaHoc}" width="100" style="max-height: 100px; object-fit: cover;" />
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <img src="https://via.placeholder.com/100" alt="No Image" width="100" style="max-height: 100px; object-fit: cover;" />
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-info btn-sm toggle-details" data-id="${course.ID_KhoaHoc}">
+                                                <i class="bi bi-info-circle"></i> Xem chi tiết
                                             </button>
-                                            <a href="${pageContext.request.contextPath}/ManageCourse?action=UpdateCourse&ID_KhoaHoc=${course.ID_KhoaHoc}" class="btn btn-danger btn-sm">
-                                                <i class="bi bi-pencil"></i> Update
+                                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="${course.ID_KhoaHoc}">
+                                                <i class="bi bi-trash"></i> Xóa
+                                            </button>
+                                            <a href="${pageContext.request.contextPath}/ManageCourse?action=updateCourse&ID_KhoaHoc=${course.ID_KhoaHoc}" class="btn btn-danger btn-sm">
+                                                <i class="bi bi-pencil"></i> Sửa
                                             </a>
-                                            <a href="${pageContext.request.contextPath}/ManageCourse?action=ViewCourse&ID_Khoi=${course.ID_Khoi}&ID_KhoaHoc=${course.ID_KhoaHoc}" class="btn btn-secondary btn-sm">
-                                                <i class="bi bi-eye"></i> View
-                                            </a>
+                                            <c:choose>
+                                                <c:when test="${course.ID_Khoi != null}">
+                                                    <a href="${pageContext.request.contextPath}/ManageCourse?action=ViewCourse&ID_Khoi=${course.ID_Khoi}&ID_KhoaHoc=${course.ID_KhoaHoc}" class="btn btn-secondary btn-sm">
+                                                        <i class="bi bi-eye"></i> Xem lớp
+                                                    </a>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <button class="btn btn-secondary btn-sm" disabled title="Không thể xem lớp vì thiếu ID_Khoi">
+                                                        <i class="bi bi-eye"></i> Xem lớp
+                                                    </button>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                    </tr>
+                                    <!-- Hàng chi tiết (ẩn mặc định) -->
+                                    <tr class="details-row" id="details-${course.ID_KhoaHoc}">
+                                        <td colspan="8">
+                                            <div class="details-content">
+                                                <div><strong>Ngày bắt đầu:</strong> ${course.thoiGianBatDau != null ? course.thoiGianBatDau : 'Chưa xác định'}</div>
+                                                <div><strong>Ngày kết thúc:</strong> ${course.thoiGianKetThuc != null ? course.thoiGianKetThuc : 'Chưa xác định'}</div>
+                                                <div><strong>Ghi chú:</strong> ${course.getGhiChu() != null ? course.getGhiChu() : 'Không có'}</div>
+                                                <div><strong>Ngày tạo:</strong> ${course.getNgayTao() != null ? course.getNgayTao() : 'Chưa xác định'}</div>
+                                            </div>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -466,21 +533,18 @@
                     <div class="pagination-container">
                         <nav aria-label="Page navigation">
                             <ul class="pagination">
-                                <!-- Nút quay về trang đầu tiên -->
                                 <li class="page-item">
-                                    <a class="page-link" href="${pageContext.request.contextPath}/ManageCourse?action=paginate&page=1&sortName=${sortName}&name=${name}&sortColumn=${sortColumn}&sortOrder=${sortOrder}" aria-label="First">
+                                    <a class="page-link" href="${pageContext.request.contextPath}/ManageCourse?action=paginate&page=1&statusFilter=${statusFilter}&name=${name}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" aria-label="First">
                                         <span aria-hidden="true">««</span>
                                     </a>
                                 </li>
-                                <!-- Trang trước nếu có -->
                                 <c:if test="${pageNumber > 1}">
                                     <li class="page-item">
-                                        <a class="page-link" href="${pageContext.request.contextPath}/ManageCourse?action=paginate&page=${pageNumber - 1}&sortName=${sortName}&name=${name}&sortColumn=${sortColumn}&sortOrder=${sortOrder}" aria-label="Previous">
+                                        <a class="page-link" href="${pageContext.request.contextPath}/ManageCourse?action=paginate&page=${pageNumber - 1}&statusFilter=${statusFilter}&name=${name}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" aria-label="Previous">
                                             <span aria-hidden="true">«</span>
                                         </a>
                                     </li>
                                 </c:if>
-                                <!-- Hiển thị 4 trang gần trang hiện tại nhất -->
                                 <c:set var="startPage" value="${pageNumber - 2}"/>
                                 <c:set var="endPage" value="${pageNumber + 2}"/>
                                 <c:if test="${startPage < 1}">
@@ -496,20 +560,18 @@
                                 </c:if>
                                 <c:forEach var="i" begin="${startPage}" end="${endPage}">
                                     <li class="page-item ${i == pageNumber ? 'active' : ''}">
-                                        <a class="page-link" href="${pageContext.request.contextPath}/ManageCourse?action=paginate&page=${i}&sortName=${sortName}&name=${name}&sortColumn=${sortColumn}&sortOrder=${sortOrder}">${i}</a>
+                                        <a class="page-link" href="${pageContext.request.contextPath}/ManageCourse?action=paginate&page=${i}&statusFilter=${statusFilter}&name=${name}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}">${i}</a>
                                     </li>
                                 </c:forEach>
-                                <!-- Trang sau nếu có -->
                                 <c:if test="${pageNumber < totalPages}">
                                     <li class="page-item">
-                                        <a class="page-link" href="${pageContext.request.contextPath}/ManageCourse?action=paginate&page=${pageNumber + 1}&sortName=${sortName}&name=${name}&sortColumn=${sortColumn}&sortOrder=${sortOrder}" aria-label="Next">
+                                        <a class="page-link" href="${pageContext.request.contextPath}/ManageCourse?action=paginate&page=${pageNumber + 1}&statusFilter=${statusFilter}&name=${name}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" aria-label="Next">
                                             <span aria-hidden="true">»</span>
                                         </a>
                                     </li>
                                 </c:if>
-                                <!-- Nút quay về trang cuối cùng -->
                                 <li class="page-item">
-                                    <a class="page-link" href="${pageContext.request.contextPath}/ManageCourse?action=paginate&page=${totalPages}&sortName=${sortName}&name=${name}&sortColumn=${sortColumn}&sortOrder=${sortOrder}" aria-label="Last">
+                                    <a class="page-link" href="${pageContext.request.contextPath}/ManageCourse?action=paginate&page=${totalPages}&statusFilter=${statusFilter}&name=${name}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" aria-label="Last">
                                         <span aria-hidden="true">»»</span>
                                     </a>
                                 </li>
@@ -526,6 +588,9 @@
                 </form>
             </div>
         </div>
+
+        <!-- Nút Scroll to Top -->
+        <button id="scrollToTopBtn" onclick="scrollToTop()" title="Cuộn lên đầu trang">↑</button>
 
         <!-- Modal xác nhận xóa -->
         <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -546,19 +611,20 @@
             </div>
         </div>
 
-        <!-- Nút trượt lên đầu trang -->
-        <button id="scrollToTopBtn" onclick="scrollToTop()">↑</button>
+        <!-- Bootstrap 5 JS và Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 
         <script>
             // Hiển thị/n ẩn nút khi cuộn
-            window.onscroll = function () {
+            window.addEventListener('scroll', function () {
                 var scrollBtn = document.getElementById("scrollToTopBtn");
                 if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
                     scrollBtn.style.display = "block";
                 } else {
                     scrollBtn.style.display = "none";
                 }
-            };
+            });
 
             // Hàm cuộn lên đầu trang
             function scrollToTop() {
@@ -576,24 +642,56 @@
 
             // Quản lý trạng thái active cho nút sort
             document.querySelectorAll('.sort-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    // Xóa class active khỏi tất cả các nút sort
+                link.addEventListener('click', function (e) {
                     document.querySelectorAll('.sort-link').forEach(l => l.classList.remove('active'));
-                    // Thêm class active vào nút được bấm
                     this.classList.add('active');
                 });
             });
 
             // Xóa trạng thái active khi bấm nút Refresh hoặc Tìm
             document.querySelectorAll('.btn-custom-action').forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     document.querySelectorAll('.sort-link').forEach(l => l.classList.remove('active'));
                 });
             });
-        </script>
 
-        <!-- Bootstrap 5 JS và Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+            // Kiểm tra sự tồn tại của ảnh
+            document.querySelectorAll('img[data-course-image]').forEach(img => {
+                const imageUrl = img.getAttribute('data-course-image');
+                const fallbackUrl = 'https://via.placeholder.com/100';
+                const testImage = new Image();
+                testImage.src = imageUrl;
+                testImage.onload = () => {
+                    img.src = imageUrl;
+                };
+                testImage.onerror = () => {
+                    img.src = fallbackUrl;
+                    img.onerror = null;
+                };
+            });
+
+            // Toggle hàng chi tiết
+            document.querySelectorAll('.toggle-details').forEach(button => {
+                button.addEventListener('click', function () {
+                    const id = this.getAttribute('data-id');
+                    const detailsRow = document.getElementById('details-' + id);
+                    const isVisible = detailsRow.style.display === 'table-row';
+                    detailsRow.style.display = isVisible ? 'none' : 'table-row';
+                    this.innerHTML = isVisible
+                            ? '<i class="bi bi-info-circle"></i> Xem chi tiết'
+                            : '<i class="bi bi-x-circle"></i> Ẩn chi tiết';
+                });
+            });
+
+            // Kiểm tra khoảng thời gian hợp lệ
+            document.querySelector('form').addEventListener('submit', function (e) {
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                if (startDate && endDate && new Date(endDate) < new Date(startDate)) {
+                    alert('Ngày kết thúc phải sau ngày bắt đầu!');
+                    e.preventDefault();
+                }
+            });
+        </script>
     </body>
-</html> 
+</html>

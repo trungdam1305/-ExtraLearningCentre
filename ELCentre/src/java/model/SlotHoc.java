@@ -1,41 +1,54 @@
 package model;
 
+/**
+ * The SlotHoc class represents a specific time slot for a class session.
+ * It includes an ID and a string representing the time (e.g. "08:00 - 09:30").
+ * This class is typically used for scheduling classes in a timetable.
+ * 
+ * Author: admin
+ */
 public class SlotHoc {
-    private Integer idSlotHoc;
-    private String slotThoiGian;
 
-    // Constructor mặc định
+    // Unique identifier for the time slot
+    private int ID_SlotHoc;
+
+    // Time slot description (e.g., "08:00 - 09:30")
+    private String SlotThoiGian;
+
+    /**
+     * Constructor with parameters to initialize all attributes.
+     * 
+     * @param ID_SlotHoc      the ID of the time slot
+     * @param SlotThoiGian    the time range string
+     */
+    public SlotHoc(int ID_SlotHoc, String SlotThoiGian) {
+        this.ID_SlotHoc = ID_SlotHoc;
+        this.SlotThoiGian = SlotThoiGian;
+    }
+
+    /**
+     * Default constructor.
+     */
     public SlotHoc() {
     }
 
-    // Constructor đầy đủ
-    public SlotHoc(Integer idSlotHoc, String slotThoiGian) {
-        this.idSlotHoc = idSlotHoc;
-        this.slotThoiGian = slotThoiGian;
+    // Getter for ID_SlotHoc
+    public int getID_SlotHoc() {
+        return ID_SlotHoc;
     }
 
-    // Getters và Setters
-    public Integer getIdSlotHoc() {
-        return idSlotHoc;
+    // Setter for ID_SlotHoc
+    public void setID_SlotHoc(int ID_SlotHoc) {
+        this.ID_SlotHoc = ID_SlotHoc;
     }
 
-    public void setIdSlotHoc(Integer idSlotHoc) {
-        this.idSlotHoc = idSlotHoc;
-    }
-
+    // Getter for SlotThoiGian
     public String getSlotThoiGian() {
-        return slotThoiGian;
+        return SlotThoiGian;
     }
 
-    public void setSlotThoiGian(String slotThoiGian) {
-        this.slotThoiGian = slotThoiGian;
-    }
-
-    @Override
-    public String toString() {
-        return "SlotHoc{" +
-                "idSlotHoc=" + idSlotHoc +
-                ", slotThoiGian='" + slotThoiGian + '\'' +
-                '}';
+    // Setter for SlotThoiGian
+    public void setSlotThoiGian(String SlotThoiGian) {
+        this.SlotThoiGian = SlotThoiGian;
     }
 }

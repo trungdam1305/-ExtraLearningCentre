@@ -1,27 +1,52 @@
-
 package model;
 
 import java.time.LocalDateTime;
 
 /**
- *
- * @author wrx_Chur04
+ * The TaiKhoanChiTiet class represents a detailed view of a user account,
+ * combining both account credentials and user profile information.
+ * It is typically used for displaying full account information in admin or user management views.
+ * 
+ * Author: wrx_Chur04
  */
 public class TaiKhoanChiTiet {
-    private Integer ID_TaiKhoan;
-    private String Email;
-    private String HoTen ; 
-    private String UserType;
-    private String MatKhau;
-    private Integer ID_VaiTro;
     
+    // Unique account ID
+    private Integer ID_TaiKhoan;
+    
+    // User's email address (login credential)
+    private String Email;
+
+    // User's full name
+    private String HoTen;
+
+    // Type of user (e.g., "Student", "Teacher", "Parent")
+    private String UserType;
+
+    // Account password (should be encrypted/hashed in actual use)
+    private String MatKhau;
+
+    // Role ID for authorization
+    private Integer ID_VaiTro;
+
+    // User's phone number
     private String SoDienThoai;
+
+    // Account status (e.g., "Active", "Inactive", "Suspended")
     private String TrangThai;
+
+    // Date and time the account was created
     private LocalDateTime NgayTao;
 
+    /**
+     * Default constructor.
+     */
     public TaiKhoanChiTiet() {
     }
 
+    /**
+     * Full-argument constructor to initialize all fields.
+     */
     public TaiKhoanChiTiet(Integer ID_TaiKhoan, String Email, String HoTen, String UserType, String MatKhau, Integer ID_VaiTro, String SoDienThoai, String TrangThai, LocalDateTime NgayTao) {
         this.ID_TaiKhoan = ID_TaiKhoan;
         this.Email = Email;
@@ -34,7 +59,7 @@ public class TaiKhoanChiTiet {
         this.NgayTao = NgayTao;
     }
 
-    
+    // Getters
 
     public Integer getID_TaiKhoan() {
         return ID_TaiKhoan;
@@ -72,6 +97,8 @@ public class TaiKhoanChiTiet {
         return NgayTao;
     }
 
+    // Setters
+
     public void setID_TaiKhoan(Integer ID_TaiKhoan) {
         this.ID_TaiKhoan = ID_TaiKhoan;
     }
@@ -107,6 +134,4 @@ public class TaiKhoanChiTiet {
     public void setNgayTao(LocalDateTime NgayTao) {
         this.NgayTao = NgayTao;
     }
-    
-    
 }

@@ -37,10 +37,6 @@
         <servlet-class>controller.SearchCourse</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ManagerCourse</servlet-name>
-        <servlet-class>controller.ManagerCourse</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>AddKhoaHoc</servlet-name>
         <servlet-class>controller.AddKhoaHoc</servlet-class>
     </servlet>
@@ -65,16 +61,44 @@
         <servlet-class>controller.HomeCourse</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ManageCourse</servlet-name>
-        <servlet-class>controller.ManageCourses.ManageCourse</servlet-class>
+        <servlet-name>HomePageCourse</servlet-name>
+        <servlet-class>controller.HomePageCourse</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ManageClass</servlet-name>
-        <servlet-class>controller.ManageCourses.ManageClass</servlet-class>
+        <servlet-name>HomePageMaterial</servlet-name>
+        <servlet-class>controller.HomePageMaterial</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ManageClassDetail</servlet-name>
-        <servlet-class>controller.ManageCourses.ManageClassDetail</servlet-class>
+        <servlet-name>HomePageLearning</servlet-name>
+        <servlet-class>controller.HomePageLearning</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HomePageBlog</servlet-name>
+        <servlet-class>controller.HomePageBlog</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TeacherDashboard</servlet-name>
+        <servlet-class>controller.TeacherDashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>teacherGetFromDashboard</servlet-name>
+        <servlet-class>controller.teacherGetFromDashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>adminActionWithStudent</servlet-name>
+        <servlet-class>controller.adminActionWithStudent</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>adminActionWithTeacher</servlet-name>
+        <servlet-class>controller.adminActionWithTeacher</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Advice</servlet-name>
+        <servlet-class>controller.Advice</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SendAdviceMailServlet</servlet-name>
+        <servlet-class>controller.SendAdviceMailServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
@@ -95,10 +119,6 @@
     <servlet-mapping>
         <servlet-name>SearchCourse</servlet-name>
         <url-pattern>/SearchCourse</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ManagerCourse</servlet-name>
-        <url-pattern>/ManagerCourse</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddKhoaHoc</servlet-name>
@@ -141,6 +161,38 @@
         <url-pattern>/HomeCourse</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>HomePageCourse</servlet-name>
+        <url-pattern>/HomePageCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomePageMaterial</servlet-name>
+        <url-pattern>/HomePageMaterial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomePageLearning</servlet-name>
+        <url-pattern>/HomePageLearning</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomePageBlog</servlet-name>
+        <url-pattern>/HomePageBlog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TeacherDashboard</servlet-name>
+        <url-pattern>/TeacherDashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>teacherGetFromDashboard</servlet-name>
+        <url-pattern>/teacherGetFromDashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminActionWithStudent</servlet-name>
+        <url-pattern>/adminActionWithStudent</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminActionWithTeacher</servlet-name>
+        <url-pattern>/adminActionWithTeacher</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ManageCourse</servlet-name>
         <url-pattern>/ManageCourse</url-pattern>
     </servlet-mapping>
@@ -151,6 +203,26 @@
     <servlet-mapping>
         <servlet-name>ManageClassDetail</servlet-name>
         <url-pattern>/ManageClassDetail</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ManageCourse</servlet-name>
+        <servlet-class>controller.ManageCourses.ManageCourse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageClass</servlet-name>
+        <servlet-class>.ManageClass</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageClassDetail</servlet-name>
+        <servlet-class>.ManageClassDetail</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Advice</servlet-name>
+        <url-pattern>/Advice</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendAdviceMailServlet</servlet-name>
+        <url-pattern>/SendAdviceMailServlet</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>
