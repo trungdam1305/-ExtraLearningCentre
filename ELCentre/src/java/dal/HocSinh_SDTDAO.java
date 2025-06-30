@@ -110,71 +110,62 @@ public class HocSinh_SDTDAO {
         }
     }
 
-    public static ArrayList<HocSinh_SDT> adminGetHocSinhByFilter(String keyword, String status, String khoa) {
-    ArrayList<HocSinh_SDT> list = new ArrayList<>();
+    public static ArrayList<HocSinh_SDT> adminGetHocSinhFilter(String keyword, String trangthai, String khoa) {
+    ArrayList<HocSinh_SDT> hocsinhs = new ArrayList<>();
     DBContext db = DBContext.getInstance();
 
     try {
-        StringBuilder sql = new StringBuilder("""
-            SELECT *
-            FROM HocSinh
-            JOIN TaiKhoan ON HocSinh.ID_TaiKhoan = TaiKhoan.ID_TaiKhoan
-            JOIN TruongHoc ON TruongHoc.ID_TruongHoc = HocSinh.ID_TruongHoc
-            WHERE (HoTen LIKE N? OR MaHocSinh LIKE N? OR SoDienThoai LIKE N?)
-        """);
+        String sql = """
+            SELECT * 
+            FROM HocSinh HS
+            JOIN TaiKhoan TK ON HS.ID_TaiKhoan = TK.ID_TaiKhoan
+            JOIN TruongHoc TH ON TH.ID_TruongHoc = HS.ID_TruongHoc
+            WHERE (HoTen LIKE ? OR MaHocSinh LIKE ? OR SoDienThoai LIKE ?)
+              AND TrangThaiHoc LIKE ?
+              AND MaHocSinh LIKE ?
+        """;
 
-        if (status != null && !status.isEmpty()) {
-            sql.append(" AND TrangThaiHoc = N? ");
-        }
-        if (khoa != null && !khoa.isEmpty()) {
-            sql.append(" AND MaHocSinh LIKE N? + '%' ");
-        }
+        PreparedStatement statement = db.getConnection().prepareStatement(sql);
 
-        PreparedStatement stmt = db.getConnection().prepareStatement(sql.toString());
+        statement.setString(1, "%" + keyword + "%");
+        statement.setString(2, "%" + keyword + "%");
+        statement.setString(3, "%" + keyword + "%");
 
-        String kw = "%" + keyword + "%";
-        int idx = 1;
-        stmt.setString(idx++, kw);
-        stmt.setString(idx++, kw);
-        stmt.setString(idx++, kw);
+        
+        statement.setString(4, trangthai);
+        statement.setString(5, khoa + "%");
 
-        if (status != null && !status.isEmpty()) {
-            stmt.setString(idx++, status);
-        }
-        if (khoa != null && !khoa.isEmpty()) {
-            stmt.setString(idx++, khoa);
-        }
-
-        ResultSet rs = stmt.executeQuery();
+        ResultSet rs = statement.executeQuery();
         while (rs.next()) {
             HocSinh_SDT hs = new HocSinh_SDT(
-                rs.getInt("ID_HocSinh"),
-                rs.getString("MaHocSinh"),
-                rs.getInt("ID_TaiKhoan"),
-                rs.getString("HoTen"),
-                rs.getDate("NgaySinh").toLocalDate(),
-                rs.getString("GioiTinh"),
-                rs.getString("SoDienThoai"),
-                rs.getString("DiaChi"),
-                rs.getString("SDT_PhuHuynh"),
-                rs.getInt("ID_TruongHoc"),
-                rs.getString("GhiChu"),
-                rs.getString("TrangThai"),
-                rs.getTimestamp("NgayTao").toLocalDateTime(),
-                rs.getString("TenTruongHoc"),
-                rs.getString("LopDangHocTrenTruong"),
-                rs.getString("TrangThaiHoc"),
-                rs.getString("Avatar")
+                    rs.getInt("ID_HocSinh"),
+                    rs.getString("MaHocSinh"),
+                    rs.getInt("ID_TaiKhoan"),
+                    rs.getString("HoTen"),
+                    rs.getDate("NgaySinh").toLocalDate(),
+                    rs.getString("GioiTinh"),
+                    rs.getString("SoDienThoai"),
+                    rs.getString("DiaChi"),
+                    rs.getString("SDT_PhuHuynh"),
+                    rs.getInt("ID_TruongHoc"),
+                    rs.getString("GhiChu"),
+                    rs.getString("TrangThai"),
+                    rs.getTimestamp("NgayTao").toLocalDateTime(),
+                    rs.getString("TenTruongHoc"),
+                    rs.getString("LopDangHocTrenTruong"),
+                    rs.getString("TrangThaiHoc"),
+                    rs.getString("Avatar")
             );
-            list.add(hs);
+            hocsinhs.add(hs);
         }
-    } catch (Exception e) {
+    } catch (SQLException e) {
         e.printStackTrace();
         return null;
     }
 
-    return list;
+    return hocsinhs;
 }
+
 
     
     
