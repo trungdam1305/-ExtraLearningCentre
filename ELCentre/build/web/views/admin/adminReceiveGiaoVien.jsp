@@ -433,11 +433,21 @@
                         <input type="text" id="keyword" placeholder="Tìm kiếm...">
                     </div>
                     <div class="filter-group">
-                        <label for="gender">Chuyên môn</label>
-                        <select id="gender">
+                        <label for="chuyenmon">Chuyên môn</label>
+                        <select id="chuyenmon">
                             <option>Tất cả</option>
-                            <option>Nam</option>
-                            <option>Nữ</option>
+                            <option>Toán</option>
+                            <option>Lý</option>
+                            <option>Hóa</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="chuyenmon">Trạng thái dạy</label>
+                        <select id="chuyenmon">
+                            <option>Tất cả</option>
+                            <option>Đang dạy</option>
+                            <option>Chờ lớp</option>
+                            <option>Đã dạy</option>
                         </select>
                     </div>
                    
@@ -451,14 +461,14 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>ID Giáo viên</th>
                                     <th>Họ và Tên</th>
                                     <th>Chuyên Môn</th>
-
+                                    <th>Số điện thoại</th>
                                     <th>Trường đang dạy</th>
+                                    <th>Lớp đang dạy trên trường</th>
 
-
-                                    <th>Trạng Thái</th>
+                                    <th>Trạng thái dạy tại EL CENTRE</th>
 
                                     <th>Hành động</th>
                                 </tr>
@@ -469,12 +479,12 @@
                                         <td>${giaovien.getID_GiaoVien()}</td>
                                         <td>${giaovien.getHoTen()}</td>
                                         <td>${giaovien.getChuyenMon()}</td>
-
+                                        <td>${giaovien.getSDT()}</td>
                                         <td>${giaovien.getTenTruongHoc()}</td>
+                                        <td>${giaovien.getLopDangDayTrenTruong()}</td>
 
-
-                                        <td>${giaovien.getTrangThai()}</td>
-
+                                        <td>${giaovien.getTrangThaiDay()}</td>
+                                        
 
 
                                         <td class="action-buttons">

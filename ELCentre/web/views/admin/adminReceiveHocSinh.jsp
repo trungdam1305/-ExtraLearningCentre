@@ -423,35 +423,42 @@
         </div>
 
         <div class="main-content">
+            <c:if test="${not empty message}">
+                <div style="color: red; font-weight: bold; margin-bottom: 15px; text-align: center;">
+                    ${message}
+                </div>
+            </c:if>
+
             <div class="page-header">
                 <h2><i class="fas fa-user-graduate"></i> Tất cả học sinh</h2>
             </div>
 
-            <form  action="adminGetFromDashboard" method="get">
+            <form  action="adminFindInFilterGroup" method="get">
                 <div class="filter-bar">
 
                     <div class="filter-group">
                         <label for="keyword">Từ khóa:</label>
-                        <input type="text" id="keyword" placeholder="Tìm kiếm...">
+                        <input type="text" id="keyword" name="keyword" placeholder="Tìm kiếm...">
                     </div>
                     <div class="filter-group">
-                        <label for="gender">Giới tính:</label>
-                        <select id="gender">
-                            <option>Tất cả</option>
-                            <option>Nam</option>
-                            <option>Nữ</option>
+                        <label for="status">Trạng thái học</label>
+                        <select id="status" name="status">
+                            <option value="">Tất cả</option>
+                            <option value="dang">Đang học</option>
+                            <option value="cho">Chờ học</option>
+                            <option value="da">Đã học</option>
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="year">Năm sinh:</label>
-                        <select id="year">
-                            <option>Tất cả</option>
-                            <option>2008</option>
-                            <option>2009</option>
-                            <!-- thêm tùy chọn -->
+                        <label for="khoa">Khóa học sinh</label>
+                        <select id="khoa" name="khoa">
+                            <option value="">Tất cả</option>
+                            <option value="HS">HS</option>
+                            <option value="HE">HE</option>
+                            <option value="AI">AI</option>
                         </select>
                     </div>
-                    <button><i class="fas fa-search"></i></button>
+                    <button><i class="fas fa-search" ></i></button>
                 </div>
             </form>
 
@@ -461,41 +468,42 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>Mã học sinh</th>
                                     <th>Họ và Tên</th>
 
-                                    <th>Giới Tính</th>
+                                    <th>Giới tính</th>
+                                    <th>Số điện thoại</th>
 
-                                    <th>Ngày Sinh</th>
                                     <th>Trường học</th>
-
-                                    <th>Trạng Thái</th>
+                                    <th>Lớp đang học trên trường</th>
+                                    <th>Trạng thái học tại EL CENTRE</th>
 
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
-                                <tbody id="studentTableBody">
+                            <tbody id="studentTableBody">
                                 <c:forEach var="hocsinh" items="${sessionScope.hocsinhs}">
                                     <tr>
-                                        <td>${hocsinh.getID_HocSinh()}</td>
+                                        <td>${hocsinh.getMaHocSinh()}</td>
                                         <td>${hocsinh.getHoTen()}</td>
 
                                         <td>${hocsinh.getGioiTinh()}</td>
-                                        <td>${hocsinh.getNgaySinh()}</td>
+                                        <td>${hocsinh.getSoDienThoai()}</td>
+
 
                                         <td>${hocsinh.getTenTruongHoc()}</td>
-
-                                        <td>${hocsinh.getTrangThai()}</td>
+                                        <td>${hocsinh.getLopDangHocTrenTruong()}</td>
+                                        <td>${hocsinh.getTrangThaiHoc()}</td>
 
                                         <td class="action-buttons">
                                             <a class="btn-action view" title="Chi tiết" href="${pageContext.request.contextPath}/adminActionWithStudent?action=view&id=${hocsinh.getID_HocSinh()}&idtaikhoan=${hocsinh.getID_TaiKhoan()}">
-                                                <i class="fas fa-eye"></i> Chi tiết
+                                                <i class="fas fa-user"></i> Chi tiết và chỉnh sửa    
                                             </a>
                                             <a class="btn-action update" title="Xem điểm" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewDiem&id=${hocsinh.getID_HocSinh()}">
-                                                <i class="fas fa-chart-line"></i> Xem điểm
+                                                <i class="fas fa-book-open"></i> Xem các lớp đang học
                                             </a>
                                             <a class="btn-action enable" title="Chỉnh sửa" href="${pageContext.request.contextPath}/adminActionWithStudent?action=update&id=${hocsinh.getID_HocSinh()}">
-                                                <i class="fas fa-edit"></i> Chỉnh sửa
+                                                <i class="fas fa-random"></i> Chuyển lớp
                                             </a>
                                         </td>
 
@@ -506,9 +514,10 @@
                     </c:when>
                     <c:otherwise>   
                         <div class="no-data">
-                            <c:if test="${not empty message}">
-                                <p style="color: red;">${message}</p>
+                            <c:if test="${not empty requestScope.message}">
+                                <p style="color: red;">${requestScope.message}</p>
                             </c:if>
+
                             <p>Không có dữ liệu học sinh để hiển thị.</p>
                         </div>
                     </c:otherwise>

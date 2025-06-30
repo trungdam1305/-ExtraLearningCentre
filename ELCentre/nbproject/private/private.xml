@@ -16,13 +16,11 @@
             <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/web/views/Home-Blog/Home-Blog-Content.jsp</file>
         </group>
         <group>
-            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/model/HocSinh_ChiTietHoc.java</file>
-            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithUser.java</file>
-            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveGiaoVien.jsp</file>
-            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/model/HocSinh.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/controller/adminFindInFilterGroup.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/dal/HocSinh_SDTDAO.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithStudent.java</file>
             <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/controller/adminGetFromDashboard.java</file>
             <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveHocSinh.jsp</file>
-            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/dal/HocSinhDAO.java</file>
         </group>
     </open-files>
 </project-private>

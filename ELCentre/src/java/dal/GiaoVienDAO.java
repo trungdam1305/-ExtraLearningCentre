@@ -33,6 +33,7 @@ public class GiaoVienDAO {
         try {
             String sql = """
                           select * from GiaoVien gv JOIN TruongHoc th ON gv.ID_TruongHoc = th.ID_TruongHoc
+                         order by IsHot DESC 
                           """;
 
             PreparedStatement statement = db.getConnection().prepareStatement(sql);

@@ -1380,4 +1380,37 @@ INSERT [dbo].[PhongHoc] ([ID_PhongHoc], [TenPhongHoc], [SucChua], [TrangThai]) V
 (10, N'Phòng 110', 40, N'Active')
 SET IDENTITY_INSERT [dbo].[PhongHoc] OFF
 GO
+select * from HocSinh
+SELECT * FROM TruongHoc
+select  GV.ID_TruongHoc , GV.LopDangDayTrenTruong   from HocSinh_LopHoc HSLH
+                         join  LopHoc LH
+                         on HSLH.ID_LopHoc = LH.ID_LopHoc 
+                         JOIN GiaoVien_LopHoc GVLH 
+                         on HSLH.ID_LopHoc = GVLH.ID_LopHoc
+                         JOIN GiaoVien GV 
+                         on GV.ID_GiaoVien = GVLH.ID_GiaoVien
+                         JOIN SlotHoc SH 
+                         ON SH.ID_SlotHoc = LH.ID_Schedule
+                         WHERE HSLH.ID_HocSinh = 
+
+
+						 update HocSinh 
+                         set  DiaChi = 'HaNam' ,
+                         ID_TruongHoc = 3 , 
+                         GhiChu = 'okok'  , 
+                         LopDangHocTrenTruong = '11B1' 
+                         where ID_HocSinh = 15   
+
+DECLARE @keyword NVARCHAR(100) = N'%HS00%'     -- hoặc N'%Nguyễn%'
+DECLARE @trangthai NVARCHAR(50) = N'Đang học'  -- hoặc N'Tất cả'
+DECLARE @khoa NVARCHAR(10) = N'HS'             -- hoặc N'Tất cả'
+
+SELECT *
+FROM HocSinh
+JOIN TaiKhoan ON HocSinh.ID_TaiKhoan = TaiKhoan.ID_TaiKhoan
+JOIN TruongHoc ON TruongHoc.ID_TruongHoc = HocSinh.ID_TruongHoc
+WHERE (HoTen LIKE @keyword OR MaHocSinh LIKE @keyword OR SoDienThoai LIKE @keyword)
+  AND (@trangthai = N'Tất cả' OR TrangThaiHoc = @trangthai)
+  AND (@khoa = N'Tất cả' OR MaHocSinh LIKE @khoa + N'%')
+
 

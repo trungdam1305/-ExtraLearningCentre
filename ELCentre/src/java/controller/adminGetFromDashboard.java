@@ -23,6 +23,8 @@ import model.KhoaHoc;
 import model.TaiKhoanChiTiet;
 import dal.TaiKhoanChiTietDAO;
 import model.GiaoVien_TruongHoc;
+import model.HocSinh_SDT ; 
+import dal.HocSinh_SDTDAO ; 
 
 /**
  * This servlet do all action admin do in dashboard , like when admin click in
@@ -73,12 +75,13 @@ public class adminGetFromDashboard extends HttpServlet {
                 break;
 
             case "hocsinh":       //action with student
-                ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>();          // create arraylist to save data 
-                hocsinhs = HocSinhDAO.adminGetAllHocSinh();                 //admin get All student from database
-                if (hocsinhs.isEmpty()) {                                    // get database fail
+                ArrayList<HocSinh_SDT> hocsinhs = new ArrayList<HocSinh_SDT>();          // create arraylist to save data 
+                hocsinhs = HocSinh_SDTDAO.adminGetSoDienThoaiHocSinh() ;                //admin get All student from database
+                if (hocsinhs == null) {                                    // get database fail
                     request.setAttribute("message", "Không có tài khoản nào.");
                     request.setAttribute("hocsinhs", hocsinhs);
                     request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);
+                    
                 } else {                                                    // get database success
                     session.setAttribute("hocsinhs", hocsinhs);          //create object is hocsinhs to send data for jsp
                     request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);          //redirect to  adminReceiveHocSinh jsp
