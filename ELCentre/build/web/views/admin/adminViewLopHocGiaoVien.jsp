@@ -316,7 +316,7 @@
 
             <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
             <div class="back-button">
-                <a href="${pageContext.request.contextPath}/views/admin/adminReceiveHocSinh.jsp">Quay lại</a>
+                <a href="${pageContext.request.contextPath}/views/admin/adminReceiveGiaoVien.jsp">Quay lại</a>
             </div>
         </div>
 

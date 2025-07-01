@@ -265,6 +265,36 @@
                 font-weight: 600;
             }
 
+            .status-badge {
+                padding: 4px 10px;
+                border-radius: 20px;
+                font-size: 13px;
+                font-weight: bold;
+                text-transform: uppercase;
+                display: inline-block;
+                min-width: 80px;
+                text-align: center;
+            }
+
+            .status-badge.active {
+                background-color: #d4f4dd;
+                color: #2ecc71;
+                border: 1px solid #2ecc71;
+            }
+
+            
+
+            .status-badge.finished {
+                background-color: #e0e0e0;
+                color: #7f8c8d;
+                border: 1px solid #7f8c8d;
+            }
+
+            .status-badge.inactive {
+                background-color: #fce1e1;
+                color: #e74c3c;
+                border: 1px solid #e74c3c;
+            }
             .action-buttons {
                 display: flex;
                 justify-content: center;
@@ -387,7 +417,8 @@
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Dashboard</a></li>
+                <li><a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp"><i class="fas fa-chart-line"></i> Dashboard</a>
+                
             </ul>
 
             <div class="sidebar-section-title">Quản lý người dùng</div>
@@ -488,97 +519,138 @@
                                         <td>${giaovien.getTenTruongHoc()}</td>
                                         <td>${giaovien.getLopDangDayTrenTruong()}</td>
 
-                                        <td>${giaovien.getTrangThaiDay()}</td>
+                                        <td>
+                                            <span class="status-badge
+                                                  ${giaovien.trangThaiDay == 'Đang dạy' ? 'active' :
+                                                    giaovien.trangThaiDay == 'Chờ dạy' ? 'waiting' :
+                                                    giaovien.trangThaiDay == 'Đã dạy' ? 'finished' : 'inactive'}">
+                                                      ${giaovien.trangThaiDay}
+                                                  </span>
+                                            </td>
 
 
 
-                                        <td class="action-buttons">
-                                            <a class="btn-action view" title="Chi tiết" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=view&id=${giaovien.getID_GiaoVien()}&idTaiKhoan=${giaovien.getID_TaiKhoan()}">
-                                                <i class="fas fa-eye"></i> Chi tiết và chỉnh sửa
-                                            </a>
-                                            <a class="btn-action update" title="Lớp đang dạy" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=viewLopHocGiaoVien&id=${giaovien.getID_GiaoVien()}">
-                                                <i class="fas fa-chalkboard-teacher"></i> Lớp đang dạy
-                                            </a>
 
-                                            <a class="btn-action enable" title="Chỉnh sửa" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=update&id=${giaovien.getID_GiaoVien()}">
-                                                <i class="fas fa-edit"></i> Chuyển lớp
-                                            </a>
-                                        </td>
-                                    </tr>   
-                                </c:forEach>
-                            </tbody>
-                        </table>    
-                    </c:when>
-                    <c:otherwise>   
-                        <div class="no-data">
-                            <c:if test="${not empty message}">
-                                <p style="color: red;">${message}</p>
-                            </c:if>
-                            <p>Không có dữ liệu giáo viên để hiển thị.</p>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
+                                            <td class="action-buttons">
+                                                <a class="btn-action view" title="Chi tiết" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=view&id=${giaovien.getID_GiaoVien()}&idTaiKhoan=${giaovien.getID_TaiKhoan()}">
+                                                    <i class="fas fa-eye"></i> Chi tiết và chỉnh sửa
+                                                </a>
+                                                <a class="btn-action update" title="Lớp đang dạy" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=viewLopHocGiaoVien&id=${giaovien.getID_GiaoVien()}">
+                                                    <i class="fas fa-chalkboard-teacher"></i> Lớp của giáo viên
+                                                </a>
 
-                <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
+                                                <a class="btn-action enable" title="Chỉnh sửa" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=update&id=${giaovien.getID_GiaoVien()}">
+                                                    <i class="fas fa-edit"></i> Chuyển lớp
+                                                </a>
+                                            </td>
+                                        </tr>   
+                                    </c:forEach>
+                                </tbody>
+                            </table>    
+                        </c:when>
+                        <c:otherwise>   
+                            <div class="no-data">
+                                <c:if test="${not empty message}">
+                                    <p style="color: red;">${message}</p>
+                                </c:if>
+                                <p>Không có dữ liệu giáo viên để hiển thị.</p>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
+                </div>
+                <div class="back-button">
+                    <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">← Quay lại trang chủ</a>
+                </div>
             </div>
-            <div class="back-button">
-                <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">← Quay lại trang chủ</a>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>© 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
             </div>
-        </div>
 
-        <!-- Footer -->
-        <div class="footer">
-            <p>© 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
-        </div>
-
-        <script>
-            function toggleDropdown() {
-                const dropdown = document.getElementById('adminDropdown');
-                dropdown.classList.toggle('active');
-            }
-
-            document.addEventListener('click', function (event) {
-                const profile = document.querySelector('.admin-profile');
-                const dropdown = document.getElementById('adminDropdown');
-                if (!profile.contains(event.target)) {
-                    dropdown.classList.remove('active');
+            <script>
+                function toggleDropdown() {
+                    const dropdown = document.getElementById('adminDropdown');
+                    dropdown.classList.toggle('active');
                 }
-            });
-            const tableBody = document.getElementById("teacherTableBody");
-            let allRows = [], filteredRows = [], currentPage = 1;
-            const rowsPerPage = 7;
 
-            window.onload = () => {
-                allRows = Array.from(tableBody.querySelectorAll("tr"));
-                filteredRows = [...allRows];
-                renderPage();
-            };
+                document.addEventListener('click', function (event) {
+                    const profile = document.querySelector('.admin-profile');
+                    const dropdown = document.getElementById('adminDropdown');
+                    if (!profile.contains(event.target)) {
+                        dropdown.classList.remove('active');
+                    }
+                });
+                const tableBody = document.getElementById("teacherTableBody");
+                let allRows = [], filteredRows = [], currentPage = 1;
+                const rowsPerPage = 7;
 
-            function renderPage() {
-                tableBody.innerHTML = "";
-                const start = (currentPage - 1) * rowsPerPage;
-                const end = start + rowsPerPage;
-                filteredRows.slice(start, end).forEach(row => tableBody.appendChild(row));
-                renderPagination();
-            }
+                window.onload = () => {
+                    allRows = Array.from(tableBody.querySelectorAll("tr"));
+                    filteredRows = [...allRows];
+                    renderPage();
+                };
 
-            function renderPagination() {
-                const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
-                const pagination = document.getElementById("pagination");
-                pagination.innerHTML = "";
-                for (let i = 1; i <= totalPages; i++) {
-                    const btn = document.createElement("button");
-                    btn.textContent = i;
-                    if (i === currentPage)
-                        btn.classList.add("active");
-                    btn.onclick = () => {
-                        currentPage = i;
-                        renderPage();
-                    };
-                    pagination.appendChild(btn);
+                function renderPage() {
+                    tableBody.innerHTML = "";
+                    const start = (currentPage - 1) * rowsPerPage;
+                    const end = start + rowsPerPage;
+                    filteredRows.slice(start, end).forEach(row => tableBody.appendChild(row));
+                    renderPagination();
                 }
-            }
-        </script>
 
-    </body>
-</html>
+                function renderPagination() {
+                    const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+                    const pagination = document.getElementById("pagination");
+                    pagination.innerHTML = "";
+
+                    const maxPagesToShow = 3;
+                    let startPage = Math.max(1, currentPage - 1);
+                    let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+
+                    if (endPage - startPage + 1 < maxPagesToShow) {
+                        startPage = Math.max(1, endPage - maxPagesToShow + 1);
+                    }
+
+
+                    if (currentPage > 1) {
+                        const prevBtn = document.createElement("button");
+                        prevBtn.textContent = "«";
+                        prevBtn.onclick = () => {
+                            currentPage--;
+                            renderPage();
+                        };
+                        pagination.appendChild(prevBtn);
+                    }
+
+
+                    for (let i = startPage; i <= endPage; i++) {
+                        const btn = document.createElement("button");
+                        btn.textContent = i;
+                        btn.style.backgroundColor = (i === currentPage) ? "#1F4E79" : "#ddd";
+                        btn.style.color = (i === currentPage) ? "white" : "black";
+                        btn.onclick = () => {
+                            currentPage = i;
+                            renderPage();
+                        };
+                        pagination.appendChild(btn);
+                    }
+
+
+                    if (currentPage < totalPages) {
+                        const nextBtn = document.createElement("button");
+                        nextBtn.textContent = "»";
+                        nextBtn.onclick = () => {
+                            currentPage++;
+                            renderPage();
+                        };
+                        pagination.appendChild(nextBtn);
+                    }
+                }
+            </script>
+
+        </body>
+    </html>
