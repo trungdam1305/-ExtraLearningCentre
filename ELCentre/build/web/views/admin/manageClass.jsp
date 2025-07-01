@@ -567,6 +567,7 @@
                                     <td colspan="7">
                                         <div class="details-content">
                                             <div><strong>Sĩ số tối đa:</strong> ${lopHoc.siSoToiDa != null ? lopHoc.siSoToiDa : 'Chưa có'}</div>
+                                            <div><strong>Sĩ số tối thiểu:</strong> ${lopHoc.siSoToiThieu != null ? lopHoc.siSoToiThieu : 'Chưa có'}</div>
                                             <div><strong>Học phí:</strong> ${lopHoc.soTien != null ? lopHoc.soTien : '0'} VNĐ</div>
                                             <div><strong>Giáo viên:</strong> ${lopHoc.tenGiaoVien != null ? lopHoc.tenGiaoVien : 'Chưa phân công'}</div>
                                             <div><strong>Ghi chú:</strong> ${lopHoc.ghiChu != null ? lopHoc.ghiChu : 'Chưa có'}</div>

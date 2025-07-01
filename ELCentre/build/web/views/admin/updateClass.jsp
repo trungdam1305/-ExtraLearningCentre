@@ -1,9 +1,8 @@
 <%-- 
     Document   : updateClass
-    Created on : Jul 1, 2025, 8:01:20 AM
+    Created on : May 27, 2025, 18:23:02 PM
     Author     : Vuh26
 --%>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -18,75 +17,145 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-        .content-container {
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
             padding: 20px;
+        }
+        .form-container {
             max-width: 800px;
             margin: 0 auto;
-            background-color: #ffffff;
+            background-color: #fff;
+            padding: 25px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        .form-group {
-            margin-bottom: 15px;
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
         }
         .required-label::after {
             content: " *";
             color: #dc3545;
             font-weight: bold;
         }
-        .btn-custom {
-            background-color: #003087;
-            border-color: #003087;
-            color: white;
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea,
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
         }
-        .btn-custom:hover {
-            background-color: #00215a;
-            border-color: #00215a;
+        input[readonly] {
+            background-color: #e9ecef;
+            cursor: not-allowed;
         }
-        .alert-custom-danger {
-            background-color: #ff5733;
-            border-color: #ff5733;
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .btn-primary {
+            background-color: #007bff;
             color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-danger:hover {
+            background-color: #b91c1c;
+        }
+        .alert {
+            border-radius: 8px;
             margin-bottom: 20px;
+            font-size: 14px;
+            text-align: center;
+            padding: 15px;
         }
-        .alert-custom-success {
-            background-color: #28a745;
-            border-color: #28a745;
+        .alert-danger {
+            background-color: #ef4444;
             color: white;
-            margin-bottom: 20px;
+            font-weight: bold;
         }
-        .image-preview {
-            max-width: 200px;
-            max-height: 266px;
-            object-fit: cover;
-            border-radius: 4px;
-            border: 2px solid lightblue;
-            margin-top: 10px;
+        .alert-success {
+            background-color: #22c55e;
+            color: white;
+            font-weight: bold;
         }
         .schedule-row {
             display: flex;
-            align-items: center;
             gap: 10px;
             margin-bottom: 10px;
+            align-items: center;
         }
-        .schedule-row .form-control,
-        .schedule-row .form-select {
+        .schedule-row select,
+        .schedule-row input[type="date"] {
             flex: 1;
         }
-        .schedule-row .btn-remove {
-            background-color: #dc2626;
-            border-color: #dc2626;
-            color: white;
+        .back-button {
+            text-align: center;
+            margin-top: 20px;
         }
-        .schedule-row .btn-remove:hover {
-            background-color: #b91c1c;
-            border-color: #b91c1c;
+        .back-button a {
+            color: white;
+            text-decoration: none;
+        }
+        p.info {
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 15px;
         }
         p.note {
             color: #666;
             font-size: 12px;
             margin-top: -10px;
             margin-bottom: 15px;
+        }
+        img {
+            max-width: 200px;
+            margin-bottom: 10px;
+            border-radius: 6px;
         }
     </style>
 </head>
@@ -131,74 +200,149 @@
         pageContext.setAttribute("idPhongHocs", idPhongHocs);
     %>
 
-    <div class="content-container">
-        <h2 class="text-center mb-4" style="color: #003087;">Cập nhật lớp học</h2>
+    <div class="form-container">
+        <h2>Cập nhật lớp học</h2>
 
+        <!-- Thông báo -->
         <c:if test="${not empty err}">
-            <div class="alert alert-custom-danger" role="alert">${err}</div>
+            <div class="alert alert-danger">${err}</div>
         </c:if>
         <c:if test="${not empty suc}">
-            <div class="alert alert-custom-success" role="alert">${suc}</div>
+            <div class="alert alert-success">${suc}</div>
         </c:if>
-        <c:if test="${empty idLopHoc || empty idKhoaHoc || empty idKhoi}">
-            <div class="alert alert-custom-danger" role="alert">Thiếu tham số ID_LopHoc, ID_KhoaHoc hoặc ID_Khoi.</div>
-        </c:if>
+
+        <!-- Kiểm tra dữ liệu lớp học -->
         <c:if test="${empty lopHoc}">
-            <div class="alert alert-custom-danger" role="alert">Không tìm thấy thông tin lớp học.</div>
+            <div class="alert alert-danger">Không có dữ liệu lớp học để hiển thị!</div>
+            <div class="back-button">
+                <a href="${pageContext.request.contextPath}/ManageClass?action=refresh&ID_Khoi=${ID_Khoi}&ID_KhoaHoc=${ID_KhoaHoc}" class="btn btn-secondary">Quay lại</a>
+            </div>
         </c:if>
 
-        <c:if test="${not empty idLopHoc && not empty idKhoaHoc && not empty idKhoi && not empty lopHoc}">
+        <!-- Kiểm tra danh sách slot và phòng học -->
+        <c:if test="${empty slotHocList || empty phongHocList}">
+            <div class="alert alert-danger">
+                <c:choose>
+                    <c:when test="${empty slotHocList && empty phongHocList}">
+                        Không có slot học và phòng học nào trong hệ thống. Vui lòng thêm dữ liệu trước!
+                    </c:when>
+                    <c:when test="${empty slotHocList}">
+                        Không có slot học nào trong hệ thống. Vui lòng thêm slot học trước!
+                    </c:when>
+                    <c:otherwise>
+                        Không có phòng học nào khả dụng. Vui lòng thêm phòng học!
+                    </c:otherwise>
+                </c:choose>
+            </div>
+            <div class="back-button">
+                <a href="${pageContext.request.contextPath}/ManageClass?action=refresh&ID_Khoi=${ID_Khoi}&ID_KhoaHoc=${ID_KhoaHoc}" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </c:if>
+
+        <!-- Form cập nhật lớp học -->
+        <c:if test="${not empty lopHoc && not empty slotHocList && not empty phongHocList}">
             <form action="${pageContext.request.contextPath}/ManageClass" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="action" value="updateClass" />
-                <input type="hidden" name="ID_LopHoc" value="${idLopHoc}" />
-                <input type="hidden" name="ID_KhoaHoc" value="${idKhoaHoc}" />
-                <input type="hidden" name="ID_Khoi" value="${idKhoi}" />
-                <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
+                <input type="hidden" name="action" value="updateClass">
+                <input type="hidden" name="ID_LopHoc" value="${lopHoc.idLopHoc}">
+                <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}">
+                <input type="hidden" name="ID_Khoi" value="${ID_Khoi}">
+                <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
 
-                <div class="form-group">
-                    <label for="classCode" class="form-label">Mã lớp học:</label>
-                    <input type="text" class="form-control" id="classCode" name="classCode" value="${lopHoc.classCode}" readonly>
-                    <p class="note">Mã lớp học không thể chỉnh sửa.</p>
+                <div class="mb-3">
+                    <label for="tenLopHoc" class="form-label required-label">Tên lớp học:</label>
+                    <input type="text" class="form-control" id="tenLopHoc" name="tenLopHoc" value="${lopHoc.tenLopHoc != null ? lopHoc.tenLopHoc : ''}" maxlength="100" readonly>
+                    <p class="note">Tên lớp học tối đa 100 ký tự. Ví dụ: Lớp Toán Cao Cấp.</p>
                 </div>
 
-                <div class="form-group">
-                    <label for="tenLopHoc" class="form-label">Tên lớp học:</label>
-                    <input type="text" class="form-control" id="tenLopHoc" name="tenLopHoc" value="${lopHoc.tenLopHoc}" readonly>
-                    <p class="note">Tên lớp học không thể chỉnh sửa.</p>
+                <div class="mb-3">
+                    <label for="classCode" class="form-label required-label">Mã lớp học:</label>
+                    <input type="text" class="form-control" id="classCode" name="classCode" value="${lopHoc.classCode != null ? lopHoc.classCode : ''}" maxlength="20" readonly>
+                    <p class="note">Mã lớp học được tự động tạo từ tên lớp học và khối học (ví dụ: Toán Cơ Bản khối 12 → TCB12).</p>
                 </div>
 
-                <div class="form-group">
-                    <label for="siSo" class="form-label">Sĩ số:</label>
-                    <input type="number" class="form-control" id="siSo" name="siSo" value="${lopHoc.siSo}" readonly>
-                    <p class="note">Sĩ số không thể chỉnh sửa trực tiếp.</p>
+                <div class="mb-3">
+                    <label class="form-label">Khóa học:</label>
+                    <p class="info">ID khóa học: <c:out value="${ID_KhoaHoc != null ? ID_KhoaHoc : 'Không xác định'}" /></p>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
+                    <label class="form-label">Khối học:</label>
+                    <p class="info">Khối: 
+                        <c:choose>
+                            <c:when test="${not empty ID_Khoi and ID_Khoi >= 1 and ID_Khoi <= 7}">
+                                Lớp <c:out value="${ID_Khoi + 5}"/>
+                            </c:when>
+                            <c:otherwise>
+                                Tổng ôn
+                            </c:otherwise>
+                        </c:choose>
+                    </p>
+                </div>
+
+                <div class="mb-3">
                     <label for="siSoToiDa" class="form-label required-label">Sĩ số tối đa:</label>
-                    <input type="number" class="form-control" id="siSoToiDa" name="siSoToiDa" value="${not empty param.siSoToiDa ? param.siSoToiDa : lopHoc.siSoToiDa}" min="1">
+                    <input type="number" class="form-control" id="siSoToiDa" name="siSoToiDa" value="${not empty param.siSoToiDa ? param.siSoToiDa : lopHoc.siSoToiDa}" min="${lopHoc.siSo}">
                     <p class="note">Sĩ số tối đa phải lớn hơn hoặc bằng sĩ số hiện tại (${lopHoc.siSo}).</p>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
+                    <label for="siSoToiThieu" class="form-label required-label">Sĩ số tối thiểu:</label>
+                    <input type="number" class="form-control" id="siSoToiThieu" name="siSoToiThieu" value="${not empty param.siSoToiThieu ? param.siSoToiThieu : lopHoc.siSoToiThieu}" min="0">
+                    <p class="note">Sĩ số tối thiểu phải là số không âm và nhỏ hơn hoặc bằng sĩ số tối đa.</p>
+                </div>
+
+                <div class="mb-3">
+                    <label for="ghiChu" class="form-label">Ghi chú:</label>
+                    <textarea class="form-control" id="ghiChu" name="ghiChu" maxlength="500">${not empty param.ghiChu ? param.ghiChu : lopHoc.ghiChu}</textarea>
+                    <p class="note">Ghi chú tối đa 500 ký tự.</p>
+                </div>
+
+                <div class="mb-3">
                     <label for="soTien" class="form-label">Học phí:</label>
                     <input type="number" class="form-control" id="soTien" name="soTien" value="${not empty param.soTien ? param.soTien : lopHoc.soTien}" min="0" step="1">
                     <p class="note">Học phí là số nguyên không âm, tối đa 10 chữ số.</p>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
+                    <label for="trangThai" class="form-label required-label">Trạng thái:</label>
+                    <select class="form-select" id="trangThai" name="trangThai" required>
+                        <option value="">-- Chọn trạng thái --</option>
+                        <option value="Inactive" ${not empty param.trangThai ? (param.trangThai == 'Inactive' ? 'selected' : '') : (lopHoc.trangThai == 'Chưa học' ? 'selected' : '')}>Chưa học</option>
+                        <option value="Active" ${not empty param.trangThai ? (param.trangThai == 'Active' ? 'selected' : '') : (lopHoc.trangThai == 'Đang học' ? 'selected' : '')}>Đang học</option>
+                        <option value="Finished" ${not empty param.trangThai ? (param.trangThai == 'Finished' ? 'selected' : '') : (lopHoc.trangThai == 'Kết thúc' ? 'selected' : '')}>Kết thúc</option>
+                    </select>
+                    <p class="note">Chọn trạng thái phù hợp cho lớp học.</p>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Ảnh đại diện lớp học hiện tại:</label>
+                    <c:if test="${not empty lopHoc.avatarGiaoVien}">
+                        <c:forEach var="avatar" items="${fn:split(lopHoc.avatarGiaoVien, ',')}">
+                            <img src="${pageContext.request.contextPath}/${avatar.trim()}" alt="Ảnh giáo viên" style="max-width: 200px; border-radius: 4px; border: 2px solid lightblue;" />
+                        </c:forEach>
+                    </c:if>
+                    <c:if test="${empty lopHoc.avatarGiaoVien}">
+                        <p>Chưa có ảnh</p>
+                    </c:if>
+                    <label for="image" class="form-label">Tải lên ảnh mới (tùy chọn):</label>
+                    <input type="file" class="form-control" id="image" name="image" accept="image/jpeg,image/png">
+                    <p class="note">Chỉ chấp nhận file ảnh .jpg hoặc .png, kích thước tối đa 3MB.</p>
+                </div>
+
+                <div class="mb-3">
                     <label for="order" class="form-label">Thứ tự:</label>
-                    <input type="number" class="form-control" id="order" name="order" value="${not empty param.order ? param.order : '0'}" min="0" step="1">
+                    <input type="number" class="form-control" id="order" name="order" value="${not empty param.order ? param.order : (lopHoc.order != null ? lopHoc.order : '0')}" min="0" step="1">
                     <p class="note">Thứ tự phải là số không âm.</p>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label class="form-label required-label">Lịch học:</label>
                     <p class="note">Định dạng ngày học: YYYY-MM-DD (ví dụ: 2025-06-30). Tối đa 10 lịch học.</p>
                     <div id="scheduleContainer">
                         <c:choose>
                             <c:when test="${not empty ngayHocs && fn:length(ngayHocs) > 0}">
-                                <c:forEach var="i" begin="0" end="${fn:length(ngayHocs)-1}">
-                                    <div class="schedule-row" id="scheduleRow${i}">
+                                <c:forEach var="i" begin="0" end="${fn:length(ngayHocs) - 1}">
+                                    <div class="schedule-row">
                                         <input type="date" class="form-control" name="ngayHoc[]" value="${not empty paramValues['ngayHoc[]'] && not empty paramValues['ngayHoc[]'][i] ? paramValues['ngayHoc[]'][i] : ngayHocs[i]}">
                                         <select class="form-select" name="idSlotHoc[]">
                                             <option value="">Chọn slot học</option>
@@ -208,16 +352,16 @@
                                         </select>
                                         <select class="form-select" name="idPhongHoc[]">
                                             <option value="">Chọn phòng học</option>
-                                            <c:forEach var="phong" items="${phongHocList}">
-                                                <option value="${phong.ID_PhongHoc}" ${not empty paramValues['idPhongHoc[]'] && not empty paramValues['idPhongHoc[]'][i] ? (paramValues['idPhongHoc[]'][i] == phong.ID_PhongHoc ? 'selected' : '') : (idPhongHocs[i] == phong.ID_PhongHoc ? 'selected' : '')}>${phong.tenPhongHoc} (Sức chứa: ${phong.sucChua})</option>
+                                            <c:forEach var="phongHoc" items="${phongHocList}">
+                                                <option value="${phongHoc.ID_PhongHoc}" ${not empty paramValues['idPhongHoc[]'] && not empty paramValues['idPhongHoc[]'][i] ? (paramValues['idPhongHoc[]'][i] == phongHoc.ID_PhongHoc ? 'selected' : '') : (idPhongHocs[i] == phongHoc.ID_PhongHoc ? 'selected' : '')}>${phongHoc.tenPhongHoc} (Sức chứa: ${phongHoc.sucChua})</option>
                                             </c:forEach>
                                         </select>
-                                        <button type="button" class="btn btn-remove btn-sm" onclick="this.parentElement.remove()">Xóa</button>
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">Xóa</button>
                                     </div>
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
-                                <div class="schedule-row" id="scheduleRow0">
+                                <div class="schedule-row">
                                     <input type="date" class="form-control" name="ngayHoc[]">
                                     <select class="form-select" name="idSlotHoc[]">
                                         <option value="">Chọn slot học</option>
@@ -227,55 +371,24 @@
                                     </select>
                                     <select class="form-select" name="idPhongHoc[]">
                                         <option value="">Chọn phòng học</option>
-                                        <c:forEach var="phong" items="${phongHocList}">
-                                            <option value="${phong.ID_PhongHoc}">${phong.tenPhongHoc} (Sức chứa: ${phong.sucChua})</option>
+                                        <c:forEach var="phongHoc" items="${phongHocList}">
+                                            <option value="${phongHoc.ID_PhongHoc}">${phongHoc.tenPhongHoc} (Sức chứa: ${phongHoc.sucChua})</option>
                                         </c:forEach>
                                     </select>
-                                    <button type="button" class="btn btn-remove btn-sm" onclick="this.parentElement.remove()">Xóa</button>
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">Xóa</button>
                                 </div>
                             </c:otherwise>
                         </c:choose>
                     </div>
-                    <button type="button" class="btn btn-custom mt-2" onclick="addScheduleRow()">Thêm lịch học</button>
+                    <button type="button" class="btn btn-primary mt-2" onclick="addScheduleRow()">Thêm lịch học</button>
                 </div>
 
-                <div class="form-group">
-                    <label for="ghiChu" class="form-label">Ghi chú:</label>
-                    <textarea class="form-control" id="ghiChu" name="ghiChu">${not empty param.ghiChu ? param.ghiChu : lopHoc.ghiChu}</textarea>
-                    <p class="note">Ghi chú tối đa 500 ký tự.</p>
-                </div>
-
-                <div class="form-group">
-                    <label for="trangThai" class="form-label required-label">Trạng thái:</label>
-                    <select class="form-select" id="trangThai" name="trangThai">
-                        <option value="Inactive" ${not empty param.trangThai ? (param.trangThai == 'Inactive' ? 'selected' : '') : (lopHoc.trangThai == 'Chưa học' ? 'selected' : '')}>Chưa học</option>
-                        <option value="Active" ${not empty param.trangThai ? (param.trangThai == 'Active' ? 'selected' : '') : (lopHoc.trangThai == 'Đang học' ? 'selected' : '')}>Đang học</option>
-                        <option value="Finished" ${not empty param.trangThai ? (param.trangThai == 'Finished' ? 'selected' : '') : (lopHoc.trangThai == 'Kết thúc' ? 'selected' : '')}>Kết thúc</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="image" class="form-label">Ảnh lớp học:</label>
-                    <input type="file" class="form-control" id="image" name="image" accept="image/jpeg,image/png">
-                    <c:if test="${not empty lopHoc.avatarGiaoVien}">
-                        <img src="${pageContext.request.contextPath}/${lopHoc.avatarGiaoVien}" alt="Current Image" class="image-preview" />
-                        <p class="note">Chọn file mới để thay đổi ảnh hiện tại. Chỉ chấp nhận .jpg hoặc .png, tối đa 3MB.</p>
-                    </c:if>
-                </div>
-
-                <div class="form-group text-center">
-                    <button type="submit" class="btn btn-custom mt-3">Cập nhật</button>
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                    <a href="${pageContext.request.contextPath}/ManageClass?action=refresh&ID_Khoi=${ID_Khoi}&ID_KhoaHoc=${ID_KhoaHoc}" class="btn btn-secondary">Quay lại</a>
                 </div>
             </form>
         </c:if>
-
-        <div class="text-center mt-3">
-            <c:if test="${not empty idKhoaHoc && not empty idKhoi}">
-                <a href="${pageContext.request.contextPath}/ManageClass?action=refresh&ID_Khoi=${idKhoi}&ID_KhoaHoc=${idKhoaHoc}" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left"></i> Quay lại danh sách lớp học
-                </a>
-            </c:if>
-        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
@@ -285,7 +398,6 @@
             const container = document.getElementById('scheduleContainer');
             const row = document.createElement('div');
             row.className = 'schedule-row';
-            row.id = 'scheduleRow' + container.children.length;
             row.innerHTML = `
                 <input type="date" class="form-control" name="ngayHoc[]">
                 <select class="form-select" name="idSlotHoc[]">
@@ -296,14 +408,59 @@
                 </select>
                 <select class="form-select" name="idPhongHoc[]">
                     <option value="">Chọn phòng học</option>
-                    <c:forEach var="phong" items="${phongHocList}">
-                        <option value="${phong.ID_PhongHoc}">${phong.tenPhongHoc} (Sức chứa: ${phong.sucChua})</option>
+                    <c:forEach var="phongHoc" items="${phongHocList}">
+                        <option value="${phongHoc.ID_PhongHoc}">${phongHoc.tenPhongHoc} (Sức chứa: ${phongHoc.sucChua})</option>
                     </c:forEach>
                 </select>
-                <button type="button" class="btn btn-remove btn-sm" onclick="this.parentElement.remove()">Xóa</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">Xóa</button>
             `;
             container.appendChild(row);
         }
+
+        // Validate siSoToiThieu <= siSoToiDa
+        document.getElementById('siSoToiDa').addEventListener('input', function() {
+            const siSoToiDa = parseInt(this.value);
+            const siSoToiThieuInput = document.getElementById('siSoToiThieu');
+            const siSoToiThieu = parseInt(siSoToiThieuInput.value);
+            if (!isNaN(siSoToiDa) && !isNaN(siSoToiThieu) && siSoToiThieu > siSoToiDa) {
+                siSoToiThieuInput.setCustomValidity('Sĩ số tối thiểu phải nhỏ hơn hoặc bằng sĩ số tối đa.');
+            } else {
+                siSoToiThieuInput.setCustomValidity('');
+            }
+        });
+
+        document.getElementById('siSoToiThieu').addEventListener('input', function() {
+            const siSoToiThieu = parseInt(this.value);
+            const siSoToiDaInput = document.getElementById('siSoToiDa');
+            const siSoToiDa = parseInt(siSoToiDaInput.value);
+            if (!isNaN(siSoToiDa) && !isNaN(siSoToiThieu) && siSoToiThieu > siSoToiDa) {
+                this.setCustomValidity('Sĩ số tối thiểu phải nhỏ hơn hoặc bằng sĩ số tối đa.');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+
+        // Validate file upload
+        document.querySelector('input[name="image"]').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file && !['image/jpeg', 'image/png'].includes(file.type)) {
+                alert('Chỉ chấp nhận file .jpg hoặc .png!');
+                e.target.value = '';
+            }
+        });
+
+        // Confirm before submit
+        document.querySelector('form').addEventListener('submit', function (e) {
+            const trangThai = document.querySelector('[name="trangThai"]').value;
+            if (!["Inactive", "Active", "Finished"].includes(trangThai)) {
+                alert('Vui lòng chọn trạng thái hợp lệ!');
+                e.preventDefault();
+                return;
+            }
+            if (!confirm('Bạn có chắc muốn cập nhật lớp học này?')) {
+                e.preventDefault();
+            }
+        });
     </script>
 </body>
 </html>

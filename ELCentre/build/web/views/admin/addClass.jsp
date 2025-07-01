@@ -229,6 +229,12 @@
                 </div>
 
                 <div class="mb-3">
+                    <label for="siSoToiThieu" class="form-label required-label">Sĩ số tối thiểu:</label>
+                    <input type="number" class="form-control" id="siSoToiThieu" name="siSoToiThieu" value="${siSoToiThieu != null ? siSoToiThieu : ''}" min="0">
+                    <p class="note">Sĩ số tối thiểu phải là số không âm và nhỏ hơn hoặc bằng sĩ số tối đa.</p>
+                </div>
+
+                <div class="mb-3">
                     <label for="ghiChu" class="form-label">Ghi chú:</label>
                     <textarea class="form-control" id="ghiChu" name="ghiChu" maxlength="500">${ghiChu != null ? ghiChu : ''}</textarea>
                     <p class="note">Ghi chú tối đa 500 ký tự.</p>
@@ -335,7 +341,7 @@
             const tenLopHoc = document.getElementById('tenLopHoc').value;
             const idKhoi = parseInt('${ID_Khoi}' || '0');
             const classCodeInput = document.getElementById('classCode');
-                classCodeInput.value = generateClassCode(tenLopHoc, idKhoi);
+            classCodeInput.value = generateClassCode(tenLopHoc, idKhoi);
         }
 
         // Gắn sự kiện input cho tenLopHoc
@@ -366,6 +372,29 @@
             `;
             container.appendChild(row);
         }
+
+        // Validate siSoToiThieu <= siSoToiDa
+        document.getElementById('siSoToiDa').addEventListener('input', function() {
+            const siSoToiDa = parseInt(this.value);
+            const siSoToiThieuInput = document.getElementById('siSoToiThieu');
+            const siSoToiThieu = parseInt(siSoToiThieuInput.value);
+            if (!isNaN(siSoToiDa) && !isNaN(siSoToiThieu) && siSoToiThieu > siSoToiDa) {
+                siSoToiThieuInput.setCustomValidity('Sĩ số tối thiểu phải nhỏ hơn hoặc bằng sĩ số tối đa.');
+            } else {
+                siSoToiThieuInput.setCustomValidity('');
+            }
+        });
+
+        document.getElementById('siSoToiThieu').addEventListener('input', function() {
+            const siSoToiThieu = parseInt(this.value);
+            const siSoToiDaInput = document.getElementById('siSoToiDa');
+            const siSoToiDa = parseInt(siSoToiDaInput.value);
+            if (!isNaN(siSoToiDa) && !isNaN(siSoToiThieu) && siSoToiThieu > siSoToiDa) {
+                this.setCustomValidity('Sĩ số tối thiểu phải nhỏ hơn hoặc bằng sĩ số tối đa.');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
     </script>
 </body>
 </html>

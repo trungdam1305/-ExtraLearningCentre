@@ -15,6 +15,7 @@ public class LopHocInfoDTO {
     private String ClassCode;
     private String tenLopHoc;
     private int siSo;
+    private int siSoToiThieu;
     private int siSoToiDa;
     private String thoiGianHoc;
     private String tenGiaoVien;
@@ -26,6 +27,15 @@ public class LopHocInfoDTO {
     private int order;
     private int idKhoaHoc;
     private int idKhoi;
+
+    public int getSiSoToiThieu() {
+        return siSoToiThieu;
+    }
+
+    public void setSiSoToiThieu(int siSoToiThieu) {
+        this.siSoToiThieu = siSoToiThieu;
+    }
+    
     
 
     public int getOrder() {

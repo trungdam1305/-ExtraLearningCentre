@@ -39,7 +39,7 @@ public class ManageClass extends HttpServlet {
     private static final int MAX_SCHEDULES = 10;
 
     private void setCommonAttributes(HttpServletRequest request, String classCode, String tenLopHoc, Integer siSoToiDa,
-                                     String ghiChu, String trangThai, String soTien, Integer order,
+                                     Integer siSoToiThieu, String ghiChu, String trangThai, String soTien, Integer order,
                                      String[] ngayHocs, String[] idSlotHocs, String[] idPhongHocs,
                                      int idKhoaHoc, int idKhoi) {
         HttpSession session = request.getSession();
@@ -59,6 +59,7 @@ public class ManageClass extends HttpServlet {
         request.setAttribute("classCode", classCode);
         request.setAttribute("tenLopHoc", tenLopHoc);
         request.setAttribute("siSoToiDa", siSoToiDa);
+        request.setAttribute("siSoToiThieu", siSoToiThieu);
         request.setAttribute("ghiChu", ghiChu);
         request.setAttribute("trangThai", trangThai);
         request.setAttribute("soTien", soTien);
@@ -88,6 +89,7 @@ public class ManageClass extends HttpServlet {
         String tenLopHoc = request.getParameter("tenLopHoc");
         String trangThai = request.getParameter("trangThai");
         String siSoToiDaStr = request.getParameter("siSoToiDa");
+        String siSoToiThieuStr = request.getParameter("siSoToiThieu");
         String soTienStr = request.getParameter("soTien");
         String orderStr = request.getParameter("order");
         String ghiChu = request.getParameter("ghiChu");
@@ -131,6 +133,23 @@ public class ManageClass extends HttpServlet {
             }
         } catch (NumberFormatException e) {
             return "Sĩ số tối đa không hợp lệ!";
+        }
+
+        // Validate siSoToiThieu
+        int siSoToiThieu;
+        if (siSoToiThieuStr == null || siSoToiThieuStr.trim().isEmpty()) {
+            return "Sĩ số tối thiểu không được để trống!";
+        }
+        try {
+            siSoToiThieu = Integer.parseInt(siSoToiThieuStr);
+            if (siSoToiThieu < 0) {
+                return "Sĩ số tối thiểu không được nhỏ hơn 0!";
+            }
+            if (siSoToiThieu > siSoToiDa) {
+                return "Sĩ số tối thiểu không được lớn hơn sĩ số tối đa!";
+            }
+        } catch (NumberFormatException e) {
+            return "Sĩ số tối thiểu không hợp lệ!";
         }
 
         // Validate soTien
@@ -266,7 +285,7 @@ public class ManageClass extends HttpServlet {
         KhoaHoc khoaHoc = khoaHocDAO.getKhoaHocById(idKhoaHoc);
         if (khoaHoc == null || khoaHoc.getID_Khoi() != idKhoi) {
             request.setAttribute("err", "Khóa học không tồn tại hoặc ID_Khoi không khớp!");
-            setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, idKhoaHoc, idKhoi);
+            setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, null, idKhoaHoc, idKhoi);
             request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
             return;
         }
@@ -490,7 +509,7 @@ public class ManageClass extends HttpServlet {
 
         if (idKhoaStr == null || idKhoaStr.trim().isEmpty() || idKhoiStr == null || idKhoiStr.trim().isEmpty()) {
             request.setAttribute("err", "ID_KhoaHoc hoặc ID_Khoi không được để trống!");
-            setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, -1, -1);
+            setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, null, -1, -1);
             request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
             return;
         }
@@ -503,7 +522,7 @@ public class ManageClass extends HttpServlet {
         } catch (NumberFormatException e) {
             System.out.println("Invalid ID_KhoaHoc/ID_Khoi: " + e.getMessage());
             request.setAttribute("err", "ID_KhoaHoc hoặc ID_Khoi không hợp lệ.");
-            setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, -1, -1);
+            setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, null, -1, -1);
             request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
             return;
         }
@@ -515,7 +534,7 @@ public class ManageClass extends HttpServlet {
         if (khoaHoc == null || khoaHoc.getID_Khoi() != idKhoi) {
             System.out.println("Invalid course or ID_Khoi mismatch");
             request.setAttribute("err", "Khóa học không tồn tại hoặc ID_Khoi không khớp!");
-            setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, idKhoaHoc, idKhoi);
+            setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, null, idKhoaHoc, idKhoi);
             request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
             return;
         }
@@ -528,6 +547,8 @@ public class ManageClass extends HttpServlet {
                 String soTienStr = request.getParameter("soTien");
                 String ghiChu = request.getParameter("ghiChu");
                 String orderStr = request.getParameter("order");
+                String siSoToiDaStr = request.getParameter("siSoToiDa");
+                String siSoToiThieuStr = request.getParameter("siSoToiThieu");
                 String[] ngayHocs = request.getParameterValues("ngayHoc[]");
                 String[] idSlotHocs = request.getParameterValues("idSlotHoc[]");
                 String[] idPhongHocs = request.getParameterValues("idPhongHoc[]");
@@ -536,13 +557,17 @@ public class ManageClass extends HttpServlet {
                 String validationError = validateFormData(request, false, 0);
                 if (validationError != null) {
                     System.out.println("Validation error in addClass: " + validationError);
-                    setCommonAttributes(request, classCode, tenLopHoc, null, ghiChu, trangThai, soTienStr, null, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                    Integer siSoToiDa = siSoToiDaStr != null && !siSoToiDaStr.trim().isEmpty() ? Integer.parseInt(siSoToiDaStr) : null;
+                    Integer siSoToiThieu = siSoToiThieuStr != null && !siSoToiThieuStr.trim().isEmpty() ? Integer.parseInt(siSoToiThieuStr) : null;
+                    Integer order = orderStr != null && !orderStr.trim().isEmpty() ? Integer.parseInt(orderStr) : null;
+                    setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
                     request.setAttribute("err", validationError);
                     request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
                     return;
                 }
 
-                int siSoToiDa = Integer.parseInt(request.getParameter("siSoToiDa"));
+                int siSoToiDa = Integer.parseInt(siSoToiDaStr);
+                int siSoToiThieu = Integer.parseInt(siSoToiThieuStr);
                 int soTien = soTienStr != null && !soTienStr.trim().isEmpty() ? Integer.parseInt(soTienStr) : 0;
                 int order = orderStr != null && !orderStr.trim().isEmpty() ? Integer.parseInt(orderStr) : 0;
 
@@ -571,7 +596,7 @@ public class ManageClass extends HttpServlet {
                         if (!uploadDir.canWrite()) {
                             System.out.println("Cannot write to Uploads directory");
                             request.setAttribute("err", "Không có quyền ghi vào thư mục Uploads!");
-                            setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                            setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
                             request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
                             return;
                         }
@@ -581,7 +606,7 @@ public class ManageClass extends HttpServlet {
                 } catch (IOException | ServletException e) {
                     System.out.println("Image upload error: " + e.getMessage());
                     request.setAttribute("err", "Lỗi khi upload ảnh: " + e.getMessage());
-                    setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                    setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
                     request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
                     return;
                 }
@@ -601,18 +626,19 @@ public class ManageClass extends HttpServlet {
                     soTien,
                     imagePath,
                     siSoToiDa,
-                    order
+                    order,
+                    siSoToiThieu
                 );
                 System.out.println("addLopHoc time: " + (System.currentTimeMillis() - startTime) + "ms");
 
                 if (result.getLopHoc() != null) {
-                   request.setAttribute("suc", result.getErrorMessage() != null ? result.getErrorMessage() : "Thêm lớp học thành công!");
-                    setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                    request.setAttribute("suc", "Thêm lớp học thành công!");
+                    setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
                     request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
                 } else {
                     System.out.println("addLopHoc failed: " + result.getErrorMessage());
                     request.setAttribute("err", result.getErrorMessage() != null ? result.getErrorMessage() : "Lỗi khi thêm lớp học!");
-                    setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                    setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
                     request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
                 }
             } else if ("deleteClass".equalsIgnoreCase(action)) {
@@ -674,7 +700,7 @@ public class ManageClass extends HttpServlet {
                 if (idLopHocStr == null || idLopHocStr.trim().isEmpty()) {
                     System.out.println("Missing ID_LopHoc for update");
                     request.setAttribute("err", "ID_LopHoc không được để trống!");
-                    setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, idKhoaHoc, idKhoi);
+                    setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, null, idKhoaHoc, idKhoi);
                     request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
                     return;
                 }
@@ -685,7 +711,7 @@ public class ManageClass extends HttpServlet {
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid ID_LopHoc for update: " + e.getMessage());
                     request.setAttribute("err", "ID_LopHoc không hợp lệ!");
-                    setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, idKhoaHoc, idKhoi);
+                    setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, null, idKhoaHoc, idKhoi);
                     request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
                     return;
                 }
@@ -705,6 +731,8 @@ public class ManageClass extends HttpServlet {
                 String trangThai = request.getParameter("trangThai");
                 String soTienStr = request.getParameter("soTien");
                 String orderStr = request.getParameter("order");
+                String siSoToiDaStr = request.getParameter("siSoToiDa");
+                String siSoToiThieuStr = request.getParameter("siSoToiThieu");
                 String[] ngayHocs = request.getParameterValues("ngayHoc[]");
                 String[] idSlotHocs = request.getParameterValues("idSlotHoc[]");
                 String[] idPhongHocs = request.getParameterValues("idPhongHoc[]");
@@ -713,13 +741,17 @@ public class ManageClass extends HttpServlet {
                 String validationError = validateFormData(request, true, siSo);
                 if (validationError != null) {
                     System.out.println("Validation error in updateClass: " + validationError);
-                    setCommonAttributes(request, classCode, tenLopHoc, null, ghiChu, trangThai, soTienStr, null, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                    Integer siSoToiDa = siSoToiDaStr != null && !siSoToiDaStr.trim().isEmpty() ? Integer.parseInt(siSoToiDaStr) : null;
+                    Integer siSoToiThieu = siSoToiThieuStr != null && !siSoToiThieuStr.trim().isEmpty() ? Integer.parseInt(siSoToiThieuStr) : null;
+                    Integer order = orderStr != null && !orderStr.trim().isEmpty() ? Integer.parseInt(orderStr) : null;
+                    setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
                     request.setAttribute("err", validationError);
                     request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
                     return;
                 }
 
-                int siSoToiDa = Integer.parseInt(request.getParameter("siSoToiDa"));
+                int siSoToiDa = Integer.parseInt(siSoToiDaStr);
+                int siSoToiThieu = Integer.parseInt(siSoToiThieuStr);
                 int soTien = soTienStr != null && !soTienStr.trim().isEmpty() ? Integer.parseInt(soTienStr) : 0;
                 int order = orderStr != null && !orderStr.trim().isEmpty() ? Integer.parseInt(orderStr) : 0;
 
@@ -748,7 +780,7 @@ public class ManageClass extends HttpServlet {
                         if (!uploadDir.canWrite()) {
                             System.out.println("Cannot write to Uploads directory");
                             request.setAttribute("err", "Không có quyền ghi vào thư mục Uploads!");
-                            setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                            setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
                             request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
                             return;
                         }
@@ -758,7 +790,7 @@ public class ManageClass extends HttpServlet {
                 } catch (IOException | ServletException e) {
                     System.out.println("Image upload error in updateClass: " + e.getMessage());
                     request.setAttribute("err", "Lỗi khi upload ảnh: " + e.getMessage());
-                    setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                    setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
                     request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
                     return;
                 }
@@ -779,29 +811,51 @@ public class ManageClass extends HttpServlet {
                     soTien,
                     imagePath,
                     siSoToiDa,
-                    order
+                    order,
+                    siSoToiThieu
                 );
                 System.out.println("updateLopHoc time: " + (System.currentTimeMillis() - startTime) + "ms");
 
                 if (result.getLopHoc() != null) {
-                    response.sendRedirect(request.getContextPath() + "/ManageClass?action=ViewCourse&ID_KhoaHoc=" + idKhoaHoc + "&ID_Khoi=" + idKhoi);
+                  request.setAttribute("suc", "Thêm lớp học thành công!");
+                    setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                    request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
                 } else {
                     System.out.println("updateLopHoc failed: " + result.getErrorMessage());
                     request.setAttribute("err", result.getErrorMessage() != null ? result.getErrorMessage() : "Lỗi khi cập nhật lớp học!");
-                    setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                    setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
                     request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
                 }
             } else {
                 System.out.println("Invalid action: " + action);
                 request.setAttribute("err", "Hành động không hợp lệ!");
-                setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, idKhoaHoc, idKhoi);
+                setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, null, idKhoaHoc, idKhoi);
                 request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
             }
         } catch (Exception e) {
             System.out.println("doPost error: " + e.getMessage());
             e.printStackTrace();
             request.setAttribute("err", "Lỗi xử lý yêu cầu: " + e.getMessage());
-            setCommonAttributes(request, request.getParameter("classCode"), request.getParameter("tenLopHoc"), null, request.getParameter("ghiChu"), request.getParameter("trangThai"), request.getParameter("soTien"), null, request.getParameterValues("ngayHoc[]"), request.getParameterValues("idSlotHoc[]"), request.getParameterValues("idPhongHoc[]"), idKhoaHoc, idKhoi);
+            String siSoToiDaStr = request.getParameter("siSoToiDa");
+            String siSoToiThieuStr = request.getParameter("siSoToiThieu");
+            String orderStr = request.getParameter("order");
+            Integer siSoToiDa = siSoToiDaStr != null && !siSoToiDaStr.trim().isEmpty() ? Integer.parseInt(siSoToiDaStr) : null;
+            Integer siSoToiThieu = siSoToiThieuStr != null && !siSoToiThieuStr.trim().isEmpty() ? Integer.parseInt(siSoToiThieuStr) : null;
+            Integer order = orderStr != null && !orderStr.trim().isEmpty() ? Integer.parseInt(orderStr) : null;
+            setCommonAttributes(request, 
+                               request.getParameter("classCode"), 
+                               request.getParameter("tenLopHoc"), 
+                               siSoToiDa, 
+                               siSoToiThieu, 
+                               request.getParameter("ghiChu"), 
+                               request.getParameter("trangThai"), 
+                               request.getParameter("soTien"), 
+                               order, 
+                               request.getParameterValues("ngayHoc[]"), 
+                               request.getParameterValues("idSlotHoc[]"), 
+                               request.getParameterValues("idPhongHoc[]"), 
+                               idKhoaHoc, 
+                               idKhoi);
             request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
         }
     }
