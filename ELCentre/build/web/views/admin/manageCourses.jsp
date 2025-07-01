@@ -351,6 +351,26 @@
                     flex: 1 1 100%;
                 }
             }
+
+            /* Status badge styling */
+            .status-badge {
+                padding: 5px 10px;
+                border-radius: 12px;
+                font-size: 0.9rem;
+                font-weight: 500;
+            }
+            .status-dang-hoc {
+                background-color: #22c55e;
+                color: white;
+            }
+            .status-ket-thuc {
+                background-color: #ef4444;
+                color: white;
+            }
+            .status-chua-hoc {
+                background-color: #6b7280;
+                color: white;
+            }
         </style>
     </head>
     <body>
@@ -478,7 +498,26 @@
                                             </c:choose>
                                         </td>
                                         <td>${course.getOrder()}</td>
-                                        <td>${course.getTrangThai()}</td>
+
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${course.trangThai == 'Đang hoạt động'}">
+                                                    <span class="status-badge status-dang-hoc">Đang hoạt động</span>
+                                                </c:when>
+                                                <c:when test="${course.trangThai == 'Đã kết thúc'}">
+                                                    <span class="status-badge status-ket-thuc">Đã kết thúc</span>
+                                                </c:when>
+                                                <c:when test="${course.trangThai == 'Đã kết thúc'}">
+                                                    <span class="status-badge status-chua-hoc">Đã kết thúc</span>
+                                                </c:when>
+                                                <c:when test="${course.trangThai == 'Chưa bắt đầu'}">
+                                                    <span class="status-badge status-chua-hoc">Chưa bắt đầu</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span>${course.trangThai != null ? course.trangThai : 'Chưa có'}</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
                                         <td>
                                             <c:choose>
                                                 <c:when test="${not empty course.image}">
