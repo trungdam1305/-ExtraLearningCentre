@@ -26,6 +26,7 @@ public class LopHocInfoDTO {
     private int order;
     private int idKhoaHoc;
     private int idKhoi;
+    
 
     public int getOrder() {
         return order;

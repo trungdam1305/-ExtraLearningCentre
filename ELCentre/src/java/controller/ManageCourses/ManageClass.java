@@ -606,7 +606,9 @@ public class ManageClass extends HttpServlet {
                 System.out.println("addLopHoc time: " + (System.currentTimeMillis() - startTime) + "ms");
 
                 if (result.getLopHoc() != null) {
-                    response.sendRedirect(request.getContextPath() + "/ManageClass?action=ViewCourse&ID_KhoaHoc=" + idKhoaHoc + "&ID_Khoi=" + idKhoi);
+                   request.setAttribute("suc", result.getErrorMessage() != null ? result.getErrorMessage() : "Thêm lớp học thành công!");
+                    setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                    request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
                 } else {
                     System.out.println("addLopHoc failed: " + result.getErrorMessage());
                     request.setAttribute("err", result.getErrorMessage() != null ? result.getErrorMessage() : "Lỗi khi thêm lớp học!");

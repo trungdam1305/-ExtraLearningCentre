@@ -199,8 +199,8 @@
 
                 <div class="mb-3">
                     <label for="classCode" class="form-label required-label">Mã lớp học:</label>
-                    <input type="text" class="form-control" id="classCode" name="classCode" value="${classCode != null ? classCode : ''}" maxlength="20">
-                    <p class="note">Mã lớp học chỉ chứa chữ cái và số, tối đa 20 ký tự.</p>
+                    <input type="text" class="form-control" id="classCode" name="classCode" value="${classCode != null ? classCode : ''}" maxlength="20" readonly>
+                    <p class="note">Mã lớp học được tự động tạo từ tên lớp học và khối học (ví dụ: Toán Cơ Bản khối 12 → TCB12).</p>
                 </div>
 
                 <div class="mb-3">
@@ -309,6 +309,41 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <script>
+        function removeVietnameseAccents(str) {
+            return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd').replace(/Đ/g, 'D');
+        }
+
+        function generateClassCode(className, idKhoi) {
+            if (!className) return '';
+            
+            // Loại bỏ dấu tiếng Việt và chuyển thành chữ thường
+            className = removeVietnameseAccents(className).toLowerCase();
+            
+            // Lấy chữ cái đầu của mỗi từ
+            let initials = className.split(/\s+/).map(word => word.charAt(0).toUpperCase()).join('');
+            
+            // Tính số khối (ID_Khoi từ 1 đến 7 tương ứng lớp 6 đến 12)
+            let grade = idKhoi >= 1 && idKhoi <= 7 ? (idKhoi + 5) : 0;
+            // Định dạng số khối thành 2 chữ số (ví dụ: 9 → "09", 12 → "12")
+            let gradeStr = grade > 0 ? grade.toString().padStart(2, '0') : '';
+            
+            return initials + gradeStr;
+        }
+
+        function updateClassCode() {
+            const tenLopHoc = document.getElementById('tenLopHoc').value;
+            const idKhoi = parseInt('${ID_Khoi}' || '0');
+            const classCodeInput = document.getElementById('classCode');
+                classCodeInput.value = generateClassCode(tenLopHoc, idKhoi);
+        }
+
+        // Gắn sự kiện input cho tenLopHoc
+        document.getElementById('tenLopHoc').addEventListener('input', updateClassCode);
+
+        // Cập nhật mã lớp học khi trang tải
+        window.addEventListener('load', updateClassCode);
+
         function addScheduleRow() {
             const container = document.getElementById('scheduleContainer');
             const row = document.createElement('div');
@@ -334,4 +369,3 @@
     </script>
 </body>
 </html>
-
