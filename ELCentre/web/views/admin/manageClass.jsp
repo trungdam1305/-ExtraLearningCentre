@@ -1,7 +1,19 @@
+<%-- 
+    Document   : manageClass
+    Created on : May 30, 2025, 10:33:02 PM
+    Author     : Vuh26
+--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page import="java.util.UUID" %>
+<%@ page import="dal.LopHocInfoDTODAO" %>
+<%@ page import="dal.GiaoVienDAO" %>
+<%@ page import="model.LopHocInfoDTO" %>
+<%@ page import="model.GiaoVien" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Set" %>
+<%@ page import="java.util.HashSet" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -22,7 +34,6 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
         /* Header styling */
         .header-row {
             text-align: center;
@@ -33,7 +44,6 @@
             font-size: 2rem;
             font-weight: 600;
         }
-
         /* Action and search row */
         .action-search-row {
             display: flex;
@@ -41,6 +51,7 @@
             align-items: center;
             gap: 10px;
             margin-bottom: 20px;
+            flex-wrap: nowrap; /* Ngăn xuống hàng, giữ tất cả trên một hàng */
         }
         .action-search-row .form-control,
         .action-search-row .form-select {
@@ -50,6 +61,7 @@
             transition: border-color 0.3s ease;
             height: 38px;
             font-size: 0.95rem;
+            width: 150px; /* Đặt chiều rộng cố định để đồng nhất */
         }
         .action-search-row .form-control:focus,
         .action-search-row .form-select:focus {
@@ -61,8 +73,8 @@
             display: flex;
             align-items: center;
             padding: 0 16px;
+            white-space: nowrap; /* Ngăn nút bị ngắt dòng */
         }
-
         /* Custom button styling */
         .btn-custom-action {
             background-color: #003087;
@@ -80,7 +92,6 @@
         .btn-custom-action i {
             margin-right: 5px;
         }
-
         /* Table styling */
         .table-container {
             display: flex;
@@ -97,7 +108,7 @@
         }
         .table {
             width: 100%;
-            min-width: 1400px;
+            min-width: 1000px;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -121,7 +132,6 @@
             vertical-align: middle;
             text-align: center;
         }
-
         /* Sort styling */
         .table th.sorted {
             border: 3px solid #2563eb;
@@ -156,7 +166,6 @@
             border-color: #0288d1;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-
         /* Action buttons in table */
         .table .btn-sm {
             margin-right: 5px;
@@ -191,7 +200,42 @@
             background-color: #4b5563;
             border-color: #4b5563;
         }
-
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+        .btn-info:hover {
+            background-color: #117a8b;
+            border-color: #117a8b;
+        }
+        /* Collapsible row styling */
+        .details-row {
+            display: none;
+            background-color: #f8f9fa;
+        }
+        .details-row td {
+            padding: 20px;
+            border-top: 1px solid #dee2e6;
+        }
+        .details-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .details-content div {
+            flex: 1 1 45%;
+            font-size: 0.95rem;
+        }
+        .details-content div strong {
+            color: #003087;
+        }
+        .details-content img {
+            width: 100px !important;
+            height: 130px !important;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 2px solid lightblue;
+        }
         /* Pagination styling */
         .pagination-container {
             display: flex;
@@ -215,7 +259,6 @@
             background-color: #e6f0fa;
             color: #00215a;
         }
-
         /* Alerts */
         .alert-custom-success {
             background-color: #22c55e;
@@ -233,7 +276,6 @@
             padding: 15px;
             margin-bottom: 20px;
         }
-
         /* Dashboard button */
         .dashboard-button {
             text-align: center;
@@ -244,7 +286,6 @@
             padding: 10px 20px;
             font-size: 1rem;
         }
-
         /* Scroll to top button */
         #scrollToTopBtn {
             display: none;
@@ -266,7 +307,6 @@
         #scrollToTopBtn:hover {
             background-color: #0056b3;
         }
-
         /* Modal styling */
         .modal-content {
             border-radius: 8px;
@@ -282,25 +322,6 @@
             border-radius: 6px;
             padding: 8px 16px;
         }
-
-        /* Image column */
-        .teacher-column {
-            width: 130px;
-        }
-        .table tbody tr {
-            height: 160px;
-        }
-        .table td img {
-            width: 100px !important;
-            height: 130px !important;
-            object-fit: cover;
-            display: block;
-            margin: 0 auto;
-            border-radius: 4px;
-            border: 2px solid lightblue;
-            margin-bottom: 5px;
-        }
-
         /* Status badge styling */
         .status-badge {
             padding: 5px 10px;
@@ -320,7 +341,6 @@
             background-color: #6b7280;
             color: white;
         }
-
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .content-container {
@@ -354,6 +374,9 @@
                 width: 40px;
                 height: 40px;
                 font-size: 16px;
+            }
+            .details-content div {
+                flex: 1 1 100%;
             }
         }
     </style>
@@ -406,19 +429,39 @@
                 <a href="${pageContext.request.contextPath}/ManageClass?action=refresh&ID_Khoi=${ID_Khoi}&ID_KhoaHoc=${ID_KhoaHoc}" class="btn btn-custom-action">
                     <i class="bi bi-arrow-clockwise"></i> Làm mới
                 </a>
-                <form action="${pageContext.request.contextPath}/ManageClass" method="get" id="filterForm" style="display: flex; align-items: center; gap: 10px;">
-                    <input type="hidden" name="action" value="search" />
+                <form action="${pageContext.request.contextPath}/ManageClass" method="get" id="filterForm" style="display: flex; align-items: center; gap: 10px; flex-wrap: nowrap;">
+                    <input type="hidden" name="action" value="filter" />
                     <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}" />
                     <input type="hidden" name="ID_Khoi" value="${ID_Khoi}" />
                     <input type="hidden" name="page" value="${page != null ? page : 1}" />
                     <input type="hidden" name="sortColumn" value="${sortColumn != null ? sortColumn : 'TenLopHoc'}" />
                     <input type="hidden" name="sortOrder" value="${sortOrder != null ? sortOrder : 'asc'}" />
-                    <input type="text" class="form-control" id="name" name="name" value="<c:out value='${searchName}'/>" placeholder="Nhập tên hoặc mã lớp học">
-                    <select class="form-select" id="sortName" name="sortName" onchange="this.form.action.value = 'filterStatus'; this.form.submit();">
+                    <input type="text" class="form-control" id="searchQuery" name="searchQuery" value="<c:out value='${searchQuery}'/>" placeholder="Nhập tên hoặc mã lớp học">
+                    <select class="form-select" id="sortName" name="sortName" onchange="this.form.submit();">
                         <option value="" ${sortName == null || sortName.isEmpty() ? 'selected' : ''}>Tất cả trạng thái</option>
                         <option value="Đang học" ${sortName == 'Đang học' ? 'selected' : ''}>Đang học</option>
                         <option value="Kết thúc" ${sortName == 'Kết thúc' ? 'selected' : ''}>Kết thúc</option>
                         <option value="Chưa học" ${sortName == 'Chưa học' ? 'selected' : ''}>Chưa học</option>
+                    </select>
+                    <select class="form-select" id="teacherFilter" name="teacherFilter" onchange="this.form.submit();">
+                        <option value="" ${teacherFilter == null || teacherFilter.isEmpty() ? 'selected' : ''}>Tất cả giáo viên</option>
+                        <c:forEach var="teacher" items="${teacherList}">
+                            <option value="${teacher.ID_GiaoVien}" ${teacherFilter == teacher.ID_GiaoVien ? 'selected' : ''}>${teacher.hoTen}</option>
+                        </c:forEach>
+                    </select>
+                    <select class="form-select" id="feeFilter" name="feeFilter" onchange="this.form.submit();">
+                        <option value="" ${feeFilter == null || feeFilter.isEmpty() ? 'selected' : ''}>Tất cả học phí</option>
+                        <option value="0-50000" ${feeFilter == '0-50000' ? 'selected' : ''}>0 - 50,000</option>
+                        <option value="50000-100000" ${feeFilter == '50000-100000' ? 'selected' : ''}>50,000 - 100,000</option>
+                        <option value="100000-200000" ${feeFilter == '100000-200000' ? 'selected' : ''}>100,000 - 200,000</option>
+                    </select>
+                    <select class="form-select" id="orderFilter" name="orderFilter" onchange="this.form.submit();">
+                        <option value="" ${orderFilter == null || orderFilter.isEmpty() ? 'selected' : ''}>Tất cả thứ tự</option>
+                        <option value="1" ${orderFilter == '1' ? 'selected' : ''}>1</option>
+                        <option value="2" ${orderFilter == '2' ? 'selected' : ''}>2</option>
+                        <option value="3" ${orderFilter == '3' ? 'selected' : ''}>3</option>
+                        <option value="4" ${orderFilter == '4' ? 'selected' : ''}>4</option>
+                        <option value="5" ${orderFilter == '5' ? 'selected' : ''}>5</option>
                     </select>
                     <button type="submit" class="btn btn-custom-action"><i class="bi bi-search"></i> Tìm</button>
                 </form>
@@ -438,47 +481,32 @@
                             <tr>
                                 <th class="${sortColumn == 'ClassCode' ? 'sorted' : ''}">
                                     Mã lớp học
-                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=ClassCode&sortOrder=asc&name=${searchName}&page=${page}&sortName=${sortName}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'ClassCode' && sortOrder == 'asc' ? 'active' : ''}" aria-label="Sắp xếp mã lớp học tăng dần"><i class="bi bi-caret-up-fill"></i></a>
-                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=ClassCode&sortOrder=desc&name=${searchName}&page=${page}&sortName=${sortName}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'ClassCode' && sortOrder == 'desc' ? 'active' : ''}" aria-label="Sắp xếp mã lớp học giảm dần"><i class="bi bi-caret-down-fill"></i></a>
+                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=ClassCode&sortOrder=asc&searchQuery=${searchQuery}&page=${page}&sortName=${sortName}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'ClassCode' && sortOrder == 'asc' ? 'active' : ''}" aria-label="Sắp xếp mã lớp học tăng dần"><i class="bi bi-caret-up-fill"></i></a>
+                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=ClassCode&sortOrder=desc&searchQuery=${searchQuery}&page=${page}&sortName=${sortName}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'ClassCode' && sortOrder == 'desc' ? 'active' : ''}" aria-label="Sắp xếp mã lớp học giảm dần"><i class="bi bi-caret-down-fill"></i></a>
                                 </th>
                                 <th class="${sortColumn == 'TenLopHoc' ? 'sorted' : ''}">
                                     Tên lớp học
-                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=TenLopHoc&sortOrder=asc&name=${searchName}&page=${page}&sortName=${sortName}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'TenLopHoc' && sortOrder == 'asc' ? 'active' : ''}" aria-label="Sắp xếp tên lớp học tăng dần"><i class="bi bi-caret-up-fill"></i></a>
-                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=TenLopHoc&sortOrder=desc&name=${searchName}&page=${page}&sortName=${sortName}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'TenLopHoc' && sortOrder == 'desc' ? 'active' : ''}" aria-label="Sắp xếp tên lớp học giảm dần"><i class="bi bi-caret-down-fill"></i></a>
+                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=TenLopHoc&sortOrder=asc&searchQuery=${searchQuery}&page=${page}&sortName=${sortName}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'TenLopHoc' && sortOrder == 'asc' ? 'active' : ''}" aria-label="Sắp xếp tên lớp học tăng dần"><i class="bi bi-caret-up-fill"></i></a>
+                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=TenLopHoc&sortOrder=desc&searchQuery=${searchQuery}&page=${page}&sortName=${sortName}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'TenLopHoc' && sortOrder == 'desc' ? 'active' : ''}" aria-label="Sắp xếp tên lớp học giảm dần"><i class="bi bi-caret-down-fill"></i></a>
                                 </th>
                                 <th class="${sortColumn == 'SiSo' ? 'sorted' : ''}">
                                     Sĩ số
-                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=SiSo&sortOrder=asc&name=${searchName}&page=${page}&sortName=${sortName}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'SiSo' && sortOrder == 'asc' ? 'active' : ''}" aria-label="Sắp xếp sĩ số tăng dần"><i class="bi bi-caret-up-fill"></i></a>
-                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=SiSo&sortOrder=desc&name=${searchName}&page=${page}&sortName=${sortName}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'SiSo' && sortOrder == 'desc' ? 'active' : ''}" aria-label="Sắp xếp sĩ số giảm dần"><i class="bi bi-caret-down-fill"></i></a>
+                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=SiSo&sortOrder=asc&searchQuery=${searchQuery}&page=${page}&sortName=${sortName}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'SiSo' && sortOrder == 'asc' ? 'active' : ''}" aria-label="Sắp xếp sĩ số tăng dần"><i class="bi bi-caret-up-fill"></i></a>
+                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=SiSo&sortOrder=desc&searchQuery=${searchQuery}&page=${page}&sortName=${sortName}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'SiSo' && sortOrder == 'desc' ? 'active' : ''}" aria-label="Sắp xếp sĩ số giảm dần"><i class="bi bi-caret-down-fill"></i></a>
                                 </th>
-                                <th class="${sortColumn == 'SiSoToiDa' ? 'sorted' : ''}">
-                                    Sĩ số tối đa
-                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=SiSoToiDa&sortOrder=asc&name=${searchName}&page=${page}&sortName=${sortName}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'SiSoToiDa' && sortOrder == 'asc' ? 'active' : ''}" aria-label="Sắp xếp sĩ số tối đa tăng dần"><i class="bi bi-caret-up-fill"></i></a>
-                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=SiSoToiDa&sortOrder=desc&name=${searchName}&page=${page}&sortName=${sortName}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'SiSoToiDa' && sortOrder == 'desc' ? 'active' : ''}" aria-label="Sắp xếp sĩ số tối đa giảm dần"><i class="bi bi-caret-down-fill"></i></a>
+                                <th>
+                                    Thời gian học
                                 </th>
-                                <th class="${sortColumn == 'SoTien' ? 'sorted' : ''}">
-                                    Học phí
-                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=SoTien&sortOrder=asc&name=${searchName}&page=${page}&sortName=${sortName}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'SoTien' && sortOrder == 'asc' ? 'active' : ''}" aria-label="Sắp xếp học phí tăng dần"><i class="bi bi-caret-up-fill"></i></a>
-                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=SoTien&sortOrder=desc&name=${searchName}&page=${page}&sortName=${sortName}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'SoTien' && sortOrder == 'desc' ? 'active' : ''}" aria-label="Sắp xếp học phí giảm dần"><i class="bi bi-caret-down-fill"></i></a>
-                                </th>
-                                <th>Thời gian học</th>
-                                <th>Giáo viên</th>
-                                <th class="${sortColumn == 'GhiChu' ? 'sorted' : ''}">
-                                    Ghi chú
-                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=GhiChu&sortOrder=asc&name=${searchName}&page=${page}&sortName=${sortName}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'GhiChu' && sortOrder == 'asc' ? 'active' : ''}" aria-label="Sắp xếp ghi chú tăng dần"><i class="bi bi-caret-up-fill"></i></a>
-                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=GhiChu&sortOrder=desc&name=${searchName}&page=${page}&sortName=${sortName}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'GhiChu' && sortOrder == 'desc' ? 'active' : ''}" aria-label="Sắp xếp ghi chú giảm dần"><i class="bi bi-caret-down-fill"></i></a>
+                                <th class="${sortColumn == 'Order' ? 'sorted' : ''}">
+                                    Thứ tự ưu tiên
+                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=Order&sortOrder=asc&searchQuery=${searchQuery}&page=${page}&sortName=${sortName}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'Order' && sortOrder == 'asc' ? 'active' : ''}" aria-label="Sắp xếp thứ tự tăng dần"><i class="bi bi-caret-up-fill"></i></a>
+                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=Order&sortOrder=desc&searchQuery=${searchQuery}&page=${page}&sortName=${sortName}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'Order' && sortOrder == 'desc' ? 'active' : ''}" aria-label="Sắp xếp thứ tự giảm dần"><i class="bi bi-caret-down-fill"></i></a>
                                 </th>
                                 <th class="${sortColumn == 'TrangThai' ? 'sorted' : ''}">
                                     Trạng thái
-                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=TrangThai&sortOrder=asc&name=${searchName}&page=${page}&sortName=${sortName}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'TrangThai' && sortOrder == 'asc' ? 'active' : ''}" aria-label="Sắp xếp trạng thái tăng dần"><i class="bi bi-caret-up-fill"></i></a>
-                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=TrangThai&sortOrder=desc&name=${searchName}&page=${page}&sortName=${sortName}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'TrangThai' && sortOrder == 'desc' ? 'active' : ''}" aria-label="Sắp xếp trạng thái giảm dần"><i class="bi bi-caret-down-fill"></i></a>
+                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=TrangThai&sortOrder=asc&searchQuery=${searchQuery}&page=${page}&sortName=${sortName}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'TrangThai' && sortOrder == 'asc' ? 'active' : ''}" aria-label="Sắp xếp trạng thái tăng dần"><i class="bi bi-caret-up-fill"></i></a>
+                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=TrangThai&sortOrder=desc&searchQuery=${searchQuery}&page=${page}&sortName=${sortName}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'TrangThai' && sortOrder == 'desc' ? 'active' : ''}" aria-label="Sắp xếp trạng thái giảm dần"><i class="bi bi-caret-down-fill"></i></a>
                                 </th>
-                                <th class="${sortColumn == 'NgayTao' ? 'sorted' : ''}">
-                                    Ngày khởi tạo
-                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=NgayTao&sortOrder=asc&name=${searchName}&page=${page}&sortName=${sortName}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'NgayTao' && sortOrder == 'asc' ? 'active' : ''}" aria-label="Sắp xếp ngày khởi tạo tăng dần"><i class="bi bi-caret-up-fill"></i></a>
-                                    <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=NgayTao&sortOrder=desc&name=${searchName}&page=${page}&sortName=${sortName}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'NgayTao' && sortOrder == 'desc' ? 'active' : ''}" aria-label="Sắp xếp ngày khởi tạo giảm dần"><i class="bi bi-caret-down-fill"></i></a>
-                                </th>
-                                <th class="teacher-column">Ảnh giáo viên</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -488,8 +516,6 @@
                                     <td>${lopHoc.classCode != null ? lopHoc.classCode : 'Chưa có'}</td>
                                     <td>${lopHoc.tenLopHoc != null ? lopHoc.tenLopHoc : 'Chưa có'}</td>
                                     <td>${lopHoc.siSo != null ? lopHoc.siSo : '0'}</td>
-                                    <td>${lopHoc.siSoToiDa != null ? lopHoc.siSoToiDa : 'Chưa có'}</td>
-                                    <td>${lopHoc.soTien != null ? lopHoc.soTien : '0'} VNĐ</td>
                                     <td>
                                         <c:choose>
                                             <c:when test="${not empty lopHoc.thoiGianHoc}">
@@ -504,8 +530,7 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
-                                    <td>${lopHoc.tenGiaoVien != null ? lopHoc.tenGiaoVien : 'Chưa phân công'}</td>
-                                    <td>${lopHoc.ghiChu != null ? lopHoc.ghiChu : 'Chưa có'}</td>
+                                    <td>${lopHoc.order != null ? lopHoc.order : '0'}</td>
                                     <td>
                                         <c:choose>
                                             <c:when test="${lopHoc.trangThai == 'Đang học'}">
@@ -522,20 +547,10 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
-                                    <td>${lopHoc.ngayTao != null ? lopHoc.ngayTao : 'Chưa có'}</td>
-                                    <td class="teacher-column">
-                                        <c:choose>
-                                            <c:when test="${not empty lopHoc.avatarGiaoVien}">
-                                                <c:forEach var="avatar" items="${fn:split(lopHoc.avatarGiaoVien, ',')}">
-                                                    <img src="${pageContext.request.contextPath}/${avatar.trim()}" alt="Ảnh giáo viên" style="width: 100px; height: 130px; object-fit: cover; border-radius: 4px; border: 2px solid lightblue; margin-bottom: 5px;" />
-                                                </c:forEach>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <span>Chưa có ảnh</span>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
                                     <td>
+                                        <button type="button" class="btn btn-info btn-sm toggle-details" data-id="${lopHoc.idLopHoc}">
+                                            <i class="bi bi-info-circle"></i> Xem chi tiết
+                                        </button>
                                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="${lopHoc.idLopHoc}" aria-label="Xóa lớp học">
                                             <i class="bi bi-trash"></i> Xóa
                                         </button>
@@ -545,6 +560,31 @@
                                         <a href="${pageContext.request.contextPath}/ManageClassDetail?ID_LopHoc=${lopHoc.idLopHoc}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="btn btn-secondary btn-sm" aria-label="Xem lớp học">
                                             <i class="bi bi-eye"></i> Xem danh sách lớp
                                         </a>
+                                    </td>
+                                </tr>
+                                <!-- Hàng chi tiết (ẩn mặc định) -->
+                                <tr class="details-row" id="details-${lopHoc.idLopHoc}">
+                                    <td colspan="7">
+                                        <div class="details-content">
+                                            <div><strong>Sĩ số tối đa:</strong> ${lopHoc.siSoToiDa != null ? lopHoc.siSoToiDa : 'Chưa có'}</div>
+                                            <div><strong>Học phí:</strong> ${lopHoc.soTien != null ? lopHoc.soTien : '0'} VNĐ</div>
+                                            <div><strong>Giáo viên:</strong> ${lopHoc.tenGiaoVien != null ? lopHoc.tenGiaoVien : 'Chưa phân công'}</div>
+                                            <div><strong>Ghi chú:</strong> ${lopHoc.ghiChu != null ? lopHoc.ghiChu : 'Chưa có'}</div>
+                                            <div><strong>Ngày khởi tạo:</strong> ${lopHoc.ngayTao != null ? lopHoc.ngayTao : 'Chưa có'}</div>
+                                            <div>
+                                                <strong>Ảnh giáo viên:</strong><br>
+                                                <c:choose>
+                                                    <c:when test="${not empty lopHoc.avatarGiaoVien}">
+                                                        <c:forEach var="avatar" items="${fn:split(lopHoc.avatarGiaoVien, ',')}">
+                                                            <img src="${pageContext.request.contextPath}/${avatar.trim()}" alt="Ảnh giáo viên" />
+                                                        </c:forEach>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span>Chưa có ảnh</span>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -557,13 +597,13 @@
                     <nav aria-label="Phân trang">
                         <ul class="pagination">
                             <li class="page-item">
-                                <a class="page-link" href="${pageContext.request.contextPath}/ManageClass?action=paginate&page=1&sortName=${sortName}&name=${searchName}&sortColumn=${sortColumn}&sortOrder=${sortOrder}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" aria-label="Trang đầu">
+                                <a class="page-link" href="${pageContext.request.contextPath}/ManageClass?action=paginate&page=1&sortName=${sortName}&searchQuery=${searchQuery}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&sortColumn=${sortColumn}&sortOrder=${sortOrder}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" aria-label="Trang đầu">
                                     <span aria-hidden="true">««</span>
                                 </a>
                             </li>
                             <c:if test="${page > 1}">
                                 <li class="page-item">
-                                    <a class="page-link" href="${pageContext.request.contextPath}/ManageClass?action=paginate&page=${page - 1}&sortName=${sortName}&name=${searchName}&sortColumn=${sortColumn}&sortOrder=${sortOrder}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" aria-label="Trang trước">
+                                    <a class="page-link" href="${pageContext.request.contextPath}/ManageClass?action=paginate&page=${page - 1}&sortName=${sortName}&searchQuery=${searchQuery}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&sortColumn=${sortColumn}&sortOrder=${sortOrder}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" aria-label="Trang trước">
                                         <span aria-hidden="true">«</span>
                                     </a>
                                 </li>
@@ -583,18 +623,18 @@
                             </c:if>
                             <c:forEach var="i" begin="${startPage}" end="${endPage}">
                                 <li class="page-item ${i == page ? 'active' : ''}">
-                                    <a class="page-link" href="${pageContext.request.contextPath}/ManageClass?action=paginate&page=${i}&sortName=${sortName}&name=${searchName}&sortColumn=${sortColumn}&sortOrder=${sortOrder}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}">${i}</a>
+                                    <a class="page-link" href="${pageContext.request.contextPath}/ManageClass?action=paginate&page=${i}&sortName=${sortName}&searchQuery=${searchQuery}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&sortColumn=${sortColumn}&sortOrder=${sortOrder}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}">${i}</a>
                                 </li>
                             </c:forEach>
                             <c:if test="${page < totalPages}">
                                 <li class="page-item">
-                                    <a class="page-link" href="${pageContext.request.contextPath}/ManageClass?action=paginate&page=${page + 1}&sortName=${sortName}&name=${searchName}&sortColumn=${sortColumn}&sortOrder=${sortOrder}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" aria-label="Trang sau">
+                                    <a class="page-link" href="${pageContext.request.contextPath}/ManageClass?action=paginate&page=${page + 1}&sortName=${sortName}&searchQuery=${searchQuery}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&sortColumn=${sortColumn}&sortOrder=${sortOrder}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" aria-label="Trang sau">
                                         <span aria-hidden="true">»</span>
                                     </a>
                                 </li>
                             </c:if>
                             <li class="page-item">
-                                <a class="page-link" href="${pageContext.request.contextPath}/ManageClass?action=paginate&page=${totalPages}&sortName=${sortName}&name=${searchName}&sortColumn=${sortColumn}&sortOrder=${sortOrder}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" aria-label="Trang cuối">
+                                <a class="page-link" href="${pageContext.request.contextPath}/ManageClass?action=paginate&page=${totalPages}&sortName=${sortName}&searchQuery=${searchQuery}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&sortColumn=${sortColumn}&sortOrder=${sortOrder}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" aria-label="Trang cuối">
                                     <span aria-hidden="true">»»</span>
                                 </a>
                             </li>
@@ -677,6 +717,19 @@
         document.querySelectorAll('.btn-custom-action').forEach(button => {
             button.addEventListener('click', function() {
                 document.querySelectorAll('.sort-link').forEach(l => l.classList.remove('active'));
+            });
+        });
+
+        // Toggle hàng chi tiết
+        document.querySelectorAll('.toggle-details').forEach(button => {
+            button.addEventListener('click', function () {
+                const id = this.getAttribute('data-id');
+                const detailsRow = document.getElementById('details-' + id);
+                const isVisible = detailsRow.style.display === 'table-row';
+                detailsRow.style.display = isVisible ? 'none' : 'table-row';
+                this.innerHTML = isVisible
+                    ? '<i class="bi bi-info-circle"></i> Xem chi tiết'
+                    : '<i class="bi bi-x-circle"></i> Ẩn chi tiết';
             });
         });
     </script>

@@ -16,9 +16,10 @@
             <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/web/views/Home-Blog/Home-Blog-Content.jsp</file>
         </group>
         <group>
-            <file>file:/C:/Users/Vuh26/Desktop/DaSuaXongAddClass/ELCentre/web/views/admin/addClass.jsp</file>
-            <file>file:/C:/Users/Vuh26/Desktop/DaSuaXongAddClass/ELCentre/src/java/dal/LopHocInfoDTODAO.java</file>
-            <file>file:/C:/Users/Vuh26/Desktop/DaSuaXongAddClass/ELCentre/src/java/controller/ManageCourses/ManageClass.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/ccccaq/-ExtraLearningCentre/ELCentre/web/views/admin/manageClass.jsp</file>
+            <file>file:/C:/Users/Vuh26/Desktop/ccccaq/-ExtraLearningCentre/ELCentre/web/views/admin/manageCourses.jsp</file>
+            <file>file:/C:/Users/Vuh26/Desktop/ccccaq/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageCourse.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/ccccaq/-ExtraLearningCentre/ELCentre/src/java/dal/LopHocInfoDTODAO.java</file>
         </group>
     </open-files>
 </project-private>

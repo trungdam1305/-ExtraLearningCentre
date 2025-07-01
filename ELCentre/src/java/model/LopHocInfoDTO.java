@@ -23,6 +23,33 @@ public class LopHocInfoDTO {
     private LocalDateTime ngayTao;
     private int SoTien;
     private String avatarGiaoVien;
+    private int order;
+    private int idKhoaHoc;
+    private int idKhoi;
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    public int getIdKhoaHoc() {
+        return idKhoaHoc;
+    }
+
+    public void setIdKhoaHoc(int idKhoaHoc) {
+        this.idKhoaHoc = idKhoaHoc;
+    }
+
+    public int getIdKhoi() {
+        return idKhoi;
+    }
+
+    public void setIdKhoi(int idKhoi) {
+        this.idKhoi = idKhoi;
+    }
     
     // Constructor
     public LopHocInfoDTO() {

@@ -55,8 +55,7 @@ public class LopHocInfoDTODAO {
     public boolean isDuplicateClass(String tenLopHoc, String classCode, int idKhoaHoc) {
         DBContext db = DBContext.getInstance();
         String sql = "SELECT COUNT(*) FROM LopHoc WHERE (TenLopHoc = ? OR ClassCode = ?) AND ID_KhoaHoc = ?";
-        try (Connection conn = db.getConnection();
-             PreparedStatement statement = conn.prepareStatement(sql)) {
+        try (Connection conn = db.getConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setString(1, tenLopHoc);
             statement.setString(2, classCode);
             statement.setInt(3, idKhoaHoc);
@@ -140,8 +139,8 @@ public class LopHocInfoDTODAO {
             }
 
             // Kiểm tra dữ liệu lịch học
-            if (ngayHocs == null || idSlotHocs == null || idPhongHocs == null || 
-                ngayHocs.size() != idSlotHocs.size() || ngayHocs.size() != idPhongHocs.size()) {
+            if (ngayHocs == null || idSlotHocs == null || idPhongHocs == null
+                    || ngayHocs.size() != idSlotHocs.size() || ngayHocs.size() != idPhongHocs.size()) {
                 return "Dữ liệu lịch học không hợp lệ!";
             }
             if (ngayHocs.isEmpty()) {
@@ -234,8 +233,8 @@ public class LopHocInfoDTODAO {
             }
             return null; // Không có dữ liệu liên quan
         } catch (SQLException e) {
-            System.out.println("SQL Error in checkRelatedRecords: " + e.getMessage() + 
-                               " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+            System.out.println("SQL Error in checkRelatedRecords: " + e.getMessage()
+                    + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
             e.printStackTrace();
             return "Lỗi cơ sở dữ liệu khi kiểm tra dữ liệu liên quan: " + e.getMessage();
         }
@@ -246,23 +245,21 @@ public class LopHocInfoDTODAO {
 
         // Kiểm tra lớp học có tồn tại
         String checkExistSql = "SELECT TrangThai FROM LopHoc WHERE ID_LopHoc = ?";
-        try (Connection conn = db.getConnection();
-             PreparedStatement checkStmt = conn.prepareStatement(checkExistSql)) {
+        try (Connection conn = db.getConnection(); PreparedStatement checkStmt = conn.prepareStatement(checkExistSql)) {
             checkStmt.setInt(1, idLopHoc);
             ResultSet rs = checkStmt.executeQuery();
             if (!rs.next()) {
                 System.out.println("deleteLopHoc: Class not found for ID_LopHoc=" + idLopHoc);
                 return new OperationResult(false, "Lớp học không tồn tại!");
             }
-            // Kiểm tra trạng thái nếu cần (chỉ xóa khi trạng thái là "Chưa học")
             String trangThai = rs.getString("TrangThai");
             if (!"Chưa học".equalsIgnoreCase(trangThai)) {
                 System.out.println("deleteLopHoc: Cannot delete class ID_LopHoc=" + idLopHoc + " due to invalid status: " + trangThai);
                 return new OperationResult(false, "Không thể xóa lớp học vì trạng thái không phù hợp (" + trangThai + ")!");
             }
         } catch (SQLException e) {
-            System.out.println("SQL Error in deleteLopHoc (check existence): " + e.getMessage() + 
-                               " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+            System.out.println("SQL Error in deleteLopHoc (check existence): " + e.getMessage()
+                    + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
             e.printStackTrace();
             return new OperationResult(false, "Lỗi cơ sở dữ liệu khi kiểm tra lớp học: " + e.getMessage());
         }
@@ -276,8 +273,7 @@ public class LopHocInfoDTODAO {
 
         // Thực hiện xóa
         String sql = "DELETE FROM LopHoc WHERE ID_LopHoc = ?";
-        try (Connection conn = db.getConnection();
-             PreparedStatement statement = conn.prepareStatement(sql)) {
+        try (Connection conn = db.getConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setInt(1, idLopHoc);
             int rs = statement.executeUpdate();
             if (rs > 0) {
@@ -288,14 +284,16 @@ public class LopHocInfoDTODAO {
                 return new OperationResult(false, "Không thể xóa lớp học, kiểm tra ID!");
             }
         } catch (SQLException e) {
-            System.out.println("SQL Error in deleteLopHoc: " + e.getMessage() + 
-                               " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+            System.out.println("SQL Error in deleteLopHoc: " + e.getMessage()
+                    + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
             e.printStackTrace();
             return new OperationResult(false, "Lỗi cơ sở dữ liệu khi xóa lớp học: " + e.getMessage());
         }
     }
 
-    public List<LopHocInfoDTO> getLopHocInfoList(String name, String statusFilter, int page, int pageSize, int idKhoaHoc, int idKhoi, String sortColumn, String sortOrder) {
+    public List<LopHocInfoDTO> getLopHocInfoList(String searchQuery, String statusFilter, int page, int pageSize,
+                                                 int idKhoaHoc, int idKhoi, String sortColumn, String sortOrder,
+                                                 String teacherFilter, String feeFilter, String orderFilter) {
         List<LopHocInfoDTO> list = new ArrayList<>();
         DBContext db = DBContext.getInstance();
         StringBuilder sql = new StringBuilder("""
@@ -305,6 +303,7 @@ public class LopHocInfoDTODAO {
                 lh.TenLopHoc,
                 lh.SiSo,
                 lh.SiSoToiDa,
+                lh.[Order],
                 STRING_AGG(CONCAT(lich.NgayHoc, ' ', sh.SlotThoiGian, ' (', ph.TenPhongHoc, ')'), '; ') AS ThoiGianHoc,
                 STRING_AGG(gv.HoTen, ', ') AS TenGiaoVien,
                 lh.GhiChu,
@@ -329,17 +328,67 @@ public class LopHocInfoDTODAO {
             WHERE 
                 lh.ID_KhoaHoc = ? AND kh.ID_Khoi = ?
         """);
+
         List<Object> params = new ArrayList<>();
         params.add(idKhoaHoc);
         params.add(idKhoi);
 
-        if (name != null && !name.trim().isEmpty()) {
-            sql.append(" AND lh.TenLopHoc LIKE ? ");
-            params.add("%" + name.trim() + "%");
+        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+            sql.append(" AND (lh.TenLopHoc LIKE ? OR lh.ClassCode LIKE ?) ");
+            params.add("%" + searchQuery.trim() + "%");
+            params.add("%" + searchQuery.trim() + "%");
         }
+
         if (statusFilter != null && !statusFilter.trim().isEmpty()) {
             sql.append(" AND lh.TrangThai = ? ");
             params.add(statusFilter.trim());
+        }
+
+        if (teacherFilter != null && !teacherFilter.trim().isEmpty()) {
+            try {
+                int idGiaoVien = Integer.parseInt(teacherFilter);
+                sql.append(" AND glh.ID_GiaoVien = ? ");
+                params.add(idGiaoVien);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid teacherFilter: " + teacherFilter);
+            }
+        }
+
+        if (feeFilter != null && !feeFilter.trim().isEmpty()) {
+            switch (feeFilter) {
+                case "0-50000":
+                    sql.append(" AND lh.SoTien BETWEEN ? AND ? ");
+                    params.add(0);
+                    params.add(50000);
+                    break;
+                case "50000-100000":
+                    sql.append(" AND lh.SoTien BETWEEN ? AND ? ");
+                    params.add(50000);
+                    params.add(100000);
+                    break;
+                case "100000-200000":
+                    sql.append(" AND lh.SoTien BETWEEN ? AND ? ");
+                    params.add(100000);
+                    params.add(200000);
+                    break;
+                default:
+                    System.out.println("Invalid feeFilter: " + feeFilter);
+                    break;
+            }
+        }
+
+        if (orderFilter != null && !orderFilter.trim().isEmpty()) {
+            try {
+                int orderValue = Integer.parseInt(orderFilter);
+                if (orderValue >= 1 && orderValue <= 5) {
+                    sql.append(" AND lh.[Order] = ? ");
+                    params.add(orderValue);
+                } else {
+                    System.out.println("Invalid orderFilter value: " + orderFilter + " (must be 1, 2, 3, 4, or 5)");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid orderFilter: " + orderFilter + " (not a valid integer)");
+            }
         }
 
         sql.append("""
@@ -349,6 +398,7 @@ public class LopHocInfoDTODAO {
                 lh.TenLopHoc,
                 lh.SiSo,
                 lh.SiSoToiDa,
+                lh.[Order],
                 lh.GhiChu,
                 lh.TrangThai,
                 lh.NgayTao,
@@ -356,15 +406,12 @@ public class LopHocInfoDTODAO {
         """);
 
         if (sortColumn != null && !sortColumn.isEmpty()) {
-            sql.append(" ORDER BY ").append(sortColumn);
-            if (sortOrder != null && sortOrder.equalsIgnoreCase("desc")) {
-                sql.append(" DESC");
-            } else {
-                sql.append(" ASC");
-            }
+            sql.append(" ORDER BY lh.").append(sortColumn);
+            sql.append(sortOrder != null && sortOrder.equalsIgnoreCase("desc") ? " DESC" : " ASC");
         } else {
             sql.append(" ORDER BY lh.ID_LopHoc DESC");
         }
+
         sql.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
         int offset = (page - 1) * pageSize;
         params.add(offset);
@@ -372,17 +419,20 @@ public class LopHocInfoDTODAO {
 
         try (Connection conn = db.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql.toString())) {
+
             for (int i = 0; i < params.size(); i++) {
                 statement.setObject(i + 1, params.get(i));
             }
+
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 LopHocInfoDTO info = new LopHocInfoDTO();
                 info.setIdLopHoc(rs.getInt("ID_LopHoc"));
                 info.setClassCode(rs.getString("ClassCode"));
                 info.setTenLopHoc(rs.getString("TenLopHoc"));
-                info.setSiSo(rs.getInt("SiSo") != 0 ? rs.getInt("SiSo") : 0);
-                info.setSiSoToiDa(rs.getInt("SiSoToiDa") != 0 ? rs.getInt("SiSoToiDa") : 0);
+                info.setSiSo(rs.getInt("SiSo"));
+                info.setSiSoToiDa(rs.getInt("SiSoToiDa"));
+                info.setOrder(rs.getInt("Order"));
                 info.setThoiGianHoc(rs.getString("ThoiGianHoc") != null ? rs.getString("ThoiGianHoc") : "");
                 info.setTenGiaoVien(rs.getString("TenGiaoVien") != null ? rs.getString("TenGiaoVien") : "");
                 info.setGhiChu(rs.getString("GhiChu") != null ? rs.getString("GhiChu") : "");
@@ -396,44 +446,102 @@ public class LopHocInfoDTODAO {
                 info.setAvatarGiaoVien(rs.getString("AvatarGiaoVien") != null ? rs.getString("AvatarGiaoVien") : "");
                 list.add(info);
             }
-            System.out.println("getLopHocInfoList: Retrieved " + list.size() + " classes for ID_KhoaHoc=" + idKhoaHoc + ", ID_Khoi=" + idKhoi + ", name=" + name + ", status=" + statusFilter);
+
+            System.out.println("getLopHocInfoList: Retrieved " + list.size() + " classes for ID_KhoaHoc=" + idKhoaHoc +
+                    ", ID_Khoi=" + idKhoi + ", searchQuery=" + searchQuery + ", status=" + statusFilter +
+                    ", teacherFilter=" + teacherFilter + ", feeFilter=" + feeFilter + ", orderFilter=" + orderFilter);
         } catch (SQLException e) {
-            System.out.println("SQL Error in getLopHocInfoList: " + e.getMessage() + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+            System.out.println("SQL Error in getLopHocInfoList: " + e.getMessage() +
+                    " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
             e.printStackTrace();
         }
+
         return list;
     }
 
-    public List<LopHocInfoDTO> getLopHocInfoList(String name, String statusFilter, int page, int pageSize, int idKhoaHoc, int idKhoi) {
-        return getLopHocInfoList(name, statusFilter, page, pageSize, idKhoaHoc, idKhoi, null, null);
-    }
-
-    public int countClasses(String name, String statusFilter, int idKhoaHoc, int idKhoi) {
+    public int countClasses(String searchQuery, String statusFilter, int idKhoaHoc, int idKhoi, String teacherFilter, String feeFilter, String orderFilter) {
         int count = 0;
         DBContext db = DBContext.getInstance();
-        String sql = """
+        StringBuilder sql = new StringBuilder("""
             SELECT COUNT(*) 
             FROM [dbo].[LopHoc] l
             INNER JOIN [dbo].[KhoaHoc] k ON l.ID_KhoaHoc = k.ID_KhoaHoc
+            LEFT JOIN [dbo].[GiaoVien_LopHoc] glh ON l.ID_LopHoc = glh.ID_LopHoc
             WHERE l.ID_KhoaHoc = ? AND k.ID_Khoi = ?
-            """ + (name != null && !name.isEmpty() ? "AND l.TenLopHoc LIKE ? " : "") +
-            (statusFilter != null && !statusFilter.isEmpty() ? "AND l.TrangThai = ? " : "");
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            int paramIndex = 1;
-            ps.setInt(paramIndex++, idKhoaHoc);
-            ps.setInt(paramIndex++, idKhoi);
-            if (name != null && !name.isEmpty()) {
-                ps.setString(paramIndex++, "%" + name + "%");
+        """);
+        List<Object> params = new ArrayList<>();
+        params.add(idKhoaHoc);
+        params.add(idKhoi);
+
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            sql.append(" AND (l.TenLopHoc LIKE ? OR l.ClassCode LIKE ?) ");
+            params.add("%" + searchQuery + "%");
+            params.add("%" + searchQuery + "%");
+        }
+
+        if (statusFilter != null && !statusFilter.isEmpty()) {
+            sql.append(" AND l.TrangThai = ? ");
+            params.add(statusFilter);
+        }
+
+        if (teacherFilter != null && !teacherFilter.isEmpty()) {
+            try {
+                int idGiaoVien = Integer.parseInt(teacherFilter);
+                sql.append(" AND glh.ID_GiaoVien = ? ");
+                params.add(idGiaoVien);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid teacherFilter: " + teacherFilter);
             }
-            if (statusFilter != null && !statusFilter.isEmpty()) {
-                ps.setString(paramIndex++, statusFilter);
+        }
+
+        if (feeFilter != null && !feeFilter.isEmpty()) {
+            switch (feeFilter) {
+                case "0-50000":
+                    sql.append(" AND l.SoTien BETWEEN ? AND ? ");
+                    params.add(0);
+                    params.add(50000);
+                    break;
+                case "50000-100000":
+                    sql.append(" AND l.SoTien BETWEEN ? AND ? ");
+                    params.add(50000);
+                    params.add(100000);
+                    break;
+                case "100000-200000":
+                    sql.append(" AND l.SoTien BETWEEN ? AND ? ");
+                    params.add(100000);
+                    params.add(200000);
+                    break;
+                default:
+                    System.out.println("Invalid feeFilter: " + feeFilter);
+                    break;
+            }
+        }
+
+        if (orderFilter != null && !orderFilter.isEmpty()) {
+            try {
+                int orderValue = Integer.parseInt(orderFilter);
+                if (orderValue >= 1 && orderValue <= 5) {
+                    sql.append(" AND l.[Order] = ? ");
+                    params.add(orderValue);
+                } else {
+                    System.out.println("Invalid orderFilter value: " + orderFilter + " (must be 1, 2, 3, 4, or 5)");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid orderFilter: " + orderFilter + " (not a valid integer)");
+            }
+        }
+
+        try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
             }
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 count = rs.getInt(1);
             }
-            System.out.println("countClasses: Counted " + count + " classes for ID_KhoaHoc=" + idKhoaHoc + ", ID_Khoi=" + idKhoi + ", name=" + name + ", status=" + statusFilter);
+            System.out.println("countClasses: Counted " + count + " classes for ID_KhoaHoc=" + idKhoaHoc + ", ID_Khoi=" + idKhoi +
+                    ", searchQuery=" + searchQuery + ", status=" + statusFilter + ", teacherFilter=" + teacherFilter +
+                    ", feeFilter=" + feeFilter + ", orderFilter=" + orderFilter);
         } catch (SQLException e) {
             System.out.println("SQL Error in countClasses: " + e.getMessage() + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
             e.printStackTrace();
@@ -449,8 +557,7 @@ public class LopHocInfoDTODAO {
             FROM LichHoc lh
             WHERE lh.ID_SlotHoc = ? AND lh.NgayHoc = ?
         """;
-        try (Connection conn = db.getConnection();
-             PreparedStatement statement = conn.prepareStatement(sql)) {
+        try (Connection conn = db.getConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setInt(1, idSlotHoc);
             statement.setDate(2, java.sql.Date.valueOf(ngayHoc));
             ResultSet rs = statement.executeQuery();
@@ -474,6 +581,7 @@ public class LopHocInfoDTODAO {
                 lh.TenLopHoc,
                 lh.SiSo,
                 lh.SiSoToiDa,
+                lh.[Order],
                 STRING_AGG(CONCAT(lich.NgayHoc, ' ', sh.SlotThoiGian, ' (', ph.TenPhongHoc, ')'), '; ') AS ThoiGianHoc,
                 STRING_AGG(gv.HoTen, ', ') AS TenGiaoVien,
                 lh.GhiChu,
@@ -503,13 +611,13 @@ public class LopHocInfoDTODAO {
                 lh.TenLopHoc,
                 lh.SiSo,
                 lh.SiSoToiDa,
+                lh.[Order],
                 lh.GhiChu,
                 lh.TrangThai,
                 lh.NgayTao,
                 lh.SoTien
         """;
-        try (Connection conn = db.getConnection();
-             PreparedStatement statement = conn.prepareStatement(sqlSelect)) {
+        try (Connection conn = db.getConnection(); PreparedStatement statement = conn.prepareStatement(sqlSelect)) {
             statement.setInt(1, idLopHoc);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
@@ -519,6 +627,7 @@ public class LopHocInfoDTODAO {
                 info.setTenLopHoc(rs.getString("TenLopHoc"));
                 info.setSiSo(rs.getInt("SiSo") != 0 ? rs.getInt("SiSo") : 0);
                 info.setSiSoToiDa(rs.getInt("SiSoToiDa") != 0 ? rs.getInt("SiSoToiDa") : 0);
+                info.setOrder(rs.getInt("Order"));
                 info.setThoiGianHoc(rs.getString("ThoiGianHoc") != null ? rs.getString("ThoiGianHoc") : "");
                 info.setTenGiaoVien(rs.getString("TenGiaoVien") != null ? rs.getString("TenGiaoVien") : "");
                 info.setGhiChu(rs.getString("GhiChu") != null ? rs.getString("GhiChu") : "");
@@ -548,8 +657,7 @@ public class LopHocInfoDTODAO {
             SET SiSo = ?
             WHERE ID_LopHoc = ?
         """;
-        try (Connection conn = db.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, siSo);
             stmt.setInt(2, idLopHoc);
             int rowsAffected = stmt.executeUpdate();
@@ -562,7 +670,6 @@ public class LopHocInfoDTODAO {
         }
     }
 
-    // Phương thức ánh xạ trạng thái
     private String mapTrangThai(String trangThai) {
         if (trangThai == null) {
             return "Chưa học";
@@ -575,12 +682,11 @@ public class LopHocInfoDTODAO {
             case "inactive":
                 return "Chưa học";
             default:
-                return "Chưa học"; // Mặc định nếu trạng thái không khớp
+                return "Chưa học";
         }
     }
 
     public AddLopHocResult addLopHoc(String tenLopHoc, String classCode, int idKhoaHoc, int idKhoi, int siSo, List<Integer> idSlotHocs, List<String> ngayHocs, List<Integer> idPhongHocs, String ghiChu, String trangThai, int soTien, String image, int siSoToiDa, int order) {
-        // Kiểm tra đầu vào
         String validationError = validateLopHocInput(tenLopHoc, classCode, idKhoaHoc, idKhoi, idSlotHocs, ngayHocs, idPhongHocs, siSoToiDa, order, soTien, ghiChu);
         if (validationError != null) {
             return new AddLopHocResult(null, validationError);
@@ -590,7 +696,6 @@ public class LopHocInfoDTODAO {
         LocalDateTime ngayTao = LocalDateTime.now();
         Connection connection = null;
 
-        // Ánh xạ trạng thái
         String mappedTrangThai = mapTrangThai(trangThai);
         System.out.println("addLopHoc: Mapping TrangThai from '" + trangThai + "' to '" + mappedTrangThai + "'");
 
@@ -598,7 +703,6 @@ public class LopHocInfoDTODAO {
             connection = db.getConnection();
             connection.setAutoCommit(false);
 
-            // Chèn vào bảng LopHoc
             String sqlInsert = """
                 INSERT INTO LopHoc (
                     ClassCode, TenLopHoc, ID_KhoaHoc, SiSo, GhiChu,
@@ -629,14 +733,12 @@ public class LopHocInfoDTODAO {
                     return new AddLopHocResult(null, "Không thể chèn vào bảng LopHoc hoặc lấy ID lớp học!");
                 }
 
-                // Kiểm tra newId
                 if (newId <= 0) {
                     System.out.println("addLopHoc: Invalid ID_LopHoc=" + newId + " for TenLopHoc=" + tenLopHoc);
                     connection.rollback();
                     return new AddLopHocResult(null, "ID lớp học không hợp lệ!");
                 }
 
-                // Chèn vào bảng LichHoc
                 for (int i = 0; i < idSlotHocs.size(); i++) {
                     String sqlLichHoc = """
                         INSERT INTO LichHoc (NgayHoc, ID_SlotHoc, GhiChu, ID_LopHoc, ID_PhongHoc)
@@ -657,7 +759,6 @@ public class LopHocInfoDTODAO {
                     }
                 }
 
-                // Lấy thông tin lớp học vừa thêm
                 String sqlSelect = """
                     SELECT 
                         lh.ID_LopHoc,
@@ -665,6 +766,7 @@ public class LopHocInfoDTODAO {
                         lh.TenLopHoc,
                         lh.SiSo,
                         lh.SiSoToiDa,
+                        lh.[Order],
                         STRING_AGG(CONCAT(lich.NgayHoc, ' ', sh.SlotThoiGian, ' (', ph.TenPhongHoc, ')'), '; ') AS ThoiGianHoc,
                         STRING_AGG(gv.HoTen, ', ') AS TenGiaoVien,
                         lh.GhiChu,
@@ -694,6 +796,7 @@ public class LopHocInfoDTODAO {
                         lh.TenLopHoc,
                         lh.SiSo,
                         lh.SiSoToiDa,
+                        lh.[Order],
                         lh.GhiChu,
                         lh.TrangThai,
                         lh.NgayTao,
@@ -709,6 +812,7 @@ public class LopHocInfoDTODAO {
                         info.setTenLopHoc(rsSelect.getString("TenLopHoc"));
                         info.setSiSo(rsSelect.getInt("SiSo") != 0 ? rsSelect.getInt("SiSo") : 0);
                         info.setSiSoToiDa(rsSelect.getInt("SiSoToiDa") != 0 ? rsSelect.getInt("SiSoToiDa") : 0);
+                        info.setOrder(rsSelect.getInt("Order"));
                         info.setThoiGianHoc(rsSelect.getString("ThoiGianHoc") != null ? rsSelect.getString("ThoiGianHoc") : "");
                         info.setTenGiaoVien(rsSelect.getString("TenGiaoVien") != null ? rsSelect.getString("TenGiaoVien") : "");
                         info.setGhiChu(rsSelect.getString("GhiChu") != null ? rsSelect.getString("GhiChu") : "");
@@ -756,7 +860,6 @@ public class LopHocInfoDTODAO {
     }
 
     public AddLopHocResult updateLopHoc(int idLopHoc, String tenLopHoc, String classCode, int idKhoaHoc, int idKhoi, int siSo, List<Integer> idSlotHocs, List<String> ngayHocs, List<Integer> idPhongHocs, String ghiChu, String trangThai, int soTien, String image, int siSoToiDa, int order) {
-        // Kiểm tra đầu vào
         String validationError = validateLopHocInput(tenLopHoc, classCode, idKhoaHoc, idKhoi, idSlotHocs, ngayHocs, idPhongHocs, siSoToiDa, order, soTien, ghiChu);
         if (validationError != null) {
             return new AddLopHocResult(null, validationError);
@@ -765,7 +868,6 @@ public class LopHocInfoDTODAO {
         DBContext db = DBContext.getInstance();
         Connection connection = null;
 
-        // Ánh xạ trạng thái
         String mappedTrangThai = mapTrangThai(trangThai);
         System.out.println("updateLopHoc: Mapping TrangThai from '" + trangThai + "' to '" + mappedTrangThai + "'");
 
@@ -773,7 +875,6 @@ public class LopHocInfoDTODAO {
             connection = db.getConnection();
             connection.setAutoCommit(false);
 
-            // Kiểm tra trùng tên lớp học hoặc mã lớp học
             String sqlCheckDuplicate = "SELECT ID_LopHoc FROM LopHoc WHERE (TenLopHoc = ? OR ClassCode = ?) AND ID_KhoaHoc = ? AND ID_LopHoc != ?";
             try (PreparedStatement checkStmt = connection.prepareStatement(sqlCheckDuplicate)) {
                 checkStmt.setString(1, tenLopHoc);
@@ -788,7 +889,6 @@ public class LopHocInfoDTODAO {
                 }
             }
 
-            // Cập nhật bảng LopHoc
             String sqlUpdate = """
                 UPDATE LopHoc
                 SET ClassCode = ?, TenLopHoc = ?, ID_KhoaHoc = ?, SiSo = ?, GhiChu = ?,
@@ -815,14 +915,12 @@ public class LopHocInfoDTODAO {
                 }
             }
 
-            // Xóa lịch học cũ
             String sqlDeleteLichHoc = "DELETE FROM LichHoc WHERE ID_LopHoc = ?";
             try (PreparedStatement deleteStmt = connection.prepareStatement(sqlDeleteLichHoc)) {
                 deleteStmt.setInt(1, idLopHoc);
                 deleteStmt.executeUpdate();
             }
 
-            // Chèn lịch học mới
             for (int i = 0; i < idSlotHocs.size(); i++) {
                 String sqlLichHoc = """
                     INSERT INTO LichHoc (NgayHoc, ID_SlotHoc, GhiChu, ID_LopHoc, ID_PhongHoc)
@@ -843,7 +941,6 @@ public class LopHocInfoDTODAO {
                 }
             }
 
-            // Lấy thông tin lớp học vừa cập nhật
             String sqlSelect = """
                 SELECT 
                     lh.ID_LopHoc,
@@ -851,6 +948,7 @@ public class LopHocInfoDTODAO {
                     lh.TenLopHoc,
                     lh.SiSo,
                     lh.SiSoToiDa,
+                    lh.[Order],
                     STRING_AGG(CONCAT(lich.NgayHoc, ' ', sh.SlotThoiGian, ' (', ph.TenPhongHoc, ')'), '; ') AS ThoiGianHoc,
                     STRING_AGG(gv.HoTen, ', ') AS TenGiaoVien,
                     lh.GhiChu,
@@ -880,6 +978,7 @@ public class LopHocInfoDTODAO {
                     lh.TenLopHoc,
                     lh.SiSo,
                     lh.SiSoToiDa,
+                    lh.[Order],
                     lh.GhiChu,
                     lh.TrangThai,
                     lh.NgayTao,
@@ -895,6 +994,7 @@ public class LopHocInfoDTODAO {
                     info.setTenLopHoc(rsSelect.getString("TenLopHoc"));
                     info.setSiSo(rsSelect.getInt("SiSo") != 0 ? rsSelect.getInt("SiSo") : 0);
                     info.setSiSoToiDa(rsSelect.getInt("SiSoToiDa") != 0 ? rsSelect.getInt("SiSoToiDa") : 0);
+                    info.setOrder(rsSelect.getInt("Order"));
                     info.setThoiGianHoc(rsSelect.getString("ThoiGianHoc") != null ? rsSelect.getString("ThoiGianHoc") : "");
                     info.setTenGiaoVien(rsSelect.getString("TenGiaoVien") != null ? rsSelect.getString("TenGiaoVien") : "");
                     info.setGhiChu(rsSelect.getString("GhiChu") != null ? rsSelect.getString("GhiChu") : "");

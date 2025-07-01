@@ -1,3 +1,8 @@
+<%-- 
+    Document   : updateCourse
+    Created on : May 27, 2025, 18:23:02 PM
+    Author     : Vuh26
+--%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.KhoaHoc"%>
