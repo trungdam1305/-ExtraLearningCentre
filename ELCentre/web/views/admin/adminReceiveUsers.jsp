@@ -1,7 +1,7 @@
 <%-- 
     Document   : adminReceiveUsers
     Created on : May 24, 2025, 10:03:15 PM
-    Author     : wrx_Chur04
+    Author     : chuvv
     Purpose    : This page manages user accounts in the EL CENTRE system, displaying details like ID, email, role, phone number, and status. 
                  It supports filtering by status and role, searching, pagination, and actions such as viewing, 
                  enabling/disabling, and updating accounts for admin users.

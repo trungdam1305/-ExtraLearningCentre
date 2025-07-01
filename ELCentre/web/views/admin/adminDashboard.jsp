@@ -1,6 +1,6 @@
 <!-- 
   Created on: May 24, 2025, 2:44:16 PM
-  Author: wrx_Chur04
+  Author: chuvv
   Purpose: This admin dashboard page for the EL CENTRE system is designed to provide an overview of key 
   metrics including the number of students, teachers, classes, and revenue. It also tracks recent user activities, today's support, 
   and offers visual charts for attendance, student satisfaction, and monthly revenue analysis.

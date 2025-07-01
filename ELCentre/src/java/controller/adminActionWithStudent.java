@@ -68,8 +68,8 @@ public class adminActionWithStudent extends HttpServlet {
                 doView(request, response);
                 break;
 
-            case "viewDiem":
-                doViewHocPhi(request, response);
+            case "viewClass":
+                doViewClass(request, response);
                 break;
 
             case "update":
@@ -112,7 +112,7 @@ public class adminActionWithStudent extends HttpServlet {
 
     }
 
-    protected void doViewHocPhi(HttpServletRequest request, HttpServletResponse response)
+    protected void doViewClass(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         String ID = request.getParameter("id");

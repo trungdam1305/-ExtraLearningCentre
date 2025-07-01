@@ -1,7 +1,7 @@
 <%-- 
     Document   : adminReceiveHocSinh
     Created on : May 24, 2025, 11:09:21 PM
-    Author     : wrx_Chur04
+    Author     : chuvv
     Purpose    : This page displays a list of all students (học sinh) in the EL CENTRE system, 
                 including details like name, birth date, gender, address, parent contact, school, and status. 
                 It supports filtering by gender, searching, and pagination, with action links for viewing details, scores, and editing student records.
@@ -201,7 +201,7 @@
 
             .filter-bar {
                 display: flex;
-                justify-content: flex-end; /* Đẩy sang phải */
+                justify-content: flex-end; 
                 flex-wrap: wrap;
                 gap: 20px;
                 margin-bottom: 20px;
@@ -537,13 +537,13 @@
 
                                             <td class="action-buttons">
                                                 <a class="btn-action view" title="Chi tiết" href="${pageContext.request.contextPath}/adminActionWithStudent?action=view&id=${hocsinh.getID_HocSinh()}&idtaikhoan=${hocsinh.getID_TaiKhoan()}">
-                                                    <i class="fas fa-user"></i> Chi tiết và chỉnh sửa    
+                                                    <i class="fas fa-user-edit"></i> Chi tiết và chỉnh sửa    
                                                 </a>
-                                                <a class="btn-action update" title="Xem điểm" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewDiem&id=${hocsinh.getID_HocSinh()}">
-                                                    <i class="fas fa-book-open"></i> Xem các lớp của học sinh
+                                                <a class="btn-action update" title="Xem lớp và chuyển lớp" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewClass&id=${hocsinh.getID_HocSinh()}">
+                                                     <i class="fas fa-exchange-alt"></i> Xem lớp & Chuyển lớp
                                                 </a>
-                                                <a class="btn-action enable" title="Chỉnh sửa" href="${pageContext.request.contextPath}/adminActionWithStudent?action=update&id=${hocsinh.getID_HocSinh()}">
-                                                    <i class="fas fa-random"></i> Chuyển lớp
+                                                <a class="btn-action enable" title="Học phí và Thông báo" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewTuiTionAndSendNTF&id=${hocsinh.getID_HocSinh()}">
+                                                    <i class="fas fa-money-bill-wave"></i> Học Phí & Thông báo
                                                 </a>
                                             </td>
 

@@ -1,7 +1,7 @@
 <%-- 
     Document   : adminReceiveHocPhi
     Created on : May 29, 2025, 3:45:49 PM
-    Author     : wrx_Chur04
+    Author     : chuvv
     Purpose    : This page displays a table of tuition fee (học phí) details for the EL CENTRE system, 
                  including student IDs, class IDs, subjects, payment methods, status, and dates. 
     Parameters:

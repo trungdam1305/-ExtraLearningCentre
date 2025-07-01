@@ -1,7 +1,7 @@
 <%-- 
     Document   : adminUpdateTeacherInfor
     Created on : Jun 2, 2025, 6:44:28 PM
-    Author     : wrx_Chur04
+    Author     : chuvv
     Purpose    : This page allows admin users to update information for teachers (giáo viên) in the EL CENTRE system, 
                  including phone number, school, salary, and notes, while displaying read-only fields 
                  like account ID, name, specialization, status, and creation date.

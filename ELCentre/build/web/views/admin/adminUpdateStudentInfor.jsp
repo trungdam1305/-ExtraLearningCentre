@@ -1,7 +1,7 @@
 <%-- 
     Document   : adminUpdateTeacherInfor
     Created on : Jun 2, 2025, 6:44:28 PM
-    Author     : wrx_Chur04
+    Author     : chuvv
     Purpose    : This page allows admin users to update information for students (học sinh) in the EL CENTRE system, 
                  including address, school, and notes, while displaying read-only fields 
                  like account ID, name, birth date, gender, parent contact, status, and creation date.

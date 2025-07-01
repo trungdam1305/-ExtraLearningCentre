@@ -1,7 +1,7 @@
 <%-- 
     Document   : adminReceiveGiaoVien
     Created on : May 29, 2025, 16:22:36 PM
-    Author     : wrx_Chur04
+    Author     : chuvv
     Purpose    : This page displays a list of all teachers (giáo viên) in the EL CENTRE system, including details like name, specialization, 
                  contact info, salary, and status. It supports filtering by specialization, searching, and pagination, 
                  with action links for viewing details, managing classes, and editing teacher records.
@@ -532,15 +532,15 @@
 
 
                                             <td class="action-buttons">
-                                                <a class="btn-action view" title="Chi tiết" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=view&id=${giaovien.getID_GiaoVien()}&idTaiKhoan=${giaovien.getID_TaiKhoan()}">
-                                                    <i class="fas fa-eye"></i> Chi tiết và chỉnh sửa
+                                                <a class="btn-action view" title="Chi tiết thông tin và chỉnh sửa thông tin" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=view&id=${giaovien.getID_GiaoVien()}&idTaiKhoan=${giaovien.getID_TaiKhoan()}">
+                                                    <i class="fas fa-user-edit"></i> Chi tiết và chỉnh sửa
                                                 </a>
-                                                <a class="btn-action update" title="Lớp đang dạy" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=viewLopHocGiaoVien&id=${giaovien.getID_GiaoVien()}">
-                                                    <i class="fas fa-chalkboard-teacher"></i> Lớp của giáo viên
+                                                <a class="btn-action update" title="Xem lớp đang dạy của giáo viên và chuyển lớp" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=viewLopHocGiaoVien&id=${giaovien.getID_GiaoVien()}">
+                                                   <i class="fas fa-chalkboard-teacher"></i> Xem lớp & Chuyển lớp
                                                 </a>
 
-                                                <a class="btn-action enable" title="Chỉnh sửa" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=update&id=${giaovien.getID_GiaoVien()}">
-                                                    <i class="fas fa-edit"></i> Chuyển lớp
+                                                <a class="btn-action enable" title="Gửi thông báo" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=sendNoTiFiCaTion&id=${giaovien.getID_GiaoVien()}">
+                                                    <i class="fas fa-bell"></i> Gửi thông báo
                                                 </a>
                                             </td>
                                         </tr>   
@@ -585,7 +585,7 @@
                 });
                 const tableBody = document.getElementById("teacherTableBody");
                 let allRows = [], filteredRows = [], currentPage = 1;
-                const rowsPerPage = 7;
+                const rowsPerPage = 12;
 
                 window.onload = () => {
                     allRows = Array.from(tableBody.querySelectorAll("tr"));

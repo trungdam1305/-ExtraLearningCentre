@@ -1,7 +1,7 @@
 <%-- 
     Document   : adminReceiveTeacherInfor
     Created on : June 23, 2025, 12:45 PM
-    Author     : wrx_Chur04
+    Author     : chuvv
     Purpose    : This page displays detailed information about specific teachers (giáo viên) in the EL CENTRE system, 
                 including account ID, name, specialization, contact details, school, salary, and status. 
     Parameters:

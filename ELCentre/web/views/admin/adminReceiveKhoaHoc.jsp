@@ -1,7 +1,7 @@
 <%-- 
     Document   : adminReceiveKhoaHoc
     Created on : May 29, 2025, 10:54:36 PM
-    Author     : wrx_Chur04
+    Author     : chuvv
     Purpose    : This page displays a list of all courses (khóa học) in the EL CENTRE system, including details like course ID, name, 
                  description, start/end dates, status, and creation date. 
     Parameters:
