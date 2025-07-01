@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.GiaoVienDAO;
 import dal.HocSinh_SDTDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
+import model.GiaoVien;
+import model.GiaoVien_TruongHoc;
 import model.HocSinh_SDT;
 
 /**
@@ -21,15 +24,7 @@ import model.HocSinh_SDT;
  */
 public class adminFindInFilterGroup extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -47,19 +42,13 @@ public class adminFindInFilterGroup extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession() ; 
+        request.setCharacterEncoding("UTF-8");
+
+        HttpSession session = request.getSession();
         String keyword = request.getParameter("keyword");
         String status = request.getParameter("status");
         String khoa = request.getParameter("khoa");
@@ -76,24 +65,35 @@ public class adminFindInFilterGroup extends HttpServlet {
         if (khoa == null) {
             khoa = "";
         }
-        
-         ArrayList<HocSinh_SDT> filteredList = HocSinh_SDTDAO.adminGetHocSinhByFilter(keyword, status, khoa);
-         session.setAttribute("hocsinhs", filteredList);
-         request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);
+        PrintWriter out = response.getWriter();
+        ArrayList<HocSinh_SDT> filteredList = HocSinh_SDTDAO.adminGetHocSinhFilter(keyword, status, khoa);
+
+        session.setAttribute("hocsinhs", filteredList);
+        request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
+    
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession() ; 
+        String keyword = request.getParameter("keyword");
+        String chuyenmon = request.getParameter("chuyenmon");
+        String trangthai = request.getParameter("trangthaiday");
+
+        if (keyword == null) {
+            keyword = "";
+        }
+        if (chuyenmon == null) {
+            chuyenmon = "";
+        }
+        if (trangthai == null) {
+            trangthai = "";
+        }
+
+        ArrayList<GiaoVien_TruongHoc> filtered = HocSinh_SDTDAO.adminGetGiaoVienFilter(keyword.trim(), chuyenmon, trangthai);
+        session.setAttribute("giaoviens", filtered);
+        request.getRequestDispatcher("/views/admin/adminReceiveGiaoVien.jsp").forward(request, response);
     }
 
     /**

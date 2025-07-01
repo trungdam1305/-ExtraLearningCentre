@@ -289,8 +289,8 @@
                                     <td>${sct.getNgayTao()}</td>
                                     <td>${sct.getHoTen()}</td>
                                     <td>
-                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=view&id=${giaovien.getID_GiaoVien()}">Xem điểm học sinh</a> | 
-                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=viewLopHocGiaoVien&id=${giaovien.getID_GiaoVien()}">Sửa điểm học sinh</a> 
+                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=view&id=${giaovien.getID_GiaoVien()}">Tình trạng học phí</a> 
+                                         
 
                                     </td>
                                 </tr>   

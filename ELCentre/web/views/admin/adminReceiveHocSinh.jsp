@@ -19,6 +19,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
         <title>Quản lý học sinh</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
@@ -444,9 +445,9 @@
                         <label for="status">Trạng thái học</label>
                         <select id="status" name="status">
                             <option value="">Tất cả</option>
-                            <option value="dang">Đang học</option>
-                            <option value="cho">Chờ học</option>
-                            <option value="da">Đã học</option>
+                            <option value="Đang học">Đang học</option>
+                            <option value="Chờ học">Chờ học</option>
+                            <option value="Đã học">Đã học</option>
                         </select>
                     </div>
                     <div class="filter-group">

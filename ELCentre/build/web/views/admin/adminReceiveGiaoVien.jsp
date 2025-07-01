@@ -18,6 +18,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
         <title>Quản lý giáo viên</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
@@ -421,39 +422,43 @@
         </div>
 
         <div class="main-content">
+            <c:if test="${not empty message}">
+                <div style="color: red; font-weight: bold; margin-bottom: 15px; text-align: center;">
+                    ${message}
+                </div>
+            </c:if>
             <div class="page-header">
                 <h2><i class="fas fa-chalkboard-teacher"></i> Tất cả giáo viên</h2>
             </div>
 
-            <form  action="adminGetFromDashboard" method="get">
+            <form action="adminFindInFilterGroup" method="post">
                 <div class="filter-bar">
-
                     <div class="filter-group">
                         <label for="keyword">Từ khóa:</label>
-                        <input type="text" id="keyword" placeholder="Tìm kiếm...">
+                        <input type="text" id="keyword" name="keyword" placeholder="Tìm kiếm...">
                     </div>
                     <div class="filter-group">
                         <label for="chuyenmon">Chuyên môn</label>
-                        <select id="chuyenmon">
-                            <option>Tất cả</option>
-                            <option>Toán</option>
-                            <option>Lý</option>
-                            <option>Hóa</option>
+                        <select id="chuyenmon" name="chuyenmon">
+                            <option value="">Tất cả</option>
+                            <option value="Toán">Toán</option>
+                            <option value="Lý">Lý</option>
+                            <option value="Hóa">Hóa</option>
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="chuyenmon">Trạng thái dạy</label>
-                        <select id="chuyenmon">
-                            <option>Tất cả</option>
-                            <option>Đang dạy</option>
-                            <option>Chờ lớp</option>
-                            <option>Đã dạy</option>
+                        <label for="trangthaiday">Trạng thái dạy</label>
+                        <select id="trangthaiday" name="trangthaiday">
+                            <option value="">Tất cả</option>
+                            <option value="Đang dạy">Đang dạy</option>
+                            <option value="Chờ dạy">Chờ lớp</option>
+                            <option value="Đã dạy">Đã dạy</option>
                         </select>
                     </div>
-                   
                     <button><i class="fas fa-search"></i></button>
                 </div>
             </form>
+
 
             <c:choose>
                 <c:when test="${not empty sessionScope.giaoviens}">
@@ -484,19 +489,19 @@
                                         <td>${giaovien.getLopDangDayTrenTruong()}</td>
 
                                         <td>${giaovien.getTrangThaiDay()}</td>
-                                        
+
 
 
                                         <td class="action-buttons">
                                             <a class="btn-action view" title="Chi tiết" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=view&id=${giaovien.getID_GiaoVien()}&idTaiKhoan=${giaovien.getID_TaiKhoan()}">
-                                                <i class="fas fa-eye"></i> Chi tiết
+                                                <i class="fas fa-eye"></i> Chi tiết và chỉnh sửa
                                             </a>
                                             <a class="btn-action update" title="Lớp đang dạy" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=viewLopHocGiaoVien&id=${giaovien.getID_GiaoVien()}">
                                                 <i class="fas fa-chalkboard-teacher"></i> Lớp đang dạy
                                             </a>
 
                                             <a class="btn-action enable" title="Chỉnh sửa" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=update&id=${giaovien.getID_GiaoVien()}">
-                                                <i class="fas fa-edit"></i> Chỉnh sửa
+                                                <i class="fas fa-edit"></i> Chuyển lớp
                                             </a>
                                         </td>
                                     </tr>   

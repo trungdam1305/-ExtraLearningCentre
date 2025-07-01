@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import model.GiaoVien;
+import model.HocSinh;
 
 public class HocSinh_ChiTietDAO {
 
@@ -74,16 +75,15 @@ public class HocSinh_ChiTietDAO {
         try {
             String sql = """
                      SELECT GV.ID_TruongHoc ,  GV.LopDangDayTrenTruong 
-                     FROM HocSinh_LopHoc HSLH
-                     join  LopHoc LH
-                    on HSLH.ID_LopHoc = LH.ID_LopHoc 
-                    JOIN GiaoVien_LopHoc GVLH 
-                    on HSLH.ID_LopHoc = GVLH.ID_LopHoc
-                    JOIN GiaoVien GV 
-                    on GV.ID_GiaoVien = GVLH.ID_GiaoVien
-                    JOIN SlotHoc SH 
-                    ON SH.ID_SlotHoc = LH.ID_Schedule
-                    WHERE HSLH.ID_HocSinh = ? ;
+                                         FROM HocSinh_LopHoc HSLH
+                                         join  LopHoc LH
+                                        on HSLH.ID_LopHoc = LH.ID_LopHoc 
+                                        JOIN GiaoVien_LopHoc GVLH 
+                                        on HSLH.ID_LopHoc = GVLH.ID_LopHoc
+                                        JOIN GiaoVien GV 
+                                        on GV.ID_GiaoVien = GVLH.ID_GiaoVien
+                                        
+                                        WHERE HSLH.ID_HocSinh = ? ;
                      """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             statement.setString(1, ID_HocSinh);
@@ -135,12 +135,74 @@ public class HocSinh_ChiTietDAO {
         return false ; 
     }
     
-    
-    public static void main(String []args){
-        System.out.println(updateTruongLopHocSinh("HaNoi", "4", "DEO", "11B1", "15"));
+    public static ArrayList<HocSinh> adminGetLopHocCuaHocSinhSoVoiGiaoVien(String ID_GiaoVien) {
+        ArrayList<HocSinh> lopdangdaycuaGiaoVien = new ArrayList<HocSinh>();
+        DBContext db = DBContext.getInstance();
+
+        try {
+            String sql = """
+                     select  HS.ID_TruongHoc , HS.LopDangHocTrenTruong   from HocSinh_LopHoc HSLH
+                    join  LopHoc LH
+                    on HSLH.ID_LopHoc = LH.ID_LopHoc 
+                    JOIN GiaoVien_LopHoc GVLH 
+                    on HSLH.ID_LopHoc = GVLH.ID_LopHoc
+                    JOIN GiaoVien GV 
+                    on GV.ID_GiaoVien = GVLH.ID_GiaoVien
+
+                    join HocSinh HS 
+                  ON HS.ID_HocSinh = HSLH.ID_HocSinh
+                  WHERE GV.ID_GiaoVien = ? ; 
+                     """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setString(1, ID_GiaoVien);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                HocSinh hocsinh = new HocSinh(
+                        rs.getInt("ID_TruongHoc") , 
+                        rs.getString("LopDangHocTrenTruong") 
+                ) ; 
+                lopdangdaycuaGiaoVien.add(hocsinh) ; 
+            }
+            return lopdangdaycuaGiaoVien;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
-   
+   public static boolean updateTruongLopGiaoVien(String idTruongHoc  , String lopTrenTruong  , String sdt , String hot , String ID_GiaoVien) {
+        
+        DBContext db = DBContext.getInstance() ; 
+       int rs = 0 ; 
+        try {
+            String sql = """
+                         update GiaoVien 
+                         set 
+                         ID_TruongHoc = ? , 
+                         IsHot = ?  , 
+                         LopDangDayTrenTruong = ? , 
+                         SDT = ? 
+                         where ID_GiaoVien = ?   
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, idTruongHoc);
+            statement.setString(2, hot);
+            statement.setString(3, lopTrenTruong);
+            statement.setString(4, sdt);
+            statement.setString(5, ID_GiaoVien);
+           
+             rs = statement.executeUpdate() ; 
+            while(rs > 0 ){
+                return true ; 
+            }
+        } catch(SQLException e ) {
+            e.printStackTrace();
+           
+        }
+        return false ; 
+    }
 
     
 }
