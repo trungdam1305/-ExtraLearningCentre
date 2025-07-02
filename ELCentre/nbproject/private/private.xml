@@ -15,6 +15,33 @@
             <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/src/java/dal/DBContext.java</file>
             <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/web/views/Home-Blog/Home-Blog-Content.jsp</file>
         </group>
-        <group/>
+        <group>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/addClass.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveUsers.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/index.html</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/dal/HocSinh_ChiTietDAO.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/controller/LoginServlet.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminUpdateTeacherInfor.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/addCourse.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveTeacherInfor.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/login.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminViewHocSinhChiTiet.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminUpdateParentInfor.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveGiaoVien.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithStudent.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveHocPhi.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminDashboard.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveKhoaHoc.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveParentInfor.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminViewLopHocGiaoVien.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveThongBao.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/dal/HocSinh_SDTDAO.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminUpdateStudentInfor.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveHocSinh.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveStudentInfor.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminViewGiaoVienChiTiet.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminApproveRegisterUser.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminViewHocPhiHocSinh.jsp</file>
+        </group>
     </open-files>
 </project-private>

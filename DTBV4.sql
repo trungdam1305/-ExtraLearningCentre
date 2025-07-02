@@ -1382,24 +1382,21 @@ SET IDENTITY_INSERT [dbo].[PhongHoc] OFF
 GO
 select * from HocSinh
 SELECT * FROM TruongHoc
-select  GV.ID_TruongHoc , GV.LopDangDayTrenTruong   from HocSinh_LopHoc HSLH
+select  HS.ID_TruongHoc , HS.LopDangHocTrenTruong   from HocSinh_LopHoc HSLH
                          join  LopHoc LH
                          on HSLH.ID_LopHoc = LH.ID_LopHoc 
                          JOIN GiaoVien_LopHoc GVLH 
                          on HSLH.ID_LopHoc = GVLH.ID_LopHoc
                          JOIN GiaoVien GV 
                          on GV.ID_GiaoVien = GVLH.ID_GiaoVien
-                         JOIN SlotHoc SH 
-                         ON SH.ID_SlotHoc = LH.ID_Schedule
-                         WHERE HSLH.ID_HocSinh = 
+                         
+                         join HocSinh HS 
+						 ON HS.ID_HocSinh = HSLH.ID_HocSinh
+						 WHERE GV.ID_GiaoVien = 1 ; 
 
+	select * from GiaoVien					 
 
-						 update HocSinh 
-                         set  DiaChi = 'HaNam' ,
-                         ID_TruongHoc = 3 , 
-                         GhiChu = 'okok'  , 
-                         LopDangHocTrenTruong = '11B1' 
-                         where ID_HocSinh = 15   
+						    
 
 DECLARE @keyword NVARCHAR(100) = N'%HS00%'     -- hoặc N'%Nguyễn%'
 DECLARE @trangthai NVARCHAR(50) = N'Đang học'  -- hoặc N'Tất cả'
@@ -1414,3 +1411,10 @@ WHERE (HoTen LIKE @keyword OR MaHocSinh LIKE @keyword OR SoDienThoai LIKE @keywo
   AND (@khoa = N'Tất cả' OR MaHocSinh LIKE @khoa + N'%')
 
 
+  update GiaoVien 
+                         set 
+                         ID_TruongHoc = '1' , 
+                         IsHot =  '1' , 
+                         LopDangDayTrenTruong = '10A1' , 
+                         SDT ='0987654321'
+                         where ID_GiaoVien = 1  

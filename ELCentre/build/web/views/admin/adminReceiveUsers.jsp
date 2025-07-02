@@ -2,17 +2,17 @@
     Document   : adminReceiveUsers
     Created on : May 24, 2025, 10:03:15 PM
     Author     : chuvv
-    Purpose    : This page manages user accounts in the EL CENTRE system, displaying details like ID, email, role, phone number, and status. 
+    Purpose    : This page manages user accounts in the EL CENTRE system, displaying details like ID, name, email, role, phone number, and status. 
                  It supports filtering by status and role, searching, pagination, and actions such as viewing, 
                  enabling/disabling, and updating accounts for admin users.
-    Parameters:
-    - @Param taikhoans (ArrayList<TaiKhoan>): A session attribute containing the list of user account objects fetched from the database.
+    Parameters:(Handle from adminGetFromDashboard servlet)
+    - Method to get data from database in TaiKhoanChiTietDAO
+    - @Param taikhoans (ArrayList<TaiKhoanChiTiet>): A session attribute containing the list of user account objects fetched from the database.
     - @Param message (String): An optional request or session attribute for displaying error or success messages.
---%>
+--%>    
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <%@ page import="dal.AdminDAO" %>
 <%@ page import="model.Admin" %>
 <%@ page import="java.util.ArrayList" %>
@@ -188,23 +188,6 @@
                 flex-grow: 1;
             }
 
-            .section-title {
-                color: var(--main-color);
-                font-size: 20px;
-                font-weight: 700;
-                border-bottom: 2px solid var(--main-color);
-                padding-bottom: 5px;
-                margin-bottom: 20px;
-            }
-
-            .main-content {
-                margin-left: 250px;
-                padding: 100px 40px 40px;
-                background-color: #f4f6f8;
-                min-height: 100vh;
-                box-sizing: border-box;
-            }
-
             .page-header {
                 display: flex;
                 justify-content: center;
@@ -281,8 +264,6 @@
                 color: #1F4E79;
                 font-weight: 600;
             }
-
-
 
             #pagination {
                 margin-top: 15px;
@@ -516,13 +497,15 @@
                                         <td>${tk.userType}</td>
                                         <td>${tk.soDienThoai}</td>
                                         <td>
-                                            <span class="status-badge ${tk.trangThai == 'Active' ? 'active' : 'inactive'}">
-                                                ${tk.trangThai == 'Active' ? 'Hoạt động' : 'Cấm hoạt động'}
-                                            </span>
+                                            <c:choose>
+                                                <c:when test="${tk.trangThai == 'Active'}">
+                                                    <span class="status-badge active">Hoạt động</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="status-badge inactive">Cấm hoạt động</span>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
-
-
-
                                         <td>
                                             <div class="action-buttons">
                                                 <a class="btn-action view" href="${pageContext.request.contextPath}/adminActionWithUser?action=view&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-eye"></i>Chi tiết</a> |
@@ -559,7 +542,7 @@
 
 
         <div class="footer">
-            <p>© 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
+            <p>© 2025 EL CENTRE. All rights reserved. | Developed by EL CENTRE</p>
         </div>
 
         <script>
@@ -607,10 +590,11 @@
                         cell.textContent.toLowerCase().includes(keyword)
                     );
 
+                    const normalizedStatus = statusText.toLowerCase().includes("cấm") ? "inactive" : "active";
                     const matchesStatus =
                             status === "all" ||
-                            (status === "active" && statusText === "active") ||
-                            (status === "inactive" && statusText === "inactive");
+                            (status === "active" && normalizedStatus === "active") ||
+                            (status === "inactive" && normalizedStatus === "inactive");
 
                     const matchesRole =
                             role === "all" ||
@@ -642,12 +626,12 @@
                 let startPage = Math.max(1, currentPage - 1);
                 let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
 
-               
+
                 if (endPage - startPage + 1 < maxPagesToShow) {
                     startPage = Math.max(1, endPage - maxPagesToShow + 1);
                 }
 
-                
+
                 if (currentPage > 1) {
                     const prevBtn = document.createElement("button");
                     prevBtn.textContent = "«";
@@ -658,7 +642,7 @@
                     pagination.appendChild(prevBtn);
                 }
 
-                
+
                 for (let i = startPage; i <= endPage; i++) {
                     const btn = document.createElement("button");
                     btn.textContent = i;
@@ -671,7 +655,7 @@
                     pagination.appendChild(btn);
                 }
 
-                
+
                 if (currentPage < totalPages) {
                     const nextBtn = document.createElement("button");
                     nextBtn.textContent = "»";

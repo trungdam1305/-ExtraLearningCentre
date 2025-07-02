@@ -12,7 +12,7 @@ import java.sql.ResultSet ;
 import java.sql.PreparedStatement ; 
 import model.PhuHuynh ; 
 public class PhuHuynhDAO {
-    public static ArrayList<PhuHuynh> adminGetPhuHuynhByID(String id) {
+    public static ArrayList<PhuHuynh> adminGetPhuHuynhByID(String ID_TaiKhoan) {
         ArrayList<PhuHuynh> phuhuynhs = new ArrayList<PhuHuynh>() ; 
         DBContext db = DBContext.getInstance() ; 
         
@@ -23,7 +23,7 @@ public class PhuHuynhDAO {
                          """ ; 
             
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
-            statement.setString(1, id);
+            statement.setString(1, ID_TaiKhoan);
             ResultSet rs = statement.executeQuery() ; 
             
             while(rs.next()){

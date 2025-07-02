@@ -1,9 +1,10 @@
 <!-- 
   Created on: May 24, 2025, 2:44:16 PM
   Author: chuvv
-  Purpose: This admin dashboard page for the EL CENTRE system is designed to provide an overview of key 
-  metrics including the number of students, teachers, classes, and revenue. It also tracks recent user activities, today's support, 
-  and offers visual charts for attendance, student satisfaction, and monthly revenue analysis.
+  Purpose: This admin dashboard page of the EL CENTRE system provides a comprehensive overview of key metrics, 
+  including the number of students, teachers, classes, students waiting to be assigned to a class, and consultations pending approval. 
+  It also monitors recent user activities and today's support requests, and presents visual charts for attendance trends, 
+  student satisfaction, and monthly revenue analysis.
 -->
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -419,17 +420,12 @@
                 color: #C62828;
             }
 
-
-            
-
-            /* Wrapper các bảng */
             .tables-wrapper {
                 display: flex;
                 flex-wrap: wrap;
                 gap: 20px;
             }
 
-            /* Mỗi container bảng */
             .data-table-container {
                 background: linear-gradient(to bottom right, #ffffff, #f7fafd);
                 padding: 20px;
@@ -443,7 +439,7 @@
                 transform: translateY(-3px);
             }
 
-            /* Tiêu đề bảng */
+
             .section-title {
                 font-size: 18px;
                 color: #1F4E79;
@@ -460,7 +456,7 @@
                 color: #1F4E79;
             }
 
-            /* Bảng */
+
             table {
                 width: 100%;
                 border-collapse: collapse;
@@ -485,7 +481,7 @@
                 transition: background-color 0.2s ease;
             }
 
-            /* Không có dữ liệu */
+
             .no-data {
                 text-align: center;
                 color: #777;
@@ -495,7 +491,7 @@
                 border-radius: 6px;
             }
 
-            /* Bộ lọc ngày */
+
             #logDateFilter {
                 padding: 6px 12px;
                 border-radius: 6px;
@@ -505,7 +501,6 @@
                 color: #1F4E79;
             }
 
-            /* Tìm kiếm */
             #searchLogInput {
                 padding: 8px 12px;
                 width: 100%;
@@ -517,7 +512,6 @@
                 box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
             }
 
-            /* Nút hành động "Duyệt" */
             .btn-action.update {
                 display: inline-flex;
                 align-items: center;
@@ -539,9 +533,8 @@
                 background-color: #388e3c;
             }
 
-
         </style>
-        
+
 
     </head>
     <body>
@@ -637,7 +630,7 @@
                     <h3><i class="fas fa-envelope-open-text"></i> Tổng đơn đăng ký tư vấn chưa duyệt</h3>
                     <p>15</p>
                 </div>
-                
+
                 <div class="stat-card stat-hocsinh">
                     <h3><i class="fas fa-user-clock"></i> Tổng số học sinh đang chờ lớp</h3>
                     <%
@@ -714,7 +707,7 @@
                             <table>
                                 <thead>
                                     <tr>
-                                       
+
                                         <th>Họ Tên</th>
                                         <th>Yêu Cầu</th>
                                         <th>Mô Tả</th>
@@ -725,7 +718,7 @@
                                 <tbody id="userHoTroTableBody">
                                     <c:forEach var="sp" items="${HoTroList}">
                                         <tr>
-                                            
+
                                             <td>${sp.getHoTen()}</td>
                                             <td>${sp.getTenHoTro()}</td>
                                             <td>${sp.getMoTa()}</td>
@@ -803,7 +796,7 @@
                 }
             });
 
-            
+
             const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
             const attendanceGradient = attendanceCtx.createLinearGradient(0, 0, 200, 0);
             attendanceGradient.addColorStop(0, '#1F4E79');
@@ -838,7 +831,7 @@
                 data: {
                     labels: ['Hài lòng', 'Không hài lòng'],
                     datasets: [{
-                            data: [tongsohocsinhkhonghaiong , tongsohocsinhhaiong],
+                            data: [tongsohocsinhkhonghaiong, tongsohocsinhhaiong],
                             backgroundColor: [satisfactionGradient, '#F06292'],
                             borderColor: '#ffffff',
                             borderWidth: 3,

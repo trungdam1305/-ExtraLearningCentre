@@ -176,7 +176,7 @@ public class GiaoVienDAO {
         return giaoviens;
     }
 
-    public static ArrayList<GiaoVien_TruongHoc> adminGetGiaoVienByID(String id) {
+    public static ArrayList<GiaoVien_TruongHoc> adminGetGiaoVienByID(String id_TaiKhoan) {
         DBContext db = DBContext.getInstance();
         ArrayList<GiaoVien_TruongHoc> giaoviens = new ArrayList<GiaoVien_TruongHoc>();
 
@@ -187,7 +187,7 @@ public class GiaoVienDAO {
                          where ID_TaiKhoan = ? 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            statement.setString(1, id);
+            statement.setString(1, id_TaiKhoan);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
