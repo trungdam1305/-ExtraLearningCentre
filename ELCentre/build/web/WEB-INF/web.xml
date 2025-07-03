@@ -37,10 +37,6 @@
         <servlet-class>controller.SearchCourse</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ManagerCourse</servlet-name>
-        <servlet-class>controller.ManagerCourse</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>AddKhoaHoc</servlet-name>
         <servlet-class>controller.AddKhoaHoc</servlet-class>
     </servlet>
@@ -105,8 +101,44 @@
         <servlet-class>controller.SendAdviceMailServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ManageClass</servlet-name>
+        <servlet-class>controller.ManageCourses.ManageClass</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>StudentDashboardServlet</servlet-name>
         <servlet-class>controller.StudentDashboardServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StudentEditProfileServlet</servlet-name>
+        <servlet-class>controller.StudentEditProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StudentViewScheduleServlet</servlet-name>
+        <servlet-class>controller.StudentViewScheduleServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StudentViewNotificationServlet</servlet-name>
+        <servlet-class>controller.StudentViewNotificationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StudentViewClassServlet</servlet-name>
+        <servlet-class>controller.StudentViewClassServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StudentClassDetailServlet</servlet-name>
+        <servlet-class>controller.StudentClassDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StudentTransferClassServlet</servlet-name>
+        <servlet-class>controller.StudentTransferClassServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StudentLeaveClassServlet</servlet-name>
+        <servlet-class>controller.StudentLeaveClassServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StudentEnrollClass</servlet-name>
+        <servlet-class>controller.StudentEnrollClass</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
@@ -127,10 +159,6 @@
     <servlet-mapping>
         <servlet-name>SearchCourse</servlet-name>
         <url-pattern>/SearchCourse</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ManagerCourse</servlet-name>
-        <url-pattern>/ManagerCourse</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddKhoaHoc</servlet-name>
@@ -208,25 +236,9 @@
         <servlet-name>ManageCourse</servlet-name>
         <url-pattern>/ManageCourse</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ManageClass</servlet-name>
-        <url-pattern>/ManageClass</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ManageClassDetail</servlet-name>
-        <url-pattern>/ManageClassDetail</url-pattern>
-    </servlet-mapping>
     <servlet>
         <servlet-name>ManageCourse</servlet-name>
         <servlet-class>controller.ManageCourses.ManageCourse</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ManageClass</servlet-name>
-        <servlet-class>controller.ManageCourses.ManageClass</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ManageClassDetail</servlet-name>
-        <servlet-class>controller.ManageCourses.ManageClassDetail</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Advice</servlet-name>
@@ -237,8 +249,44 @@
         <url-pattern>/SendAdviceMailServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>ManageClass</servlet-name>
+        <url-pattern>/ManageClass</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>StudentDashboardServlet</servlet-name>
         <url-pattern>/StudentDashboardServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentEditProfileServlet</servlet-name>
+        <url-pattern>/StudentEditProfileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentViewScheduleServlet</servlet-name>
+        <url-pattern>/StudentViewScheduleServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentViewNotificationServlet</servlet-name>
+        <url-pattern>/StudentViewNotificationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentViewClassServlet</servlet-name>
+        <url-pattern>/StudentViewClassServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentClassDetailServlet</servlet-name>
+        <url-pattern>/StudentClassDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentTransferClassServlet</servlet-name>
+        <url-pattern>/StudentTransferClassServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentLeaveClassServlet</servlet-name>
+        <url-pattern>/StudentLeaveClassServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentEnrollClass</servlet-name>
+        <url-pattern>/StudentEnrollClass</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

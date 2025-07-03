@@ -16,35 +16,40 @@ public class TruongHoc {
     public TruongHoc() {
     }
 
-    public TruongHoc(int ID_TruongHoc, String TenTruongHoc, String DiaChi) {
+    public TruongHoc(Integer ID_TruongHoc, String TenTruongHoc, String DiaChi) {
         this.ID_TruongHoc = ID_TruongHoc;
         this.TenTruongHoc = TenTruongHoc;
         this.DiaChi = DiaChi;
     }
 
-    public int getID_TruongHoc() {
+    public Integer getID_TruongHoc() {
         return ID_TruongHoc;
+    }
+
+    public void setID_TruongHoc(Integer ID_TruongHoc) {
+        this.ID_TruongHoc = ID_TruongHoc;
     }
 
     public String getTenTruongHoc() {
         return TenTruongHoc;
     }
 
-    public String getDiaChi() {
-        return DiaChi;
-    }
-
-    public void setID_TruongHoc(int ID_TruongHoc) {
-        this.ID_TruongHoc = ID_TruongHoc;
-    }
-
     public void setTenTruongHoc(String TenTruongHoc) {
         this.TenTruongHoc = TenTruongHoc;
+    }
+
+    public String getDiaChi() {
+        return DiaChi;
     }
 
     public void setDiaChi(String DiaChi) {
         this.DiaChi = DiaChi;
     }
+    
+    
+
+
+    
     
     
 }

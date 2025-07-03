@@ -9,19 +9,20 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="dao.HocSinhDAO" %>
+<%@ page import="dal.HocSinhDAO" %>
 <%@ page import="model.HocSinh" %>
-<%@ page import="dao.GiaoVienDAO" %>
+<%@ page import="dal.GiaoVienDAO" %>
 <%@ page import="model.GiaoVien" %>
-<%@ page import="dao.LopHocDAO" %>
+<%@ page import="dal.LopHocDAO" %>
 <%@ page import="model.LopHoc" %>
-<%@ page import="dao.UserLogsDAO" %>
+<%@ page import="dal.UserLogsDAO" %>
 <%@ page import="model.UserLogs" %>
-<%@ page import="dao.HoTroDAO" %>
+<%@ page import="dal.HoTroDAO" %>
 <%@ page import="model.HoTro" %>
 <%@ page import="model.UserLogView" %>
 <%@ page import="java.time.LocalDate" %>
-
+<%@ page import="model.Admin" %>
+<%@ page import="dal.AdminDAO" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -68,15 +69,15 @@
                 position: relative;
                 display: flex;
                 flex-direction: column;
-                align-items: center; 
+                align-items: center;
                 cursor: pointer;
-                margin-left: 50px; 
+                margin-left: 50px;
             }
 
             .admin-profile .admin-img {
                 width: 40px;
                 height: 40px;
-                border-radius: 50%; 
+                border-radius: 50%;
                 object-fit: cover;
                 border: 2px solid #B0C4DE;
                 margin-bottom: 5px;
@@ -90,7 +91,7 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                margin-right: 40px; 
+                margin-right: 40px;
             }
 
             .admin-profile i {
@@ -144,16 +145,16 @@
             }
 
             .sidebar h4 {
-                margin: 0 auto; 
+                margin: 0 auto;
                 font-weight: bold;
                 letter-spacing: 1.5px;
-                text-align: center; 
+                text-align: center;
             }
 
             .sidebar-logo {
                 width: 100px;
                 height: 100px;
-                border-radius: 50%; 
+                border-radius: 50%;
                 object-fit: cover;
                 margin: 15px auto;
                 display: block;
@@ -200,7 +201,7 @@
 
             .main-content {
                 margin-left: 250px;
-                padding: 100px 40px 20px 40px;  
+                padding: 100px 40px 20px 40px;
                 flex: 1;
                 min-height: 100vh;
                 display: flex;
@@ -357,7 +358,7 @@
                 cursor: pointer;
             }
 
-          
+
             .footer {
                 background-color: #1F4E79;
                 color: #B0C4DE;
@@ -382,8 +383,14 @@
                 Admin Dashboard <i class="fas fa-tachometer-alt"></i>
             </div>
             <div class="admin-profile" onclick="toggleDropdown()">
-                <img src="https://png.pngtree.com/png-clipart/20250117/original/pngtree-account-avatar-user-abstract-circle-background-flat-color-icon-png-image_4965046.png" alt="Admin Photo" class="admin-img">
-                <span>Admin Vũ Văn Chủ </span>
+                <%
+                      ArrayList<Admin> admins  = (ArrayList) AdminDAO.getNameAdmin();
+                      
+                %>
+                <img src="<%= admins.get(0).getAvatar() %>" alt="Admin Photo" class="admin-img">
+                
+                
+                <span><%= admins.get(0).getHoTen() %></span>
                 <i class="fas fa-caret-down"></i>
                 <div class="dropdown-menu" id="adminDropdown">
                     <a href="#"><i class="fas fa-key"></i> Change Password</a>
@@ -464,9 +471,9 @@
                 </div>
             </div>
 
-            
+
             <div class="tables-wrapper">
-               
+
                 <div class="data-table-container">
                     <h3 class="section-title"><i class="fas fa-history"></i> Request/Thay Đổi Trong Hệ Thống</h3>
                     <%
@@ -503,7 +510,7 @@
                     <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
                 </div>
 
-                
+
                 <div class="data-table-container">
                     <h3 class="section-title">Yêu Cầu Hỗ Trợ Từ Người Dùng</h3>
                     <%
@@ -546,9 +553,9 @@
              LocalDate today = LocalDate.now();
             %>
 
-            
+
             <div class="charts-wrapper">
-                
+
                 <div class="data-table-container chart-container">
                     <h3 class="section-title"><i class="fas fa-chart-pie"></i> Báo cáo điểm danh</h3>
                     <div class="chart-container">
@@ -556,7 +563,7 @@
                     </div>
                 </div>
 
-                
+
                 <div class="data-table-container chart-container">
                     <h3 class="section-title"><i class="fas fa-chart-pie"></i> Báo cáo mức độ hài lòng của học sinh</h3>
                     <div class="chart-container">
@@ -565,7 +572,7 @@
                 </div>
             </div>
 
-            
+
             <div class="charts-bottom">
                 <div class="data-table-container chart-container">
                     <h3 class="section-title"><i class="fas fa-chart-bar"></i> Báo cáo thống kê doanh thu theo tháng</h3>
@@ -576,19 +583,19 @@
             </div>
         </div>
 
-        
+
         <div class="footer">
             <p>&copy; 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
         </div>
 
         <script>
-            
+
             function toggleDropdown() {
                 const dropdown = document.getElementById('adminDropdown');
                 dropdown.classList.toggle('active');
             }
 
-            
+
             document.addEventListener('click', function (event) {
                 const profile = document.querySelector('.admin-profile');
                 const dropdown = document.getElementById('adminDropdown');
@@ -597,7 +604,7 @@
                 }
             });
 
-            
+
             const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
             const attendanceGradient = attendanceCtx.createLinearGradient(0, 0, 200, 0);
             attendanceGradient.addColorStop(0, '#1F4E79');
@@ -618,7 +625,7 @@
 
             });
 
-            
+
             const satisfactionCtx = document.getElementById('satisfactionChart').getContext('2d');
             const satisfactionGradient = satisfactionCtx.createLinearGradient(0, 0, 200, 0);
             satisfactionGradient.addColorStop(0, '#8E24AA');
@@ -639,7 +646,7 @@
 
             });
 
-            
+
             const revenueCtx = document.getElementById('revenueChart').getContext('2d');
             const revenueGradient = revenueCtx.createLinearGradient(0, 0, 0, 400);
             revenueGradient.addColorStop(0, '#2E7D32');
@@ -665,46 +672,46 @@
 
 
 
-            
+
             var soDongMoiTrang = 10;
 
-           
+
             var tatCaDong = document.querySelectorAll("#userLogTableBody tr");
 
-            
+
             var tongSoTrang = Math.ceil(tatCaDong.length / soDongMoiTrang);
 
-            
+
             var phanTrangDiv = document.getElementById("pagination");
 
-            
+
             function hienThiTrang(trang) {
-                
+
                 for (var i = 0; i < tatCaDong.length; i++) {
                     tatCaDong[i].style.display = "none";
                 }
 
-                
+
                 var batDau = (trang - 1) * soDongMoiTrang;
                 var ketThuc = batDau + soDongMoiTrang;
                 for (var i = batDau; i < ketThuc && i < tatCaDong.length; i++) {
                     tatCaDong[i].style.display = "";
                 }
 
-               
+
                 phanTrangDiv.innerHTML = "";
                 for (var j = 1; j <= tongSoTrang; j++) {
                     var nut = document.createElement("button");
                     nut.innerText = j;
 
-                    
+
                     nut.onclick = (function (trangDuocChon) {
                         return function () {
                             hienThiTrang(trangDuocChon);
                         };
                     })(j);
 
-                    
+
                     if (j === trang) {
                         nut.style.backgroundColor = "#1F4E79";
                         nut.style.color = "white";
@@ -714,7 +721,7 @@
                 }
             }
 
-            
+
             hienThiTrang(1);
         </script>   
     </body>

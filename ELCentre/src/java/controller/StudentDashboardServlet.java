@@ -1,60 +1,27 @@
-
 package controller;
 
+import dal.HocSinhDAO;
+import dal.HocSinh_LopHocDAO;
+import dal.LichHocDAO;
+
+import dal.ThongBaoDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import dao.*;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpSession;
 import model.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import dao.TaiKhoanDAO;
 
-/**
- *
- * @author vkhan
- */
 public class StudentDashboardServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet StudentDashboardServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet StudentDashboardServlet at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-
+            throws ServletException, IOException {
         HttpSession session = request.getSession();
         TaiKhoan user = (TaiKhoan) session.getAttribute("user");
 
@@ -64,40 +31,97 @@ public class StudentDashboardServlet extends HttpServlet {
         }
 
         int idTaiKhoan = user.getID_TaiKhoan();
-//        int idHocSinh = HocSinhDAO.getHocSinhIdByTaiKhoanId(idTaiKhoan);
+        System.out.println("ID_TaiKhoan từ session: " + idTaiKhoan);
 
-//        List<LopHoc> dsLopHoc = DangKyLopHocDAO.getLopHocByHocSinhId(idHocSinh);
-//        List<ThongBao> dsThongBao = ThongBaoDAO.getThongBaoByTaiKhoanId(idTaiKhoan);
-//        List<LichHoc> lichHocSapToi = LichHocDAO.getUpcomingScheduleByHocSinhId(idHocSinh);
+        int idHocSinh = HocSinhDAO.getHocSinhIdByTaiKhoanId(idTaiKhoan);
+        System.out.println("ID_HocSinh từ DB: " + idHocSinh);
 
-//        request.setAttribute("dsLopHoc", dsLopHoc);
-//        request.setAttribute("dsThongBao", dsThongBao);
-//        request.setAttribute("lichHocSapToi", lichHocSapToi);
+        List<LopHoc> dsLopHoc = HocSinh_LopHocDAO.getLopHocDaDangKyByHocSinhId(idHocSinh);
 
+        List<ThongBao> dsThongBao = new ArrayList<>();
+        try {
+            dsThongBao = ThongBaoDAO.getThongBaoByTaiKhoanId(idTaiKhoan);
+            System.out.println("Số lượng thông báo: " + dsThongBao.size());
+            for (ThongBao tb : dsThongBao) {
+                System.out.println("→ " + tb.getNoiDung() + " | " + tb.getThoiGian());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        List<LichHoc> lichHocSapToi = LichHocDAO.getUpcomingScheduleByHocSinhId(idHocSinh);
+        System.out.println("Số lượng lịch học sắp tới: " + lichHocSapToi.size());
+        for (LichHoc lh : lichHocSapToi) {
+            System.out.println("→ " + lh.getNgayHoc() + " | " + lh.getTenLopHoc() + " | " + lh.getSlotThoiGian());
+        }
+
+        request.setAttribute("dsLopHoc", dsLopHoc);
+        request.setAttribute("dsThongBao", dsThongBao);
+        request.setAttribute("lichHocSapToi", lichHocSapToi);
         request.getRequestDispatcher("/views/student/studentDashboard.jsp").forward(request, response);
     }
 
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
+            throws ServletException, IOException {
+        doGet(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+        return "Servlet hiển thị dashboard học sinh";
+    }
+    
+    public static void main(String[] args) {
+        String email = "hocsinh4@example.com"; // thay đổi tại đây
+
+        String password = "hspass4";             // thay đổi tại đây
+
+        try {
+            TaiKhoan user = TaiKhoanDAO.login(email, password);
+
+            if (user == null) {
+                System.out.println("❌ Đăng nhập thất bại: Sai email hoặc mật khẩu.");
+                return;
+            }
+
+            if ("Inactive".equalsIgnoreCase(user.getTrangThai())) {
+                System.out.println("❌ Tài khoản chưa được kích hoạt.");
+                return;
+            }
+
+            int idTaiKhoan = user.getID_TaiKhoan();
+            int idHocSinh = HocSinhDAO.getHocSinhIdByTaiKhoanId(idTaiKhoan);
+
+            System.out.println("===== ĐĂNG NHẬP THÀNH CÔNG =====");
+            System.out.println("Tài khoản: " + user.getEmail());
+            System.out.println("ID_TaiKhoan: " + idTaiKhoan);
+            System.out.println("ID_HocSinh : " + idHocSinh);
+
+            System.out.println("\n→ THÔNG BÁO:");
+            List<ThongBao> dsThongBao = ThongBaoDAO.getThongBaoByTaiKhoanId(idTaiKhoan);
+            System.out.println("Số lượng: " + dsThongBao.size());
+            for (ThongBao tb : dsThongBao) {
+                System.out.println(" - " + tb.getNoiDung() + " | " + tb.getThoiGian());
+            }
+
+            System.out.println("\n→ LỚP HỌC ĐÃ ĐĂNG KÝ:");
+            List<LopHoc> dsLopHoc = HocSinh_LopHocDAO.getLopHocDaDangKyByHocSinhId(idHocSinh);
+            System.out.println("Số lượng: " + dsLopHoc.size());
+            for (LopHoc lop : dsLopHoc) {
+                System.out.println(" - " + lop.getTenLopHoc() + " | Khóa: " + lop.getTenKhoaHoc());
+            }
+
+            System.out.println("\n→ LỊCH HỌC SẮP TỚI:");
+            List<LichHoc> lichHocSapToi = LichHocDAO.getUpcomingScheduleByHocSinhId(idHocSinh);
+            System.out.println("Số lượng: " + lichHocSapToi.size());
+            for (LichHoc lh : lichHocSapToi) {
+                System.out.println(" - " + lh.getNgayHoc() + " | Lớp: " + lh.getTenLopHoc() + " | Slot: " + lh.getSlotThoiGian());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

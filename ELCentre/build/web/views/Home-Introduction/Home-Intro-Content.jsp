@@ -91,10 +91,10 @@
     <div class="col-lg-6 col-md-6">
       <div class="section-title">Kết nối với chúng tôi</div>
 
-      <form class="contact-form" method="post" action="ContactServlet">
+      <form class="contact-form" method="post" action="${pageContext.request.contextPath}/Advice">
         <div class="mb-3">
           <label for="name" class="form-label">Tên bạn</label>
-          <input type="text" class="form-control" id="name" name="name" placeholder="Tên của bạn" required>
+          <input type="text" class="form-control" id="name" name="fullName" placeholder="Tên của bạn" required>
         </div>
 
         <div class="mb-3">
@@ -115,7 +115,7 @@
 
         <div class="mb-4">
           <label for="message" class="form-label">Nội dung bạn muốn nhắn nhủ</label>
-          <textarea class="form-control" id="message" name="message" rows="5" placeholder="Nội dung..." required></textarea>
+          <textarea class="form-control" id="message" name="NoiDung" rows="5" placeholder="Nội dung..." required></textarea>
         </div>
 
         <div class="text-start">

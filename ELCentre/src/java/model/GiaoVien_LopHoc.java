@@ -16,6 +16,16 @@ public class GiaoVien_LopHoc {
 
     // Getter and setter methods
 
+    public GiaoVien_LopHoc() {
+    }
+
+    public GiaoVien_LopHoc(Integer ID_GiaoVien, Integer ID_LopHoc) {
+        this.ID_GiaoVien = ID_GiaoVien;
+        this.ID_LopHoc = ID_LopHoc;
+    }
+    
+    
+
     public Integer getID_GiaoVien() {
         return ID_GiaoVien;
     }

@@ -9,19 +9,19 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import model.TaiKhoan;
-import dao.TaiKhoanDAO;
+import dal.TaiKhoanDAO;
 import model.HocSinh;
-import dao.HocSinhDAO;
+import dal.HocSinhDAO;
 import model.GiaoVien;
-import dao.GiaoVienDAO;
+import dal.GiaoVienDAO;
 import model.HocPhi;
-import dao.HocPhiDAO;
+import dal.HocPhiDAO;
 import model.ThongBao;
-import dao.ThongBaoDAO;
-import dao.KhoaHocDAO;
+import dal.ThongBaoDAO;
+import dal.KhoaHocDAO;
 import model.KhoaHoc;
 import model.TaiKhoanChiTiet;
-import dao.TaiKhoanChiTietDAO;
+import dal.TaiKhoanChiTietDAO;
 import model.GiaoVien_TruongHoc;
 
 /**

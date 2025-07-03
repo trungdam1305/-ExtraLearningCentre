@@ -5,7 +5,7 @@
 
 package controller;
 
-import dao.DangTaiLieuDAO;
+import dal.DangTaiLieuDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;

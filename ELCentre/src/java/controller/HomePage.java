@@ -5,13 +5,13 @@
 
 package controller;
 
-import dao.BlogDAO;
-import dao.GiaoVienDAO;
-import dao.HocSinhDAO;
-import dao.KhoaHocDAO;
-import dao.KhoiHocDAO;
-import dao.LopHocDAO;
-import dao.SliderDAO;
+import dal.BlogDAO;
+import dal.GiaoVienDAO;
+import dal.HocSinhDAO;
+import dal.KhoaHocDAO;
+import dal.KhoiHocDAO;
+import dal.LopHocDAO;
+import dal.SliderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;

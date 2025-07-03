@@ -32,6 +32,8 @@ public class LichHoc {
     // ID of the class this schedule belongs to
     private int ID_LopHoc;
 
+    
+    private int ID_PhongHoc ; 
     // Additional notes for the lesson
     private String GhiChu;
 
@@ -40,12 +42,25 @@ public class LichHoc {
 
     // Class name associated with the lesson
     private String TenLopHoc;
+    
+    private String TenPhongHoc;
+    
 
     /**
      * Default constructor.
      */
     public LichHoc() {
     }
+
+    public int getID_PhongHoc() {
+        return ID_PhongHoc;
+    }
+
+    public void setID_PhongHoc(int ID_PhongHoc) {
+        this.ID_PhongHoc = ID_PhongHoc;
+    }
+    
+    
 
     
     
@@ -62,14 +77,18 @@ public class LichHoc {
         this.TenLopHoc = TenLopHoc;
     }
 
-   // Constructor đầy đủ
-    public LichHoc(Integer idSchedule, LocalDate ngayHoc, Integer idSlotHoc, Integer idLopHoc, String ghiChu) {
-        this.ID_Schedule = idSchedule;
-        this.NgayHoc = ngayHoc;
-        this.ID_SlotHoc = idSlotHoc;
-        this.ID_LopHoc = idLopHoc;
-        this.GhiChu = ghiChu;
+    public LichHoc(int ID_Schedule, LocalDate NgayHoc, int ID_SlotHoc, int ID_LopHoc, int ID_PhongHoc, String GhiChu, String SlotThoiGian, String TenLopHoc) {
+        this.ID_Schedule = ID_Schedule;
+        this.NgayHoc = NgayHoc;
+        this.ID_SlotHoc = ID_SlotHoc;
+        this.ID_LopHoc = ID_LopHoc;
+        this.ID_PhongHoc = ID_PhongHoc;
+        this.GhiChu = GhiChu;
+        this.SlotThoiGian = SlotThoiGian;
+        this.TenLopHoc = TenLopHoc;
     }
+
+   
 
     /**
      * Constructor with only essential scheduling fields.
@@ -81,6 +100,20 @@ public class LichHoc {
         this.ID_LopHoc = ID_LopHoc;
         this.GhiChu = GhiChu;
     }
+
+    public LichHoc(int ID_Schedule, LocalDate NgayHoc, int ID_SlotHoc, int ID_LopHoc, int ID_PhongHoc, String GhiChu, String SlotThoiGian, String TenLopHoc, String TenPhongHoc) {
+        this.ID_Schedule = ID_Schedule;
+        this.NgayHoc = NgayHoc;
+        this.ID_SlotHoc = ID_SlotHoc;
+        this.ID_LopHoc = ID_LopHoc;
+        this.ID_PhongHoc = ID_PhongHoc;
+        this.GhiChu = GhiChu;
+        this.SlotThoiGian = SlotThoiGian;
+        this.TenLopHoc = TenLopHoc;
+        this.TenPhongHoc = TenPhongHoc;
+    }
+    
+    
 
     // --- Getters and Setters ---
 
@@ -139,6 +172,15 @@ public class LichHoc {
     public void setTenLopHoc(String TenLopHoc) {
         this.TenLopHoc = TenLopHoc;
     }
+
+    public String getTenPhongHoc() {
+        return TenPhongHoc;
+    }
+
+    public void setTenPhongHoc(String TenPhongHoc) {
+        this.TenPhongHoc = TenPhongHoc;
+    }
+    
     
     
     

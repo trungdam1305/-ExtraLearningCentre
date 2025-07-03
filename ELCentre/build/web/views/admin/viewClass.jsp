@@ -10,9 +10,9 @@
 <%@page import="model.LichHoc"%>
 <%@page import="model.GiaoVien"%>
 <%@page import="model.HocSinh"%>
-<%@page import="dao.GiaoVienDAO"%>
-<%@page import="dao.HocSinhDAO"%>
-<%@page import="dao.KhoaHocDAO"%>
+<%@page import="dal.GiaoVienDAO"%>
+<%@page import="dal.HocSinhDAO"%>
+<%@page import="dal.KhoaHocDAO"%>
 <%@page import="model.KhoaHoc"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
@@ -126,7 +126,7 @@
                 width: 100%;
                 max-width: 400px;
             }
-            #teacherModao .modao-dialog, #studentModao .modao-dialog {
+            #teacherModal .modal-dialog, #studentModal .modal-dialog {
                 max-width: 800px;
             }
             .hidden {
@@ -203,14 +203,14 @@
                                     <span class="detail-label">Ảnh đại diện:</span> Chưa có ảnh
                                 </div>
                             </c:if>
-                            <button id="changeTeacherBtn" class="btn btn-primary mt-2" data-bs-toggle="modao" data-bs-target="#teacherModao">
+                            <button id="changeTeacherBtn" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#teacherModal">
                                 <i class="bi bi-pencil-square"></i> Thay đổi giáo viên
                             </button>
                         </div>
                     </c:when>
                     <c:otherwise>
                         <div class="alert alert-warning" role="alert">Chưa có giáo viên được phân công.</div>
-                        <button id="changeTeacherBtn" class="btn btn-primary mt-2" data-bs-toggle="modao" data-bs-target="#teacherModao">
+                        <button id="changeTeacherBtn" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#teacherModal">
                             <i class="bi bi-person-plus"></i> Thêm giáo viên
                         </button>
                     </c:otherwise>
@@ -233,15 +233,15 @@
                     <div class="alert alert-danger">${studentErr}</div>
                 </c:if>
 
-                <!-- Modao để thay đổi giáo viên -->
-                <div class="modao fade" id="teacherModao" tabindex="-1" aria-labelledby="teacherModaoLabel" aria-hidden="true">
-                    <div class="modao-dialog">
-                        <div class="modao-content">
-                            <div class="modao-header">
-                                <h5 class="modao-title" id="teacherModaoLabel">Chọn giáo viên</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modao" aria-label="Close"></button>
+                <!-- Modal để thay đổi giáo viên -->
+                <div class="modal fade" id="teacherModal" tabindex="-1" aria-labelledby="teacherModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="teacherModalLabel">Chọn giáo viên</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modao-body">
+                            <div class="modal-body">
 
                                 <c:choose>
                                     <c:when test="${not empty availableTeachers}">
@@ -286,8 +286,8 @@
                                     </c:otherwise>
                                 </c:choose>
                             </div>
-                            <div class="modao-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modao">Đóng</button>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                             </div>
                         </div>
                     </div>
@@ -340,19 +340,19 @@
         <div class="alert alert-warning" role="alert">Chưa có học sinh nào trong lớp.</div>
     </c:otherwise>
 </c:choose>
-                <button id="showStudentsBtn" class="btn btn-primary mt-2" data-bs-toggle="modao" data-bs-target="#studentModao">
+                <button id="showStudentsBtn" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#studentModal">
                     <i class="bi bi-plus-circle"></i> Thêm học sinh
                 </button>
 
-                <!-- Modao để thêm học sinh -->
-                <div class="modao fade" id="studentModao" tabindex="-1" aria-labelledby="studentModaoLabel" aria-hidden="true">
-                    <div class="modao-dialog">
-                        <div class="modao-content">
-                            <div class="modao-header">
-                                <h5 class="modao-title" id="studentModaoLabel">Thêm học sinh</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modao" aria-label="Close"></button>
+                <!-- Modal để thêm học sinh -->
+                <div class="modal fade" id="studentModal" tabindex="-1" aria-labelledby="studentModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="studentModalLabel">Thêm học sinh</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modao-body">
+                            <div class="modal-body">
 
                                 <div class="mb-3">
                                     <label for="studentSearch" class="form-label">Tìm kiếm học sinh:</label>
@@ -395,8 +395,8 @@
                                     <div class="alert alert-warning">Không có học sinh nào trong database.</div>
                                 </c:if>
                             </div>
-                            <div class="modao-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modao">Đóng</button>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                             </div>
                         </div>
                     </div>

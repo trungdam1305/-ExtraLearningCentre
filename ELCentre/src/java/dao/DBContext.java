@@ -19,17 +19,18 @@ public class DBContext {
         return instance;
     }
 
-    public Connection getConnection() {
+            public Connection getConnection() {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://localhost:1433;databaseName=SWPV1";
+            String url = "jdbc:sqlserver://localhost:1433;databaseName=SSS";
             String user = "sa";
             String password = "123";
             connection = DriverManager.getConnection(url, user, password);
             return connection;
         } catch (SQLException | ClassNotFoundException e) {
             System.err.println("Error " + e.getMessage() + " at DBContext");
-                    return null;
+            e.printStackTrace();
+            return null;
         }
     }
 

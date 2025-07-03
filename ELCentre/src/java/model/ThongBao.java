@@ -5,35 +5,62 @@ import java.time.LocalDateTime;
 public class ThongBao {
      private Integer ID_ThongBao;
     private Integer ID_TaiKhoan;
-    private String NoiDung;
+    private String noiDung;
     private Integer ID_HocPhi;
-    private LocalDateTime ThoiGian;
+    private LocalDateTime thoiGian;
 
 
     public ThongBao() {
     }
 
-
-    public ThongBao(Integer ID_ThongBao, Integer ID_TaiKhoan, String NoiDung, Integer ID_HocPhi, LocalDateTime ThoiGian) {
+    public ThongBao(Integer ID_ThongBao, Integer ID_TaiKhoan, String noiDung, Integer ID_HocPhi, LocalDateTime thoiGian) {
         this.ID_ThongBao = ID_ThongBao;
         this.ID_TaiKhoan = ID_TaiKhoan;
-        this.NoiDung = NoiDung;
+        this.noiDung = noiDung;
         this.ID_HocPhi = ID_HocPhi;
-        this.ThoiGian = ThoiGian;
+        this.thoiGian = thoiGian;
     }
 
-    public Integer getID_ThongBao() { return ID_ThongBao; }
-    public void setID_ThongBao(Integer ID_ThongBao) { this.ID_ThongBao = ID_ThongBao; }
+    public Integer getID_ThongBao() {
+        return ID_ThongBao;
+    }
 
-    public Integer getID_TaiKhoan() { return ID_TaiKhoan; }
-    public void setID_TaiKhoan(Integer ID_TaiKhoan) { this.ID_TaiKhoan = ID_TaiKhoan; }
+    public void setID_ThongBao(Integer ID_ThongBao) {
+        this.ID_ThongBao = ID_ThongBao;
+    }
 
-    public String getNoiDung() { return NoiDung; }
-    public void setNoiDung(String NoiDung) { this.NoiDung = NoiDung; }
+    public Integer getID_TaiKhoan() {
+        return ID_TaiKhoan;
+    }
 
-    public Integer getID_HocPhi() { return ID_HocPhi; }
-    public void setID_HocPhi(Integer ID_HocPhi) { this.ID_HocPhi = ID_HocPhi; }
+    public void setID_TaiKhoan(Integer ID_TaiKhoan) {
+        this.ID_TaiKhoan = ID_TaiKhoan;
+    }
 
-    public LocalDateTime getThoiGian() { return ThoiGian; }
-    public void setThoiGian(LocalDateTime ThoiGian) { this.ThoiGian = ThoiGian; }
+    public String getNoiDung() {
+        return noiDung;
+    }
+
+    public void setNoiDung(String noiDung) {
+        this.noiDung = noiDung;
+    }
+
+    public Integer getID_HocPhi() {
+        return ID_HocPhi;
+    }
+
+    public void setID_HocPhi(Integer ID_HocPhi) {
+        this.ID_HocPhi = ID_HocPhi;
+    }
+
+    public LocalDateTime getThoiGian() {
+        return thoiGian;
+    }
+
+    public void setThoiGian(LocalDateTime thoiGian) {
+        this.thoiGian = thoiGian;
+    }
+    
+    
+    
 }
