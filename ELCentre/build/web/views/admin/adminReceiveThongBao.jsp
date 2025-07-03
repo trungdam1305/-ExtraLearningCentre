@@ -2,6 +2,10 @@
     Document   : adminReceiveThongBao
     Created on : May 29, 2025, 4:12:42 PM
     Author     : wrx_Chur04
+    Purpose    : This page displays a list of sent notifications (thông báo) in the EL CENTRE system, 
+                 including notification ID, account ID, content, associated tuition fee ID, and timestamp. 
+    Parameters:
+    - @Param thongbaos (ArrayList<ThongBao>): A request attribute containing the list of notification objects fetched from the database.
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

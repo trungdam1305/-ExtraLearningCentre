@@ -14,6 +14,8 @@
     <!-- Google Identity -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
+
+
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -80,8 +82,13 @@
         <div class="right-panel">
             <div class="login-box">
                 <h3 class="fw-bold">|Đăng nhập hệ thống</h3>
-                <p class="small">Chưa có tài khoản? <a href="register.jsp">Đăng ký ngay</a></p>
-
+                <p class="small">
+                    Bạn đang quan tâm tới khóa học của chúng tôi? 
+                    <br>
+                    <a href="advice.jsp">Gửi yêu cầu tư vấn ngay!</a>
+                    <br>
+                    <a href="${pageContext.request.contextPath}/HomePage">Quay lại trang chủ</a>
+                </p>
                 <% String error = request.getParameter("error");
                    if (error != null) { %>
                     <div class="alert alert-danger"><%= error %></div>
@@ -100,8 +107,8 @@
                     </div>
 
                     <!-- ✅ Google reCAPTCHA -->
-                    <div class="g-recaptcha mb-3" data-sitekey="6Ldf8E4rAAAAACIhQBZn-9343I1wWxzJwzawYS1s"></div>
-
+                    <!-- <div class="g-recaptcha mb-3" data-sitekey="6Ldf8E4rAAAAACIhQBZn-9343I1wWxzJwzawYS1s"></div> -->
+ 
                     <button type="submit" name="action" class="btn btn-login">Đăng nhập</button>
                 </form>
 

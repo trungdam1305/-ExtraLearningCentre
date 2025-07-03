@@ -7,10 +7,12 @@ import model.TaiKhoan;
 public class TaiKhoanDAO {
 
     public static TaiKhoan login(String email, String password) throws SQLException {
-        String sql = "SELECT * FROM TaiKhoan WHERE Email = ? AND MatKhau = ? AND TrangThai = 'Active'";
+               String sql = "SELECT * FROM TaiKhoan WHERE Email = ? AND MatKhau = ? AND TrangThai = 'Active'";
+
         
         try (Connection conn = DBContext.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             
             stmt.setString(1, email);
             stmt.setString(2, password); 
@@ -198,7 +200,7 @@ public class TaiKhoanDAO {
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+              return false;
         }
     }
 }

@@ -35,7 +35,7 @@ public class PhuHuynhDAO {
                         rs.getString("Email") , 
                         rs.getString("DiaChi") , 
                         rs.getString("GhiChu") , 
-                        rs.getInt("ID_HocSinh") ,
+                        
                         rs.getString("TrangThai") , 
                         rs.getTimestamp("NgayTao").toLocalDateTime()
                 
@@ -131,7 +131,7 @@ public class PhuHuynhDAO {
         if (rs == 0 ) {
             return false ; 
         } else {
-            return true ; 
+               return true ; 
         }
     }
 }

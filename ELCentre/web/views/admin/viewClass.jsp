@@ -36,7 +36,7 @@
         try {
             giaoVien = giaoVienDAO.getGiaoVienByLopHoc(lopHoc.getID_LopHoc());
             hocSinhList = hocSinhDAO.getHocSinhByLopHoc(lopHoc.getID_LopHoc());
-            allStudents = HocSinhDAO.adminGetAllHocSinh();
+            allStudents = HocSinhDAO.adminGetAllHocSinh1();
             KhoaHocDAO khoaHocDAO = new KhoaHocDAO();
             KhoaHoc khoaHoc = khoaHocDAO.getKhoaHocById(idKhoaHoc);
             if (khoaHoc != null) {
@@ -169,52 +169,12 @@
             </c:if>
 
             <c:if test="${lopHoc != null}">
-                <!-- Thông tin lớp học -->
-                <div class="section-title">Thông tin lớp học</div>
-                <div class="detail-item">
-                    <span class="detail-label">Tên lớp học:</span> ${lopHoc.tenLopHoc}
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Sĩ số:</span> ${lopHoc.siSo}
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Sĩ số tối đa:</span> ${lopHoc.siSoToiDa}
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Ghi chú:</span> ${lopHoc.ghiChu != null ? lopHoc.ghiChu : 'Chưa có'}
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Trạng thái:</span> ${lopHoc.trangThai}
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Ngày khởi tạo:</span> ${lopHoc.ngayTao != null ? lopHoc.ngayTao : 'Chưa có'}
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Thời gian học:</span>
-                    <c:if test="${lichHoc != null}">
-                        ${lichHoc.slotThoiGian} (${lichHoc.ngayHoc})
-                    </c:if>
-                    <c:if test="${lichHoc == null}">
-                        <span style="color: red;">Chưa có lịch học</span>
-                    </c:if>
-                </div>
-                <c:if test="${not empty lopHoc.image}">
-                    <div class="detail-item">
-                        <span class="detail-label">Ảnh lớp học:</span>
-                        <img src="${pageContext.request.contextPath}/${lopHoc.image}" alt="Class Image" style="max-width: 200px; max-height: 266px; object-fit: cover; border-radius: 4px; border: 2px solid lightblue;" />
-                    </div>
-                </c:if>
-                <c:if test="${empty lopHoc.image}">
-                    <div class="detail-item">
-                        <span class="detail-label">Ảnh lớp học:</span> Chưa có ảnh
-                    </div>
-                </c:if>
+
 
                 <!-- Thông tin giáo viên -->
                 <div class="section-title">Thông tin giáo viên</div>
                 <!-- Debug trạng thái giáo viên -->
-                <c:out value="GiaoVien: ${giaoVien != null ? giaoVien.hoTen : 'null'}"/>
-                <c:out value="AvailableTeachers size: ${availableTeachers != null ? availableTeachers.size() : 'null'}"/>
+
                 <c:choose>
                     <c:when test="${giaoVien != null}">
                         <div class="teacher-info">
@@ -227,18 +187,11 @@
                             <div class="detail-item">
                                 <span class="detail-label">Chuyên môn:</span> ${giaoVien.chuyenMon != null ? giaoVien.chuyenMon : 'Chưa có'}
                             </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Lương:</span> ${giaoVien.luong != null ? giaoVien.luong : 'Chưa có'}
-                            </div>
+
                             <div class="detail-item">
                                 <span class="detail-label">Trường học:</span> ${giaoVien.tenTruongHoc != null ? giaoVien.tenTruongHoc : 'Chưa có'}
                             </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Trạng thái:</span> ${giaoVien.trangThai != null ? giaoVien.trangThai : 'Chưa có'}
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Ngày tạo:</span> ${giaoVien.ngayTao != null ? giaoVien.ngayTao : 'Chưa có'}
-                            </div>
+
                             <c:if test="${not empty giaoVien.avatar}">
                                 <div class="detail-item">
                                     <span class="detail-label">Ảnh đại diện:</span>
@@ -263,6 +216,23 @@
                     </c:otherwise>
                 </c:choose>
 
+
+                <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+                <%-- Success messages --%>
+                <c:if test="${not empty teacherSuc}">
+                    <div class="alert alert-success">${teacherSuc}</div>
+                </c:if>
+                <c:if test="${not empty studentSuc}">
+                    <div class="alert alert-success">${studentSuc}</div>
+                </c:if>
+                <%-- Error messages --%>
+                <c:if test="${not empty teacherErr}">
+                    <div class="alert alert-danger">${teacherErr}</div>
+                </c:if>
+                <c:if test="${not empty studentErr}">
+                    <div class="alert alert-danger">${studentErr}</div>
+                </c:if>
+
                 <!-- Modal để thay đổi giáo viên -->
                 <div class="modal fade" id="teacherModal" tabindex="-1" aria-labelledby="teacherModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -272,18 +242,12 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <!-- Thông báo trong modal -->
-                                <c:if test="${not empty teacherErr}">
-                                    <div class="alert alert-custom-danger" role="alert">${teacherErr}</div>
-                                </c:if>
-                                <c:if test="${not empty teacherSuc}">
-                                    <div class="alert alert-success" role="alert">${teacherSuc}</div>
-                                </c:if>
+
                                 <c:choose>
                                     <c:when test="${not empty availableTeachers}">
                                         <div class="mb-3">
                                             <label for="teacherSearch" class="form-label">Tìm kiếm giáo viên:</label>
-                                            <input type="text" id="teacherSearch" class="form-control" placeholder="Nhập tên hoặc mã giáo viên..." value="${param.teacherSearch}">
+                                            <input type="text" id="teacherSearch" class="form-control" placeholder="Nhập tên giáo viên" value="${param.teacherSearch}">
                                         </div>
                                         <form id="assignTeacherForm" action="${pageContext.request.contextPath}/ManageClassDetail" method="post">
                                             <input type="hidden" name="action" value="assignTeacher">
@@ -329,45 +293,53 @@
                     </div>
                 </div>
 
+                
+                
+
                 <!-- Danh sách học sinh -->
                 <div class="section-title">Danh sách học sinh</div>
                 <!-- Debug kích thước danh sách học sinh -->
                 <c:out value="HocSinhList size: ${hocSinhList != null ? hocSinhList.size() : 'null'}"/>
-                <c:choose>
-                    <c:when test="${not empty hocSinhList}">
-                        <table class="student-table">
-                            <thead>
-                                <tr>
-                                    <th>Mã học sinh</th>
-                                    <th>Họ và tên</th>
-                                    <th>Ngày sinh</th>
-                                    <th>Giới tính</th>
-                                    <th>Địa chỉ</th>
-                                    <th>SĐT phụ huynh</th>
-                                    <th>Trạng thái</th>
-                                    <th>Ngày tạo</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach var="hocSinh" items="${hocSinhList}">
-                                    <tr>
-                                        <td>${hocSinh.ID_HocSinh != null ? hocSinh.ID_HocSinh : 'Chưa có'}</td>
-                                        <td>${hocSinh.hoTen != null ? hocSinh.hoTen : 'Chưa có'}</td>
-                                        <td>${hocSinh.ngaySinh != null ? hocSinh.ngaySinh : 'Chưa có'}</td>
-                                        <td>${hocSinh.gioiTinh != null ? hocSinh.gioiTinh : 'Chưa có'}</td>
-                                        <td>${hocSinh.diaChi != null ? hocSinh.diaChi : 'Chưa có'}</td>
-                                        <td>${hocSinh.SDT_PhuHuynh != null ? hocSinh.SDT_PhuHuynh : 'Chưa có'}</td>
-                                        <td>${hocSinh.trangThai != null ? hocSinh.trangThai : 'Chưa có'}</td>
-                                        <td>${hocSinh.ngayTao != null ? hocSinh.ngayTao : 'Chưa có'}</td>
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
-                        </table>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="alert alert-warning" role="alert">Chưa có học sinh nào trong lớp.</div>
-                    </c:otherwise>
-                </c:choose>
+               <c:choose>
+    <c:when test="${not empty hocSinhList}">
+        <table class="student-table">
+            <thead>
+                <tr>
+                    <th>Họ và tên</th>
+                    <th>Giới tính</th>
+                    <th>SĐT phụ huynh</th>
+                    <th>Trường học</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="hocSinh" items="${hocSinhList}">
+                    <tr>
+                        <td>${hocSinh.hoTen != null ? hocSinh.hoTen : 'Chưa có'}</td>
+                        <td>${hocSinh.gioiTinh != null ? hocSinh.gioiTinh : 'Chưa có'}</td>
+                        <td>${hocSinh.SDT_PhuHuynh != null ? hocSinh.SDT_PhuHuynh : 'Chưa có'}</td>
+                        <td>${hocSinh.tenTruongHoc != null ? hocSinh.tenTruongHoc : 'Chưa có'}</td>
+                        <td>
+                            <form action="${pageContext.request.contextPath}/ManageClassDetail" method="post" style="display:inline;">
+                                <input type="hidden" name="action" value="moveOutStudent">
+                                <input type="hidden" name="ID_LopHoc" value="${lopHoc.ID_LopHoc}">
+                                <input type="hidden" name="ID_HocSinh" value="${hocSinh.ID_HocSinh}">
+                                <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}">
+                                <input type="hidden" name="ID_Khoi" value="${ID_Khoi}">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa học sinh ${hocSinh.hoTen} khỏi lớp?');">
+                                    <i class="bi bi-trash"></i> Xóa
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </c:when>
+    <c:otherwise>
+        <div class="alert alert-warning" role="alert">Chưa có học sinh nào trong lớp.</div>
+    </c:otherwise>
+</c:choose>
                 <button id="showStudentsBtn" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#studentModal">
                     <i class="bi bi-plus-circle"></i> Thêm học sinh
                 </button>
@@ -381,16 +353,10 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <!-- Thông báo trong modal học sinh -->
-                                <c:if test="${not empty studentErr}">
-                                    <div class="alert alert-custom-danger" role="alert">${studentErr}</div>
-                                </c:if>
-                                <c:if test="${not empty studentSuc}">
-                                    <div class="alert alert-success" role="alert">${studentSuc}</div>
-                                </c:if>
+
                                 <div class="mb-3">
                                     <label for="studentSearch" class="form-label">Tìm kiếm học sinh:</label>
-                                    <input type="text" id="studentSearch" class="form-control" placeholder="Nhập tên hoặc mã học sinh..." value="${param.studentSearch}">
+                                    <input type="text" id="studentSearch" class="form-control" placeholder="Nhập tên học sinh" value="${param.studentSearch}">
                                 </div>
                                 <c:if test="${not empty allStudents}">
                                     <form id="addStudentForm" action="${pageContext.request.contextPath}/ManageClassDetail" method="post">
@@ -405,6 +371,7 @@
                                                     <th>Mã học sinh</th>
                                                     <th>Họ và tên</th>
                                                     <th>Ngày sinh</th>
+                                                    <th>Trường học</th> 
                                                     <th>Hành động</th>
                                                 </tr>
                                             </thead>
@@ -414,8 +381,9 @@
                                                         <td>${student.ID_HocSinh != null ? student.ID_HocSinh : 'Chưa có'}</td>
                                                         <td>${student.hoTen != null ? student.hoTen : 'Chưa có'}</td>
                                                         <td>${student.ngaySinh != null ? student.ngaySinh : 'Chưa có'}</td>
+                                                        <td>${student.tenTruongHoc != null ? student.tenTruongHoc : 'Chưa có'}</td> <!-- Hiển thị Trường học -->
                                                         <td>
-                                                            <button type="submit" name="ID_HocSinh" value="${student.ID_HocSinh}" class="btn btn-success btn-sm">Add</button>
+                                                            <button type="submit" name="ID_HocSinh" value="${student.ID_HocSinh}" class="btn btn-success btn-sm">Thêm</button>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>

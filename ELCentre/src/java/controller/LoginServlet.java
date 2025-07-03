@@ -31,22 +31,22 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        // Xác thực Captcha
-        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
-        boolean isValidCaptcha = VerifyRecaptcha.verify(gRecaptchaResponse);
-
-        if (!isValidCaptcha) {
-            String error = "Vui lòng xác nhận bạn không phải là robot.";
-            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
-            return;
-        }
-
-        if (email == null || email.trim().isEmpty() ||
-            password == null || password.trim().isEmpty()) {
-            String errorMsg = "Vui lòng nhập email và mật khẩu";
-            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
-            return;
-        }
+//        // Xác thực Captcha
+//        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+//        boolean isValidCaptcha = VerifyRecaptcha.verify(gRecaptchaResponse);
+//
+//        if (!isValidCaptcha) {
+//            String error = "Vui lòng xác nhận bạn không phải là robot.";
+//            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
+//            return;
+//        }
+//
+//        if (email == null || email.trim().isEmpty() ||
+//            password == null || password.trim().isEmpty()) {
+//            String errorMsg = "Vui lòng nhập email và mật khẩu";
+//            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
+//            return;
+//        } 
 
         try {
             TaiKhoan user = TaiKhoanDAO.login(email, password);
@@ -57,11 +57,16 @@ public class LoginServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
                     return;
                 }
-                UserLogs log = new UserLogs();
-                log.setID_TaiKhoan(user.getID_TaiKhoan());
-                log.setHanhDong("Đăng nhập hệ thống");
-                log.setThoiGian(LocalDateTime.now());
-                UserLogsDAO.insertLog(log);
+
+                HttpSession session = request.getSession();
+                session.setAttribute("user", user);
+
+//                // Ghi log đăng nhập
+//                UserLogs log = new UserLogs();
+//                log.setID_TaiKhoan(user.getID_TaiKhoan());
+//                log.setHanhDong("Đăng nhập hệ thống");
+//                log.setThoiGian(LocalDateTime.now());
+//                UserLogsDAO.insertLog(log);
 
                 // ✅ Gửi email thông báo đăng nhập
                 try {
@@ -74,14 +79,24 @@ public class LoginServlet extends HttpServlet {
                     e.printStackTrace(); // Không cản trở login nếu gửi mail lỗi
                 }
 
-                // Điều hướng sau khi login
-                if (user.getID_VaiTro() == 1) {
-                    response.sendRedirect(request.getContextPath() + "/views/admin/adminDashboard.jsp");
-                } else {
+                if (null == user.getID_VaiTro()) {
                     response.sendRedirect(request.getContextPath() + "/HomePage");
+                } else // Điều hướng sau khi login
+                switch (user.getID_VaiTro()) {
+                    case 1 -> //admin
+                        response.sendRedirect(request.getContextPath() + "/views/admin/adminDashboard.jsp");
+                    case 2 -> //staff
+                        response.sendRedirect(request.getContextPath() + "/views/staff/staffDashboard.jsp");
+                    case 3 -> //teacher    
+                        response.sendRedirect(request.getContextPath() + "/TeacherDashboard");
+                    case 4 -> //student
+                        response.sendRedirect(request.getContextPath() + "/views/student/studentDashboard.jsp");
+                    case 5 -> //parent
+                        response.sendRedirect(request.getContextPath() + "/views/parent/parentDashboard.jsp");
+                    default -> response.sendRedirect(request.getContextPath() + "/views/login.jsp");
                 }
             } else {
-                String errorMsg = "Thông tin đăng nhập không đúng hoặc tài khoản đã bị khóa.";
+                String errorMsg = "Thông tin đăng nhập không đúng hoặc tài khoản chưa được kích hoạt bởi admin.";
                 response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
             }
         } catch (SQLException e) {
