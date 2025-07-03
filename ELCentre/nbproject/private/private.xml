@@ -16,7 +16,12 @@
             <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/web/views/Home-Blog/Home-Blog-Content.jsp</file>
         </group>
         <group>
-            <file>file:/C:/Users/Vuh26/Desktop/ccccaq/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageCourse.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/ccccaq/-ExtraLearningCentre/ELCentre/web/views/admin/manageClass.jsp</file>
+            <file>file:/C:/Users/Vuh26/Desktop/ccccaq/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageClassDetail.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/ccccaq/-ExtraLearningCentre/ELCentre/src/java/dal/GiaoVienDAO.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/ccccaq/-ExtraLearningCentre/ELCentre/web/views/admin/viewClass.jsp</file>
+            <file>file:/C:/Users/Vuh26/Desktop/ccccaq/-ExtraLearningCentre/ELCentre/src/java/dal/LopHocInfoDTODAO.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/ccccaq/-ExtraLearningCentre/ELCentre/src/java/controller/HomePage.java</file>
             <file>file:/C:/Users/Vuh26/Desktop/ccccaq/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageClass.java</file>
         </group>
     </open-files>

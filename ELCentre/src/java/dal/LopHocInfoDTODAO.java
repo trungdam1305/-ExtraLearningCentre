@@ -78,6 +78,171 @@ public class LopHocInfoDTODAO {
         return false;
     }
 
+    // Kiểm tra trùng lịch học (phòng học, slot học, ngày học)
+    public String checkScheduleConflict(List<Integer> idPhongHocList, List<Integer> idSlotHocList, List<LocalDate> ngayHocList, Integer excludeIdLopHoc) {
+        StringBuilder errorMessage = new StringBuilder();
+        DBContext db = DBContext.getInstance();
+        String sql = """
+            SELECT lh.ID_LopHoc, lop.TenLopHoc, lh.NgayHoc, ph.TenPhongHoc, sh.SlotThoiGian
+            FROM LichHoc lh
+            JOIN LopHoc lop ON lh.ID_LopHoc = lop.ID_LopHoc
+            JOIN PhongHoc ph ON lh.ID_PhongHoc = ph.ID_PhongHoc
+            JOIN SlotHoc sh ON lh.ID_SlotHoc = sh.ID_SlotHoc
+            WHERE lh.ID_PhongHoc = ? AND lh.ID_SlotHoc = ? AND lh.NgayHoc = ?
+            """ + (excludeIdLopHoc != null ? "AND lh.ID_LopHoc != ?" : "");
+
+        try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            for (int i = 0; i < idPhongHocList.size(); i++) {
+                stmt.setInt(1, idPhongHocList.get(i));
+                stmt.setInt(2, idSlotHocList.get(i));
+                stmt.setDate(3, java.sql.Date.valueOf(ngayHocList.get(i)));
+                if (excludeIdLopHoc != null) {
+                    stmt.setInt(4, excludeIdLopHoc);
+                }
+
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    String tenLopHoc = rs.getString("TenLopHoc");
+                    String tenPhongHoc = rs.getString("TenPhongHoc");
+                    String slotThoiGian = rs.getString("SlotThoiGian");
+                    LocalDate ngayHoc = ngayHocList.get(i);
+                    errorMessage.append(String.format("Xung đột lịch học: Phòng %s, slot %s, ngày %s đã được sử dụng bởi lớp %s. ",
+                            tenPhongHoc, slotThoiGian, ngayHoc.toString(), tenLopHoc));
+                }
+            }
+
+            return errorMessage.length() > 0 ? errorMessage.toString() : null;
+        } catch (SQLException e) {
+            System.out.println("SQL Error in checkScheduleConflict: " + e.getMessage() + 
+                    " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+            e.printStackTrace();
+            return "Lỗi cơ sở dữ liệu khi kiểm tra xung đột lịch học: " + e.getMessage();
+        }
+    }
+
+    // Kiểm tra xung đột lịch học của giáo viên và học sinh
+    public String checkTeacherStudentScheduleConflict(int idLopHoc, List<Integer> idPhongHocList, List<Integer> idSlotHocList, List<LocalDate> ngayHocList) {
+        StringBuilder errorMessage = new StringBuilder();
+        DBContext db = DBContext.getInstance();
+
+        // Lấy danh sách giáo viên của lớp
+        String sqlTeachers = "SELECT ID_GiaoVien FROM GiaoVien_LopHoc WHERE ID_LopHoc = ?";
+        List<Integer> teacherIds = new ArrayList<>();
+        try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sqlTeachers)) {
+            stmt.setInt(1, idLopHoc);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                teacherIds.add(rs.getInt("ID_GiaoVien"));
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in checkTeacherStudentScheduleConflict (teachers): " + e.getMessage() + 
+                    " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+            e.printStackTrace();
+            return "Lỗi cơ sở dữ liệu khi lấy danh sách giáo viên: " + e.getMessage();
+        }
+
+        // Kiểm tra xung đột lịch học của giáo viên
+        if (!teacherIds.isEmpty()) {
+            String sqlTeacherConflict = """
+                SELECT lh.ID_LopHoc, lop.TenLopHoc, lh.NgayHoc, ph.TenPhongHoc, sh.SlotThoiGian, gv.HoTen
+                FROM LichHoc lh
+                JOIN LopHoc lop ON lh.ID_LopHoc = lop.ID_LopHoc
+                JOIN PhongHoc ph ON lh.ID_PhongHoc = ph.ID_PhongHoc
+                JOIN SlotHoc sh ON lh.ID_SlotHoc = sh.ID_SlotHoc
+                JOIN GiaoVien_LopHoc glh ON lh.ID_LopHoc = glh.ID_LopHoc
+                JOIN GiaoVien gv ON glh.ID_GiaoVien = gv.ID_GiaoVien
+                WHERE glh.ID_GiaoVien = ? AND lh.ID_SlotHoc = ? AND lh.NgayHoc = ? AND lh.ID_LopHoc != ?
+            """;
+            try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sqlTeacherConflict)) {
+                for (Integer idGiaoVien : teacherIds) {
+                    for (int i = 0; i < idSlotHocList.size(); i++) {
+                        stmt.setInt(1, idGiaoVien);
+                        stmt.setInt(2, idSlotHocList.get(i));
+                        stmt.setDate(3, java.sql.Date.valueOf(ngayHocList.get(i)));
+                        stmt.setInt(4, idLopHoc);
+                        ResultSet rs = stmt.executeQuery();
+                        if (rs.next()) {
+                            String tenLopHoc = rs.getString("TenLopHoc");
+                            String tenPhongHoc = rs.getString("TenPhongHoc");
+                            String slotThoiGian = rs.getString("SlotThoiGian");
+                            String hoTenGiaoVien = rs.getString("HoTen");
+                            LocalDate ngayHoc = ngayHocList.get(i);
+                            errorMessage.append(String.format("Xung đột lịch học giáo viên: Giáo viên %s có lớp %s vào slot %s, ngày %s tại phòng %s. ",
+                                    hoTenGiaoVien, tenLopHoc, slotThoiGian, ngayHoc.toString(), tenPhongHoc));
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println("SQL Error in checkTeacherStudentScheduleConflict (teacher conflict): " + e.getMessage() + 
+                        " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+                e.printStackTrace();
+                return "Lỗi cơ sở dữ liệu khi kiểm tra xung đột lịch học giáo viên: " + e.getMessage();
+            }
+        }
+
+        // Lấy danh sách học sinh của lớp
+        String sqlStudents = "SELECT ID_HocSinh FROM HocSinh_LopHoc WHERE ID_LopHoc = ?";
+        List<Integer> studentIds = new ArrayList<>();
+        try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sqlStudents)) {
+            stmt.setInt(1, idLopHoc);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                studentIds.add(rs.getInt("ID_HocSinh"));
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in checkTeacherStudentScheduleConflict (students): " + e.getMessage() + 
+                    " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+            e.printStackTrace();
+            return "Lỗi cơ sở dữ liệu khi lấy danh sách học sinh: " + e.getMessage();
+        }
+
+        // Kiểm tra xung đột lịch học của học sinh
+        if (!studentIds.isEmpty()) {
+            String sqlStudentConflict = """
+                SELECT lh.ID_LopHoc, lop.TenLopHoc, lh.NgayHoc, ph.TenPhongHoc, sh.SlotThoiGian, hs.HoTen
+                FROM LichHoc lh
+                JOIN LopHoc lop ON lh.ID_LopHoc = lop.ID_LopHoc
+                JOIN PhongHoc ph ON lh.ID_PhongHoc = ph.ID_PhongHoc
+                JOIN SlotHoc sh ON lh.ID_SlotHoc = sh.ID_SlotHoc
+                JOIN HocSinh_LopHoc hslh ON lh.ID_LopHoc = hslh.ID_LopHoc
+                JOIN HocSinh hs ON hslh.ID_HocSinh = hs.ID_HocSinh
+                WHERE hslh.ID_HocSinh = ? AND lh.ID_SlotHoc = ? AND lh.NgayHoc = ? AND lh.ID_LopHoc != ?
+            """;
+            try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sqlStudentConflict)) {
+                for (Integer idHocSinh : studentIds) {
+                    for (int i = 0; i < idSlotHocList.size(); i++) {
+                        stmt.setInt(1, idHocSinh);
+                        stmt.setInt(2, idSlotHocList.get(i));
+                        stmt.setDate(3, java.sql.Date.valueOf(ngayHocList.get(i)));
+                        stmt.setInt(4, idLopHoc);
+                        ResultSet rs = stmt.executeQuery();
+                        if (rs.next()) {
+                            String tenLopHoc = rs.getString("TenLopHoc");
+                            String tenPhongHoc = rs.getString("TenPhongHoc");
+                            String slotThoiGian = rs.getString("SlotThoiGian");
+                            String hoTenHocSinh = rs.getString("HoTen");
+                            LocalDate ngayHoc = ngayHocList.get(i);
+                            errorMessage.append(String.format("Xung đột lịch học học sinh: Học sinh %s có lớp %s vào slot %s, ngày %s tại phòng %s. ",
+                                    hoTenHocSinh, tenLopHoc, slotThoiGian, ngayHoc.toString(), tenPhongHoc));
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println("SQL Error in checkTeacherStudentScheduleConflict (student conflict): " + e.getMessage() + 
+                        " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+                e.printStackTrace();
+                return "Lỗi cơ sở dữ liệu khi kiểm tra xung đột lịch học học sinh: " + e.getMessage();
+            }
+        }
+
+        return errorMessage.length() > 0 ? errorMessage.toString() : null;
+    }
+
+    // Kiểm tra trùng lịch học của phòng học (không loại trừ lớp học, dùng khi thêm mới)
+    public String checkScheduleConflict(List<Integer> idPhongHocList, List<Integer> idSlotHocList, List<LocalDate> ngayHocList) {
+        return checkScheduleConflict(idPhongHocList, idSlotHocList, ngayHocList, null);
+    }
+
     // Kiểm tra dữ liệu đầu vào trước khi thêm hoặc cập nhật lớp học
     public String validateLopHocInput(String tenLopHoc, String classCode, int idKhoaHoc, int idKhoi, 
             List<Integer> idSlotHocs, List<String> ngayHocs, List<Integer> idPhongHocs, 
@@ -329,12 +494,20 @@ public class LopHocInfoDTODAO {
                 lh.SiSoToiThieu,
                 lh.[Order],
                 STRING_AGG(CONCAT(lich.NgayHoc, ' ', sh.SlotThoiGian, ' (', ph.TenPhongHoc, ')'), '; ') AS ThoiGianHoc,
-                STRING_AGG(gv.HoTen, ', ') AS TenGiaoVien,
+                (SELECT TOP 1 gv.HoTen 
+                 FROM GiaoVien_LopHoc glh 
+                 JOIN GiaoVien gv ON glh.ID_GiaoVien = gv.ID_GiaoVien 
+                 WHERE glh.ID_LopHoc = lh.ID_LopHoc 
+                 ORDER BY glh.ID_GiaoVien DESC) AS TenGiaoVien,
+                (SELECT TOP 1 gv.Avatar 
+                 FROM GiaoVien_LopHoc glh 
+                 JOIN GiaoVien gv ON glh.ID_GiaoVien = gv.ID_GiaoVien 
+                 WHERE glh.ID_LopHoc = lh.ID_LopHoc 
+                 ORDER BY glh.ID_GiaoVien DESC) AS AvatarGiaoVien,
                 lh.GhiChu,
                 lh.TrangThai,
                 lh.NgayTao,
-                lh.SoTien,
-                STRING_AGG(gv.Avatar, ', ') AS AvatarGiaoVien
+                lh.SoTien
             FROM 
                 LopHoc lh
             JOIN 
@@ -345,10 +518,6 @@ public class LopHocInfoDTODAO {
                 SlotHoc sh ON lich.ID_SlotHoc = sh.ID_SlotHoc
             LEFT JOIN 
                 PhongHoc ph ON lich.ID_PhongHoc = ph.ID_PhongHoc
-            LEFT JOIN 
-                GiaoVien_LopHoc glh ON lh.ID_LopHoc = glh.ID_LopHoc
-            LEFT JOIN 
-                GiaoVien gv ON glh.ID_GiaoVien = gv.ID_GiaoVien
             WHERE 
                 lh.ID_KhoaHoc = ? AND kh.ID_Khoi = ?
         """);
@@ -371,7 +540,7 @@ public class LopHocInfoDTODAO {
         if (teacherFilter != null && !teacherFilter.trim().isEmpty()) {
             try {
                 int idGiaoVien = Integer.parseInt(teacherFilter);
-                sql.append(" AND glh.ID_GiaoVien = ? ");
+                sql.append(" AND EXISTS (SELECT 1 FROM GiaoVien_LopHoc glh WHERE glh.ID_LopHoc = lh.ID_LopHoc AND glh.ID_GiaoVien = ?) ");
                 params.add(idGiaoVien);
             } catch (NumberFormatException e) {
                 System.out.println("Invalid teacherFilter: " + teacherFilter);
@@ -455,9 +624,9 @@ public class LopHocInfoDTODAO {
                 info.setIdLopHoc(rs.getInt("ID_LopHoc"));
                 info.setClassCode(rs.getString("ClassCode"));
                 info.setTenLopHoc(rs.getString("TenLopHoc"));
-                info.setSiSo(rs.getInt("SiSo"));
-                info.setSiSoToiDa(rs.getInt("SiSoToiDa"));
-                info.setSiSoToiThieu(rs.getInt("SiSoToiThieu"));
+                info.setSiSo(rs.getInt("SiSo") != 0 ? rs.getInt("SiSo") : 0);
+                info.setSiSoToiDa(rs.getInt("SiSoToiDa") != 0 ? rs.getInt("SiSoToiDa") : 0);
+                info.setSiSoToiThieu(rs.getInt("SiSoToiThieu") != 0 ? rs.getInt("SiSoToiThieu") : 0);
                 info.setOrder(rs.getInt("Order"));
                 info.setThoiGianHoc(rs.getString("ThoiGianHoc") != null ? rs.getString("ThoiGianHoc") : "");
                 info.setTenGiaoVien(rs.getString("TenGiaoVien") != null ? rs.getString("TenGiaoVien") : "");
@@ -580,9 +749,9 @@ public class LopHocInfoDTODAO {
         int count = 0;
         DBContext db = DBContext.getInstance();
         String sql = """
-            SELECT COUNT(DISTINCT lh.ID_LopHoc)
-            FROM LichHoc lh
-            WHERE lh.ID_SlotHoc = ? AND lh.NgayHoc = ?
+            SELECT COUNT(DISTINCT ID_LopHoc)
+            FROM LichHoc
+            WHERE ID_SlotHoc = ? AND NgayHoc = ?
         """;
         try (Connection conn = db.getConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setInt(1, idSlotHoc);
@@ -612,12 +781,20 @@ public class LopHocInfoDTODAO {
                 lh.SiSoToiThieu,
                 lh.[Order],
                 STRING_AGG(CONCAT(lich.NgayHoc, ' ', sh.SlotThoiGian, ' (', ph.TenPhongHoc, ')'), '; ') AS ThoiGianHoc,
-                STRING_AGG(gv.HoTen, ', ') AS TenGiaoVien,
+                (SELECT TOP 1 gv.HoTen 
+                 FROM GiaoVien_LopHoc glh 
+                 JOIN GiaoVien gv ON glh.ID_GiaoVien = gv.ID_GiaoVien 
+                 WHERE glh.ID_LopHoc = lh.ID_LopHoc 
+                 ORDER BY glh.ID_GiaoVien DESC) AS TenGiaoVien,
+                (SELECT TOP 1 gv.Avatar 
+                 FROM GiaoVien_LopHoc glh 
+                 JOIN GiaoVien gv ON glh.ID_GiaoVien = gv.ID_GiaoVien 
+                 WHERE glh.ID_LopHoc = lh.ID_LopHoc 
+                 ORDER BY glh.ID_GiaoVien DESC) AS AvatarGiaoVien,
                 lh.GhiChu,
                 lh.TrangThai,
                 lh.NgayTao,
-                lh.SoTien,
-                STRING_AGG(gv.Avatar, ', ') AS AvatarGiaoVien
+                lh.SoTien
             FROM 
                 LopHoc lh
             JOIN 
@@ -628,10 +805,6 @@ public class LopHocInfoDTODAO {
                 SlotHoc sh ON lich.ID_SlotHoc = sh.ID_SlotHoc
             LEFT JOIN 
                 PhongHoc ph ON lich.ID_PhongHoc = ph.ID_PhongHoc
-            LEFT JOIN 
-                GiaoVien_LopHoc glh ON lh.ID_LopHoc = glh.ID_LopHoc
-            LEFT JOIN 
-                GiaoVien gv ON glh.ID_GiaoVien = gv.ID_GiaoVien
             WHERE 
                 lh.ID_LopHoc = ?
             GROUP BY 
@@ -719,78 +892,90 @@ public class LopHocInfoDTODAO {
         }
     }
 
-        public AddLopHocResult addLopHoc(String tenLopHoc, String classCode, int idKhoaHoc, int idKhoi, int siSo, 
-                List<Integer> idSlotHocs, List<String> ngayHocs, List<Integer> idPhongHocs, 
-                String ghiChu, String trangThai, int soTien, String image, int siSoToiDa, int order, int siSoToiThieu) {
-            String validationError = validateLopHocInput(tenLopHoc, classCode, idKhoaHoc, idKhoi, idSlotHocs, ngayHocs, 
-                    idPhongHocs, siSoToiDa, order, soTien, ghiChu, siSoToiThieu, false, 0);
-            if (validationError != null) {
-                return new AddLopHocResult(null, validationError);
-            }
+    public AddLopHocResult addLopHoc(String tenLopHoc, String classCode, int idKhoaHoc, int idKhoi, int siSo, 
+            List<Integer> idSlotHocs, List<String> ngayHocs, List<Integer> idPhongHocs, 
+            String ghiChu, String trangThai, int soTien, String image, int siSoToiDa, int order, int siSoToiThieu) {
+        String validationError = validateLopHocInput(tenLopHoc, classCode, idKhoaHoc, idKhoi, idSlotHocs, ngayHocs, 
+                idPhongHocs, siSoToiDa, order, soTien, ghiChu, siSoToiThieu, false, 0);
+        if (validationError != null) {
+            return new AddLopHocResult(null, validationError);
+        }
 
-            DBContext db = DBContext.getInstance();
-            LocalDateTime ngayTao = LocalDateTime.now();
-            Connection connection = null;
+        // Chuyển đổi danh sách ngày học sang List<LocalDate> để kiểm tra xung đột
+        List<LocalDate> ngayHocList = new ArrayList<>();
+        for (String ngayHoc : ngayHocs) {
+            ngayHocList.add(LocalDate.parse(ngayHoc));
+        }
 
-            String mappedTrangThai = mapTrangThai(trangThai);
-            System.out.println("addLopHoc: Mapping TrangThai from '" + trangThai + "' to '" + mappedTrangThai + "'");
+        // Kiểm tra xung đột lịch học phòng
+        String scheduleConflictError = checkScheduleConflict(idPhongHocs, idSlotHocs, ngayHocList);
+        if (scheduleConflictError != null) {
+            return new AddLopHocResult(null, scheduleConflictError);
+        }
 
-            try {
-                connection = db.getConnection();
-                connection.setAutoCommit(false);
+        DBContext db = DBContext.getInstance();
+        LocalDateTime ngayTao = LocalDateTime.now();
+        Connection connection = null;
 
-                String sqlInsert = """
-                    INSERT INTO LopHoc (
-                        ClassCode, TenLopHoc, ID_KhoaHoc, SiSo, GhiChu,
-                        TrangThai, SoTien, NgayTao, Image, SiSoToiDa, [Order], SiSoToiThieu
-                    ) OUTPUT INSERTED.ID_LopHoc
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """;
-                try (PreparedStatement statement = connection.prepareStatement(sqlInsert)) {
-                    statement.setString(1, classCode);
-                    statement.setString(2, tenLopHoc);
-                    statement.setInt(3, idKhoaHoc);
-                    statement.setInt(4, siSo);
-                    statement.setString(5, ghiChu);
-                    statement.setString(6, mappedTrangThai);
-                    statement.setString(7, String.valueOf(soTien));
-                    statement.setTimestamp(8, Timestamp.valueOf(ngayTao));
-                    statement.setString(9, image);
-                    statement.setInt(10, siSoToiDa);
-                    statement.setInt(11, order);
-                    statement.setInt(12, siSoToiThieu);
-                    ResultSet rs = statement.executeQuery();
-                    int newId = -1;
-                    if (rs.next()) {
-                        newId = rs.getInt("ID_LopHoc");
-                        System.out.println("addLopHoc: Generated ID_LopHoc=" + newId + " for TenLopHoc=" + tenLopHoc + ", ClassCode=" + classCode);
-                    } else {
-                        System.out.println("addLopHoc: Failed to insert into LopHoc or retrieve ID_LopHoc for TenLopHoc=" + tenLopHoc + ", ID_KhoaHoc=" + idKhoaHoc);
-                        connection.rollback();
-                        return new AddLopHocResult(null, "Không thể chèn vào bảng LopHoc hoặc lấy ID lớp học!");
-                    }
+        String mappedTrangThai = mapTrangThai(trangThai);
+        System.out.println("addLopHoc: Mapping TrangThai from '" + trangThai + "' to '" + mappedTrangThai + "'");
 
-                    if (newId <= 0) {
-                        System.out.println("addLopHoc: Invalid ID_LopHoc=" + newId + " for TenLopHoc=" + tenLopHoc);
-                        connection.rollback();
-                        return new AddLopHocResult(null, "ID lớp học không hợp lệ!");
-                    }
+        try {
+            connection = db.getConnection();
+            connection.setAutoCommit(false);
 
-                    for (int i = 0; i < idSlotHocs.size(); i++) {
-                        String sqlLichHoc = """
-                            INSERT INTO LichHoc (NgayHoc, ID_SlotHoc, GhiChu, ID_LopHoc, ID_PhongHoc)
-                            VALUES (?, ?, ?, ?, ?)
-                        """;
-                        try (PreparedStatement stmtLichHoc = connection.prepareStatement(sqlLichHoc)) {
-                            stmtLichHoc.setDate(1, java.sql.Date.valueOf(ngayHocs.get(i)));
-                            stmtLichHoc.setInt(2, idSlotHocs.get(i));
-                            stmtLichHoc.setString(3, ghiChu);
-                            stmtLichHoc.setInt(4, newId);
-                            stmtLichHoc.setInt(5, idPhongHocs.get(i));
-                            int lichHocRs = stmtLichHoc.executeUpdate();
-                            if (lichHocRs == 0) {
-                                System.out.println("addLopHoc: Failed to insert into LichHoc for ID_LopHoc=" + newId + ", ID_SlotHoc=" + idSlotHocs.get(i) + ", NgayHoc=" + ngayHocs.get(i));
-                                connection.rollback();
+            String sqlInsert = """
+                INSERT INTO LopHoc (
+                    ClassCode, TenLopHoc, ID_KhoaHoc, SiSo, GhiChu,
+                    TrangThai, SoTien, NgayTao, Image, SiSoToiDa, [Order], SiSoToiThieu
+                ) OUTPUT INSERTED.ID_LopHoc
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """;
+            try (PreparedStatement statement = connection.prepareStatement(sqlInsert)) {
+                statement.setString(1, classCode);
+                statement.setString(2, tenLopHoc);
+                statement.setInt(3, idKhoaHoc);
+                statement.setInt(4, siSo);
+                statement.setString(5, ghiChu);
+                statement.setString(6, mappedTrangThai);
+                statement.setString(7, String.valueOf(soTien));
+                statement.setTimestamp(8, Timestamp.valueOf(ngayTao));
+                statement.setString(9, image);
+                statement.setInt(10, siSoToiDa);
+                statement.setInt(11, order);
+                statement.setInt(12, siSoToiThieu);
+                ResultSet rs = statement.executeQuery();
+                int newId = -1;
+                if (rs.next()) {
+                    newId = rs.getInt("ID_LopHoc");
+                    System.out.println("addLopHoc: Generated ID_LopHoc=" + newId + " for TenLopHoc=" + tenLopHoc + ", ClassCode=" + classCode);
+                } else {
+                    System.out.println("addLopHoc: Failed to insert into LopHoc or retrieve ID_LopHoc for TenLopHoc=" + tenLopHoc + ", ID_KhoaHoc=" + idKhoaHoc);
+                    connection.rollback();
+                    return new AddLopHocResult(null, "Không thể chèn vào bảng LopHoc hoặc lấy ID lớp học!");
+                }
+
+                if (newId <= 0) {
+                    System.out.println("addLopHoc: Invalid ID_LopHoc=" + newId + " for TenLopHoc=" + tenLopHoc);
+                    connection.rollback();
+                    return new AddLopHocResult(null, "ID lớp học không hợp lệ!");
+                }
+
+                for (int i = 0; i < idSlotHocs.size(); i++) {
+                    String sqlLichHoc = """
+                        INSERT INTO LichHoc (NgayHoc, ID_SlotHoc, GhiChu, ID_LopHoc, ID_PhongHoc)
+                        VALUES (?, ?, ?, ?, ?)
+                    """;
+                    try (PreparedStatement stmtLichHoc = connection.prepareStatement(sqlLichHoc)) {
+                        stmtLichHoc.setDate(1, java.sql.Date.valueOf(ngayHocs.get(i)));
+                        stmtLichHoc.setInt(2, idSlotHocs.get(i));
+                        stmtLichHoc.setString(3, ghiChu);
+                        stmtLichHoc.setInt(4, newId);
+                        stmtLichHoc.setInt(5, idPhongHocs.get(i));
+                        int lichHocRs = stmtLichHoc.executeUpdate();
+                        if (lichHocRs == 0) {
+                            System.out.println("addLopHoc: Failed to insert into LichHoc for ID_LopHoc=" + newId + ", ID_SlotHoc=" + idSlotHocs.get(i) + ", NgayHoc=" + ngayHocs.get(i));
+                            connection.rollback();
                             return new AddLopHocResult(null, "Không thể chèn vào bảng LichHoc cho slot " + idSlotHocs.get(i) + " ngày " + ngayHocs.get(i) + "!");
                         }
                     }
@@ -806,12 +991,20 @@ public class LopHocInfoDTODAO {
                         lh.SiSoToiThieu,
                         lh.[Order],
                         STRING_AGG(CONCAT(lich.NgayHoc, ' ', sh.SlotThoiGian, ' (', ph.TenPhongHoc, ')'), '; ') AS ThoiGianHoc,
-                        STRING_AGG(gv.HoTen, ', ') AS TenGiaoVien,
+                        (SELECT TOP 1 gv.HoTen 
+                         FROM GiaoVien_LopHoc glh 
+                         JOIN GiaoVien gv ON glh.ID_GiaoVien = gv.ID_GiaoVien 
+                         WHERE glh.ID_LopHoc = lh.ID_LopHoc 
+                         ORDER BY glh.ID_GiaoVien DESC) AS TenGiaoVien,
+                        (SELECT TOP 1 gv.Avatar 
+                         FROM GiaoVien_LopHoc glh 
+                         JOIN GiaoVien gv ON glh.ID_GiaoVien = gv.ID_GiaoVien 
+                         WHERE glh.ID_LopHoc = lh.ID_LopHoc 
+                         ORDER BY glh.ID_GiaoVien DESC) AS AvatarGiaoVien,
                         lh.GhiChu,
                         lh.TrangThai,
                         lh.NgayTao,
-                        lh.SoTien,
-                        STRING_AGG(gv.Avatar, ', ') AS AvatarGiaoVien
+                        lh.SoTien
                     FROM 
                         LopHoc lh
                     JOIN 
@@ -822,10 +1015,6 @@ public class LopHocInfoDTODAO {
                         SlotHoc sh ON lich.ID_SlotHoc = sh.ID_SlotHoc
                     LEFT JOIN 
                         PhongHoc ph ON lich.ID_PhongHoc = ph.ID_PhongHoc
-                    LEFT JOIN 
-                        GiaoVien_LopHoc glh ON lh.ID_LopHoc = glh.ID_LopHoc
-                    LEFT JOIN 
-                        GiaoVien gv ON glh.ID_GiaoVien = gv.ID_GiaoVien
                     WHERE 
                         lh.ID_LopHoc = ?
                     GROUP BY 
@@ -911,6 +1100,24 @@ public class LopHocInfoDTODAO {
             return new AddLopHocResult(null, validationError);
         }
 
+        // Chuyển đổi danh sách ngày học sang List<LocalDate> để kiểm tra xung đột
+        List<LocalDate> ngayHocList = new ArrayList<>();
+        for (String ngayHoc : ngayHocs) {
+            ngayHocList.add(LocalDate.parse(ngayHoc));
+        }
+
+        // Kiểm tra xung đột lịch học phòng
+        String scheduleConflictError = checkScheduleConflict(idPhongHocs, idSlotHocs, ngayHocList, idLopHoc);
+        if (scheduleConflictError != null) {
+            return new AddLopHocResult(null, scheduleConflictError);
+        }
+
+        // Kiểm tra xung đột lịch học của giáo viên và học sinh
+        String teacherStudentConflictError = checkTeacherStudentScheduleConflict(idLopHoc, idPhongHocs, idSlotHocs, ngayHocList);
+        if (teacherStudentConflictError != null) {
+            return new AddLopHocResult(null, teacherStudentConflictError);
+        }
+
         DBContext db = DBContext.getInstance();
         Connection connection = null;
 
@@ -981,12 +1188,20 @@ public class LopHocInfoDTODAO {
                     lh.SiSoToiThieu,
                     lh.[Order],
                     STRING_AGG(CONCAT(lich.NgayHoc, ' ', sh.SlotThoiGian, ' (', ph.TenPhongHoc, ')'), '; ') AS ThoiGianHoc,
-                    STRING_AGG(gv.HoTen, ', ') AS TenGiaoVien,
+                    (SELECT TOP 1 gv.HoTen 
+                     FROM GiaoVien_LopHoc glh 
+                     JOIN GiaoVien gv ON glh.ID_GiaoVien = gv.ID_GiaoVien 
+                     WHERE glh.ID_LopHoc = lh.ID_LopHoc 
+                     ORDER BY glh.ID_GiaoVien DESC) AS TenGiaoVien,
+                    (SELECT TOP 1 gv.Avatar 
+                     FROM GiaoVien_LopHoc glh 
+                     JOIN GiaoVien gv ON glh.ID_GiaoVien = gv.ID_GiaoVien 
+                     WHERE glh.ID_LopHoc = lh.ID_LopHoc 
+                     ORDER BY glh.ID_GiaoVien DESC) AS AvatarGiaoVien,
                     lh.GhiChu,
                     lh.TrangThai,
                     lh.NgayTao,
-                    lh.SoTien,
-                    STRING_AGG(gv.Avatar, ', ') AS AvatarGiaoVien
+                    lh.SoTien
                 FROM 
                     LopHoc lh
                 JOIN 
@@ -997,10 +1212,6 @@ public class LopHocInfoDTODAO {
                     SlotHoc sh ON lich.ID_SlotHoc = sh.ID_SlotHoc
                 LEFT JOIN 
                     PhongHoc ph ON lich.ID_PhongHoc = ph.ID_PhongHoc
-                LEFT JOIN 
-                    GiaoVien_LopHoc glh ON lh.ID_LopHoc = glh.ID_LopHoc
-                LEFT JOIN 
-                    GiaoVien gv ON glh.ID_GiaoVien = gv.ID_GiaoVien
                 WHERE 
                     lh.ID_LopHoc = ?
                 GROUP BY 

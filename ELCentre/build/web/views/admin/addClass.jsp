@@ -428,18 +428,20 @@
 <body>
     <div class="header">
         <div class="left-title">
-            Admin Dashboard <i class="fas fa-tachometer-alt"></i>
+            Admin Dashboard <i class="bi bi-speedometer2"></i>
         </div>
         <div class="admin-profile" onclick="toggleDropdown()">
             <%
-                ArrayList<Admin> admins = (ArrayList) AdminDAO.getNameAdmin();
+                ArrayList<Admin> admins = AdminDAO.getNameAdmin();
+                String adminAvatar = admins != null && !admins.isEmpty() ? admins.get(0).getAvatar() : "/img/default-avatar.png";
+                String adminName = admins != null && !admins.isEmpty() ? admins.get(0).getHoTen() : "Admin";
             %>
-            <img src="<%= admins.get(0).getAvatar() %>" alt="Admin Photo" class="admin-img">
-            <span><%= admins.get(0).getHoTen() %></span>
-            <i class="fas fa-caret-down"></i>
+            <img src="<%= request.getContextPath() + adminAvatar %>" alt="Admin Photo" class="admin-img">
+            <span><%= adminName %></span>
+            <i class="bi bi-caret-down-fill"></i>
             <div class="dropdown-menu" id="adminDropdown">
-                <a href="#"><i class="fas fa-key"></i> Đổi mật khẩu</a>
-                <a href="#"><i class="fas fa-user-edit"></i> Cập nhật thông tin</a>
+                <a href="#"><i class="bi bi-key"></i> Đổi mật khẩu</a>
+                <a href="#"><i class="bi bi-person-fill"></i> Cập nhật thông tin</a>
             </div>
         </div>
     </div>
@@ -449,32 +451,32 @@
         <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
         <div class="sidebar-section-title">Tổng quan</div>
         <ul class="sidebar-menu">
-            <li><a href="#">Dashboard</a></li>
+            <li><a href="#"><i class="bi bi-house-door"></i> Dashboard</a></li>
         </ul>
         <div class="sidebar-section-title">Quản lý người dùng</div>
         <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocsinh">Học sinh</a></li>
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=giaovien">Giáo viên</a></li>
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=taikhoan">Tài khoản</a></li>
+            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocsinh"><i class="bi bi-person"></i> Học sinh</a></li>
+            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=giaovien"><i class="bi bi-person-gear"></i> Giáo viên</a></li>
+            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=taikhoan"><i class="bi bi-person-circle"></i> Tài khoản</a></li>
         </ul>
         <div class="sidebar-section-title">Quản lý tài chính</div>
         <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocphi"><i class="fas fa-money-bill-wave"></i> Học phí</a></li>
+            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocphi"><i class="bi bi-currency-dollar"></i> Học phí</a></li>
         </ul>
         <div class="sidebar-section-title">Quản lý học tập</div>
         <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
+            <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="bi bi-book"></i> Khoá học</a></li>
         </ul>
         <div class="sidebar-section-title">Hệ thống</div>
         <ul class="sidebar-menu">
-            <li><a href="#"><i class="fas fa-cog"></i> Cài đặt</a></li>
+            <li><a href="#"><i class="bi bi-gear"></i> Cài đặt</a></li>
         </ul>
         <div class="sidebar-section-title">Khác</div>
         <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=yeucautuvan"><i class="fas fa-blog"></i> Yêu cầu tư vấn</a></li>
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
-            <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
-            <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=yeucautuvan"><i class="bi bi-chat-dots"></i> Yêu cầu tư vấn</a></li>
+            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=thongbao"><i class="bi bi-bell"></i> Thông báo</a></li>
+            <li><a href="#"><i class="bi bi-newspaper"></i> Blog</a></li>
+            <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a></li>
         </ul>
     </div>
 
@@ -484,10 +486,10 @@
 
             <!-- Thông báo -->
             <c:if test="${not empty err}">
-                <div class="alert alert-danger">${err}</div>
+                <div class="alert alert-danger">${fn:escapeXml(err)}</div>
             </c:if>
             <c:if test="${not empty suc}">
-                <div class="alert alert-success">${suc}</div>
+                <div class="alert alert-success">${fn:escapeXml(suc)}</div>
                 <div class="back-button">
                     <a href="${pageContext.request.contextPath}/ManageClass?action=refresh&ID_Khoi=${ID_Khoi}&ID_KhoaHoc=${ID_KhoaHoc}" class="btn btn-secondary">Quay lại danh sách lớp học</a>
                 </div>
@@ -523,14 +525,14 @@
 
                     <div class="mb-3">
                         <label for="tenLopHoc" class="form-label required-label">Tên lớp học:</label>
-                        <input type="text" class="form-control" id="tenLopHoc" name="tenLopHoc" value="${tenLopHoc != null ? tenLopHoc : ''}" maxlength="100">
+                        <input type="text" class="form-control" id="tenLopHoc" name="tenLopHoc" value="${tenLopHoc != null ? fn:escapeXml(tenLopHoc) : ''}" maxlength="100" required>
                         <p class="note">Tên lớp học tối đa 100 ký tự. Ví dụ: Lớp Toán Cao Cấp.</p>
                     </div>
 
                     <div class="mb-3">
                         <label for="classCode" class="form-label required-label">Mã lớp học:</label>
-                        <input type="text" class="form-control" id="classCode" name="classCode" value="${classCode != null ? classCode : ''}">
-                        <p class="note">Mã lớp học được tự động tạo từ tên lớp học và khối học (ví dụ: Toán Cơ Bản khối 12 → TCB12).</p>
+                        <input type="text" class="form-control" id="classCode" name="classCode" value="${classCode != null ? fn:escapeXml(classCode) : ''}" maxlength="20" required>
+                        <p class="note">Mã lớp học chỉ chứa chữ cái và số, tối đa 20 ký tự (ví dụ: TCB12).</p>
                     </div>
 
                     <div class="mb-3">
@@ -554,19 +556,19 @@
 
                     <div class="mb-3">
                         <label for="siSoToiDa" class="form-label required-label">Sĩ số tối đa:</label>
-                        <input type="number" class="form-control" id="siSoToiDa" name="siSoToiDa" value="${siSoToiDa != null ? siSoToiDa : ''}" min="1">
+                        <input type="number" class="form-control" id="siSoToiDa" name="siSoToiDa" value="${siSoToiDa != null ? siSoToiDa : ''}" min="1" required>
                         <p class="note">Sĩ số tối đa phải lớn hơn 0 và nhỏ hơn hoặc bằng sức chứa phòng học.</p>
                     </div>
 
                     <div class="mb-3">
                         <label for="siSoToiThieu" class="form-label required-label">Sĩ số tối thiểu:</label>
-                        <input type="number" class="form-control" id="siSoToiThieu" name="siSoToiThieu" value="${siSoToiThieu != null ? siSoToiThieu : ''}" min="0">
+                        <input type="number" class="form-control" id="siSoToiThieu" name="siSoToiThieu" value="${siSoToiThieu != null ? siSoToiThieu : ''}" min="0" required>
                         <p class="note">Sĩ số tối thiểu phải là số không âm và nhỏ hơn hoặc bằng sĩ số tối đa.</p>
                     </div>
 
                     <div class="mb-3">
                         <label for="ghiChu" class="form-label">Ghi chú:</label>
-                        <textarea class="form-control" id="ghiChu" name="ghiChu" maxlength="500">${ghiChu != null ? ghiChu : ''}</textarea>
+                        <textarea class="form-control" id="ghiChu" name="ghiChu" maxlength="500">${ghiChu != null ? fn:escapeXml(ghiChu) : ''}</textarea>
                         <p class="note">Ghi chú tối đa 500 ký tự.</p>
                     </div>
 
@@ -590,44 +592,44 @@
 
                     <div class="mb-3">
                         <label class="form-label required-label">Lịch học:</label>
-                        <p class="note">Định dạng ngày học: YYYY-MM-DD (ví dụ: 2025-06-30). Tối đa 10 lịch học.</p>
+                        <p class="note">Định dạng ngày học: YYYY-MM-DD (ví dụ: 2025-07-03). Tối đa 10 lịch học.</p>
                         <div id="scheduleContainer">
                             <c:if test="${not empty ngayHocs && fn:length(ngayHocs) > 0}">
                                 <c:forEach var="i" begin="0" end="${fn:length(ngayHocs) - 1}">
                                     <div class="schedule-row">
-                                        <input type="date" class="form-control" name="ngayHoc[]" value="${ngayHocs[i]}">
-                                        <select class="form-select" name="idSlotHoc[]">
+                                        <input type="date" class="form-control" name="ngayHoc[]" value="${fn:escapeXml(ngayHocs[i])}" required>
+                                        <select class="form-select" name="idSlotHoc[]" required>
                                             <option value="">Chọn slot học</option>
                                             <c:forEach var="slot" items="${slotHocList}">
                                                 <option value="${slot.ID_SlotHoc}" ${idSlotHocs[i] == slot.ID_SlotHoc ? 'selected' : ''}>${slot.slotThoiGian}</option>
                                             </c:forEach>
                                         </select>
-                                        <select class="form-select" name="idPhongHoc[]">
+                                        <select class="form-select" name="idPhongHoc[]" required>
                                             <option value="">Chọn phòng học</option>
                                             <c:forEach var="phongHoc" items="${phongHocList}">
-                                                <option value="${phongHoc.ID_PhongHoc}" ${idPhongHocs[i] == phongHoc.ID_PhongHoc ? 'selected' : ''}>${phongHoc.tenPhongHoc} (Sức chứa: ${phongHoc.sucChua})</option>
+                                                <option value="${phongHoc.ID_PhongHoc}" data-succhua="${phongHoc.sucChua}" ${idPhongHocs[i] == phongHoc.ID_PhongHoc ? 'selected' : ''}>${phongHoc.tenPhongHoc} (Sức chứa: ${phongHoc.sucChua})</option>
                                             </c:forEach>
                                         </select>
-                                        <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">Xóa</button>
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove(); validateForm()">Xóa</button>
                                     </div>
                                 </c:forEach>
                             </c:if>
                             <c:if test="${empty ngayHocs}">
                                 <div class="schedule-row">
-                                    <input type="date" class="form-control" name="ngayHoc[]">
-                                    <select class="form-select" name="idSlotHoc[]">
+                                    <input type="date" class="form-control" name="ngayHoc[]" required>
+                                    <select class="form-select" name="idSlotHoc[]" required>
                                         <option value="">Chọn slot học</option>
                                         <c:forEach var="slot" items="${slotHocList}">
                                             <option value="${slot.ID_SlotHoc}">${slot.slotThoiGian}</option>
                                         </c:forEach>
                                     </select>
-                                    <select class="form-select" name="idPhongHoc[]">
+                                    <select class="form-select" name="idPhongHoc[]" required>
                                         <option value="">Chọn phòng học</option>
                                         <c:forEach var="phongHoc" items="${phongHocList}">
                                             <option value="${phongHoc.ID_PhongHoc}" data-succhua="${phongHoc.sucChua}">${phongHoc.tenPhongHoc} (Sức chứa: ${phongHoc.sucChua})</option>
                                         </c:forEach>
                                     </select>
-                                    <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">Xóa</button>
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove(); validateForm()">Xóa</button>
                                 </div>
                             </c:if>
                         </div>
@@ -660,17 +662,10 @@
         function generateClassCode(className, idKhoi) {
             if (!className) return '';
             
-            // Loại bỏ dấu tiếng Việt và chuyển thành chữ thường
             className = removeVietnameseAccents(className).toLowerCase();
-            
-            // Lấy chữ cái đầu của mỗi từ
             let initials = className.split(/\s+/).map(word => word.charAt(0).toUpperCase()).join('');
-            
-            // Tính số khối (ID_Khoi từ 1 đến 7 tương ứng lớp 6 đến 12)
             let grade = idKhoi >= 1 && idKhoi <= 7 ? (idKhoi + 5) : 0;
-            // Định dạng số khối thành 2 chữ số (ví dụ: 9 → "09", 12 → "12")
             let gradeStr = grade > 0 ? grade.toString().padStart(2, '0') : '';
-            
             return initials + gradeStr;
         }
 
@@ -691,17 +686,22 @@
         // Thêm hàng lịch học
         function addScheduleRow() {
             const container = document.getElementById('scheduleContainer');
+            const rowCount = container.getElementsByClassName('schedule-row').length;
+            if (rowCount >= 10) {
+                alert('Không được thêm quá 10 lịch học!');
+                return;
+            }
             const row = document.createElement('div');
             row.className = 'schedule-row';
             row.innerHTML = `
-                <input type="date" class="form-control" name="ngayHoc[]">
-                <select class="form-select" name="idSlotHoc[]">
+                <input type="date" class="form-control" name="ngayHoc[]" required>
+                <select class="form-select" name="idSlotHoc[]" required>
                     <option value="">Chọn slot học</option>
                     <c:forEach var="slot" items="${slotHocList}">
                         <option value="${slot.ID_SlotHoc}">${slot.slotThoiGian}</option>
                     </c:forEach>
                 </select>
-                <select class="form-select" name="idPhongHoc[]">
+                <select class="form-select" name="idPhongHoc[]" required>
                     <option value="">Chọn phòng học</option>
                     <c:forEach var="phongHoc" items="${phongHocList}">
                         <option value="${phongHoc.ID_PhongHoc}" data-succhua="${phongHoc.sucChua}">${phongHoc.tenPhongHoc} (Sức chứa: ${phongHoc.sucChua})</option>
@@ -710,8 +710,8 @@
                 <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove(); validateForm()">Xóa</button>
             `;
             container.appendChild(row);
-            // Gắn sự kiện cho select phòng học mới
             row.querySelector('select[name="idPhongHoc[]"]').addEventListener('change', validateForm);
+            validateForm();
         }
 
         // Validation form
@@ -728,11 +728,15 @@
             const idSlotHocSelects = document.getElementsByName('idSlotHoc[]');
             const idPhongHocSelects = document.getElementsByName('idPhongHoc[]');
 
+            let isValid = true;
+
             // Validation cho tenLopHoc
             if (!tenLopHoc.value || tenLopHoc.value.trim() === '') {
                 tenLopHoc.setCustomValidity('Tên lớp học không được để trống!');
+                isValid = false;
             } else if (tenLopHoc.value.length > 100) {
                 tenLopHoc.setCustomValidity('Tên lớp học không được dài quá 100 ký tự!');
+                isValid = false;
             } else {
                 tenLopHoc.setCustomValidity('');
             }
@@ -740,8 +744,10 @@
             // Validation cho classCode
             if (!classCode.value || classCode.value.trim() === '') {
                 classCode.setCustomValidity('Mã lớp học không được để trống!');
+                isValid = false;
             } else if (classCode.value.length > 20 || !/^[A-Za-z0-9]+$/.test(classCode.value)) {
                 classCode.setCustomValidity('Mã lớp học chỉ được chứa chữ cái và số, tối đa 20 ký tự!');
+                isValid = false;
             } else {
                 classCode.setCustomValidity('');
             }
@@ -750,6 +756,7 @@
             const siSoToiDaValue = parseInt(siSoToiDa.value);
             if (isNaN(siSoToiDaValue) || siSoToiDaValue <= 0) {
                 siSoToiDa.setCustomValidity('Sĩ số tối đa phải lớn hơn 0!');
+                isValid = false;
             } else {
                 siSoToiDa.setCustomValidity('');
             }
@@ -758,26 +765,31 @@
             const siSoToiThieuValue = parseInt(siSoToiThieu.value);
             if (isNaN(siSoToiThieuValue) || siSoToiThieuValue < 0) {
                 siSoToiThieu.setCustomValidity('Sĩ số tối thiểu phải là số không âm!');
+                isValid = false;
             } else if (!isNaN(siSoToiDaValue) && !isNaN(siSoToiThieuValue) && siSoToiThieuValue > siSoToiDaValue) {
                 siSoToiThieu.setCustomValidity('Sĩ số tối thiểu phải nhỏ hơn hoặc bằng sĩ số tối đa!');
+                isValid = false;
             } else {
                 siSoToiThieu.setCustomValidity('');
             }
 
             // Validation cho soTien
             const soTienValue = parseInt(soTien.value);
-            if (!soTien.value || isNaN(soTienValue) || soTienValue < 0) {
+            if (soTien.value && (isNaN(soTienValue) || soTienValue < 0)) {
                 soTien.setCustomValidity('Học phí phải là số không âm!');
-            } else if (soTien.value.length > 10) {
+                isValid = false;
+            } else if (soTien.value && soTien.value.length > 10) {
                 soTien.setCustomValidity('Học phí không được dài quá 10 chữ số!');
+                isValid = false;
             } else {
                 soTien.setCustomValidity('');
             }
 
             // Validation cho order
             const orderValue = parseInt(order.value);
-            if (!order.value || isNaN(orderValue) || orderValue < 0) {
+            if (order.value && (isNaN(orderValue) || orderValue < 0)) {
                 order.setCustomValidity('Thứ tự phải là số không âm!');
+                isValid = false;
             } else {
                 order.setCustomValidity('');
             }
@@ -785,12 +797,12 @@
             // Validation cho ghiChu
             if (ghiChu.value.length > 500) {
                 ghiChu.setCustomValidity('Ghi chú không được dài quá 500 ký tự!');
+                isValid = false;
             } else {
                 ghiChu.setCustomValidity('');
             }
 
             // Validation cho lịch học
-            let isScheduleValid = true;
             const today = new Date().toISOString().split('T')[0];
             for (let i = 0; i < ngayHocInputs.length; i++) {
                 const ngayHoc = ngayHocInputs[i];
@@ -800,24 +812,24 @@
                 // Kiểm tra ngày học
                 if (!ngayHoc.value || ngayHoc.value.trim() === '') {
                     ngayHoc.setCustomValidity('Ngày học không được để trống!');
-                    isScheduleValid = false;
+                    isValid = false;
                 } else if (ngayHoc.value < today) {
                     ngayHoc.setCustomValidity('Ngày học không được trong quá khứ!');
-                    isScheduleValid = false;
+                    isValid = false;
                 } else {
                     try {
                         new Date(ngayHoc.value);
                         ngayHoc.setCustomValidity('');
                     } catch (e) {
                         ngayHoc.setCustomValidity('Ngày học không đúng định dạng YYYY-MM-DD!');
-                        isScheduleValid = false;
+                        isValid = false;
                     }
                 }
 
                 // Kiểm tra slot học
                 if (!idSlotHoc.value || idSlotHoc.value.trim() === '') {
                     idSlotHoc.setCustomValidity('Slot học không được để trống!');
-                    isScheduleValid = false;
+                    isValid = false;
                 } else {
                     idSlotHoc.setCustomValidity('');
                 }
@@ -825,19 +837,17 @@
                 // Kiểm tra phòng học
                 if (!idPhongHoc.value || idPhongHoc.value.trim() === '') {
                     idPhongHoc.setCustomValidity('Phòng học không được để trống!');
-                    isScheduleValid = false;
+                    isValid = false;
                 } else {
                     idPhongHoc.setCustomValidity('');
                 }
 
                 // Kiểm tra siSoToiDa so với sucChua của phòng học
                 if (!isNaN(siSoToiDaValue) && idPhongHoc.value) {
-                    const sucChua = parseInt(idPhongHoc.selectedOptions[0].getAttribute('data-succhua'));
-                    if (siSoToiDaValue > sucChua) {
+                    const sucChua = parseInt(idPhongHoc.selectedOptions[0].getAttribute('data-succhua') || '0');
+                    if (sucChua > 0 && siSoToiDaValue > sucChua) {
                         siSoToiDa.setCustomValidity('Sĩ số tối đa vượt quá sức chứa phòng học (' + sucChua + ')!');
-                        isScheduleValid = false;
-                    } else {
-                        siSoToiDa.setCustomValidity('');
+                        isValid = false;
                     }
                 }
             }
@@ -845,15 +855,15 @@
             // Kiểm tra số lượng lịch học
             if (ngayHocInputs.length > 10) {
                 form.setCustomValidity('Không được thêm quá 10 lịch học!');
-                isScheduleValid = false;
+                isValid = false;
             } else if (ngayHocInputs.length === 0) {
                 form.setCustomValidity('Phải có ít nhất 1 lịch học!');
-                isScheduleValid = false;
+                isValid = false;
             } else {
                 form.setCustomValidity('');
             }
 
-            return isScheduleValid;
+            return isValid;
         }
 
         // Gắn sự kiện input để validate
@@ -876,6 +886,12 @@
                 event.preventDefault();
             }
         });
+
+        // Toggle dropdown menu
+        function toggleDropdown() {
+            const dropdown = document.getElementById('adminDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
     </script>
 </body>
 </html>

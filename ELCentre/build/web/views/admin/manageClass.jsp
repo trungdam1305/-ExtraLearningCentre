@@ -17,8 +17,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="dal.HocSinhDAO" %>
 <%@ page import="model.HocSinh" %>
-<%@ page import="dal.GiaoVienDAO" %>
-<%@ page import="model.GiaoVien" %>
 <%@ page import="dal.LopHocDAO" %>
 <%@ page import="model.LopHoc" %>
 <%@ page import="dal.UserLogsDAO" %>
@@ -39,6 +37,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Font Awesome for additional icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         * {
             box-sizing: border-box;
@@ -69,7 +69,7 @@
             color: #003087;
         }
         .header-row h2 {
-            font-size: 1.33rem; /* Reduced from 2rem (2/3) */
+            font-size: 1.33rem;
             font-weight: 600;
         }
 
@@ -78,7 +78,7 @@
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            gap: 6px; /* Reduced from 10px */
+            gap: 6px;
             margin-bottom: 15px;
             flex-wrap: nowrap;
         }
@@ -88,9 +88,9 @@
             border: 1px solid #ced4da;
             box-shadow: none;
             transition: border-color 0.3s ease;
-            height: 28px; /* Reduced from 38px */
-            font-size: 0.63rem; /* Reduced from 0.95rem (2/3) */
-            width: 110px; /* Reduced from 150px */
+            height: 28px;
+            font-size: 0.63rem;
+            width: 110px;
         }
         .action-search-row .form-control:focus,
         .action-search-row .form-select:focus {
@@ -101,9 +101,9 @@
             height: 28px;
             display: flex;
             align-items: center;
-            padding: 0 8px; /* Reduced from 0 16px */
+            padding: 0 8px;
             white-space: nowrap;
-            font-size: 0.63rem; /* Reduced from 0.95rem (2/3) */
+            font-size: 0.63rem;
         }
 
         /* Custom button styling */
@@ -142,27 +142,27 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            font-size: 0.67rem; /* Reduced from 1rem (2/3) */
+            font-size: 0.67rem;
         }
         .table thead {
             background-color: #2196F3;
         }
         .table thead th {
-            padding: 8px 10px; /* Reduced from 15px 20px */
+            padding: 8px 10px;
             vertical-align: middle;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            font-size: 0.73rem; /* Reduced from 1.1rem (2/3) */
+            font-size: 0.73rem;
             color: black;
             text-align: center;
             min-width: 120px;
         }
         .table tbody td {
-            padding: 8px 10px; /* Reduced from 15px 20px */
+            padding: 8px 10px;
             vertical-align: middle;
             text-align: center;
-            font-size: 0.67rem; /* Reduced from 1rem (2/3) */
+            font-size: 0.67rem;
         }
 
         /* Sort styling */
@@ -174,7 +174,7 @@
             color: black;
             text-decoration: none;
             display: inline-block;
-            padding: 3px 6px; /* Reduced from 5px 10px */
+            padding: 3px 6px;
             border: 1px solid transparent;
             border-radius: 4px;
             transition: all 0.3s ease;
@@ -195,9 +195,9 @@
         .table .btn-sm {
             margin-right: 4px;
             border-radius: 6px;
-            font-size: 0.6rem; /* Reduced from 0.9rem (2/3) */
-            padding: 4px 6px; /* Reduced from 8px 12px */
-            min-width: 50px; /* Reduced from 80px */
+            font-size: 0.6rem;
+            padding: 4px 6px;
+            min-width: 50px;
             text-align: center;
             line-height: 1.2;
         }
@@ -240,24 +240,24 @@
             background-color: #f8f9fa;
         }
         .details-row td {
-            padding: 12px; /* Reduced from 20px */
+            padding: 12px;
             border-top: 1px solid #dee2e6;
         }
         .details-content {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px; /* Reduced from 20px */
+            gap: 12px;
         }
         .details-content div {
             flex: 1 1 45%;
-            font-size: 0.67rem; /* Reduced from 0.95rem (2/3) */
+            font-size: 0.67rem;
         }
         .details-content div strong {
             color: #003087;
         }
         .details-content img {
-            width: 60px !important; /* Reduced from 100px */
-            height: 80px !important; /* Reduced from 130px */
+            width: 60px !important;
+            height: 80px !important;
             object-fit: cover;
             border-radius: 4px;
             border: 2px solid lightblue;
@@ -280,7 +280,7 @@
             border-radius: 6px;
             margin: 0 2px;
             color: #003087;
-            font-size: 0.67rem; /* Reduced from ~1rem (2/3) */
+            font-size: 0.67rem;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
         .pagination .page-link:hover {
@@ -292,9 +292,9 @@
             border-color: #22c55e;
             color: white;
             border-radius: 8px;
-            padding: 8px; /* Reduced from 15px */
-            margin-bottom: 10px; /* Reduced from 20px */
-            font-size: 0.67rem; /* Reduced from ~1rem (2/3) */
+            padding: 8px;
+            margin-bottom: 10px;
+            font-size: 0.67rem;
         }
         .alert-custom-danger {
             background-color: #ef4444;
@@ -307,25 +307,25 @@
         }
         .dashboard-button {
             text-align: center;
-            margin-top: 10px; /* Reduced from 20px */
+            margin-top: 10px;
         }
         .dashboard-button .btn {
             border-radius: 6px;
-            padding: 6px 12px; /* Reduced from 10px 20px */
-            font-size: 0.67rem; /* Reduced from 1rem (2/3) */
+            padding: 6px 12px;
+            font-size: 0.67rem;
         }
         #scrollToTopBtn {
             display: none;
             position: fixed;
-            bottom: 15px; /* Reduced from 20px */
-            right: 15px; /* Reduced from 20px */
+            bottom: 15px;
+            right: 15px;
             background-color: #007bff;
             color: white;
             border: none;
             border-radius: 50%;
-            width: 40px; /* Reduced from 50px */
-            height: 40px; /* Reduced from 50px */
-            font-size: 14px; /* Reduced from 18px */
+            width: 40px;
+            height: 40px;
+            font-size: 14px;
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             z-index: 1000;
@@ -345,19 +345,19 @@
             border-top-right-radius: 8px;
         }
         .modal-header h5 {
-            font-size: 0.8rem; /* Match manageCourses.jsp */
+            font-size: 0.8rem;
         }
         .modal-footer .btn {
             border-radius: 6px;
-            padding: 4px 8px; /* Reduced from 8px 16px */
-            font-size: 0.58rem; /* Reduced from ~1rem (2/3) */
+            padding: 4px 8px;
+            font-size: 0.58rem;
         }
 
         /* Status badge styling */
         .status-badge {
-            padding: 3px 6px; /* Reduced from 5px 10px */
+            padding: 3px 6px;
             border-radius: 12px;
-            font-size: 0.6rem; /* Reduced from 0.9rem (2/3) */
+            font-size: 0.6rem;
             font-weight: 500;
         }
         .status-dang-hoc {
@@ -484,7 +484,7 @@
 
         /* Course stats styling */
         .course-stats {
-            font-size: 0.67rem; /* Reduced from ~1rem (2/3) */
+            font-size: 0.67rem;
             margin: 8px 0;
         }
 
@@ -498,7 +498,7 @@
                 padding-bottom: 30px;
             }
             .header-row h2 {
-                font-size: 0.89rem; /* Reduced from 1.33rem (2/3) */
+                font-size: 0.89rem;
             }
             .action-search-row {
                 flex-direction: column;
@@ -509,7 +509,7 @@
             .action-search-row .form-select,
             .action-search-row .btn-custom-action {
                 width: auto;
-                font-size: 0.42rem; /* Reduced from 0.63rem (2/3) */
+                font-size: 0.42rem;
                 height: 24px;
             }
             .action-search-row .btn-custom-action {
@@ -518,36 +518,36 @@
             .table thead th,
             .table tbody td {
                 padding: 5px 6px;
-                font-size: 0.45rem; /* Reduced from 0.67rem (2/3) */
+                font-size: 0.45rem;
             }
             .table .btn-sm {
-                font-size: 0.4rem; /* Reduced from 0.6rem (2/3) */
+                font-size: 0.4rem;
                 padding: 3px 5px;
                 min-width: 45px;
             }
             .status-badge {
                 padding: 2px 4px;
-                font-size: 0.4rem; /* Reduced from 0.6rem (2/3) */
+                font-size: 0.4rem;
             }
             .pagination-container {
                 justify-content: center;
             }
             .pagination .page-link {
-                font-size: 0.45rem; /* Reduced from 0.67rem (2/3) */
+                font-size: 0.45rem;
             }
             .alert-custom-success,
             .alert-custom-danger {
                 padding: 6px;
                 margin-bottom: 8px;
-                font-size: 0.45rem; /* Reduced from 0.67rem (2/3) */
+                font-size: 0.45rem;
             }
             .details-content div {
                 flex: 1 1 100%;
-                font-size: 0.45rem; /* Reduced from 0.67rem (2/3) */
+                font-size: 0.45rem;
             }
             .details-content img {
-                width: 40px !important; /* Reduced from 60px */
-                height: 50px !important; /* Reduced from 80px */
+                width: 40px !important;
+                height: 50px !important;
             }
             .dashboard-button {
                 margin-top: 8px;
@@ -630,7 +630,7 @@
 
     <div class="sidebar">
         <h4>EL CENTRE</h4>
-        <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
+        <img src="${pageContext.request.contextPath}/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
         <div class="sidebar-section-title">Tổng quan</div>
         <ul class="sidebar-menu">
             <li><a href="#">Dashboard</a></li>
@@ -655,7 +655,7 @@
         </ul>
         <div class="sidebar-section-title">Khác</div>
         <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=yeucautuvan"><i class="fas fa-blog"></i>Yêu cầu tư vấn</a></li>
+            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=yeucautuvan"><i class="fas fa-blog"></i> Yêu cầu tư vấn</a></li>
             <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
             <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
             <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
@@ -749,7 +749,7 @@
         </div>
 
         <c:if test="${not empty ID_KhoaHoc && not empty ID_Khoi}">
-            <p class="course-stats">Tổng số lớp học: ${totalItems != null ? totalItems : '0'} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tổng số trang: ${totalPages != null ? totalPages : '0'}</p>
+            <p class="course-stats">Tổng số lớp học: ${totalItems != null ? totalItems : '0'} &nbsp;&nbsp;&nbsp;&nbsp; Tổng số trang: ${totalPages != null ? totalPages : '0'}</p>
         </c:if>
 
         <!-- Bảng danh sách -->
@@ -849,16 +849,24 @@
                                             <div><strong>Sĩ số tối đa:</strong> ${lopHoc.siSoToiDa != null ? lopHoc.siSoToiDa : 'Chưa có'}</div>
                                             <div><strong>Sĩ số tối thiểu:</strong> ${lopHoc.siSoToiThieu != null ? lopHoc.siSoToiThieu : 'Chưa có'}</div>
                                             <div><strong>Học phí:</strong> ${lopHoc.soTien != null ? lopHoc.soTien : '0'} VNĐ</div>
-                                            <div><strong>Giáo viên:</strong> ${lopHoc.tenGiaoVien != null ? lopHoc.tenGiaoVien : 'Chưa phân công'}</div>
+                                            <div>
+                                                <strong>Giáo viên:</strong> 
+                                                <c:choose>
+                                                    <c:when test="${not empty lopHoc.tenGiaoVien}">
+                                                        ${fn:split(lopHoc.tenGiaoVien, ',')[0].trim()}
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        Chưa phân công
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </div>
                                             <div><strong>Ghi chú:</strong> ${lopHoc.ghiChu != null ? lopHoc.ghiChu : 'Chưa có'}</div>
                                             <div><strong>Ngày khởi tạo:</strong> ${lopHoc.ngayTao != null ? lopHoc.ngayTao : 'Chưa có'}</div>
                                             <div>
                                                 <strong>Ảnh giáo viên:</strong><br>
                                                 <c:choose>
                                                     <c:when test="${not empty lopHoc.avatarGiaoVien}">
-                                                        <c:forEach var="avatar" items="${fn:split(lopHoc.avatarGiaoVien, ',')}">
-                                                            <img src="${pageContext.request.contextPath}/${avatar.trim()}" alt="Ảnh giáo viên" />
-                                                        </c:forEach>
+                                                        <img src="${pageContext.request.contextPath}/${fn:split(lopHoc.avatarGiaoVien, ',')[0].trim()}" alt="Ảnh giáo viên" />
                                                     </c:when>
                                                     <c:otherwise>
                                                         <span>Chưa có ảnh</span>

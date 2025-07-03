@@ -55,7 +55,7 @@ public class ManageClass extends HttpServlet {
             phongHocList = phongHocDAO.getAllPhongHoc();
             session.setAttribute("slotHocList", slotHocList);
             session.setAttribute("phongHocList", phongHocList);
-            session.setAttribute("maxInactiveInterval", 1800); // 30 phút
+            session.setMaxInactiveInterval(1800); // 30 phút
         }
 
         request.setAttribute("classCode", classCode);
@@ -421,7 +421,7 @@ public class ManageClass extends HttpServlet {
                     phongHocList = phongHocDAO.getAllPhongHoc();
                     session.setAttribute("slotHocList", slotHocList);
                     session.setAttribute("phongHocList", phongHocList);
-                    session.setAttribute("maxInactiveInterval", 1800); // 30 phút
+                    session.setMaxInactiveInterval(1800); // 30 phút
                 }
 
                 if (slotHocList.isEmpty() || phongHocList.isEmpty()) {
@@ -476,7 +476,7 @@ public class ManageClass extends HttpServlet {
                     phongHocList = phongHocDAO.getAllPhongHoc();
                     session.setAttribute("slotHocList", slotHocList);
                     session.setAttribute("phongHocList", phongHocList);
-                    session.setAttribute("maxInactiveInterval", 1800); // 30 phút
+                    session.setMaxInactiveInterval(1800); // 30 phút
                 }
 
                 request.setAttribute("lopHoc", lopHoc);
@@ -575,11 +575,25 @@ public class ManageClass extends HttpServlet {
 
                 List<Integer> idSlotHocList = new ArrayList<>();
                 List<Integer> idPhongHocList = new ArrayList<>();
+                List<LocalDate> ngayHocList = new ArrayList<>();
                 for (String idSlotHoc : idSlotHocs) {
                     idSlotHocList.add(Integer.parseInt(idSlotHoc));
                 }
                 for (String idPhongHoc : idPhongHocs) {
                     idPhongHocList.add(Integer.parseInt(idPhongHoc));
+                }
+                for (String ngayHoc : ngayHocs) {
+                    ngayHocList.add(LocalDate.parse(ngayHoc));
+                }
+
+                // Kiểm tra xung đột lịch học
+                String scheduleConflictError = lopHocDAO.checkScheduleConflict(idPhongHocList, idSlotHocList, ngayHocList);
+                if (scheduleConflictError != null) {
+                    System.out.println("addClass: Schedule conflict detected - " + scheduleConflictError);
+                    setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                    request.setAttribute("err", scheduleConflictError);
+                    request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
+                    return;
                 }
 
                 // Xử lý upload ảnh
@@ -769,11 +783,35 @@ public class ManageClass extends HttpServlet {
 
                 List<Integer> idSlotHocList = new ArrayList<>();
                 List<Integer> idPhongHocList = new ArrayList<>();
+                List<LocalDate> ngayHocList = new ArrayList<>();
                 for (String idSlotHoc : idSlotHocs) {
                     idSlotHocList.add(Integer.parseInt(idSlotHoc));
                 }
                 for (String idPhongHoc : idPhongHocs) {
                     idPhongHocList.add(Integer.parseInt(idPhongHoc));
+                }
+                for (String ngayHoc : ngayHocs) {
+                    ngayHocList.add(LocalDate.parse(ngayHoc));
+                }
+
+                // Kiểm tra xung đột lịch học phòng
+                String scheduleConflictError = lopHocDAO.checkScheduleConflict(idPhongHocList, idSlotHocList, ngayHocList, idLopHoc);
+                if (scheduleConflictError != null) {
+                    System.out.println("updateClass: Schedule conflict detected - " + scheduleConflictError);
+                    setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                    request.setAttribute("err", scheduleConflictError);
+                    request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
+                    return;
+                }
+
+                // Kiểm tra xung đột lịch học của giáo viên và học sinh
+                String teacherStudentConflictError = lopHocDAO.checkTeacherStudentScheduleConflict(idLopHoc, idPhongHocList, idSlotHocList, ngayHocList);
+                if (teacherStudentConflictError != null) {
+                    System.out.println("updateClass: Teacher/Student schedule conflict detected - " + teacherStudentConflictError);
+                    setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                    request.setAttribute("err", teacherStudentConflictError);
+                    request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
+                    return;
                 }
 
                 // Xử lý upload ảnh

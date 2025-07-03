@@ -330,25 +330,40 @@ public class HocSinhDAO {
     public boolean hasSchoolConflict(int idHocSinh, int idLopHoc) {
         DBContext db = DBContext.getInstance();
         String sql = """
-        SELECT COUNT(*)
-        FROM HocSinh hs
-        JOIN GiaoVien_LopHoc glh ON glh.ID_LopHoc = ?
-        JOIN GiaoVien g ON glh.ID_GiaoVien = g.ID_GiaoVien
-        WHERE hs.ID_HocSinh = ?
-        AND hs.ID_TruongHoc = g.ID_TruongHoc
+            SELECT hs.TenTruongHoc, hs.LopDangHocTrenTruong, gv.TenTruongHoc AS GvTenTruongHoc, gv.LopDangDayTrenTruong
+            FROM HocSinh hs
+            LEFT JOIN GiaoVien_LopHoc glh ON glh.ID_LopHoc = ?
+            LEFT JOIN GiaoVien gv ON glh.ID_GiaoVien = gv.ID_GiaoVien
+            WHERE hs.ID_HocSinh = ?
         """;
-        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+
+        try (
+             PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, idLopHoc);
             stmt.setInt(2, idHocSinh);
             ResultSet rs = stmt.executeQuery();
+
             if (rs.next()) {
-                return rs.getInt(1) > 0; // Conflict if count > 0
+                String hsTenTruongHoc = rs.getString("TenTruongHoc");
+                String hsLopDangHoc = rs.getString("LopDangHocTrenTruong");
+                String gvTenTruongHoc = rs.getString("GvTenTruongHoc");
+                String gvLopDangDay = rs.getString("LopDangDayTrenTruong");
+
+                // Kiểm tra nếu cả tên trường và tên lớp đều khớp
+                if (hsTenTruongHoc != null && gvTenTruongHoc != null && hsTenTruongHoc.equals(gvTenTruongHoc) &&
+                    hsLopDangHoc != null && gvLopDangDay != null && hsLopDangHoc.equals(gvLopDangDay)) {
+                    System.out.println("hasSchoolConflict: Conflict detected for ID_HocSinh=" + idHocSinh + ", ID_LopHoc=" + idLopHoc +
+                            ", TenTruongHoc=" + hsTenTruongHoc + ", LopDangHocTrenTruong=" + hsLopDangHoc);
+                    return true;
+                }
             }
+            System.out.println("hasSchoolConflict: No conflict for ID_HocSinh=" + idHocSinh + ", ID_LopHoc=" + idLopHoc);
+            return false;
         } catch (SQLException e) {
             System.out.println("SQL Error in hasSchoolConflict: " + e.getMessage());
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     public boolean addStudentToClass(int idHocSinh, int idLopHoc) {
