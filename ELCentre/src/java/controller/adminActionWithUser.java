@@ -70,16 +70,16 @@ public class adminActionWithUser extends HttpServlet {
                 break;
 
             case "enable":      //admin enable account
-                if (type.equalsIgnoreCase("GiaoVien")) {    //if user is teacher
+                if (type.equalsIgnoreCase("GiaoVien")) {   
 
                     boolean b2 = TaiKhoanDAO.adminEnableAccountUser(id); //admin enable in table account
                     boolean b1 = GiaoVienDAO.adminEnableGiaoVien(id);   //admin enable in table of this user
-                    if (b1 == true && b2 == true) {                     //if 2 method is access
+                    if (b1 == true && b2 == true) {                    
                         int ID_TaiKhoan = Integer.parseInt(id) ; 
                         UserLogs log = new UserLogs(0 , 1 , "Mở tài khoản giáo viên có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
                                     
                         UserLogsDAO.insertLog(log);
-                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();  //admin call method this to get all account after update
+                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();  
                         session.setAttribute("taikhoans", taikhoans);           //set object for jsp can get it again
                         request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);      //redirect to adminReceiveUsers
                     } else {
@@ -265,36 +265,7 @@ public class adminActionWithUser extends HttpServlet {
 
     }
 
-    private void doEnableAccount(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String typeUser = request.getParameter("type");
-        String ID_TaiKhoan = request.getParameter("id") ; 
-        switch(typeUser) {
-            case "HocSinh" : 
-                    boolean b2 = TaiKhoanDAO.adminEnableAccountUser(ID_TaiKhoan); //admin enable in table account
-                    boolean b1 = GiaoVienDAO.adminEnableGiaoVien(ID_TaiKhoan);   //admin enable in table of this user
-                    if (b1 == true && b2 == true) {                     
-                        int ID_TaiKhoanToLog = Integer.parseInt(ID_TaiKhoan) ; 
-                        UserLogs log = new UserLogs(0 , 1 , "Mở tài khoản giáo viên có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());      
-                        UserLogsDAO.insertLog(log);                                 //admin insert log after enable
-                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName(); 
-                        request.setAttribute("message", "Kích hoạt tài khoản thành công!");
-                        session.setAttribute("taikhoans", taikhoans);           
-                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);      
-                    } else {
-                        request.setAttribute("message", "Không kích hoạt được tài khoản!");
-                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
-                    }
-                break ; 
-                
-            case "GiaoVien" : 
-                break ; 
-                
-            case "PhuHuynh" : 
-                break ; 
-        }
-    }
+    
     
     //medthod view detail information of account
     private void doViewAccount(HttpServletRequest request, HttpServletResponse response)

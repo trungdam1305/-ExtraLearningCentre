@@ -126,7 +126,7 @@ public class HocSinhDAO {
         }
     }
 
-    public static boolean adminEnableHocSinh(String id) {
+    public static boolean adminEnableHocSinh(String ID_TaiKhoan) {
         DBContext db = DBContext.getInstance();
         int rs = 0;
         try {
@@ -136,7 +136,7 @@ public class HocSinhDAO {
                          WHERE ID_TaiKhoan = ?;
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            statement.setString(1, id);
+            statement.setString(1, ID_TaiKhoan);
             rs = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

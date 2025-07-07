@@ -224,7 +224,7 @@ public class GiaoVienDAO {
         }
     }
 
-    public static boolean adminEnableGiaoVien(String id) {
+    public static boolean adminEnableGiaoVien(String ID_TaiKhoan) {
         DBContext db = DBContext.getInstance();
         int rs = 0;
         try {
@@ -234,7 +234,7 @@ public class GiaoVienDAO {
                          WHERE ID_TaiKhoan = ?;
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            statement.setString(1, id);
+            statement.setString(1, ID_TaiKhoan);
             rs = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

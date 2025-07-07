@@ -546,21 +546,18 @@
         </div>
 
         <script>
-
             function toggleDropdown() {
                 const dropdown = document.getElementById('adminDropdown');
                 dropdown.classList.toggle('active');
             }
 
-
             document.addEventListener('click', function (event) {
                 const profile = document.querySelector('.admin-profile');
                 const dropdown = document.getElementById('adminDropdown');
-                if (!profile.contains(event.target)) {
-                    dropdown.classList.remove('active');
+                if (profile && !profile.contains(event.target)) {
+                    dropdown?.classList.remove('active');
                 }
             });
-
 
             const messageDiv = document.querySelector('.no-data');
             if (messageDiv) {
@@ -573,8 +570,8 @@
             const statusFilter = document.getElementById("statusFilter");
             const roleFilter = document.getElementById("roleFilter");
             const table = document.querySelector("#userTable tbody");
-            const allRows = Array.from(table.rows);
-            let filteredRows = allRows;
+            let allRows = []; // sẽ khởi tạo sau khi DOM sẵn sàng
+            let filteredRows = [];
             let currentPage = 1;
             const rowsPerPage = 14;
 
@@ -585,20 +582,23 @@
 
                 filteredRows = allRows.filter(row => {
                     const cells = row.querySelectorAll("td");
-                    const statusText = cells[5].textContent.trim().toLowerCase();
-                    const matchesKeyword = Array.from(cells).slice(0, 4).some(cell =>
-                        cell.textContent.toLowerCase().includes(keyword)
-                    );
+                    if (cells.length < 6)
+                        return false;
 
-                    const normalizedStatus = statusText.toLowerCase().includes("cấm") ? "inactive" : "active";
+                    const statusText = cells[5].textContent.trim().toLowerCase();
+                    const normalizedStatus = statusText.includes("cấm") ? "inactive" : "active";
                     const matchesStatus =
                             status === "all" ||
                             (status === "active" && normalizedStatus === "active") ||
                             (status === "inactive" && normalizedStatus === "inactive");
 
+                    const matchesKeyword = Array.from(cells).slice(0, 4).some(cell =>
+                        cell.textContent.toLowerCase().includes(keyword)
+                    );
+
                     const matchesRole =
                             role === "all" ||
-                            cells[3].textContent.toLowerCase() === role;
+                            cells[3].textContent.toLowerCase().includes(role);
 
                     return matchesKeyword && matchesStatus && matchesRole;
                 });
@@ -607,30 +607,33 @@
                 renderPage();
             }
 
-
             function renderPage() {
-                table.innerHTML = "";
+                // Ẩn tất cả dòng
+                allRows.forEach(row => row.style.display = "none");
+
                 const start = (currentPage - 1) * rowsPerPage;
                 const end = start + rowsPerPage;
                 const pageRows = filteredRows.slice(start, end);
-                pageRows.forEach(row => table.appendChild(row));
+
+                pageRows.forEach(row => row.style.display = "");
+
                 renderPagination();
             }
 
             function renderPagination() {
-                const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
                 const pagination = document.getElementById("pagination");
                 pagination.innerHTML = "";
+
+                const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+                if (totalPages <= 1)
+                    return;
 
                 const maxPagesToShow = 3;
                 let startPage = Math.max(1, currentPage - 1);
                 let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
-
-
                 if (endPage - startPage + 1 < maxPagesToShow) {
                     startPage = Math.max(1, endPage - maxPagesToShow + 1);
                 }
-
 
                 if (currentPage > 1) {
                     const prevBtn = document.createElement("button");
@@ -641,7 +644,6 @@
                     };
                     pagination.appendChild(prevBtn);
                 }
-
 
                 for (let i = startPage; i <= endPage; i++) {
                     const btn = document.createElement("button");
@@ -655,7 +657,6 @@
                     pagination.appendChild(btn);
                 }
 
-
                 if (currentPage < totalPages) {
                     const nextBtn = document.createElement("button");
                     nextBtn.textContent = "»";
@@ -667,12 +668,19 @@
                 }
             }
 
+            // Sự kiện lọc
+            searchInput?.addEventListener("input", filterRows);
+            statusFilter?.addEventListener("change", filterRows);
+            roleFilter?.addEventListener("change", filterRows);
 
-            searchInput.addEventListener("input", filterRows);
-            statusFilter.addEventListener("change", filterRows);
-            roleFilter.addEventListener("change", filterRows);
+            // Khởi tạo sau khi DOM đã có <tr>
+            window.addEventListener("DOMContentLoaded", () => {
+                const tbody = document.querySelector("#userTable tbody");
+                allRows = Array.from(tbody.rows);
+                filteredRows = [...allRows]; // ban đầu là tất cả
+                renderPage();
+            });
+        </script>
 
-            window.onload = () => renderPage();
-        </script>   
     </body>
 </html> 
