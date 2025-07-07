@@ -38,12 +38,11 @@ import java.util.UUID;
 public class ManageClass extends HttpServlet {
 
     private static final String UPLOAD_DIR = "images/class";
-    private static final int MAX_SCHEDULES = 10;
 
     private void setCommonAttributes(HttpServletRequest request, String classCode, String tenLopHoc, Integer siSoToiDa,
-                                     Integer siSoToiThieu, String ghiChu, String trangThai, String soTien, Integer order,
-                                     String[] ngayHocs, String[] idSlotHocs, String[] idPhongHocs,
-                                     int idKhoaHoc, int idKhoi) {
+            Integer siSoToiThieu, String ghiChu, String trangThai, String soTien, Integer order,
+            String[] ngayHocs, String[] idSlotHocs, String[] idPhongHocs,
+            int idKhoaHoc, int idKhoi) {
         HttpSession session = request.getSession();
         List<SlotHoc> slotHocList = (List<SlotHoc>) session.getAttribute("slotHocList");
         List<PhongHoc> phongHocList = (List<PhongHoc>) session.getAttribute("phongHocList");
@@ -185,16 +184,14 @@ public class ManageClass extends HttpServlet {
         }
 
         // Validate lịch học
-        if (ngayHocs == null || idSlotHocs == null || idPhongHocs == null ||
-            ngayHocs.length == 0 || idSlotHocs.length == 0 || idPhongHocs.length == 0) {
+        if (ngayHocs == null || idSlotHocs == null || idPhongHocs == null
+                || ngayHocs.length == 0 || idSlotHocs.length == 0 || idPhongHocs.length == 0) {
             return "Dữ liệu lịch học không được để trống!";
         }
         if (ngayHocs.length != idSlotHocs.length || ngayHocs.length != idPhongHocs.length) {
             return "Dữ liệu lịch học không đồng bộ!";
         }
-        if (ngayHocs.length > MAX_SCHEDULES) {
-            return "Không được thêm quá " + MAX_SCHEDULES + " lịch học!";
-        }
+        
         LocalDate today = LocalDate.now();
         for (String ngayHoc : ngayHocs) {
             if (ngayHoc == null || ngayHoc.trim().isEmpty()) {
@@ -259,7 +256,9 @@ public class ManageClass extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         String action = request.getParameter("action");
-        if (action == null) action = "ViewCourse";
+        if (action == null) {
+            action = "ViewCourse";
+        }
 
         String idKhoiStr = request.getParameter("ID_Khoi");
         String idKhoaStr = request.getParameter("ID_KhoaHoc");
@@ -307,7 +306,9 @@ public class ManageClass extends HttpServlet {
                 try {
                     if (request.getParameter("page") != null && !request.getParameter("page").trim().isEmpty()) {
                         pageNumber = Integer.parseInt(request.getParameter("page"));
-                        if (pageNumber < 1) pageNumber = 1;
+                        if (pageNumber < 1) {
+                            pageNumber = 1;
+                        }
                     }
                 } catch (NumberFormatException e) {
                     pageNumber = 1;
@@ -356,10 +357,10 @@ public class ManageClass extends HttpServlet {
                     request.setAttribute("err", "Không có lớp học nào phù hợp với bộ lọc.");
                 }
 
-                System.out.println("ViewCourse: Successfully processed - ID_KhoaHoc=" + idKhoaHoc + ", ID_Khoi=" + idKhoi +
-                        ", searchQuery=" + searchQuery + ", sortName=" + sortName + ", teacherFilter=" + teacherFilter +
-                        ", feeFilter=" + feeFilter + ", orderFilter=" + orderFilter + ", sortColumn=" + sortColumn +
-                        ", sortOrder=" + sortOrder + ", page=" + pageNumber + ", totalItems=" + totalItems);
+                System.out.println("ViewCourse: Successfully processed - ID_KhoaHoc=" + idKhoaHoc + ", ID_Khoi=" + idKhoi
+                        + ", searchQuery=" + searchQuery + ", sortName=" + sortName + ", teacherFilter=" + teacherFilter
+                        + ", feeFilter=" + feeFilter + ", orderFilter=" + orderFilter + ", sortColumn=" + sortColumn
+                        + ", sortOrder=" + sortOrder + ", page=" + pageNumber + ", totalItems=" + totalItems);
 
                 request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
             } else if ("refresh".equalsIgnoreCase(action)) {
@@ -404,14 +405,24 @@ public class ManageClass extends HttpServlet {
                     request.setAttribute("err", "Chưa có lớp học nào được khởi tạo cho khóa học này.");
                 }
 
-                System.out.println("Refresh: Successfully processed - ID_KhoaHoc=" + idKhoaHoc + ", ID_Khoi=" + idKhoi +
-                        ", totalItems=" + totalItems);
+                System.out.println("Refresh: Successfully processed - ID_KhoaHoc=" + idKhoaHoc + ", ID_Khoi=" + idKhoi
+                        + ", totalItems=" + totalItems);
 
                 request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
             } else if ("showAddClass".equalsIgnoreCase(action)) {
                 HttpSession session = request.getSession();
                 List<SlotHoc> slotHocList = (List<SlotHoc>) session.getAttribute("slotHocList");
                 List<PhongHoc> phongHocList = (List<PhongHoc>) session.getAttribute("phongHocList");
+
+                if (khoaHoc == null) {
+                    System.out.println("showAddClass: Course not found - ID_KhoaHoc=" + idKhoaHoc);
+                    request.setAttribute("err", "Không tìm thấy khóa học với ID: " + idKhoaHoc);
+                    request.setAttribute("ID_KhoaHoc", idKhoaHoc);
+                    request.setAttribute("ID_Khoi", idKhoi);
+                    request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
+                    return;
+                }
+
                 List<GiaoVien> teacherList = giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc());
 
                 if (slotHocList == null || phongHocList == null) {
@@ -428,6 +439,7 @@ public class ManageClass extends HttpServlet {
                     request.setAttribute("err", slotHocList.isEmpty() ? "Không có slot học nào trong hệ thống." : "Không có phòng học nào trong hệ thống.");
                     request.setAttribute("ID_KhoaHoc", idKhoaHoc);
                     request.setAttribute("ID_Khoi", idKhoi);
+                    request.setAttribute("khoaHoc", khoaHoc);
                     request.setAttribute("teacherList", teacherList);
                     request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
                     return;
@@ -438,54 +450,8 @@ public class ManageClass extends HttpServlet {
                 request.setAttribute("teacherList", teacherList);
                 request.setAttribute("ID_KhoaHoc", idKhoaHoc);
                 request.setAttribute("ID_Khoi", idKhoi);
+                request.setAttribute("khoaHoc", khoaHoc);
                 request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
-            } else if ("updateClass".equalsIgnoreCase(action)) {
-                String idLopHocStr = request.getParameter("ID_LopHoc");
-                if (idLopHocStr == null || idLopHocStr.trim().isEmpty()) {
-                    request.setAttribute("err", "ID_LopHoc không được để trống!");
-                    request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc()));
-                    request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
-                    return;
-                }
-                int idLopHoc;
-                try {
-                    idLopHoc = Integer.parseInt(idLopHocStr);
-                } catch (NumberFormatException e) {
-                    request.setAttribute("err", "ID_LopHoc không hợp lệ.");
-                    request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc()));
-                    request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
-                    return;
-                }
-
-                LopHocInfoDTO lopHoc = lopHocDAO.getLopHocInfoById(idLopHoc);
-                if (lopHoc == null) {
-                    request.setAttribute("err", "Không tìm thấy lớp học!");
-                    request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc()));
-                    request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
-                    return;
-                }
-
-                HttpSession session = request.getSession();
-                List<SlotHoc> slotHocList = (List<SlotHoc>) session.getAttribute("slotHocList");
-                List<PhongHoc> phongHocList = (List<PhongHoc>) session.getAttribute("phongHocList");
-
-                if (slotHocList == null || phongHocList == null) {
-                    SlotHocDAO slotHocDAO = new SlotHocDAO();
-                    PhongHocDAO phongHocDAO = new PhongHocDAO();
-                    slotHocList = slotHocDAO.getAllSlotHoc();
-                    phongHocList = phongHocDAO.getAllPhongHoc();
-                    session.setAttribute("slotHocList", slotHocList);
-                    session.setAttribute("phongHocList", phongHocList);
-                    session.setMaxInactiveInterval(1800); // 30 phút
-                }
-
-                request.setAttribute("lopHoc", lopHoc);
-                request.setAttribute("slotHocList", slotHocList);
-                request.setAttribute("phongHocList", phongHocList);
-                request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc()));
-                request.setAttribute("ID_KhoaHoc", idKhoaHoc);
-                request.setAttribute("ID_Khoi", idKhoi);
-                request.getRequestDispatcher("/views/admin/updateClass.jsp").forward(request, response);
             } else {
                 request.setAttribute("err", "Hành động không hợp lệ!");
                 request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc()));
@@ -495,7 +461,7 @@ public class ManageClass extends HttpServlet {
             System.out.println("doGet error: " + e.getMessage());
             e.printStackTrace();
             request.setAttribute("err", "Lỗi xử lý yêu cầu: " + e.getMessage());
-            request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc()));
+            request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc != null ? khoaHoc.getTenKhoaHoc() : ""));
             request.getRequestDispatcher("/views/admin/manageCourses.jsp").forward(request, response);
         }
     }
@@ -531,6 +497,7 @@ public class ManageClass extends HttpServlet {
 
         LopHocInfoDTODAO lopHocDAO = new LopHocInfoDTODAO();
         KhoaHocDAO khoaHocDAO = new KhoaHocDAO();
+        GiaoVienDAO giaoVienDAO = new GiaoVienDAO();
 
         KhoaHoc khoaHoc = khoaHocDAO.getKhoaHocById(idKhoaHoc);
         if (khoaHoc == null || khoaHoc.getID_Khoi() != idKhoi) {
@@ -564,6 +531,8 @@ public class ManageClass extends HttpServlet {
                     Integer order = orderStr != null && !orderStr.trim().isEmpty() ? Integer.parseInt(orderStr) : null;
                     setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
                     request.setAttribute("err", validationError);
+                    request.setAttribute("khoaHoc", khoaHoc);
+                    request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc()));
                     request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
                     return;
                 }
@@ -592,6 +561,8 @@ public class ManageClass extends HttpServlet {
                     System.out.println("addClass: Schedule conflict detected - " + scheduleConflictError);
                     setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
                     request.setAttribute("err", scheduleConflictError);
+                    request.setAttribute("khoaHoc", khoaHoc);
+                    request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc()));
                     request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
                     return;
                 }
@@ -606,6 +577,8 @@ public class ManageClass extends HttpServlet {
                             System.out.println("addClass: Invalid image format - ContentType=" + contentType);
                             request.setAttribute("err", "Chỉ chấp nhận file ảnh định dạng .jpg hoặc .png!");
                             setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                            request.setAttribute("khoaHoc", khoaHoc);
+                            request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc()));
                             request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
                             return;
                         }
@@ -622,6 +595,8 @@ public class ManageClass extends HttpServlet {
                             System.out.println("addClass: Cannot write to directory - Path=" + uploadPath);
                             request.setAttribute("err", "Không có quyền ghi vào thư mục lưu trữ!");
                             setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                            request.setAttribute("khoaHoc", khoaHoc);
+                            request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc()));
                             request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
                             return;
                         }
@@ -633,38 +608,56 @@ public class ManageClass extends HttpServlet {
                     System.out.println("addClass: Error saving image - " + e.getMessage());
                     request.setAttribute("err", "Lỗi khi lưu tệp hình ảnh: " + e.getMessage());
                     setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                    request.setAttribute("khoaHoc", khoaHoc);
+                    request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc()));
                     request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
                     return;
                 }
 
                 long startTime = System.currentTimeMillis();
                 AddLopHocResult result = lopHocDAO.addLopHoc(
-                    tenLopHoc.trim(),
-                    classCode.trim(),
-                    idKhoaHoc,
-                    idKhoi,
-                    0,
-                    idSlotHocList,
-                    List.of(ngayHocs),
-                    idPhongHocList,
-                    ghiChu,
-                    trangThai,
-                    soTien,
-                    imagePath,
-                    siSoToiDa,
-                    order,
-                    siSoToiThieu
+                        tenLopHoc.trim(),
+                        classCode.trim(),
+                        idKhoaHoc,
+                        idKhoi,
+                        0,
+                        idSlotHocList,
+                        List.of(ngayHocs),
+                        idPhongHocList,
+                        ghiChu,
+                        trangThai,
+                        soTien,
+                        imagePath,
+                        siSoToiDa,
+                        order,
+                        siSoToiThieu
                 );
                 System.out.println("addLopHoc time: " + (System.currentTimeMillis() - startTime) + "ms");
 
                 if (result.getLopHoc() != null) {
+                    // Lấy lại khoaHoc để đảm bảo không null
+                    KhoaHoc khoaHocUpdated = khoaHocDAO.getKhoaHocById(idKhoaHoc);
+                    if (khoaHocUpdated == null) {
+                        System.out.println("addClass: Course not found after adding - ID_KhoaHoc=" + idKhoaHoc);
+                        request.setAttribute("err", "Không tìm thấy thông tin khóa học sau khi thêm lớp học!");
+                        setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, null, idKhoaHoc, idKhoi);
+                        request.setAttribute("khoaHoc", null);
+                        request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(""));
+                        request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
+                        return;
+                    }
+
                     request.setAttribute("suc", "Thêm lớp học thành công!");
-                    setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                    setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, null, idKhoaHoc, idKhoi);
+                    request.setAttribute("khoaHoc", khoaHocUpdated);
+                    request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHocUpdated.getTenKhoaHoc()));
                     request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
                 } else {
                     System.out.println("addLopHoc failed: " + result.getErrorMessage());
                     request.setAttribute("err", result.getErrorMessage() != null ? result.getErrorMessage() : "Lỗi khi thêm lớp học!");
                     setCommonAttributes(request, classCode, tenLopHoc, siSoToiDa, siSoToiThieu, ghiChu, trangThai, soTienStr, order, ngayHocs, idSlotHocs, idPhongHocs, idKhoaHoc, idKhoi);
+                    request.setAttribute("khoaHoc", khoaHoc);
+                    request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc()));
                     request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
                 }
             } else if ("deleteClass".equalsIgnoreCase(action)) {
@@ -866,22 +859,22 @@ public class ManageClass extends HttpServlet {
 
                 long startTime = System.currentTimeMillis();
                 AddLopHocResult result = lopHocDAO.updateLopHoc(
-                    idLopHoc,
-                    tenLopHoc,
-                    classCode,
-                    idKhoaHoc,
-                    idKhoi,
-                    siSo,
-                    idSlotHocList,
-                    List.of(ngayHocs),
-                    idPhongHocList,
-                    ghiChu,
-                    trangThai,
-                    soTien,
-                    imagePath,
-                    siSoToiDa,
-                    order,
-                    siSoToiThieu
+                        idLopHoc,
+                        tenLopHoc,
+                        classCode,
+                        idKhoaHoc,
+                        idKhoi,
+                        siSo,
+                        idSlotHocList,
+                        List.of(ngayHocs),
+                        idPhongHocList,
+                        ghiChu,
+                        trangThai,
+                        soTien,
+                        imagePath,
+                        siSoToiDa,
+                        order,
+                        siSoToiThieu
                 );
                 System.out.println("updateLopHoc time: " + (System.currentTimeMillis() - startTime) + "ms");
 
@@ -899,6 +892,8 @@ public class ManageClass extends HttpServlet {
                 System.out.println("Invalid action: " + action);
                 request.setAttribute("err", "Hành động không hợp lệ!");
                 setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, null, idKhoaHoc, idKhoi);
+                request.setAttribute("khoaHoc", khoaHoc);
+                request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc()));
                 request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
             }
         } catch (Exception e) {
@@ -911,20 +906,22 @@ public class ManageClass extends HttpServlet {
             Integer siSoToiDa = siSoToiDaStr != null && !siSoToiDaStr.trim().isEmpty() ? Integer.parseInt(siSoToiDaStr) : null;
             Integer siSoToiThieu = siSoToiThieuStr != null && !siSoToiThieuStr.trim().isEmpty() ? Integer.parseInt(siSoToiThieuStr) : null;
             Integer order = orderStr != null && !orderStr.trim().isEmpty() ? Integer.parseInt(orderStr) : null;
-            setCommonAttributes(request, 
-                               request.getParameter("classCode"), 
-                               request.getParameter("tenLopHoc"), 
-                               siSoToiDa, 
-                               siSoToiThieu, 
-                               request.getParameter("ghiChu"), 
-                               request.getParameter("trangThai"), 
-                               request.getParameter("soTien"), 
-                               order, 
-                               request.getParameterValues("ngayHoc[]"), 
-                               request.getParameterValues("idSlotHoc[]"), 
-                               request.getParameterValues("idPhongHoc[]"), 
-                               idKhoaHoc, 
-                               idKhoi);
+            setCommonAttributes(request,
+                    request.getParameter("classCode"),
+                    request.getParameter("tenLopHoc"),
+                    siSoToiDa,
+                    siSoToiThieu,
+                    request.getParameter("ghiChu"),
+                    request.getParameter("trangThai"),
+                    request.getParameter("soTien"),
+                    order,
+                    request.getParameterValues("ngayHoc[]"),
+                    request.getParameterValues("idSlotHoc[]"),
+                    request.getParameterValues("idPhongHoc[]"),
+                    idKhoaHoc,
+                    idKhoi);
+            request.setAttribute("khoaHoc", khoaHoc);
+            request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc != null ? khoaHoc.getTenKhoaHoc() : ""));
             request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
         }
     }
