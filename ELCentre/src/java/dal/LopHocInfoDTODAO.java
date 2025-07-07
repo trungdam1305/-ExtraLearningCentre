@@ -530,11 +530,13 @@ public class LopHocInfoDTODAO {
             sql.append(" AND (lh.TenLopHoc LIKE ? OR lh.ClassCode LIKE ?) ");
             params.add("%" + searchQuery.trim() + "%");
             params.add("%" + searchQuery.trim() + "%");
+            System.out.println("getLopHocInfoList: Applying searchQuery filter: " + searchQuery);
         }
 
         if (statusFilter != null && !statusFilter.trim().isEmpty()) {
             sql.append(" AND lh.TrangThai = ? ");
             params.add(statusFilter.trim());
+            System.out.println("getLopHocInfoList: Applying statusFilter: " + statusFilter);
         }
 
         if (teacherFilter != null && !teacherFilter.trim().isEmpty()) {
@@ -542,8 +544,9 @@ public class LopHocInfoDTODAO {
                 int idGiaoVien = Integer.parseInt(teacherFilter);
                 sql.append(" AND EXISTS (SELECT 1 FROM GiaoVien_LopHoc glh WHERE glh.ID_LopHoc = lh.ID_LopHoc AND glh.ID_GiaoVien = ?) ");
                 params.add(idGiaoVien);
+                System.out.println("getLopHocInfoList: Applying teacherFilter: ID_GiaoVien=" + idGiaoVien);
             } catch (NumberFormatException e) {
-                System.out.println("Invalid teacherFilter: " + teacherFilter);
+                System.out.println("getLopHocInfoList: Invalid teacherFilter: " + teacherFilter + " (not a valid integer)");
             }
         }
 
@@ -553,19 +556,22 @@ public class LopHocInfoDTODAO {
                     sql.append(" AND lh.SoTien BETWEEN ? AND ? ");
                     params.add(0);
                     params.add(50000);
+                    System.out.println("getLopHocInfoList: Applying feeFilter: 0-50000");
                     break;
                 case "50000-100000":
                     sql.append(" AND lh.SoTien BETWEEN ? AND ? ");
                     params.add(50000);
                     params.add(100000);
+                    System.out.println("getLopHocInfoList: Applying feeFilter: 50000-100000");
                     break;
                 case "100000-200000":
                     sql.append(" AND lh.SoTien BETWEEN ? AND ? ");
                     params.add(100000);
                     params.add(200000);
+                    System.out.println("getLopHocInfoList: Applying feeFilter: 100000-200000");
                     break;
                 default:
-                    System.out.println("Invalid feeFilter: " + feeFilter);
+                    System.out.println("getLopHocInfoList: Invalid feeFilter: " + feeFilter);
                     break;
             }
         }
@@ -576,11 +582,12 @@ public class LopHocInfoDTODAO {
                 if (orderValue >= 1 && orderValue <= 5) {
                     sql.append(" AND lh.[Order] = ? ");
                     params.add(orderValue);
+                    System.out.println("getLopHocInfoList: Applying orderFilter: " + orderValue);
                 } else {
-                    System.out.println("Invalid orderFilter value: " + orderFilter + " (must be 1, 2, 3, 4, or 5)");
+                    System.out.println("getLopHocInfoList: Invalid orderFilter value: " + orderFilter + " (must be 1, 2, 3, 4, or 5)");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Invalid orderFilter: " + orderFilter + " (not a valid integer)");
+                System.out.println("getLopHocInfoList: Invalid orderFilter: " + orderFilter + " (not a valid integer)");
             }
         }
 
@@ -602,8 +609,10 @@ public class LopHocInfoDTODAO {
         if (sortColumn != null && !sortColumn.isEmpty()) {
             sql.append(" ORDER BY lh.").append(sortColumn);
             sql.append(sortOrder != null && sortOrder.equalsIgnoreCase("desc") ? " DESC" : " ASC");
+            System.out.println("getLopHocInfoList: Sorting by " + sortColumn + " " + sortOrder);
         } else {
             sql.append(" ORDER BY lh.ID_LopHoc DESC");
+            System.out.println("getLopHocInfoList: Default sorting by ID_LopHoc DESC");
         }
 
         sql.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
@@ -643,8 +652,9 @@ public class LopHocInfoDTODAO {
             }
 
             System.out.println("getLopHocInfoList: Retrieved " + list.size() + " classes for ID_KhoaHoc=" + idKhoaHoc +
-                    ", ID_Khoi=" + idKhoi + ", searchQuery=" + searchQuery + ", status=" + statusFilter +
-                    ", teacherFilter=" + teacherFilter + ", feeFilter=" + feeFilter + ", orderFilter=" + orderFilter);
+                    ", ID_Khoi=" + idKhoi + ", searchQuery=" + searchQuery + ", statusFilter=" + statusFilter +
+                    ", teacherFilter=" + teacherFilter + ", feeFilter=" + feeFilter + ", orderFilter=" + orderFilter +
+                    ", sortColumn=" + sortColumn + ", sortOrder=" + sortOrder + ", page=" + page + ", pageSize=" + pageSize);
         } catch (SQLException e) {
             System.out.println("SQL Error in getLopHocInfoList: " + e.getMessage() +
                     " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
@@ -658,7 +668,7 @@ public class LopHocInfoDTODAO {
         int count = 0;
         DBContext db = DBContext.getInstance();
         StringBuilder sql = new StringBuilder("""
-            SELECT COUNT(*) 
+            SELECT COUNT(DISTINCT l.ID_LopHoc) 
             FROM [dbo].[LopHoc] l
             INNER JOIN [dbo].[KhoaHoc] k ON l.ID_KhoaHoc = k.ID_KhoaHoc
             LEFT JOIN [dbo].[GiaoVien_LopHoc] glh ON l.ID_LopHoc = glh.ID_LopHoc
@@ -672,11 +682,13 @@ public class LopHocInfoDTODAO {
             sql.append(" AND (l.TenLopHoc LIKE ? OR l.ClassCode LIKE ?) ");
             params.add("%" + searchQuery + "%");
             params.add("%" + searchQuery + "%");
+            System.out.println("countClasses: Applying searchQuery filter: " + searchQuery);
         }
 
         if (statusFilter != null && !statusFilter.isEmpty()) {
             sql.append(" AND l.TrangThai = ? ");
             params.add(statusFilter);
+            System.out.println("countClasses: Applying statusFilter: " + statusFilter);
         }
 
         if (teacherFilter != null && !teacherFilter.isEmpty()) {
@@ -684,8 +696,9 @@ public class LopHocInfoDTODAO {
                 int idGiaoVien = Integer.parseInt(teacherFilter);
                 sql.append(" AND glh.ID_GiaoVien = ? ");
                 params.add(idGiaoVien);
+                System.out.println("countClasses: Applying teacherFilter: ID_GiaoVien=" + idGiaoVien);
             } catch (NumberFormatException e) {
-                System.out.println("Invalid teacherFilter: " + teacherFilter);
+                System.out.println("countClasses: Invalid teacherFilter: " + teacherFilter + " (not a valid integer)");
             }
         }
 
@@ -695,19 +708,22 @@ public class LopHocInfoDTODAO {
                     sql.append(" AND l.SoTien BETWEEN ? AND ? ");
                     params.add(0);
                     params.add(50000);
+                    System.out.println("countClasses: Applying feeFilter: 0-50000");
                     break;
                 case "50000-100000":
                     sql.append(" AND l.SoTien BETWEEN ? AND ? ");
                     params.add(50000);
                     params.add(100000);
+                    System.out.println("countClasses: Applying feeFilter: 50000-100000");
                     break;
                 case "100000-200000":
                     sql.append(" AND l.SoTien BETWEEN ? AND ? ");
                     params.add(100000);
                     params.add(200000);
+                    System.out.println("countClasses: Applying feeFilter: 100000-200000");
                     break;
                 default:
-                    System.out.println("Invalid feeFilter: " + feeFilter);
+                    System.out.println("countClasses: Invalid feeFilter: " + feeFilter);
                     break;
             }
         }
@@ -718,11 +734,12 @@ public class LopHocInfoDTODAO {
                 if (orderValue >= 1 && orderValue <= 5) {
                     sql.append(" AND l.[Order] = ? ");
                     params.add(orderValue);
+                    System.out.println("countClasses: Applying orderFilter: " + orderValue);
                 } else {
-                    System.out.println("Invalid orderFilter value: " + orderFilter + " (must be 1, 2, 3, 4, or 5)");
+                    System.out.println("countClasses: Invalid orderFilter value: " + orderFilter + " (must be 1, 2, 3, 4, or 5)");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Invalid orderFilter: " + orderFilter + " (not a valid integer)");
+                System.out.println("countClasses: Invalid orderFilter: " + orderFilter + " (not a valid integer)");
             }
         }
 
@@ -735,7 +752,7 @@ public class LopHocInfoDTODAO {
                 count = rs.getInt(1);
             }
             System.out.println("countClasses: Counted " + count + " classes for ID_KhoaHoc=" + idKhoaHoc + ", ID_Khoi=" + idKhoi +
-                    ", searchQuery=" + searchQuery + ", status=" + statusFilter + ", teacherFilter=" + teacherFilter +
+                    ", searchQuery=" + searchQuery + ", statusFilter=" + statusFilter + ", teacherFilter=" + teacherFilter +
                     ", feeFilter=" + feeFilter + ", orderFilter=" + orderFilter);
         } catch (SQLException e) {
             System.out.println("SQL Error in countClasses: " + e.getMessage() + 

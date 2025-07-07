@@ -21,7 +21,7 @@ public class GiaoVienDAO {
 
     public static ArrayList<GiaoVien_TruongHoc> admminGetAllGiaoVien() {
         DBContext db = DBContext.getInstance();
-        ArrayList<GiaoVien_TruongHoc> giaoviens = new ArrayList<GiaoVien_TruongHoc>();
+        ArrayList<GiaoVien_TruongHoc> giaoviens = new ArrayList<>();
         try {
             String sql = """
                           select * from GiaoVien gv JOIN TruongHoc th ON gv.ID_TruongHoc = th.ID_TruongHoc
@@ -56,7 +56,7 @@ public class GiaoVienDAO {
 
     public ArrayList<GiaoVien> HomePageGetGiaoVien() {
         DBContext db = DBContext.getInstance();
-        ArrayList<GiaoVien> giaoviens = new ArrayList<GiaoVien>();
+        ArrayList<GiaoVien> giaoviens = new ArrayList<>();
         try {
             String sql = """
                           select * from GiaoVien 
@@ -85,7 +85,7 @@ public class GiaoVienDAO {
         } catch (SQLException e) {
             System.out.println("SQL Error in HomePageGetGiaoVien: " + e.getMessage());
             e.printStackTrace();
-            return new ArrayList<GiaoVien>();
+            return new ArrayList<>();
         }
         return giaoviens.isEmpty() ? null : giaoviens;
     }
@@ -127,6 +127,59 @@ public class GiaoVienDAO {
         return gv;
     }
 
+    public List<GiaoVien> getTeachersBySpecialization(String tenKhoaHoc) {
+        List<GiaoVien> teachers = new ArrayList<>();
+        DBContext db = DBContext.getInstance();
+        if (tenKhoaHoc == null || tenKhoaHoc.trim().isEmpty()) {
+            System.out.println("getTeachersBySpecialization: tenKhoaHoc is null or empty");
+            return teachers;
+        }
+
+        // Tách từ khóa chính từ tenKhoaHoc (ví dụ: "Toán 10" -> "Toán", "Khóa tổng ôn Toán" -> "Toán")
+        String mainKeyword = tenKhoaHoc.trim();
+        if (mainKeyword.startsWith("Khóa tổng ôn ")) {
+            mainKeyword = mainKeyword.replace("Khóa tổng ôn ", "");
+        } else {
+            String[] parts = mainKeyword.split(" ");
+            mainKeyword = parts[0]; // Lấy từ đầu tiên làm từ khóa chính
+        }
+
+        String sql = """
+            SELECT gv.*, th.TenTruongHoc 
+            FROM [dbo].[GiaoVien] gv 
+            JOIN [dbo].[TruongHoc] th ON gv.ID_TruongHoc = th.ID_TruongHoc 
+            WHERE gv.TrangThai = 'Active' AND LOWER(gv.ChuyenMon) LIKE ?
+        """;
+        try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "%" + mainKeyword.toLowerCase() + "%");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                GiaoVien giaoVien = new GiaoVien();
+                giaoVien.setID_GiaoVien(rs.getInt("ID_GiaoVien"));
+                giaoVien.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
+                giaoVien.setHoTen(rs.getString("HoTen"));
+                giaoVien.setChuyenMon(rs.getString("ChuyenMon"));
+                giaoVien.setSDT(rs.getString("SDT"));
+                giaoVien.setID_TruongHoc(rs.getInt("ID_TruongHoc"));
+                giaoVien.setLuong(rs.getBigDecimal("Luong"));
+                giaoVien.setIsHot(rs.getInt("IsHot"));
+                giaoVien.setTrangThai(rs.getString("TrangThai"));
+                giaoVien.setNgayTao(rs.getTimestamp("NgayTao") != null ? rs.getTimestamp("NgayTao").toLocalDateTime() : null);
+                giaoVien.setAvatar(rs.getString("Avatar"));
+                giaoVien.setBangCap(rs.getString("BangCap"));
+                giaoVien.setLopDangDayTrenTruong(rs.getString("LopDangDayTrenTruong"));
+                giaoVien.setTrangThaiDay(rs.getString("TrangThaiDay"));
+                giaoVien.setTenTruongHoc(rs.getString("TenTruongHoc"));
+                teachers.add(giaoVien);
+            }
+            System.out.println("getTeachersBySpecialization: Retrieved " + teachers.size() + " teachers for tenKhoaHoc=" + tenKhoaHoc + ", mainKeyword=" + mainKeyword);
+        } catch (SQLException e) {
+            System.out.println("SQL Error in getTeachersBySpecialization: tenKhoaHoc=" + tenKhoaHoc + ", error=" + e.getMessage());
+            e.printStackTrace();
+        }
+        return teachers;
+    }
+
     public ArrayList<GiaoVien> getSpecialised() {
         DBContext db = DBContext.getInstance();
         ArrayList<GiaoVien> giaoviens = new ArrayList<>();
@@ -166,7 +219,7 @@ public class GiaoVienDAO {
 
     public static ArrayList<GiaoVien_TruongHoc> adminGetGiaoVienByID(String id) {
         DBContext db = DBContext.getInstance();
-        ArrayList<GiaoVien_TruongHoc> giaoviens = new ArrayList<GiaoVien_TruongHoc>();
+        ArrayList<GiaoVien_TruongHoc> giaoviens = new ArrayList<>();
         try {
             String sql = """
                 SELECT * 
@@ -301,65 +354,7 @@ public class GiaoVienDAO {
         return luong;
     }
 
-    public List<GiaoVien> getTeachersBySpecialization(String tenKhoaHoc) {
-        List<GiaoVien> teachers = new ArrayList<>();
-        DBContext db = DBContext.getInstance();
-        if (tenKhoaHoc == null || tenKhoaHoc.length() < 2) {
-            return teachers;
-        }
-        List<String> subStrings = new ArrayList<>();
-        String lowerTenKhoaHoc = tenKhoaHoc.toLowerCase();
-        for (int i = 0; i < lowerTenKhoaHoc.length() - 1; i++) {
-            subStrings.add(lowerTenKhoaHoc.substring(i, i + 2));
-        }
-        StringBuilder sql = new StringBuilder("""
-            SELECT gv.*, th.TenTruongHoc 
-            FROM [dbo].[GiaoVien] gv 
-            JOIN [dbo].[TruongHoc] th ON gv.ID_TruongHoc = th.ID_TruongHoc 
-            WHERE gv.TrangThai = 'Active' AND (
-        """);
-        List<Object> params = new ArrayList<>();
-        for (int i = 0; i < subStrings.size(); i++) {
-            if (i > 0) {
-                sql.append(" OR ");
-            }
-            sql.append("LOWER(gv.ChuyenMon) LIKE ?");
-            params.add("%" + subStrings.get(i) + "%");
-        }
-        sql.append(")");
-        try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
-            for (int i = 0; i < params.size(); i++) {
-                stmt.setObject(i + 1, params.get(i));
-            }
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                GiaoVien giaoVien = new GiaoVien();
-                giaoVien.setID_GiaoVien(rs.getInt("ID_GiaoVien"));
-                giaoVien.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
-                giaoVien.setHoTen(rs.getString("HoTen"));
-                giaoVien.setChuyenMon(rs.getString("ChuyenMon"));
-                giaoVien.setSDT(rs.getString("SDT"));
-                giaoVien.setID_TruongHoc(rs.getInt("ID_TruongHoc"));
-                giaoVien.setLuong(rs.getBigDecimal("Luong"));
-                giaoVien.setIsHot(rs.getInt("IsHot"));
-                giaoVien.setTrangThai(rs.getString("TrangThai"));
-                giaoVien.setNgayTao(rs.getTimestamp("NgayTao") != null ? rs.getTimestamp("NgayTao").toLocalDateTime() : null);
-                giaoVien.setAvatar(rs.getString("Avatar"));
-                giaoVien.setBangCap(rs.getString("BangCap"));
-                giaoVien.setLopDangDayTrenTruong(rs.getString("LopDangDayTrenTruong"));
-                giaoVien.setTrangThaiDay(rs.getString("TrangThaiDay"));
-                giaoVien.setTenTruongHoc(rs.getString("TenTruongHoc"));
-                teachers.add(giaoVien);
-            }
-        } catch (SQLException e) {
-            System.out.println("SQL Error in getTeachersBySpecialization: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return teachers;
-    }
-
-    // Lấy giáo viên theo ID lớp học
-    public static GiaoVien getGiaoVienByLopHoc(int idLopHoc) {
+    public GiaoVien getGiaoVienByLopHoc(int idLopHoc) {
         GiaoVien giaoVien = null;
         DBContext db = DBContext.getInstance();
         String sql = """
@@ -400,7 +395,6 @@ public class GiaoVienDAO {
         return giaoVien;
     }
 
-    // Thêm phân công giáo viên
     public boolean assignTeacherToClass(int idLopHoc, int idGiaoVien) throws SQLException {
         DBContext db = DBContext.getInstance();
         Connection conn = null;
@@ -500,7 +494,7 @@ public class GiaoVienDAO {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            throw e; // Ném lại ngoại lệ để servlet xử lý
+            throw e;
         } finally {
             try {
                 if (conn != null) {
@@ -513,7 +507,6 @@ public class GiaoVienDAO {
         }
     }
 
-    // Cập nhật phân công giáo viên
     public boolean updateTeacherAssignment(int idLopHoc, int idGiaoVien) throws SQLException {
         DBContext db = DBContext.getInstance();
         Connection conn = null;
@@ -613,7 +606,7 @@ public class GiaoVienDAO {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            throw e; // Ném lại ngoại lệ để servlet xử lý
+            throw e;
         } finally {
             try {
                 if (conn != null) {
@@ -626,7 +619,6 @@ public class GiaoVienDAO {
         }
     }
 
-    // Kiểm tra xung đột lịch học
     public boolean hasSlotConflict(int idGiaoVien, int idLopHoc, int idSlotHoc, LocalDate ngayHoc) {
         DBContext db = DBContext.getInstance();
         String sql = """
@@ -683,7 +675,6 @@ public class GiaoVienDAO {
         return false;
     }
 
-    // Tìm tên lớp học xung đột
     public String findConflictingClassName(int idGiaoVien, int idLopHoc, int idSlotHoc, LocalDate ngayHoc) {
         DBContext db = DBContext.getInstance();
         String sql = """
@@ -741,7 +732,6 @@ public class GiaoVienDAO {
         return null;
     }
 
-    // Kiểm tra xung đột thời gian
     private boolean isTimeConflict(String slotThoiGian1, String slotThoiGian2) {
         try {
             if (slotThoiGian1 == null || slotThoiGian2 == null) {
@@ -767,7 +757,6 @@ public class GiaoVienDAO {
         }
     }
 
-    // Lấy danh sách giáo viên theo ID trường học
     public static List<GiaoVien> getGiaoVienByTruongHoc(int idTruongHoc) {
         List<GiaoVien> list = new ArrayList<>();
         DBContext db = DBContext.getInstance();
@@ -806,5 +795,4 @@ public class GiaoVienDAO {
         }
         return list;
     }
-
 }

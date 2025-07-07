@@ -1,3 +1,4 @@
+
 <%-- 
     Document   : manageClass
     Created on : May 30, 2025, 10:33:02 PM
@@ -607,14 +608,14 @@
                 margin-right: 5px;
             }
             .course-stats {
-    font-size: 0.45rem !important;
-}
+                font-size: 0.45rem !important;
+            }
         }
         
         .course-stats {
-    font-size: 0.67rem !important;
-    margin: 8px 0;
-}
+            font-size: 0.67rem !important;
+            margin: 8px 0;
+        }
     </style>
 </head>
 <body>
@@ -707,6 +708,9 @@
         <c:if test="${empty danhSachLopHoc && danhSachLopHoc != null}">
             <div class="alert alert-custom-danger" role="alert">Không có lớp học nào để hiển thị cho khóa học này.</div>
         </c:if>
+        <c:if test="${empty teacherList}">
+            <div class="alert alert-custom-danger" role="alert">Không có giáo viên nào trong danh sách teacherList. Kiểm tra servlet ManageClass hoặc GiaoVienDAO.</div>
+        </c:if>
 
         <!-- Nút hành động và form tìm kiếm/lọc -->
         <div class="action-search-row">
@@ -734,7 +738,7 @@
                     <select class="form-select" id="teacherFilter" name="teacherFilter" onchange="this.form.submit();">
                         <option value="" ${teacherFilter == null || teacherFilter.isEmpty() ? 'selected' : ''}>Tất cả giáo viên</option>
                         <c:forEach var="teacher" items="${teacherList}">
-                            <option value="${teacher.ID_GiaoVien}" ${teacherFilter == teacher.ID_GiaoVien ? 'selected' : ''}>${teacher.hoTen}</option>
+                            <option value="${teacher.ID_GiaoVien}" ${teacherFilter == teacher.ID_GiaoVien.toString() ? 'selected' : ''}>${teacher.hoTen} (${teacher.chuyenMon})</option>
                         </c:forEach>
                     </select>
                     <select class="form-select" id="feeFilter" name="feeFilter" onchange="this.form.submit();">
@@ -757,7 +761,7 @@
         </div>
 
         <c:if test="${not empty ID_KhoaHoc && not empty ID_Khoi}">
-            <p class="course-stats">Tổng số lớp học: ${totalItems != null ? totalItems : '0'} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tổng số trang: ${totalPages != null ? totalPages : '0'}</p>
+            <p class="course-stats">Tổng số lớp học: ${totalItems != null ? totalItems : '0'}       Tổng số trang: ${totalPages != null ? totalPages : '0'}</p>
         </c:if>
 
         <!-- Bảng danh sách -->

@@ -21,16 +21,12 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import model.GiaoVien;
 import model.KhoaHoc;
 import model.LichHoc;
 import model.LopHoc;
 import java.text.Normalizer;
-import java.util.HashSet;
-import java.util.Set;
 import model.LopHocInfoDTO;
 
 /**
@@ -336,110 +332,106 @@ public class ManageCourse extends HttpServlet {
                     khoaHocList = dao.getCoursesByFilters(name, dbStatusFilter, idKhoi, order, start, end, offset, pageSize);
                     totalCourses = dao.getTotalCoursesByFilters(name, dbStatusFilter, idKhoi, order, start, end);
                 }
-         } else if ("ViewCourse".equalsIgnoreCase(action)) {
-                    try {
-                        String idKhoiStr = request.getParameter("ID_Khoi");
-                        String idKhoaStr = request.getParameter("ID_KhoaHoc");
-                        System.out.println("ViewCourse: ID_KhoaHoc=" + idKhoaStr + ", ID_Khoi=" + idKhoiStr);
+            } else if ("ViewCourse".equalsIgnoreCase(action)) {
+                try {
+                    String idKhoiStr = request.getParameter("ID_Khoi");
+                    String idKhoaStr = request.getParameter("ID_KhoaHoc");
+                    System.out.println("ViewCourse: ID_KhoaHoc=" + idKhoaStr + ", ID_Khoi=" + idKhoiStr);
 
-                        if (idKhoiStr == null || idKhoiStr.trim().isEmpty() || idKhoaStr == null || idKhoaStr.trim().isEmpty()) {
-                            request.setAttribute("err", "Thiếu hoặc không hợp lệ tham số ID_KhoaHoc hoặc ID_Khoi.");
-                            System.out.println("Error: ID_KhoaHoc or ID_Khoi is null or empty");
-                            request.getRequestDispatcher("/views/admin/manageCourses.jsp").forward(request, response);
-                            return;
-                        }
-
-                         idKhoi = Integer.parseInt(idKhoiStr);
-                        int idKhoaHoc = Integer.parseInt(idKhoaStr);
-                        LopHocInfoDTODAO lopHocDAO = new LopHocInfoDTODAO();
-                        GiaoVienDAO giaoVienDAO = new GiaoVienDAO();
-
-                        String searchQuery = request.getParameter("searchQuery");
-                        String sortName = request.getParameter("sortName");
-                        String teacherFilter = request.getParameter("teacherFilter");
-                        String feeFilter = request.getParameter("feeFilter");
-                         orderFilter = request.getParameter("orderFilter");
-                         sortColumn = request.getParameter("sortColumn");
-                         sortOrder = request.getParameter("sortOrder");
-                         pageNumber = 1;
-                         pageSize = 10;
-
-                        try {
-                            if (request.getParameter("page") != null && !request.getParameter("page").trim().isEmpty()) {
-                                pageNumber = Integer.parseInt(request.getParameter("page"));
-                                if (pageNumber < 1) {
-                                    pageNumber = 1;
-                                }
-                            }
-                        } catch (NumberFormatException e) {
-                            pageNumber = 1;
-                            System.out.println("ViewCourse: Invalid page parameter - page=" + request.getParameter("page"));
-                        }
-
-                        // Sử dụng hàm getLopHocInfoList để lấy danh sách lớp học với các bộ lọc
-                        List<LopHocInfoDTO> danhSachLopHoc = lopHocDAO.getLopHocInfoList(searchQuery, sortName, pageNumber, pageSize, idKhoaHoc, idKhoi, sortColumn, sortOrder, teacherFilter, feeFilter, orderFilter);
-                        int totalItems = lopHocDAO.countClasses(searchQuery, sortName, idKhoaHoc, idKhoi, teacherFilter, feeFilter, orderFilter);
-                        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
-
-                        // Lấy danh sách giáo viên từ cột tenGiaoVien trong danhSachLopHoc
-                        Set<GiaoVien> teacherList = new HashSet<>();
-                        for (LopHocInfoDTO lopHoc : danhSachLopHoc) {
-                            if (lopHoc.getTenGiaoVien() != null && !lopHoc.getTenGiaoVien().isEmpty()) {
-                                String[] teacherNames = lopHoc.getTenGiaoVien().split(", ");
-                                for (String teacherName : teacherNames) {
-                                    GiaoVien teacher = giaoVienDAO.getGiaoVienByHoTen(teacherName.trim());
-                                    if (teacher != null) {
-                                        teacherList.add(teacher);
-                                    }
-                                }
-                            }
-                        }
-                        if (teacherList.isEmpty()) {
-                            System.out.println("ViewCourse: No teachers found in danhSachLopHoc for ID_KhoaHoc=" + idKhoaHoc);
-                            request.setAttribute("err", "Không tìm thấy giáo viên nào cho các lớp học hiện tại.");
-                        }
-
-                        // Đặt các thuộc tính vào request để gửi tới JSP
-                        request.setAttribute("danhSachLopHoc", danhSachLopHoc);
-                        request.setAttribute("totalItems", totalItems);
-                        request.setAttribute("totalPages", totalPages);
-                        request.setAttribute("page", pageNumber);
-                        request.setAttribute("sortColumn", sortColumn);
-                        request.setAttribute("sortOrder", sortOrder);
-                        request.setAttribute("searchQuery", searchQuery);
-                        request.setAttribute("sortName", sortName);
-                        request.setAttribute("teacherFilter", teacherFilter);
-                        request.setAttribute("feeFilter", feeFilter);
-                        request.setAttribute("orderFilter", orderFilter);
-                        request.setAttribute("ID_KhoaHoc", idKhoaHoc);
-                        request.setAttribute("ID_Khoi", idKhoi);
-                        request.setAttribute("teacherList", new ArrayList<>(teacherList));
-
-                        if (danhSachLopHoc.isEmpty()) {
-                            request.setAttribute("err", "Chưa có lớp học nào được khởi tạo cho khóa học này.");
-                        }
-
-                        System.out.println("ViewCourse: Successfully processed - ID_KhoaHoc=" + idKhoaHoc + ", ID_Khoi=" + idKhoi +
-                                ", searchQuery=" + searchQuery + ", sortName=" + sortName + ", teacherFilter=" + teacherFilter +
-                                ", feeFilter=" + feeFilter + ", orderFilter=" + orderFilter + ", sortColumn=" + sortColumn +
-                                ", sortOrder=" + sortOrder + ", page=" + pageNumber + ", totalItems=" + totalItems);
-
-                        request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
-                        return;
-                    } catch (NumberFormatException e) {
-                        request.setAttribute("err", "ID_KhoaHoc hoặc ID_Khoi không hợp lệ!");
-                        System.out.println("ViewCourse: NumberFormatException - " + e.getMessage());
-                        e.printStackTrace();
-                        request.getRequestDispatcher("/views/admin/manageCourses.jsp").forward(request, response);
-                        return;
-                    } catch (Exception e) {
-                        request.setAttribute("err", "Lỗi xử lý yêu cầu: " + e.getMessage());
-                        System.out.println("ViewCourse: Exception - " + e.getMessage());
-                        e.printStackTrace();
+                    if (idKhoiStr == null || idKhoiStr.trim().isEmpty() || idKhoaStr == null || idKhoaStr.trim().isEmpty()) {
+                        request.setAttribute("err", "Thiếu hoặc không hợp lệ tham số ID_KhoaHoc hoặc ID_Khoi.");
+                        System.out.println("Error: ID_KhoaHoc or ID_Khoi is null or empty");
                         request.getRequestDispatcher("/views/admin/manageCourses.jsp").forward(request, response);
                         return;
                     }
-                } else if ("updateCourse".equalsIgnoreCase(action)) {
+
+                    idKhoi = Integer.parseInt(idKhoiStr);
+                    int idKhoaHoc = Integer.parseInt(idKhoaStr);
+                    LopHocInfoDTODAO lopHocDAO = new LopHocInfoDTODAO();
+                    GiaoVienDAO giaoVienDAO = new GiaoVienDAO();
+                    KhoaHoc khoaHoc = dao.getKhoaHocById(idKhoaHoc);
+
+                    if (khoaHoc == null || khoaHoc.getID_Khoi() != idKhoi) {
+                        request.setAttribute("err", "Khóa học không tồn tại hoặc ID_Khoi không khớp!");
+                        request.getRequestDispatcher("/views/admin/manageCourses.jsp").forward(request, response);
+                        return;
+                    }
+
+                    String searchQuery = request.getParameter("searchQuery");
+                    String sortName = request.getParameter("sortName");
+                    String teacherFilter = request.getParameter("teacherFilter");
+                    String feeFilter = request.getParameter("feeFilter");
+                    orderFilter = request.getParameter("orderFilter");
+                    sortColumn = request.getParameter("sortColumn");
+                    sortOrder = request.getParameter("sortOrder");
+                    pageNumber = 1;
+                    pageSize = 10;
+
+                    try {
+                        if (request.getParameter("page") != null && !request.getParameter("page").trim().isEmpty()) {
+                            pageNumber = Integer.parseInt(request.getParameter("page"));
+                            if (pageNumber < 1) {
+                                pageNumber = 1;
+                            }
+                        }
+                    } catch (NumberFormatException e) {
+                        pageNumber = 1;
+                        System.out.println("ViewCourse: Invalid page parameter - page=" + request.getParameter("page"));
+                    }
+
+                    // Sử dụng hàm getLopHocInfoList để lấy danh sách lớp học với các bộ lọc
+                    List<LopHocInfoDTO> danhSachLopHoc = lopHocDAO.getLopHocInfoList(searchQuery, sortName, pageNumber, pageSize, idKhoaHoc, idKhoi, sortColumn, sortOrder, teacherFilter, feeFilter, orderFilter);
+                    int totalItems = lopHocDAO.countClasses(searchQuery, sortName, idKhoaHoc, idKhoi, teacherFilter, feeFilter, orderFilter);
+                    int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+
+                    // Lấy danh sách giáo viên dựa trên chuyên môn của khóa học
+                    List<GiaoVien> teacherList = giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc());
+                    if (teacherList == null || teacherList.isEmpty()) {
+                        System.out.println("ViewCourse: No teachers found with specialization matching tenKhoaHoc=" + khoaHoc.getTenKhoaHoc() + " for ID_KhoaHoc=" + idKhoaHoc);
+                        request.setAttribute("err", "Không có giáo viên nào có chuyên môn phù hợp với khóa học.");
+                    }
+
+                    // Đặt các thuộc tính vào request để gửi tới JSP
+                    request.setAttribute("danhSachLopHoc", danhSachLopHoc);
+                    request.setAttribute("totalItems", totalItems);
+                    request.setAttribute("totalPages", totalPages);
+                    request.setAttribute("page", pageNumber);
+                    request.setAttribute("sortColumn", sortColumn);
+                    request.setAttribute("sortOrder", sortOrder);
+                    request.setAttribute("searchQuery", searchQuery);
+                    request.setAttribute("sortName", sortName);
+                    request.setAttribute("teacherFilter", teacherFilter);
+                    request.setAttribute("feeFilter", feeFilter);
+                    request.setAttribute("orderFilter", orderFilter);
+                    request.setAttribute("ID_KhoaHoc", idKhoaHoc);
+                    request.setAttribute("ID_Khoi", idKhoi);
+                    request.setAttribute("teacherList", teacherList);
+
+                    if (danhSachLopHoc.isEmpty()) {
+                        request.setAttribute("err", "Chưa có lớp học nào được khởi tạo cho khóa học này.");
+                    }
+
+                    System.out.println("ViewCourse: Successfully processed - ID_KhoaHoc=" + idKhoaHoc + ", ID_Khoi=" + idKhoi +
+                            ", searchQuery=" + searchQuery + ", sortName=" + sortName + ", teacherFilter=" + teacherFilter +
+                            ", feeFilter=" + feeFilter + ", orderFilter=" + orderFilter + ", sortColumn=" + sortColumn +
+                            ", sortOrder=" + sortOrder + ", page=" + pageNumber + ", totalItems=" + totalItems);
+
+                    request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
+                    return;
+                } catch (NumberFormatException e) {
+                    request.setAttribute("err", "ID_KhoaHoc hoặc ID_Khoi không hợp lệ!");
+                    System.out.println("ViewCourse: NumberFormatException - " + e.getMessage());
+                    e.printStackTrace();
+                    request.getRequestDispatcher("/views/admin/manageCourses.jsp").forward(request, response);
+                    return;
+                } catch (Exception e) {
+                    request.setAttribute("err", "Lỗi xử lý yêu cầu: " + e.getMessage());
+                    System.out.println("ViewCourse: Exception - " + e.getMessage());
+                    e.printStackTrace();
+                    request.getRequestDispatcher("/views/admin/manageCourses.jsp").forward(request, response);
+                    return;
+                }
+            } else if ("updateCourse".equalsIgnoreCase(action)) {
                 try {
                     int id = Integer.parseInt(request.getParameter("ID_KhoaHoc"));
                     KhoaHoc khoaHoc = dao.getKhoaHocById(id);
