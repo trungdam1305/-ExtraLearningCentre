@@ -18,8 +18,9 @@ public class LopHocDAO {
     public List<LopHoc> getAllFeaturedLopHoc() {
         DBContext db = DBContext.getInstance();
         List<LopHoc> list = new ArrayList<>();
-        String sql = "SELECT * FROM [dbo].[LopHoc]\n"
-                + "                WHERE GhiChu IS NOT NULL";
+        String sql = """
+                     SELECT * FROM [dbo].[LopHoc]
+                     WHERE [Order] <> 0""";
         try (PreparedStatement statement = db.getConnection().prepareStatement(sql);) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {

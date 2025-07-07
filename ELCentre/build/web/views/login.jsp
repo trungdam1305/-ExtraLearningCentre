@@ -94,7 +94,7 @@
                     <div class="alert alert-danger"><%= error %></div>
                 <% } %>
 
-                <form action="<%= request.getContextPath() %>/LoginServlet" method="post">
+                <form action="<%= request.getContextPath() %>/LoginServlet" method="post" class="sign-in-form">
                     <input type="text" name="email" class="form-control" placeholder="Email">
                     <input type="password" name="password" class="form-control" placeholder="Mật khẩu">
 
@@ -106,7 +106,7 @@
                         <a href="../views/forgotPassword.jsp" class="small">Quên mật khẩu?</a>
                     </div>
 
-                    <!-- ✅ Google reCAPTCHA -->
+                     ✅ Google reCAPTCHA 
                     <div class="g-recaptcha mb-3" data-sitekey="6Ldf8E4rAAAAACIhQBZn-9343I1wWxzJwzawYS1s"></div>
 
                     <button type="submit" name="action" class="btn btn-login">Đăng nhập</button>

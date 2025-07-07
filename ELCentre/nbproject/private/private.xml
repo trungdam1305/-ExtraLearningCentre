@@ -2,25 +2,19 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group name="SWT">
-            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/web/views/Home-Learning/Homepage-Learning.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/src/java/model/Blog.java</file>
-            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/src/java/dao/DBContext.java</file>
-            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/web/views/Home-Material/Home-Material-Content.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/src/java/model/DangTaiLieu.java</file>
-            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/src/java/controller/RegisterServlet.java</file>
-            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/src/java/dal/DangTaiLieuDAO.java</file>
-            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/src/java/controller/HomePageMaterial.java</file>
-            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithUser.java</file>
-            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/src/java/dal/DBContext.java</file>
-            <file>file:/C:/Users/admin/Desktop/Hehe/-ExtraLearningCentre/ELCentre/web/views/Home-Blog/Home-Blog-Content.jsp</file>
-        </group>
         <group>
             <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/controller/adminFindInFilterGroup.java</file>
             <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/dal/HocSinh_SDTDAO.java</file>
             <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithStudent.java</file>
             <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/controller/adminGetFromDashboard.java</file>
             <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveHocSinh.jsp</file>
+        </group>
+        <group name="SWT">
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/controller/LoginServlet.java</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/controller/adminFindInFilterGroup.java</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveHocSinh.jsp</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/login.jsp</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/dal/HocSinh_SDTDAO.java</file>
         </group>
     </open-files>
 </project-private>

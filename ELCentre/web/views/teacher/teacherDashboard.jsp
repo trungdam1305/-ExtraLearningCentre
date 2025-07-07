@@ -373,8 +373,6 @@
             <!--Academy Management-->
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">
-                <!--Teacher's Course Management-->
-                <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=hocsinh"><i class="fas fa-book"></i>Khóa Học</a></li>
                 <!--Teacher's Class Management-->
                 <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=giaovien"><i class="fas fa-book"></i>Lớp Học</a></li>
                 <!--Attendance's Management-->

@@ -61,14 +61,13 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
 
-//                // Ghi log đăng nhập
-//                UserLogs log = new UserLogs();
-//                log.setID_TaiKhoan(user.getID_TaiKhoan());
-//                log.setHanhDong("Đăng nhập hệ thống");
-//                log.setThoiGian(LocalDateTime.now());
-//                UserLogsDAO.insertLog(log);
+                UserLogs log = new UserLogs();
+                log.setID_TaiKhoan(user.getID_TaiKhoan());
+                log.setHanhDong("Đăng nhập hệ thống");
+                log.setThoiGian(LocalDateTime.now());
+                UserLogsDAO.insertLog(log);
 
-                // ✅ Gửi email thông báo đăng nhập
+                 // ✅ Gửi email thông báo đăng nhập
                 try {
                     String subject = "Thông báo đăng nhập thành công";
                     String body = "Xin chào " + user.getEmail() +

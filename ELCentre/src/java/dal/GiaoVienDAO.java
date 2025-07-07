@@ -151,9 +151,12 @@ public class GiaoVienDAO {
     public ArrayList<GiaoVien> getSpecialised() {
         DBContext db = DBContext.getInstance();
         ArrayList<GiaoVien> giaoviens = new ArrayList<>();
-        String sql = "SELECT gv.*, th.TenTruongHoc FROM GiaoVien gv "
-                + "JOIN TruongHoc th ON gv.ID_TruongHoc = th.ID_TruongHoc "
-                + "ORDER BY gv.IsHot ASC;";
+        String sql = """
+                     SELECT gv.*, th.TenTruongHoc 
+                     FROM GiaoVien gv
+                     JOIN TruongHoc th ON gv.ID_TruongHoc = th.ID_TruongHoc
+                     WHERE gv.IsHot <> 0
+                     ORDER BY gv.IsHot ASC""";
         try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {

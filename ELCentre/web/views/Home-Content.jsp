@@ -251,7 +251,7 @@
                                 </div>
                                 <c:forEach var="khoi" items="${listKhoi}">
                                             <c:if test="${khoi.ID_Khoi > 4}">
-                                                <div class="column dt-sc-one-third first">
+                                                <div class="column dt-sc-one-fourth first">
                                                     <article id="post-${khoi.tenKhoi}" class="dt-sc-course post-${khoi.tenKhoi} course type-course">
                                                         <div class="dt-sc-course-thumb">
                                                             <a href="#" title="${khoi.tenKhoi}">
