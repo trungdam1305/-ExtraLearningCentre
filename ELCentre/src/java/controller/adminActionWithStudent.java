@@ -68,8 +68,8 @@ public class adminActionWithStudent extends HttpServlet {
                 doView(request, response);
                 break;
 
-            case "viewDiem":
-                doViewDiem(request, response);
+            case "viewClass":
+                doViewClass(request, response);
                 break;
 
             case "update":
@@ -112,7 +112,7 @@ public class adminActionWithStudent extends HttpServlet {
 
     }
 
-    protected void doViewDiem(HttpServletRequest request, HttpServletResponse response)
+    protected void doViewClass(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         String ID = request.getParameter("id");
@@ -121,7 +121,7 @@ public class adminActionWithStudent extends HttpServlet {
         ArrayList<HocSinh_ChiTietHoc> hocsinhchitiets = HocSinh_ChiTietDAO.adminGetAllLopHocCuaHocSinh(ID);
         if (hocsinhchitiets != null) {
             request.setAttribute("hocsinhchitiets", hocsinhchitiets);
-            request.getRequestDispatcher("views/admin/adminViewDiemHocSinh.jsp").forward(request, response);
+            request.getRequestDispatcher("views/admin/adminViewHocPhiHocSinh.jsp").forward(request, response);
         } else {
 
             out.print("okkokokok");

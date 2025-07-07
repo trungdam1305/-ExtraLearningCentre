@@ -82,6 +82,14 @@ public class HocSinh {
         this.TrangThaiHoc = TrangThaiHoc;
         this.Avatar = Avatar;
     }
+    
+    public HocSinh(  int ID_TruongHoc,  String LopDangHocTrenTruong) {
+        
+        this.ID_TruongHoc = ID_TruongHoc;
+        
+        this.LopDangHocTrenTruong = LopDangHocTrenTruong;
+        
+    }
 
     /**
      * Constructor without school name

@@ -1,7 +1,7 @@
 <%-- 
     Document   : adminReceiveParentInfor
     Created on : May 29, 2025, 2:18:27 PM
-    Author     : wrx_Chur04
+    Author     : chuvv
     Purpose    : This page displays detailed information about parents (phụ huynh) in the EL CENTRE system, 
                  including account ID, name, contact details, address, associated student IDs, and status.
     Parameters:

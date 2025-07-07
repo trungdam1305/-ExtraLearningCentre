@@ -179,7 +179,7 @@ public class GiaoVienDAO {
         return giaoviens;
     }
 
-    public static ArrayList<GiaoVien_TruongHoc> adminGetGiaoVienByID(String id) {
+    public static ArrayList<GiaoVien_TruongHoc> adminGetGiaoVienByID(String id_TaiKhoan) {
         DBContext db = DBContext.getInstance();
         ArrayList<GiaoVien_TruongHoc> giaoviens = new ArrayList<GiaoVien_TruongHoc>();
 
@@ -190,7 +190,7 @@ public class GiaoVienDAO {
                          where ID_TaiKhoan = ? 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            statement.setString(1, id);
+            statement.setString(1, id_TaiKhoan);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
@@ -227,7 +227,7 @@ public class GiaoVienDAO {
         }
     }
 
-    public static boolean adminEnableGiaoVien(String id) {
+    public static boolean adminEnableGiaoVien(String ID_TaiKhoan) {
         DBContext db = DBContext.getInstance();
         int rs = 0;
         try {
@@ -237,7 +237,7 @@ public class GiaoVienDAO {
                          WHERE ID_TaiKhoan = ?;
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            statement.setString(1, id);
+            statement.setString(1, ID_TaiKhoan);
             rs = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

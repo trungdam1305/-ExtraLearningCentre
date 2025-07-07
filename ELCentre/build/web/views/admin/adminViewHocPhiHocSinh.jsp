@@ -1,9 +1,9 @@
 <%-- 
-    Document   : adminViewDiemHocSinh
+    Document   : adminViewHocPhiHocSinh
     Created on : Jun 23, 2025, 9:24:13 AM
-    Author     : wrx_Chur04
-    Purpose    : This page displays a list of all classes (lớp học) of one student  in the EL CENTRE system, including details like name, specialization, 
-                 time of class , note , status name of teacher , image of class . And admin can view score of student amd change score of student in this classes
+    Author     : chuvv
+    Purpose    : This page displays a list of all classes (lớp học) and tuition (học phí)  of one student  in the EL CENTRE system, including details like name, specialization, 
+                 time of class , note , status name of teacher , image of class . And admin can view tuition of student amd change score of student in this classes
     Parameters:
     - @Param giaoviens (ArrayList<hocsinhchitiets>): A request attribute containing the list of class of student objects fetched from the database.
 --%>
@@ -112,7 +112,7 @@
                 background-color: #163b5c;
             }
 
-            /* Header Styles */
+            
             .header {
                 background-color: #1F4E79;
                 color: white;
@@ -209,7 +209,7 @@
                 margin-right: 8px;
             }
 
-            /* Footer Styles */
+           
             .footer {
                 background-color: #1F4E79;
                 color: #B0C4DE;
@@ -223,7 +223,7 @@
                 font-size: 14px;
             }
 
-            /* Ensure main content pushes footer down */
+            
             .main-content {
                 flex: 1 0 auto;
                 padding-bottom: 40px;
@@ -289,8 +289,8 @@
                                     <td>${sct.getNgayTao()}</td>
                                     <td>${sct.getHoTen()}</td>
                                     <td>
-                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=view&id=${giaovien.getID_GiaoVien()}">Xem điểm học sinh</a> | 
-                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=viewLopHocGiaoVien&id=${giaovien.getID_GiaoVien()}">Sửa điểm học sinh</a> 
+                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWith?action=view&id=${giaovien.getID_LopHoc()}">Tình trạng học phí</a> 
+                                         <a class="action-link" href="${pageContext.request.contextPath}/adminActionWith?action=view&id=${giaovien.getID_LopHoc()}">Chuyển học sinh khỏi lớp</a>  
 
                                     </td>
                                 </tr>   

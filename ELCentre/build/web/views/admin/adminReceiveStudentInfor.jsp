@@ -1,7 +1,7 @@
 <%-- 
     Document   : adminReceiveHocSinhDetails
     Created on : May 29, 2025, 4:22:32 PM
-    Author     : wrx_Chur04
+    Author     : chuvv
     Purpose    : This page displays detailed information about specific students (học sinh) in the EL CENTRE system, 
                 including account ID, name, birth date, gender, address, parent contact, school, and status. 
     Parameters:

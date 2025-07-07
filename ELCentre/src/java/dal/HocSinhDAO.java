@@ -80,7 +80,7 @@ public class HocSinhDAO {
         return hocsinhs;
     }
 
-    public static ArrayList<HocSinh> adminGetHocSinhByID(String id) {
+    public static ArrayList<HocSinh> adminGetHocSinhByID(String ID_TaiKhoan) {
         DBContext db = DBContext.getInstance();
         ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>();
 
@@ -91,7 +91,7 @@ public class HocSinhDAO {
                          where ID_TaiKhoan = ? 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            statement.setString(1, id);
+            statement.setString(1, ID_TaiKhoan);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
@@ -126,7 +126,7 @@ public class HocSinhDAO {
         }
     }
 
-    public static boolean adminEnableHocSinh(String id) {
+    public static boolean adminEnableHocSinh(String ID_TaiKhoan) {
         DBContext db = DBContext.getInstance();
         int rs = 0;
         try {
@@ -136,7 +136,7 @@ public class HocSinhDAO {
                          WHERE ID_TaiKhoan = ?;
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            statement.setString(1, id);
+            statement.setString(1, ID_TaiKhoan);
             rs = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -249,7 +249,7 @@ public class HocSinhDAO {
         }
     }
 
-    public static List<String> nameofStudentDependPH(String idPhuHuynh) {
+    public static List<String> nameofStudentDependPH(String id_TK_PhuHuynh) {
         List<String> ListName = new ArrayList<String>();
         DBContext db = DBContext.getInstance();
 
@@ -263,7 +263,7 @@ public class HocSinhDAO {
                                                   where PHU.ID_TaiKhoan = ? ; 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            statement.setString(1, idPhuHuynh);
+            statement.setString(1, id_TK_PhuHuynh);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 String name = rs.getString("HoTen");

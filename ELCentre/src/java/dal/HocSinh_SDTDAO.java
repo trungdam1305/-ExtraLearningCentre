@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import model.GiaoVien;
 import model.GiaoVien_TruongHoc;
 import model.HocSinh_SDT;
 
@@ -269,9 +270,5 @@ public class HocSinh_SDTDAO {
 
         return list;
     }
-
-
-    
-    
 
 }

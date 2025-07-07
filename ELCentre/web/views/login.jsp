@@ -112,7 +112,7 @@
                     <button type="submit" name="action" class="btn btn-login">Đăng nhập</button>
                 </form>
 
-                <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 
                 <div class="text-center mt-4">
                     <p class="small">Hoặc đăng nhập bằng</p>
