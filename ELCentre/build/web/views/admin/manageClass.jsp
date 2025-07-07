@@ -59,7 +59,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-top: 60px;
-            padding-bottom: 40px; /* Prevent footer overlap */
+            padding-bottom: 40px;
         }
 
         /* Header styling */
@@ -69,7 +69,7 @@
             color: #003087;
         }
         .header-row h2 {
-            font-size: 1.33rem;
+            font-size: 1.07rem;
             font-weight: 600;
         }
 
@@ -89,7 +89,7 @@
             box-shadow: none;
             transition: border-color 0.3s ease;
             height: 28px;
-            font-size: 0.63rem;
+            font-size: 0.57rem;
             width: 110px;
         }
         .action-search-row .form-control:focus,
@@ -103,7 +103,7 @@
             align-items: center;
             padding: 0 8px;
             white-space: nowrap;
-            font-size: 0.63rem;
+            font-size: 0.57rem;
         }
 
         /* Custom button styling */
@@ -142,7 +142,7 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            font-size: 0.67rem;
+            font-size: 0.58rem;
         }
         .table thead {
             background-color: #2196F3;
@@ -153,7 +153,7 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            font-size: 0.73rem;
+            font-size: 0.6rem;
             color: black;
             text-align: center;
             min-width: 120px;
@@ -162,41 +162,21 @@
             padding: 8px 10px;
             vertical-align: middle;
             text-align: center;
-            font-size: 0.67rem;
-        }
-
-        /* Sort styling */
-        .table th.sorted {
-            border: 3px solid #2563eb;
-            background-color: #bfdbfe;
-        }
-        .table th a.sort-link {
-            color: black;
-            text-decoration: none;
-            display: inline-block;
-            padding: 3px 6px;
-            border: 1px solid transparent;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-        .table th a.sort-link:hover {
-            color: #ffeb3b;
-            background-color: rgba(255, 235, 59, 0.2);
-            border-color: #ffeb3b;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .table th a.sort-link.active {
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
+            font-size: 0.58rem;
         }
 
         /* Action buttons in table */
+        .table .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+            justify-content: center;
+        }
         .table .btn-sm {
             margin-right: 4px;
             border-radius: 6px;
-            font-size: 0.6rem;
-            padding: 4px 6px;
+            font-size: 0.5rem;
+            padding: 3px 5px;
             min-width: 50px;
             text-align: center;
             line-height: 1.2;
@@ -234,6 +214,32 @@
             border-color: #117a8b;
         }
 
+        /* Sort styling */
+        .table th.sorted {
+            border: 3px solid #2563eb;
+            background-color: #bfdbfe;
+        }
+        .table th a.sort-link {
+            color: black;
+            text-decoration: none;
+            display: inline-block;
+            padding: 3px 6px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .table th a.sort-link:hover {
+            color: #ffeb3b;
+            background-color: rgba(255, 235, 59, 0.2);
+            border-color: #ffeb3b;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .table th a.sort-link.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
         /* Collapsible row styling */
         .details-row {
             display: none;
@@ -250,14 +256,14 @@
         }
         .details-content div {
             flex: 1 1 45%;
-            font-size: 0.67rem;
+            font-size: 0.58rem;
         }
         .details-content div strong {
             color: #003087;
         }
         .details-content img {
-            width: 60px !important;
-            height: 80px !important;
+            width: 50px !important;
+            height: 50px !important;
             object-fit: cover;
             border-radius: 4px;
             border: 2px solid lightblue;
@@ -280,7 +286,7 @@
             border-radius: 6px;
             margin: 0 2px;
             color: #003087;
-            font-size: 0.67rem;
+            font-size: 0.57rem;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
         .pagination .page-link:hover {
@@ -294,7 +300,7 @@
             border-radius: 8px;
             padding: 8px;
             margin-bottom: 10px;
-            font-size: 0.67rem;
+            font-size: 0.57rem;
         }
         .alert-custom-danger {
             background-color: #ef4444;
@@ -303,7 +309,7 @@
             border-radius: 8px;
             padding: 8px;
             margin-bottom: 10px;
-            font-size: 0.67rem;
+            font-size: 0.57rem;
         }
         .dashboard-button {
             text-align: center;
@@ -312,7 +318,7 @@
         .dashboard-button .btn {
             border-radius: 6px;
             padding: 6px 12px;
-            font-size: 0.67rem;
+            font-size: 0.57rem;
         }
         #scrollToTopBtn {
             display: none;
@@ -350,14 +356,14 @@
         .modal-footer .btn {
             border-radius: 6px;
             padding: 4px 8px;
-            font-size: 0.58rem;
+            font-size: 0.57rem;
         }
 
         /* Status badge styling */
         .status-badge {
-            padding: 3px 6px;
+            padding: 2px 4px;
             border-radius: 12px;
-            font-size: 0.6rem;
+            font-size: 0.5rem;
             font-weight: 500;
         }
         .status-dang-hoc {
@@ -482,12 +488,6 @@
             margin-right: 5px;
         }
 
-        /* Course stats styling */
-        .course-stats {
-            font-size: 0.67rem;
-            margin: 8px 0;
-        }
-
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .content-container {
@@ -498,7 +498,7 @@
                 padding-bottom: 30px;
             }
             .header-row h2 {
-                font-size: 0.89rem;
+                font-size: 0.8rem;
             }
             .action-search-row {
                 flex-direction: column;
@@ -509,8 +509,8 @@
             .action-search-row .form-select,
             .action-search-row .btn-custom-action {
                 width: auto;
-                font-size: 0.42rem;
-                height: 24px;
+                font-size: 0.38rem;
+                height: 26px;
             }
             .action-search-row .btn-custom-action {
                 padding: 0 6px;
@@ -518,42 +518,42 @@
             .table thead th,
             .table tbody td {
                 padding: 5px 6px;
-                font-size: 0.45rem;
+                font-size: 0.5rem;
             }
             .table .btn-sm {
-                font-size: 0.4rem;
-                padding: 3px 5px;
+                font-size: 0.48rem;
+                padding: 2px 4px;
                 min-width: 45px;
             }
             .status-badge {
                 padding: 2px 4px;
-                font-size: 0.4rem;
+                font-size: 0.48rem;
             }
             .pagination-container {
                 justify-content: center;
             }
             .pagination .page-link {
-                font-size: 0.45rem;
+                font-size: 0.5rem;
             }
             .alert-custom-success,
             .alert-custom-danger {
                 padding: 6px;
                 margin-bottom: 8px;
-                font-size: 0.45rem;
+                font-size: 0.38rem;
             }
             .details-content div {
                 flex: 1 1 100%;
-                font-size: 0.45rem;
+                font-size: 0.54rem;
             }
             .details-content img {
                 width: 40px !important;
-                height: 50px !important;
+                height: 40px !important;
             }
             .dashboard-button {
                 margin-top: 8px;
             }
             .dashboard-button .btn {
-                font-size: 0.45rem;
+                font-size: 0.48rem;
                 padding: 4px 8px;
             }
             #scrollToTopBtn {
@@ -606,7 +606,15 @@
             ul.sidebar-menu li a i {
                 margin-right: 5px;
             }
+            .course-stats {
+    font-size: 0.45rem !important;
+}
         }
+        
+        .course-stats {
+    font-size: 0.67rem !important;
+    margin: 8px 0;
+}
     </style>
 </head>
 <body>
@@ -749,7 +757,7 @@
         </div>
 
         <c:if test="${not empty ID_KhoaHoc && not empty ID_Khoi}">
-            <p class="course-stats">Tổng số lớp học: ${totalItems != null ? totalItems : '0'} &nbsp;&nbsp;&nbsp;&nbsp; Tổng số trang: ${totalPages != null ? totalPages : '0'}</p>
+            <p class="course-stats">Tổng số lớp học: ${totalItems != null ? totalItems : '0'} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tổng số trang: ${totalPages != null ? totalPages : '0'}</p>
         </c:if>
 
         <!-- Bảng danh sách -->
@@ -800,9 +808,27 @@
                                         <c:choose>
                                             <c:when test="${not empty lopHoc.thoiGianHoc}">
                                                 <ul style="margin: 0; padding-left: 15px;">
-                                                    <c:forEach var="thoiGian" items="${fn:split(lopHoc.thoiGianHoc, ';')}">
-                                                        <li>${thoiGian.trim()}</li>
+                                                    <c:set var="thoiGianList" value="${fn:split(lopHoc.thoiGianHoc, ';')}" />
+                                                    <c:set var="today" value="<%= java.time.LocalDate.now().toString() %>" />
+                                                    <c:set var="futureSchedules" value="0" />
+                                                    <c:forEach var="thoiGian" items="${thoiGianList}" varStatus="loop">
+                                                        <c:set var="scheduleDate" value="${fn:substringBefore(thoiGian.trim(), ' ')}" />
+                                                        <c:set var="parsedDate" value="${fn:replace(scheduleDate, '/', '-')}" />
+                                                        <c:if test="${parsedDate >= today && futureSchedules < 5}">
+                                                            <li>${thoiGian.trim()}</li>
+                                                            <c:set var="futureSchedules" value="${futureSchedules + 1}" />
+                                                        </c:if>
                                                     </c:forEach>
+                                                    <c:if test="${futureSchedules == 0}">
+                                                        <li style="color: red;">Không có lịch học sắp tới</li>
+                                                    </c:if>
+                                                    <c:if test="${fn:length(thoiGianList) > futureSchedules}">
+                                                        <li>
+                                                            <button type="button" class="btn btn-info btn-sm view-schedule" data-bs-toggle="modal" data-bs-target="#scheduleModal" data-id="${lopHoc.idLopHoc}" data-schedule="${fn:escapeXml(lopHoc.thoiGianHoc)}">
+                                                                <i class="bi bi-eye"></i> Xem thêm
+                                                            </button>
+                                                        </li>
+                                                    </c:if>
                                                 </ul>
                                             </c:when>
                                             <c:otherwise>
@@ -827,7 +853,7 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
-                                    <td>
+                                    <td class="action-buttons">
                                         <button type="button" class="btn btn-info btn-sm toggle-details" data-id="${lopHoc.idLopHoc}">
                                             <i class="bi bi-info-circle"></i> Xem chi tiết
                                         </button>
@@ -842,7 +868,6 @@
                                         </a>
                                     </td>
                                 </tr>
-                                <!-- Hàng chi tiết (ẩn mặc định) -->
                                 <tr class="details-row" id="details-${lopHoc.idLopHoc}">
                                     <td colspan="7">
                                         <div class="details-content">
@@ -866,10 +891,10 @@
                                                 <strong>Ảnh giáo viên:</strong><br>
                                                 <c:choose>
                                                     <c:when test="${not empty lopHoc.avatarGiaoVien}">
-                                                        <img src="${pageContext.request.contextPath}/${fn:split(lopHoc.avatarGiaoVien, ',')[0].trim()}" alt="Ảnh giáo viên" />
+                                                        <img data-class-image="${pageContext.request.contextPath}/${fn:split(lopHoc.avatarGiaoVien, ',')[0].trim()}" src="${pageContext.request.contextPath}/${fn:split(lopHoc.avatarGiaoVien, ',')[0].trim()}" alt="Ảnh giáo viên" width="50" style="max-height: 50px; object-fit: cover;" />
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <span>Chưa có ảnh</span>
+                                                        <img src="https://via.placeholder.com/50" alt="No Image" width="50" style="max-height: 50px; object-fit: cover;" />
                                                     </c:otherwise>
                                                 </c:choose>
                                             </div>
@@ -933,6 +958,50 @@
             </c:if>
         </div>
 
+        <!-- Modal hiển thị lịch học -->
+        <div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="scheduleModalLabel">Danh sách lịch học</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul id="scheduleList" style="margin: 0; padding-left: 15px; font-size: 0.58rem;"></ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal xác nhận xóa -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Bạn có chắc muốn xóa lớp học này không?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <form action="${pageContext.request.contextPath}/ManageClass" method="post" id="deleteForm">
+                            <input type="hidden" name="action" value="deleteClass">
+                            <input type="hidden" name="ID_LopHoc" id="deleteClassId">
+                            <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}">
+                            <input type="hidden" name="ID_Khoi" value="${ID_Khoi}">
+                            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
+                            <button type="submit" class="btn btn-primary">Xóa</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Nút quay lại dashboard -->
         <div class="dashboard-button">
             <form action="${pageContext.request.contextPath}/ManageCourse">
@@ -941,34 +1010,9 @@
         </div>
     </div>
 
-    <!-- Modal xác nhận xóa -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Bạn có chắc muốn xóa lớp học này không?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <form action="${pageContext.request.contextPath}/ManageClass" method="post" id="deleteForm">
-                        <input type="hidden" name="action" value="deleteClass">
-                        <input type="hidden" name="ID_LopHoc" id="deleteClassId">
-                        <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}">
-                        <input type="hidden" name="ID_Khoi" value="${ID_Khoi}">
-                        <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
-                        <button type="submit" class="btn btn-primary">Xóa</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+    <div class="footer">
+        <p>© 2025 EL CENTRE. Bản quyền thuộc về EL CENTRE.</p>
     </div>
-
-    <!-- Nút cuộn lên đầu trang -->
-    <button id="scrollToTopBtn" onclick="scrollToTop()" aria-label="Cuộn lên đầu trang"><i class="bi bi-arrow-up"></i></button>
 
     <!-- Bootstrap 5 JS và Popper -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
@@ -999,7 +1043,7 @@
 
         // Quản lý trạng thái active cho nút sort
         document.querySelectorAll('.sort-link').forEach(link => {
-            link.addEventListener('click', function(e) {
+            link.addEventListener('click', function (e) {
                 document.querySelectorAll('.sort-link').forEach(l => l.classList.remove('active'));
                 this.classList.add('active');
             });
@@ -1007,9 +1051,24 @@
 
         // Xóa trạng thái active khi bấm nút Refresh hoặc Tìm
         document.querySelectorAll('.btn-custom-action').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 document.querySelectorAll('.sort-link').forEach(l => l.classList.remove('active'));
             });
+        });
+
+        // Kiểm tra sự tồn tại của ảnh
+        document.querySelectorAll('img[data-class-image]').forEach(img => {
+            const imageUrl = img.getAttribute('data-class-image');
+            const fallbackUrl = 'https://via.placeholder.com/50';
+            const testImage = new Image();
+            testImage.src = imageUrl;
+            testImage.onload = () => {
+                img.src = imageUrl;
+            };
+            testImage.onerror = () => {
+                img.src = fallbackUrl;
+                img.onerror = null;
+            };
         });
 
         // Toggle hàng chi tiết
@@ -1022,6 +1081,27 @@
                 this.innerHTML = isVisible
                     ? '<i class="bi bi-info-circle"></i> Xem chi tiết'
                     : '<i class="bi bi-x-circle"></i> Ẩn chi tiết';
+            });
+        });
+
+        // Hiển thị lịch học trong modal
+        document.querySelectorAll('.view-schedule').forEach(button => {
+            button.addEventListener('click', function () {
+                const schedule = this.getAttribute('data-schedule');
+                const scheduleList = document.getElementById('scheduleList');
+                scheduleList.innerHTML = '';
+                if (schedule) {
+                    const times = schedule.split(';');
+                    times.forEach(time => {
+                        if (time.trim()) {
+                            const li = document.createElement('li');
+                            li.textContent = time.trim();
+                            scheduleList.appendChild(li);
+                        }
+                    });
+                } else {
+                    scheduleList.innerHTML = '<li style="color: red;">Chưa có lịch học</li>';
+                }
             });
         });
     </script>
