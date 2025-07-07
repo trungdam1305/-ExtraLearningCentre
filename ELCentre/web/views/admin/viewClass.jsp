@@ -537,59 +537,7 @@
         </c:if>
 
         <c:if test="${lopHoc != null}">
-            <!-- Thông tin lớp học -->
-            <div class="section-title">Thông tin lớp học</div>
-            <div class="detail-item">
-                <span class="detail-label">Tên lớp:</span> ${lopHoc.tenLopHoc != null ? lopHoc.tenLopHoc : 'Chưa có'}
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Mã lớp:</span> ${lopHoc.classCode != null ? lopHoc.classCode : 'Chưa có'}
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Sĩ số:</span> ${lopHoc.siSo != 0 ? lopHoc.siSo : 0}
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Sĩ số tối đa:</span> ${lopHoc.siSoToiDa != 0 ? lopHoc.siSoToiDa : 0}
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Sĩ số tối thiểu:</span> ${lopHoc.siSoToiThieu != 0 ? lopHoc.siSoToiThieu : 0}
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Ghi chú:</span> ${lopHoc.ghiChu != null ? lopHoc.ghiChu : 'Chưa có'}
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Trạng thái:</span> ${lopHoc.trangThai != null ? lopHoc.trangThai : 'Chưa có'}
-            </div>
-
-            <!-- Thông tin lịch học -->
-            <div class="section-title">Thông tin lịch học</div>
-            <c:choose>
-                <c:when test="${not empty lichHocList}">
-                    <table class="schedule-table">
-                        <thead>
-                            <tr>
-                                <th>Ngày học</th>
-                                <th>Slot học</th>
-                                <th>Phòng học</th>
-                                <th>Ghi chú</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="lichHoc" items="${lichHocList}">
-                                <tr>
-                                    <td>${lichHoc.ngayHoc != null ? lichHoc.ngayHoc : 'Chưa có'}</td>
-                                    <td>${lichHoc.slotThoiGian != null ? lichHoc.slotThoiGian : 'Chưa có'}</td>
-                                    <td>${lichHoc.getID_PhongHoc() != null ? lichHoc.getID_PhongHoc() : 'Chưa có'}</td>
-                                    <td>${lichHoc.ghiChu != null ? lichHoc.ghiChu : 'Chưa có'}</td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </c:when>
-                <c:otherwise>
-                    <div class="alert alert-warning" role="alert">Chưa có lịch học nào cho lớp này.</div>
-                </c:otherwise>
-            </c:choose>
+            
 
             <!-- Thông tin giáo viên -->
             <div class="section-title">Thông tin giáo viên</div>

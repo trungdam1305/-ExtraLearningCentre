@@ -20,6 +20,14 @@ import java.time.LocalDate;
  */
 public class LichHoc {
 
+    public int getID_PhongHoc() {
+        return ID_PhongHoc;
+    }
+
+    public void setID_PhongHoc(int ID_PhongHoc) {
+        this.ID_PhongHoc = ID_PhongHoc;
+    }
+
     // Unique ID for the schedule
     private int ID_Schedule;
 
@@ -47,14 +55,6 @@ public class LichHoc {
      * Default constructor.
      */
     public LichHoc() {
-    }
-
-    public int getID_PhongHoc() {
-        return ID_PhongHoc;
-    }
-
-    public void setID_PhongHoc(int ID_PhongHoc) {
-        this.ID_PhongHoc = ID_PhongHoc;
     }
 
     

@@ -37,6 +37,10 @@
         <servlet-class>controller.SearchCourse</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ManagerCourse</servlet-name>
+        <servlet-class>controller.ManagerCourse</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>AddKhoaHoc</servlet-name>
         <servlet-class>controller.AddKhoaHoc</servlet-class>
     </servlet>
@@ -101,12 +105,8 @@
         <servlet-class>controller.SendAdviceMailServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ManageClass</servlet-name>
-        <servlet-class>controller.ManageCourses.ManageClass</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ManageClassDetail</servlet-name>
-        <servlet-class>controller.ManageCourses.ManageClassDetail</servlet-class>
+        <servlet-name>adminFindInFilterGroup</servlet-name>
+        <servlet-class>controller.adminFindInFilterGroup</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
@@ -127,6 +127,10 @@
     <servlet-mapping>
         <servlet-name>SearchCourse</servlet-name>
         <url-pattern>/SearchCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManagerCourse</servlet-name>
+        <url-pattern>/ManagerCourse</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddKhoaHoc</servlet-name>
@@ -204,9 +208,25 @@
         <servlet-name>ManageCourse</servlet-name>
         <url-pattern>/ManageCourse</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageClass</servlet-name>
+        <url-pattern>/ManageClass</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageClassDetail</servlet-name>
+        <url-pattern>/ManageClassDetail</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>ManageCourse</servlet-name>
         <servlet-class>controller.ManageCourses.ManageCourse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageClass</servlet-name>
+        <servlet-class>controller.ManageCourses.ManageClass</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageClassDetail</servlet-name>
+        <servlet-class>controller.ManageCourses.ManageClassDetail</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Advice</servlet-name>
@@ -217,12 +237,8 @@
         <url-pattern>/SendAdviceMailServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ManageClass</servlet-name>
-        <url-pattern>/ManageClass</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ManageClassDetail</servlet-name>
-        <url-pattern>/ManageClassDetail</url-pattern>
+        <servlet-name>adminFindInFilterGroup</servlet-name>
+        <url-pattern>/adminFindInFilterGroup</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

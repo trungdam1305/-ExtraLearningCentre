@@ -1,7 +1,7 @@
 <%-- 
     Document   : adminUpdateTeacherInfor
     Created on : Jun 2, 2025, 6:44:28 PM
-    Author     : wrx_Chur04
+    Author     : chuvv
     Purpose    : This page allows admin users to update information for teachers (giáo viên) in the EL CENTRE system, 
                  including phone number, school, salary, and notes, while displaying read-only fields 
                  like account ID, name, specialization, status, and creation date.
@@ -245,7 +245,7 @@
                                     <tr>
                                         <td>ID_TàiKhoản</td>
                                         <c:forEach var="giaovien" items="${giaoviens}">
-                                            <td><input type="text" name="idtaikhoan" value="${giaovien.getID_TaiKhoan()}" readonly /></td>
+                                            <td><input type="text" name="idtaikhoan" value= "${giaovien.getID_TaiKhoan()}" readonly /></td>
                                         </c:forEach>
                                     </tr>
                                     <tr>
@@ -261,6 +261,12 @@
                                         </c:forEach>
                                     </tr>
                                     <tr>
+                                        <td>Bằng cấp</td>
+                                        <c:forEach var="giaovien" items="${giaoviens}">
+                                            <td><input type="text" value="${giaovien.getBangCap()}" readonly /></td>
+                                        </c:forEach>
+                                    </tr>
+                                    <tr>
                                         <td>SĐT</td>
                                         <c:forEach var="giaovien" items="${giaoviens}">
                                             <td><input type="number" name="sdt" value="${giaovien.getSDT()}" required="" /></td>
@@ -271,7 +277,13 @@
                                         <c:forEach var="giaovien" items="${giaoviens}">
                                             <td><input type="text" name="truong" value="${giaovien.getTenTruongHoc()}" readonly /></td>
                                         </c:forEach>
-                                    </tr>   
+                                    </tr>
+                                    <tr>
+                                        <td>Lớp đang dạy trên trường</td>
+                                        <c:forEach var="giaovien" items="${giaoviens}">
+                                            <td><input type="text" name="truong" value="${giaovien.getLopDangDayTrenTruong()}" readonly /></td>
+                                        </c:forEach>
+                                    </tr>
                                     <tr>
                                         <td>Lương</td>
                                         <c:forEach var="giaovien" items="${giaoviens}">
@@ -280,13 +292,19 @@
                                     </tr>
                                    
                                     <tr>
-                                    <td>Top Hot</td>
-                                    <c:forEach var="giaovien" items="${giaoviens}">
-                                         <td><input type="number" name="hot" value="${giaovien.getIsHot()}" required="" /></td>
-                                    </c:forEach>
-                                </tr>
+                                        <td>Top Hot</td>
+                                        <c:forEach var="giaovien" items="${giaoviens}">
+                                             <td><input type="number" name="hot" value="${giaovien.getIsHot()}" required="" /></td>
+                                        </c:forEach>
+                                    </tr>
                                     <tr>
-                                        <td>Trạng thái</td>
+                                        <td>Trạng thái dạy tại EL CENTRE</td>
+                                        <c:forEach var="giaovien" items="${giaoviens}">
+                                            <td><input type="text" name="truong" value="${giaovien.getTrangThaiDay()}" readonly /></td>
+                                        </c:forEach>
+                                    </tr>
+                                    <tr>
+                                        <td>Trạng thái tài khoản</td>
                                         <c:forEach var="giaovien" items="${giaoviens}">
                                             <td><input type="text" value="${giaovien.getTrangThai()}" readonly /></td>
                                         </c:forEach>

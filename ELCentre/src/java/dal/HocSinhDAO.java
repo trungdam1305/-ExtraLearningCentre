@@ -80,7 +80,7 @@ public class HocSinhDAO {
         return hocsinhs;
     }
 
-    public static ArrayList<HocSinh> adminGetHocSinhByID(String id) {
+    public static ArrayList<HocSinh> adminGetHocSinhByID(String ID_TaiKhoan) {
         DBContext db = DBContext.getInstance();
         ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>();
 
@@ -91,7 +91,7 @@ public class HocSinhDAO {
                          where ID_TaiKhoan = ? 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            statement.setString(1, id);
+            statement.setString(1, ID_TaiKhoan);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
@@ -126,7 +126,7 @@ public class HocSinhDAO {
         }
     }
 
-    public static boolean adminEnableHocSinh(String id) {
+    public static boolean adminEnableHocSinh(String ID_TaiKhoan) {
         DBContext db = DBContext.getInstance();
         int rs = 0;
         try {
@@ -136,7 +136,7 @@ public class HocSinhDAO {
                          WHERE ID_TaiKhoan = ?;
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            statement.setString(1, id);
+            statement.setString(1, ID_TaiKhoan);
             rs = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -172,13 +172,15 @@ public class HocSinhDAO {
         }
     }
 
-    public static int adminGetTongSoHocSinh() {
+    public static int adminGetTongSoHocSinhDangHoc() {
         DBContext db = DBContext.getInstance();
         int tong = 0;
 
         try {
             String sql = """
-                          select count(*) from HocSinh
+                         SELECT COUNT(*) 
+                          FROM HocSinh
+                          WHERE TrangThaiHoc LIKE N'%Đang Học%'; 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
@@ -209,7 +211,7 @@ public class HocSinhDAO {
             rs.close();
             statement.close();
         } catch (Exception e) {
-            return 0; // hoặc có thể trả về -1 để phân biệt có lỗi
+            return 0; 
         }
         return total;
     }
@@ -247,19 +249,21 @@ public class HocSinhDAO {
         }
     }
 
-    public static List<String> nameofStudentDependPH(String idPhuHuynh) {
+    public static List<String> nameofStudentDependPH(String id_TK_PhuHuynh) {
         List<String> ListName = new ArrayList<String>();
         DBContext db = DBContext.getInstance();
 
         try {
             String sql = """
                          select HS.HoTen from HocSinh HS
-                         join PhuHuynh PH 
-                         on HS.ID_HocSinh = PH.ID_HocSinh 
-                         where PH.ID_TaiKhoan = ? 
+                                                  join HocSinh_PhuHuynh PH 
+                                                  on HS.ID_HocSinh = PH.ID_HocSinh 
+                         						 join PhuHuynh PHU 
+                         						 ON PHU.ID_PhuHuynh = PH.ID_PhuHuynh
+                                                  where PHU.ID_TaiKhoan = ? ; 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            statement.setString(1, idPhuHuynh);
+            statement.setString(1, id_TK_PhuHuynh);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 String name = rs.getString("HoTen");
@@ -330,40 +334,25 @@ public class HocSinhDAO {
     public boolean hasSchoolConflict(int idHocSinh, int idLopHoc) {
         DBContext db = DBContext.getInstance();
         String sql = """
-            SELECT hs.TenTruongHoc, hs.LopDangHocTrenTruong, gv.TenTruongHoc AS GvTenTruongHoc, gv.LopDangDayTrenTruong
-            FROM HocSinh hs
-            LEFT JOIN GiaoVien_LopHoc glh ON glh.ID_LopHoc = ?
-            LEFT JOIN GiaoVien gv ON glh.ID_GiaoVien = gv.ID_GiaoVien
-            WHERE hs.ID_HocSinh = ?
+        SELECT COUNT(*)
+        FROM HocSinh hs
+        JOIN GiaoVien_LopHoc glh ON glh.ID_LopHoc = ?
+        JOIN GiaoVien g ON glh.ID_GiaoVien = g.ID_GiaoVien
+        WHERE hs.ID_HocSinh = ?
+        AND hs.ID_TruongHoc = g.ID_TruongHoc
         """;
-
-        try (
-             PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, idLopHoc);
             stmt.setInt(2, idHocSinh);
             ResultSet rs = stmt.executeQuery();
-
             if (rs.next()) {
-                String hsTenTruongHoc = rs.getString("TenTruongHoc");
-                String hsLopDangHoc = rs.getString("LopDangHocTrenTruong");
-                String gvTenTruongHoc = rs.getString("GvTenTruongHoc");
-                String gvLopDangDay = rs.getString("LopDangDayTrenTruong");
-
-                // Kiểm tra nếu cả tên trường và tên lớp đều khớp
-                if (hsTenTruongHoc != null && gvTenTruongHoc != null && hsTenTruongHoc.equals(gvTenTruongHoc) &&
-                    hsLopDangHoc != null && gvLopDangDay != null && hsLopDangHoc.equals(gvLopDangDay)) {
-                    System.out.println("hasSchoolConflict: Conflict detected for ID_HocSinh=" + idHocSinh + ", ID_LopHoc=" + idLopHoc +
-                            ", TenTruongHoc=" + hsTenTruongHoc + ", LopDangHocTrenTruong=" + hsLopDangHoc);
-                    return true;
-                }
+                return rs.getInt(1) > 0; // Conflict if count > 0
             }
-            System.out.println("hasSchoolConflict: No conflict for ID_HocSinh=" + idHocSinh + ", ID_LopHoc=" + idLopHoc);
-            return false;
         } catch (SQLException e) {
             System.out.println("SQL Error in hasSchoolConflict: " + e.getMessage());
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     public boolean addStudentToClass(int idHocSinh, int idLopHoc) {
@@ -512,6 +501,30 @@ public class HocSinhDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public static int adminGetTongSoHocSinhChoHoc() {
+        DBContext db = DBContext.getInstance();
+        int tong = 0;
+
+        try {
+            String sql = """
+                         SELECT COUNT(*) 
+                         FROM HocSinh
+                         WHERE TrangThaiHoc LIKE N'%Chờ Học%';
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                tong = rs.getInt(1);
+                return tong;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return tong;
     }
     
     public static void main(String[] args) {

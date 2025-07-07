@@ -1,7 +1,7 @@
 <%-- 
     Document   : adminUpdateParentInfor
     Created on : Jun 2, 2025, 9:32:33 PM
-    Author     : wrx_Chur04
+    Author     : chuvv
     Purpose    : This page allows admin users to update information for parents (phụ huynh) in the EL CENTRE system, 
                  including phone number, address, and notes, while displaying read-only fields 
                  like account ID, name, email, student ID, status, and creation date.

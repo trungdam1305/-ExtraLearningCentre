@@ -18,7 +18,7 @@ import model.UserLogView;
 
 public class UserLogsDAO {
 
-    public static ArrayList<UserLogView> adminGetAllUserLogs() {
+    public static ArrayList<UserLogView> adminGetAllUserLogs(String date) {
         ArrayList<UserLogView> userlogviews = new ArrayList<UserLogView>();
         DBContext db = DBContext.getInstance();
         try {
@@ -35,10 +35,11 @@ public class UserLogsDAO {
                             LEFT JOIN PhuHuynh PH ON PH.ID_TaiKhoan = U.ID_TaiKhoan
                                                   LEFT JOIN Admin AD ON AD.ID_TaiKhoan = U.ID_TaiKhoan
                                                   LEFT JOIN Staff ST ON ST.ID_TaiKhoan = U.ID_TaiKhoan
-                            
+                            where U.ThoiGian >= ? 
                             order by U.ThoiGian DESC
                           """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setString(1, date);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {

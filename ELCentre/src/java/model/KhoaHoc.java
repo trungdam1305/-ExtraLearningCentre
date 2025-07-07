@@ -23,8 +23,26 @@ public class KhoaHoc {
     private LocalDateTime NgayTao;       // Date the course was created
     private int ID_Khoi;                 // Educational level ID (e.g., primary, secondary)
     private String Image;                // URL or path to course image
-    private int Order ; 
+    private int  Order ; 
 
+    public String getCourseCode() {
+        return CourseCode;
+    }
+
+    public void setCourseCode(String CourseCode) {
+        this.CourseCode = CourseCode;
+    }
+
+    public int getOrder() {
+        return Order;
+    }
+
+    public void setOrder(int Order) {
+        this.Order = Order;
+    }
+
+    
+    
     // Constructors
     public KhoaHoc() {}
     
@@ -55,22 +73,8 @@ public class KhoaHoc {
         this.Order = Order;
     }
 
-    public String getCourseCode() {
-        return CourseCode;
-    }
-
-    public void setCourseCode(String CourseCode) {
-        this.CourseCode = CourseCode;
-    }
-
-    public int getOrder() {
-        return Order;
-    }
-
-    public void setOrder(int Order) {
-        this.Order = Order;
-    }
-
+    
+    
    
 
     // Getter and Setter methods

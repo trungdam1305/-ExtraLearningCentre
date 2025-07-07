@@ -12,7 +12,24 @@ import model.SlotHoc;
 
 public class SlotHocDAO {
 
-   public List<SlotHoc> getAllSlotHoc() {
+    // Lấy tất cả slot học từ database
+    public List<SlotHoc> getAllSlotHoc() throws SQLException {
+        List<SlotHoc> slotHocList = new ArrayList<>();
+        DBContext db = DBContext.getInstance();
+        String sql = "SELECT ID_SlotHoc, SlotThoiGian FROM [dbo].[SlotHoc]";
+        try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                SlotHoc slot = new SlotHoc();
+                slot.setID_SlotHoc(rs.getInt("ID_SlotHoc"));
+                slot.setSlotThoiGian(rs.getString("SlotThoiGian"));
+                slotHocList.add(slot);
+            }
+        }
+        return slotHocList;
+    }
+
+    
+       public List<SlotHoc> getAllSlotHoc1() {
         List<SlotHoc> list = new ArrayList<>();
         DBContext db = DBContext.getInstance();
         String sql = "SELECT ID_SlotHoc, SlotThoiGian FROM SlotHoc";
@@ -32,21 +49,20 @@ public class SlotHocDAO {
         return list;
     }
 
-    public SlotHoc getSlotHocById(int id) {
+    // Lấy slot học theo ID
+    public SlotHoc getSlotHocById(int idSlotHoc) throws SQLException {
         DBContext db = DBContext.getInstance();
-        String sql = "SELECT ID_SlotHoc, SlotThoiGian FROM SlotHoc WHERE ID_SlotHoc = ?";
-        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                SlotHoc slot = new SlotHoc();
-                slot.setID_SlotHoc(rs.getInt("ID_SlotHoc"));
-                slot.setSlotThoiGian(rs.getString("SlotThoiGian"));
-                return slot;
+        String sql = "SELECT ID_SlotHoc, SlotThoiGian FROM [dbo].[SlotHoc] WHERE ID_SlotHoc = ?";
+        try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idSlotHoc);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    SlotHoc slot = new SlotHoc();
+                    slot.setID_SlotHoc(rs.getInt("ID_SlotHoc"));
+                    slot.setSlotThoiGian(rs.getString("SlotThoiGian"));
+                    return slot;
+                }
             }
-        } catch (SQLException e) {
-            System.out.println("SQL Error in getSlotHocById: " + e.getMessage() + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
-            e.printStackTrace();
         }
         return null;
     }

@@ -49,7 +49,7 @@ public class ManageClass extends HttpServlet {
         if (slotHocList == null || phongHocList == null) {
             SlotHocDAO slotHocDAO = new SlotHocDAO();
             PhongHocDAO phongHocDAO = new PhongHocDAO();
-            slotHocList = slotHocDAO.getAllSlotHoc();
+            slotHocList = slotHocDAO.getAllSlotHoc1();
             phongHocList = phongHocDAO.getAllPhongHoc();
             session.setAttribute("slotHocList", slotHocList);
             session.setAttribute("phongHocList", phongHocList);

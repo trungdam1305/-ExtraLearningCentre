@@ -76,7 +76,7 @@ public class TaiKhoanDAO {
     }
     
     
-    public static boolean adminEnableAccountUser(String id) {
+    public static boolean adminEnableAccountUser(String ID_TaiKhoan) {
         DBContext db = DBContext.getInstance() ; 
         int rs = 0 ; 
         try {
@@ -86,7 +86,7 @@ public class TaiKhoanDAO {
                          WHERE ID_TaiKhoan = ?;
                          """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
-            statement.setString(1, id);
+            statement.setString(1, ID_TaiKhoan);
             rs = statement.executeUpdate() ; 
         } catch (SQLException e ) {
             e.printStackTrace();

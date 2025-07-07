@@ -1,7 +1,7 @@
 <%-- 
     Document   : adminUpdateTeacherInfor
     Created on : Jun 2, 2025, 6:44:28 PM
-    Author     : wrx_Chur04
+    Author     : chuvv
     Purpose    : This page allows admin users to update information for students (học sinh) in the EL CENTRE system, 
                  including address, school, and notes, while displaying read-only fields 
                  like account ID, name, birth date, gender, parent contact, status, and creation date.
@@ -242,9 +242,9 @@
                                 <tbody>
                                 <input type="hidden" name="type" value="${type}" />
                                 <tr>
-                                    <td>ID_TàiKhoản</td>
+                                    <td>Mã học sinh</td>
                                     <c:forEach var="hocsinh" items="${hocsinhs}">
-                                        <td><input type="text" name="idtaikhoan" value="${hocsinh.getID_TaiKhoan()}" readonly /></td>
+                                        <td><input type="text" name="idtaikhoan" value="${hocsinh.getMaHocSinh()}" readonly /></td>
                                         </c:forEach>
                                 </tr>
                                 <tr>
@@ -272,6 +272,24 @@
                                         </c:forEach>
                                 </tr>
                                 <tr>
+                                    <td>Trường học</td>
+                                    <c:forEach var="hocsinh" items="${hocsinhs}">
+                                        <td><input type="text" name="truonghoc" value="${hocsinh.getTenTruongHoc()}" readonly /></td>
+                                        </c:forEach>
+                                </tr>
+                                 <tr>
+                                    <td>Lớp đang học trên trường</td>
+                                    <c:forEach var="hocsinh" items="${hocsinhs}">
+                                        <td><input type="text" name="truonghoc" value="${hocsinh.getLopDangHocTrenTruong()}" readonly /></td>
+                                        </c:forEach>
+                                </tr>
+                                <tr>
+                                    <td>Trạng thái học tại EL CENTRE</td>
+                                    <c:forEach var="hocsinh" items="${hocsinhs}">
+                                        <td><input type="text" name="truonghoc" value="${hocsinh.getTrangThaiHoc()}" readonly /></td>
+                                        </c:forEach>
+                                </tr>
+                                <tr>
                                     <td>Số điện thoại</td>
                                     <td><input type="number" name="sdt" value="${sodienthoai}" required /></td>
                                 </tr>
@@ -283,12 +301,7 @@
                                         <td><input type="number" name ="sdtph" value="${hocsinh.getSDT_PhuHuynh()}" readonly /></td>
                                         </c:forEach>
                                 </tr>
-                                <tr>
-                                    <td>Trường học</td>
-                                    <c:forEach var="hocsinh" items="${hocsinhs}">
-                                        <td><input type="text" name="truonghoc" value="${hocsinh.getTenTruongHoc()}" readonly /></td>
-                                        </c:forEach>
-                                </tr>
+                                
                                 <tr>
                                     <td>Ghi chú</td>
                                     <c:forEach var="hocsinh" items="${hocsinhs}">

@@ -76,8 +76,15 @@ public class GiaoVien {
         this.TrangThaiDay = TrangThaiDay;
     }
     
-    
+    public GiaoVien(   int ID_TruongHoc,  String LopDangDayTrenTruong  ) {
+       
+        this.ID_TruongHoc = ID_TruongHoc;
+        
+        this.LopDangDayTrenTruong = LopDangDayTrenTruong;
+    }
 
+    
+    
    public GiaoVien(Integer ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT, int ID_TruongHoc, BigDecimal Luong, int IsHot, String TrangThai, LocalDateTime NgayTao, String Avatar, String TenTruongHoc) {
         this.ID_GiaoVien = ID_GiaoVien;
         this.ID_TaiKhoan = ID_TaiKhoan;
@@ -92,8 +99,6 @@ public class GiaoVien {
         this.Avatar = Avatar;
         this.TenTruongHoc = TenTruongHoc;
     }
-   
-   
    
     public String getBangCap() {
         return BangCap;

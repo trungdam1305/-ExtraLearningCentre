@@ -39,37 +39,6 @@ public class LopHoc {
     private String Image;               // URL or filename of the class image
     private int Order ; 
 
-    public LopHoc(Integer ID_LopHoc, String ClassCode, String TenLopHoc, Integer ID_KhoaHoc, Integer SiSo, Integer SiSoToiDa, Integer SiSoToiThieu, int ID_Schedule, int ID_PhongHoc, String GhiChu, String TrangThai, String SoTien, LocalDateTime NgayTao, String Image, int Order, String tenPhongHoc) {
-        this.ID_LopHoc = ID_LopHoc;
-        this.ClassCode = ClassCode;
-        this.TenLopHoc = TenLopHoc;
-        this.ID_KhoaHoc = ID_KhoaHoc;
-        this.SiSo = SiSo;
-        this.SiSoToiDa = SiSoToiDa;
-        this.SiSoToiThieu = SiSoToiThieu;
-        this.ID_Schedule = ID_Schedule;
-        this.ID_PhongHoc = ID_PhongHoc;
-        this.GhiChu = GhiChu;
-        this.TrangThai = TrangThai;
-        this.SoTien = SoTien;
-        this.NgayTao = NgayTao;
-        this.Image = Image;
-        this.Order = Order;
-        this.tenPhongHoc = tenPhongHoc;
-    }
-    
-    
-    private String tenPhongHoc; //nhac chung no them cai nay vao cho0 taoooooo
-
-    public String getTenPhongHoc() {
-        return tenPhongHoc;
-    }
-
-    public void setTenPhongHoc(String tenPhongHoc) {
-        this.tenPhongHoc = tenPhongHoc;
-    }
-    
-
     public LopHoc(Integer ID_LopHoc, String ClassCode, String TenLopHoc, Integer ID_KhoaHoc, Integer SiSo, Integer SiSoToiDa, Integer SiSoToiThieu, int ID_Schedule, int ID_PhongHoc, String GhiChu, String TrangThai, String SoTien, LocalDateTime NgayTao, String Image, int Order) {
         this.ID_LopHoc = ID_LopHoc;
         this.ClassCode = ClassCode;
@@ -88,8 +57,6 @@ public class LopHoc {
         this.Order = Order;
     }
 
-    
-    
     
 
     public Integer getSiSoToiDa() {
