@@ -21,19 +21,14 @@
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="dal.AdminDAO" %>
 <%@ page import="model.Admin" %>
-<%@ page import="java.util.UUID" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Thêm lớp học</title>
-        <!-- Bootstrap 5 CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <!-- Bootstrap Icons -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-        <!-- Font Awesome for additional icons -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
         <style>
             * {
                 box-sizing: border-box;
@@ -54,16 +49,15 @@
                 border-radius: 8px;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                 margin-top: 60px;
-                padding-bottom: 40px;
+                padding-bottom: 40px; /* Prevent footer overlap */
             }
 
             /* Form styling */
             h2 {
                 text-align: center;
-                color: #003087;
-                margin-bottom: 15px;
-                font-size: 1.07rem;
-                font-weight: 600;
+                color: #333;
+                margin-bottom: 30px;
+                font-size: 1.33rem;
             }
             .form-container {
                 max-width: 600px;
@@ -94,19 +88,10 @@
                 width: 100%;
                 padding: 6px;
                 margin-bottom: 15px;
-                border: 1px solid #ced4da;
+                border: 1px solid #ccc;
                 border-radius: 6px;
                 font-size: 0.58rem;
                 box-sizing: border-box;
-                transition: border-color 0.3s ease;
-            }
-            input[type="text"]:focus,
-            input[type="number"]:focus,
-            input[type="date"]:focus,
-            select:focus,
-            textarea:focus {
-                border-color: #003087;
-                box-shadow: 0 0 5px rgba(0, 48, 135, 0.3);
             }
             input[type="text"],
             input[type="number"],
@@ -125,60 +110,59 @@
                 resize: vertical;
                 min-height: 60px;
             }
-            .btn-custom-action {
-                background-color: #003087;
-                border-color: #003087;
+            .btn-primary {
+                background-color: #007bff;
                 color: white;
-                border-radius: 6px;
+                border: none;
                 padding: 6px 12px;
+                border-radius: 6px;
+                cursor: pointer;
                 font-size: 0.58rem;
-                transition: background-color 0.3s ease, transform 0.2s ease;
+                margin-right: 10px;
             }
-            .btn-custom-action:hover {
-                background-color: #00215a;
-                border-color: #00215a;
-                transform: translateY(-2px);
+            .btn-primary:hover {
+                background-color: #0056b3;
             }
-            .btn-custom-action i {
-                margin-right: 4px;
+            .btn-secondary {
+                background-color: #6c757d;
+                color: white;
+                border: none;
+                padding: 6px 12px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 0.58rem;
+            }
+            .btn-secondary:hover {
+                background-color: #5a6268;
             }
             .btn-danger {
-                background-color: #f97316;
-                border-color: #f97316;
+                background-color: #dc3545;
                 color: white;
+                border: none;
+                padding: 6px 12px;
                 border-radius: 6px;
-                padding: 4px 6px;
+                cursor: pointer;
                 font-size: 0.5rem;
             }
             .btn-danger:hover {
-                background-color: #ea580c;
-                border-color: #ea580c;
+                background-color: #b91c1c;
             }
-            .alert-custom-success {
-                background-color: #22c55e;
-                border-color: #22c55e;
-                color: white;
+            .alert {
                 border-radius: 8px;
-                padding: 8px;
-                margin-bottom: 10px;
-                font-size: 0.57rem;
+                margin-bottom: 15px;
+                font-size: 0.58rem;
                 text-align: center;
-                max-width: 600px;
-                margin-left: auto;
-                margin-right: auto;
+                padding: 10px;
             }
-            .alert-custom-danger {
+            .alert-danger {
                 background-color: #ef4444;
-                border-color: #ef4444;
                 color: white;
-                border-radius: 8px;
-                padding: 8px;
-                margin-bottom: 10px;
-                font-size: 0.57rem;
-                text-align: center;
-                max-width: 600px;
-                margin-left: auto;
-                margin-right: auto;
+                font-weight: bold;
+            }
+            .alert-success {
+                background-color: #22c55e;
+                color: white;
+                font-weight: bold;
             }
             .schedule-row {
                 display: flex;
@@ -191,29 +175,17 @@
                 flex: 1;
                 font-size: 0.58rem !important;
             }
-            .schedule-row .btn-danger {
+            .schedule-row .btn-danger.btn-sm {
                 font-size: 0.5rem;
                 padding: 4px 6px;
             }
-            .dashboard-button {
+            .back-button {
                 text-align: center;
-                margin-top: 10px;
+                margin-top: 15px;
             }
-            .dashboard-button .btn {
-                border-radius: 6px;
-                padding: 6px 12px;
-                font-size: 0.57rem;
-                background-color: #003087;
-                border-color: #003087;
+            .back-button a {
                 color: white;
-            }
-            .dashboard-button .btn:hover {
-                background-color: #00215a;
-                border-color: #00215a;
-                transform: translateY(-2px);
-            }
-            .dashboard-button .btn i {
-                margin-right: 4px;
+                text-decoration: none;
             }
             p.info {
                 color: #333;
@@ -237,28 +209,6 @@
                 display: flex;
                 align-items: center;
                 gap: 5px;
-            }
-
-            /* Scroll to Top Button */
-            #scrollToTopBtn {
-                display: none;
-                position: fixed;
-                bottom: 15px;
-                right: 15px;
-                background-color: #007bff;
-                color: white;
-                border: none;
-                border-radius: 50%;
-                width: 40px;
-                height: 40px;
-                font-size: 14px;
-                cursor: pointer;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-                z-index: 1000;
-                transition: background-color 0.3s ease;
-            }
-            #scrollToTopBtn:hover {
-                background-color: #0056b3;
             }
 
             /* Header styling */
@@ -380,7 +330,7 @@
                     padding-bottom: 30px;
                 }
                 h2 {
-                    font-size: 0.8rem;
+                    font-size: 0.89rem;
                 }
                 .form-container {
                     max-width: 100%;
@@ -397,7 +347,12 @@
                 input[type="file"] {
                     font-size: 0.38rem;
                     padding: 4px;
-                    height: 26px;
+                }
+                input[type="text"],
+                input[type="number"],
+                input[type="date"],
+                select {
+                    height: 24px;
                 }
                 input[type="file"] {
                     padding: 2px;
@@ -405,8 +360,8 @@
                 textarea {
                     min-height: 50px;
                 }
-                .btn-custom-action,
-                .dashboard-button .btn {
+                .btn-primary,
+                .btn-secondary {
                     font-size: 0.38rem;
                     padding: 4px 8px;
                 }
@@ -414,11 +369,10 @@
                     font-size: 0.33rem;
                     padding: 3px 5px;
                 }
-                .alert-custom-success,
-                .alert-custom-danger {
+                .alert {
                     font-size: 0.38rem;
-                    padding: 6px;
-                    margin-bottom: 8px;
+                    padding: 8px;
+                    margin-bottom: 10px;
                 }
                 p.info {
                     font-size: 0.38rem;
@@ -434,22 +388,18 @@
                 .schedule-row input[type="date"] {
                     font-size: 0.38rem !important;
                 }
-                .schedule-row .btn-danger {
+                .schedule-row .btn-danger.btn-sm {
                     font-size: 0.33rem;
                     padding: 3px 5px;
+                }
+                .back-button {
+                    margin-top: 10px;
                 }
                 .weekday-checkboxes {
                     gap: 5px;
                 }
                 .weekday-checkboxes label {
                     font-size: 0.38rem;
-                }
-                #scrollToTopBtn {
-                    bottom: 8px;
-                    right: 8px;
-                    width: 30px;
-                    height: 30px;
-                    font-size: 12px;
                 }
                 .sidebar {
                     width: 100%;
@@ -496,7 +446,7 @@
     <body>
         <div class="header">
             <div class="left-title">
-                Admin Dashboard <i class="fas fa-tachometer-alt"></i>
+                Admin Dashboard <i class="bi bi-speedometer2"></i>
             </div>
             <div class="admin-profile" onclick="toggleDropdown()">
                 <%
@@ -506,10 +456,10 @@
                 %>
                 <img src="<%= request.getContextPath() + adminAvatar %>" alt="Admin Photo" class="admin-img">
                 <span><%= adminName %></span>
-                <i class="fas fa-caret-down"></i>
+                <i class="bi bi-caret-down-fill"></i>
                 <div class="dropdown-menu" id="adminDropdown">
-                    <a href="#"><i class="fas fa-key"></i> Đổi mật khẩu</a>
-                    <a href="#"><i class="fas fa-user-edit"></i> Cập nhật thông tin</a>
+                    <a href="#"><i class="bi bi-key"></i> Đổi mật khẩu</a>
+                    <a href="#"><i class="bi bi-person-fill"></i> Cập nhật thông tin</a>
                 </div>
             </div>
         </div>
@@ -519,78 +469,56 @@
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="#"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="#"><i class="bi bi-house-door"></i> Dashboard</a></li>
             </ul>
             <div class="sidebar-section-title">Quản lý người dùng</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocsinh">Học sinh</a></li>
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=giaovien">Giáo viên</a></li>
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=taikhoan">Tài khoản</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocsinh"><i class="bi bi-person"></i> Học sinh</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=giaovien"><i class="bi bi-person-gear"></i> Giáo viên</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=taikhoan"><i class="bi bi-person-circle"></i> Tài khoản</a></li>
             </ul>
             <div class="sidebar-section-title">Quản lý tài chính</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocphi"><i class="fas fa-money-bill-wave"></i> Học phí</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocphi"><i class="bi bi-currency-dollar"></i> Học phí</a></li>
             </ul>
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
-                <li><a href="${pageContext.request.contextPath}/ManageSchedule"><i class="fas fa-calendar-alt"></i> Lịch học</a></li>
+                <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="bi bi-book"></i> Khoá học</a></li>
             </ul>
             <div class="sidebar-section-title">Hệ thống</div>
             <ul class="sidebar-menu">
-                <li><a href="#"><i class="fas fa-cog"></i> Cài đặt</a></li>
+                <li><a href="#"><i class="bi bi-gear"></i> Cài đặt</a></li>
             </ul>
             <div class="sidebar-section-title">Khác</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=yeucautuvan"><i class="fas fa-blog"></i>Yêu cầu tư vấn</a></li>
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
-                <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
-                <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=yeucautuvan"><i class="bi bi-chat-dots"></i> Yêu cầu tư vấn</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=thongbao"><i class="bi bi-bell"></i> Thông báo</a></li>
+                <li><a href="#"><i class="bi bi-newspaper"></i> Blog</a></li>
+                <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a></li>
             </ul>
         </div>
 
         <div class="content-container">
-            <!-- Tạo CSRF token nếu chưa tồn tại -->
-            <c:if test="${empty sessionScope.csrfToken}">
-                <% 
-                    String csrfToken = UUID.randomUUID().toString();
-                    session.setAttribute("csrfToken", csrfToken);
-                %>
-            </c:if>
-
             <div class="form-container">
                 <h2>Thêm lớp học</h2>
 
                 <!-- Thông báo -->
                 <c:if test="${not empty err}">
-                    <div class="alert alert-custom-danger">${fn:escapeXml(err)}</div>
+                    <div class="alert alert-danger">${fn:escapeXml(err)}</div>
                 </c:if>
                 <c:if test="${not empty suc}">
-                    <div class="alert alert-custom-success">${fn:escapeXml(suc)}</div>
-                    <div class="dashboard-button">
-                        <form action="${pageContext.request.contextPath}/ManageClass" method="get">
-                            <input type="hidden" name="action" value="refresh" />
-                            <input type="hidden" name="ID_Khoi" value="${ID_Khoi}" />
-                            <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}" />
-                            <button type="submit" class="btn"><i class="bi bi-arrow-left"></i> Quay lại danh sách lớp học</button>
-                        </form>
+                    <div class="alert alert-success">${fn:escapeXml(suc)}</div>
+                    <div class="back-button">
+                        <a href="${pageContext.request.contextPath}/ManageClass?action=refresh&ID_Khoi=${ID_Khoi}&ID_KhoaHoc=${ID_KhoaHoc}" class="btn btn-secondary">Quay lại danh sách lớp học</a>
                     </div>
                 </c:if>
                 <c:if test="${khoaHoc == null && empty suc && empty err}">
-                    <div class="alert alert-custom-danger">Không tìm thấy thông tin khóa học!</div>
-                    <div class="dashboard-button">
-                        <form action="${pageContext.request.contextPath}/ManageClass" method="get">
-                            <input type="hidden" name="action" value="refresh" />
-                            <input type="hidden" name="ID_Khoi" value="${ID_Khoi}" />
-                            <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}" />
-                            <button type="submit" class="btn"><i class="bi bi-arrow-left"></i> Quay lại danh sách lớp học</button>
-                        </form>
-                    </div>
+                    <div class="alert alert-danger">Không tìm thấy thông tin khóa học!</div>
                 </c:if>
 
                 <!-- Kiểm tra danh sách slot và phòng học -->
                 <c:if test="${empty slotHocList || empty phongHocList}">
-                    <div class="alert alert-custom-danger">
+                    <div class="alert alert-danger">
                         <c:choose>
                             <c:when test="${empty slotHocList && empty phongHocList}">
                                 Không có slot học và phòng học nào trong hệ thống. Vui lòng thêm dữ liệu trước!
@@ -603,13 +531,8 @@
                             </c:otherwise>
                         </c:choose>
                     </div>
-                    <div class="dashboard-button">
-                        <form action="${pageContext.request.contextPath}/ManageClass" method="get">
-                            <input type="hidden" name="action" value="refresh" />
-                            <input type="hidden" name="ID_Khoi" value="${ID_Khoi}" />
-                            <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}" />
-                            <button type="submit" class="btn"><i class="bi bi-arrow-left"></i> Quay lại danh sách lớp học</button>
-                        </form>
+                    <div class="back-button">
+                        <a href="${pageContext.request.contextPath}/ManageClass?action=refresh&ID_Khoi=${ID_Khoi}&ID_KhoaHoc=${ID_KhoaHoc}" class="btn btn-secondary">Quay lại</a>
                     </div>
                 </c:if>
 
@@ -619,8 +542,7 @@
                         <input type="hidden" name="action" value="addClass">
                         <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}">
                         <input type="hidden" name="ID_Khoi" value="${ID_Khoi}">
-                        <input type="hidden" name="trangThai" value="Chưa học">
-                        <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
+                        <input type="hidden" name="trangThai" value="Inactive">
 
                         <div class="mb-3">
                             <label for="tenLopHoc" class="form-label required-label">Tên lớp học:</label>
@@ -708,7 +630,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="startDate" class="form-label required-label">Ngày bắt đầu:</label>
-                                <input type="date" class="form-control" id="startDate" name="startDate" min="${khoaHoc.thoiGianBatDau}" max="${khoaHoc.thoiGianKetThuc}" required>
+                                <input type="date" class="form-control" id="startDate" name="startDate" required>
                                 <p class="note">Chọn ngày bắt đầu cho lịch học, phải nằm trong khoảng thời gian của khóa học.</p>
                             </div>
                             <div class="mb-3">
@@ -729,7 +651,7 @@
                                     </c:forEach>
                                 </select>
                             </div>
-                            <button type="button" class="btn btn-custom-action mt-2"><i class="bi bi-calendar-plus"></i> Tạo lịch học tự động</button>
+                            <button type="button" class="btn btn-primary mt-2" onclick="generateSchedule()">Tạo lịch học tự động</button>
                             <div id="scheduleContainer" class="mt-3">
                                 <c:if test="${not empty ngayHocs && fn:length(ngayHocs) > 0}">
                                     <c:forEach var="i" begin="0" end="${fn:length(ngayHocs) - 1}">
@@ -770,18 +692,14 @@
                                     </div>
                                 </c:if>
                             </div>
-                            <button type="button" class="btn btn-custom-action mt-2"><i class="bi bi-plus-circle"></i> Thêm lịch học thủ công</button>
+                            <button type="button" class="btn btn-primary mt-2" onclick="addScheduleRow()">Thêm lịch học thủ công</button>
                         </div>
 
                         <div class="mt-3">
-                            <button type="submit" class="btn btn-custom-action"><i class="bi bi-save"></i> Thêm lớp học</button>
+                            <button type="submit" class="btn btn-primary">Thêm</button>
+                            <a href="${pageContext.request.contextPath}/ManageClass?action=refresh&ID_Khoi=${ID_Khoi}&ID_KhoaHoc=${ID_KhoaHoc}" class="btn btn-secondary">Quay lại</a>
                         </div>
                     </form>
-
-                    <!-- Nút quay lại -->
-                    <div class="dashboard-button">
-                        <a href="${pageContext.request.contextPath}/ManageClass?action=refresh&ID_Khoi=${ID_Khoi}&ID_KhoaHoc=${ID_KhoaHoc}" class="btn btn-secondary">Quay lại</a>
-                    </div>
                 </c:if>
             </div>
         </div>
@@ -790,153 +708,159 @@
             <p>© 2025 EL CENTRE. Bản quyền thuộc về EL CENTRE.</p>
         </div>
 
-        <!-- Nút Scroll to Top -->
-        <button id="scrollToTopBtn" onclick="scrollToTop()" title="Cuộn lên đầu trang">↑</button>
-
-        <!-- Bootstrap 5 JS và Popper -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
         <script>
-            // Hiển thị/n ẩn nút khi cuộn
-            window.onscroll = function () {
-                var scrollBtn = document.getElementById("scrollToTopBtn");
-                if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-                    scrollBtn.style.display = "block";
-                } else {
-                    scrollBtn.style.display = "none";
-                }
-            };
+                                // Hàm loại bỏ dấu tiếng Việt
+                                function removeVietnameseAccents(str) {
+                                    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                                            .replace(/đ/g, 'd').replace(/Đ/g, 'D');
+                                }
 
-            // Hàm cuộn lên đầu trang
-            function scrollToTop() {
-                window.scrollTo({top: 0, behavior: "smooth"});
-            }
+                                // Hàm tạo mã lớp học tự động
+                                function generateClassCode(className, idKhoi) {
+                                    if (!className)
+                                        return '';
+                                    className = removeVietnameseAccents(className).toLowerCase();
+                                    let initials = className.split(/\s+/).map(word => word.charAt(0).toUpperCase()).join('');
+                                    let grade = idKhoi >= 1 && idKhoi <= 7 ? (idKhoi + 5) : 0;
+                                    let gradeStr = grade > 0 ? grade.toString().padStart(2, '0') : '';
+                                    return initials + gradeStr;
+                                }
 
-            // Hàm loại bỏ dấu tiếng Việt
-            function removeVietnameseAccents(str) {
-                return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-                        .replace(/đ/g, 'd').replace(/Đ/g, 'D');
-            }
+                                // Cập nhật mã lớp học
+                                function updateClassCode() {
+                                    const tenLopHoc = document.getElementById('tenLopHoc').value;
+                                    const idKhoi = parseInt('${ID_Khoi}' || '0');
+                                    const classCodeInput = document.getElementById('classCode');
+                                    console.log('ID_Khoi:', idKhoi, 'tenLopHoc:', tenLopHoc); // Debug
+                                    classCodeInput.value = generateClassCode(tenLopHoc, idKhoi);
+                                }
 
-            // Hàm tạo mã lớp học tự động
-            function generateClassCode(className, idKhoi) {
-                if (!className)
-                    return '';
-                className = removeVietnameseAccents(className).toLowerCase();
-                let initials = className.split(/\s+/).map(word => word.charAt(0).toUpperCase()).join('');
-                let grade = idKhoi >= 1 && idKhoi <= 7 ? (idKhoi + 5) : 0;
-                let gradeStr = grade > 0 ? grade.toString().padStart(2, '0') : '';
-                return initials + gradeStr;
-            }
+                                // Gắn sự kiện input cho tenLopHoc
+                                document.getElementById('tenLopHoc').addEventListener('input', updateClassCode);
 
-            // Cập nhật mã lớp học
-            function updateClassCode() {
-                const tenLopHoc = document.getElementById('tenLopHoc').value;
-                const idKhoi = parseInt('${ID_Khoi}' || '0');
-                const classCodeInput = document.getElementById('classCode');
-                classCodeInput.value = generateClassCode(tenLopHoc, idKhoi);
-            }
+                                // Cập nhật mã lớp học khi trang tải
+                                window.addEventListener('load', function () {
+                                    console.log('Page loaded, calling updateClassCode');
+                                    updateClassCode();
+                                });
 
-            // Hàm tạo lịch học tự động
-            function generateSchedule() {
-                const container = document.getElementById('scheduleContainer');
-                const startDateInput = document.getElementById('startDate').value;
-                const defaultSlotHoc = document.getElementById('defaultSlotHoc').value;
-                const defaultPhongHoc = document.getElementById('defaultPhongHoc').value;
-                const weekdays = Array.from(document.querySelectorAll('input[name="weekdays"]:checked')).map(cb => parseInt(cb.value));
-                const startKhoaHoc = '${khoaHoc.thoiGianBatDau}' || '2000-01-01';
-                const endKhoaHoc = '${khoaHoc.thoiGianKetThuc}' || '2100-12-31';
-                const today = new Date().toISOString().split('T')[0];
+                                // Hàm tạo lịch học tự động dựa trên các thứ trong tuần
+                                function generateSchedule() {
+                                    const container = document.getElementById('scheduleContainer');
+                                    const startDateInput = document.getElementById('startDate').value;
+                                    const defaultSlotHoc = document.getElementById('defaultSlotHoc').value;
+                                    const defaultPhongHoc = document.getElementById('defaultPhongHoc').value;
+                                    const weekdays = Array.from(document.querySelectorAll('input[name="weekdays"]:checked')).map(cb => parseInt(cb.value));
+                                    const startKhoaHoc = '${khoaHoc.thoiGianBatDau}' || '2000-01-01';
+                                    const endKhoaHoc = '${khoaHoc.thoiGianKetThuc}' || '2100-12-31';
+                                    const today = new Date().toISOString().split('T')[0];
 
-                // Xóa các lịch học hiện có
-                container.innerHTML = '';
+                                    console.log('generateSchedule:', {startDateInput, defaultSlotHoc, defaultPhongHoc, weekdays, startKhoaHoc, endKhoaHoc}); // Debug
 
-                if (!startDateInput) {
-                    alert('Vui lòng chọn ngày bắt đầu!');
-                    return;
-                }
-                if (!defaultSlotHoc || !defaultPhongHoc) {
-                    alert('Vui lòng chọn slot học và phòng học mặc định!');
-                    return;
-                }
-                if (weekdays.length === 0) {
-                    alert('Vui lòng chọn ít nhất một thứ trong tuần!');
-                    return;
-                }
+                                    // Xóa các lịch học hiện có
+                                    container.innerHTML = '';
 
-                const startDate = new Date(startDateInput);
-                if (isNaN(startDate)) {
-                    alert('Ngày bắt đầu không hợp lệ!');
-                    return;
-                }
-                if (startDate < new Date(today)) {
-                    alert('Ngày bắt đầu không được trong quá khứ!');
-                    return;
-                }
-                if (startKhoaHoc && startDate < new Date(startKhoaHoc)) {
-                    alert('Ngày bắt đầu phải sau hoặc bằng ngày bắt đầu khóa học (' + startKhoaHoc + ')!');
-                    return;
-                }
-                if (endKhoaHoc && startDate > new Date(endKhoaHoc)) {
-                    alert('Ngày bắt đầu phải trước hoặc bằng ngày kết thúc khóa học (' + endKhoaHoc + ')!');
-                    return;
-                }
+                                    if (!startDateInput) {
+                                        alert('Vui lòng chọn ngày bắt đầu!');
+                                        return;
+                                    }
+                                    if (!defaultSlotHoc || !defaultPhongHoc) {
+                                        alert('Vui lòng chọn slot học và phòng học mặc định!');
+                                        return;
+                                    }
+                                    if (weekdays.length === 0) {
+                                        alert('Vui lòng chọn ít nhất một thứ trong tuần!');
+                                        return;
+                                    }
 
-                let schedules = [];
-                weekdays.forEach(weekday => {
-                    let currentDate = new Date(startDate);
-                    while (currentDate.getDay() !== weekday) {
-                        currentDate.setDate(currentDate.getDate() + 1);
-                    }
-                    while (currentDate <= new Date(endKhoaHoc)) {
-                        const scheduleDate = new Date(currentDate);
-                        const dateStr = scheduleDate.toISOString().split('T')[0];
-                        schedules.push({date: dateStr, slotHoc: defaultSlotHoc, phongHoc: defaultPhongHoc});
-                        currentDate.setDate(currentDate.getDate() + 7);
-                    }
-                });
+                                    const startDate = new Date(startDateInput);
+                                    if (isNaN(startDate)) {
+                                        alert('Ngày bắt đầu không hợp lệ!');
+                                        return;
+                                    }
+                                    if (startDate < new Date(today)) {
+                                        alert('Ngày bắt đầu không được trong quá khứ!');
+                                        return;
+                                    }
+                                    if (startKhoaHoc && startDate < new Date(startKhoaHoc)) {
+                                        alert('Ngày bắt đầu phải sau hoặc bằng ngày bắt đầu khóa học (' + startKhoaHoc + ')!');
+                                        return;
+                                    }
+                                    if (endKhoaHoc && startDate > new Date(endKhoaHoc)) {
+                                        alert('Ngày bắt đầu phải trước hoặc bằng ngày kết thúc khóa học (' + endKhoaHoc + ')!');
+                                        return;
+                                    }
 
-                // Sắp xếp lịch theo thứ tự ngày tăng dần
-                schedules.sort((a, b) => new Date(a.date) - new Date(b.date));
+                                    let schedules = [];
+                                    weekdays.forEach(weekday => {
+                                        let currentDate = new Date(startDate);
+                                        // Điều chỉnh currentDate đến đúng thứ trong tuần được chọn
+                                        while (currentDate.getDay() !== weekday) {
+                                            currentDate.setDate(currentDate.getDate() + 1);
+                                        }
+                                        // Tạo lịch cho đến khi vượt quá thời gian kết thúc khóa học
+                                        while (currentDate <= new Date(endKhoaHoc)) {
+                                            const scheduleDate = new Date(currentDate);
+                                            const dateStr = scheduleDate.toISOString().split('T')[0];
+                                            schedules.push({date: dateStr, slotHoc: defaultSlotHoc, phongHoc: defaultPhongHoc});
+                                            currentDate.setDate(currentDate.getDate() + 7); // Chuyển sang tuần tiếp theo
+                                        }
+                                    });
 
-                // Giới hạn số lượng lịch học
-                if (schedules.length > 50) {
-                    alert('Số lượng lịch học quá lớn (' + schedules.length + ')! Chỉ lấy 50 lịch đầu tiên.');
-                    schedules = schedules.slice(0, 50);
-                }
+                                    // Sắp xếp lịch theo thứ tự ngày tăng dần
+                                    schedules.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-                schedules.forEach(schedule => {
-                    const row = document.createElement('div');
-                    row.className = 'schedule-row';
-                    row.innerHTML = `
-                        <input type="date" class="form-control" name="ngayHoc[]" value="${schedule.date}" required>
-                        <select class="form-select" name="idSlotHoc[]" required>
-                            <option value="">Chọn slot học</option>
+                                    // Giới hạn số lượng lịch học để tránh hiệu suất kém (tùy chọn)
+                                    if (schedules.length > 50) {
+                                        alert('Số lượng lịch học quá lớn (' + schedules.length + ')! Chỉ lấy 50 lịch đầu tiên để tránh lỗi hiệu suất.');
+                                        schedules = schedules.slice(0, 50);
+                                    }
+
+                                    console.log('Generated schedules:', schedules); // Debug
+
+                                    // Tạo các hàng lịch học
+                                    schedules.forEach(schedule => {
+                                        const row = document.createElement('div');
+                                        row.className = 'schedule-row';
+                                        row.innerHTML = `
+                <input type="date" class="form-control" name="ngayHoc[]" required>
+                <select class="form-select" name="idSlotHoc[]" required>
+                    <option value="">Chọn slot học</option>
             <c:forEach var="slot" items="${slotHocList}">
-                                <option value="${slot.ID_SlotHoc}" ${schedule.slotHoc == slot.ID_SlotHoc ? 'selected' : ''}>${slot.slotThoiGian}</option>
+                        <option value="${slot.ID_SlotHoc}">${slot.slotThoiGian}</option>
             </c:forEach>
-                        </select>
-                        <select class="form-select" name="idPhongHoc[]" required>
-                            <option value="">Chọn phòng học</option>
+                </select>
+                <select class="form-select" name="idPhongHoc[]" required>
+                    <option value="">Chọn phòng học</option>
             <c:forEach var="phongHoc" items="${phongHocList}">
-                                <option value="${phongHoc.ID_PhongHoc}" data-succhua="${phongHoc.sucChua}" ${schedule.phongHoc == phongHoc.ID_PhongHoc ? 'selected' : ''}>${phongHoc.tenPhongHoc} (Sức chứa: ${phongHoc.sucChua})</option>
+                        <option value="${phongHoc.ID_PhongHoc}" data-succhua="${phongHoc.sucChua}">${phongHoc.tenPhongHoc} (Sức chứa: ${phongHoc.sucChua})</option>
             </c:forEach>
-                        </select>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove(); validateForm()">Xóa</button>
-                    `;
-                    container.appendChild(row);
-                    row.querySelector('select[name="idPhongHoc[]"]').addEventListener('change', validateForm);
-                });
+                </select>
+                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove(); validateForm()">Xóa</button>
+            `;
+                                        container.appendChild(row);
+                                        // Gán giá trị bằng JavaScript
+                                        const dateInput = row.querySelector('input[name="ngayHoc[]"]');
+                                        const slotSelect = row.querySelector('select[name="idSlotHoc[]"]');
+                                        const phongHocSelect = row.querySelector('select[name="idPhongHoc[]"]');
+                                        dateInput.value = schedule.date;
+                                        slotSelect.value = schedule.slotHoc;
+                                        phongHocSelect.value = schedule.phongHoc;
+                                        console.log('Schedule row:', {date: schedule.date, slotHoc: schedule.slotHoc, phongHoc: schedule.phongHoc}); // Debug
+                                        phongHocSelect.addEventListener('change', validateForm);
+                                    });
 
-                validateForm();
-            }
+                                    validateForm();
+                                }
 
-            // Thêm lịch học thủ công
-            function addScheduleRow() {
-                const container = document.getElementById('scheduleContainer');
-                const row = document.createElement('div');
-                row.className = 'schedule-row';
-                row.innerHTML = `
+                                // Thêm lịch học thủ công
+                                function addScheduleRow() {
+                                    const container = document.getElementById('scheduleContainer');
+                                    const row = document.createElement('div');
+                                    row.className = 'schedule-row';
+                                    row.innerHTML = `
                     <input type="date" class="form-control" name="ngayHoc[]" required>
                     <select class="form-select" name="idSlotHoc[]" required>
                         <option value="">Chọn slot học</option>
@@ -952,216 +876,197 @@
                     </select>
                     <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove(); validateForm()">Xóa</button>
                 `;
-                container.appendChild(row);
-                row.querySelector('select[name="idPhongHoc[]"]').addEventListener('change', validateForm);
-                validateForm();
-            }
+                                    container.appendChild(row);
+                                    row.querySelector('select[name="idPhongHoc[]"]').addEventListener('change', validateForm);
+                                    validateForm();
+                                }
 
-            // Validation form
-            function validateForm() {
-                const form = document.getElementById('addClassForm');
-                const tenLopHoc = document.getElementById('tenLopHoc');
-                const classCode = document.getElementById('classCode');
-                const siSoToiDa = document.getElementById('siSoToiDa');
-                const siSoToiThieu = document.getElementById('siSoToiThieu');
-                const soTien = document.getElementById('soTien');
-                const order = document.getElementById('order');
-                const ghiChu = document.getElementById('ghiChu');
-                const ngayHocInputs = document.getElementsByName('ngayHoc[]');
-                const idSlotHocSelects = document.getElementsByName('idSlotHoc[]');
-                const idPhongHocSelects = document.getElementsByName('idPhongHoc[]');
-                const startKhoaHoc = '${khoaHoc.thoiGianBatDau}' || '2000-01-01';
-                const endKhoaHoc = '${khoaHoc.thoiGianKetThuc}' || '2100-12-31';
-                const today = new Date().toISOString().split('T')[0];
+                                // Validation form
+                                function validateForm() {
+                                    const form = document.getElementById('addClassForm');
+                                    const tenLopHoc = document.getElementById('tenLopHoc');
+                                    const classCode = document.getElementById('classCode');
+                                    const siSoToiDa = document.getElementById('siSoToiDa');
+                                    const siSoToiThieu = document.getElementById('siSoToiThieu');
+                                    const soTien = document.getElementById('soTien');
+                                    const order = document.getElementById('order');
+                                    const ghiChu = document.getElementById('ghiChu');
+                                    const ngayHocInputs = document.getElementsByName('ngayHoc[]');
+                                    const idSlotHocSelects = document.getElementsByName('idSlotHoc[]');
+                                    const idPhongHocSelects = document.getElementsByName('idPhongHoc[]');
+                                    const startKhoaHoc = '${khoaHoc.thoiGianBatDau}' || '2000-01-01';
+                                    const endKhoaHoc = '${khoaHoc.thoiGianKetThuc}' || '2100-12-31';
+                                    const today = new Date().toISOString().split('T')[0];
 
-                let isValid = true;
+                                    let isValid = true;
 
-                // Validation cho tenLopHoc
-                if (!tenLopHoc.value || tenLopHoc.value.trim() === '') {
-                    tenLopHoc.setCustomValidity('Tên lớp học không được để trống!');
-                    isValid = false;
-                } else if (tenLopHoc.value.length > 100) {
-                    tenLopHoc.setCustomValidity('Tên lớp học không được dài quá 100 ký tự!');
-                    isValid = false;
-                } else {
-                    tenLopHoc.setCustomValidity('');
-                }
+                                    // Validation cho tenLopHoc
+                                    if (!tenLopHoc.value || tenLopHoc.value.trim() === '') {
+                                        tenLopHoc.setCustomValidity('Tên lớp học không được để trống!');
+                                        isValid = false;
+                                    } else if (tenLopHoc.value.length > 100) {
+                                        tenLopHoc.setCustomValidity('Tên lớp học không được dài quá 100 ký tự!');
+                                        isValid = false;
+                                    } else {
+                                        tenLopHoc.setCustomValidity('');
+                                    }
 
-                // Validation cho classCode
-                if (!classCode.value || classCode.value.trim() === '') {
-                    classCode.setCustomValidity('Mã lớp học không được để trống!');
-                    isValid = false;
-                } else if (classCode.value.length > 20 || !/^[A-Za-z0-9]+$/.test(classCode.value)) {
-                    classCode.setCustomValidity('Mã lớp học chỉ được chứa chữ cái và số, tối đa 20 ký tự!');
-                    isValid = false;
-                } else {
-                    classCode.setCustomValidity('');
-                }
+                                    // Validation cho classCode
+                                    if (!classCode.value || classCode.value.trim() === '') {
+                                        classCode.setCustomValidity('Mã lớp học không được để trống!');
+                                        isValid = false;
+                                    } else if (classCode.value.length > 20 || !/^[A-Za-z0-9]+$/.test(classCode.value)) {
+                                        classCode.setCustomValidity('Mã lớp học chỉ được chứa chữ cái và số, tối đa 20 ký tự!');
+                                        isValid = false;
+                                    } else {
+                                        classCode.setCustomValidity('');
+                                    }
 
-                // Validation cho siSoToiDa
-                const siSoToiDaValue = parseInt(siSoToiDa.value);
-                if (isNaN(siSoToiDaValue) || siSoToiDaValue <= 0) {
-                    siSoToiDa.setCustomValidity('Sĩ số tối đa phải lớn hơn 0!');
-                    isValid = false;
-                } else {
-                    siSoToiDa.setCustomValidity('');
-                }
+                                    // Validation cho siSoToiDa
+                                    const siSoToiDaValue = parseInt(siSoToiDa.value);
+                                    if (isNaN(siSoToiDaValue) || siSoToiDaValue <= 0) {
+                                        siSoToiDa.setCustomValidity('Sĩ số tối đa phải lớn hơn 0!');
+                                        isValid = false;
+                                    } else {
+                                        siSoToiDa.setCustomValidity('');
+                                    }
 
-                // Validation cho siSoToiThieu
-                const siSoToiThieuValue = parseInt(siSoToiThieu.value);
-                if (isNaN(siSoToiThieuValue) || siSoToiThieuValue < 0) {
-                    siSoToiThieu.setCustomValidity('Sĩ số tối thiểu phải là số không âm!');
-                    isValid = false;
-                } else if (!isNaN(siSoToiDaValue) && !isNaN(siSoToiThieuValue) && siSoToiThieuValue > siSoToiDaValue) {
-                    siSoToiThieu.setCustomValidity('Sĩ số tối thiểu phải nhỏ hơn hoặc bằng sĩ số tối đa!');
-                    isValid = false;
-                } else {
-                    siSoToiThieu.setCustomValidity('');
-                }
+                                    // Validation cho siSoToiThieu
+                                    const siSoToiThieuValue = parseInt(siSoToiThieu.value);
+                                    if (isNaN(siSoToiThieuValue) || siSoToiThieuValue < 0) {
+                                        siSoToiThieu.setCustomValidity('Sĩ số tối thiểu phải là số không âm!');
+                                        isValid = false;
+                                    } else if (!isNaN(siSoToiDaValue) && !isNaN(siSoToiThieuValue) && siSoToiThieuValue > siSoToiDaValue) {
+                                        siSoToiThieu.setCustomValidity('Sĩ số tối thiểu phải nhỏ hơn hoặc bằng sĩ số tối đa!');
+                                        isValid = false;
+                                    } else {
+                                        siSoToiThieu.setCustomValidity('');
+                                    }
 
-                // Validation cho soTien
-                const soTienValue = parseInt(soTien.value);
-                if (soTien.value && (isNaN(soTienValue) || soTienValue < 0)) {
-                    soTien.setCustomValidity('Học phí phải là số không âm!');
-                    isValid = false;
-                } else if (soTien.value && soTien.value.length > 10) {
-                    soTien.setCustomValidity('Học phí không được dài quá 10 chữ số!');
-                    isValid = false;
-                } else {
-                    soTien.setCustomValidity('');
-                }
+                                    // Validation cho soTien
+                                    const soTienValue = parseInt(soTien.value);
+                                    if (soTien.value && (isNaN(soTienValue) || soTienValue < 0)) {
+                                        soTien.setCustomValidity('Học phí phải là số không âm!');
+                                        isValid = false;
+                                    } else if (soTien.value && soTien.value.length > 10) {
+                                        soTien.setCustomValidity('Học phí không được dài quá 10 chữ số!');
+                                        isValid = false;
+                                    } else {
+                                        soTien.setCustomValidity('');
+                                    }
 
-                // Validation cho order
-                const orderValue = parseInt(order.value);
-                if (order.value && (isNaN(orderValue) || orderValue < 0)) {
-                    order.setCustomValidity('Thứ tự phải là số không âm!');
-                    isValid = false;
-                } else {
-                    order.setCustomValidity('');
-                }
+                                    // Validation cho order
+                                    const orderValue = parseInt(order.value);
+                                    if (order.value && (isNaN(orderValue) || orderValue < 0)) {
+                                        order.setCustomValidity('Thứ tự phải là số không âm!');
+                                        isValid = false;
+                                    } else {
+                                        order.setCustomValidity('');
+                                    }
 
-                // Validation cho ghiChu
-                if (ghiChu.value.length > 500) {
-                    ghiChu.setCustomValidity('Ghi chú không được dài quá 500 ký tự!');
-                    isValid = false;
-                } else {
-                    ghiChu.setCustomValidity('');
-                }
+                                    // Validation cho ghiChu
+                                    if (ghiChu.value.length > 500) {
+                                        ghiChu.setCustomValidity('Ghi chú không được dài quá 500 ký tự!');
+                                        isValid = false;
+                                    } else {
+                                        ghiChu.setCustomValidity('');
+                                    }
 
-                // Validation cho lịch học
-                for (let i = 0; i < ngayHocInputs.length; i++) {
-                    const ngayHoc = ngayHocInputs[i];
-                    const idSlotHoc = idSlotHocSelects[i];
-                    const idPhongHoc = idPhongHocSelects[i];
+                                    // Validation cho lịch học
+                                    for (let i = 0; i < ngayHocInputs.length; i++) {
+                                        const ngayHoc = ngayHocInputs[i];
+                                        const idSlotHoc = idSlotHocSelects[i];
+                                        const idPhongHoc = idPhongHocSelects[i];
 
-                    // Kiểm tra ngày học
-                    if (!ngayHoc.value || ngayHoc.value.trim() === '') {
-                        ngayHoc.setCustomValidity('Ngày học không được để trống!');
-                        isValid = false;
-                    } else if (ngayHoc.value < today) {
-                        ngayHoc.setCustomValidity('Ngày học không được trong quá khứ!');
-                        isValid = false;
-                    } else if (startKhoaHoc && ngayHoc.value < startKhoaHoc) {
-                        ngayHoc.setCustomValidity('Ngày học phải sau hoặc bằng ngày bắt đầu khóa học (' + startKhoaHoc + ')!');
-                        isValid = false;
-                    } else if (endKhoaHoc && ngayHoc.value > endKhoaHoc) {
-                        ngayHoc.setCustomValidity('Ngày học phải trước hoặc bằng ngày kết thúc khóa học (' + endKhoaHoc + ')!');
-                        isValid = false;
-                    } else {
-                        try {
-                            new Date(ngayHoc.value);
-                            ngayHoc.setCustomValidity('');
-                        } catch (e) {
-                            ngayHoc.setCustomValidity('Ngày học không đúng định dạng YYYY-MM-DD!');
-                            isValid = false;
-                        }
-                    }
+                                        // Kiểm tra ngày học
+                                        if (!ngayHoc.value || ngayHoc.value.trim() === '') {
+                                            ngayHoc.setCustomValidity('Ngày học không được để trống!');
+                                            isValid = false;
+                                        } else if (ngayHoc.value < today) {
+                                            ngayHoc.setCustomValidity('Ngày học không được trong quá khứ!');
+                                            isValid = false;
+                                        } else if (startKhoaHoc && ngayHoc.value < startKhoaHoc) {
+                                            ngayHoc.setCustomValidity('Ngày học phải sau hoặc bằng ngày bắt đầu khóa học (' + startKhoaHoc + ')!');
+                                            isValid = false;
+                                        } else if (endKhoaHoc && ngayHoc.value > endKhoaHoc) {
+                                            ngayHoc.setCustomValidity('Ngày học phải trước hoặc bằng ngày kết thúc khóa học (' + endKhoaHoc + ')!');
+                                            isValid = false;
+                                        } else {
+                                            try {
+                                                new Date(ngayHoc.value);
+                                                ngayHoc.setCustomValidity('');
+                                            } catch (e) {
+                                                ngayHoc.setCustomValidity('Ngày học không đúng định dạng YYYY-MM-DD!');
+                                                isValid = false;
+                                            }
+                                        }
 
-                    // Kiểm tra slot học
-                    if (!idSlotHoc.value || idSlotHoc.value.trim() === '') {
-                        idSlotHoc.setCustomValidity('Slot học không được để trống!');
-                        isValid = false;
-                    } else {
-                        idSlotHoc.setCustomValidity('');
-                    }
+                                        // Kiểm tra slot học
+                                        if (!idSlotHoc.value || idSlotHoc.value.trim() === '') {
+                                            idSlotHoc.setCustomValidity('Slot học không được để trống!');
+                                            isValid = false;
+                                        } else {
+                                            idSlotHoc.setCustomValidity('');
+                                        }
 
-                    // Kiểm tra phòng học
-                    if (!idPhongHoc.value || idPhongHoc.value.trim() === '') {
-                        idPhongHoc.setCustomValidity('Phòng học không được để trống!');
-                        isValid = false;
-                    } else {
-                        idPhongHoc.setCustomValidity('');
-                    }
+                                        // Kiểm tra phòng học
+                                        if (!idPhongHoc.value || idPhongHoc.value.trim() === '') {
+                                            idPhongHoc.setCustomValidity('Phòng học không được để trống!');
+                                            isValid = false;
+                                        } else {
+                                            idPhongHoc.setCustomValidity('');
+                                        }
 
-                    // Kiểm tra siSoToiDa so với sucChua của phòng học
-                    if (!isNaN(siSoToiDaValue) && idPhongHoc.value) {
-                        const sucChua = parseInt(idPhongHoc.selectedOptions[0].getAttribute('data-succhua') || '0');
-                        if (sucChua > 0 && siSoToiDaValue > sucChua) {
-                            siSoToiDa.setCustomValidity('Sĩ số tối đa vượt quá sức chứa phòng học (' + sucChua + ')!');
-                            isValid = false;
-                        }
-                    }
-                }
+                                        // Kiểm tra siSoToiDa so với sucChua của phòng học
+                                        if (!isNaN(siSoToiDaValue) && idPhongHoc.value) {
+                                            const sucChua = parseInt(idPhongHoc.selectedOptions[0].getAttribute('data-succhua') || '0');
+                                            if (sucChua > 0 && siSoToiDaValue > sucChua) {
+                                                siSoToiDa.setCustomValidity('Sĩ số tối đa vượt quá sức chứa phòng học (' + sucChua + ')!');
+                                                isValid = false;
+                                            }
+                                        }
+                                    }
 
-                // Kiểm tra số lượng lịch học
-                if (ngayHocInputs.length === 0) {
-                    form.setCustomValidity('Phải có ít nhất 1 lịch học!');
-                    isValid = false;
-                } else {
-                    form.setCustomValidity('');
-                }
+                                    // Kiểm tra số lượng lịch học
+                                    if (ngayHocInputs.length === 0) {
+                                        form.setCustomValidity('Phải có ít nhất 1 lịch học!');
+                                        isValid = false;
+                                    } else {
+                                        form.setCustomValidity('');
+                                    }
 
-                return isValid;
-            }
+                                    return isValid;
+                                }
 
-            // Gắn sự kiện input để validate
-            document.getElementById('tenLopHoc').addEventListener('input', function () {
-                updateClassCode();
-                validateForm();
-            });
-            document.getElementById('classCode').addEventListener('input', validateForm);
-            document.getElementById('siSoToiDa').addEventListener('input', validateForm);
-            document.getElementById('siSoToiThieu').addEventListener('input', validateForm);
-            document.getElementById('soTien').addEventListener('input', validateForm);
-            document.getElementById('order').addEventListener('input', validateForm);
-            document.getElementById('ghiChu').addEventListener('input', validateForm);
-            document.getElementById('startDate').addEventListener('input', validateForm);
-            document.getElementById('defaultSlotHoc').addEventListener('change', validateForm);
-            document.getElementById('defaultPhongHoc').addEventListener('change', validateForm);
+                                // Gắn sự kiện input để validate
+                                document.getElementById('tenLopHoc').addEventListener('input', validateForm);
+                                document.getElementById('classCode').addEventListener('input', validateForm);
+                                document.getElementById('siSoToiDa').addEventListener('input', validateForm);
+                                document.getElementById('siSoToiThieu').addEventListener('input', validateForm);
+                                document.getElementById('soTien').addEventListener('input', validateForm);
+                                document.getElementById('order').addEventListener('input', validateForm);
+                                document.getElementById('ghiChu').addEventListener('input', validateForm);
+                                document.getElementById('startDate').addEventListener('input', validateForm);
+                                document.getElementById('defaultSlotHoc').addEventListener('change', validateForm);
+                                document.getElementById('defaultPhongHoc').addEventListener('change', validateForm);
 
-            // Gắn sự kiện cho các select phòng học hiện có
-            document.querySelectorAll('select[name="idPhongHoc[]"]').forEach(select => {
-                select.addEventListener('change', validateForm);
-            });
+                                // Gắn sự kiện cho các select phòng học hiện có
+                                document.querySelectorAll('select[name="idPhongHoc[]"]').forEach(select => {
+                                    select.addEventListener('change', validateForm);
+                                });
 
-            // Gắn sự kiện submit để validate và xác nhận
-            document.getElementById('addClassForm').addEventListener('submit', function (event) {
-                if (!validateForm()) {
-                    event.preventDefault();
-                    return;
-                }
-                if (!confirm('Bạn có chắc muốn thêm lớp học này?')) {
-                    event.preventDefault();
-                }
-            });
+                                // Gắn sự kiện submit để validate toàn bộ form
+                                document.getElementById('addClassForm').addEventListener('submit', function (event) {
+                                    if (!validateForm()) {
+                                        event.preventDefault();
+                                    }
+                                });
 
-            // Kiểm tra định dạng file ảnh
-            document.getElementById('image').addEventListener('change', function (e) {
-                const file = e.target.files[0];
-                if (file && !['image/jpeg', 'image/png'].includes(file.type)) {
-                    alert('Chỉ chấp nhận file .jpg hoặc .png!');
-                    e.target.value = '';
-                }
-            });
-
-            // Toggle dropdown menu
-            function toggleDropdown() {
-                const dropdown = document.getElementById('adminDropdown');
-                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-            }
-
-            // Cập nhật mã lớp học khi trang tải
-            window.addEventListener('load', updateClassCode);
+                                // Toggle dropdown menu
+                                function toggleDropdown() {
+                                    const dropdown = document.getElementById('adminDropdown');
+                                    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                                }
         </script>
     </body>
 </html>

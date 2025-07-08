@@ -36,6 +36,7 @@ public class ManageSchedule extends HttpServlet {
 
         LichHocDAO dao = new LichHocDAO();
         List<LichHoc> lichHocList = dao.getLichHocByMonth1(year, month);
+        System.out.println("lichHocList size: " + lichHocList.size());
 
         Set<Integer> scheduleDays = lichHocList.stream()
                 .filter(lh -> lh.getNgayHoc() != null)

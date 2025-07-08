@@ -1,6 +1,13 @@
+<%-- 
+    Document   : manageSchedule
+    Created on : July 8, 2025, 11:00:00 PM
+    Author     : Vuh26
+--%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="java.util.*, java.text.*" %>
 <!DOCTYPE html>
 <html>
@@ -169,51 +176,61 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Chuyển dữ liệu JSTL sang JS object an toàn
         const lichHocList = [
-            <c:forEach items="${lichHocList}" var="lich">
-            {
-                tenLopHoc: "${not empty lich.tenLopHoc ? lich.tenLopHoc : 'N/A'}",
-                tenPhongHoc: "${not empty lich.tenPhongHoc ? lich.tenPhongHoc : 'N/A'}",
-                slotThoiGian: "${not empty lich.slotThoiGian ? lich.slotThoiGian : 'N/A'}",
-                ghiChu: "${not empty lich.ghiChu ? lich.ghiChu : ''}",
-                day: ${lich.ngayHoc.dayOfMonth}
-            },
+            <c:forEach items="${lichHocList}" var="lich" varStatus="status">
+                {
+                    tenLopHoc: "${fn:escapeXml(lich.tenLopHoc != null ? lich.tenLopHoc : 'N/A')}",
+                    tenPhongHoc: "${fn:escapeXml(lich.tenPhongHoc != null ? lich.tenPhongHoc : 'N/A')}",
+                    slotThoiGian: "${fn:escapeXml(lich.slotThoiGian != null ? lich.slotThoiGian : 'N/A')}",
+                    ghiChu: "${fn:escapeXml(lich.ghiChu != null ? lich.ghiChu : '')}",
+                    day: ${lich.ngayHoc != null ? lich.dayOfMonth : 0}
+                }<c:if test="${!status.last}">,</c:if>
             </c:forEach>
         ];
-        
-        console.log("Dữ liệu lịch học:", lichHocList); // Kiểm tra trong console
 
-        // Xử lý sự kiện click
+        console.log("Dữ liệu lịch học (lichHocList):", lichHocList);
+        lichHocList.forEach(item => {
+            console.log("Lịch học: Day=" + item.day + ", Lớp=" + item.tenLopHoc + ", Phòng=" + item.tenPhongHoc);
+        });
+
         document.querySelectorAll('.btn-view').forEach(btn => {
             btn.addEventListener('click', function() {
                 const selectedDay = parseInt(this.getAttribute('data-day'));
-                document.getElementById('modalDay').textContent = 
-                    selectedDay + '/' + ${month} + '/' + ${year};
-                
-                // Lọc lịch học theo ngày
+                console.log("Ngày được chọn (selectedDay):", selectedDay);
+                document.getElementById('modalDay').textContent = selectedDay + '/' + ${month} + '/' + ${year};
+
                 const schedules = lichHocList.filter(item => item.day === selectedDay);
+                console.log("Lịch học cho ngày", selectedDay, ":", schedules);
+
                 const tbody = document.getElementById('scheduleTableBody');
                 tbody.innerHTML = '';
-                
+
                 if (schedules.length > 0) {
+                    console.log("Đang render", schedules.length, "lịch học...");
                     schedules.forEach(item => {
-                        tbody.innerHTML += `
-                            <tr>
-                                <td>${item.tenLopHoc}</td>
-                                <td>${item.tenPhongHoc}</td>
-                                <td>${item.slotThoiGian}</td>
-                                <td>${item.ghiChu}</td>
-                            </tr>
-                        `;
+                        console.log("Render lịch: ", item);
+                        const row = document.createElement('tr');
+                        const td1 = document.createElement('td');
+                        td1.textContent = item.tenLopHoc || 'N/A';
+                        const td2 = document.createElement('td');
+                        td2.textContent = item.tenPhongHoc || 'N/A';
+                        const td3 = document.createElement('td');
+                        td3.textContent = item.slotThoiGian || 'N/A';
+                        const td4 = document.createElement('td');
+                        td4.textContent = item.ghiChu || '';
+                        row.appendChild(td1);
+                        row.appendChild(td2);
+                        row.appendChild(td3);
+                        row.appendChild(td4);
+                        tbody.appendChild(row);
                     });
                 } else {
+                    console.log("Không có lịch học để render cho ngày", selectedDay);
                     tbody.innerHTML = '<tr><td colspan="4">Không có lịch học</td></tr>';
                 }
             });
         });
     });
 </script>
-
 </body>
 </html>
