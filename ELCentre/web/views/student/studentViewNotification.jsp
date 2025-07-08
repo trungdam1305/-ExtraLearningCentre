@@ -107,6 +107,7 @@
     <div class="sidebar-section">HỆ THỐNG</div>
     <a href="${pageContext.request.contextPath}/StudentViewNotificationServlet"><strong>Thông báo</strong></a>
     <a href="${pageContext.request.contextPath}/StudentEditProfileServlet">Tài khoản</a>
+    <a href="${pageContext.request.contextPath}/StudentSupportServlet">Hỗ trợ</a>
     <a href="${pageContext.request.contextPath}/LogoutServlet" class="logout-link">Đăng xuất</a>
 </div>
 

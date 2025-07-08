@@ -152,6 +152,10 @@
         <servlet-name>StudentViewScheduleServlet</servlet-name>
         <servlet-class>controller.StudentViewScheduleServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StudentSupportServlet</servlet-name>
+        <servlet-class>controller.StudentSupportServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -327,6 +331,10 @@
     <servlet-mapping>
         <servlet-name>StudentViewScheduleServlet</servlet-name>
         <url-pattern>/StudentViewScheduleServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentSupportServlet</servlet-name>
+        <url-pattern>/StudentSupportServlet</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>
