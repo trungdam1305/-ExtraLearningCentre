@@ -11,7 +11,7 @@
 <%@page import="java.time.LocalDate"%>
 <%@page import="model.Admin"%>
 <%@page import="dal.AdminDAO"%>
-
+<%@page import="java.util.UUID"%>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -22,6 +22,8 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <!-- Bootstrap Icons -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+        <!-- Font Awesome for additional icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
         <style>
             * {
                 box-sizing: border-box;
@@ -42,21 +44,22 @@
                 border-radius: 8px;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                 margin-top: 60px;
-                padding-bottom: 40px; /* Prevent footer overlap */
+                padding-bottom: 40px;
             }
 
             /* Form styling */
             h2 {
                 text-align: center;
-                color: #333;
-                margin-bottom: 30px;
-                font-size: 1.33rem; /* Reduced from ~2rem (2/3) */
+                color: #003087;
+                margin-bottom: 15px;
+                font-size: 1.07rem;
+                font-weight: 600;
             }
             form {
-                max-width: 500px; /* Reduced from 600px */
+                max-width: 500px;
                 margin: 0 auto;
                 background-color: #fff;
-                padding: 16px; /* Reduced from 20px */
+                padding: 16px;
                 border-radius: 8px;
                 box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             }
@@ -65,7 +68,7 @@
                 margin-bottom: 5px;
                 font-weight: bold;
                 color: #333;
-                font-size: 0.58rem; /* Reduced from 14px (~0.875rem, 2/3) */
+                font-size: 0.58rem;
             }
             input[type="text"],
             input[type="date"],
@@ -74,21 +77,30 @@
             textarea,
             select {
                 width: 100%;
-                padding: 6px; /* Reduced from 10px */
+                padding: 6px;
                 margin-bottom: 15px;
-                border: 1px solid #ccc;
+                border: 1px solid #ced4da;
                 border-radius: 6px;
-                font-size: 0.58rem; /* Reduced from 14px (~0.875rem, 2/3) */
+                font-size: 0.58rem;
                 box-sizing: border-box;
+                transition: border-color 0.3s ease;
+            }
+            input[type="text"]:focus,
+            input[type="date"]:focus,
+            input[type="number"]:focus,
+            select:focus,
+            textarea:focus {
+                border-color: #003087;
+                box-shadow: 0 0 5px rgba(0, 48, 135, 0.3);
             }
             input[type="text"],
             input[type="date"],
             input[type="number"],
             select {
-                height: 28px; /* Match manageCourses.jsp */
+                height: 28px;
             }
             input[type="file"] {
-                padding: 2px; /* Reduced from 3px */
+                padding: 2px;
             }
             input[readonly] {
                 background-color: #e9ecef;
@@ -96,41 +108,95 @@
             }
             textarea {
                 resize: vertical;
-                min-height: 60px; /* Reduced from 80px */
+                min-height: 60px;
             }
             button {
-                background-color: #007bff;
+                background-color: #003087;
                 color: white;
                 border: none;
-                padding: 6px 12px; /* Reduced from 10px 20px */
+                padding: 6px 12px;
                 border-radius: 6px;
                 cursor: pointer;
-                font-size: 0.58rem; /* Reduced from 14px (~0.875rem, 2/3) */
-                margin-right: 10px;
+                font-size: 0.58rem;
+                transition: background-color 0.3s ease, transform 0.2s ease;
             }
             button:hover {
-                background-color: #0056b3;
+                background-color: #00215a;
+                transform: translateY(-2px);
             }
-            p {
+            .alert-custom-success {
+                background-color: #22c55e;
+                border-color: #22c55e;
+                color: white;
+                border-radius: 8px;
+                padding: 8px;
+                margin-bottom: 10px;
+                font-size: 0.57rem;
                 text-align: center;
-                font-size: 0.58rem; /* Reduced from 14px (~0.875rem, 2/3) */
+                max-width: 500px;
+                margin-left: auto;
+                margin-right: auto;
             }
-            p[style*="red"] {
-                color: red;
-                font-weight: bold;
+            .alert-custom-danger {
+                background-color: #ef4444;
+                border-color: #ef4444;
+                color: white;
+                border-radius: 8px;
+                padding: 8px;
+                margin-bottom: 10px;
+                font-size: 0.57rem;
+                text-align: center;
+                max-width: 500px;
+                margin-left: auto;
+                margin-right: auto;
             }
-            p[style*="green"] {
-                color: green;
-                font-weight: bold;
-            }
-            form[action*="ManageCourse"] {
+            .dashboard-button {
                 text-align: center;
                 margin-top: 10px;
             }
+            .dashboard-button .btn {
+                border-radius: 6px;
+                padding: 6px 12px;
+                font-size: 0.57rem;
+                background-color: #003087;
+                border-color: #003087;
+                color: white;
+            }
+            .dashboard-button .btn:hover {
+                background-color: #00215a;
+                border-color: #00215a;
+                transform: translateY(-2px);
+            }
+            .dashboard-button .btn i {
+                margin-right: 4px;
+            }
             img {
-                max-width: 150px; /* Reduced from 200px */
+                max-width: 150px;
                 margin-bottom: 10px;
                 border-radius: 6px;
+                border: 2px solid lightblue;
+            }
+
+            /* Scroll to Top Button */
+            #scrollToTopBtn {
+                display: none;
+                position: fixed;
+                bottom: 15px;
+                right: 15px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                font-size: 14px;
+                cursor: pointer;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                z-index: 1000;
+                transition: background-color 0.3s ease;
+            }
+            #scrollToTopBtn:hover {
+                background-color: #0056b3;
             }
 
             /* Header styling */
@@ -252,14 +318,14 @@
                     padding-bottom: 30px;
                 }
                 h2 {
-                    font-size: 0.89rem; /* Reduced from 1.33rem (2/3) */
+                    font-size: 0.8rem;
                 }
                 form {
                     max-width: 100%;
                     padding: 12px;
                 }
                 label {
-                    font-size: 0.38rem; /* Reduced from 0.58rem (2/3) */
+                    font-size: 0.38rem;
                 }
                 input[type="text"],
                 input[type="date"],
@@ -267,14 +333,9 @@
                 input[type="file"],
                 textarea,
                 select {
-                    font-size: 0.38rem; /* Reduced from 0.58rem (2/3) */
+                    font-size: 0.38rem;
                     padding: 4px;
-                }
-                input[type="text"],
-                input[type="date"],
-                input[type="number"],
-                select {
-                    height: 24px;
+                    height: 26px;
                 }
                 input[type="file"] {
                     padding: 2px;
@@ -286,11 +347,25 @@
                     font-size: 0.38rem;
                     padding: 4px 8px;
                 }
-                p {
+                .alert-custom-success,
+                .alert-custom-danger {
                     font-size: 0.38rem;
+                    padding: 6px;
+                    margin-bottom: 8px;
+                }
+                .dashboard-button .btn {
+                    font-size: 0.38rem;
+                    padding: 4px 8px;
                 }
                 img {
-                    max-width: 100px; /* Reduced from 150px */
+                    max-width: 100px;
+                }
+                #scrollToTopBtn {
+                    bottom: 8px;
+                    right: 8px;
+                    width: 30px;
+                    height: 30px;
+                    font-size: 12px;
                 }
                 .sidebar {
                     width: 100%;
@@ -358,7 +433,7 @@
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="#">Dashboard</a></li>
+                <li><a href="#"><i class="fas fa-chart-line"></i> Dashboard</a></li>
             </ul>
             <div class="sidebar-section-title">Quản lý người dùng</div>
             <ul class="sidebar-menu">
@@ -368,10 +443,12 @@
             </ul>
             <div class="sidebar-section-title">Quản lý tài chính</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocphi"><i class="fas fa-money-bill-wave"></i> Học phí</a></li></ul>
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocphi"><i class="fas fa-money-bill-wave"></i> Học phí</a></li>
+            </ul>
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
+                <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-calendar-alt"></i> Lịch học</a></li>
             </ul>
             <div class="sidebar-section-title">Hệ thống</div>
             <ul class="sidebar-menu">
@@ -382,98 +459,132 @@
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=yeucautuvan"><i class="fas fa-blog"></i>Yêu cầu tư vấn</a></li>
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
                 <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
-                <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </div>
 
         <div class="content-container">
+            <!-- Tạo CSRF token nếu chưa tồn tại -->
+            <c:if test="${empty sessionScope.csrfToken}">
+                <% 
+                    String csrfToken = UUID.randomUUID().toString();
+                    session.setAttribute("csrfToken", csrfToken);
+                %>
+            </c:if>
+
             <h2>Cập nhật khóa học</h2>  
+
+            <!-- Thông báo -->
+            <c:if test="${not empty err}">
+                <div class="alert alert-custom-danger" role="alert">${err}</div>
+            </c:if>
+            <c:if test="${not empty suc}">
+                <div class="alert alert-custom-success" role="alert">${suc}</div>
+            </c:if>
+            <c:if test="${empty khoaHoc}">
+                <div class="alert alert-custom-danger" role="alert">Không có dữ liệu khóa học để hiển thị!</div>
+            </c:if>
+
             <form action="${pageContext.request.contextPath}/ManageCourse" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="submitUpdateCourse" />
                 <input type="hidden" name="ID_KhoaHoc" value="${khoaHoc.ID_KhoaHoc}" />
+                <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
 
-                <!-- Debug để kiểm tra khoaHoc -->
-                <c:if test="${empty khoaHoc}">
-                    <p style="color: red;">Không có dữ liệu khóa học để hiển thị!</p>
-                </c:if>
-
-                <label>ID khối học:</label>
-                <input type="text" value="${khoaHoc.ID_Khoi} (Lớp ${khoaHoc.ID_Khoi + 5}${khoaHoc.ID_Khoi == 8 ? ' - Tổng ôn' : ''})" readonly />
+                <label for="ID_Khoi">ID khối học:</label>
+                <input type="text" value="${khoaHoc.ID_Khoi} (Lớp ${khoaHoc.ID_Khoi <= 7 ? khoaHoc.ID_Khoi + 5 : 'Tổng ôn'})" readonly />
                 <input type="hidden" name="ID_Khoi" value="${khoaHoc.ID_Khoi}" />
 
-                <label>Tên khóa học:</label>
-                <input type="text" value="${khoaHoc.tenKhoaHoc}" readonly />
+                <label for="TenKhoaHoc">Tên khóa học:</label>
+                <input type="text" id="TenKhoaHoc" value="${khoaHoc.tenKhoaHoc}" readonly />
                 <input type="hidden" name="TenKhoaHoc" value="${khoaHoc.tenKhoaHoc}" />
 
-                <label>Mã khóa học:</label>
+                <label for="courseCode">Mã khóa học:</label>
                 <input type="text" id="courseCode" name="CourseCode" value="${khoaHoc.courseCode}" readonly />
 
-                <label>Mô tả:</label>
-                <textarea name="MoTa">${khoaHoc.moTa}</textarea>
+                <label for="MoTa">Mô tả:</label>
+                <textarea name="MoTa" id="MoTa">${khoaHoc.moTa}</textarea>
 
-                <label>Thời gian bắt đầu:</label>
-                <input type="date" name="ThoiGianBatDau" value="${khoaHoc.thoiGianBatDau}" min="${today}" />
+                <label for="ThoiGianBatDau">Thời gian bắt đầu:</label>
+                <input type="date" name="ThoiGianBatDau" id="ThoiGianBatDau" value="${khoaHoc.thoiGianBatDau}" min="${today}" required />
 
-                <label>Thời gian kết thúc:</label>
-                <input type="date" name="ThoiGianKetThuc" value="${khoaHoc.thoiGianKetThuc}" />
+                <label for="ThoiGianKetThuc">Thời gian kết thúc:</label>
+                <input type="date" name="ThoiGianKetThuc" id="ThoiGianKetThuc" value="${khoaHoc.thoiGianKetThuc}" min="${today}" required />
 
-                <label>Ghi chú:</label>
-                <input type="text" name="GhiChu" value="${khoaHoc.ghiChu}" />
+                <label for="GhiChu">Ghi chú:</label>
+                <input type="text" name="GhiChu" id="GhiChu" value="${khoaHoc.ghiChu}" />
 
-                <label>Trạng thái:</label>
-                <select name="TrangThai" required>
-                    <option value="">-- Chọn trạng thái --</option>
+                <label for="TrangThai">Trạng thái:<span style="color: red;">*</span></label>
+                <select name="TrangThai" id="TrangThai" required>
+                    <option value="" ${khoaHoc.trangThai == null ? 'selected' : ''}>-- Chọn trạng thái --</option>
                     <option value="Đang hoạt động" ${khoaHoc.trangThai == 'Đang hoạt động' ? 'selected' : ''}>Đang hoạt động</option>
-                    <option value="Chưa hoạt động" ${khoaHoc.trangThai == 'Chưa hoạt động' ? 'selected' : ''}>Chưa hoạt động</option>
                     <option value="Chưa bắt đầu" ${khoaHoc.trangThai == 'Chưa bắt đầu' ? 'selected' : ''}>Chưa bắt đầu</option>
                     <option value="Đã kết thúc" ${khoaHoc.trangThai == 'Đã kết thúc' ? 'selected' : ''}>Đã kết thúc</option>
                 </select>
 
                 <label>Hình ảnh hiện tại:</label>
-                <c:if test="${not empty khoaHoc.image}">
-                    <img src="${pageContext.request.contextPath}${khoaHoc.image}" alt="Hình ảnh khóa học" />
-                </c:if>
-                <c:if test="${empty khoaHoc.image}">
-                    <p>Chưa có hình ảnh</p>
-                </c:if>
-                <label>Tải lên hình ảnh mới (tùy chọn):</label>
-                <input type="file" name="Image" accept="image/jpeg,image/png" />
+                <c:choose>
+                    <c:when test="${not empty khoaHoc.image}">
+                        <img data-course-image="${pageContext.request.contextPath}/${khoaHoc.image}" src="${pageContext.request.contextPath}/${khoaHoc.image}" alt="Hình ảnh khóa học" />
+                    </c:when>
+                    <c:otherwise>
+                        <img src="https://via.placeholder.com/150" alt="No Image" />
+                    </c:otherwise>
+                </c:choose>
+                <label for="Image">Tải lên hình ảnh mới (tùy chọn):</label>
+                <input type="file" name="Image" id="Image" accept="image/jpeg,image/png" />
 
-                <label>Thứ tự:</label>
-                <input type="number" name="Order" value="${khoaHoc.order}" min="0" placeholder="Nhập thứ tự (tùy chọn)" />
+                <label for="Order">Thứ tự ưu tiên:</label>
+                <input type="number" name="Order" id="Order" value="${khoaHoc.order}" min="0" placeholder="Nhập thứ tự (tùy chọn)" />
 
                 <button type="submit">Cập nhật</button>
             </form>
 
-            <c:if test="${not empty err}">
-                <p style="color: red;">${err}</p>
-            </c:if>
-            <c:if test="${not empty suc}">
-                <p style="color: green;">${suc}</p>
-            </c:if>
-
             <!-- Nút quay lại -->
-            <form action="${pageContext.request.contextPath}/ManageCourse" method="get" style="margin-top: 10px;">
-                <input type="hidden" name="action" value="refresh" />
-                <input type="hidden" name="sortColumn" value="${sortColumn}" />
-                <input type="hidden" name="sortOrder" value="${sortOrder}" />
-                <input type="hidden" name="statusFilter" value="${statusFilter}" />
-                <input type="hidden" name="name" value="${name}" />
-                <input type="hidden" name="page" value="${pageNumber}" />
-                <button type="submit">Quay lại</button>
-            </form>
+            <div class="dashboard-button">
+                <form action="${pageContext.request.contextPath}/ManageCourse" method="get">
+                    <input type="hidden" name="action" value="refresh" />
+                    <input type="hidden" name="sortColumn" value="${sortColumn}" />
+                    <input type="hidden" name="sortOrder" value="${sortOrder}" />
+                    <input type="hidden" name="statusFilter" value="${statusFilter}" />
+                    <input type="hidden" name="name" value="${name}" />
+                    <input type="hidden" name="page" value="${pageNumber}" />
+                    <button type="submit" class="btn"><i class="bi bi-arrow-left"></i> Quay lại danh sách khóa học</button>
+                </form>
+            </div>
         </div>
 
         <div class="footer">
             <p>© 2025 EL CENTRE. Bản quyền thuộc về EL CENTRE.</p>
         </div>
 
+        <!-- Nút Scroll to Top -->
+        <button id="scrollToTopBtn" onclick="scrollToTop()" title="Cuộn lên đầu trang">↑</button>
+
         <% 
             java.time.LocalDate today = java.time.LocalDate.now();
             pageContext.setAttribute("today", today.toString());
         %>
 
+        <!-- Bootstrap 5 JS và Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
         <script>
+            // Hiển thị/n ẩn nút khi cuộn
+            window.onscroll = function () {
+                var scrollBtn = document.getElementById("scrollToTopBtn");
+                if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                    scrollBtn.style.display = "block";
+                } else {
+                    scrollBtn.style.display = "none";
+                }
+            };
+
+            // Hàm cuộn lên đầu trang
+            function scrollToTop() {
+                window.scrollTo({top: 0, behavior: "smooth"});
+            }
+
+            // Kiểm tra định dạng file ảnh
             document.querySelector('input[name="Image"]').addEventListener('change', function (e) {
                 const file = e.target.files[0];
                 if (file && !['image/jpeg', 'image/png'].includes(file.type)) {
@@ -482,21 +593,40 @@
                 }
             });
 
+            // Kiểm tra sự tồn tại của ảnh
+            document.querySelectorAll('img[data-course-image]').forEach(img => {
+                const imageUrl = img.getAttribute('data-course-image');
+                const fallbackUrl = 'https://via.placeholder.com/150';
+                const testImage = new Image();
+                testImage.src = imageUrl;
+                testImage.onload = () => {
+                    img.src = imageUrl;
+                };
+                testImage.onerror = () => {
+                    img.src = fallbackUrl;
+                    img.onerror = null;
+                };
+            });
+
+            // Kiểm tra ngày hợp lệ và xác nhận submit
             document.querySelector('form').addEventListener('submit', function (e) {
-                const trangThai = document.querySelector('[name="TrangThai"]').value;
-                if (!["Đang hoạt động", "Chưa hoạt động", "Chưa bắt đầu", "Đã kết thúc"].includes(trangThai)) {
+                const startDate = document.getElementById('ThoiGianBatDau').value;
+                const endDate = document.getElementById('ThoiGianKetThuc').value;
+                const trangThai = document.getElementById('TrangThai').value;
+                if (startDate && endDate && new Date(endDate) < new Date(startDate)) {
+                    alert('Ngày kết thúc phải sau ngày bắt đầu!');
+                    e.preventDefault();
+                    return;
+                }
+                if (!["Đang hoạt động", "Chưa bắt đầu", "Đã kết thúc", ""].includes(trangThai)) {
                     alert('Vui lòng chọn trạng thái hợp lệ!');
                     e.preventDefault();
                     return;
                 }
-                if (!confirm('Bạn có chắc muốn lưu khóa học này?')) {
+                if (!confirm('Bạn có chắc muốn lưu các thay đổi này?')) {
                     e.preventDefault();
                 }
             });
         </script>
-
-        <!-- Bootstrap 5 JS và Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     </body>
 </html>

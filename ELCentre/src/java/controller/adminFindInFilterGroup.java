@@ -1,4 +1,3 @@
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
@@ -69,6 +68,10 @@ public class adminFindInFilterGroup extends HttpServlet {
         PrintWriter out = response.getWriter();
         ArrayList<HocSinh_SDT> filteredList = HocSinh_SDTDAO.adminGetHocSinhFilter(keyword, status, khoa);
 
+        if (filteredList == null ) {
+            request.setAttribute("message", "Không tìm thấy học sinh nào phù hợp! ");
+            request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);
+        }
         session.setAttribute("hocsinhs", filteredList);
         request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);
     }

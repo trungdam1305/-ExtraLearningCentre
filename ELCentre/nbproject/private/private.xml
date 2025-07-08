@@ -2,17 +2,12 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group name="SWT">
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/controller/LoginServlet.java</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/controller/adminFindInFilterGroup.java</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveHocSinh.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/login.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/dal/HocSinh_SDTDAO.java</file>
-        </group>
         <group>
-            <file>file:/C:/Users/Vuh26/Desktop/trungDam/-ExtraLearningCentre/ELCentre/src/java/dal/KhoaHocDAO.java</file>
-            <file>file:/C:/Users/Vuh26/Desktop/trungDam/-ExtraLearningCentre/ELCentre/src/java/model/KhoaHoc.java</file>
-            <file>file:/C:/Users/Vuh26/Desktop/trungDam/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageCourse.java</file>
+            <file>file:/D:/Zalo%20Data/ELCentre/src/java/dal/GiaoVienDAO.java</file>
+            <file>file:/D:/Zalo%20Data/ELCentre/web/views/admin/adminReceiveHocSinh.jsp</file>
+            <file>file:/D:/Zalo%20Data/ELCentre/src/java/controller/adminFindInFilterGroup.java</file>
+            <file>file:/D:/Zalo%20Data/ELCentre/web/views/admin/adminReceiveGiaoVien.jsp</file>
+            <file>file:/D:/Zalo%20Data/ELCentre/src/java/dal/HocSinh_SDTDAO.java</file>
         </group>
     </open-files>
 </project-private>

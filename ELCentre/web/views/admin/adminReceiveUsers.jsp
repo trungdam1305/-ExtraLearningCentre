@@ -6,10 +6,10 @@
                  It supports filtering by status and role, searching, pagination, and actions such as viewing, 
                  enabling/disabling, and updating accounts for admin users.
     Parameters:(Handle from adminGetFromDashboard servlet)
-    - Method to get data from database in TaiKhoanChiTietDAO
+    - Method to get data from database in TaiKhoanChiTietDAO - (adminGetAllTaiKhoanHaveName)
     - @Param taikhoans (ArrayList<TaiKhoanChiTiet>): A session attribute containing the list of user account objects fetched from the database.
     - @Param message (String): An optional request or session attribute for displaying error or success messages.
---%>    
+--%>   
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>

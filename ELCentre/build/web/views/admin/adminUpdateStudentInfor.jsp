@@ -6,8 +6,11 @@
                  including address, school, and notes, while displaying read-only fields 
                  like account ID, name, birth date, gender, parent contact, status, and creation date.
     Parameters:
+    - Parameters:(Handle from adminActionWithUser servlet)
+    - Method to get data from database in HocSinhDAO - adminGetHocSinhByID
     - @Param hocsinhs (ArrayList<HocSinh>): A request attribute containing the list of student objects to be updated.
     - @Param type (String): A request attribute indicating the user type for the update action.
+    - Send data to adminActionWithUser servlet (do Post)
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
