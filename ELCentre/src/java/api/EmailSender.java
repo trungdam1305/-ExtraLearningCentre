@@ -10,6 +10,7 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
+import jakarta.mail.internet.MimeUtility;
 
 public class EmailSender {
 
@@ -38,7 +39,7 @@ public class EmailSender {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress(USERNAME, "ELCentre", "UTF-8"));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
-        message.setSubject(subject);
+        message.setSubject(MimeUtility.encodeText(subject, "UTF-8", "B"));
         
         // Thiết lập nội dung với UTF-8
         message.setContent(body, "text/html; charset=UTF-8");

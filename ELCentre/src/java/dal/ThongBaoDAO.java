@@ -43,22 +43,22 @@ public class ThongBaoDAO {
         }
     }
     
+    //Hàm nhập thông báo tư vấn
     public static void insertThongBaoTuVan(String noiDung) throws SQLException {
         DBContext db = DBContext.getInstance();
-        String sql = "INSERT INTO ThongBao (ID_TaiKhoan, NoiDung, ID_HocPhi, ThoiGian) " + "VALUES (?, ?, ?, GETDATE())";
-        
+        String sql = "INSERT INTO ThongBao (ID_TaiKhoan, NoiDung, ThoiGian) " + "VALUES (?, ?, GETDATE())";
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)){
             ps.setNull(1, java.sql.Types.INTEGER);
             ps.setString(2, noiDung);
-            ps.setNull(3, java.sql.Types.INTEGER);
             ps.executeUpdate();
         }
     }
     
+
+    //Hàm lấy thông báo theo id
     public static ThongBao getThongBaoById(int id) {
         DBContext db = DBContext.getInstance();
         ThongBao tb = null;
-        
         try {
             String sql = "SELECT * FROM ThongBao WHERE ID_ThongBao = ?";
             PreparedStatement ps = db.getConnection().prepareStatement(sql);
@@ -79,7 +79,8 @@ public class ThongBaoDAO {
         }
         return tb;
     }
-    
+        
+    //Hàm lấy ra tất cả yêu cầu tư 
     public static ArrayList<ThongBao> getAllTuVan() {
         ArrayList<ThongBao> list = new ArrayList<>();
         DBContext db = DBContext.getInstance();
@@ -92,7 +93,6 @@ public class ThongBaoDAO {
                     rs.getInt("ID_ThongBao"),
                     rs.getInt("ID_TaiKhoan"),
                     rs.getString("NoiDung"),
-                    rs.getInt("ID_HocPhi"),
                     rs.getTimestamp("ThoiGian").toLocalDateTime()
                 );
                 list.add(tb);

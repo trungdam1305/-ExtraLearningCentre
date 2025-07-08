@@ -8,6 +8,7 @@ public class ThongBao {
     private String noiDung;
     private Integer ID_HocPhi;
     private LocalDateTime thoiGian;
+    private Integer ID_DiemDanh;
 
 
     public ThongBao() {
@@ -19,6 +20,22 @@ public class ThongBao {
         this.noiDung = noiDung;
         this.ID_HocPhi = ID_HocPhi;
         this.thoiGian = thoiGian;
+    }
+
+    public ThongBao(Integer ID_ThongBao, Integer ID_TaiKhoan, String noiDung, LocalDateTime thoiGian) {
+        this.ID_ThongBao = ID_ThongBao;
+        this.ID_TaiKhoan = ID_TaiKhoan;
+        this.noiDung = noiDung;
+        this.thoiGian = thoiGian;
+    }
+
+    public ThongBao(Integer ID_ThongBao, Integer ID_TaiKhoan, String noiDung, Integer ID_HocPhi, LocalDateTime thoiGian, Integer ID_DiemDanh) {
+        this.ID_ThongBao = ID_ThongBao;
+        this.ID_TaiKhoan = ID_TaiKhoan;
+        this.noiDung = noiDung;
+        this.ID_HocPhi = ID_HocPhi;
+        this.thoiGian = thoiGian;
+        this.ID_DiemDanh = ID_DiemDanh;
     }
 
     public Integer getID_ThongBao() {
@@ -60,7 +77,12 @@ public class ThongBao {
     public void setThoiGian(LocalDateTime thoiGian) {
         this.thoiGian = thoiGian;
     }
-    
-    
-    
+
+    public Integer getID_DiemDanh() {
+        return ID_DiemDanh;
+    }
+
+    public void setID_DiemDanh(Integer ID_DiemDanh) {
+        this.ID_DiemDanh = ID_DiemDanh;
+    }    
 }
