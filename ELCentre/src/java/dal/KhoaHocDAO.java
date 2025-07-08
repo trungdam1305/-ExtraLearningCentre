@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dal;
 
-import com.sun.jdi.connect.spi.Connection;
+import java.sql.Connection;
 import dal.DBContext;
 import java.util.ArrayList;
 import model.KhoaHoc;
@@ -21,10 +17,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import model.KhoiHoc;
 
-/**
- *
- * @author Vuh26
- */
+
 public class KhoaHocDAO {
     public static ArrayList<KhoaHoc> adminGetAllKhoaHoc(){
         ArrayList<KhoaHoc> khoahocs = new ArrayList<KhoaHoc>() ; 
@@ -1436,6 +1429,55 @@ public class KhoaHocDAO {
         return false;
     }
            
-           
-
+    //Lấy ra khác khóa học đang mở        
+    public static List<KhoaHoc> getAllKhoaHocDangMo() {
+        List<KhoaHoc> list = new ArrayList<>();
+        String sql = """
+            SELECT kh.ID_KhoaHoc, kh.TenKhoaHoc, kh.MoTa, kh.ThoiGianBatDau, kh.ThoiGianKetThuc,
+                   kh.GhiChu, kh.TrangThai, kh.ID_Khoi, k.TenKhoi
+            FROM KhoaHoc kh
+            LEFT JOIN KhoiHoc k ON kh.ID_Khoi = k.ID_Khoi
+            WHERE kh.TrangThai = 'Active'
+        """;
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                KhoaHoc kh = new KhoaHoc();
+                kh.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                kh.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
+                kh.setMoTa(rs.getString("MoTa"));
+                kh.setThoiGianBatDau(rs.getDate("ThoiGianBatDau").toLocalDate());
+                kh.setThoiGianKetThuc(rs.getDate("ThoiGianKetThuc").toLocalDate());
+                kh.setGhiChu(rs.getString("GhiChu"));
+                kh.setTrangThai(rs.getString("TrangThai"));
+                kh.setID_Khoi(rs.getInt("ID_Khoi")); // Bổ sung: cần khớp với SELECT
+                kh.setTenKhoi(rs.getString("TenKhoi"));
+                list.add(kh);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }  
+    
+//    // Kiểm tra dữ liệu
+//    public static void main(String[] args) {
+//        List<KhoaHoc> ds = getAllKhoaHocDangMo();
+//        System.out.println("===== DANH SÁCH KHÓA HỌC ĐANG MỞ =====");
+//        if (ds.isEmpty()) {
+//            System.out.println("⚠️ Không có khóa học nào đang mở.");
+//        } else {
+//            for (KhoaHoc kh : ds) {
+//                System.out.println("ID: " + kh.getID_KhoaHoc());
+//                System.out.println("Tên khóa học: " + kh.getTenKhoaHoc());
+//                System.out.println("Mô tả: " + kh.getMoTa());
+//                System.out.println("Thời gian: " + kh.getThoiGianBatDau() + " → " + kh.getThoiGianKetThuc());
+//                System.out.println("Khối: " + kh.getTenKhoi());
+//                System.out.println("Ghi chú: " + kh.getGhiChu());
+//                System.out.println("Trạng thái: " + kh.getTrangThai());
+//                System.out.println("------------------------------------------------");
+//            }
+//        }
+//    }
 }

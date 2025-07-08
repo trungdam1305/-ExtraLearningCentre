@@ -1,5 +1,7 @@
-﻿
-USE SWP 
+﻿CREATE DATABASE SWP
+GO
+
+USE SWP
 GO
 
 /****** Object:  Table [dbo].[VaiTro]    Script Date: 26/06/2025 23:16:00 ******/
@@ -247,7 +249,7 @@ GO
 /****** Object:  Table [dbo].[ThongBao]    Script Date: 26/06/2025 23:16:00 ******/
 CREATE TABLE [dbo].[ThongBao](
     [ID_ThongBao] [int] IDENTITY(1,1) NOT NULL,
-    [ID_TaiKhoan] [int] NOT NULL,
+    [ID_TaiKhoan] [int] NULL,
     [NoiDung] [nvarchar](max) NULL,
     [ID_HocPhi] [int] NULL,
     [ThoiGian] [datetime] NOT NULL DEFAULT GETDATE(),

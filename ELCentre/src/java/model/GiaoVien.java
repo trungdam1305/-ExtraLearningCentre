@@ -53,12 +53,14 @@ public class GiaoVien {
     private String LopDangDayTrenTruong ; 
     
     private String TrangThaiDay ; 
+    
+    private String Email;
 
     // Constructors
     public GiaoVien() {
     }
 
-    public GiaoVien(Integer ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT, int ID_TruongHoc, BigDecimal Luong, int IsHot, String TrangThai, LocalDateTime NgayTao, String Avatar, String TenTruongHoc, String BangCap, String LopDangDayTrenTruong, String TrangThaiDay) {
+    public GiaoVien(Integer ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT, int ID_TruongHoc, BigDecimal Luong, int IsHot, String TrangThai, LocalDateTime NgayTao, String Avatar, String TenTruongHoc, String BangCap, String LopDangDayTrenTruong, String TrangThaiDay, String Email) {
         this.ID_GiaoVien = ID_GiaoVien;
         this.ID_TaiKhoan = ID_TaiKhoan;
         this.HoTen = HoTen;
@@ -74,6 +76,7 @@ public class GiaoVien {
         this.BangCap = BangCap;
         this.LopDangDayTrenTruong = LopDangDayTrenTruong;
         this.TrangThaiDay = TrangThaiDay;
+        this.Email = Email;
     }
     
     public GiaoVien(   int ID_TruongHoc,  String LopDangDayTrenTruong  ) {
@@ -223,5 +226,13 @@ public class GiaoVien {
 
     public void setAvatar(String Avatar) {
         this.Avatar = Avatar;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String Email) {
+        this.Email = Email;
     }
 }

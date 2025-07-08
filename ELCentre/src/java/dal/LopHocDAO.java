@@ -753,5 +753,111 @@ public class LopHocDAO {
             return false;
         }
     }
+    
+    //Lấy thông tin lớp học theo mã lớp 
+    public static LopHoc getLopHocByClassCode(String classCode) {
+        String sql = """
+            SELECT l.*, gv_lh.ID_GiaoVien, kh.TenKhoaHoc
+            FROM LopHoc l
+            LEFT JOIN GiaoVien_LopHoc gv_lh ON l.ID_LopHoc = gv_lh.ID_LopHoc
+            LEFT JOIN KhoaHoc kh ON l.ID_KhoaHoc = kh.ID_KhoaHoc
+            WHERE l.ClassCode = ?
+        """;
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, classCode);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    LopHoc lop = new LopHoc();
+                    lop.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                    lop.setClassCode(rs.getString("ClassCode"));
+                    lop.setTenLopHoc(rs.getString("TenLopHoc"));
+                    lop.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
+                    lop.setSiSo(rs.getInt("SiSo"));
+                    lop.setSiSoToiThieu(rs.getInt("SiSoToiThieu"));
+                    lop.setSiSoToiDa(rs.getInt("SiSoToiDa"));
+                    lop.setImage(rs.getString("Image"));
+                    lop.setOrder(rs.getInt("Order"));
+                    lop.setID_PhongHoc(rs.getInt("ID_PhongHoc"));
+                    lop.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+                    lop.setGhiChu(rs.getString("GhiChu"));
+                    lop.setID_GiaoVien(rs.getInt("ID_GiaoVien"));
+                    // Nạp thêm nếu cần
+                    return lop;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    //Lấy ra các lớp học trong khóa học bằng ID_KhoaHoc
+    public static List<LopHoc> getLopHocByKhoaHocId(int idKhoaHoc) {
+        List<LopHoc> list = new ArrayList<>();
+        String sql = """
+            SELECT lh.ID_LopHoc, lh.ClassCode, lh.TenLopHoc, lh.SiSo, lh.SiSoToiThieu, lh.SiSoToiDa,
+                   lh.NgayTao, lh.GhiChu,
+                   kh.TenKhoaHoc, kh.ThoiGianBatDau, kh.ThoiGianKetThuc
+            FROM LopHoc lh
+            LEFT JOIN KhoaHoc kh ON lh.ID_KhoaHoc = kh.ID_KhoaHoc
+            WHERE lh.ID_KhoaHoc = ?
+        """;
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idKhoaHoc);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    LopHoc lop = new LopHoc();
+                    lop.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                    lop.setClassCode(rs.getString("ClassCode"));
+                    lop.setTenLopHoc(rs.getString("TenLopHoc"));
+                    lop.setSiSo(rs.getInt("SiSo"));
+                    lop.setSiSoToiThieu(rs.getInt("SiSoToiThieu"));
+                    lop.setSiSoToiDa(rs.getInt("SiSoToiDa"));
+                    lop.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+                    lop.setGhiChu(rs.getString("GhiChu"));
 
+                    lop.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
+                    lop.setThoiGianBatDau(rs.getTimestamp("ThoiGianBatDau").toLocalDateTime());
+                    lop.setThoiGianKetThuc(rs.getTimestamp("ThoiGianKetThuc").toLocalDateTime());
+
+                    list.add(lop);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    //Kiểm tra dữ liệu
+    public static void main(String[] args) {
+        int idKhoaHoc = 1; // thay bằng ID_KhoaHoc bạn muốn test
+        List<LopHoc> ds = getLopHocByKhoaHocId(idKhoaHoc);
+
+        System.out.println("===== DANH SÁCH LỚP HỌC TRONG KHÓA HỌC ID: " + idKhoaHoc + " =====");
+
+        if (ds.isEmpty()) {
+            System.out.println("⚠️ Không có lớp học nào thuộc khóa học này.");
+            return;
+        }
+
+        int i = 1;
+        for (LopHoc lop : ds) {
+            System.out.println("----- Lớp " + (i++) + " -----");
+            System.out.println("Mã lớp:          " + lop.getClassCode());
+            System.out.println("Tên lớp học:     " + lop.getTenLopHoc());
+            System.out.println("Tên khóa học:    " + lop.getTenKhoaHoc());
+            System.out.println("Thời gian khóa:  " + lop.getThoiGianBatDau() + " → " + lop.getThoiGianKetThuc());
+            System.out.println("Sĩ số hiện tại:  " + lop.getSiSo());
+            System.out.println("Sĩ số tối thiểu: " + lop.getSiSoToiThieu());
+            System.out.println("Sĩ số tối đa:    " + lop.getSiSoToiDa());
+            System.out.println("Ngày tạo lớp:    " + lop.getNgayTao());
+            System.out.println("Ghi chú:         " + lop.getGhiChu());
+            System.out.println();
+        }
+    }
+    
+    
 }

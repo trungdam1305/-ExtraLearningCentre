@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dal;
 
-/**
- *
- * @author wrx_Chur04
- */
 import java.sql.Connection;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -21,6 +13,7 @@ import java.util.List;
 import model.GiaoVien;
 import model.GiaoVien_TruongHoc;
 import model.LichHoc;
+import model.LopHoc;
 
 public class GiaoVienDAO {
 
@@ -384,13 +377,6 @@ public class GiaoVienDAO {
             e.printStackTrace();
         }
         return giaoVien;
-    }
-
-    //Debugging DAO
-    public static void main(String[] args) {
-        GiaoVienDAO dao = new GiaoVienDAO();
-        double a = dao.getLuongTheoTaiKhoan(11);
-        System.out.println(a);
     }
 
     public String findConflictingClassName(int idGiaoVien, int idLopHoc, int idSlotHoc, LocalDate ngayHoc) {
@@ -807,5 +793,69 @@ public class GiaoVienDAO {
             }
         }
     }
+    
+    //Lấy thông tin giáo viên theo id
+    public static GiaoVien getGiaoVienById(int id) {
+        String sql = """
+            SELECT g.*, tk.Email
+            FROM GiaoVien g
+            JOIN TaiKhoan tk ON g.ID_TaiKhoan = tk.ID_TaiKhoan
+            WHERE g.ID_GiaoVien = ?
+        """;
 
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    GiaoVien gv = new GiaoVien();
+                    gv.setID_GiaoVien(rs.getInt("ID_GiaoVien"));
+                    gv.setHoTen(rs.getString("HoTen"));
+                    gv.setEmail(rs.getString("Email"));
+                    gv.setChuyenMon(rs.getString("ChuyenMon"));
+                    gv.setSDT(rs.getString("SDT"));
+                    gv.setAvatar(rs.getString("Avatar"));
+                    return gv;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    //Kiểm tra dữ liệu    
+    public static void main(String[] args) {
+        String classCode = "LICH09A";
+
+        // Bước 1: Lấy thông tin lớp học
+        LopHoc lop = LopHocDAO.getLopHocByClassCode(classCode);
+        if (lop == null) {
+            System.out.println("❌ Không tìm thấy lớp học với mã: " + classCode);
+            return;
+        }
+
+        System.out.println("===== THÔNG TIN LỚP HỌC =====");
+        System.out.println("ClassCode:  " + lop.getClassCode());
+        System.out.println("Tên lớp:    " + lop.getTenLopHoc());
+        System.out.println("Khóa học:   " + lop.getTenKhoaHoc());
+        System.out.println("Thời gian:  " + lop.getThoiGianBatDau() + " → " + lop.getThoiGianKetThuc());
+        System.out.println("Ghi chú:    " + lop.getGhiChu());
+        System.out.println("ID_Giáo viên phụ trách: " + lop.getID_GiaoVien());
+
+        // Bước 2: Lấy thông tin giáo viên từ ID_GiaoVien của lớp
+        GiaoVien gv = GiaoVienDAO.getGiaoVienById(lop.getID_GiaoVien());
+        if (gv == null) {
+            System.out.println("❌ Không tìm thấy giáo viên với ID: " + lop.getID_GiaoVien());
+            return;
+        }
+
+        System.out.println("\n===== THÔNG TIN GIÁO VIÊN =====");
+        System.out.println("Họ tên:     " + gv.getHoTen());
+        System.out.println("Email:      " + gv.getEmail());
+        System.out.println("SĐT:        " + gv.getSDT());
+        System.out.println("Chuyên môn: " + gv.getChuyenMon());
+        System.out.println("Avatar:     " + gv.getAvatar());
+    }
 }

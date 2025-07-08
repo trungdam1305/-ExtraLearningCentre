@@ -1,121 +1,113 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<c:if test="${empty sessionScope.user}">
+    <c:redirect url="${pageContext.request.contextPath}/views/login.jsp" />
+</c:if>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hồ sơ người dùng</title>
+    <meta charset="UTF-8">
+    <title>Chỉnh sửa hồ sơ</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/student-style.css">
     <style>
         body {
-            margin: 0;
             font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
             display: flex;
+            background-color: #f4f6f9;
         }
-
-        /* Sidebar đồng bộ */
         .sidebar {
             width: 260px;
             background-color: #1F4E79;
             height: 100vh;
-            padding: 24px;
+            padding: 20px;
             color: white;
         }
-
         .sidebar-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
-            margin-bottom: 30px;
-            letter-spacing: 1px;
+            margin-bottom: 25px;
         }
-
         .sidebar-section {
-            margin-top: 25px;
+            margin-top: 20px;
             font-size: 20px;
             font-weight: bold;
-            color: #c2d6f0;
-            letter-spacing: 1.2px;
+            color: #a9c0dc;
+            letter-spacing: 1px;
             border-top: 1px solid #3e5f87;
-            padding-top: 12px;
+            padding-top: 10px;
         }
-
         .sidebar a {
             display: block;
             text-decoration: none;
             color: white;
-            padding: 10px 0;
+            padding: 8px 0;
             font-size: 20px;
-            transition: background-color 0.2s ease, padding-left 0.2s;
+            transition: background-color 0.2s ease;
         }
-
         .sidebar a:hover {
             background-color: #294f78;
-            padding-left: 12px;
+            padding-left: 10px;
         }
-
         .logout-link {
-            margin-top: 35px;
+            margin-top: 30px;
             font-weight: bold;
             color: #ffcccc;
-            font-size: 16px;
         }
-
-        /* Main content */
         .main-content {
             flex: 1;
-            padding: 40px;
+            padding: 30px;
         }
-
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
         }
-
         .profile-form {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        .profile-grid {
             display: flex;
-            gap: 50px;
+            gap: 40px;
         }
-
-        .avatar-section {
-            flex: 1;
-            text-align: center;
-        }
-
         .avatar-box {
             width: 180px;
             height: 180px;
             background-color: #ccc;
             border-radius: 10px;
-            margin: 0 auto 10px;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             font-size: 48px;
             color: #fff;
+            overflow: hidden;
         }
-
-        .avatar-section small {
-            display: block;
-            margin: 10px 0;
-            font-size: 13px;
-            color: #777;
+        .avatar-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-
-        .info-section {
-            flex: 2;
+        .profile-image-box input[type="file"] {
+            margin-top: 10px;
         }
-
-        .info-section label {
+        .profile-info-box {
+            flex: 1;
+        }
+        .profile-info-box label {
             display: block;
             margin-bottom: 4px;
             font-weight: 600;
             color: #444;
         }
-
-        .info-section input,
-        .info-section textarea,
-        .info-section select {
+        .profile-info-box input,
+        .profile-info-box textarea,
+        .profile-info-box select {
             width: 100%;
             padding: 10px;
             margin-bottom: 16px;
@@ -124,19 +116,16 @@
             background-color: #f0f0f0;
             font-size: 15px;
         }
-
-        .info-section input[readonly] {
+        .profile-info-box input[readonly] {
             background-color: #eaeaea;
             color: #999;
         }
-
         .form-buttons {
             display: flex;
             justify-content: flex-end;
             gap: 20px;
             margin-top: 20px;
         }
-
         .form-buttons button {
             padding: 10px 20px;
             border: none;
@@ -145,12 +134,10 @@
             cursor: pointer;
             font-size: 15px;
         }
-
         .form-buttons .cancel {
             background-color: transparent;
             color: #999;
         }
-
         .form-buttons .save {
             background-color: #1F4E79;
             color: white;
@@ -158,83 +145,78 @@
     </style>
 </head>
 <body>
-
-<!-- Sidebar -->
 <div class="sidebar">
     <div class="sidebar-title">STUDENT</div>
-
     <div class="sidebar-section">TỔNG QUAN</div>
-    <a href="${pageContext.request.contextPath}/views/student/studentDashboard.jsp">Trang chủ</a>
-
+    <a href="${pageContext.request.contextPath}/StudentDashboardServlet">Trang chủ</a>
     <div class="sidebar-section">HỌC TẬP</div>
-    <a href="${pageContext.request.contextPath}/views/student/studentEnrollClass.jsp">Đăng ký học</a>
-    <a href="${pageContext.request.contextPath}/views/student/studentViewSchedule.jsp">Lớp học</a>
-    <a href="${pageContext.request.contextPath}/views/student/studentViewSchedule.jsp">Lịch học</a>
-
+    <a href="${pageContext.request.contextPath}/StudentEnrollClassServlet">Đăng ký học</a>
+    <a href="${pageContext.request.contextPath}/StudentViewClassServlet">Lớp học</a>
+    <a href="${pageContext.request.contextPath}/StudentViewScheduleServlet">Lịch học</a>
     <div class="sidebar-section">TÀI CHÍNH</div>
-    <a href="${pageContext.request.contextPath}/views/student/studentPayment.jsp">Học phí</a>
-
+    <a href="${pageContext.request.contextPath}/StudentPaymentServlet">Học phí</a>
     <div class="sidebar-section">HỆ THỐNG</div>
-    <a href="${pageContext.request.contextPath}/views/student/studentViewNotification.jsp">Thông báo</a>
-    <a href="${pageContext.request.contextPath}/views/student/studentEditProfile.jsp"><strong>Tài khoản</strong></a>
-
-    <a href="${pageContext.request.contextPath}/logout" class="logout-link">Đăng xuất</a>
+    <a href="${pageContext.request.contextPath}/StudentViewNotificationServlet">Thông báo</a>
+    <a href="${pageContext.request.contextPath}/StudentEditProfileServlet"><strong>Tài khoản</strong></a>
+    <a href="${pageContext.request.contextPath}/LogoutServlet" class="logout-link">Đăng xuất</a>
 </div>
-
-<!-- Main Content -->
 <div class="main-content">
     <div class="header">
-        <h2>Hồ sơ người dùng</h2>
+        <h2>Chỉnh sửa hồ sơ</h2>
         <span>Xin chào ${sessionScope.user.email}</span>
     </div>
-
-    <form action="UpdateProfileServlet" method="post" enctype="multipart/form-data" class="profile-form">
-        <!-- Ảnh đại diện -->
-        <div class="avatar-section">
-            <div class="avatar-box">
-                <i class="fa fa-user"></i> <!-- Hoặc ảnh thật -->
+    <form action="StudentEditProfileServlet" method="post" enctype="multipart/form-data" class="profile-form">
+        <div class="profile-grid">
+            <div class="profile-image-box">
+                <div class="avatar-box">
+                    <c:choose>
+                        <c:when test="${not empty hocSinh.avatar}">
+                            <img src="${pageContext.request.contextPath}/${hocSinh.avatar}" alt="Avatar">
+                        </c:when>
+                        <c:otherwise>
+                            <i class="fa fa-user"></i>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                <input type="file" name="profileImage" accept="image/png, image/jpeg">
             </div>
-            <small>Tải lên ảnh của bạn (jpg hoặc png)</small>
-            <input type="file" name="profileImage">
-            <button type="button" style="margin-top: 10px;">Xóa ảnh</button>
-        </div>
-
-        <!-- Thông tin cá nhân -->
-        <div class="info-section">
-            <label>Họ và tên</label>
-            <input type="text" name="hoTen" value="${hocSinh.hoTen}">
-
-            <label>Email</label>
-            <input type="text" name="email" value="${user.email}" readonly>
-
-            <label>Ngày sinh</label>
-            <input type="date" name="ngaySinh" value="${hocSinh.ngaySinh}">
-
-            <label>Địa chỉ</label>
-            <input type="text" name="diaChi" value="${hocSinh.diaChi}">
-
-            <label>Trường học</label>
-            <input type="text" name="truongHoc" value="${hocSinh.tenTruongHoc}">
-
-            <label>Giới tính</label>
-            <select name="gioiTinh">
-                <option value="Nam" ${hocSinh.gioiTinh == 'Nam' ? 'selected' : ''}>Nam</option>
-                <option value="Nữ" ${hocSinh.gioiTinh == 'Nữ' ? 'selected' : ''}>Nữ</option>
-            </select>
-
-            <label>Số điện thoại phụ huynh</label>
-            <input type="text" name="sdtPhuHuynh" value="${hocSinh.SDT_PhuHuynh}">
-
-            <label>Giới thiệu bản thân</label>
-            <textarea name="ghiChu" rows="3">${hocSinh.ghiChu}</textarea>
-
-            <div class="form-buttons">
-                <button type="button" class="cancel">Hủy</button>
-                <button type="submit" class="save">Lưu hồ sơ</button>
+            <div class="profile-info-box">
+                <label>Mã học sinh</label>
+                <input type="text" value="${hocSinh.maHocSinh}" readonly>
+                <label>Họ và tên</label>
+                <input type="text" name="hoTen" value="${hocSinh.hoTen}" required>
+                <label>Email</label>
+                <input type="text" value="${sessionScope.user.email}" readonly>
+                <label>Ngày sinh</label>
+                <input type="date" name="ngaySinh" value="${hocSinh.ngaySinh}">
+                <label>Địa chỉ</label>
+                <input type="text" name="diaChi" value="${hocSinh.diaChi}">
+                <label>Trường học</label>
+                <select name="idTruongHoc">
+                    <c:forEach var="t" items="${dsTruongHoc}">
+                        <option value="${t.ID_TruongHoc}" ${t.ID_TruongHoc == hocSinh.ID_TruongHoc ? 'selected' : ''}>
+                            ${t.tenTruongHoc}
+                        </option>
+                    </c:forEach>
+                </select>
+                <label>Lớp đang học</label>
+                <input type="text" name="lopDangHoc" value="${hocSinh.lopDangHocTrenTruong}">
+                <label>Giới tính</label>
+                <select name="gioiTinh">
+                    <option value="Nam" ${hocSinh.gioiTinh == 'Nam' ? 'selected' : ''}>Nam</option>
+                    <option value="Nữ" ${hocSinh.gioiTinh == 'Nữ' ? 'selected' : ''}>Nữ</option>
+                </select>
+                <label>Số điện thoại phụ huynh</label>
+                <input type="text" name="sdtPhuHuynh" value="${hocSinh.SDT_PhuHuynh}">
+                <label>Giới thiệu bản thân</label>
+                <textarea name="ghiChu" rows="3">${hocSinh.ghiChu}</textarea>
+                <div class="form-buttons">
+                    <button type="reset" class="cancel">Hủy</button>
+                    <button type="submit" class="save">Lưu hồ sơ</button>
+                </div>
             </div>
         </div>
     </form>
 </div>
-
 </body>
 </html>
