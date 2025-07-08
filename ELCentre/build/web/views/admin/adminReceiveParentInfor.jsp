@@ -4,7 +4,8 @@
     Author     : chuvv
     Purpose    : This page displays detailed information about parents (phụ huynh) in the EL CENTRE system, 
                  including account ID, name, contact details, address, associated student IDs, and status.
-    Parameters:
+    Parameters: (Handle from adminActionWithUser servlet)
+    - Method to get data from database in PhuHuynhDAO - (adminGetPhuHuynhByID)
     - @Param phuhuynhs (ArrayList<PhuHuynh>): A request attribute containing the list of parent objects fetched from the database.
 --%>
 

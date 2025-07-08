@@ -6,8 +6,11 @@
                  including phone number, school, salary, and notes, while displaying read-only fields 
                  like account ID, name, specialization, status, and creation date.
     Parameters:
+    - Parameters:(Handle from adminActionWithUser servlet)
+    - Method to get data from database in GiaoVienDAO - adminGetGiaoVienByID
     - @Param giaoviens (ArrayList<GiaoVien>): A request attribute containing the list of teacher objects to be updated.
     - @Param type (String): A request attribute indicating the user type for the update action.
+    - Send data to adminActionWithUser servlet (do Post)
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

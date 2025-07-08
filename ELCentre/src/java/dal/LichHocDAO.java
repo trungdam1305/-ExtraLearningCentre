@@ -148,32 +148,39 @@ public class LichHocDAO {
 
     }
 
-    public LichHoc getLichHocByLopHoc(int idLopHoc) {
-        LichHoc lichHoc = null;
+  public List<LichHoc> getLichHocByLopHoc(int idLopHoc) {
+        List<LichHoc> list = new ArrayList<>();
         DBContext db = DBContext.getInstance();
         String sql = """
-            SELECT lh.*, sh.SlotThoiGian
+            SELECT lh.ID_Schedule, lh.NgayHoc, lh.ID_SlotHoc, lh.ID_LopHoc, lh.ID_PhongHoc, lh.GhiChu, 
+                   sh.SlotThoiGian, lop.TenLopHoc
             FROM [dbo].[LichHoc] lh
-            LEFT JOIN [dbo].[SlotHoc] sh ON lh.ID_SlotHoc = sh.ID_SlotHoc
+            JOIN [dbo].[SlotHoc] sh ON lh.ID_SlotHoc = sh.ID_SlotHoc
+            JOIN [dbo].[LopHoc] lop ON lh.ID_LopHoc = lop.ID_LopHoc
             WHERE lh.ID_LopHoc = ?
         """;
-        try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, idLopHoc);
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                lichHoc = new LichHoc();
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idLopHoc);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                LichHoc lichHoc = new LichHoc();
                 lichHoc.setID_Schedule(rs.getInt("ID_Schedule"));
-                lichHoc.setNgayHoc(rs.getDate("NgayHoc").toLocalDate());
+                lichHoc.setNgayHoc(rs.getDate("NgayHoc") != null ? rs.getDate("NgayHoc").toLocalDate() : null);
                 lichHoc.setID_SlotHoc(rs.getInt("ID_SlotHoc"));
                 lichHoc.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                lichHoc.setID_PhongHoc(rs.getInt("ID_PhongHoc"));
                 lichHoc.setGhiChu(rs.getString("GhiChu"));
                 lichHoc.setSlotThoiGian(rs.getString("SlotThoiGian"));
+                lichHoc.setTenLopHoc(rs.getString("TenLopHoc"));
+                list.add(lichHoc);
             }
+            System.out.println("getLichHocByLopHoc: Retrieved " + list.size() + " schedules for ID_LopHoc=" + idLopHoc);
         } catch (SQLException e) {
+            System.out.println("SQL Error in getLichHocByLopHoc: " + e.getMessage());
             e.printStackTrace();
-            return null;
         }
-        return lichHoc;
+        return list;
     }
     
       // Xóa lịch học

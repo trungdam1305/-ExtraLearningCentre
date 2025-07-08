@@ -92,12 +92,6 @@
                                         <span class='menu-icon fa fa-gift'> </span>Tài Liệu Học
                                     </a>
                                 </li>
-                                <!--Learning Class-->
-                                <li class="menu-item <%= uri.contains("/Home-Learning") ? "current-menu-item" : "" %>">
-                                    <a href="<%= context %>/HomePageLearning">
-                                        <span class='menu-icon fa fa-book'> </span>Học Bài
-                                    </a>
-                                </li>
                                 <!--Blog-->
                                 <li class="menu-item <%= uri.contains("/Home-Blog") ? "current-menu-item" : "" %>">
                                     <a href="<%= context %>/HomePageBlog">

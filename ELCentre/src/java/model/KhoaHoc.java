@@ -25,6 +25,24 @@ public class KhoaHoc {
     private String Image;                // URL or path to course image
     private int  Order ; 
 
+    public String getCourseCode() {
+        return CourseCode;
+    }
+
+    public void setCourseCode(String CourseCode) {
+        this.CourseCode = CourseCode;
+    }
+
+    public int getOrder() {
+        return Order;
+    }
+
+    public void setOrder(int Order) {
+        this.Order = Order;
+    }
+
+    
+    
     // Constructors
     public KhoaHoc() {}
     

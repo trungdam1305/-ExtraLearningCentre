@@ -68,6 +68,10 @@ public class adminFindInFilterGroup extends HttpServlet {
         PrintWriter out = response.getWriter();
         ArrayList<HocSinh_SDT> filteredList = HocSinh_SDTDAO.adminGetHocSinhFilter(keyword, status, khoa);
 
+        if (filteredList == null ) {
+            request.setAttribute("message", "Không tìm thấy học sinh nào phù hợp! ");
+            request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);
+        }
         session.setAttribute("hocsinhs", filteredList);
         request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);
     }

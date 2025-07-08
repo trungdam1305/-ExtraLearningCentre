@@ -6,6 +6,8 @@
                 including details like name, birth date, gender, address, parent contact, school, and status. 
                 It supports filtering by gender, searching, and pagination, with action links for viewing details, scores, and editing student records.
     Parameters:
+     Parameters:(Handle from adminGetFromDashboard servlet)
+    - Method to get data from database in HocSinh_SDTDAO - adminGetSoDienThoaiHocSinh
     - @Param hocsinhs (ArrayList<HocSinh>): A request attribute containing the list of student objects fetched from the database.
 --%>
 
@@ -465,7 +467,7 @@
                 <h2><i class="fas fa-user-graduate"></i> Tất cả học sinh</h2>
             </div>
 
-            <form  action="adminFindInFilterGroup" method="get">
+            <form  action="${pageContext.request.contextPath}/adminFindInFilterGroup" method="get">
                 <div class="filter-bar">
 
                     <div class="filter-group">
