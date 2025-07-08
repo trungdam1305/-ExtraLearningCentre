@@ -5,9 +5,9 @@
 
 package controller;
 
-import dao.GiaoVien_LopHocDAO;
-import dao.GiaoVienDAO;
-import dao.LichHocDAO;
+import dal.GiaoVien_LopHocDAO;
+import dal.GiaoVienDAO;
+import dal.LichHocDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;

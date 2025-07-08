@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class KhoaHoc {
     private Integer ID_KhoaHoc;          // Unique identifier for the course
+    private String CourseCode ; 
     private String TenKhoaHoc;           // Course name
     private String MoTa;                 // Description of the course
     private LocalDate ThoiGianBatDau;    // Start date of the course
@@ -22,7 +23,26 @@ public class KhoaHoc {
     private LocalDateTime NgayTao;       // Date the course was created
     private int ID_Khoi;                 // Educational level ID (e.g., primary, secondary)
     private String Image;                // URL or path to course image
+    private int  Order ; 
 
+    public String getCourseCode() {
+        return CourseCode;
+    }
+
+    public void setCourseCode(String CourseCode) {
+        this.CourseCode = CourseCode;
+    }
+
+    public int getOrder() {
+        return Order;
+    }
+
+    public void setOrder(int Order) {
+        this.Order = Order;
+    }
+
+    
+    
     // Constructors
     public KhoaHoc() {}
     
@@ -37,15 +57,10 @@ public class KhoaHoc {
         this.NgayTao = NgayTao;
         this.ID_Khoi = ID_Khoi;
     }
-     
-    
 
-      
-
-    public KhoaHoc(Integer ID_KhoaHoc, String TenKhoaHoc, String MoTa, LocalDate ThoiGianBatDau,
-                   LocalDate ThoiGianKetThuc, String GhiChu, String TrangThai,
-                   LocalDateTime NgayTao, int ID_Khoi, String Image) {
+    public KhoaHoc(Integer ID_KhoaHoc, String CourseCode, String TenKhoaHoc, String MoTa, LocalDate ThoiGianBatDau, LocalDate ThoiGianKetThuc, String GhiChu, String TrangThai, LocalDateTime NgayTao, int ID_Khoi, String Image, int Order) {
         this.ID_KhoaHoc = ID_KhoaHoc;
+        this.CourseCode = CourseCode;
         this.TenKhoaHoc = TenKhoaHoc;
         this.MoTa = MoTa;
         this.ThoiGianBatDau = ThoiGianBatDau;
@@ -55,16 +70,12 @@ public class KhoaHoc {
         this.NgayTao = NgayTao;
         this.ID_Khoi = ID_Khoi;
         this.Image = Image;
+        this.Order = Order;
     }
-    
-     
 
     
-    public KhoaHoc(Integer ID_KhoaHoc, String TenKhoaHoc, String MoTa, LocalDate ThoiGianBatDau,
-                   LocalDate ThoiGianKetThuc, String GhiChu, String TrangThai,
-                   LocalDateTime NgayTao) {
-        this(ID_KhoaHoc, TenKhoaHoc, MoTa, ThoiGianBatDau, ThoiGianKetThuc, GhiChu, TrangThai, NgayTao, 0, null);
-    }
+    
+   
 
     // Getter and Setter methods
 

@@ -1,5 +1,7 @@
 package controller;
 
+import dao.TaiKhoanDAO;
+import dao.UserLogsDAO;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import model.TaiKhoan;
@@ -12,8 +14,6 @@ import java.net.URLEncoder;
 
 import api.VerifyRecaptcha;
 import api.EmailSender; 
-import dao.TaiKhoanDAO;
-import dao.UserLogsDAO;
 import jakarta.mail.MessagingException; 
 
 public class LoginServlet extends HttpServlet {
@@ -31,15 +31,15 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        // Xác thực Captcha
-        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
-        boolean isValidCaptcha = VerifyRecaptcha.verify(gRecaptchaResponse);
-
-        if (!isValidCaptcha) {
-            String error = "Vui lòng xác nhận bạn không phải là robot.";
-            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
-            return;
-        }
+//        // Xác thực Captcha
+//        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+//        boolean isValidCaptcha = VerifyRecaptcha.verify(gRecaptchaResponse);
+//
+//        if (!isValidCaptcha) {
+//            String error = "Vui lòng xác nhận bạn không phải là robot.";
+//            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
+//            return;
+//        }
 
         if (email == null || email.trim().isEmpty() ||
             password == null || password.trim().isEmpty()) {
@@ -61,14 +61,13 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
 
-                // Ghi log đăng nhập
                 UserLogs log = new UserLogs();
                 log.setID_TaiKhoan(user.getID_TaiKhoan());
                 log.setHanhDong("Đăng nhập hệ thống");
                 log.setThoiGian(LocalDateTime.now());
                 UserLogsDAO.insertLog(log);
 
-                // ✅ Gửi email thông báo đăng nhập
+                 // ✅ Gửi email thông báo đăng nhập
                 try {
                     String subject = "Thông báo đăng nhập thành công";
                     String body = "Xin chào " + user.getEmail() +
@@ -88,9 +87,9 @@ public class LoginServlet extends HttpServlet {
                     case 2 -> //staff
                         response.sendRedirect(request.getContextPath() + "/views/staff/staffDashboard.jsp");
                     case 3 -> //teacher    
-                        response.sendRedirect(request.getContextPath() + "/views/teacher/teacherDashboard.jsp");
+                        response.sendRedirect(request.getContextPath() + "/TeacherDashboard");
                     case 4 -> //student
-                        response.sendRedirect(request.getContextPath() + "/StudentDashboardServlet");
+                        response.sendRedirect(request.getContextPath() + "/views/student/studentDashboard.jsp");
                     case 5 -> //parent
                         response.sendRedirect(request.getContextPath() + "/views/parent/parentDashboard.jsp");
                     default -> response.sendRedirect(request.getContextPath() + "/views/login.jsp");

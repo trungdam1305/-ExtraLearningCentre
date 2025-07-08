@@ -12,6 +12,9 @@ public class HocSinh {
 
     // Unique ID for the student
     private Integer ID_HocSinh;
+    
+    
+    private String MaHocSinh ; 
 
     // ID of the associated user account
     private Integer ID_TaiKhoan;
@@ -45,6 +48,12 @@ public class HocSinh {
 
     // Name of the school (denormalized for display)
     private String TenTruongHoc;
+    
+    private String LopDangHocTrenTruong ; 
+    
+    private String TrangThaiHoc ; 
+    
+    private String Avatar ; 
 
     /**
      * Default constructor
@@ -55,10 +64,9 @@ public class HocSinh {
     /**
      * Constructor with school name included
      */
-    public HocSinh(Integer ID_HocSinh, Integer ID_TaiKhoan, String HoTen, LocalDate NgaySinh, String GioiTinh,
-                   String DiaChi, String SDT_PhuHuynh, int ID_TruongHoc, String GhiChu,
-                   String TrangThai, LocalDateTime NgayTao, String TenTruongHoc) {
+    public HocSinh(Integer ID_HocSinh, String MaHocSinh, Integer ID_TaiKhoan, String HoTen, LocalDate NgaySinh, String GioiTinh, String DiaChi, String SDT_PhuHuynh, int ID_TruongHoc, String GhiChu, String TrangThai, LocalDateTime NgayTao, String TenTruongHoc, String LopDangHocTrenTruong, String TrangThaiHoc, String Avatar) {
         this.ID_HocSinh = ID_HocSinh;
+        this.MaHocSinh = MaHocSinh;
         this.ID_TaiKhoan = ID_TaiKhoan;
         this.HoTen = HoTen;
         this.NgaySinh = NgaySinh;
@@ -70,18 +78,23 @@ public class HocSinh {
         this.TrangThai = TrangThai;
         this.NgayTao = NgayTao;
         this.TenTruongHoc = TenTruongHoc;
+        this.LopDangHocTrenTruong = LopDangHocTrenTruong;
+        this.TrangThaiHoc = TrangThaiHoc;
+        this.Avatar = Avatar;
     }
     
-    
-    
-    
+    public HocSinh(  int ID_TruongHoc,  String LopDangHocTrenTruong) {
+        
+        this.ID_TruongHoc = ID_TruongHoc;
+        
+        this.LopDangHocTrenTruong = LopDangHocTrenTruong;
+        
+    }
 
     /**
      * Constructor without school name
      */
-    public HocSinh(Integer ID_HocSinh, Integer ID_TaiKhoan, String HoTen, LocalDate NgaySinh, String GioiTinh,
-                   String DiaChi, String SDT_PhuHuynh, int ID_TruongHoc, String GhiChu,
-                   String TrangThai, LocalDateTime NgayTao) {
+    public HocSinh(Integer ID_HocSinh, Integer ID_TaiKhoan, String HoTen, LocalDate NgaySinh, String GioiTinh, String DiaChi, String SDT_PhuHuynh, int ID_TruongHoc, String GhiChu, String TrangThai, LocalDateTime NgayTao) {
         this.ID_HocSinh = ID_HocSinh;
         this.ID_TaiKhoan = ID_TaiKhoan;
         this.HoTen = HoTen;
@@ -191,6 +204,38 @@ public class HocSinh {
 
     public void setTenTruongHoc(String TenTruongHoc) {
         this.TenTruongHoc = TenTruongHoc;
+    }
+
+    public String getMaHocSinh() {
+        return MaHocSinh;
+    }
+
+    public String getLopDangHocTrenTruong() {
+        return LopDangHocTrenTruong;
+    }
+
+    public String getTrangThaiHoc() {
+        return TrangThaiHoc;
+    }
+
+    public String getAvatar() {
+        return Avatar;
+    }
+
+    public void setMaHocSinh(String MaHocSinh) {
+        this.MaHocSinh = MaHocSinh;
+    }
+
+    public void setLopDangHocTrenTruong(String LopDangHocTrenTruong) {
+        this.LopDangHocTrenTruong = LopDangHocTrenTruong;
+    }
+
+    public void setTrangThaiHoc(String TrangThaiHoc) {
+        this.TrangThaiHoc = TrangThaiHoc;
+    }
+
+    public void setAvatar(String Avatar) {
+        this.Avatar = Avatar;
     }
     
     

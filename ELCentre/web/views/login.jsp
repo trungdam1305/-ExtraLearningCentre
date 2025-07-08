@@ -87,14 +87,14 @@
                     <br>
                     <a href="advice.jsp">Gửi yêu cầu tư vấn ngay!</a>
                     <br>
-                    <a href="HomePage.jsp">Quay lại trang chủ</a>
+                    <a href="${pageContext.request.contextPath}/HomePage">Quay lại trang chủ</a>
                 </p>
                 <% String error = request.getParameter("error");
                    if (error != null) { %>
                     <div class="alert alert-danger"><%= error %></div>
                 <% } %>
 
-                <form action="<%= request.getContextPath() %>/LoginServlet" method="post">
+                <form action="<%= request.getContextPath() %>/LoginServlet" method="post" class="sign-in-form">
                     <input type="text" name="email" class="form-control" placeholder="Email">
                     <input type="password" name="password" class="form-control" placeholder="Mật khẩu">
 
@@ -106,13 +106,13 @@
                         <a href="../views/forgotPassword.jsp" class="small">Quên mật khẩu?</a>
                     </div>
 
-                    <!-- ✅ Google reCAPTCHA -->
+                     ✅ Google reCAPTCHA 
                     <div class="g-recaptcha mb-3" data-sitekey="6Ldf8E4rAAAAACIhQBZn-9343I1wWxzJwzawYS1s"></div>
 
                     <button type="submit" name="action" class="btn btn-login">Đăng nhập</button>
                 </form>
 
-                <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 
                 <div class="text-center mt-4">
                     <p class="small">Hoặc đăng nhập bằng</p>

@@ -34,6 +34,9 @@ public class Blog {
 
     // ID of the blog category
     private int ID_PhanLoai;
+    
+    private String KeyTag ; 
+    private String KeyWord ; 
 
     // Name of the blog category
     private String PhanLoai;
@@ -44,10 +47,7 @@ public class Blog {
     public Blog() {
     }
 
-    /**
-     * Constructor to initialize all fields
-     */
-    public Blog(int ID_Blog, String BlogTitle, String BlogDescription, LocalDateTime BlogDate, String Image, int ID_Khoi, int ID_PhanLoai, String PhanLoai) {
+    public Blog(int ID_Blog, String BlogTitle, String BlogDescription, LocalDateTime BlogDate, String Image, int ID_Khoi, int ID_PhanLoai, String KeyTag, String KeyWord, String PhanLoai) {
         this.ID_Blog = ID_Blog;
         this.BlogTitle = BlogTitle;
         this.BlogDescription = BlogDescription;
@@ -55,11 +55,12 @@ public class Blog {
         this.Image = Image;
         this.ID_Khoi = ID_Khoi;
         this.ID_PhanLoai = ID_PhanLoai;
+        this.KeyTag = KeyTag;
+        this.KeyWord = KeyWord;
         this.PhanLoai = PhanLoai;
     }
 
     // Getters and setters
-
     public int getID_Blog() {
         return ID_Blog;
     }
@@ -123,6 +124,24 @@ public class Blog {
     public void setPhanLoai(String PhanLoai) {
         this.PhanLoai = PhanLoai;
     }
+
+    public String getKeyTag() {
+        return KeyTag;
+    }
+
+    public String getKeyWord() {
+        return KeyWord;
+    }
+
+    public void setKeyTag(String KeyTag) {
+        this.KeyTag = KeyTag;
+    }
+
+    public void setKeyWord(String KeyWord) {
+        this.KeyWord = KeyWord;
+    }
+    
+    
 
     /**
      * Returns the blog date formatted as dd-MM-yyyy for display

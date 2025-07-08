@@ -11,11 +11,20 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.HocSinh;
-import dao.HocSinhDAO;
+import dal.HocSinhDAO;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
-import model.HocSinh_ChiTietHoc ; 
-import dao.HocSinh_ChiTietDAO ; 
+import model.HocSinh_ChiTietHoc;
+import dal.HocSinh_ChiTietDAO;
+import dal.HocSinh_SDTDAO;
+import dal.TaiKhoanDAO;
+import dal.TruongHocDAO;
+import dao.UserLogsDAO;
+import java.time.LocalDateTime;
+import model.GiaoVien;
+import model.HocSinh_SDT;
+import model.TruongHoc;
+import model.UserLogs;
 
 /**
  *
@@ -52,15 +61,15 @@ public class adminActionWithStudent extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String action = request.getParameter("action");
         switch (action) {
             case "view":
                 doView(request, response);
                 break;
 
-            case "viewDiem":
-                doViewDiem(request, response) ; 
+            case "viewClass":
+                doViewClass(request, response);
                 break;
 
             case "update":
@@ -71,7 +80,13 @@ public class adminActionWithStudent extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String type = request.getParameter("type");
+        
+        switch (type) {
+            case "update":
+                doUpdateInfor(request, response);
+                break;
+        }
     }
 
     @Override
@@ -81,11 +96,13 @@ public class adminActionWithStudent extends HttpServlet {
 
     protected void doView(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter() ; 
+        PrintWriter out = response.getWriter();
         String ID = request.getParameter("id");
-        String ID_TaiKhoan = request.getParameter("idtaikhoan") ; 
-        ArrayList<HocSinh> hocsinhs = HocSinhDAO.adminGetHocSinhByID(ID_TaiKhoan);
+        String ID_TaiKhoan = request.getParameter("idtaikhoan");
+        ArrayList<HocSinh_SDT> hocsinhs = HocSinh_SDTDAO.adminGetSoDienThoaiHocSinhByIDTK(ID_TaiKhoan);
+        ArrayList<TruongHoc> truonghoc = TruongHocDAO.adminGetTenTruong();
         if (hocsinhs != null) {
+            request.setAttribute("truonghoc", truonghoc);
             request.setAttribute("hocsinhs", hocsinhs);
             request.getRequestDispatcher("/views/admin/adminViewHocSinhChiTiet.jsp").forward(request, response);
         } else {
@@ -94,21 +111,80 @@ public class adminActionWithStudent extends HttpServlet {
         }
 
     }
-    
-    
-    protected void doViewDiem(HttpServletRequest request, HttpServletResponse response)
+
+    protected void doViewClass(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter() ; 
+        PrintWriter out = response.getWriter();
         String ID = request.getParameter("id");
-        String ID_TaiKhoan = request.getParameter("idtaikhoan") ; 
-        
-        ArrayList<HocSinh_ChiTietHoc> hocsinhchitiets = HocSinh_ChiTietDAO.adminGetAllLopHocCuaHocSinh(ID) ; 
-        if (hocsinhchitiets != null ){
+        String ID_TaiKhoan = request.getParameter("idtaikhoan");
+
+        ArrayList<HocSinh_ChiTietHoc> hocsinhchitiets = HocSinh_ChiTietDAO.adminGetAllLopHocCuaHocSinh(ID);
+        if (hocsinhchitiets != null) {
             request.setAttribute("hocsinhchitiets", hocsinhchitiets);
-            request.getRequestDispatcher("views/admin/adminViewDiemHocSinh.jsp").forward(request, response);
+            request.getRequestDispatcher("views/admin/adminViewHocPhiHocSinh.jsp").forward(request, response);
         } else {
-            
+
             out.print("okkokokok");
         }
+    }
+
+    protected void doUpdateInfor(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+        HttpSession session = request.getSession();
+        String ID_HocSinh = request.getParameter("idhocsinh");
+        String ID_taikhoan = request.getParameter("idtaikhoan");
+        String diachi = request.getParameter("diachi");
+        String idTruong = request.getParameter("idTruongHoc");
+        String lopTrenTruong = request.getParameter("lop");
+        String sdt = request.getParameter("sdt");
+        String ghichu = request.getParameter("ghichu");
+
+        int ID_TruongHS = Integer.parseInt(idTruong);
+        ArrayList<GiaoVien> truongVaLopDangDayCuaGiaoVienDayHocSinhDo = HocSinh_ChiTietDAO.adminGetLopHocCuaGiaoVienSoVoiHocSinh(ID_HocSinh);
+
+        boolean canUpdate = true;
+
+        for (GiaoVien gv : truongVaLopDangDayCuaGiaoVienDayHocSinhDo) {
+            if (gv.getID_TruongHoc() == ID_TruongHS
+                    && gv.getLopDangDayTrenTruong().equalsIgnoreCase(lopTrenTruong)) {
+                canUpdate = false;
+                break;
+            }
+        }
+
+        if (canUpdate) {
+            try {
+                int ID_TaiKhoan = Integer.parseInt(ID_taikhoan) ; 
+                if (sdt.length() != 10) {
+                    throw new Exception("Số điện thoại phải dài 10 chữ số!");
+                }
+
+                if (!sdt.startsWith("0")) {
+                    throw new Exception("Số điện thoại phải bắt đầu bằng số 0!");
+                }
+                
+                
+                
+                boolean s1 = TaiKhoanDAO.adminUpdateInformationAccount(sdt, ID_TaiKhoan) ; 
+                boolean s2 = HocSinh_ChiTietDAO.updateTruongLopHocSinh(diachi, idTruong, ghichu, lopTrenTruong, ID_HocSinh) ; 
+                if (s1== true && s2 == true ) {
+                    request.setAttribute("message", "Thay đổi thành công!");
+                    UserLogs log = new UserLogs(0 , 1 , "Thay đổi thông tin học sinh có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
+                     UserLogsDAO.insertLog(log);
+                     ArrayList<HocSinh_SDT> hocsinhs =  HocSinh_SDTDAO.adminGetSoDienThoaiHocSinh() ;  
+                     session.setAttribute("hocsinhs", hocsinhs);        
+                    request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);    
+                
+                }
+            } catch (Exception e) {
+                request.setAttribute("message", e.getMessage());
+                request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);    
+            }
+        } else {
+            request.setAttribute("message", "Không thể thay đổi ! Vi phạm nghị đinh 29 !!");
+            request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);    
+        }
+
     }
 }

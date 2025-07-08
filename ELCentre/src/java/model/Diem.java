@@ -32,9 +32,28 @@ public class Diem {
 
     // Score for the final exam
     private BigDecimal DiemCuoiKy;
+    
+    private BigDecimal DiemTongKet ; 
 
     // Timestamp of the last score update
     private LocalDateTime ThoiGianCapNhat;
+
+    public Diem() {
+    }
+
+    public Diem(Integer ID_Diem, Integer ID_HocSinh, Integer ID_LopHoc, BigDecimal DiemKiemTra, BigDecimal DiemBaiTap, BigDecimal DiemGiuaKy, BigDecimal DiemCuoiKy, BigDecimal DiemTongKet, LocalDateTime ThoiGianCapNhat) {
+        this.ID_Diem = ID_Diem;
+        this.ID_HocSinh = ID_HocSinh;
+        this.ID_LopHoc = ID_LopHoc;
+        this.DiemKiemTra = DiemKiemTra;
+        this.DiemBaiTap = DiemBaiTap;
+        this.DiemGiuaKy = DiemGiuaKy;
+        this.DiemCuoiKy = DiemCuoiKy;
+        this.DiemTongKet = DiemTongKet;
+        this.ThoiGianCapNhat = ThoiGianCapNhat;
+    }
+    
+    
 
     // Getter and setter methods
 
@@ -101,4 +120,13 @@ public class Diem {
     public void setThoiGianCapNhat(LocalDateTime ThoiGianCapNhat) {
         this.ThoiGianCapNhat = ThoiGianCapNhat;
     }
+
+    public BigDecimal getDiemTongKet() {
+        return DiemTongKet;
+    }
+
+    public void setDiemTongKet(BigDecimal DiemTongKet) {
+        this.DiemTongKet = DiemTongKet;
+    }
+    
 }

@@ -29,8 +29,7 @@ public class PhuHuynh {
     // Optional notes
     private String GhiChu;
 
-    // ID of the associated student
-    private Integer ID_HocSinh;
+   
 
     // Status (e.g., Active, Inactive)
     private String TrangThai;
@@ -42,8 +41,7 @@ public class PhuHuynh {
     public PhuHuynh() {
     }
 
-    // Full constructor
-    public PhuHuynh(Integer ID_PhuHuynh, Integer ID_TaiKhoan, String HoTen, String SDT, String Email, String DiaChi, String GhiChu, Integer ID_HocSinh, String TrangThai, LocalDateTime NgayTao) {
+    public PhuHuynh(Integer ID_PhuHuynh, Integer ID_TaiKhoan, String HoTen, String SDT, String Email, String DiaChi, String GhiChu, String TrangThai, LocalDateTime NgayTao) {
         this.ID_PhuHuynh = ID_PhuHuynh;
         this.ID_TaiKhoan = ID_TaiKhoan;
         this.HoTen = HoTen;
@@ -51,10 +49,11 @@ public class PhuHuynh {
         this.Email = Email;
         this.DiaChi = DiaChi;
         this.GhiChu = GhiChu;
-        this.ID_HocSinh = ID_HocSinh;
         this.TrangThai = TrangThai;
         this.NgayTao = NgayTao;
     }
+
+    
 
     // Getters and setters
 
@@ -114,13 +113,7 @@ public class PhuHuynh {
         this.GhiChu = GhiChu;
     }
 
-    public Integer getID_HocSinh() {
-        return ID_HocSinh;
-    }
-
-    public void setID_HocSinh(Integer ID_HocSinh) {
-        this.ID_HocSinh = ID_HocSinh;
-    }
+    
 
     public String getTrangThai() {
         return TrangThai;

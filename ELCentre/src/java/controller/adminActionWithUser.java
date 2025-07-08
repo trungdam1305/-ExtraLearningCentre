@@ -7,34 +7,31 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import model.GiaoVien;
 import model.HocSinh;
-import dao.HocSinhDAO;
-import dao.GiaoVienDAO;
+import dal.HocSinhDAO;
+import dal.GiaoVienDAO;
 import model.PhuHuynh;
-import dao.PhuHuynhDAO;
-import dao.TaiKhoanChiTietDAO;
-import model.TaiKhoan;
-import dao.TaiKhoanDAO;
-import dao.TruongHocDAO;
+import dal.PhuHuynhDAO;
+import dal.TaiKhoanChiTietDAO;
+import dal.TaiKhoanDAO;
 import jakarta.servlet.http.HttpSession;
-import java.io.EOFException;
 import java.math.BigDecimal;
 import java.util.List;
 import model.TaiKhoanChiTiet;
 import model.GiaoVien_TruongHoc;
 import model.TruongHoc;
-import dao.TruongHocDAO;
+import dal.TruongHocDAO;
 import dao.UserLogsDAO;
 import java.time.LocalDateTime;
 import model.UserLogs;
+import dal.HoTroDAO ; 
 
 /**
  * This servlet handle all the action of admin when admin click button manage account users 
  * like view details account user , disnable / enable account user or update information of account user 
  * and after handle logic , this servlet can send information to specific JSP if need
  * May 28 , 2025 11:14:38 PM
- * @author wrx_Chur04
+ * @author chuvv
  */
 public class adminActionWithUser extends HttpServlet {
 
@@ -42,7 +39,6 @@ public class adminActionWithUser extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -69,75 +65,37 @@ public class adminActionWithUser extends HttpServlet {
         String id = request.getParameter("id");
         switch (action) {
 
-            case "view":    // view detail information of user
-
-                if (type.equalsIgnoreCase("GiaoVien")) {    //if user is teacher
-
-                    ArrayList<GiaoVien_TruongHoc> giaoviens = GiaoVienDAO.adminGetGiaoVienByID(id); // call method to get data from database 
-                    if (giaoviens.isEmpty()) {                                              // if can not get data from database
-                        request.setAttribute("message", "Không tìm thấy thông tin giáo viên này.");
-                        request.getRequestDispatcher("/views/admin/adminReceiveTeacherInfor.jsp").forward(request, response); // redirect to adminReceiveTeacherInfor.jsp
-
-                    } else {
-                        request.setAttribute("giaoviens", giaoviens);   //set object is giaoviens for jsp can get this 
-                        request.getRequestDispatcher("/views/admin/adminReceiveTeacherInfor.jsp").forward(request, response);   // redirect to adminReceiveTeacherInfor.jsp
-                    }
-
-                } else if (type.equalsIgnoreCase("HocSinh")) {  //if user is student
-                    ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>(); // create arraylist to save data 
-                    hocsinhs = HocSinhDAO.adminGetHocSinhByID(id);  // call method to get data from database 
-
-                    if (hocsinhs.isEmpty()) {                       // if can not get data from database
-                        request.setAttribute("message", "Không tìm thấy thông tin học sinh này.");
-                        request.getRequestDispatcher("/views/admin/adminReceiveStudentInfor.jsp").forward(request, response);   // redirect to adminReceiveStudentInfor.jsp
-                    } else {
-
-                        request.setAttribute("hocsinhs", hocsinhs);      //set object is hocsinhs for jsp can get this 
-                        request.getRequestDispatcher("/views/admin/adminReceiveStudentInfor.jsp").forward(request, response);    // redirect to adminReceiveStudentInfor.jsp
-                    }
-                } else if (type.equalsIgnoreCase("PhuHuynh")) {     //if user is parent of student  
-                    ArrayList<PhuHuynh> phuhuynhs = PhuHuynhDAO.adminGetPhuHuynhByID(id);
-                    List<String> name = HocSinhDAO.nameofStudentDependPH(id);
-
-                    if (phuhuynhs.isEmpty()) {                                          // if can not get data from database
-                        request.setAttribute("message", "Không tìm thấy thông tin phụ huyunh này.");
-                        request.getRequestDispatcher("/views/admin/adminReceiveParentInfor.jsp").forward(request, response);    // redirect to adminReceiveParentInfor.jsp
-                    } else {
-                        request.setAttribute("name", name);
-                        request.setAttribute("phuhuynhs", phuhuynhs);             //set object is phuhuynhs for jsp can get this      
-                        request.getRequestDispatcher("/views/admin/adminReceiveParentInfor.jsp").forward(request, response);    // redirect to adminReceiveParentInfor.jsp
-                    }
-                }
+            case "view":    // view detail information of account user
+                doViewAccount(request, response) ; 
                 break;
 
             case "enable":      //admin enable account
-                if (type.equalsIgnoreCase("GiaoVien")) {    //if user is teacher
+                if (type.equalsIgnoreCase("GiaoVien")) {   
 
                     boolean b2 = TaiKhoanDAO.adminEnableAccountUser(id); //admin enable in table account
                     boolean b1 = GiaoVienDAO.adminEnableGiaoVien(id);   //admin enable in table of this user
-                    if (b1 == true && b2 == true) {                     //if 2 method is access
+                    if (b1 == true && b2 == true) {                    
                         int ID_TaiKhoan = Integer.parseInt(id) ; 
                         UserLogs log = new UserLogs(0 , 1 , "Mở tài khoản giáo viên có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
                                     
                         UserLogsDAO.insertLog(log);
-                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();  //admin call method this to get all account after update
-                        session.setAttribute("taikhoans", taikhoans);           //set object for jsp can get it again
+                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();  
+                        session.setAttribute("taikhoans", taikhoans);           
                         request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);      //redirect to adminReceiveUsers
                     } else {
                         request.setAttribute("message", "Không có tài khoản nào.");
-
                         request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
                     }
                 } else if (type.equalsIgnoreCase("HocSinh")) {       //if user is student
                     boolean b1 = TaiKhoanDAO.adminEnableAccountUser(id);        //admin enable in table account
                     boolean b2 = HocSinhDAO.adminEnableHocSinh(id);             //admin enable in table of this user
-                    if (b1 == true && b2 == true) {                               //if 2 method is access
+                    if (b1 == true && b2 == true) {                            
                         int ID_TaiKhoan = Integer.parseInt(id) ; 
                         UserLogs log = new UserLogs(0 , 1 , "Mở tài khoản học sinh có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
                                     
                         UserLogsDAO.insertLog(log);
-                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();    //admin call method this to get all account after update
-                        session.setAttribute("taikhoans", taikhoans);           //set object for jsp can get it again
+                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();    
+                        session.setAttribute("taikhoans", taikhoans);           
                         request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);       //redirect to adminReceiveUsers
                     } else {
                         request.setAttribute("message", "Không có tài khoản nào.");
@@ -147,13 +105,13 @@ public class adminActionWithUser extends HttpServlet {
                 } else if (type.equalsIgnoreCase("PhuHuynh")) {     //if user is parent of student 
                     boolean b1 = TaiKhoanDAO.adminEnableAccountUser(id);     //admin enable in table account
                     boolean b2 = PhuHuynhDAO.adminEnablePhuHuynh(id);       //admin enable in table of this user
-                    if (b1 == true && b2 == true) {                         //if 2 method is access
+                    if (b1 == true && b2 == true) {                       
                         int ID_TaiKhoan = Integer.parseInt(id) ; 
                         UserLogs log = new UserLogs(0 , 1 , "Mở tài khoản phụ huynh có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
                                     
                         UserLogsDAO.insertLog(log);
-                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();     //admin call method this to get all account after update
-                        session.setAttribute("taikhoans", taikhoans);                       //set object for jsp can get it again
+                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();     
+                        session.setAttribute("taikhoans", taikhoans);                      
                         request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);       //redirect to adminReceiveUsers
                     } else {
                         request.setAttribute("message", "Không có tài khoản nào.");
@@ -175,42 +133,42 @@ public class adminActionWithUser extends HttpServlet {
 
                     boolean b2 = TaiKhoanDAO.adminDisableAccountUser(id);    //admin disnable in table account
                     boolean b1 = GiaoVienDAO.adminDisableGiaoVien(id);            //admin disnable in table of this user
-                    if (b1 == true && b2 == true) {                           //if 2 method is access
+                    if (b1 == true && b2 == true) {                         
                         int ID_TaiKhoan = Integer.parseInt(id) ; 
                         UserLogs log = new UserLogs(0 , 1 , "Vô hiệu hóa tài khoản giáo viên có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
                                     
                         UserLogsDAO.insertLog(log);
-                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();   //admin call method this to get all account after update
-                        session.setAttribute("taikhoans", taikhoans);            //set object for jsp can get it again
-                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);       //redirect to adminReceiveUsers  
+                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();  
+                        session.setAttribute("taikhoans", taikhoans);            
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);      
                     } else {
                         out.print("huhuhu");
                     }
                 } else if (type.equalsIgnoreCase("HocSinh")) {      //if user is student
                     boolean b1 = TaiKhoanDAO.adminDisableAccountUser(id);       //admin disnable in table account
                     boolean b2 = HocSinhDAO.adminDisableHocSinh(id);            //admin disnable in table of this user
-                    if (b1 == true && b2 == true) {                             //if 2 method is access
+                    if (b1 == true && b2 == true) {                            
                         int ID_TaiKhoan = Integer.parseInt(id) ; 
                         UserLogs log = new UserLogs(0 , 1 , "Vô hiệu hóa tài khoản học sinh có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
                                     
                         UserLogsDAO.insertLog(log);
-                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();        //admin call method this to get all account after update
-                        session.setAttribute("taikhoans", taikhoans);               //set object for jsp can get it again
-                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);      //redirect to adminReceiveUsers  
+                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();        
+                        session.setAttribute("taikhoans", taikhoans);              
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);     
                     } else {
                         out.print("huhuhu");
                     }
                 } else if (type.equalsIgnoreCase("PhuHuynh")) {          //if user is parent of student
                     boolean b1 = TaiKhoanDAO.adminDisableAccountUser(id);    //admin disnable in table account
                     boolean b2 = PhuHuynhDAO.adminDisablePhuHuynh(id);       //admin disnable in table of this user
-                    if (b1 == true && b2 == true) {                       //if 2 method is access
+                    if (b1 == true && b2 == true) {                      
                         int ID_TaiKhoan = Integer.parseInt(id) ; 
                         UserLogs log = new UserLogs(0 , 1 , "Vô hiệu hóa tài khoản phụ huynh có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
                                     
                         UserLogsDAO.insertLog(log);
-                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();     //admin call method this to get all account after update
-                        session.setAttribute("taikhoans", taikhoans);                //set object for jsp can get it again
-                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);       //redirect to adminReceiveUsers  
+                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();     
+                        session.setAttribute("taikhoans", taikhoans);               
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);       
                     } else {
                         out.print("huhuhu");
                     }
@@ -227,48 +185,57 @@ public class adminActionWithUser extends HttpServlet {
             case "update":
                 if (type.equalsIgnoreCase("GiaoVien")) {    //if user is teacher
 
-                    ArrayList<GiaoVien_TruongHoc> giaoviens = GiaoVienDAO.adminGetGiaoVienByID(id); // call method to get data from database 
+                    ArrayList<GiaoVien_TruongHoc> giaoviens = GiaoVienDAO.adminGetGiaoVienByID(id); 
                     ArrayList<TruongHoc> truonghocs = TruongHocDAO.adminGetTenTruong();
-                    if (giaoviens.isEmpty()) {                                              // if can not get data from database
+                    if (giaoviens.isEmpty()) {                                              
 
                         request.setAttribute("message", "Không tìm thấy thông tin giáo viên này.");
                         request.getRequestDispatcher("/views/admin/adminUpdateTeacherInfor.jsp").forward(request, response); // redirect to adminReceiveTeacherInfor.jsp
 
                     } else {
                         request.setAttribute("truonghocs", truonghocs);
-                        request.setAttribute("giaoviens", giaoviens);   //set object is giaoviens for jsp can get this 
-                        request.setAttribute("type", type);  // set type to send to the jsp and continue send to the servlet
+                        request.setAttribute("giaoviens", giaoviens);   
+                        request.setAttribute("type", type); 
                         request.getRequestDispatcher("/views/admin/adminUpdateTeacherInfor.jsp").forward(request, response);   // redirect to adminReceiveTeacherInfor.jsp
                     }
 
                 } else if (type.equalsIgnoreCase("HocSinh")) {  //if user is student
-                    ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>(); // create arraylist to save data 
-                    hocsinhs = HocSinhDAO.adminGetHocSinhByID(id);  // call method to get data from database 
+                    ArrayList<HocSinh> hocsinhs = HocSinhDAO.adminGetHocSinhByID(id); 
+                   
 
-                    String sodienthoai = TaiKhoanDAO.admingetSDTTaiKhoanByID(id);
-                    if (hocsinhs.isEmpty()) {                       // if can not get data from database
+                    String sodienthoai = TaiKhoanDAO.admingetSDTTaiKhoanByID(id);  // get sdt HocSinh because table hocsinh don't have phone number
+                    if (hocsinhs.isEmpty()) {                       
                         request.setAttribute("message", "Không tìm thấy thông tin học sinh này.");
-                        request.getRequestDispatcher("/views/admin/adminUpdateStudentInfor.jsp").forward(request, response);   // redirect to adminReceiveStudentInfor.jsp
+                        request.getRequestDispatcher("/views/admin/adminUpdateStudentInfor.jsp").forward(request, response);   
                     } else {
                         request.setAttribute("sodienthoai", sodienthoai);
-                        request.setAttribute("hocsinhs", hocsinhs);      //set object is hocsinhs for jsp can get this 
-                        request.setAttribute("type", type);  // set type to send to the jsp and continue send to the servlet
+                        request.setAttribute("hocsinhs", hocsinhs);      
+                        request.setAttribute("type", type);  
                         request.getRequestDispatcher("/views/admin/adminUpdateStudentInfor.jsp").forward(request, response);    // redirect to adminReceiveStudentInfor.jsp
                     }
                 } else if (type.equalsIgnoreCase("PhuHuynh")) {     //if user is parent of student  
-                    ArrayList<PhuHuynh> phuhuynhs = PhuHuynhDAO.adminGetPhuHuynhByID(id);       // call method to get data from database 
-                    List<String> name = HocSinhDAO.nameofStudentDependPH(id);
-                    if (phuhuynhs.isEmpty()) {                                          // if can not get data from database
+                    ArrayList<PhuHuynh> phuhuynhs = PhuHuynhDAO.adminGetPhuHuynhByID(id);        
+                    List<String> name = HocSinhDAO.nameofStudentDependPH(id);   //get name son of parent
+                    if (phuhuynhs.isEmpty()) {                                          
                         request.setAttribute("message", "Không tìm thấy thông tin phụ huyunh này.");
-                        request.getRequestDispatcher("/views/admin/adminUpdateParentInfor.jsp").forward(request, response);    // redirect to adminReceiveParentInfor.jsp
+                        request.getRequestDispatcher("/views/admin/adminUpdateParentInfor.jsp").forward(request, response);   
                     } else {
                         request.setAttribute("name", name);
-                        request.setAttribute("phuhuynhs", phuhuynhs);             //set object is phuhuynhs for jsp can get this     
-                        request.setAttribute("type", type);  // set type to send to the jsp and continue send to the servlet
+                        request.setAttribute("phuhuynhs", phuhuynhs);                
+                        request.setAttribute("type", type);  
                         request.getRequestDispatcher("/views/admin/adminUpdateParentInfor.jsp").forward(request, response);    // redirect to adminReceiveParentInfor.jsp
                     }
                 }
                 break;
+                
+            case "danhdau" : 
+                // danh dau ho tro o admin dashboard
+                String id_HoTro = request.getParameter("id") ; 
+                boolean ok = HoTroDAO.adminDanhDauDaDocHoTro(id_HoTro) ; 
+                if (ok) {
+                    request.getRequestDispatcher("/views/admin/adminDashboard.jsp").forward(request, response);
+                }
+                break ; 
 
         }
     }
@@ -276,7 +243,6 @@ public class adminActionWithUser extends HttpServlet {
     
     
      //This method handle the information from specific jsp ( update information of user JSP ) and call method handle that
-    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -300,6 +266,51 @@ public class adminActionWithUser extends HttpServlet {
 
     }
 
+    
+    
+    //medthod view detail information of account
+    private void doViewAccount(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+         String typeUser = request.getParameter("type");
+         String ID_TaiKhoan = request.getParameter("id") ; 
+         switch(typeUser) {
+             case "HocSinh" : 
+                    ArrayList<HocSinh> hocsinhs =  HocSinhDAO.adminGetHocSinhByID(ID_TaiKhoan);  // call method to get data from database 
+                    if (hocsinhs.isEmpty()) {                       
+                        request.setAttribute("message", "Không tìm thấy thông tin học sinh này.");
+                        request.getRequestDispatcher("/views/admin/adminReceiveStudentInfor.jsp").forward(request, response);  
+                    } else {
+                        request.setAttribute("hocsinhs", hocsinhs);      
+                        request.getRequestDispatcher("/views/admin/adminReceiveStudentInfor.jsp").forward(request, response);    
+                    }
+                 break ; 
+                
+             case "GiaoVien" : 
+                    ArrayList<GiaoVien_TruongHoc> giaoviens = GiaoVienDAO.adminGetGiaoVienByID(ID_TaiKhoan); // call method to get data from database 
+                    if (giaoviens.isEmpty()) {                                              
+                        request.setAttribute("message", "Không tìm thấy thông tin giáo viên này.");
+                        request.getRequestDispatcher("/views/admin/adminReceiveTeacherInfor.jsp").forward(request, response); 
+                    } else {
+                        request.setAttribute("giaoviens", giaoviens);   
+                        request.getRequestDispatcher("/views/admin/adminReceiveTeacherInfor.jsp").forward(request, response);  
+                    }
+                break ; 
+                 
+             case "PhuHuynh": 
+                    ArrayList<PhuHuynh> phuhuynhs = PhuHuynhDAO.adminGetPhuHuynhByID(ID_TaiKhoan); //get data of account is Parent
+                    List<String> name = HocSinhDAO.nameofStudentDependPH(ID_TaiKhoan);      //get name son of Parent(by ID_TaiKhoanPhuHuynh )
+                    if (phuhuynhs.isEmpty()) {                                         
+                        request.setAttribute("message", "Không tìm thấy thông tin phụ huyunh này.");
+                        request.getRequestDispatcher("/views/admin/adminReceiveParentInfor.jsp").forward(request, response);    
+                    } else {
+                        request.setAttribute("name", name);
+                        request.setAttribute("phuhuynhs", phuhuynhs);              
+                        request.getRequestDispatcher("/views/admin/adminReceiveParentInfor.jsp").forward(request, response);    
+                    }
+                 break ; 
+         }
+        
+    }
     
     //medthod update teacher
     private void updateTeacher(HttpServletRequest request, HttpServletResponse response)

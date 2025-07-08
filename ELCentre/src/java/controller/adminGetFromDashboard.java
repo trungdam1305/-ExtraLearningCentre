@@ -8,29 +8,26 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
-import model.TaiKhoan;
-import dao.TaiKhoanDAO;
-import model.HocSinh;
-import dao.HocSinhDAO;
-import model.GiaoVien;
-import dao.GiaoVienDAO;
+import dal.GiaoVienDAO;
 import model.HocPhi;
-import dao.HocPhiDAO;
+import dal.HocPhiDAO;
 import model.ThongBao;
-import dao.ThongBaoDAO;
-import dao.KhoaHocDAO;
+import dal.ThongBaoDAO;
+import dal.KhoaHocDAO;
 import model.KhoaHoc;
 import model.TaiKhoanChiTiet;
-import dao.TaiKhoanChiTietDAO;
+import dal.TaiKhoanChiTietDAO;
 import model.GiaoVien_TruongHoc;
+import model.HocSinh_SDT ; 
+import dal.HocSinh_SDTDAO ; 
 
 /**
+ * Created on:May 24 , 2025 11:48:56 PM
+ * @author: chuvv
  * This servlet do all action admin do in dashboard , like when admin click in
  * manage Users or all thing in admin dashboard , servlet can create ArrayList
  * to save data from database and send this data to specific JSP to show for
  * admin
- * May 24 , 2025 11:48:56 PM
- * @author wrx_Chur04
  */
 public class adminGetFromDashboard extends HttpServlet {
 
@@ -38,7 +35,6 @@ public class adminGetFromDashboard extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -54,18 +50,18 @@ public class adminGetFromDashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");         //get paramerter to know action with what ? 
+        String action = request.getParameter("action");       //get paramerter from adminDashboard
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         switch (action) {
             case "taikhoan":            //action with account
-                ArrayList<TaiKhoanChiTiet> taikhoans = new ArrayList<TaiKhoanChiTiet>();  // create arraylist to save data 
-                taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();            //admin get All acount from database
-                if (taikhoans == null) {                                  // get database fail
+                ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();    //admin get All acount from database
+              
+                if (taikhoans == null) {                                  
                     request.setAttribute("message", "Không có tài khoản nào.");
                     request.setAttribute("taikhoans", taikhoans);
                     request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
-                } else {                                                     // get database success
+                } else {                                                    
                     session.setAttribute("taikhoans", taikhoans);       //create object is taikhoans to send data for jsp
                     request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);          //redirect to jsp
                 }
@@ -73,12 +69,13 @@ public class adminGetFromDashboard extends HttpServlet {
                 break;
 
             case "hocsinh":       //action with student
-                ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>();          // create arraylist to save data 
-                hocsinhs = HocSinhDAO.adminGetAllHocSinh();                 //admin get All student from database
-                if (hocsinhs.isEmpty()) {                                    // get database fail
+                ArrayList<HocSinh_SDT> hocsinhs = new ArrayList<HocSinh_SDT>();          // create arraylist to save data 
+                hocsinhs = HocSinh_SDTDAO.adminGetSoDienThoaiHocSinh() ;                //admin get All student from database
+                if (hocsinhs == null) {                                    // get database fail
                     request.setAttribute("message", "Không có tài khoản nào.");
                     request.setAttribute("hocsinhs", hocsinhs);
                     request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);
+                    
                 } else {                                                    // get database success
                     session.setAttribute("hocsinhs", hocsinhs);          //create object is hocsinhs to send data for jsp
                     request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);          //redirect to  adminReceiveHocSinh jsp

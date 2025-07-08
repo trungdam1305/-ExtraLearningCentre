@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dao.KhoaHocDAO;
+import dal.KhoaHocDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import model.KhoaHoc;
 import model.LopHoc;
-import dao.LopHocDAO;
+import dal.LopHocDAO;
 
 /**
  *

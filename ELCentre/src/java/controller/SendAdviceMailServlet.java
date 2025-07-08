@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import api.EmailSender;
-import dao.ThongBaoDAO;
+import dal.ThongBaoDAO;
 import model.ThongBao;
 
 /**

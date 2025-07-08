@@ -47,12 +47,18 @@ public class GiaoVien {
 
     // Name of the school (used in display, not for DB insertion)
     private String TenTruongHoc;
+    
+    private String BangCap ; 
+    
+    private String LopDangDayTrenTruong ; 
+    
+    private String TrangThaiDay ; 
 
     // Constructors
     public GiaoVien() {
     }
-    
-     public GiaoVien(Integer ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT, int ID_TruongHoc, BigDecimal Luong, int IsHot, String TrangThai, LocalDateTime NgayTao, String Avatar) {
+
+    public GiaoVien(Integer ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT, int ID_TruongHoc, BigDecimal Luong, int IsHot, String TrangThai, LocalDateTime NgayTao, String Avatar, String TenTruongHoc, String BangCap, String LopDangDayTrenTruong, String TrangThaiDay) {
         this.ID_GiaoVien = ID_GiaoVien;
         this.ID_TaiKhoan = ID_TaiKhoan;
         this.HoTen = HoTen;
@@ -64,8 +70,21 @@ public class GiaoVien {
         this.TrangThai = TrangThai;
         this.NgayTao = NgayTao;
         this.Avatar = Avatar;
+        this.TenTruongHoc = TenTruongHoc;
+        this.BangCap = BangCap;
+        this.LopDangDayTrenTruong = LopDangDayTrenTruong;
+        this.TrangThaiDay = TrangThaiDay;
+    }
+    
+    public GiaoVien(   int ID_TruongHoc,  String LopDangDayTrenTruong  ) {
+       
+        this.ID_TruongHoc = ID_TruongHoc;
+        
+        this.LopDangDayTrenTruong = LopDangDayTrenTruong;
     }
 
+    
+    
    public GiaoVien(Integer ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT, int ID_TruongHoc, BigDecimal Luong, int IsHot, String TrangThai, LocalDateTime NgayTao, String Avatar, String TenTruongHoc) {
         this.ID_GiaoVien = ID_GiaoVien;
         this.ID_TaiKhoan = ID_TaiKhoan;
@@ -80,14 +99,34 @@ public class GiaoVien {
         this.Avatar = Avatar;
         this.TenTruongHoc = TenTruongHoc;
     }
+   
+    public String getBangCap() {
+        return BangCap;
+    }
+
+    public String getLopDangDayTrenTruong() {
+        return LopDangDayTrenTruong;
+    }
+
+    public String getTrangThaiDay() {
+        return TrangThaiDay;
+    }
+
+    public void setBangCap(String BangCap) {
+        this.BangCap = BangCap;
+    }
+
+    public void setLopDangDayTrenTruong(String LopDangDayTrenTruong) {
+        this.LopDangDayTrenTruong = LopDangDayTrenTruong;
+    }
+
+    public void setTrangThaiDay(String TrangThaiDay) {
+        this.TrangThaiDay = TrangThaiDay;
+    }
 
    
 
-    public GiaoVien(int ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT,
-            int ID_TruongHoc, BigDecimal Luong, int IsHot, String TrangThai,
-            LocalDateTime NgayTao) {
-        this(ID_GiaoVien, ID_TaiKhoan, HoTen, ChuyenMon, SDT, ID_TruongHoc, Luong, IsHot, TrangThai, NgayTao, null);
-    }
+    
 
     // Getters and Setters
     public Integer getID_GiaoVien() {

@@ -1,6 +1,6 @@
 package controller;
 
-import dao.HocSinhDAO;
+import dal.HocSinhDAO;
 import dao.TaiKhoanDAO;
 import model.TaiKhoan;
 import model.HocSinh;

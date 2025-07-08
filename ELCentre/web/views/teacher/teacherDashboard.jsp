@@ -8,15 +8,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="dao.HocSinhDAO" %>
+<%@ page import="dal.HocSinhDAO" %>
 <%@ page import="model.HocSinh" %>
-<%@ page import="dao.GiaoVienDAO" %>
+<%@ page import="dal.GiaoVienDAO" %>
 <%@ page import="model.GiaoVien" %>
-<%@ page import="dao.LopHocDAO" %>
+<%@ page import="dal.LopHocDAO" %>
 <%@ page import="model.LopHoc" %>
-<%@ page import="dao.UserLogsDAO" %>
+<%@ page import="dal.UserLogsDAO" %>
 <%@ page import="model.UserLogs" %>
-<%@ page import="dao.LichHocDAO" %>
+<%@ page import="dal.LichHocDAO" %>
 <%@ page import="model.LichHoc" %>
 <%@ page import="model.UserLogView" %>
 <%@ page import="java.time.LocalDate" %>
@@ -373,8 +373,6 @@
             <!--Academy Management-->
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">
-                <!--Teacher's Course Management-->
-                <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=hocsinh"><i class="fas fa-book"></i>Khóa Học</a></li>
                 <!--Teacher's Class Management-->
                 <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=giaovien"><i class="fas fa-book"></i>Lớp Học</a></li>
                 <!--Attendance's Management-->

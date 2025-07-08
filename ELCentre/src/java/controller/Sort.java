@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dao.KhoaHocDAO;
+import dal.KhoaHocDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;

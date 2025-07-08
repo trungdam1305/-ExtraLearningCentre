@@ -105,8 +105,8 @@
         <servlet-class>controller.SendAdviceMailServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>StudentDashboardServlet</servlet-name>
-        <servlet-class>controller.StudentDashboardServlet</servlet-class>
+        <servlet-name>adminFindInFilterGroup</servlet-name>
+        <servlet-class>controller.adminFindInFilterGroup</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
@@ -237,8 +237,8 @@
         <url-pattern>/SendAdviceMailServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>StudentDashboardServlet</servlet-name>
-        <url-pattern>/StudentDashboardServlet</url-pattern>
+        <servlet-name>adminFindInFilterGroup</servlet-name>
+        <url-pattern>/adminFindInFilterGroup</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

@@ -21,7 +21,7 @@ public class HocSinh_LopHoc {
     private String FeedBack;
 
     /** Whether feedback has been submitted (true if submitted) */
-    private boolean status_FeedBack;
+    private boolean Status_FeedBack;
 
     // Getter and Setter methods
 
@@ -57,11 +57,24 @@ public class HocSinh_LopHoc {
         this.FeedBack = FeedBack;
     }
 
-    public boolean isStatus_FeedBack() {
-        return status_FeedBack;
+    public HocSinh_LopHoc(Integer ID_LopHoc, Integer ID_HocSinh, Integer ID_HSLopHoc, String FeedBack, boolean Status_FeedBack) {
+        this.ID_LopHoc = ID_LopHoc;
+        this.ID_HocSinh = ID_HocSinh;
+        this.ID_HSLopHoc = ID_HSLopHoc;
+        this.FeedBack = FeedBack;
+        this.Status_FeedBack = Status_FeedBack;
     }
 
-    public void setStatus_FeedBack(boolean status_FeedBack) {
-        this.status_FeedBack = status_FeedBack;
+    public HocSinh_LopHoc() {
     }
+
+    public boolean isStatus_FeedBack() {
+        return Status_FeedBack;
+    }
+
+    public void setStatus_FeedBack(boolean Status_FeedBack) {
+        this.Status_FeedBack = Status_FeedBack;
+    }
+
+        
 }

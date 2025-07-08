@@ -24,6 +24,19 @@ public class DiemDanh {
     // Reason for absence (if applicable)
     private String LyDoVang;
 
+    public DiemDanh() {
+    }
+
+    public DiemDanh(Integer ID_DiemDanh, Integer ID_HocSinh, Integer ID_Schedule, String TrangThai, String LyDoVang) {
+        this.ID_DiemDanh = ID_DiemDanh;
+        this.ID_HocSinh = ID_HocSinh;
+        this.ID_Schedule = ID_Schedule;
+        this.TrangThai = TrangThai;
+        this.LyDoVang = LyDoVang;
+    }
+    
+    
+
     // Getter and setter methods
 
     public Integer getID_DiemDanh() {
