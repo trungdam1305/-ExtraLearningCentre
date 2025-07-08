@@ -908,20 +908,20 @@ public class LopHocInfoDTODAO {
     }
 
     private String mapTrangThai(String trangThai) {
-        if (trangThai == null) {
-            return "Chưa học";
-        }
-        switch (trangThai.trim().toLowerCase()) {
-            case "active":
-                return "Đang học";
-            case "finished":
-                return "Kết thúc";
-            case "inactive":
-                return "Chưa học";
-            default:
-                return "Chưa học";
-        }
+    if (trangThai == null) {
+        return "Chưa học";
     }
+    switch (trangThai.trim()) {
+        case "Đang học":
+            return "Đang học";
+        case "Kết thúc":
+            return "Kết thúc";
+        case "Chưa học":
+            return "Chưa học";
+        default:
+            return "Chưa học";
+    }
+}
 
     public AddLopHocResult addLopHoc(String tenLopHoc, String classCode, int idKhoaHoc, int idKhoi, int siSo, 
             List<Integer> idSlotHocs, List<String> ngayHocs, List<Integer> idPhongHocs, 

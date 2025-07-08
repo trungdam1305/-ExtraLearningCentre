@@ -108,6 +108,10 @@
         <servlet-name>adminFindInFilterGroup</servlet-name>
         <servlet-class>controller.adminFindInFilterGroup</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageSchedule</servlet-name>
+        <servlet-class>controller.ManageCourses.ManageSchedule</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -239,6 +243,10 @@
     <servlet-mapping>
         <servlet-name>adminFindInFilterGroup</servlet-name>
         <url-pattern>/adminFindInFilterGroup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageSchedule</servlet-name>
+        <url-pattern>/ManageSchedule</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

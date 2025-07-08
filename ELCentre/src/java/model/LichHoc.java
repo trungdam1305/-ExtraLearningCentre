@@ -51,11 +51,24 @@ public class LichHoc {
     // Class name associated with the lesson
     private String TenLopHoc;
 
+    private String TenPhongHoc;
+
+    public String getTenPhongHoc() {
+        return TenPhongHoc;
+    }
+
+    public void setTenPhongHoc(String TenPhongHoc) {
+        this.TenPhongHoc = TenPhongHoc;
+    }
+    
+    
+    
     /**
      * Default constructor.
      */
     public LichHoc() {
     }
+    
 
     
     
