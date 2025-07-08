@@ -1,9 +1,5 @@
 package dal;
 
-/**
- *
- * @author wrx_Chur04
- */
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -83,7 +79,7 @@ public class HocSinhDAO {
         return hocsinhs;
     }
 
-    public static ArrayList<HocSinh> adminGetHocSinhByID(String id) {
+    public static ArrayList<HocSinh> adminGetHocSinhByID(String ID_TaiKhoan) {
         DBContext db = DBContext.getInstance();
         ArrayList<HocSinh> hocsinhs = new ArrayList<HocSinh>();
 
@@ -94,7 +90,7 @@ public class HocSinhDAO {
                          where ID_TaiKhoan = ? 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            statement.setString(1, id);
+            statement.setString(1, ID_TaiKhoan);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
@@ -129,7 +125,7 @@ public class HocSinhDAO {
         }
     }
 
-    public static boolean adminEnableHocSinh(String id) {
+    public static boolean adminEnableHocSinh(String ID_TaiKhoan) {
         DBContext db = DBContext.getInstance();
         int rs = 0;
         try {
@@ -139,7 +135,7 @@ public class HocSinhDAO {
                          WHERE ID_TaiKhoan = ?;
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            statement.setString(1, id);
+            statement.setString(1, ID_TaiKhoan);
             rs = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -175,13 +171,15 @@ public class HocSinhDAO {
         }
     }
 
-    public static int adminGetTongSoHocSinh() {
+    public static int adminGetTongSoHocSinhDangHoc() {
         DBContext db = DBContext.getInstance();
         int tong = 0;
 
         try {
             String sql = """
-                          select count(*) from HocSinh
+                         SELECT COUNT(*) 
+                          FROM HocSinh
+                          WHERE TrangThaiHoc LIKE N'%Đang Học%'; 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
@@ -212,7 +210,7 @@ public class HocSinhDAO {
             rs.close();
             statement.close();
         } catch (Exception e) {
-            return 0; // hoặc có thể trả về -1 để phân biệt có lỗi
+            return 0; 
         }
         return total;
     }
@@ -250,19 +248,21 @@ public class HocSinhDAO {
         }
     }
 
-    public static List<String> nameofStudentDependPH(String idPhuHuynh) {
+    public static List<String> nameofStudentDependPH(String id_TK_PhuHuynh) {
         List<String> ListName = new ArrayList<String>();
         DBContext db = DBContext.getInstance();
 
         try {
             String sql = """
                          select HS.HoTen from HocSinh HS
-                         join PhuHuynh PH 
-                         on HS.ID_HocSinh = PH.ID_HocSinh 
-                         where PH.ID_TaiKhoan = ? 
+                                                  join HocSinh_PhuHuynh PH 
+                                                  on HS.ID_HocSinh = PH.ID_HocSinh 
+                         						 join PhuHuynh PHU 
+                         						 ON PHU.ID_PhuHuynh = PH.ID_PhuHuynh
+                                                  where PHU.ID_TaiKhoan = ? ; 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            statement.setString(1, idPhuHuynh);
+            statement.setString(1, id_TK_PhuHuynh);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 String name = rs.getString("HoTen");
@@ -278,8 +278,6 @@ public class HocSinhDAO {
             return ListName;
         }
     }
-
-
 
     public List<HocSinh> getHocSinhByLopHoc(int idLopHoc) {
         List<HocSinh> hocSinhList = new ArrayList<>();
@@ -504,7 +502,31 @@ public class HocSinhDAO {
         }
     }
     
+    public static int adminGetTongSoHocSinhChoHoc() {
+        DBContext db = DBContext.getInstance();
+        int tong = 0;
+
+        try {
+            String sql = """
+                         SELECT COUNT(*) 
+                         FROM HocSinh
+                         WHERE TrangThaiHoc LIKE N'%Chờ Học%';
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                tong = rs.getInt(1);
+                return tong;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return tong;
+    }
     
+    //Lấy thông tin học sinh theo id tài khoản    
     public static int getHocSinhIdByTaiKhoanId(int idTaiKhoan) {
         int idHocSinh = -1;
         String sql = "SELECT ID_HocSinh FROM HocSinh WHERE ID_TaiKhoan = ?";
@@ -521,7 +543,7 @@ public class HocSinhDAO {
         return idHocSinh;
     }
     
-    
+    // Lấy thông tin học sinh theo id học sinh
     public static HocSinh getHocSinhById(int idHocSinh) {
         HocSinh hs = null;
         String sql = """
@@ -544,7 +566,7 @@ public class HocSinhDAO {
                 hs.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
                 hs.setHoTen(rs.getString("HoTen"));
 
-                // ✅ Xử lý an toàn ngày sinh
+                // Xử lý an toàn việc hiển thị ngày sinh
                 java.sql.Date sqlNgaySinh = rs.getDate("NgaySinh");
                 if (sqlNgaySinh != null) {
                     hs.setNgaySinh(sqlNgaySinh.toLocalDate());
@@ -557,7 +579,7 @@ public class HocSinhDAO {
                 hs.setGhiChu(rs.getString("GhiChu"));
                 hs.setTrangThai(rs.getString("TrangThai"));
 
-                // ✅ Xử lý an toàn ngày tạo
+                //  Xử lý an toàn việc hiển thị ngày tạo
                 java.sql.Timestamp sqlNgayTao = rs.getTimestamp("NgayTao");
                 if (sqlNgayTao != null) {
                     hs.setNgayTao(sqlNgayTao.toLocalDateTime());
@@ -576,7 +598,7 @@ public class HocSinhDAO {
         return hs;
     }
 
-
+    //Cập nhật thông tin tài khoản học sinh
     public static boolean updateHocSinh(HocSinh hs) {
         String sql = """
             UPDATE HocSinh SET
@@ -616,48 +638,4 @@ public class HocSinhDAO {
         }
         return false;
     }
-    
-    
-public static void main(String[] args) {
-    int idHocSinh = 4;
-
-    HocSinh hs = new HocSinh();
-    hs.setID_HocSinh(idHocSinh);
-    hs.setHoTen("Phạm Thị Hồng Anh");
-    hs.setNgaySinh(LocalDate.of(2006, 5, 12));
-    hs.setGioiTinh("Nữ");
-    hs.setDiaChi("Đà Nẵng");
-    hs.setSDT_PhuHuynh("0900111233");
-    hs.setGhiChu("Cập nhật hồ sơ học sinh test");
-
-    // 🔍 Lấy ID_TruongHoc từ TenTruongHoc
-    String tenTruong = "Trường THCS Lê Quý Đôn";
-    int idTruongHoc = TruongHocDAO.getIdByTenTruongHoc(tenTruong);
-    if (idTruongHoc == -1) {
-        System.out.println("❌ Không tìm thấy trường học!");
-        return;
-    }
-    hs.setID_TruongHoc(idTruongHoc);
-
-    // Các trường còn lại
-    hs.setAvatar("avatar_student4_updated.jpg");
-    hs.setLopDangHocTrenTruong("12C3");
-    hs.setTrangThaiHoc("Đang học");
-
-    boolean success = HocSinhDAO.updateHocSinh(hs);
-    if (success) {
-        System.out.println("✅ Cập nhật học sinh thành công!");
-    } else {
-        System.out.println("❌ Cập nhật học sinh thất bại!");
-    }
-
-    // In lại để kiểm tra
-    HocSinh updated = HocSinhDAO.getHocSinhById(idHocSinh);
-    System.out.println("----- SAU CẬP NHẬT -----");
-    System.out.println("Họ tên: " + updated.getHoTen());
-    System.out.println("Trường: " + updated.getTenTruongHoc());
-    System.out.println("Lớp: " + updated.getLopDangHocTrenTruong());
-    System.out.println("Avatar: " + updated.getAvatar());
-}
-
 }

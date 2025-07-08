@@ -25,6 +25,7 @@ public class HoTroDAO {
         try {
             String sql = """
                          select * from HoTro 
+                         where DaDuyet = 0 ; 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
@@ -35,7 +36,8 @@ public class HoTroDAO {
                         rs.getString("TenHoTro"),
                         rs.getTimestamp("ThoiGian").toLocalDateTime(),
                         rs.getString("MoTa"),
-                        rs.getInt("ID_TaiKhoan")
+                        rs.getInt("ID_TaiKhoan") , 
+                        rs.getBoolean("DaDuyet")
                 );
                 hotros.add(hotro);
             }
@@ -50,4 +52,28 @@ public class HoTroDAO {
             return hotros ; 
         }
     }
+    
+    public static boolean adminDanhDauDaDocHoTro(String id_HoTro){
+        DBContext db = DBContext.getInstance() ; 
+        int rs = 0; 
+        try {
+            String sql = """
+                         UPDATE HoTro
+                         SET 
+                         DaDuyet = 1 
+                         where ID_HoTro = ? 
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, id_HoTro);
+            rs = statement.executeUpdate() ; 
+            while(rs!= 0 ) {
+                return true ; 
+            }
+        } catch(SQLException e ) {
+            e.printStackTrace(); 
+            return false ; 
+        }
+        return false ;
+    }
+    
 }

@@ -1,10 +1,11 @@
 <%-- 
     Document   : adminReceiveParentInfor
     Created on : May 29, 2025, 2:18:27 PM
-    Author     : wrx_Chur04
+    Author     : chuvv
     Purpose    : This page displays detailed information about parents (phụ huynh) in the EL CENTRE system, 
                  including account ID, name, contact details, address, associated student IDs, and status.
-    Parameters:
+    Parameters: (Handle from adminActionWithUser servlet)
+    - Method to get data from database in PhuHuynhDAO - (adminGetPhuHuynhByID)
     - @Param phuhuynhs (ArrayList<PhuHuynh>): A request attribute containing the list of parent objects fetched from the database.
 --%>
 
@@ -29,46 +30,46 @@
 
             h2 {
                 color: #1F4E79;
-                text-align: center; 
+                text-align: center;
             }
 
             .table-container {
                 overflow-x: auto;
                 margin-top: 20px;
                 display: flex;
-                justify-content: center; 
+                justify-content: center;
             }
 
             table {
                 border-collapse: collapse;
                 min-width: 800px;
                 background-color: #fff;
-                border-radius: 8px; 
-                overflow: hidden; 
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
 
             th, td {
-                border: 1px solid #ddd; 
-                padding: 12px 15px; 
-                text-align: center; 
-                vertical-align: middle; 
-                font-size: 14px; 
+                border: 1px solid #ddd;
+                padding: 12px 15px;
+                text-align: center;
+                vertical-align: middle;
+                font-size: 14px;
             }
 
             th {
                 background-color: #1F4E79;
                 color: #fff;
                 white-space: nowrap;
-                text-transform: uppercase; 
-                font-weight: 600; 
+                text-transform: uppercase;
+                font-weight: 600;
             }
 
             tr td:first-child {
                 background-color: #f8f8f8;
                 font-weight: bold;
                 width: 180px;
-                padding-left: 20px; 
+                padding-left: 20px;
                 text-align: center;
             }
 
@@ -78,11 +79,11 @@
                 background-color: #ffefef;
                 border: 1px solid #e0a8a8;
                 color: #cc0000;
-                border-radius: 8px; 
-                max-width: 600px; 
+                border-radius: 8px;
+                max-width: 600px;
                 margin-left: auto;
                 margin-right: auto;
-                text-align: center; 
+                text-align: center;
             }
 
             .back-button {
@@ -95,7 +96,7 @@
                 padding: 10px 20px;
                 background-color: #1F4E79;
                 color: white;
-                border-radius: 6px; 
+                border-radius: 6px;
                 font-size: 14px;
                 transition: background-color 0.3s ease;
             }
@@ -104,7 +105,7 @@
                 background-color: #163c5b;
             }
 
-            
+
             .header {
                 background-color: #1F4E79;
                 color: white;
@@ -153,7 +154,7 @@
                 margin-bottom: 5px;
             }
 
-            
+
             .footer {
                 background-color: #1F4E79;
                 color: #B0C4DE;
@@ -167,7 +168,7 @@
                 font-size: 14px;
             }
 
-            
+
             .main-content {
                 flex: 1 0 auto;
                 padding-bottom: 40px;
@@ -184,7 +185,7 @@
             <div class="admin-profile" onclick="toggleDropdown()">
                 <img src="https://png.pngtree.com/png-clipart/20250117/original/pngtree-account-avatar-user-abstract-circle-background-flat-color-icon-png-image_4965046.png" alt="Admin Photo" class="admin-img">
                 <span>Admin Vũ Văn Chủ</span>
-                
+
             </div>
         </div>
 
@@ -198,9 +199,9 @@
                             <thead>
                                 <tr>
                                     <th>Thông tin</th>
-                                    <c:forEach var="ph" items="${phuhuynhs}">
+                                        <c:forEach var="ph" items="${phuhuynhs}">
                                         <th>PH ${ph.getID_PhuHuynh()}</th>
-                                    </c:forEach>
+                                        </c:forEach>
                                 </tr>
                             </thead>
                             <tbody>
@@ -236,10 +237,14 @@
                                 </tr>
                                 <tr>
                                     <td>Phụ Huynh Của</td>
-                                    <c:forEach var="tenCon" items="${name}">
-                                        <td>${tenCon} , </td>
-                                    </c:forEach>
+                                    <td>
+                                        <c:forEach var="tenCon" items="${name}" varStatus="i">
+                                            ${tenCon}
+                                            <c:if test="${!i.last}">, </c:if>
+                                        </c:forEach>
+                                    </td>
                                 </tr>
+
                                 <tr>
                                     <td>Ghi chú</td>
                                     <c:forEach var="ph" items="${phuhuynhs}">
@@ -277,11 +282,11 @@
             </div>
         </div>
 
-        
+
         <div class="footer">
             <p>© 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
         </div>
 
-       
+
     </body>
 </html>

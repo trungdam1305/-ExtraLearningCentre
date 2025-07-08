@@ -105,7 +105,7 @@
                     </div>
 
                     <!-- ✅ Google reCAPTCHA -->
-                    <!-- <div class="g-recaptcha mb-3" data-sitekey="6Ldf8E4rAAAAACIhQBZn-9343I1wWxzJwzawYS1s"></div> -->
+                    <div class="g-recaptcha mb-3" data-sitekey="6Ldf8E4rAAAAACIhQBZn-9343I1wWxzJwzawYS1s"></div>
  
                     <button type="submit" name="action" class="btn btn-login">Đăng nhập</button>
                 </form>

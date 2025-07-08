@@ -91,6 +91,40 @@
             background-color: white;
             border-radius: 10px;
         }
+        
+        .timetable-wrapper {
+            margin-top: 40px;
+        }
+
+        .timetable {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .timetable th, .timetable td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+            font-size: 15px;
+        }
+
+        .timetable th {
+            background-color: #1F4E79;
+            color: white;
+        }
+
+        .timetable td.active {
+            background-color: #d4edda;
+            font-weight: bold;
+            color: #155724;
+            border: 2px solid #28a745;
+            border-radius: 4px;
+        }
+
     </style>
 </head>
 <body>
@@ -150,6 +184,49 @@
             <div class="no-data">Bạn chưa có lịch học nào sắp tới!</div>
         </c:otherwise>
     </c:choose>
+    <br>        
+            
+    <div class="timetable-wrapper">
+        <h3>🗓️ Thời khóa biểu tuần này</h3>
+        <table class="timetable">
+            <thead>
+                <tr>
+                    <th>Giờ học</th>
+                    <th>Thứ 2</th>
+                    <th>Thứ 3</th>
+                    <th>Thứ 4</th>
+                    <th>Thứ 5</th>
+                    <th>Thứ 6</th>
+                    <th>Thứ 7</th>
+                    <th>Chủ nhật</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>07:00 - 09:00</td>
+                    <td class="active">Toán NC</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="active">Anh Văn</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>09:30 - 11:30</td>
+                    <td></td>
+                    <td class="active">Lý 9 nâng cao</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <!-- Thêm nhiều slot hơn nếu cần -->
+            </tbody>
+        </table>
+    </div>
+        
 </div>
 
 </body>

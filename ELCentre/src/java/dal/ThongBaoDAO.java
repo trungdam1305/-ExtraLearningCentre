@@ -1,9 +1,5 @@
 package dal;
 
-/**
- *
- * @author wrx_Chur04
- */
 import model.ThongBao;
 import java.util.ArrayList;
 import java.sql.PreparedStatement;
@@ -106,7 +102,7 @@ public class ThongBaoDAO {
         }
         return list;
     }
-    
+
     //Hàm lấy thông báo theo id tài khoản
     public static List<ThongBao> getThongBaoByTaiKhoanId(int idTaiKhoan) throws SQLException {
          List<ThongBao> list = new ArrayList<>();
@@ -152,5 +148,5 @@ public class ThongBaoDAO {
                 System.err.println("Đã xảy ra lỗi khi lấy thông báo:");
                 e.printStackTrace();
             }
-    }
+    }    
 }

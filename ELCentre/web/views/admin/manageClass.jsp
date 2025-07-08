@@ -1,3 +1,4 @@
+
 <%-- 
     Document   : manageClass
     Created on : May 30, 2025, 10:33:02 PM
@@ -14,6 +15,19 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="java.util.HashSet" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="dal.HocSinhDAO" %>
+<%@ page import="model.HocSinh" %>
+<%@ page import="dal.LopHocDAO" %>
+<%@ page import="model.LopHoc" %>
+<%@ page import="dal.UserLogsDAO" %>
+<%@ page import="model.UserLogs" %>
+<%@ page import="dal.HoTroDAO" %>
+<%@ page import="model.HoTro" %>
+<%@ page import="model.UserLogView" %>
+<%@ page import="java.time.LocalDate" %>
+<%@ page import="model.Admin" %>
+<%@ page import="dal.AdminDAO" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -24,34 +38,50 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Font Awesome for additional icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f9;
+        }
+
         /* General container styling */
         .content-container {
-            padding: 20px;
+            padding: 6px;
             max-width: 100%;
             margin: 0 auto;
+            margin-left: 160px;
             background-color: #ffffff;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 60px;
+            padding-bottom: 40px;
         }
+
         /* Header styling */
         .header-row {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             color: #003087;
         }
         .header-row h2 {
-            font-size: 2rem;
+            font-size: 1.07rem;
             font-weight: 600;
         }
+
         /* Action and search row */
         .action-search-row {
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: nowrap; /* Ngăn xuống hàng, giữ tất cả trên một hàng */
+            gap: 6px;
+            margin-bottom: 15px;
+            flex-wrap: nowrap;
         }
         .action-search-row .form-control,
         .action-search-row .form-select {
@@ -59,9 +89,9 @@
             border: 1px solid #ced4da;
             box-shadow: none;
             transition: border-color 0.3s ease;
-            height: 38px;
-            font-size: 0.95rem;
-            width: 150px; /* Đặt chiều rộng cố định để đồng nhất */
+            height: 28px;
+            font-size: 0.57rem;
+            width: 110px;
         }
         .action-search-row .form-control:focus,
         .action-search-row .form-select:focus {
@@ -69,19 +99,20 @@
             box-shadow: 0 0 5px rgba(0, 48, 135, 0.3);
         }
         .action-search-row .btn-custom-action {
-            height: 38px;
+            height: 28px;
             display: flex;
             align-items: center;
-            padding: 0 16px;
-            white-space: nowrap; /* Ngăn nút bị ngắt dòng */
+            padding: 0 8px;
+            white-space: nowrap;
+            font-size: 0.57rem;
         }
+
         /* Custom button styling */
         .btn-custom-action {
             background-color: #003087;
             border-color: #003087;
             color: white;
             border-radius: 8px;
-            font-size: 0.95rem;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
         .btn-custom-action:hover {
@@ -90,14 +121,15 @@
             transform: translateY(-2px);
         }
         .btn-custom-action i {
-            margin-right: 5px;
+            margin-right: 4px;
         }
+
         /* Table styling */
         .table-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 20px;
+            margin-top: 15px;
             max-width: 98%;
             margin-left: auto;
             margin-right: auto;
@@ -108,71 +140,45 @@
         }
         .table {
             width: 100%;
-            min-width: 1000px;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            font-size: 1rem;
+            font-size: 0.58rem;
         }
         .table thead {
             background-color: #2196F3;
         }
         .table thead th {
-            padding: 15px 20px;
+            padding: 8px 10px;
             vertical-align: middle;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            font-size: 1.1rem;
+            font-size: 0.6rem;
             color: black;
             text-align: center;
+            min-width: 120px;
         }
         .table tbody td {
-            padding: 15px 20px;
+            padding: 8px 10px;
             vertical-align: middle;
             text-align: center;
+            font-size: 0.58rem;
         }
-        /* Sort styling */
-        .table th.sorted {
-            border: 3px solid #2563eb;
-            background-color: #bfdbfe;
-        }
-        .table th a.sort-link {
-            color: black;
-            text-decoration: none;
-            display: inline-block;
-            padding: 5px 10px;
-            border: 1px solid transparent;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-        .table th a.sort-link:hover {
-            color: #ffeb3b;
-            background-color: rgba(255, 235, 59, 0.2);
-            border-color: #ffeb3b;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .table th a.sort-link.active {
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
-        .table th a.sort-link:focus {
-            outline: none;
-        }
-        .table th a.sort-link:active {
-            color: #0288d1;
-            background-color: rgba(2, 136, 209, 0.3);
-            border-color: #0288d1;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
+
         /* Action buttons in table */
+        .table .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+            justify-content: center;
+        }
         .table .btn-sm {
-            margin-right: 5px;
+            margin-right: 4px;
             border-radius: 6px;
-            font-size: 0.9rem;
-            padding: 8px 12px;
-            min-width: 80px;
+            font-size: 0.5rem;
+            padding: 3px 5px;
+            min-width: 50px;
             text-align: center;
             line-height: 1.2;
         }
@@ -208,40 +214,68 @@
             background-color: #117a8b;
             border-color: #117a8b;
         }
+
+        /* Sort styling */
+        .table th.sorted {
+            border: 3px solid #2563eb;
+            background-color: #bfdbfe;
+        }
+        .table th a.sort-link {
+            color: black;
+            text-decoration: none;
+            display: inline-block;
+            padding: 3px 6px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .table th a.sort-link:hover {
+            color: #ffeb3b;
+            background-color: rgba(255, 235, 59, 0.2);
+            border-color: #ffeb3b;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .table th a.sort-link.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
         /* Collapsible row styling */
         .details-row {
             display: none;
             background-color: #f8f9fa;
         }
         .details-row td {
-            padding: 20px;
+            padding: 12px;
             border-top: 1px solid #dee2e6;
         }
         .details-content {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 12px;
         }
         .details-content div {
             flex: 1 1 45%;
-            font-size: 0.95rem;
+            font-size: 0.58rem;
         }
         .details-content div strong {
             color: #003087;
         }
         .details-content img {
-            width: 100px !important;
-            height: 130px !important;
+            width: 50px !important;
+            height: 50px !important;
             object-fit: cover;
             border-radius: 4px;
             border: 2px solid lightblue;
         }
-        /* Pagination styling */
+
+        /* Pagination, Alerts, Modal, Scroll to Top */
         .pagination-container {
             display: flex;
             justify-content: flex-end;
-            margin-top: 10px;
-            padding: 0 20px;
+            margin-top: 8px;
+            padding: 0 12px;
             width: 98%;
         }
         .pagination .page-item.active .page-link {
@@ -251,54 +285,54 @@
         }
         .pagination .page-link {
             border-radius: 6px;
-            margin: 0 3px;
+            margin: 0 2px;
             color: #003087;
+            font-size: 0.57rem;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
         .pagination .page-link:hover {
             background-color: #e6f0fa;
             color: #00215a;
         }
-        /* Alerts */
         .alert-custom-success {
             background-color: #22c55e;
             border-color: #22c55e;
             color: white;
             border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
+            padding: 8px;
+            margin-bottom: 10px;
+            font-size: 0.57rem;
         }
         .alert-custom-danger {
             background-color: #ef4444;
             border-color: #ef4444;
             color: white;
             border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
+            padding: 8px;
+            margin-bottom: 10px;
+            font-size: 0.57rem;
         }
-        /* Dashboard button */
         .dashboard-button {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 10px;
         }
         .dashboard-button .btn {
-            border-radius: 8px;
-            padding: 10px 20px;
-            font-size: 1rem;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 0.57rem;
         }
-        /* Scroll to top button */
         #scrollToTopBtn {
             display: none;
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 15px;
+            right: 15px;
             background-color: #007bff;
             color: white;
             border: none;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 18px;
+            width: 40px;
+            height: 40px;
+            font-size: 14px;
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             z-index: 1000;
@@ -307,7 +341,6 @@
         #scrollToTopBtn:hover {
             background-color: #0056b3;
         }
-        /* Modal styling */
         .modal-content {
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -318,15 +351,20 @@
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
         }
+        .modal-header h5 {
+            font-size: 0.8rem;
+        }
         .modal-footer .btn {
             border-radius: 6px;
-            padding: 8px 16px;
+            padding: 4px 8px;
+            font-size: 0.57rem;
         }
+
         /* Status badge styling */
         .status-badge {
-            padding: 5px 10px;
+            padding: 2px 4px;
             border-radius: 12px;
-            font-size: 0.9rem;
+            font-size: 0.5rem;
             font-weight: 500;
         }
         .status-dang-hoc {
@@ -341,47 +379,298 @@
             background-color: #6b7280;
             color: white;
         }
+
+        /* Header styling */
+        .header {
+            background-color: #1F4E79;
+            color: white;
+            padding: 4px 8px;
+            text-align: left;
+            position: fixed;
+            width: calc(100% - 160px);
+            left: 160px;
+            right: 0;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header .left-title {
+            font-size: 0.83rem;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+        }
+        .header .left-title i {
+            margin-right: 8px;
+        }
+
+        /* Footer styling */
+        .footer {
+            background-color: #1F4E79;
+            color: #B0C4DE;
+            text-align: center;
+            padding: 3px 0;
+            position: fixed;
+            width: calc(100% - 160px);
+            left: 160px;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+        }
+        .footer p {
+            margin: 0;
+            font-size: 0.5rem;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 160px;
+            background-color: #1F4E79;
+            color: white;
+            padding: 6px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1001;
+        }
+        .sidebar h4 {
+            margin: 0 auto;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        .sidebar-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 5px auto;
+            display: block;
+            border: 3px solid #B0C4DE;
+        }
+        .sidebar-section-title {
+            font-weight: bold;
+            margin-top: 15px;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #B0C4DE;
+            border-bottom: 1px solid #B0C4DE;
+            padding-bottom: 3px;
+        }
+        ul.sidebar-menu {
+            list-style: none;
+            padding-left: 0;
+            margin: 4px 0 0 0;
+        }
+        ul.sidebar-menu li {
+            margin: 4px 0;
+        }
+        ul.sidebar-menu li a {
+            color: white;
+            text-decoration: none;
+            padding: 4px 6px;
+            display: flex;
+            align-items: center;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            transition: background-color 0.3s ease;
+        }
+        ul.sidebar-menu li a:hover {
+            background-color: #163E5C;
+        }
+        ul.sidebar-menu li a i {
+            margin-right: 5px;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .content-container {
-                padding: 15px;
-                margin: 10px;
+                padding: 8px;
+                margin: 5px;
+                margin-left: 0;
+                margin-top: 50px;
+                padding-bottom: 30px;
             }
             .header-row h2 {
-                font-size: 1.5rem;
+                font-size: 0.8rem;
             }
             .action-search-row {
                 flex-direction: column;
                 align-items: flex-end;
-                gap: 10px;
+                gap: 6px;
             }
             .action-search-row .form-control,
             .action-search-row .form-select,
             .action-search-row .btn-custom-action {
-                width: 100%;
+                width: auto;
+                font-size: 0.38rem;
+                height: 26px;
+            }
+            .action-search-row .btn-custom-action {
+                padding: 0 6px;
             }
             .table thead th,
             .table tbody td {
-                padding: 10px 15px;
-                font-size: 0.9rem;
+                padding: 5px 6px;
+                font-size: 0.5rem;
+            }
+            .table .btn-sm {
+                font-size: 0.48rem;
+                padding: 2px 4px;
+                min-width: 45px;
+            }
+            .status-badge {
+                padding: 2px 4px;
+                font-size: 0.48rem;
             }
             .pagination-container {
                 justify-content: center;
             }
-            #scrollToTopBtn {
-                bottom: 15px;
-                right: 15px;
-                width: 40px;
-                height: 40px;
-                font-size: 16px;
+            .pagination .page-link {
+                font-size: 0.5rem;
+            }
+            .alert-custom-success,
+            .alert-custom-danger {
+                padding: 6px;
+                margin-bottom: 8px;
+                font-size: 0.38rem;
             }
             .details-content div {
                 flex: 1 1 100%;
+                font-size: 0.54rem;
             }
+            .details-content img {
+                width: 40px !important;
+                height: 40px !important;
+            }
+            .dashboard-button {
+                margin-top: 8px;
+            }
+            .dashboard-button .btn {
+                font-size: 0.48rem;
+                padding: 4px 8px;
+            }
+            #scrollToTopBtn {
+                bottom: 8px;
+                right: 8px;
+                width: 30px;
+                height: 30px;
+                font-size: 12px;
+            }
+            .modal-footer .btn {
+                padding: 3px 6px;
+                font-size: 0.38rem;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                box-shadow: none;
+                padding: 5px;
+            }
+            .header, .footer {
+                width: 100%;
+                margin-left: 0;
+                left: 0;
+                right: 0;
+            }
+            .sidebar h4 {
+                font-size: 0.85rem;
+            }
+            .sidebar-logo {
+                width: 50px;
+                height: 50px;
+                margin: 5px auto;
+            }
+            .sidebar-section-title {
+                margin-top: 12px;
+                font-size: 10px;
+                padding-bottom: 3px;
+            }
+            ul.sidebar-menu {
+                margin: 4px 0 0 0;
+            }
+            ul.sidebar-menu li {
+                margin: 4px 0;
+            }
+            ul.sidebar-menu li a {
+                padding: 3px 5px;
+                font-size: 0.7rem;
+            }
+            ul.sidebar-menu li a i {
+                margin-right: 5px;
+            }
+            .course-stats {
+                font-size: 0.45rem !important;
+            }
+        }
+        
+        .course-stats {
+            font-size: 0.67rem !important;
+            margin: 8px 0;
         }
     </style>
 </head>
 <body>
+    <div class="header">
+        <div class="left-title">
+            Admin Dashboard <i class="fas fa-tachometer-alt"></i>
+        </div>
+        <div class="admin-profile" onclick="toggleDropdown()">
+            <%
+                ArrayList<Admin> admins = (ArrayList) AdminDAO.getNameAdmin();
+            %>
+            <img src="<%= admins.get(0).getAvatar() %>" alt="Admin Photo" class="admin-img">
+            <span><%= admins.get(0).getHoTen() %></span>
+            <i class="fas fa-caret-down"></i>
+            <div class="dropdown-menu" id="adminDropdown">
+                <a href="#"><i class="fas fa-key"></i> Đổi mật khẩu</a>
+                <a href="#"><i class="fas fa-user-edit"></i> Cập nhật thông tin</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <h4>EL CENTRE</h4>
+        <img src="${pageContext.request.contextPath}/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
+        <div class="sidebar-section-title">Tổng quan</div>
+        <ul class="sidebar-menu">
+            <li><a href="#">Dashboard</a></li>
+        </ul>
+        <div class="sidebar-section-title">Quản lý người dùng</div>
+        <ul class="sidebar-menu">
+            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocsinh">Học sinh</a></li>
+            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=giaovien">Giáo viên</a></li>
+            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=taikhoan">Tài khoản</a></li>
+        </ul>
+        <div class="sidebar-section-title">Quản lý tài chính</div>
+        <ul class="sidebar-menu">
+            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocphi"><i class="fas fa-money-bill-wave"></i> Học phí</a></li>
+        </ul>
+        <div class="sidebar-section-title">Quản lý học tập</div>
+        <ul class="sidebar-menu">
+            <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
+        </ul>
+        <div class="sidebar-section-title">Hệ thống</div>
+        <ul class="sidebar-menu">
+            <li><a href="#"><i class="fas fa-cog"></i> Cài đặt</a></li>
+        </ul>
+        <div class="sidebar-section-title">Khác</div>
+        <ul class="sidebar-menu">
+            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=yeucautuvan"><i class="fas fa-blog"></i> Yêu cầu tư vấn</a></li>
+            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
+            <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
+            <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+        </ul>
+    </div>
+
     <div class="content-container">
         <!-- Tạo CSRF token nếu chưa tồn tại -->
         <c:if test="${empty sessionScope.csrfToken}">
@@ -419,6 +708,9 @@
         <c:if test="${empty danhSachLopHoc && danhSachLopHoc != null}">
             <div class="alert alert-custom-danger" role="alert">Không có lớp học nào để hiển thị cho khóa học này.</div>
         </c:if>
+        <c:if test="${empty teacherList}">
+            <div class="alert alert-custom-danger" role="alert">Không có giáo viên nào trong danh sách teacherList. Kiểm tra servlet ManageClass hoặc GiaoVienDAO.</div>
+        </c:if>
 
         <!-- Nút hành động và form tìm kiếm/lọc -->
         <div class="action-search-row">
@@ -429,7 +721,7 @@
                 <a href="${pageContext.request.contextPath}/ManageClass?action=refresh&ID_Khoi=${ID_Khoi}&ID_KhoaHoc=${ID_KhoaHoc}" class="btn btn-custom-action">
                     <i class="bi bi-arrow-clockwise"></i> Làm mới
                 </a>
-                <form action="${pageContext.request.contextPath}/ManageClass" method="get" id="filterForm" style="display: flex; align-items: center; gap: 10px; flex-wrap: nowrap;">
+                <form action="${pageContext.request.contextPath}/ManageClass" method="get" id="filterForm" style="display: flex; align-items: center; gap: 6px; flex-wrap: nowrap;">
                     <input type="hidden" name="action" value="filter" />
                     <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}" />
                     <input type="hidden" name="ID_Khoi" value="${ID_Khoi}" />
@@ -446,7 +738,7 @@
                     <select class="form-select" id="teacherFilter" name="teacherFilter" onchange="this.form.submit();">
                         <option value="" ${teacherFilter == null || teacherFilter.isEmpty() ? 'selected' : ''}>Tất cả giáo viên</option>
                         <c:forEach var="teacher" items="${teacherList}">
-                            <option value="${teacher.ID_GiaoVien}" ${teacherFilter == teacher.ID_GiaoVien ? 'selected' : ''}>${teacher.hoTen}</option>
+                            <option value="${teacher.ID_GiaoVien}" ${teacherFilter == teacher.ID_GiaoVien.toString() ? 'selected' : ''}>${teacher.hoTen} (${teacher.chuyenMon})</option>
                         </c:forEach>
                     </select>
                     <select class="form-select" id="feeFilter" name="feeFilter" onchange="this.form.submit();">
@@ -469,7 +761,7 @@
         </div>
 
         <c:if test="${not empty ID_KhoaHoc && not empty ID_Khoi}">
-            <p>Tổng số lớp học: ${totalItems != null ? totalItems : '0'}       Tổng số trang: ${totalPages != null ? totalPages : '0'}</p>
+            <p class="course-stats">Tổng số lớp học: ${totalItems != null ? totalItems : '0'}       Tổng số trang: ${totalPages != null ? totalPages : '0'}</p>
         </c:if>
 
         <!-- Bảng danh sách -->
@@ -519,10 +811,28 @@
                                     <td>
                                         <c:choose>
                                             <c:when test="${not empty lopHoc.thoiGianHoc}">
-                                                <ul style="margin: 0; padding-left: 20px;">
-                                                    <c:forEach var="thoiGian" items="${fn:split(lopHoc.thoiGianHoc, ';')}">
-                                                        <li>${thoiGian.trim()}</li>
+                                                <ul style="margin: 0; padding-left: 15px;">
+                                                    <c:set var="thoiGianList" value="${fn:split(lopHoc.thoiGianHoc, ';')}" />
+                                                    <c:set var="today" value="<%= java.time.LocalDate.now().toString() %>" />
+                                                    <c:set var="futureSchedules" value="0" />
+                                                    <c:forEach var="thoiGian" items="${thoiGianList}" varStatus="loop">
+                                                        <c:set var="scheduleDate" value="${fn:substringBefore(thoiGian.trim(), ' ')}" />
+                                                        <c:set var="parsedDate" value="${fn:replace(scheduleDate, '/', '-')}" />
+                                                        <c:if test="${parsedDate >= today && futureSchedules < 5}">
+                                                            <li>${thoiGian.trim()}</li>
+                                                            <c:set var="futureSchedules" value="${futureSchedules + 1}" />
+                                                        </c:if>
                                                     </c:forEach>
+                                                    <c:if test="${futureSchedules == 0}">
+                                                        <li style="color: red;">Không có lịch học sắp tới</li>
+                                                    </c:if>
+                                                    <c:if test="${fn:length(thoiGianList) > futureSchedules}">
+                                                        <li>
+                                                            <button type="button" class="btn btn-info btn-sm view-schedule" data-bs-toggle="modal" data-bs-target="#scheduleModal" data-id="${lopHoc.idLopHoc}" data-schedule="${fn:escapeXml(lopHoc.thoiGianHoc)}">
+                                                                <i class="bi bi-eye"></i> Xem thêm
+                                                            </button>
+                                                        </li>
+                                                    </c:if>
                                                 </ul>
                                             </c:when>
                                             <c:otherwise>
@@ -547,7 +857,7 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
-                                    <td>
+                                    <td class="action-buttons">
                                         <button type="button" class="btn btn-info btn-sm toggle-details" data-id="${lopHoc.idLopHoc}">
                                             <i class="bi bi-info-circle"></i> Xem chi tiết
                                         </button>
@@ -557,31 +867,38 @@
                                         <a href="${pageContext.request.contextPath}/ManageClass?action=updateClass&ID_LopHoc=${lopHoc.idLopHoc}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="btn btn-danger btn-sm" aria-label="Cập nhật lớp học">
                                             <i class="bi bi-pencil"></i> Sửa
                                         </a>
-                                        <a href="${pageContext.request.contextPath}/ManageClassDetail?ID_LopHoc=${lopHoc.idLopHoc}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="btn btn-secondary btn-sm" aria-label="Xem lớp học">
-                                            <i class="bi bi-eye"></i> Xem danh sách lớp
+                                        <a href="${pageContext.request.contextPath}/ManageClassDetail?ID_LopHoc=${lopHoc.idLopHoc}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="btn btn-secondary btn-sm" aria-label="Xem danh sách lớp">
+                                            <i class="bi bi-eye"></i> Danh sách học sinh
                                         </a>
                                     </td>
                                 </tr>
-                                <!-- Hàng chi tiết (ẩn mặc định) -->
                                 <tr class="details-row" id="details-${lopHoc.idLopHoc}">
                                     <td colspan="7">
                                         <div class="details-content">
                                             <div><strong>Sĩ số tối đa:</strong> ${lopHoc.siSoToiDa != null ? lopHoc.siSoToiDa : 'Chưa có'}</div>
                                             <div><strong>Sĩ số tối thiểu:</strong> ${lopHoc.siSoToiThieu != null ? lopHoc.siSoToiThieu : 'Chưa có'}</div>
                                             <div><strong>Học phí:</strong> ${lopHoc.soTien != null ? lopHoc.soTien : '0'} VNĐ</div>
-                                            <div><strong>Giáo viên:</strong> ${lopHoc.tenGiaoVien != null ? lopHoc.tenGiaoVien : 'Chưa phân công'}</div>
+                                            <div>
+                                                <strong>Giáo viên:</strong> 
+                                                <c:choose>
+                                                    <c:when test="${not empty lopHoc.tenGiaoVien}">
+                                                        ${fn:split(lopHoc.tenGiaoVien, ',')[0].trim()}
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        Chưa phân công
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </div>
                                             <div><strong>Ghi chú:</strong> ${lopHoc.ghiChu != null ? lopHoc.ghiChu : 'Chưa có'}</div>
                                             <div><strong>Ngày khởi tạo:</strong> ${lopHoc.ngayTao != null ? lopHoc.ngayTao : 'Chưa có'}</div>
                                             <div>
                                                 <strong>Ảnh giáo viên:</strong><br>
                                                 <c:choose>
                                                     <c:when test="${not empty lopHoc.avatarGiaoVien}">
-                                                        <c:forEach var="avatar" items="${fn:split(lopHoc.avatarGiaoVien, ',')}">
-                                                            <img src="${pageContext.request.contextPath}/${avatar.trim()}" alt="Ảnh giáo viên" />
-                                                        </c:forEach>
+                                                        <img data-class-image="${pageContext.request.contextPath}/${fn:split(lopHoc.avatarGiaoVien, ',')[0].trim()}" src="${pageContext.request.contextPath}/${fn:split(lopHoc.avatarGiaoVien, ',')[0].trim()}" alt="Ảnh giáo viên" width="50" style="max-height: 50px; object-fit: cover;" />
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <span>Chưa có ảnh</span>
+                                                        <img src="https://via.placeholder.com/50" alt="No Image" width="50" style="max-height: 50px; object-fit: cover;" />
                                                     </c:otherwise>
                                                 </c:choose>
                                             </div>
@@ -645,6 +962,50 @@
             </c:if>
         </div>
 
+        <!-- Modal hiển thị lịch học -->
+        <div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="scheduleModalLabel">Danh sách lịch học</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul id="scheduleList" style="margin: 0; padding-left: 15px; font-size: 0.58rem;"></ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal xác nhận xóa -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Bạn có chắc muốn xóa lớp học này không?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <form action="${pageContext.request.contextPath}/ManageClass" method="post" id="deleteForm">
+                            <input type="hidden" name="action" value="deleteClass">
+                            <input type="hidden" name="ID_LopHoc" id="deleteClassId">
+                            <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}">
+                            <input type="hidden" name="ID_Khoi" value="${ID_Khoi}">
+                            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
+                            <button type="submit" class="btn btn-primary">Xóa</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Nút quay lại dashboard -->
         <div class="dashboard-button">
             <form action="${pageContext.request.contextPath}/ManageCourse">
@@ -653,30 +1014,8 @@
         </div>
     </div>
 
-    <!-- Modal xác nhận xóa -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Bạn có chắc muốn xóa lớp học này không?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <form action="${pageContext.request.contextPath}/ManageClass" method="post" id="deleteForm">
-                        <input type="hidden" name="action" value="deleteClass">
-                        <input type="hidden" name="ID_LopHoc" id="deleteClassId">
-                        <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}">
-                        <input type="hidden" name="ID_Khoi" value="${ID_Khoi}">
-                        <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
-                        <button type="submit" class="btn btn-primary">Xóa</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+    <div class="footer">
+        <p>© 2025 EL CENTRE. Bản quyền thuộc về EL CENTRE.</p>
     </div>
 
     <!-- Bootstrap 5 JS và Popper -->
@@ -708,7 +1047,7 @@
 
         // Quản lý trạng thái active cho nút sort
         document.querySelectorAll('.sort-link').forEach(link => {
-            link.addEventListener('click', function(e) {
+            link.addEventListener('click', function (e) {
                 document.querySelectorAll('.sort-link').forEach(l => l.classList.remove('active'));
                 this.classList.add('active');
             });
@@ -716,9 +1055,24 @@
 
         // Xóa trạng thái active khi bấm nút Refresh hoặc Tìm
         document.querySelectorAll('.btn-custom-action').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 document.querySelectorAll('.sort-link').forEach(l => l.classList.remove('active'));
             });
+        });
+
+        // Kiểm tra sự tồn tại của ảnh
+        document.querySelectorAll('img[data-class-image]').forEach(img => {
+            const imageUrl = img.getAttribute('data-class-image');
+            const fallbackUrl = 'https://via.placeholder.com/50';
+            const testImage = new Image();
+            testImage.src = imageUrl;
+            testImage.onload = () => {
+                img.src = imageUrl;
+            };
+            testImage.onerror = () => {
+                img.src = fallbackUrl;
+                img.onerror = null;
+            };
         });
 
         // Toggle hàng chi tiết
@@ -733,8 +1087,27 @@
                     : '<i class="bi bi-x-circle"></i> Ẩn chi tiết';
             });
         });
+
+        // Hiển thị lịch học trong modal
+        document.querySelectorAll('.view-schedule').forEach(button => {
+            button.addEventListener('click', function () {
+                const schedule = this.getAttribute('data-schedule');
+                const scheduleList = document.getElementById('scheduleList');
+                scheduleList.innerHTML = '';
+                if (schedule) {
+                    const times = schedule.split(';');
+                    times.forEach(time => {
+                        if (time.trim()) {
+                            const li = document.createElement('li');
+                            li.textContent = time.trim();
+                            scheduleList.appendChild(li);
+                        }
+                    });
+                } else {
+                    scheduleList.innerHTML = '<li style="color: red;">Chưa có lịch học</li>';
+                }
+            });
+        });
     </script>
-    <!-- Nút cuộn lên đầu trang -->
-    <button id="scrollToTopBtn" onclick="scrollToTop()" aria-label="Cuộn lên đầu trang"><i class="bi bi-arrow-up"></i></button>
 </body>
 </html>

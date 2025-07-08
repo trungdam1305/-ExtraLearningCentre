@@ -1,9 +1,10 @@
 <!-- 
   Created on: May 24, 2025, 2:44:16 PM
-  Author: wrx_Chur04
-  Purpose: This admin dashboard page for the EL CENTRE system is designed to provide an overview of key 
-  metrics including the number of students, teachers, classes, and revenue. It also tracks recent user activities, today's support, 
-  and offers visual charts for attendance, student satisfaction, and monthly revenue analysis.
+  Author: chuvv
+  Purpose: This admin dashboard page of the EL CENTRE system provides a comprehensive overview of key metrics, 
+  including the number of students, teachers, classes, students waiting to be assigned to a class, and consultations pending approval. 
+  It also monitors recent user activities and today's support requests, and presents visual charts for attendance trends, 
+  student satisfaction, and monthly revenue analysis.
 -->
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -23,6 +24,7 @@
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="model.Admin" %>
 <%@ page import="dal.AdminDAO" %>
+<%@ page import="dal.HocSinh_LopHocDAO" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -375,7 +377,165 @@
                 margin: 0;
                 font-size: 14px;
             }
+
+            .stat-card {
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                flex: 1 1 220px;
+                text-align: center;
+                transition: transform 0.2s;
+                color: white;
+            }
+            .stat-card h3 {
+                font-weight: 700;
+                font-size: 18px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 15px;
+                color: inherit;
+            }
+            .stat-card p {
+                font-size: 28px;
+                font-weight: bold;
+                margin: 0;
+                color: inherit;
+            }
+
+            .stat-hocsinh {
+                background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+                color: #0D47A1;
+            }
+            .stat-giaovien {
+                background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+                color: #1B5E20;
+            }
+            .stat-lophoc {
+                background: linear-gradient(135deg, #FFFDE7, #FFF9C4);
+                color: #F57F17;
+            }
+            .stat-tuvan {
+                background: linear-gradient(135deg, #FFEBEE, #FFCDD2);
+                color: #C62828;
+            }
+
+            .tables-wrapper {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+            .data-table-container {
+                background: linear-gradient(to bottom right, #ffffff, #f7fafd);
+                padding: 20px;
+                border-radius: 12px;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+                flex: 1 1 48%;
+                transition: transform 0.2s;
+            }
+
+            .data-table-container:hover {
+                transform: translateY(-3px);
+            }
+
+
+            .section-title {
+                font-size: 18px;
+                color: #1F4E79;
+                font-weight: 600;
+                border-left: 5px solid #1F4E79;
+                padding-left: 12px;
+                margin-bottom: 15px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .section-title i {
+                color: #1F4E79;
+            }
+
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 14px;
+            }
+
+            table th, table td {
+                padding: 10px 14px;
+                text-align: left;
+                border-bottom: 1px solid #e0e0e0;
+            }
+
+            table th {
+                background-color: #E3F2FD;
+                color: #0D47A1;
+                font-weight: bold;
+            }
+
+            table tbody tr:hover {
+                background-color: #f1f8ff;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+            }
+
+
+            .no-data {
+                text-align: center;
+                color: #777;
+                padding: 20px;
+                font-style: italic;
+                background-color: #f9f9f9;
+                border-radius: 6px;
+            }
+
+
+            #logDateFilter {
+                padding: 6px 12px;
+                border-radius: 6px;
+                border: 1px solid #ccc;
+                font-size: 14px;
+                margin-bottom: 10px;
+                color: #1F4E79;
+            }
+
+            #searchLogInput {
+                padding: 8px 12px;
+                width: 100%;
+                margin-bottom: 12px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                font-size: 14px;
+                outline: none;
+                box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+            }
+
+            .btn-action.update {
+                display: inline-flex;
+                align-items: center;
+                background-color: #4CAF50;
+                color: #fff;
+                padding: 6px 12px;
+                border-radius: 6px;
+                font-size: 13px;
+                text-decoration: none;
+                transition: background-color 0.3s;
+                font-weight: 600;
+            }
+
+            .btn-action.update i {
+                margin-right: 6px;
+            }
+
+            .btn-action.update:hover {
+                background-color: #388e3c;
+            }
+
         </style>
+
+
     </head>
     <body>
         <div class="header">
@@ -388,8 +548,8 @@
                       
                 %>
                 <img src="<%= admins.get(0).getAvatar() %>" alt="Admin Photo" class="admin-img">
-                
-                
+
+
                 <span><%= admins.get(0).getHoTen() %></span>
                 <i class="fas fa-caret-down"></i>
                 <div class="dropdown-menu" id="adminDropdown">
@@ -404,7 +564,8 @@
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="#">Dashboard</a></li>
+                <li><a href="#"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+
             </ul>
 
             <div class="sidebar-section-title">Quản lý người dùng</div>
@@ -422,6 +583,7 @@
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
+                <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-calendar-alt"></i> Lịch học</a></li>
             </ul>
 
             <div class="sidebar-section-title">Hệ thống</div>
@@ -441,34 +603,42 @@
         <div class="main-content">
             <!-- Dashboard Stats -->
             <div class="dashboard-stats">
-                <div class="stat-card">
-                    <h3><i class="fas fa-user-graduate"></i> Tổng số học sinh</h3>
+                <div class="stat-card stat-hocsinh">
+                    <h3><i class="fas fa-user-graduate"></i> Tổng số học sinh đang học</h3>
                     <%
-                        Integer tongSoHocSinh = HocSinhDAO.adminGetTongSoHocSinh();
+                        Integer tongSoHocSinhDangHoc = HocSinhDAO.adminGetTongSoHocSinhDangHoc();
                     %>
-                    <p><%= tongSoHocSinh %></p>
+                    <p><%= tongSoHocSinhDangHoc %></p>
                 </div>
 
-                <div class="stat-card">
-                    <h3><i class="fas fa-chalkboard-teacher"></i> Tổng số giáo viên</h3>
+                <div class="stat-card stat-giaovien">
+                    <h3><i class="fas fa-chalkboard-teacher"></i> Tổng số giáo viên đang dạy</h3>
                     <%
-                        Integer tongSoGiaoVien = GiaoVienDAO.adminGetTongSoGiaoVien();
+                        Integer tongSoGiaoVienDangDay = GiaoVienDAO.adminGetTongSoGiaoVienDangDay();
                     %>
-                    <p><%= tongSoGiaoVien %></p>
+                    <p><%= tongSoGiaoVienDangDay     %></p>
                 </div>
 
-                <div class="stat-card">
-                    <h3><i class="fas fa-school"></i> Tổng số lớp học</h3>
+                <div class="stat-card stat-lophoc">
+                    <h3><i class="fas fa-school"></i> Tổng số lớp học đang học</h3>
                     <%
-                        Integer tongSoLopHoc = LopHocDAO.adminGetTongSoLopHoc();
+                        Integer tongSoLopHocDangHoc = LopHocDAO.adminGetTongSoLopHocDangHoc();
                     %>
-                    <p><%= tongSoLopHoc %></p>
+                    <p><%= tongSoLopHocDangHoc   %></p>
                 </div>
 
-                <div class="stat-card">
-                    <h3><i class="fas fa-money-bill"></i> Tổng đơn đăng ký tư vấn chưa duyệt</h3>
+                <div class="stat-card stat-tuvan">
+                    <h3><i class="fas fa-envelope-open-text"></i> Tổng đơn đăng ký tư vấn chưa duyệt</h3>
                     <p>15</p>
                 </div>
+
+                <div class="stat-card stat-hocsinh">
+                    <h3><i class="fas fa-user-clock"></i> Tổng số học sinh đang chờ lớp</h3>
+                    <%
+                        Integer tongSoHocSinhChoHoc = HocSinhDAO.adminGetTongSoHocSinhChoHoc();
+                    %>
+                    <p><%= tongSoHocSinhChoHoc %></p>
+                </div>  
             </div>
 
 
@@ -477,9 +647,20 @@
                 <div class="data-table-container">
                     <h3 class="section-title"><i class="fas fa-history"></i> Request/Thay Đổi Trong Hệ Thống</h3>
                     <%
-                      ArrayList<UserLogView> userLogsList = (ArrayList) UserLogsDAO.adminGetAllUserLogs();
+                        
+
+                      LocalDate date = LocalDate.now();
+                      String datteBien = date.toString(); 
+
+                      ArrayList<UserLogView> userLogsList = (ArrayList) UserLogsDAO.adminGetAllUserLogs(datteBien);
                       request.setAttribute("userLogsList", userLogsList);
                     %>
+                    <select id="logDateFilter" onchange="filterUserLogsByDate()">
+                        <option value="all">Tất cả</option>
+                        <option value="today">Hôm nay</option>
+                        <option value="7days">7 ngày qua</option>
+                    </select>
+
                     <c:choose>
                         <c:when test="${not empty userLogsList}">
                             <table>
@@ -489,6 +670,7 @@
                                         <th>Họ và Tên</th>
                                         <th>Hành Động</th>
                                         <th>Thời Gian</th>
+
                                     </tr>
                                 </thead>
                                 <tbody id="userLogTableBody">
@@ -504,7 +686,8 @@
                             </table>
                         </c:when>
                         <c:otherwise>
-                            <p class="no-data">Không có dữ liệu nhật ký để hiển thị.</p>
+                            <div class="no-data">Không có dữ liệu ...</div>
+
                         </c:otherwise>
                     </c:choose>
                     <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
@@ -513,6 +696,8 @@
 
                 <div class="data-table-container">
                     <h3 class="section-title">Yêu Cầu Hỗ Trợ Từ Người Dùng</h3>
+                    <input type="text" id="searchLogInput" placeholder="Tìm kiếm..." oninput="searchLogs()">
+
                     <%
                         
                         ArrayList<HoTro> HoTroList = (ArrayList) HoTroDAO.adminGetHoTroDashBoard();
@@ -523,41 +708,49 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>ID Hỗ Trợ</th>
+
                                         <th>Họ Tên</th>
                                         <th>Yêu Cầu</th>
                                         <th>Mô Tả</th>
                                         <th>Thời Gian</th>
+                                        <th>Đã Duyệt</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="userHoTroTableBody">
                                     <c:forEach var="sp" items="${HoTroList}">
                                         <tr>
-                                            <td>${sp.getID_HoTro()}</td>
+
                                             <td>${sp.getHoTen()}</td>
                                             <td>${sp.getTenHoTro()}</td>
                                             <td>${sp.getMoTa()}</td>
                                             <td>${sp.getThoiGian()}</td>
+                                            <td>
+                                                <a class="btn-action update" href="${pageContext.request.contextPath}/adminActionWithUser?action=danhdau&id=${sp.getID_HoTro()}">
+                                                    <i class="fas fa-check-circle"></i> Duyệt
+                                                </a>
+                                            </td>
+
                                         </tr>
                                     </c:forEach>
                                 </tbody>
                             </table>
                         </c:when>
                         <c:otherwise>
-                            <p class="no-data">Không có dữ liệu yêu cầu hỗ trợ để hiển thị.</p>
+                            <div class="no-data">Không có yêu cầu nào ...</div>
+
                         </c:otherwise>
                     </c:choose>
                 </div>
             </div>
-            <%
-             LocalDate today = LocalDate.now();
-            %>
+
 
 
             <div class="charts-wrapper">
-
+                <%
+             LocalDate today = LocalDate.now();
+                %>  
                 <div class="data-table-container chart-container">
-                    <h3 class="section-title"><i class="fas fa-chart-pie"></i> Báo cáo điểm danh</h3>
+                    <h3 class="section-title"><i class="fas fa-chart-pie"></i> Báo cáo điểm danh ngày hôm nay</h3>
                     <div class="chart-container">
                         <canvas id="attendanceChart"></canvas>
                     </div>
@@ -585,7 +778,7 @@
 
 
         <div class="footer">
-            <p>&copy; 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
+            <p>&copy; 2025 EL CENTRE. All rights reserved. | Developed by EL CENTRE</p>
         </div>
 
         <script>
@@ -624,8 +817,12 @@
                 },
 
             });
-
-
+            <% 
+                Integer tongSoHocSinhHaiLong = HocSinh_LopHocDAO.adminGetSoHocSinhHaiLong();
+                Integer tongSoHocSinhKhongHaiLong = HocSinh_LopHocDAO.adminGetSoHocSinhKhongHaiLong();
+            %>
+            const tongsohocsinhhaiong = <%= tongSoHocSinhHaiLong %>;
+            const tongsohocsinhkhonghaiong = <%= tongSoHocSinhKhongHaiLong %>;
             const satisfactionCtx = document.getElementById('satisfactionChart').getContext('2d');
             const satisfactionGradient = satisfactionCtx.createLinearGradient(0, 0, 200, 0);
             satisfactionGradient.addColorStop(0, '#8E24AA');
@@ -635,7 +832,7 @@
                 data: {
                     labels: ['Hài lòng', 'Không hài lòng'],
                     datasets: [{
-                            data: [80, 20],
+                            data: [tongsohocsinhkhonghaiong, tongsohocsinhhaiong],
                             backgroundColor: [satisfactionGradient, '#F06292'],
                             borderColor: '#ffffff',
                             borderWidth: 3,
@@ -723,6 +920,8 @@
 
 
             hienThiTrang(1);
+
+
         </script>   
     </body>
 </html> 

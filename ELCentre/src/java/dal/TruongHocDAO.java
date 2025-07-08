@@ -1,9 +1,5 @@
 package dal;
 
-/**
- *
- * @author wrx_Chur04
- */
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
@@ -62,8 +58,8 @@ public class TruongHocDAO {
             return truonghocs ; 
         }
     }
-
-    public static List<TruongHoc> getAllSchools() {
+    
+        public static List<TruongHoc> getAllSchools() {
         List<TruongHoc> list = new ArrayList<>();
         String sql = "SELECT ID_TruongHoc, TenTruongHoc FROM TruongHoc";
 

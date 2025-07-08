@@ -1,18 +1,18 @@
 <%-- 
     Document   : adminReceiveUsers
     Created on : May 24, 2025, 10:03:15 PM
-    Author     : wrx_Chur04
-    Purpose    : This page manages user accounts in the EL CENTRE system, displaying details like ID, email, role, phone number, and status. 
+    Author     : chuvv
+    Purpose    : This page manages user accounts in the EL CENTRE system, displaying details like ID, name, email, role, phone number, and status. 
                  It supports filtering by status and role, searching, pagination, and actions such as viewing, 
                  enabling/disabling, and updating accounts for admin users.
-    Parameters:
-    - @Param taikhoans (ArrayList<TaiKhoan>): A session attribute containing the list of user account objects fetched from the database.
+    Parameters:(Handle from adminGetFromDashboard servlet)
+    - Method to get data from database in TaiKhoanChiTietDAO - (adminGetAllTaiKhoanHaveName)
+    - @Param taikhoans (ArrayList<TaiKhoanChiTiet>): A session attribute containing the list of user account objects fetched from the database.
     - @Param message (String): An optional request or session attribute for displaying error or success messages.
---%>
+--%>   
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <%@ page import="dal.AdminDAO" %>
 <%@ page import="model.Admin" %>
 <%@ page import="java.util.ArrayList" %>
@@ -22,7 +22,6 @@
     <head>
         <meta charset="UTF-8">
         <title>Quản lý tài khoản</title>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
             :root {
@@ -189,23 +188,6 @@
                 flex-grow: 1;
             }
 
-            .section-title {
-                color: var(--main-color);
-                font-size: 20px;
-                font-weight: 700;
-                border-bottom: 2px solid var(--main-color);
-                padding-bottom: 5px;
-                margin-bottom: 20px;
-            }
-
-            .main-content {
-                margin-left: 250px;
-                padding: 100px 40px 40px;
-                background-color: #f4f6f8;
-                min-height: 100vh;
-                box-sizing: border-box;
-            }
-
             .page-header {
                 display: flex;
                 justify-content: center;
@@ -282,8 +264,6 @@
                 color: #1F4E79;
                 font-weight: 600;
             }
-
-
 
             #pagination {
                 margin-top: 15px;
@@ -427,7 +407,7 @@
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Dashboard</a></li>
+                <li><a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp"><i class="fas fa-chart-line"></i> Dashboard</a>
             </ul>
 
             <div class="sidebar-section-title">Quản lý người dùng</div>
@@ -517,25 +497,28 @@
                                         <td>${tk.userType}</td>
                                         <td>${tk.soDienThoai}</td>
                                         <td>
-                                            <span class="status-badge ${tk.trangThai == 'Active' ? 'active' : 'inactive'}">
-                                                ${tk.trangThai}
-                                            </span>
+                                            <c:choose>
+                                                <c:when test="${tk.trangThai == 'Active'}">
+                                                    <span class="status-badge active">Hoạt động</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="status-badge inactive">Cấm hoạt động</span>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
-
-
                                         <td>
                                             <div class="action-buttons">
-                                                <a class="btn-action view" href="${pageContext.request.contextPath}/adminActionWithUser?action=view&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-eye"></i>View</a> |
+                                                <a class="btn-action view" href="${pageContext.request.contextPath}/adminActionWithUser?action=view&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-eye"></i>Chi tiết</a> |
                                                 <c:choose>
                                                     <c:when test="${tk.trangThai == 'Active'}">
-                                                        <a class="btn-action disable" href="${pageContext.request.contextPath}/adminActionWithUser?action=disable&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-user-slash"></i>Disable</a>
+                                                        <a class="btn-action disable" href="${pageContext.request.contextPath}/adminActionWithUser?action=disable&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-user-slash"></i>Vô hiệu hóa</a>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <a class="btn-action enable" href="${pageContext.request.contextPath}/adminActionWithUser?action=enable&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-user-check"></i>Enable</a>
+                                                        <a class="btn-action enable" href="${pageContext.request.contextPath}/adminActionWithUser?action=enable&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-user-check"></i>Kích hoạt</a>
                                                     </c:otherwise>
                                                 </c:choose>
                                                 |
-                                                <a class="btn-action update" href="${pageContext.request.contextPath}/adminActionWithUser?action=update&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-edit"></i>Update</a>
+                                                <a class="btn-action update" href="${pageContext.request.contextPath}/adminActionWithUser?action=update&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-edit"></i>Cập nhật</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -559,25 +542,22 @@
 
 
         <div class="footer">
-            <p>© 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
+            <p>© 2025 EL CENTRE. All rights reserved. | Developed by EL CENTRE</p>
         </div>
 
         <script>
-
             function toggleDropdown() {
                 const dropdown = document.getElementById('adminDropdown');
                 dropdown.classList.toggle('active');
             }
 
-
             document.addEventListener('click', function (event) {
                 const profile = document.querySelector('.admin-profile');
                 const dropdown = document.getElementById('adminDropdown');
-                if (!profile.contains(event.target)) {
-                    dropdown.classList.remove('active');
+                if (profile && !profile.contains(event.target)) {
+                    dropdown?.classList.remove('active');
                 }
             });
-
 
             const messageDiv = document.querySelector('.no-data');
             if (messageDiv) {
@@ -590,8 +570,8 @@
             const statusFilter = document.getElementById("statusFilter");
             const roleFilter = document.getElementById("roleFilter");
             const table = document.querySelector("#userTable tbody");
-            const allRows = Array.from(table.rows);
-            let filteredRows = allRows;
+            let allRows = []; // sẽ khởi tạo sau khi DOM sẵn sàng
+            let filteredRows = [];
             let currentPage = 1;
             const rowsPerPage = 14;
 
@@ -601,20 +581,24 @@
                 const role = roleFilter.value;
 
                 filteredRows = allRows.filter(row => {
-                    const cells = row.querySelectorAll("td"); 
-                    const statusText = cells[5].textContent.trim().toLowerCase(); 
+                    const cells = row.querySelectorAll("td");
+                    if (cells.length < 6)
+                        return false;
+
+                    const statusText = cells[5].textContent.trim().toLowerCase();
+                    const normalizedStatus = statusText.includes("cấm") ? "inactive" : "active";
+                    const matchesStatus =
+                            status === "all" ||
+                            (status === "active" && normalizedStatus === "active") ||
+                            (status === "inactive" && normalizedStatus === "inactive");
+
                     const matchesKeyword = Array.from(cells).slice(0, 4).some(cell =>
                         cell.textContent.toLowerCase().includes(keyword)
                     );
 
-                    const matchesStatus =
-                            status === "all" ||
-                            (status === "active" && statusText === "active") ||
-                            (status === "inactive" && statusText === "inactive");
-
                     const matchesRole =
                             role === "all" ||
-                            cells[3].textContent.toLowerCase() === role;
+                            cells[3].textContent.toLowerCase().includes(role);
 
                     return matchesKeyword && matchesStatus && matchesRole;
                 });
@@ -623,22 +607,45 @@
                 renderPage();
             }
 
-
             function renderPage() {
-                table.innerHTML = "";
+                // Ẩn tất cả dòng
+                allRows.forEach(row => row.style.display = "none");
+
                 const start = (currentPage - 1) * rowsPerPage;
                 const end = start + rowsPerPage;
                 const pageRows = filteredRows.slice(start, end);
-                pageRows.forEach(row => table.appendChild(row));
+
+                pageRows.forEach(row => row.style.display = "");
+
                 renderPagination();
             }
 
             function renderPagination() {
-                const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
                 const pagination = document.getElementById("pagination");
                 pagination.innerHTML = "";
 
-                for (let i = 1; i <= totalPages; i++) {
+                const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+                if (totalPages <= 1)
+                    return;
+
+                const maxPagesToShow = 3;
+                let startPage = Math.max(1, currentPage - 1);
+                let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+                if (endPage - startPage + 1 < maxPagesToShow) {
+                    startPage = Math.max(1, endPage - maxPagesToShow + 1);
+                }
+
+                if (currentPage > 1) {
+                    const prevBtn = document.createElement("button");
+                    prevBtn.textContent = "«";
+                    prevBtn.onclick = () => {
+                        currentPage--;
+                        renderPage();
+                    };
+                    pagination.appendChild(prevBtn);
+                }
+
+                for (let i = startPage; i <= endPage; i++) {
                     const btn = document.createElement("button");
                     btn.textContent = i;
                     btn.style.backgroundColor = (i === currentPage) ? "#1F4E79" : "#ddd";
@@ -649,13 +656,31 @@
                     };
                     pagination.appendChild(btn);
                 }
+
+                if (currentPage < totalPages) {
+                    const nextBtn = document.createElement("button");
+                    nextBtn.textContent = "»";
+                    nextBtn.onclick = () => {
+                        currentPage++;
+                        renderPage();
+                    };
+                    pagination.appendChild(nextBtn);
+                }
             }
 
-            searchInput.addEventListener("input", filterRows);
-            statusFilter.addEventListener("change", filterRows);
-            roleFilter.addEventListener("change", filterRows);
+            // Sự kiện lọc
+            searchInput?.addEventListener("input", filterRows);
+            statusFilter?.addEventListener("change", filterRows);
+            roleFilter?.addEventListener("change", filterRows);
 
-            window.onload = () => renderPage();
-        </script>   
+            // Khởi tạo sau khi DOM đã có <tr>
+            window.addEventListener("DOMContentLoaded", () => {
+                const tbody = document.querySelector("#userTable tbody");
+                allRows = Array.from(tbody.rows);
+                filteredRows = [...allRows]; // ban đầu là tất cả
+                renderPage();
+            });
+        </script>
+
     </body>
 </html> 

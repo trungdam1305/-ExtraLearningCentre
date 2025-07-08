@@ -1,8 +1,8 @@
 <%-- 
     Document   : adminReceiveTeacherInfor
     Created on : June 23, 2025, 12:50 AM
-    Author     : wrx_Chur04
-    Purpose    : This page displays detailed information about specific classes of teachers (lớp học) in the EL CENTRE system, 
+    Author     : chuvv
+    Purpose    : This page displays detailed information about specific classes of teachers (lớp học)  in the EL CENTRE system, 
                 including  name of class , image , date create , ... and admin can view details student in this class
     Parameters:
     - @Param giaoviens (ArrayList<GiaoVien>): A request attribute containing the list of teacher objects fetched from the database.
@@ -112,7 +112,7 @@
                 background-color: #163b5c;
             }
 
-            /* Header Styles */
+           
             .header {
                 background-color: #1F4E79;
                 color: white;
@@ -209,7 +209,7 @@
                 margin-right: 8px;
             }
 
-            /* Footer Styles */
+            
             .footer {
                 background-color: #1F4E79;
                 color: #B0C4DE;
@@ -223,7 +223,7 @@
                 font-size: 14px;
             }
 
-            /* Ensure main content pushes footer down */
+            
             .main-content {
                 flex: 1 0 auto;
                 padding-bottom: 40px;
@@ -295,8 +295,8 @@
                                     <td>${giaovien.getNgayTao()}</td>
                                      <td>${giaovien.getImage()}</td>
                                     <td>
-                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=view&id=${giaovien.getID_GiaoVien()}">Xem học sinh trong lớp</a>
-                                       
+                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWith?action=view&id=${giaovien.getID_LopHoc()}">Xem học sinh trong lớp</a>
+                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWith?action=view&id=${giaovien.getID_LopHoc()}">Chuyển giáo viên khỏi lớp</a>
 
                                     </td>
                                 </tr>   
@@ -316,7 +316,7 @@
 
             <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
             <div class="back-button">
-                <a href="${pageContext.request.contextPath}/views/admin/adminReceiveHocSinh.jsp">Quay lại</a>
+                <a href="${pageContext.request.contextPath}/views/admin/adminReceiveGiaoVien.jsp">Quay lại</a>
             </div>
         </div>
 

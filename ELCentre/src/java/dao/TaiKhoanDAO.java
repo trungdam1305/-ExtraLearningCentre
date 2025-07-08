@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import model.TaiKhoan;
 
 public class TaiKhoanDAO {
-
+    //Lấy thông tin về tài khoản đăng nhập
     public static TaiKhoan login(String email, String password) throws SQLException {
                String sql = "SELECT * FROM TaiKhoan WHERE Email = ? AND MatKhau = ? AND TrangThai = 'Active'";
 
@@ -26,8 +26,8 @@ public class TaiKhoanDAO {
                 tk.setMatKhau(rs.getString("MatKhau"));
                 tk.setID_VaiTro(rs.getInt("ID_VaiTro"));
                 tk.setUserType(rs.getString("UserType"));
-                tk.setSoDienThoai("SoDienThoai");
-                tk.setTrangThai(rs.getString("TrangThai"));
+                tk.setSoDienThoai(rs.getString("SoDienThoai"));
+                tk.setTrangThai(rs.getString("TrangThai")); 
                 tk.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
                 return tk;
             }
@@ -36,7 +36,8 @@ public class TaiKhoanDAO {
         }
         return null;
     }
-
+    
+    //Đang phát triển
     public TaiKhoan findOrCreateFacebookUser(String email, String name) {
         try (Connection conn = DBContext.getInstance().getConnection()) {
             String sql = "SELECT * FROM TaiKhoan WHERE Email = ?";
@@ -76,7 +77,8 @@ public class TaiKhoanDAO {
         }
         return null;
     }
-
+    
+    //Đăng kí tài khoản mới (Đang bị thiếu ) 
     public boolean register(TaiKhoan user) {
         String sql = "INSERT INTO TaiKhoan (Email, MatKhau, ID_VaiTro, TrangThai, NgayTao, UserType, SoDienThoai) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBContext.getInstance().getConnection();
@@ -98,7 +100,8 @@ public class TaiKhoanDAO {
             return false;
         }
     }
-
+    
+    //Kiểm tra mail đã đăng kí trong hệ thống hay chưa
     public boolean checkEmailExists(String email) {
         String sql = "SELECT 1 FROM TaiKhoan WHERE Email = ?";
         try (Connection conn = DBContext.getInstance().getConnection();
@@ -111,7 +114,8 @@ public class TaiKhoanDAO {
             return false;
         }
     }
-
+    
+    //Lấy ra tên vai trò theo ID_VaiTro
     public String getUserTypeByRoleId(int roleId) {
         String userType = "Local"; 
         try (Connection conn = DBContext.getInstance().getConnection()) {
@@ -127,7 +131,8 @@ public class TaiKhoanDAO {
         }
         return userType;
     }
-
+    
+    //Kiểm tra mail và số điện thoại xác thực cho việc đổi mật khẩu
     public TaiKhoan findByEmailAndPhone(String email, String phone) {
         TaiKhoan user = null;
         String sql = "SELECT * FROM TaiKhoan WHERE Email = ? AND TRIM(SoDienThoai) = ?";
@@ -153,7 +158,7 @@ public class TaiKhoanDAO {
         return user;
     }
 
-
+    // Cập nhật mật khẩu mới
     public boolean updatePassword(String email, String newPassword) {
         String sql = "UPDATE TaiKhoan SET MatKhau = ? WHERE Email = ?";
         try (Connection conn = DBContext.getInstance().getConnection();
@@ -188,7 +193,8 @@ public class TaiKhoanDAO {
         }
         return user;
     }
-
+    
+    //Nhập dữ liệu tài khoản (Đang bị thiếu join vào các bảng theo từng role)
     public boolean insertTaiKhoan(TaiKhoan user) {
         String sql = "INSERT INTO TaiKhoan (Email, MatKhau, HoTen, ID_VaiTro, TrangThai) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DBContext.getInstance().getConnection();

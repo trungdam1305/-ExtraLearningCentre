@@ -1,11 +1,12 @@
 <%-- 
     Document   : adminReceiveTeacherInfor
     Created on : May 29, 2025, 1:37:53 PM
-    Author     : wrx_Chur04
+    Author     : chuvv
     Purpose    : This page displays detailed information about specific teachers (giáo viên) in the EL CENTRE system, 
                 including account ID, name, specialization, contact details, school, salary, and status. 
-    Parameters:
-    - @Param giaoviens (ArrayList<GiaoVien>): A request attribute containing the list of teacher objects fetched from the database.
+    Parameters: (Handle from adminActionWithUser servlet)
+    - Method to get data from database in GiaoVienDAO - (adminGetGiaoVienByID)
+    - @Param giaoviens (ArrayList<GiaoVien_TruongHoc>): A request attribute containing the list of teacher objects fetched from the database.
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -160,9 +161,6 @@
                 margin-bottom: 5px;
             }
 
-           
-
-           
             .footer {
                 background-color: #1F4E79;
                 color: #B0C4DE;
@@ -209,7 +207,7 @@
                                 <tr>
                                     <th>Thông tin</th>
                                     <c:forEach var="giaovien" items="${giaoviens}">
-                                        <th>GV ${giaovien.getID_GiaoVien()}</th>
+                                        <th>Giáo Viên ${giaovien.getID_GiaoVien()}</th>
                                     </c:forEach>
                                 </tr>
                             </thead>
@@ -233,6 +231,12 @@
                                     </c:forEach>
                                 </tr>
                                 <tr>
+                                    <td>Bằng cấp</td>
+                                    <c:forEach var="giaovien" items="${giaoviens}">
+                                        <td>${giaovien.getBangCap()}</td>
+                                    </c:forEach>
+                                </tr>
+                                <tr>
                                     <td>SĐT</td>
                                     <c:forEach var="giaovien" items="${giaoviens}">
                                         <td>${giaovien.getSDT()}</td>
@@ -242,6 +246,12 @@
                                     <td>Trường giảng dạy</td>
                                     <c:forEach var="giaovien" items="${giaoviens}">
                                         <td>${giaovien.getTenTruongHoc()}</td>
+                                    </c:forEach>
+                                </tr>
+                                <tr>
+                                    <td>Lớp đang dạy trên trường</td>
+                                    <c:forEach var="giaovien" items="${giaoviens}">
+                                        <td>${giaovien.getLopDangDayTrenTruong()}</td>
                                     </c:forEach>
                                 </tr>
                                 <tr>
@@ -257,7 +267,13 @@
                                     </c:forEach>
                                 </tr>
                                 <tr>
-                                    <td>Trạng thái</td>
+                                    <td>Trạng thái dạy tại EL CENTRE</td>
+                                    <c:forEach var="giaovien" items="${giaoviens}">
+                                        <td>${giaovien.getTrangThaiDay()}</td>
+                                    </c:forEach>
+                                </tr>
+                                <tr>
+                                    <td>Trạng thái tài khoản</td>
                                     <c:forEach var="giaovien" items="${giaoviens}">
                                         <td>${giaovien.getTrangThai()}</td>
                                     </c:forEach>

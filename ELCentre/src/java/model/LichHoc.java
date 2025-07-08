@@ -44,23 +44,12 @@ public class LichHoc {
     private String TenLopHoc;
     
     private String TenPhongHoc;
-    
 
     /**
      * Default constructor.
      */
     public LichHoc() {
     }
-
-    public int getID_PhongHoc() {
-        return ID_PhongHoc;
-    }
-
-    public void setID_PhongHoc(int ID_PhongHoc) {
-        this.ID_PhongHoc = ID_PhongHoc;
-    }
-    
-    
 
     
     
@@ -112,7 +101,6 @@ public class LichHoc {
         this.TenLopHoc = TenLopHoc;
         this.TenPhongHoc = TenPhongHoc;
     }
-    
     
 
     // --- Getters and Setters ---
@@ -181,7 +169,11 @@ public class LichHoc {
         this.TenPhongHoc = TenPhongHoc;
     }
     
-    
-    
-    
+    public int getID_PhongHoc() {
+        return ID_PhongHoc;
+    }
+
+    public void setID_PhongHoc(int ID_PhongHoc) {
+        this.ID_PhongHoc = ID_PhongHoc;
+    }
 }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dal;
 
 import java.sql.PreparedStatement;
@@ -11,10 +7,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import model.LopHoc;
-/**
- *
- * @author admin
- */
+
 public class HocSinh_LopHocDAO {
     public static int teacherGetTongSoLopHoc(int id){
         DBContext db = DBContext.getInstance() ; 
@@ -42,6 +35,53 @@ public class HocSinh_LopHocDAO {
         return tong ; 
     }   
     
+    public static int adminGetSoHocSinhHaiLong() {
+        DBContext db = DBContext.getInstance();
+        int tong = 0;
+
+        try {
+            String sql = """
+                         select COUNT (*) 
+                         from HocSinh_LopHoc
+                         where Status_FeedBack = 1 ; 
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                tong = rs.getInt(1);
+                return tong;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return tong;
+    }
+    
+    public static int adminGetSoHocSinhKhongHaiLong() {
+        DBContext db = DBContext.getInstance();
+        int tong = 0;
+
+        try {
+            String sql = """
+                         select COUNT (*) 
+                         from HocSinh_LopHoc
+                         where Status_FeedBack = 0 ; 
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                tong = rs.getInt(1);
+                return tong;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return tong;
+    }
     
     //Hàm lấy ra lớp học đã đăng ký theo id học sinh
     public static List<LopHoc> getLopHocDaDangKyByHocSinhId(Integer idHocSinh) {
@@ -122,6 +162,5 @@ public class HocSinh_LopHocDAO {
             e.printStackTrace();
         }
         return list;
-    }
-    
+    }   
 }
