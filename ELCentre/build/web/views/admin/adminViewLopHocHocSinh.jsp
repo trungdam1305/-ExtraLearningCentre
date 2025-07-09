@@ -1,21 +1,23 @@
 <%-- 
-    Document   : adminViewHocPhiHocSinh
-    Created on : Jun 23, 2025, 9:24:13 AM
+    Document   : adminReceiveTeacherInfor
+    Created on : June 23, 2025, 12:50 AM
     Author     : chuvv
-    Purpose    : This page displays a list of all classes (lớp học) and tuition (học phí)  of one student  in the EL CENTRE system, including details like name, specialization, 
-                 time of class , note , status name of teacher , image of class . And admin can view tuition of student amd change score of student in this classes
+    Purpose    : This page displays detailed information about specific classes of teachers (lớp học) in the EL CENTRE system, 
+                including class code, class name, teacher name, student count, schedule, notes, status, creation date, tuition fee, 
+                teacher avatar, course ID, and block ID. Admin can view details of students in the class or remove the teacher from the class.
     Parameters:
-    - @Param giaoviens (ArrayList<hocsinhchitiets>): A request attribute containing the list of class of student objects fetched from the database.
+    - @Param lopHocs (ArrayList<LopHocInfoDTO>): A request attribute containing the list of class objects fetched from the database.
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>All Teacher</title>
+        <title>All Classes</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -112,7 +114,6 @@
                 background-color: #163b5c;
             }
 
-            
             .header {
                 background-color: #1F4E79;
                 color: white;
@@ -209,7 +210,6 @@
                 margin-right: 8px;
             }
 
-           
             .footer {
                 background-color: #1F4E79;
                 color: #B0C4DE;
@@ -223,7 +223,6 @@
                 font-size: 14px;
             }
 
-            
             .main-content {
                 flex: 1 0 auto;
                 padding-bottom: 40px;
@@ -235,7 +234,7 @@
         <div class="header">
             <div class="left-title">
                 <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
-                EL   CENTRE <i class="fas fa-chalkboard-teacher"></i>
+                EL CENTRE <i class="fas fa-chalkboard-teacher"></i>
             </div>
             <div class="admin-profile" onclick="toggleDropdown()">
                 <img src="https://png.pngtree.com/png-clipart/20250117/original/pngtree-account-avatar-user-abstract-circle-background-flat-color-icon-png-image_4965046.png" alt="Admin Photo" class="admin-img">
@@ -249,68 +248,80 @@
         </div>
 
         <div class="main-content">
-            <h2>Quản lý điểm học sinh theo lớp</h2>
+            <h2>Lớp học của giáo viên tại trung tâm</h2>
             <div style="display: flex; justify-content: flex-end; align-items: center; gap: 15px;">
-                
             </div>
 
             <c:choose>
-                <c:when test="${not empty hocsinhchitiets}">
+                <c:when test="${not empty lopHocs}">
                     <table>
                         <thead>
                             <tr>
-                                <th>ID Lớp Học</th>
-                                <th>Image</th>
+                                <th>Mã Lớp</th>
                                 <th>Tên Lớp Học</th>
-                                <th>Thời Gian</th>
-
-                                <th>Ghi Chú</th>
-
-
-                                <th>Trạng Thái</th>
-
-                                <th>Ngày Tạo</th>
                                 <th>Tên Giáo Viên</th>
-                                <th>Hành động</th>
+                                <th>Sĩ Số</th>
+                                <th>Sĩ Số Tối Thiểu</th>
+                                <th>Sĩ Số Tối Đa</th>
+                                <th>Thời Gian Học</th>
+                                <th>Ghi Chú</th>
+                                <th>Trạng Thái</th>
+                                <th>Ngày Tạo</th>
+                                <th>Học Phí</th>
+                                <th>Ảnh Giáo Viên</th>
+                                <th>Khóa Học</th>
+                                <th>Khối</th>
+                                <th>Hành Động</th>
                             </tr>
                         </thead>
                         <tbody id="teacherTableBody">
-                            <c:forEach var="sct" items="${hocsinhchitiets}">
+                            <c:forEach var="lopHoc" items="${lopHocs}">
                                 <tr>
-                                    <td>${sct.getID_LopHoc()}</td>
-                                    <td>${sct.getImage()}</td>
-                                    <td>${sct.getTenLopHoc()}</td>
-
-                                    <td>${sct.getSlotThoiGian()}</td>
-
-
-                                    <td>${sct.getGhiChu()}</td>
-                                    <td>${sct.getTrangThai()}</td>
-                                    <td>${sct.getNgayTao()}</td>
-                                    <td>${sct.getHoTen()}</td>
+                                    <td>${lopHoc.classCode}</td>
+                                    <td>${lopHoc.tenLopHoc}</td>
+                                    <td>${lopHoc.tenGiaoVien}</td>
+                                    <td>${lopHoc.siSo}</td>
+                                    <td>${lopHoc.siSoToiThieu}</td>
+                                    <td>${lopHoc.siSoToiDa}</td>
+                                    <td><c:out value="${lopHoc.thoiGianHoc != null ? lopHoc.thoiGianHoc : 'Chưa có lịch'}" /></td>
+                                    <td><c:out value="${lopHoc.ghiChu != null ? lopHoc.ghiChu : 'Không có ghi chú'}" /></td>
+                                    <td>${lopHoc.trangThai}</td>
+                                    <td><fmt:formatDate value="${lopHoc.ngayTao}" pattern="dd/MM/yyyy HH:mm" /></td>
+                                    <td><fmt:formatNumber value="${lopHoc.soTien}" pattern="#,##0" /> VNĐ</td>
                                     <td>
-                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWith?action=view&id=${giaovien.getID_LopHoc()}">Tình trạng học phí</a> 
-                                         <a class="action-link" href="${pageContext.request.contextPath}/adminActionWith?action=view&id=${giaovien.getID_LopHoc()}">Chuyển học sinh khỏi lớp</a>  
-
+                                        <c:choose>
+                                            <c:when test="${not empty lopHoc.avatarGiaoVien}">
+                                                <img src="${pageContext.request.contextPath}/img/${lopHoc.avatarGiaoVien}" alt="Avatar" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;" />
+                                            </c:when>
+                                            <c:otherwise>
+                                                Không có ảnh
+                                            </c:otherwise>
+                                        </c:choose>
                                     </td>
-                                </tr>   
+                                    <td>${lopHoc.idKhoaHoc}</td>
+                                    <td>${lopHoc.idKhoi}</td>
+                                    <td>
+                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWith?action=viewStudents&id=${lopHoc.idLopHoc}">Xem học sinh trong lớp</a>
+                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWith?action=removeTeacher&id=${lopHoc.idLopHoc}">Xóa giáo viên khỏi lớp</a>
+                                    </td>
+                                </tr>
                             </c:forEach>
                         </tbody>
-                    </table>    
+                    </table>
                 </c:when>
-                <c:otherwise>   
+                <c:otherwise>
                     <div class="no-data">
                         <c:if test="${not empty message}">
                             <p style="color: red;">${message}</p>
                         </c:if>
-                        <p>Không có dữ liệu giáo viên để hiển thị.</p>
+                        <p>Không có dữ liệu lớp học để hiển thị.</p>
                     </div>
                 </c:otherwise>
             </c:choose>
 
             <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
             <div class="back-button">
-                <a href="${pageContext.request.contextPath}/views/admin/adminReceiveHocSinh.jsp">Quay lại</a>
+                <a href="${pageContext.request.contextPath}/views/admin/adminReceiveGiaoVien.jsp">Quay lại</a>
             </div>
         </div>
 
@@ -319,6 +330,10 @@
             <p>© 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
         </div>
 
-
+        <script>
+            function toggleDropdown() {
+                document.getElementById("adminDropdown").classList.toggle("active");
+            }
+        </script>
     </body>
 </html>

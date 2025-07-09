@@ -42,6 +42,20 @@ public class HocSinh_ChiTietHoc {
         this.Image = Image;
     }
 
+    public HocSinh_ChiTietHoc(Integer ID_KhoaHoc, Integer ID_LopHoc, Integer ID_HocSinh, Integer ID_GiaoVien, String TenLopHoc, String HoTen, String GhiChu, String TrangThai, String SoTien, LocalDateTime NgayTao, String Image) {
+        this.ID_KhoaHoc = ID_KhoaHoc;
+        this.ID_LopHoc = ID_LopHoc;
+        this.ID_HocSinh = ID_HocSinh;
+        this.ID_GiaoVien = ID_GiaoVien;
+        this.TenLopHoc = TenLopHoc;
+        this.HoTen = HoTen;
+        this.GhiChu = GhiChu;
+        this.TrangThai = TrangThai;
+        this.SoTien = SoTien;
+        this.NgayTao = NgayTao;
+        this.Image = Image;
+    }
+
     
 
     public Integer getID_KhoaHoc() {

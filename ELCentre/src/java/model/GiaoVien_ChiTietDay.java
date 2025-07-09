@@ -5,6 +5,7 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.util.logging.Logger;
 
 /**
  *
@@ -45,6 +46,23 @@ public class GiaoVien_ChiTietDay {
     public Integer getID_KhoaHoc() {
         return ID_KhoaHoc;
     }
+    private static final Logger LOG = Logger.getLogger(GiaoVien_ChiTietDay.class.getName());
+
+    public GiaoVien_ChiTietDay(Integer ID_KhoaHoc, Integer ID_LopHoc, Integer ID_GiaoVien, String HoTen, String TenTruongHoc, String TenLopHoc, String SiSo, String GhiChu, String TrangThai, LocalDateTime NgayTao, String Image) {
+        this.ID_KhoaHoc = ID_KhoaHoc;
+        this.ID_LopHoc = ID_LopHoc;
+        this.ID_GiaoVien = ID_GiaoVien;
+        this.HoTen = HoTen;
+        this.TenTruongHoc = TenTruongHoc;
+        this.TenLopHoc = TenLopHoc;
+        this.SiSo = SiSo;
+        this.GhiChu = GhiChu;
+        this.TrangThai = TrangThai;
+        this.NgayTao = NgayTao;
+        this.Image = Image;
+    }
+    
+    
 
     public Integer getID_LopHoc() {
         return ID_LopHoc;
