@@ -7,11 +7,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.apache.catalina.User;
 
 public class ManageSchedule extends HttpServlet {
 
@@ -36,7 +38,6 @@ public class ManageSchedule extends HttpServlet {
 
         LichHocDAO dao = new LichHocDAO();
         List<LichHoc> lichHocList = dao.getLichHocByMonth1(year, month);
-        System.out.println("lichHocList size: " + lichHocList.size());
 
         Set<Integer> scheduleDays = lichHocList.stream()
                 .filter(lh -> lh.getNgayHoc() != null)
@@ -51,41 +52,47 @@ public class ManageSchedule extends HttpServlet {
 
         request.getRequestDispatcher("/views/admin/manageSchedule.jsp").forward(request, response);
     }
-    
-    
-    public static void main(String[] args) {
-        LocalDate now = LocalDate.now();
-        int month = now.getMonthValue();
-        int year = now.getYear();
-
-        try {
-            // Có thể sửa tháng/năm tại đây nếu muốn test
-            month = 7; // July
-            year = 2025;
-
-            LichHocDAO dao = new LichHocDAO();
-            List<LichHoc> lichHocList = dao.getLichHocByMonth1(year, month);
-
-            Set<Integer> scheduleDays = lichHocList.stream()
-                    .filter(lh -> lh.getNgayHoc() != null)
-                    .map(lh -> lh.getNgayHoc().getDayOfMonth())
-                    .collect(Collectors.toSet());
-
-            System.out.println("🗓 Danh sách lịch học tháng " + month + "/" + year + ":");
-            for (LichHoc lh : lichHocList) {
-                System.out.println("- Ngày học: " + lh.getNgayHoc() + ", Lớp: " + lh.getID_LopHoc());
-            }
-
-            System.out.println("\n📅 Các ngày có lịch học: " + scheduleDays);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String csrfToken = request.getParameter("csrfToken");
+        if (!csrfToken.equals(session.getAttribute("csrfToken"))) {
+            request.setAttribute("err", "Yêu cầu không hợp lệ!");
+            doGet(request, response);
+            return;
+        }
+
+        String action = request.getParameter("action");
+        if ("delete".equals(action)) {
+            try {
+                int day = Integer.parseInt(request.getParameter("day"));
+                int month = Integer.parseInt(request.getParameter("month"));
+                int year = Integer.parseInt(request.getParameter("year"));
+
+                // Tạo LocalDate từ day, month, year
+                LocalDate deleteDate = LocalDate.of(year, month, day);
+
+                // Xóa tất cả lịch học trong ngày
+                LichHocDAO dao = new LichHocDAO();
+                boolean success = dao.deleteLichHocByDate1(deleteDate);
+
+                if (success) {
+                    request.setAttribute("suc", "Xóa tất cả lịch học trong ngày " + day + "/" + month + "/" + year + " thành công!");
+                } else {
+                    request.setAttribute("err", "Không có lịch học để xóa hoặc xảy ra lỗi!");
+                }
+            } catch (NumberFormatException e) {
+                request.setAttribute("err", "Dữ liệu ngày không hợp lệ!");
+            } catch (Exception e) {
+                System.out.println("Error in deleteLichHocByDate1: " + e.getMessage());
+                e.printStackTrace();
+                request.setAttribute("err", "Đã xảy ra lỗi khi xóa lịch học!");
+            }
+        }
+
+        // Làm mới trang
         doGet(request, response);
     }
 

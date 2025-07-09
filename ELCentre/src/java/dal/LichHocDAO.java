@@ -316,26 +316,5 @@ public class LichHocDAO {
         }
     }
     
-    public static void main(String[] args) {
-        LichHocDAO dao = new LichHocDAO();
-
-        int year = 2025;
-        int month = 7; // Tháng 7
-
-        List<LichHoc> lichHocList = dao.getLichHocByMonth1(year, month);
-
-        if (lichHocList.isEmpty()) {
-            System.out.println("Không có lịch học nào trong tháng " + month + "/" + year);
-        } else {
-            System.out.println("Danh sách lịch học trong tháng " + month + "/" + year + ":");
-            for (LichHoc lh : lichHocList) {
-                System.out.println("ID: " + lh.getID_Schedule()
-                        + ", Ngày học: " + lh.getNgayHoc()
-                        + ", Slot: " + lh.getSlotThoiGian()
-                        + ", Lớp: " + lh.getTenLopHoc()
-                        + ", Phòng: " + lh.getTenPhongHoc()
-                        + ", Ghi chú: " + lh.getGhiChu());
-            }
-        }
-    }
+    
 }
