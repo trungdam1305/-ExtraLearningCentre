@@ -809,6 +809,10 @@
                 <c:out value="Tổng số học sinh: ${hocSinhList != null ? hocSinhList.size() : 'null'}"/>
                 <c:choose>
                     <c:when test="${not empty hocSinhList}">
+                        <div class="student-select mb-3">
+                            <label for="currentStudentSearch" class="form-label">Tìm kiếm học sinh:</label>
+                            <input type="text" id="currentStudentSearch" class="form-control" placeholder="Nhập tên học sinh">
+                        </div>
                         <div class="table-responsive">
                             <table class="student-table">
                                 <thead>
@@ -1101,6 +1105,23 @@
                                                                         img.src = fallbackUrl;
                                                                         img.onerror = null;
                                                                     };
+                                                                });
+
+
+                                                                // Tìm kiếm học sinh trong danh sách hiện tại
+                                                                document.getElementById('currentStudentSearch')?.addEventListener('input', function () {
+                                                                    let filter = this.value.toLowerCase();
+                                                                    let table = document.querySelector('.student-table'); // Bảng học sinh hiện tại
+                                                                    let tr = table.getElementsByTagName('tr');
+                                                                    for (let i = 1; i < tr.length; i++) {
+                                                                        let td = tr[i].getElementsByTagName('td')[1]; // Cột "Họ và tên"
+                                                                        let txtValue = td.textContent || td.innerText;
+                                                                        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                                                                            tr[i].style.display = '';
+                                                                        } else {
+                                                                            tr[i].style.display = 'none';
+                                                                        }
+                                                                    }
                                                                 });
         </script>
     </body>
