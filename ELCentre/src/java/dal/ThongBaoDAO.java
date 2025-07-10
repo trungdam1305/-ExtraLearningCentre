@@ -4,11 +4,14 @@ package dal;
  *
  * @author wrx_Chur04
  */
+
 import model.ThongBao;
 import java.util.ArrayList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime ; 
 
 public class ThongBaoDAO {
 
@@ -105,4 +108,27 @@ public class ThongBaoDAO {
         return list;
     }
     
+    public static boolean adminSendNotification(String ID_TaiKhoan , String NoiDung ) {
+        int rs = 0 ;
+        DBContext db = DBContext.getInstance() ; 
+        LocalDateTime now = LocalDateTime.now() ; 
+        try {
+            String sql = """
+                         insert into ThongBao(ID_TaiKhoan , NoiDung , ThoiGian )
+                         values ( ?  , ? , ? ) 
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1 , ID_TaiKhoan);
+            statement.setString(2, NoiDung);
+            statement.setTimestamp(3, Timestamp.valueOf(now));
+           rs = statement.executeUpdate(); 
+          while(rs > 0 ) {
+              return true ; 
+          }
+        } catch (SQLException e ) {
+            e.printStackTrace();
+            
+        }
+        return false ; 
+    }
 }

@@ -541,9 +541,9 @@
                                                    <i class="fas fa-chalkboard-teacher"></i> Xem lớp & Chuyển lớp
                                                 </a>
 
-                                                <a class="btn-action enable" title="Gửi thông báo" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=sendNoTiFiCaTion&id=${giaovien.getID_GiaoVien()}">
+                                                <a class="btn-action enable" title="Gửi thông báo" href="${pageContext.request.contextPath}/views/admin/adminSendNotificationTeacher.jsp?idtaikhoan=${giaovien.getID_TaiKhoan()}">
                                                     <i class="fas fa-bell"></i> Gửi thông báo
-                                                </a>
+                                                
                                             </td>
                                         </tr>   
                                     </c:forEach>

@@ -269,7 +269,7 @@
 
                                  <td>Sĩ số lớp</td>
 
-                                <td>Thời Gian</td>
+                               
                                 <td>Ghi Chú Lớp</td>
                                 <td>Trạng Thái</td>
                                 <td>Ngày Tạo Lớp</td>
@@ -289,7 +289,7 @@
 
                                      <td>${giaovien.getTenLopHoc()}</td>
                                     <td>${giaovien.getSiSo()}</td>
-                                    <td>${giaovien.getSlotThoiGian()}</td>
+                                    
                                     <td>${giaovien.getGhiChu()}</td>
                                     <td>${giaovien.getTrangThai()}</td>
                                     <td>${giaovien.getNgayTao()}</td>

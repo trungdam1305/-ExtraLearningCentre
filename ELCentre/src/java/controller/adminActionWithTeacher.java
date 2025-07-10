@@ -16,6 +16,7 @@ import dal.GiaoVien_ChiTietDayDAO ;
 import dal.HocSinh_ChiTietDAO;
 import dal.HocSinh_SDTDAO;
 import dal.TaiKhoanDAO;
+import dal.ThongBaoDAO;
 import dal.TruongHocDAO;
 import dao.UserLogsDAO;
 import jakarta.servlet.http.HttpSession;
@@ -60,11 +61,10 @@ public class adminActionWithTeacher extends HttpServlet {
                 break;
 
             case "viewLopHocGiaoVien":
-                doViewLopHocGiaoVien(request, response) ; 
+                
                 break;
 
-            case "update":
-                break;
+            
         }
     }
 
@@ -77,6 +77,10 @@ public class adminActionWithTeacher extends HttpServlet {
             case "update":
                 doUpdateInfor(request, response);
                 break;
+                
+            case "sendNotification" : 
+                doSendNotification(request, response) ; 
+                break ; 
         }
     }
 
@@ -101,16 +105,7 @@ public class adminActionWithTeacher extends HttpServlet {
     }
     
     
-    protected void doViewLopHocGiaoVien(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String ID = request.getParameter("id") ; 
-        
-        ArrayList<GiaoVien_ChiTietDay> giaoviens = GiaoVien_ChiTietDayDAO.adminGetAllLopHocGiaoVien(ID) ; 
-        if (giaoviens != null ) {
-            request.setAttribute("giaoviens", giaoviens);
-            request.getRequestDispatcher("/views/admin/adminViewLopHocGiaoVien.jsp").forward(request, response);
-        }
-    }
+    
     
     protected void doUpdateInfor(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -172,5 +167,23 @@ public class adminActionWithTeacher extends HttpServlet {
             request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);    
         }
 
+    }
+    
+    
+    protected void doSendNotification(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession() ; 
+        String ID_TaiKhoan = request.getParameter("idtaikhoan");
+        String NoiDung = request.getParameter("noidung")  ; 
+        boolean sendNTF = ThongBaoDAO.adminSendNotification(ID_TaiKhoan, NoiDung) ; 
+        if (sendNTF) {
+            request.setAttribute("message", "Gửi thông báo thành công!");
+            
+            request.getRequestDispatcher("/views/admin/adminReceiveGiaoVien.jsp").forward(request, response);
+        } else {
+            request.setAttribute("message", "Gửi thông báo thất bại!");
+            request.getRequestDispatcher("/views/admin/adminReceiveGiaoVien.jsp").forward(request, response);
+        }
+        
     }
 }

@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Zalo%20Data/ELCentre/src/java/dal/GiaoVienDAO.java</file>
-            <file>file:/D:/Zalo%20Data/ELCentre/web/views/admin/adminReceiveHocSinh.jsp</file>
-            <file>file:/D:/Zalo%20Data/ELCentre/src/java/controller/adminFindInFilterGroup.java</file>
-            <file>file:/D:/Zalo%20Data/ELCentre/web/views/admin/adminReceiveGiaoVien.jsp</file>
-            <file>file:/D:/Zalo%20Data/ELCentre/src/java/dal/HocSinh_SDTDAO.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/model/HocSinh_ChiTietHoc.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithTeacher.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithStudent.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/dal/HocSinh_ChiTietDAO.java</file>
         </group>
     </open-files>
 </project-private>
