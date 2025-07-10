@@ -653,6 +653,7 @@ public class HocSinhDAO {
 //
 //        return list;
 //    }
+    
     //Cập nhật thông tin tài khoản học sinh
     public static boolean updateHocSinh(HocSinh hs) {
         String sql = """
@@ -693,4 +694,24 @@ public class HocSinhDAO {
         }
         return false;
     }
+    
+        public static HocSinh findByTaiKhoanId(int idTaiKhoan) {
+        String sql = "SELECT * FROM HocSinh WHERE ID_TaiKhoan = ?";
+        try (Connection con = DBContext.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idTaiKhoan);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                HocSinh hs = new HocSinh();
+                hs.setID_HocSinh(rs.getInt("ID_HocSinh"));
+                hs.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
+                hs.setLopDangHocTrenTruong(rs.getString("LopDangHocTrenTruong"));
+                return hs;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
 }

@@ -160,6 +160,10 @@
         <servlet-name>ResetPasswordServlet</servlet-name>
         <servlet-class>controller.ResetPasswordServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StudentRequestEnrollServlet</servlet-name>
+        <servlet-class>controller.StudentRequestEnrollServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -343,6 +347,10 @@
     <servlet-mapping>
         <servlet-name>ResetPasswordServlet</servlet-name>
         <url-pattern>/ResetPasswordServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentRequestEnrollServlet</servlet-name>
+        <url-pattern>/StudentRequestEnrollServlet</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

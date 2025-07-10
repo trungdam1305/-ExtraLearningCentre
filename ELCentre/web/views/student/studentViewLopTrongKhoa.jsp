@@ -97,7 +97,7 @@
     
 
     <c:choose>
-        <c:when test="${not empty dsLopHoc}">
+        <c:when test="${not empty dsLop}">
             <table>
                 <thead>
                     <tr>

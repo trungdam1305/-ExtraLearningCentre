@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.sql.Connection;
+import java.sql.Timestamp;
 
 public class ThongBaoDAO {
 
@@ -124,6 +125,35 @@ public class ThongBaoDAO {
          }
          return list;
      } 
+    
+    public static boolean checkRequestExists(int idTaiKhoan, String classCode) {
+        String sql = "SELECT 1 FROM ThongBao WHERE ID_TaiKhoan = ? AND NoiDung LIKE ?";
+        try (Connection con = DBContext.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idTaiKhoan);
+            ps.setString(2, "%" + classCode + "%");
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean insertRequestJoinClass(ThongBao tb) {
+        String sql = "INSERT INTO ThongBao (ID_TaiKhoan, NoiDung, ThoiGian) VALUES (?, ?, ?)";
+        try (Connection con = DBContext.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, tb.getID_TaiKhoan());
+            ps.setString(2, tb.getNoiDung());
+            ps.setTimestamp(3, Timestamp.valueOf(tb.getThoiGian()));
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     
     public static void main(String[] args) {
             int idTaiKhoanTest = 14; // Bạn có thể đổi sang ID khác nếu cần kiểm tra

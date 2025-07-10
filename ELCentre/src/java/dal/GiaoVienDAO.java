@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import model.GiaoVien;
 import model.GiaoVien_TruongHoc;
 import model.LichHoc;
@@ -823,6 +824,26 @@ public class GiaoVienDAO {
             e.printStackTrace();
         }
         return null;
+    }
+    
+        public static Optional<GiaoVien> findByLopHocId(int idLopHoc) {
+        String sql = "SELECT gv.* FROM GiaoVien_LopHoc gl " +
+                     "JOIN GiaoVien gv ON gl.ID_GiaoVien = gv.ID_GiaoVien " +
+                     "WHERE gl.ID_LopHoc = ?";
+        try (Connection con = DBContext.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idLopHoc);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                GiaoVien gv = new GiaoVien();
+                gv.setID_GiaoVien(rs.getInt("ID_GiaoVien"));
+                gv.setLopDangDayTrenTruong(rs.getString("LopDangDayTrenTruong"));
+                return Optional.of(gv);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
     }
     
     //Kiểm tra dữ liệu    
