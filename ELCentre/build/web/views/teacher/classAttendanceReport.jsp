@@ -660,7 +660,7 @@
                             <tr>
                                 <th class="student-name-col" style="min-width: 130px;">Họ Tên Học Sinh</th>
                                 <c:forEach var="schedule" items="${scheduleList}">
-                                    <th>
+                                    <th style="font-size: 0.85em;">
                                         <%-- Scriptlet để định dạng ngày tháng --%>
                                         <%
                                             // Lấy đối tượng 'schedule' từ vòng lặp JSTL

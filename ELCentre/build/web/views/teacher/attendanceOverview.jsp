@@ -545,7 +545,7 @@
                 color: white;
                         background-color: #27ae60;
                         border-color: #27ae60;
-                        padding: 8px 10px;
+                        padding: 5px 10px;
                         font-weight: 300;
                         border-radius: 6px;
                         text-decoration: none;
