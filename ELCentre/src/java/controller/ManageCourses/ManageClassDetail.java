@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,8 +48,8 @@ public class ManageClassDetail extends HttpServlet {
                 return;
             }
 
-            // Lấy lịch học
-            LichHoc lichHoc = lichHocDAO.getLichHocByLopHoc(idLopHoc);
+            // Lấy danh sách lịch học
+            List<LichHoc> lichHocList = lichHocDAO.getLichHocByLopHoc(idLopHoc);
 
             // Lấy giáo viên của lớp
             GiaoVien giaoVien = giaoVienDAO.getGiaoVienByLopHoc(idLopHoc);
@@ -74,7 +75,7 @@ public class ManageClassDetail extends HttpServlet {
 
             // Đặt thuộc tính cho JSP
             request.setAttribute("lopHoc", lopHoc);
-            request.setAttribute("lichHoc", lichHoc);
+            request.setAttribute("lichHocList", lichHocList);
             request.setAttribute("giaoVien", giaoVien);
             request.setAttribute("hocSinhList", hocSinhList);
             request.setAttribute("allStudents", allStudents);
@@ -129,42 +130,33 @@ public class ManageClassDetail extends HttpServlet {
                 request.getRequestDispatcher("/views/admin/viewClass.jsp").forward(request, response);
                 return;
             }
-            LichHoc lichHoc = lichHocDAO.getLichHocByLopHoc(idLopHoc);
+
+            // Lấy danh sách lịch học
+            List<LichHoc> lichHocList = lichHocDAO.getLichHocByLopHoc(idLopHoc);
 
             if ("assignTeacher".equals(action)) {
                 try {
                     int idGiaoVien = Integer.parseInt(request.getParameter("ID_GiaoVien"));
                     GiaoVien currentTeacher = giaoVienDAO.getGiaoVienByLopHoc(idLopHoc);
-                    boolean success = false;
 
-                    if (currentTeacher != null && currentTeacher.getID_GiaoVien() != idGiaoVien) {
-                        // Cập nhật phân công
-                        success = giaoVienDAO.updateTeacherAssignment(idLopHoc, idGiaoVien);
-                        System.out.println("Kết quả cập nhật phân công giáo viên: " + success);
-                    } else if (currentTeacher == null) {
-                        // Thêm phân công mới
-                        LichHoc lichHocCheck = lichHocDAO.getLichHocByLopHoc(idLopHoc);
-                        if (lichHocCheck == null) {
-                            request.setAttribute("teacherErr", "Không thể phân công giáo viên vì lớp học chưa có lịch học!");
-                        } else if (giaoVienDAO.hasSlotConflict(idGiaoVien, idLopHoc, lichHocCheck.getID_SlotHoc(), lichHocCheck.getNgayHoc())) {
-                            request.setAttribute("teacherErr", "Không thể phân công giáo viên do xung đột thời gian slot học!");
-                        } else {
-                            success = giaoVienDAO.assignTeacherToClass(idLopHoc, idGiaoVien);
-                            System.out.println("Kết quả thêm phân công giáo viên: " + success);
-                        }
-                    } else {
-                        // Giáo viên đã được phân công
+                    if (currentTeacher != null && currentTeacher.getID_GiaoVien() == idGiaoVien) {
                         request.setAttribute("teacherErr", "Giáo viên này đã được phân công cho lớp!");
                         System.out.println("Giáo viên ID " + idGiaoVien + " đã được phân công cho lớp học ID " + idLopHoc);
-                        success = false;
-                    }
-
-                    if (success) {
-                        request.setAttribute("teacherSuc", "Giáo viên đã được phân công thành công!");
+                    } else {
+                        // Thử cập nhật hoặc thêm mới phân công
+                        boolean success = giaoVienDAO.assignTeacherToClass(idLopHoc, idGiaoVien);
+                        if (success) {
+                            request.setAttribute("teacherSuc", "Giáo viên đã được phân công thành công!");
+                            System.out.println("Kết quả phân công giáo viên: Thành công cho ID_GiaoVien=" + idGiaoVien + ", ID_LopHoc=" + idLopHoc);
+                        }
                     }
                 } catch (NumberFormatException e) {
                     request.setAttribute("teacherErr", "Vui lòng chọn một giáo viên hợp lệ!");
                     System.out.println("ID_GiaoVien không hợp lệ: " + e.getMessage());
+                } catch (SQLException e) {
+                    request.setAttribute("teacherErr", "Lỗi khi phân công giáo viên: " + e.getMessage());
+                    System.out.println("SQL Error in assignTeacher: " + e.getMessage());
+                    e.printStackTrace();
                 }
             } else if ("addStudent".equals(action)) {
                 try {
@@ -174,7 +166,7 @@ public class ManageClassDetail extends HttpServlet {
                     } else if (hocSinhDAO.isStudentInClass(idHocSinh, idLopHoc)) {
                         request.setAttribute("studentErr", "Học sinh đã có trong lớp này!");
                     } else if (hocSinhDAO.hasSchoolConflict(idHocSinh, idLopHoc)) {
-                        request.setAttribute("studentErr", "Không thể thêm học sinh vì giáo viên của lớp học cùng trường với học sinh!");
+                        request.setAttribute("studentErr", "Không thể thêm học sinh vì học sinh và giáo viên cùng trường và cùng lớp!");
                     } else {
                         boolean studentAdded = hocSinhDAO.addStudentToClass(idHocSinh, idLopHoc);
                         if (studentAdded) {
@@ -195,16 +187,12 @@ public class ManageClassDetail extends HttpServlet {
             } else if ("moveOutStudent".equalsIgnoreCase(action)) {
                 try {
                     int idHocSinh = Integer.parseInt(request.getParameter("ID_HocSinh"));
-
-                    // Kiểm tra học sinh có trong lớp
                     boolean isStudentInClass = hocSinhDAO.isStudentInClass(idHocSinh, idLopHoc);
                     if (!isStudentInClass) {
                         request.setAttribute("studentErr", "Học sinh không thuộc lớp này.");
                     } else {
-                        // Xóa học sinh khỏi lớp
                         boolean removed = hocSinhDAO.removeStudentFromClass(idHocSinh, idLopHoc);
                         if (removed) {
-                            // Cập nhật sĩ số
                             int newSiSo = lopHoc.getSiSo() - 1;
                             if (newSiSo < 0) {
                                 newSiSo = 0;
@@ -227,7 +215,7 @@ public class ManageClassDetail extends HttpServlet {
 
             // Làm mới dữ liệu
             lopHoc = lopHocDAO.getLopHocById(idLopHoc);
-            lichHoc = lichHocDAO.getLichHocByLopHoc(idLopHoc);
+            lichHocList = lichHocDAO.getLichHocByLopHoc(idLopHoc);
             GiaoVien giaoVien = giaoVienDAO.getGiaoVienByLopHoc(idLopHoc);
             List<HocSinh> hocSinhList = hocSinhDAO.getHocSinhByLopHoc(idLopHoc);
             List<HocSinh> allStudents = hocSinhDAO.adminGetAllHocSinh();
@@ -247,7 +235,7 @@ public class ManageClassDetail extends HttpServlet {
 
             // Đặt thuộc tính cho JSP
             request.setAttribute("lopHoc", lopHoc);
-            request.setAttribute("lichHoc", lichHoc);
+            request.setAttribute("lichHocList", lichHocList);
             request.setAttribute("giaoVien", giaoVien);
             request.setAttribute("hocSinhList", hocSinhList);
             request.setAttribute("allStudents", allStudents);
@@ -264,7 +252,7 @@ public class ManageClassDetail extends HttpServlet {
             LopHocDAO lopHocDAO = new LopHocDAO();
             LichHocDAO lichHocDAO = new LichHocDAO();
             request.setAttribute("lopHoc", lopHocDAO.getLopHocById(idLopHoc));
-            request.setAttribute("lichHoc", lichHocDAO.getLichHocByLopHoc(idLopHoc));
+            request.setAttribute("lichHocList", lichHocDAO.getLichHocByLopHoc(idLopHoc));
             request.setAttribute("ID_KhoaHoc", idKhoaHoc);
             request.setAttribute("ID_Khoi", idKhoi);
             request.getRequestDispatcher("/views/admin/viewClass.jsp").forward(request, response);

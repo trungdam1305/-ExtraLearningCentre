@@ -20,6 +20,14 @@ import java.time.LocalDate;
  */
 public class LichHoc {
 
+    public int getID_PhongHoc() {
+        return ID_PhongHoc;
+    }
+
+    public void setID_PhongHoc(int ID_PhongHoc) {
+        this.ID_PhongHoc = ID_PhongHoc;
+    }
+
     // Unique ID for the schedule
     private int ID_Schedule;
 
@@ -42,7 +50,12 @@ public class LichHoc {
 
     // Class name associated with the lesson
     private String TenLopHoc;
-
+    
+    private String TenPhongHoc;
+    
+     private boolean daDiemDanh; // THÊM THUỘC TÍNH NÀY
+     
+     private boolean coTheSua;
     /**
      * Default constructor.
      */
@@ -144,6 +157,46 @@ public class LichHoc {
 
     public void setTenLopHoc(String TenLopHoc) {
         this.TenLopHoc = TenLopHoc;
+    }
+
+
+    public String getTenPhongHoc() {
+        return TenPhongHoc;
+    }
+
+    public void setTenPhongHoc(String TenPhongHoc) {
+        this.TenPhongHoc = TenPhongHoc;
+    }
+    
+     // THÊM GETTER VÀ SETTER NÀY
+    public boolean isDaDiemDanh() {
+        return daDiemDanh;
+    }
+
+    public void setDaDiemDanh(boolean daDiemDanh) {
+        this.daDiemDanh = daDiemDanh;
+    }
+
+    public boolean isCoTheSua() {
+        return coTheSua;
+    }
+
+    public void setCoTheSua(boolean coTheSua) {
+        this.coTheSua = coTheSua;
+    }
+
+    public LichHoc(int ID_Schedule, LocalDate NgayHoc, int ID_SlotHoc, int ID_LopHoc, int ID_PhongHoc, String GhiChu, String SlotThoiGian, String TenLopHoc, String TenPhongHoc, boolean daDiemDanh, boolean coTheSua) {
+        this.ID_Schedule = ID_Schedule;
+        this.NgayHoc = NgayHoc;
+        this.ID_SlotHoc = ID_SlotHoc;
+        this.ID_LopHoc = ID_LopHoc;
+        this.ID_PhongHoc = ID_PhongHoc;
+        this.GhiChu = GhiChu;
+        this.SlotThoiGian = SlotThoiGian;
+        this.TenLopHoc = TenLopHoc;
+        this.TenPhongHoc = TenPhongHoc;
+        this.daDiemDanh = daDiemDanh;
+        this.coTheSua = coTheSua;
     }
     
     

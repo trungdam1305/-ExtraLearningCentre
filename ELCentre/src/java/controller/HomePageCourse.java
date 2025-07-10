@@ -18,6 +18,8 @@ import java.util.List;
 import model.KhoaHoc;
 import model.KhoiHoc;
 import model.LopHocTheoNhomDTO;
+import java.util.Map;
+import model.SubjectCategoryDTO;
 
 /**
  *
@@ -72,7 +74,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     // Get search keyword and selected grade filter from the request
     String keyword = request.getParameter("keyword");
     String idKhoi = request.getParameter("ID_Khoi");
-
+    List<KhoaHoc> allCourses = dao.homepageGetAllKhoaHoc();
     // Initialize pagination parameters (default page = 1, page size = 12)
     int page = 1;
     int pageSize = 12;
@@ -93,6 +95,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     int totalPage = (int) Math.ceil((double) totalKhoaHoc / pageSize);
 
     // Set attributes to be used in the JSP view
+    request.setAttribute("allCoursesForFilter", allCourses);
     request.setAttribute("keyword", keyword);         // For retaining the search box value
     request.setAttribute("ID_Khoi", idKhoi);          // For keeping the selected grade
     request.setAttribute("khoaHocList", khoaHocList); // Course list to be displayed
@@ -103,14 +106,9 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     request.setAttribute("allKhoi", khDAO.getAllKhoiHoc());
 
     // Count number of courses per subject for display in sidebar
-    request.setAttribute("numToan", dao.getKhoaHocToan());
-    request.setAttribute("numVan", dao.getKhoaHocVan());
-    request.setAttribute("numAnh", dao.getKhoaHocAnh());
-    request.setAttribute("numLy", dao.getKhoaHocLy());
-    request.setAttribute("numHoa", dao.getKhoaHocHoa());
-    request.setAttribute("numSinh", dao.getKhoaHocSinh());
-    request.setAttribute("numSu", dao.getKhoaHocSu());
-    request.setAttribute("numDia", dao.getKhoaHocDia());
+    List<SubjectCategoryDTO> subjectCategories = dao.getCourseCategoriesWithCount();
+    request.setAttribute("subjectCategories", subjectCategories);
+
 
     // Forward request to the JSP page for rendering
     request.getRequestDispatcher("views/Home-Course/Homepage-Course.jsp").forward(request, response);

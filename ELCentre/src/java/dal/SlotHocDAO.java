@@ -28,6 +28,27 @@ public class SlotHocDAO {
         return slotHocList;
     }
 
+    
+       public List<SlotHoc> getAllSlotHoc1() {
+        List<SlotHoc> list = new ArrayList<>();
+        DBContext db = DBContext.getInstance();
+        String sql = "SELECT ID_SlotHoc, SlotThoiGian FROM SlotHoc";
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                SlotHoc slot = new SlotHoc();
+                slot.setID_SlotHoc(rs.getInt("ID_SlotHoc"));
+                slot.setSlotThoiGian(rs.getString("SlotThoiGian"));
+                list.add(slot);
+            }
+            System.out.println("getAllSlotHoc: Retrieved " + list.size() + " slots");
+        } catch (SQLException e) {
+            System.out.println("SQL Error in getAllSlotHoc: " + e.getMessage() + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     // Lấy slot học theo ID
     public SlotHoc getSlotHocById(int idSlotHoc) throws SQLException {
         DBContext db = DBContext.getInstance();

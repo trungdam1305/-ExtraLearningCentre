@@ -6,8 +6,11 @@
                  including phone number, address, and notes, while displaying read-only fields 
                  like account ID, name, email, student ID, status, and creation date.
     Parameters:
+    - Parameters:(Handle from adminActionWithUser servlet)
+    - Method to get data from database in PhuHuynhDAO - adminGetPhuHuynhByID
     - @Param phuhuynhs (ArrayList<PhuHuynh>): A request attribute containing the list of parent objects to be updated.
     - @Param type (String): A request attribute indicating the user type for the update action.
+    - Send data to adminActionWithUser servlet (do Post) 
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

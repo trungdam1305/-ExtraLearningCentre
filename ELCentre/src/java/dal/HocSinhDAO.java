@@ -297,6 +297,7 @@ public class HocSinhDAO {
                 HocSinh hocSinh = new HocSinh();
                 hocSinh.setID_HocSinh(rs.getInt("ID_HocSinh"));
                 hocSinh.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
+                hocSinh.setMaHocSinh(rs.getString("MaHocSinh"));
                 hocSinh.setHoTen(rs.getString("HoTen"));
                 hocSinh.setNgaySinh(rs.getDate("NgaySinh") != null ? rs.getDate("NgaySinh").toLocalDate() : null);
                 hocSinh.setGioiTinh(rs.getString("GioiTinh"));
@@ -307,6 +308,7 @@ public class HocSinhDAO {
                 hocSinh.setTrangThai(rs.getString("TrangThai"));
                 hocSinh.setNgayTao(rs.getTimestamp("NgayTao") != null ? rs.getTimestamp("NgayTao").toLocalDateTime() : null);
                 hocSinh.setTenTruongHoc(rs.getString("TenTruongHoc"));
+                hocSinh.setAvatar(rs.getString("Avatar"));
                 hocSinhList.add(hocSinh);
             }
             System.out.println("HocSinhList size for LopHoc ID " + idLopHoc + ": " + hocSinhList.size());
