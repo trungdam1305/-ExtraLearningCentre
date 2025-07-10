@@ -223,17 +223,11 @@ public class HocSinh_SDTDAO {
                  statement = db.getConnection().prepareStatement(sql);
 
 String keywordLike = "%" + keyword + "%";
-
-
 statement.setString(1, keyword);
 statement.setString(2, keywordLike);
 statement.setString(3, keywordLike);
-
-
 statement.setString(4, chuyenmon);
 statement.setString(5, chuyenmon);
-
-
 statement.setString(6, trangthai);
 statement.setString(7, trangthai);
 

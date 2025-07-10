@@ -172,7 +172,6 @@ public class TeacherDashboard extends HttpServlet {
 
         request.getRequestDispatcher("views/teacher/teacherDashboard.jsp").forward(request, response);
     }
-
     /** 
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request

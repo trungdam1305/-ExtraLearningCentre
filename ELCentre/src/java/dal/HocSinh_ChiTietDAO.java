@@ -16,7 +16,7 @@ import model.HocSinh;
 
 public class HocSinh_ChiTietDAO {
 
-    public static ArrayList<HocSinh_ChiTietHoc> adminGetAllLopHocCuaHocSinh(String ID_HocSinh) {
+   public static ArrayList<HocSinh_ChiTietHoc> adminGetAllLopHocCuaHocSinh(String ID_HocSinh) {
         ArrayList<HocSinh_ChiTietHoc> hocsinhchitiets = new ArrayList<HocSinh_ChiTietHoc>();
         DBContext db = DBContext.getInstance();
 

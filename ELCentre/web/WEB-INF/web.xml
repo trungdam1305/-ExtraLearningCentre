@@ -115,6 +115,10 @@
     <servlet>
         <servlet-name>adminActionWithNotification</servlet-name>
         <servlet-class>controller.adminActionWithNotification</servlet-class>
+    </servlet>   
+    <servlet>    
+        <servlet-name>ManageSchedule</servlet-name>
+        <servlet-class>controller.ManageCourses.ManageSchedule</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
@@ -255,6 +259,8 @@
     <servlet-mapping>
         <servlet-name>CourseDetailsServlet</servlet-name>
         <url-pattern>/CourseDetailsServlet</url-pattern>
+        <servlet-name>ManageSchedule</servlet-name>
+        <url-pattern>/ManageSchedule</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

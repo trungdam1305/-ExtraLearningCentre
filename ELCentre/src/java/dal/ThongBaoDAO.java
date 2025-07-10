@@ -84,7 +84,6 @@ public class ThongBaoDAO {
         }
         return tb;
     }
-
     public static ArrayList<ThongBao> getAllTuVan() {
         ArrayList<ThongBao> list = new ArrayList<>();
         DBContext db = DBContext.getInstance();
@@ -107,7 +106,7 @@ public class ThongBaoDAO {
         }
         return list;
     }
-
+    
     public static boolean adminSendNotification(String ID_TaiKhoan, String NoiDung) {
         int rs = 0;
         DBContext db = DBContext.getInstance();

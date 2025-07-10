@@ -1,3 +1,4 @@
+
 package model;
 
 import java.time.LocalDate;
@@ -199,6 +200,9 @@ public class LichHoc {
         this.coTheSua = coTheSua;
     }
     
-    
-    
+    // Phương thức để JSP truy cập dayOfMonth
+        public int getDayOfMonth() {
+            return NgayHoc != null ? NgayHoc.getDayOfMonth() : 0;
+        }
+
 }

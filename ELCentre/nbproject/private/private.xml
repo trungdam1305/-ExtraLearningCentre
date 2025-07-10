@@ -10,14 +10,16 @@
             <file>file:/D:/Zalo%20Data/ELCentre/src/java/dal/HocSinh_SDTDAO.java</file>
         </group>
         <group name="SWT">
-            <file>file:/C:/Users/admin/Desktop/New%20folder/-ExtraLearningCentre/ELCentre/web/views/teacher/teacherDashboard.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/New%20folder/-ExtraLearningCentre/ELCentre/src/java/dal/LichHocDAO.java</file>
-            <file>file:/C:/Users/admin/Desktop/New%20folder/-ExtraLearningCentre/ELCentre/src/java/controller/teacherGetFromDashboard.java</file>
-            <file>file:/C:/Users/admin/Desktop/New%20folder/-ExtraLearningCentre/ELCentre/src/java/dal/NopBaiTapDAO.java</file>
-            <file>file:/C:/Users/admin/Desktop/New%20folder/-ExtraLearningCentre/ELCentre/web/views/teacher/assignmentManagement.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/New%20folder/-ExtraLearningCentre/ELCentre/web/views/teacher/viewAttendedClasses.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/New%20folder/-ExtraLearningCentre/ELCentre/src/java/dal/LopHocDAO.java</file>
-            <file>file:/C:/Users/admin/Desktop/New%20folder/-ExtraLearningCentre/ELCentre/src/java/controller/TeacherDashboard.java</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithTeacher.java</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/admin/viewLopHoc_GiaoVien.jsp</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageSchedule.java</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/admin/adminViewLopHocGiaoVien.jsp</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/dal/KhoaHocDAO.java</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/admin/manageClass.jsp</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveGiaoVien.jsp</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/dal/LopHocInfoDTODAO.java</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/admin/manageCourses.jsp</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/dal/LopHocDAO.java</file>
         </group>
     </open-files>
 </project-private>

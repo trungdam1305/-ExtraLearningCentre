@@ -415,6 +415,24 @@ public class LopHocDAO {
     }
 
 
+
+    // Xóa lớp học
+    public LopHoc deleteLopHoc(LopHoc lopHoc) {
+        DBContext db = DBContext.getInstance();
+        String sql = "DELETE FROM LopHoc WHERE ID_LopHoc = ?";
+        try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, lopHoc.getID_LopHoc());
+            int rs = statement.executeUpdate();
+            if (rs > 0) {
+                return lopHoc;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // Lấy lớp học theo khóa học và khối
     public List<LopHoc> getLopHocByKhoaHocAndKhoi(int idKhoaHoc, int idKhoi) throws SQLException {
         List<LopHoc> list = new ArrayList<>();
         DBContext db = DBContext.getInstance();
@@ -676,9 +694,6 @@ public class LopHocDAO {
         }
         return null;
     }
-    
-    
-    
     // Cập nhật sĩ số của lớp học
     public boolean updateSiSo(int idLopHoc, int siSo) {
         DBContext db = DBContext.getInstance();
@@ -920,8 +935,4 @@ public class LopHocDAO {
         }
         return list;
     }
-    
-    
-    
-    
 }

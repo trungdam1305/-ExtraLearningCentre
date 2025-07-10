@@ -113,7 +113,7 @@ public class ManageClass extends HttpServlet {
         }
 
         // Validate trangThai
-        if (trangThai == null || trangThai.trim().isEmpty() || !List.of("Inactive", "Active", "Finished").contains(trangThai)) {
+        if (trangThai == null || trangThai.trim().isEmpty() || !List.of("Inactive", "Active", "Finished", "Chưa học","Đang học","Kết thúc").contains(trangThai)) {
             return "Trạng thái không hợp lệ!";
         }
 

@@ -84,7 +84,6 @@ public class LopHoc {
     public void setTenPhongHoc(String TenPhongHoc) {
         this.TenPhongHoc = TenPhongHoc;
     }
-
     
 
     public Integer getSiSoToiDa() {

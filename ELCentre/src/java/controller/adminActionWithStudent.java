@@ -17,13 +17,16 @@ import java.util.ArrayList;
 import model.HocSinh_ChiTietHoc;
 import dal.HocSinh_ChiTietDAO;
 import dal.HocSinh_SDTDAO;
+import dal.LopHocInfoDTODAO;
 import dal.TaiKhoanDAO;
 import dal.ThongBaoDAO;
 import dal.TruongHocDAO;
 import dao.UserLogsDAO;
 import java.time.LocalDateTime;
+import java.util.List;
 import model.GiaoVien;
 import model.HocSinh_SDT;
+import model.LopHocInfoDTO;
 import model.TruongHoc;
 import model.UserLogs;
 
@@ -70,7 +73,7 @@ public class adminActionWithStudent extends HttpServlet {
                 break;
 
             case "viewClass":
-                
+                doViewClass(request, response);     
                 break;
 
             case "viewTuiTionAndSendNTF":
@@ -211,5 +214,29 @@ public class adminActionWithStudent extends HttpServlet {
             request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);
         }
         
+    }
+
+    protected void doViewClass(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+       String ID = request.getParameter("id");
+        int id;
+        try {
+            id = Integer.parseInt(ID);
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "ID học sinh không hợp lệ.");
+            request.getRequestDispatcher("/views/admin/error.jsp").forward(request, response);
+            return;
+        }
+
+        LopHocInfoDTODAO lhd = new LopHocInfoDTODAO();
+        List<LopHocInfoDTO> lopHocs = lhd.getClassesByStudentId(id);
+        if (lopHocs == null || lopHocs.isEmpty()) {
+            request.setAttribute("error", "Không tìm thấy lớp học nào cho học sinh này.");
+            request.getRequestDispatcher("/views/admin/viewLopHoc_HocSinh.jsp").forward(request, response);
+            return;
+        }
+
+        request.setAttribute("lopHocs", lopHocs);
+        request.getRequestDispatcher("/views/admin/viewLopHoc_HocSinh.jsp").forward(request, response);
     }
 }

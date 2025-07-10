@@ -53,7 +53,6 @@ public class LichHocDAO {
         } else {
             return lichhocs;
         }
-
     }
 
     // Lấy lịch học theo ID
@@ -201,7 +200,7 @@ public class LichHocDAO {
         }
         return list;
     }
-    
+
       // Xóa lịch học
     public boolean deleteLichHoc(int idSchedule) {
         DBContext db = DBContext.getInstance();
@@ -218,7 +217,7 @@ public class LichHocDAO {
             return false;
         }
     }
-    
+
     // Thêm lịch học mới
     public LichHoc addLichHoc(LocalDate ngayHoc, int idSlotHoc, String ghiChu) {
         DBContext db = DBContext.getInstance();
@@ -279,8 +278,7 @@ public class LichHocDAO {
             return false;
         }
     }
-    
-    // Thêm phương thức này vào class LichHocDAO của bạn
+
     public void markAttendanceAsCompleted(int scheduleId) {
         DBContext db = DBContext.getInstance();
         String sql = "UPDATE LichHoc SET daDiemDanh = 1 WHERE ID_Schedule = ?";
@@ -305,7 +303,7 @@ public class LichHocDAO {
         e.printStackTrace();
     }
 }   
-    // Thêm phương thức này vào
+    
     public List<LichHoc> getAllSchedulesForClass(int classId) {
         List<LichHoc> list = new ArrayList<>();
         String sql = "SELECT * FROM LichHoc WHERE ID_LopHoc = ? ORDER BY NgayHoc";
@@ -360,4 +358,80 @@ public class LichHocDAO {
         }
         return list;
     }
+
+     public List<LichHoc> getLichHocByMonth1(int year, int month) {
+        List<LichHoc> list = new ArrayList<>();
+        DBContext db = DBContext.getInstance();
+        String sql = """
+            SELECT 
+                lh.ID_Schedule,
+                lh.NgayHoc,
+                lh.ID_SlotHoc,
+                lh.ID_LopHoc,
+                lh.ID_PhongHoc,
+                lh.GhiChu,
+                sh.SlotThoiGian,
+                cl.TenLopHoc,
+                ph.TenPhongHoc
+            FROM 
+                [dbo].[LichHoc] lh
+                INNER JOIN [dbo].[SlotHoc] sh ON lh.ID_SlotHoc = sh.ID_SlotHoc
+                INNER JOIN [dbo].[LopHoc] cl ON lh.ID_LopHoc = cl.ID_LopHoc
+                INNER JOIN [dbo].[PhongHoc] ph ON lh.ID_PhongHoc = ph.ID_PhongHoc
+            WHERE 
+                YEAR(lh.NgayHoc) = ? 
+                AND MONTH(lh.NgayHoc) = ?
+                AND cl.TrangThai = N'Đang học'
+            ORDER BY 
+                lh.NgayHoc, sh.SlotThoiGian
+            """;
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, year);
+            stmt.setInt(2, month);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    LichHoc lichHoc = new LichHoc();
+                    lichHoc.setID_Schedule(rs.getInt("ID_Schedule"));
+                    lichHoc.setNgayHoc(rs.getDate("NgayHoc") != null ? rs.getDate("NgayHoc").toLocalDate() : null);
+                    lichHoc.setID_SlotHoc(rs.getInt("ID_SlotHoc"));
+                    lichHoc.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                    lichHoc.setID_PhongHoc(rs.getInt("ID_PhongHoc"));
+                    lichHoc.setGhiChu(rs.getString("GhiChu"));
+                    lichHoc.setSlotThoiGian(rs.getString("SlotThoiGian"));
+                    lichHoc.setTenLopHoc(rs.getString("TenLopHoc"));
+                    lichHoc.setTenPhongHoc(rs.getString("TenPhongHoc"));
+                    list.add(lichHoc);
+                }
+                System.out.println("getLichHocByMonth1: Retrieved " + list.size() + " schedules for year=" + year + ", month=" + month);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in getLichHocByMonth1: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+
+
+    // Xóa tất cả lịch học của một ngày
+    public boolean deleteLichHocByDate1(LocalDate date) {
+        DBContext db = DBContext.getInstance();
+        String sql = "DELETE FROM [dbo].[LichHoc] WHERE NgayHoc = ?";
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDate(1, java.sql.Date.valueOf(date));
+            int rowsAffected = stmt.executeUpdate();
+            System.out.println("deleteLichHocByDate1: Deleted " + rowsAffected + " schedules for date=" + date);
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println("SQL Error in deleteLichHocByDate1: " + e.getMessage() + 
+                               " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    
 }

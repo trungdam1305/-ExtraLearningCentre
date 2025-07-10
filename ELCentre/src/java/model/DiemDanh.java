@@ -27,7 +27,6 @@ public class DiemDanh {
     private String HoTen;
     
     private String Avatar;
-    
     public DiemDanh() {
     }
 
@@ -109,7 +108,4 @@ public class DiemDanh {
         this.Avatar = Avatar;
     }
 
-    
-   
-    
 }
