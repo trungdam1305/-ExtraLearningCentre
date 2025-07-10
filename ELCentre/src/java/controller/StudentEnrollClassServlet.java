@@ -9,6 +9,7 @@ import model.TaiKhoan;
 
 import java.io.IOException;
 import java.util.List;
+import model.HocSinh;
 
 public class StudentEnrollClassServlet extends HttpServlet {
     @Override
@@ -22,12 +23,16 @@ public class StudentEnrollClassServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/views/login.jsp");
             return;
         }
-
+        
+        
         int idTaiKhoan = user.getID_TaiKhoan();
         int idHocSinh = HocSinhDAO.getHocSinhIdByTaiKhoanId(idTaiKhoan);
-
+        
+        HocSinh hocSinh = HocSinhDAO.getHocSinhById(idHocSinh);
+        
         List<KhoaHoc> danhSachKhoaHoc = KhoaHocDAO.getAllKhoaHocDangMo();
-
+        
+        request.setAttribute("hocSinhInfo", hocSinh);
         request.setAttribute("dsKhoaHoc", danhSachKhoaHoc);
         request.getRequestDispatcher("/views/student/studentEnrollClass.jsp").forward(request, response);
     }

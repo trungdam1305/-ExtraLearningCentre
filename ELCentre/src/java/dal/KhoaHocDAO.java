@@ -1433,7 +1433,7 @@ public class KhoaHocDAO {
     public static List<KhoaHoc> getAllKhoaHocDangMo() {
         List<KhoaHoc> list = new ArrayList<>();
         String sql = """
-            SELECT kh.ID_KhoaHoc, kh.TenKhoaHoc, kh.MoTa, kh.ThoiGianBatDau, kh.ThoiGianKetThuc,
+            SELECT kh.ID_KhoaHoc, kh.CourseCode, kh.TenKhoaHoc, kh.MoTa, kh.ThoiGianBatDau, kh.ThoiGianKetThuc,
                    kh.GhiChu, kh.TrangThai, kh.ID_Khoi, k.TenKhoi
             FROM KhoaHoc kh
             LEFT JOIN KhoiHoc k ON kh.ID_Khoi = k.ID_Khoi
@@ -1443,8 +1443,9 @@ public class KhoaHocDAO {
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                KhoaHoc kh = new KhoaHoc();
+                KhoaHoc kh = new KhoaHoc(); 
                 kh.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                kh.setCourseCode(rs.getString("CourseCode"));
                 kh.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
                 kh.setMoTa(rs.getString("MoTa"));
                 kh.setThoiGianBatDau(rs.getDate("ThoiGianBatDau").toLocalDate());

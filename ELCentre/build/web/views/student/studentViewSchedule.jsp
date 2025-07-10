@@ -143,6 +143,7 @@
     <div class="sidebar-section">HỆ THỐNG</div>
     <a href="${pageContext.request.contextPath}/StudentViewNotificationServlet">Thông báo</a>
     <a href="${pageContext.request.contextPath}/StudentEditProfileServlet">Tài khoản</a>
+    <a href="${pageContext.request.contextPath}/StudentSupportServlet">Hỗ trợ</a>
     <a href="${pageContext.request.contextPath}/LogoutServlet" class="logout-link">Đăng xuất</a>
 </div>
 
@@ -186,6 +187,9 @@
     </c:choose>
     <br>        
             
+    
+    
+    //Trả dữ liệu lịch sang đây
     <div class="timetable-wrapper">
         <h3>🗓️ Thời khóa biểu tuần này</h3>
         <table class="timetable">

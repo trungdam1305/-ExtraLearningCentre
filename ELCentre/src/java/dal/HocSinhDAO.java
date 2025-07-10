@@ -597,7 +597,62 @@ public class HocSinhDAO {
 
         return hs;
     }
-
+    
+//        // Lấy thông tin học sinh theo id học sinh
+//    public static List<HocSinh> getHocSinhInfoByIdHocSinh(Integer idHocSinh) {
+//        List<HocSinh> list = new ArrayList<>();
+//        String sql = """
+//            SELECT h.*, t.TenTruongHoc
+//            FROM HocSinh h
+//            LEFT JOIN TruongHoc t ON h.ID_TruongHoc = t.ID_TruongHoc
+//            WHERE h.ID_HocSinh = ?
+//        """;
+//
+//        try (Connection conn = DBContext.getInstance().getConnection();
+//             PreparedStatement ps = conn.prepareStatement(sql)) {
+//
+//            ps.setInt(1, idHocSinh);
+//            ResultSet rs = ps.executeQuery();
+//
+//            if (rs.next()) {
+//                HocSinh hs = new HocSinh();
+//                hs.setID_HocSinh(rs.getInt("ID_HocSinh"));
+//                hs.setMaHocSinh(rs.getString("MaHocSinh"));
+//                hs.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
+//                hs.setHoTen(rs.getString("HoTen"));
+//
+//                // Xử lý an toàn việc hiển thị ngày sinh
+//                java.sql.Date sqlNgaySinh = rs.getDate("NgaySinh");
+//                if (sqlNgaySinh != null) {
+//                    hs.setNgaySinh(sqlNgaySinh.toLocalDate());
+//                }
+//
+//                hs.setGioiTinh(rs.getString("GioiTinh"));
+//                hs.setDiaChi(rs.getString("DiaChi"));
+//                hs.setSDT_PhuHuynh(rs.getString("SDT_PhuHuynh"));
+//                hs.setID_TruongHoc(rs.getInt("ID_TruongHoc"));
+//                hs.setGhiChu(rs.getString("GhiChu"));
+//                hs.setTrangThai(rs.getString("TrangThai"));
+//
+//                //  Xử lý an toàn việc hiển thị ngày tạo
+//                java.sql.Timestamp sqlNgayTao = rs.getTimestamp("NgayTao");
+//                if (sqlNgayTao != null) {
+//                    hs.setNgayTao(sqlNgayTao.toLocalDateTime());
+//                }
+//
+//                hs.setTenTruongHoc(rs.getString("TenTruongHoc"));
+//                hs.setLopDangHocTrenTruong(rs.getString("LopDangHocTrenTruong"));
+//                hs.setTrangThaiHoc(rs.getString("TrangThaiHoc"));
+//                hs.setAvatar(rs.getString("Avatar"));
+//                list.add(hs);
+//            }
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return list;
+//    }
     //Cập nhật thông tin tài khoản học sinh
     public static boolean updateHocSinh(HocSinh hs) {
         String sql = """
