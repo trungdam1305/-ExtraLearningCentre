@@ -15,7 +15,6 @@ public class LopHocInfoDTODAO {
 
     // Lớp để trả về kết quả của các thao tác như add, update, delete với thông tin lỗi
     public static class OperationResult {
-
         private boolean success;
         private String errorMessage;
 
@@ -35,7 +34,6 @@ public class LopHocInfoDTODAO {
 
     // Lớp để trả về kết quả của addLopHoc và updateLopHoc với thông tin lỗi cụ thể
     public static class AddLopHocResult {
-
         private LopHocInfoDTO lopHoc;
         private String errorMessage;
 
@@ -92,7 +90,6 @@ public class LopHocInfoDTODAO {
         JOIN SlotHoc sh ON lh.ID_SlotHoc = sh.ID_SlotHoc
         WHERE lh.ID_PhongHoc = ? AND lh.ID_SlotHoc = ? AND lh.NgayHoc = ?
         """ + (excludeIdLopHoc != null ? "AND lh.ID_LopHoc != ?" : "");
-
         try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             LocalDate today = LocalDate.now();
             for (int i = 0; i < idPhongHocList.size(); i++) {
@@ -666,7 +663,6 @@ public class LopHocInfoDTODAO {
                 info.setAvatarGiaoVien(rs.getString("AvatarGiaoVien") != null ? rs.getString("AvatarGiaoVien") : "");
                 list.add(info);
             }
-
             System.out.println("getLopHocInfoList: Retrieved " + list.size() + " classes for ID_KhoaHoc=" + idKhoaHoc
                     + ", ID_Khoi=" + idKhoi + ", searchQuery=" + searchQuery + ", statusFilter=" + statusFilter
                     + ", teacherFilter=" + teacherFilter + ", feeFilter=" + feeFilter + ", orderFilter=" + orderFilter
@@ -1349,17 +1345,17 @@ public class LopHocInfoDTODAO {
                 g.HoTen AS TenGiaoVien,
                 STRING_AGG(sh.SlotThoiGian + ' (' + CONVERT(varchar, lich.NgayHoc, 103) + ')', ';') AS ThoiGianHoc
             FROM 
-                [SSS].[dbo].[LopHoc] lh
+                [dbo].[LopHoc] lh
             JOIN 
-                [SSS].[dbo].[GiaoVien_LopHoc] glh ON lh.ID_LopHoc = glh.ID_LopHoc
+                [dbo].[GiaoVien_LopHoc] glh ON lh.ID_LopHoc = glh.ID_LopHoc
             JOIN 
-                [SSS].[dbo].[GiaoVien] g ON glh.ID_GiaoVien = g.ID_GiaoVien
+                [dbo].[GiaoVien] g ON glh.ID_GiaoVien = g.ID_GiaoVien
             JOIN 
-                [SSS].[dbo].[KhoaHoc] kh ON lh.ID_KhoaHoc = kh.ID_KhoaHoc
+                [dbo].[KhoaHoc] kh ON lh.ID_KhoaHoc = kh.ID_KhoaHoc
             LEFT JOIN 
-                [SSS].[dbo].[LichHoc] lich ON lh.ID_LopHoc = lich.ID_LopHoc
+                [dbo].[LichHoc] lich ON lh.ID_LopHoc = lich.ID_LopHoc
             LEFT JOIN 
-                [SSS].[dbo].[SlotHoc] sh ON lich.ID_SlotHoc = sh.ID_SlotHoc
+                [dbo].[SlotHoc] sh ON lich.ID_SlotHoc = sh.ID_SlotHoc
             WHERE 
                 glh.ID_GiaoVien = ? 
                 AND lh.TrangThai = N'Đang học'
@@ -1445,19 +1441,19 @@ public class LopHocInfoDTODAO {
             g.HoTen AS TenGiaoVien,
             STRING_AGG(sh.SlotThoiGian + ' (' + CONVERT(varchar, lich.NgayHoc, 103) + ')', ';') AS ThoiGianHoc
         FROM 
-            [SSS].[dbo].[LopHoc] lh
+            [dbo].[LopHoc] lh
         JOIN 
-            [SSS].[dbo].[HocSinh_LopHoc] hslh ON lh.ID_LopHoc = hslh.ID_LopHoc
+            [dbo].[HocSinh_LopHoc] hslh ON lh.ID_LopHoc = hslh.ID_LopHoc
         JOIN 
-            [SSS].[dbo].[KhoaHoc] kh ON lh.ID_KhoaHoc = kh.ID_KhoaHoc
+            [dbo].[KhoaHoc] kh ON lh.ID_KhoaHoc = kh.ID_KhoaHoc
         LEFT JOIN 
-            [SSS].[dbo].[GiaoVien_LopHoc] glh ON lh.ID_LopHoc = glh.ID_LopHoc
+            [dbo].[GiaoVien_LopHoc] glh ON lh.ID_LopHoc = glh.ID_LopHoc
         LEFT JOIN 
-            [SSS].[dbo].[GiaoVien] g ON glh.ID_GiaoVien = g.ID_GiaoVien
+            [dbo].[GiaoVien] g ON glh.ID_GiaoVien = g.ID_GiaoVien
         LEFT JOIN 
-            [SSS].[dbo].[LichHoc] lich ON lh.ID_LopHoc = lich.ID_LopHoc
+            [dbo].[LichHoc] lich ON lh.ID_LopHoc = lich.ID_LopHoc
         LEFT JOIN 
-            [SSS].[dbo].[SlotHoc] sh ON lich.ID_SlotHoc = sh.ID_SlotHoc
+            [dbo].[SlotHoc] sh ON lich.ID_SlotHoc = sh.ID_SlotHoc
         WHERE 
             hslh.ID_HocSinh = ? 
             AND lh.TrangThai = N'Đang học'
@@ -1495,7 +1491,7 @@ public class LopHocInfoDTODAO {
             lopHoc.setSiSoToiThieu(rs.getInt("SiSoToiThieu"));
             lopHoc.setGhiChu(rs.getString("GhiChu"));
             lopHoc.setTrangThai(rs.getString("TrangThai"));
-            // Chuyển đổi SoTien từ nvarchar sang int
+      
             String soTienStr = rs.getString("SoTien");
             try {
                 lopHoc.setSoTien(soTienStr != null ? Integer.parseInt(soTienStr) : 0);
@@ -1503,7 +1499,7 @@ public class LopHocInfoDTODAO {
                 System.out.println("Error parsing SoTien: " + soTienStr);
                 lopHoc.setSoTien(0);
             }
-            // Chuyển đổi từ java.sql.Timestamp sang LocalDateTime
+
             if (rs.getTimestamp("NgayTao") != null) {
                 lopHoc.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
             }
@@ -1522,18 +1518,138 @@ public class LopHocInfoDTODAO {
 
     return classList;
 }
+    
+    
+  
+    public List<LopHocInfoDTO> findSimilarClasses(String classCode) {
+        List<LopHocInfoDTO> similarClasses = new ArrayList<>();
+        if (classCode == null || classCode.trim().isEmpty()) {
+            System.out.println("findSimilarClasses: Mã lớp không hợp lệ: " + classCode);
+            return similarClasses;
+        }
 
-    public static void main(String[] args) {
+        int codeLength = classCode.length();
+        String firstChar = classCode.substring(0, 1);
+        String lastTwoChars = classCode.length() >= 2 ? classCode.substring(classCode.length() - 2) : "";
+
+        String sql = """
+            SELECT 
+                lh.ID_LopHoc,
+                lh.ClassCode,
+                lh.TenLopHoc,
+                lh.ID_KhoaHoc,
+                lh.SiSo,
+                lh.SiSoToiDa,
+                lh.SiSoToiThieu,
+                lh.GhiChu,
+                lh.TrangThai,
+                lh.SoTien,
+                lh.NgayTao,
+                lh.Image,
+                lh.[Order],
+                kh.ID_Khoi,
+                g.HoTen AS TenGiaoVien,
+                STRING_AGG(sh.SlotThoiGian + ' (' + CONVERT(varchar, lich.NgayHoc, 103) + ')', ';') AS ThoiGianHoc
+            FROM 
+                [dbo].[LopHoc] lh
+            LEFT JOIN 
+                [dbo].[KhoaHoc] kh ON lh.ID_KhoaHoc = kh.ID_KhoaHoc
+            LEFT JOIN 
+                [dbo].[GiaoVien_LopHoc] glh ON lh.ID_LopHoc = glh.ID_LopHoc
+            LEFT JOIN 
+                [dbo].[GiaoVien] g ON glh.ID_GiaoVien = g.ID_GiaoVien
+            LEFT JOIN 
+                [dbo].[LichHoc] lich ON lh.ID_LopHoc = lich.ID_LopHoc
+            LEFT JOIN 
+                [dbo].[SlotHoc] sh ON lich.ID_SlotHoc = sh.ID_SlotHoc
+            WHERE 
+                LEN(lh.ClassCode) = ? 
+                AND LEFT(lh.ClassCode, 1) = ? 
+                AND RIGHT(lh.ClassCode, 2) = ?
+            GROUP BY 
+                lh.ID_LopHoc,
+                lh.ClassCode,
+                lh.TenLopHoc,
+                lh.ID_KhoaHoc,
+                lh.SiSo,
+                lh.SiSoToiDa,
+                lh.SiSoToiThieu,
+                lh.GhiChu,
+                lh.TrangThai,
+                lh.SoTien,
+                lh.NgayTao,
+                lh.Image,
+                lh.[Order],
+                kh.ID_Khoi,
+                g.HoTen
+        """;
+
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            if (conn == null) {
+                System.out.println("findSimilarClasses: Kết nối cơ sở dữ liệu là null");
+                return similarClasses;
+            }
+            stmt.setInt(1, codeLength);
+            stmt.setString(2, firstChar);
+            stmt.setString(3, lastTwoChars);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    LopHocInfoDTO lopHoc = new LopHocInfoDTO();
+                    lopHoc.setIdLopHoc(rs.getInt("ID_LopHoc"));
+                    lopHoc.setClassCode(rs.getString("ClassCode"));
+                    lopHoc.setTenLopHoc(rs.getString("TenLopHoc"));
+                    lopHoc.setIdKhoaHoc(rs.getInt("ID_KhoaHoc"));
+                    lopHoc.setSiSo(rs.getInt("SiSo"));
+                    lopHoc.setSiSoToiDa(rs.getInt("SiSoToiDa"));
+                    lopHoc.setSiSoToiThieu(rs.getInt("SiSoToiThieu"));
+                    lopHoc.setGhiChu(rs.getString("GhiChu"));
+                    lopHoc.setTrangThai(rs.getString("TrangThai"));
+                    String soTienStr = rs.getString("SoTien");
+                    System.out.println("findSimilarClasses: Raw SoTien for ClassCode " + rs.getString("ClassCode") + ": " + soTienStr);
+                    try {
+                        lopHoc.setSoTien(soTienStr != null && !soTienStr.trim().isEmpty() ? Integer.parseInt(soTienStr.trim()) : 0);
+                    } catch (NumberFormatException e) {
+                        System.out.println("findSimilarClasses: Error parsing SoTien for ClassCode " + rs.getString("ClassCode") + ": " + soTienStr + ", Error: " + e.getMessage());
+                        lopHoc.setSoTien(0);
+                    }
+                    if (rs.getTimestamp("NgayTao") != null) {
+                        lopHoc.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+                    }
+                    lopHoc.setOrder(rs.getInt("Order"));
+                    lopHoc.setAvatarGiaoVien(rs.getString("Image"));
+                    lopHoc.setIdKhoi(rs.getInt("ID_Khoi"));
+                    lopHoc.setTenGiaoVien(rs.getString("TenGiaoVien"));
+                    lopHoc.setThoiGianHoc(rs.getString("ThoiGianHoc"));
+                    similarClasses.add(lopHoc);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("findSimilarClasses: SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return similarClasses;
+    }
+    
+    
+     public static void main(String[] args) {
+        // Giả sử bạn có một DAO tên là ClassDAO hoặc LopHocDAO
         LopHocInfoDTODAO dao = new LopHocInfoDTODAO();
-        int testIdGiaoVien = 3;
 
-        List<LopHocInfoDTO> list = dao.getClassesByStudentId(testIdGiaoVien);
-        if (list.isEmpty()) {
-            System.out.println("Không có lớp học nào cho giáo viên ID = " + testIdGiaoVien);
+        // Mã lớp để test, ví dụ: "A1234"
+        String classCode = "TCBO06";
+
+        // Gọi phương thức tìm lớp tương đồng
+        List<LopHocInfoDTO> similarClasses = dao.findSimilarClasses(classCode);
+
+        // In kết quả ra màn hình
+        if (similarClasses.isEmpty()) {
+            System.out.println("Không tìm thấy lớp tương đồng với mã lớp: " + classCode);
         } else {
-            System.out.println("Danh sách lớp học giáo viên ID = " + testIdGiaoVien + ":");
-            for (LopHocInfoDTO dto : list) {
-                System.out.println("- " + dto.getTenLopHoc() + " | " + dto.getThoiGianHoc() + " | GV: " + dto.getTenGiaoVien());
+            System.out.println("Các lớp tương đồng với mã lớp '" + classCode + "':");
+            for (LopHocInfoDTO lop : similarClasses) {
+                System.out.println(lop);
             }
         }
     }

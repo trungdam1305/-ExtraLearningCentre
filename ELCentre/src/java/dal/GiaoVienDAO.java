@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dal;
 
-/**
- *
- * @author wrx_Chur04
- */
 import java.sql.Connection;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -20,9 +12,11 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import model.GiaoVien;
 import model.GiaoVien_TruongHoc;
 import model.LichHoc;
+import model.LopHoc;
 
 public class GiaoVienDAO {
 
@@ -55,8 +49,8 @@ public class GiaoVienDAO {
                         rs.getTimestamp("NgayTao").toLocalDateTime(),
                         rs.getString("Avatar"),
                         rs.getString("TenTruongHoc"),
-                        rs.getString("BangCap"),
-                        rs.getString("LopDangDayTrenTruong"),
+                        rs.getString("BangCap") , 
+                        rs.getString("LopDangDayTrenTruong") , 
                         rs.getString("TrangThaiDay")
                 );
                 giaoviens.add(giaovien);
@@ -209,9 +203,10 @@ public class GiaoVienDAO {
                         rs.getTimestamp("NgayTao").toLocalDateTime(),
                         rs.getString("Avatar"),
                         rs.getString("TenTruongHoc"),
-                        rs.getString("BangCap"),
-                        rs.getString("LopDangDayTrenTruong"),
+                        rs.getString("BangCap") , 
+                        rs.getString("LopDangDayTrenTruong") , 
                         rs.getString("TrangThaiDay")
+                        
                 );
                 giaoviens.add(giaovien);
             }
@@ -387,6 +382,7 @@ public class GiaoVienDAO {
         return giaoVien;
     }
 
+
     public String findConflictingClassName(int idGiaoVien, int idLopHoc, int idSlotHoc, LocalDate ngayHoc) {
         DBContext db = DBContext.getInstance();
         String sql = """
@@ -525,6 +521,7 @@ public class GiaoVienDAO {
         }
         return teachers;
     }
+
 
     public boolean updateTeacherAssignment(int idLopHoc, int idGiaoVien) throws SQLException {
         DBContext db = DBContext.getInstance();
@@ -800,6 +797,77 @@ public class GiaoVienDAO {
                 e.printStackTrace();
             }
         }
+    }
+public static String adminGetIdGiaoVienToSendNTF(String ID_LopHoc) {
+        DBContext db = DBContext.getInstance() ; 
+        
+        try {
+            String sql = """
+                         select  GV.ID_TaiKhoan from GiaoVien_LopHoc GL
+                        JOIN GiaoVien GV
+                        ON GV.ID_GiaoVien = GL.ID_GiaoVien
+                        WHERE GL.ID_LopHoc = ? ;
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1 , ID_LopHoc) ; 
+            ResultSet rs = statement.executeQuery() ; 
+            while(rs.next()) {
+                return rs.getString("ID_TaiKhoan") ; 
+            }
+        } catch(SQLException  e ) {
+            e.printStackTrace();
+        }
+        return null ;  
+    }
+    
+    public static GiaoVien_TruongHoc getGiaoVienByID(int id_TaiKhoan) {
+        // Không cần ArrayList vì chúng ta chỉ tìm một đối tượng
+        GiaoVien_TruongHoc giaovien = null; 
+        DBContext db = DBContext.getInstance();
+
+        try {
+            String sql = """
+                         select * from GiaoVien gv JOIN TruongHoc th 
+                         ON gv.ID_TruongHoc = th.ID_TruongHoc
+                         where gv.ID_TaiKhoan = ? 
+                         """; // Thêm gv.ID_TaiKhoan để rõ ràng hơn
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setInt(1, id_TaiKhoan);
+            ResultSet rs = statement.executeQuery();
+
+            // Dùng 'if' thay vì 'while' vì chúng ta chỉ mong đợi một kết quả
+            if (rs.next()) {
+                giaovien = new GiaoVien_TruongHoc(
+                        rs.getInt("ID_GiaoVien"),
+                        rs.getInt("ID_TaiKhoan"),
+                        rs.getString("HoTen"),
+                        rs.getString("ChuyenMon"),
+                        rs.getString("SDT"),
+                        rs.getInt("ID_TruongHoc"),
+                        rs.getBigDecimal("Luong"),
+                        rs.getInt("IsHot"),
+                        rs.getString("TrangThai"),
+                        rs.getTimestamp("NgayTao").toLocalDateTime(),
+                        rs.getString("Avatar"),
+                        rs.getString("TenTruongHoc"),
+                        rs.getString("BangCap"), 
+                        rs.getString("LopDangDayTrenTruong"), 
+                        rs.getString("TrangThaiDay")
+                );
+            }
+
+            // Đóng tài nguyên để tránh rò rỉ bộ nhớ
+            rs.close();
+            statement.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Trả về null nếu có lỗi
+            return null;
+        }
+
+        // Trả về đối tượng giáo viên tìm được (hoặc null nếu không tìm thấy)
+        return giaovien;
     }
 
     public List<GiaoVien> getPreviousTeachersByLopHoc(int idLopHoc) {
@@ -1300,5 +1368,54 @@ public boolean removeTeacherFromClass1(int idLopHoc, int idGiaoVien) throws SQLE
         }
     }
 }
+    //Lấy thông tin giáo viên theo id
+    public static GiaoVien getGiaoVienById(int id) {
+        String sql = """
+            SELECT g.*, tk.Email
+            FROM GiaoVien g
+            JOIN TaiKhoan tk ON g.ID_TaiKhoan = tk.ID_TaiKhoan
+            WHERE g.ID_GiaoVien = ?
+        """;
 
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    GiaoVien gv = new GiaoVien();
+                    gv.setID_GiaoVien(rs.getInt("ID_GiaoVien"));
+                    gv.setHoTen(rs.getString("HoTen"));
+                    gv.setEmail(rs.getString("Email"));
+                    gv.setChuyenMon(rs.getString("ChuyenMon"));
+                    gv.setSDT(rs.getString("SDT"));
+                    gv.setAvatar(rs.getString("Avatar"));
+                    return gv;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+        public static Optional<GiaoVien> findByLopHocId(int idLopHoc) {
+        String sql = "SELECT gv.* FROM GiaoVien_LopHoc gl " +
+                     "JOIN GiaoVien gv ON gl.ID_GiaoVien = gv.ID_GiaoVien " +
+                     "WHERE gl.ID_LopHoc = ?";
+        try (Connection con = DBContext.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idLopHoc);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                GiaoVien gv = new GiaoVien();
+                gv.setID_GiaoVien(rs.getInt("ID_GiaoVien"));
+                gv.setLopDangDayTrenTruong(rs.getString("LopDangDayTrenTruong"));
+                return Optional.of(gv);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
 }

@@ -5,6 +5,7 @@
 package model;
 
 import java.time.LocalDateTime;
+
 import java.util.logging.Logger;
 
 /**
@@ -24,6 +25,9 @@ public class GiaoVien_ChiTietDay {
     private String TrangThai ; 
     private LocalDateTime NgayTao ; 
     private String Image ; 
+    private Integer ID_Khoi ; 
+    private String TenKhoaHoc ; 
+
 
     public GiaoVien_ChiTietDay() {
     }
@@ -43,12 +47,7 @@ public class GiaoVien_ChiTietDay {
         this.Image = Image;
     }
 
-    public Integer getID_KhoaHoc() {
-        return ID_KhoaHoc;
-    }
-    private static final Logger LOG = Logger.getLogger(GiaoVien_ChiTietDay.class.getName());
-
-    public GiaoVien_ChiTietDay(Integer ID_KhoaHoc, Integer ID_LopHoc, Integer ID_GiaoVien, String HoTen, String TenTruongHoc, String TenLopHoc, String SiSo, String GhiChu, String TrangThai, LocalDateTime NgayTao, String Image) {
+    public GiaoVien_ChiTietDay(Integer ID_KhoaHoc, Integer ID_LopHoc, Integer ID_GiaoVien, String HoTen, String TenTruongHoc, String TenLopHoc, String SiSo,  String GhiChu, String TrangThai, LocalDateTime NgayTao, String Image) {
         this.ID_KhoaHoc = ID_KhoaHoc;
         this.ID_LopHoc = ID_LopHoc;
         this.ID_GiaoVien = ID_GiaoVien;
@@ -56,13 +55,36 @@ public class GiaoVien_ChiTietDay {
         this.TenTruongHoc = TenTruongHoc;
         this.TenLopHoc = TenLopHoc;
         this.SiSo = SiSo;
+       
         this.GhiChu = GhiChu;
         this.TrangThai = TrangThai;
         this.NgayTao = NgayTao;
         this.Image = Image;
     }
+
+    public GiaoVien_ChiTietDay(Integer ID_KhoaHoc, Integer ID_LopHoc, Integer ID_GiaoVien, String HoTen, String TenTruongHoc, String TenLopHoc, String SiSo,  String GhiChu, String TrangThai, LocalDateTime NgayTao, String Image, Integer ID_Khoi, String TenKhoaHoc) {
+        this.ID_KhoaHoc = ID_KhoaHoc;
+        this.ID_LopHoc = ID_LopHoc;
+        this.ID_GiaoVien = ID_GiaoVien;
+        this.HoTen = HoTen;
+        this.TenTruongHoc = TenTruongHoc;
+        this.TenLopHoc = TenLopHoc;
+        this.SiSo = SiSo;
+        
+        this.GhiChu = GhiChu;
+        this.TrangThai = TrangThai;
+        this.NgayTao = NgayTao;
+        this.Image = Image;
+        this.ID_Khoi = ID_Khoi;
+        this.TenKhoaHoc = TenKhoaHoc;
+    }
     
-    
+
+    public Integer getID_KhoaHoc() {
+        return ID_KhoaHoc;
+    }
+
+    private static final Logger LOG = Logger.getLogger(GiaoVien_ChiTietDay.class.getName());
 
     public Integer getID_LopHoc() {
         return ID_LopHoc;
@@ -155,6 +177,15 @@ public class GiaoVien_ChiTietDay {
     public void setImage(String Image) {
         this.Image = Image;
     }
+
+    public Integer getID_Khoi() {
+        return ID_Khoi;
+    }
+
+    public String getTenKhoaHoc() {
+        return TenKhoaHoc;
+    }
+
     
     
 }

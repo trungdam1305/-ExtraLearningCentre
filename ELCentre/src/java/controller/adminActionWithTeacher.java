@@ -1,3 +1,4 @@
+
 package controller;
 
 import dal.GiaoVienDAO;
@@ -16,10 +17,13 @@ import dal.HocSinh_ChiTietDAO;
 import dal.HocSinh_SDTDAO;
 import dal.LopHocInfoDTODAO;
 import dal.TaiKhoanDAO;
+import dal.ThongBaoDAO;
 import dal.TruongHocDAO;
 import dao.UserLogsDAO;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import model.HocSinh;
+import model.HocSinh_SDT;
 import java.util.List;
 import model.HocSinh;
 import model.HocSinh_SDT;
@@ -27,13 +31,11 @@ import model.LopHocInfoDTO;
 import model.TaiKhoan;
 import model.TruongHoc;
 import model.UserLogs;
-
 /**
  *
  * @author wrx_Chur04
  */
 public class adminActionWithTeacher extends HttpServlet {
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -68,6 +70,7 @@ public class adminActionWithTeacher extends HttpServlet {
 
             case "update":
                 break;
+
         }
     }
 
@@ -75,11 +78,13 @@ public class adminActionWithTeacher extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String type = request.getParameter("type");
-
         switch (type) {
             case "update":
                 doUpdateInfor(request, response);
                 break;
+            case "sendNotification" : 
+                doSendNotification(request, response) ; 
+                break ; 
         }
     }
 
@@ -133,19 +138,16 @@ public class adminActionWithTeacher extends HttpServlet {
         request.getRequestDispatcher("/views/admin/viewLopHoc_GiaoVien.jsp").forward(request, response);
     
     }
-
     protected void doUpdateInfor(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         String ID_GiaoVien = request.getParameter("idgiaovien");
         String ID_taikhoan = request.getParameter("idtaikhoan");
-
         String idTruong = request.getParameter("idTruongHoc");
         String lopTrenTruong = request.getParameter("lop");
         String sdt = request.getParameter("sdt");
         String isHot = request.getParameter("hot");
-
         int ID_TruongGV = Integer.parseInt(idTruong);
         ArrayList<HocSinh> truongVaLopDangHocCuaHocSinhTrongLopGiaoVien = HocSinh_ChiTietDAO.adminGetLopHocCuaHocSinhSoVoiGiaoVien(ID_GiaoVien);
 
@@ -169,27 +171,45 @@ public class adminActionWithTeacher extends HttpServlet {
                 if (!sdt.startsWith("0")) {
                     throw new Exception("Số điện thoại phải bắt đầu bằng số 0!");
                 }
-
-                boolean s1 = TaiKhoanDAO.adminUpdateInformationAccount(sdt, ID_TaiKhoan);
-                boolean s2 = HocSinh_ChiTietDAO.updateTruongLopGiaoVien(idTruong, lopTrenTruong, sdt, isHot, ID_GiaoVien);
-                if (s1 == true && s2 == true) {
+                
+                boolean s1 = TaiKhoanDAO.adminUpdateInformationAccount(sdt, ID_TaiKhoan) ; 
+                boolean s2 = HocSinh_ChiTietDAO.updateTruongLopGiaoVien(idTruong, lopTrenTruong, sdt, isHot, ID_GiaoVien) ; 
+                if (s1== true && s2 == true ) {
                     request.setAttribute("message", "Thay đổi thành công!");
-                    UserLogs log = new UserLogs(0, 1, "Thay đổi thông tin giáo viên có ID tài khoản " + ID_TaiKhoan, LocalDateTime.now());
-                    UserLogsDAO.insertLog(log);
-                    ArrayList<GiaoVien_TruongHoc> giaoviens = new ArrayList<GiaoVien_TruongHoc>();
-                    giaoviens = GiaoVienDAO.admminGetAllGiaoVien();
-                    session.setAttribute("giaoviens", giaoviens);
-                    request.getRequestDispatcher("/views/admin/adminReceiveGiaoVien.jsp").forward(request, response);
-
+                    UserLogs log = new UserLogs(0 , 1 , "Thay đổi thông tin giáo viên có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
+                     UserLogsDAO.insertLog(log);
+                     ArrayList<GiaoVien_TruongHoc> giaoviens = new ArrayList<GiaoVien_TruongHoc>();
+                     giaoviens = GiaoVienDAO.admminGetAllGiaoVien();
+                     session.setAttribute("giaoviens", giaoviens);        
+                    request.getRequestDispatcher("/views/admin/adminReceiveGiaoVien.jsp").forward(request, response);    
+                
                 }
             } catch (Exception e) {
                 request.setAttribute("message", e.getMessage());
-                request.getRequestDispatcher("/views/admin/adminReceiveGiaoVien.jsp").forward(request, response);
+                request.getRequestDispatcher("/views/admin/adminReceiveGiaoVien.jsp").forward(request, response);    
             }
         } else {
             request.setAttribute("message", "Không thể thay đổi ! Vi phạm nghị đinh 29 !!");
-            request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);    
         }
 
+    }
+    
+    
+    protected void doSendNotification(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession() ; 
+        String ID_TaiKhoan = request.getParameter("idtaikhoan");
+        String NoiDung = request.getParameter("noidung")  ; 
+        boolean sendNTF = ThongBaoDAO.adminSendNotification(ID_TaiKhoan, NoiDung) ; 
+        if (sendNTF) {
+            request.setAttribute("message", "Gửi thông báo thành công!");
+            
+            request.getRequestDispatcher("/views/admin/adminReceiveGiaoVien.jsp").forward(request, response);
+        } else {
+            request.setAttribute("message", "Gửi thông báo thất bại!");
+            request.getRequestDispatcher("/views/admin/adminReceiveGiaoVien.jsp").forward(request, response);
+        }
+        
     }
 }

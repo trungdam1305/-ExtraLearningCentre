@@ -22,6 +22,7 @@ public class KhoaHoc {
     private String TrangThai;            // Status of the course (e.g., active, closed)
     private LocalDateTime NgayTao;       // Date the course was created
     private int ID_Khoi;                 // Educational level ID (e.g., primary, secondary)
+    private String TenKhoi;              // Name of education level
     private String Image;                // URL or path to course image
     private int  Order ; 
 
@@ -73,10 +74,21 @@ public class KhoaHoc {
         this.Order = Order;
     }
 
-    
-    
-   
-
+    public KhoaHoc(Integer ID_KhoaHoc, String CourseCode, String TenKhoaHoc, String MoTa, LocalDate ThoiGianBatDau, LocalDate ThoiGianKetThuc, String GhiChu, String TrangThai, LocalDateTime NgayTao, int ID_Khoi, String TenKhoi, String Image, int Order) {
+        this.ID_KhoaHoc = ID_KhoaHoc;
+        this.CourseCode = CourseCode;
+        this.TenKhoaHoc = TenKhoaHoc;
+        this.MoTa = MoTa;
+        this.ThoiGianBatDau = ThoiGianBatDau;
+        this.ThoiGianKetThuc = ThoiGianKetThuc;
+        this.GhiChu = GhiChu;
+        this.TrangThai = TrangThai;
+        this.NgayTao = NgayTao;
+        this.ID_Khoi = ID_Khoi;
+        this.TenKhoi = TenKhoi;
+        this.Image = Image;
+        this.Order = Order;
+    }
     // Getter and Setter methods
 
     public Integer getID_KhoaHoc() {
@@ -174,9 +186,14 @@ public class KhoaHoc {
     public String getThoiGianKetThucFormatted() {
         return (ThoiGianKetThuc != null) ? ThoiGianKetThuc.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
     }
-    
-     
 
+    public String getTenKhoi() {
+        return TenKhoi;
+    }
+
+    public void setTenKhoi(String TenKhoi) {
+        this.TenKhoi = TenKhoi;
+    }
 public String getNgayTaoFormatted() {
     if (NgayTao != null) {
         return NgayTao.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));

@@ -56,8 +56,6 @@ public class HocSinh_ChiTietHoc {
         this.Image = Image;
     }
 
-    
-
     public Integer getID_KhoaHoc() {
         return ID_KhoaHoc;
     }

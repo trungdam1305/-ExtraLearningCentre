@@ -81,7 +81,6 @@ public class Advice extends HttpServlet {
             ThongBaoDAO.insertThongBaoTuVan(noiDungThongBao);
             System.out.println("Đã gọi xong hàm");
             response.sendRedirect(request.getContextPath() + "/views/advice-success.jsp");
-
         } catch (Exception e) {
             e.printStackTrace();
             

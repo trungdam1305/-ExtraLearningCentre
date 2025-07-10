@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
-import org.apache.catalina.User;
 
 public class ManageSchedule extends HttpServlet {
 

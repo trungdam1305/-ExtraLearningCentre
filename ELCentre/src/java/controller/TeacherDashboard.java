@@ -18,7 +18,10 @@ import jakarta.servlet.http.HttpSession;
 import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import model.GiaoVien;
+import model.GiaoVien_TruongHoc;
 import model.LichHoc;
 import model.TaiKhoan;
 
@@ -62,49 +65,113 @@ public class TeacherDashboard extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         HttpSession session = request.getSession();
-        //Get Session User to get data
-        TaiKhoan user = (TaiKhoan)session.getAttribute("user");
-        
-        GiaoVien_LopHocDAO gvLhDAO = new GiaoVien_LopHocDAO();//Initiallize GiaoVienLopHocDAO
-        int numLopHoc = GiaoVien_LopHocDAO.teacherGetTongSoLopHoc(user.getID_TaiKhoan());//get teacher's num of classes
-        int numHocSinh = GiaoVien_LopHocDAO.teacherGetTongSoHocSinh(user.getID_TaiKhoan());//get teacher's num of students
-        
-        GiaoVienDAO dao = new GiaoVienDAO();//Initiallize GiaoVienDAO
-        double luongGV = dao.getLuongTheoTaiKhoan(user.getID_TaiKhoan());//get teacher's salary
-        DecimalFormat df = new DecimalFormat("#,###");//format salary of teacher
-        String luongGv = df.format(luongGV);
-              
-        LocalDate startOfWeek = LocalDate.now().with(DayOfWeek.MONDAY);//Initiallize the start day of week
-        LocalDate endOfWeek = LocalDate.now().with(DayOfWeek.SUNDAY);//Initiallize the end day of week
-        //Get Schedule of week
-        List<LichHoc> fullList = LichHocDAO.getLichHocTrongTuan(user.getID_TaiKhoan(), startOfWeek, endOfWeek);
+        TaiKhoan user = (TaiKhoan) session.getAttribute("user");
 
-        // Pagination
-        int pageSize = 10; // In a Page 10 items
-        int page = 1;//set default page = 1
-        String pageParam = request.getParameter("page");//get item name = page from jsp 
-        if (pageParam != null && !pageParam.isEmpty()) {
-            page = Integer.parseInt(pageParam);//parse page from string to int
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/views/login.jsp");
+            return;
         }
-        int total = fullList.size();
-        int fromIndex = Math.max((page - 1) * pageSize, 0);
-        int toIndex = Math.min(fromIndex + pageSize, total);
-        List<LichHoc> pageList = fullList.subList(fromIndex, toIndex);//get pageList from schedule subList
 
-        // request to jsp
-        request.setAttribute("tkbTrongTuan", pageList);
-        request.setAttribute("currentPage", page);
-        request.setAttribute("totalPages", (int) Math.ceil((double) total / pageSize));    
-        session.setAttribute("user", user);
+        // --- Lấy các thông số chung (giữ nguyên) ---
+        GiaoVien_LopHocDAO gvLhDAO = new GiaoVien_LopHocDAO();
+        int numLopHoc = GiaoVien_LopHocDAO.teacherGetTongSoLopHoc(user.getID_TaiKhoan());
+        int numHocSinh = GiaoVien_LopHocDAO.teacherGetTongSoHocSinh(user.getID_TaiKhoan());
+        GiaoVienDAO dao = new GiaoVienDAO();
+        double luongGV = dao.getLuongTheoTaiKhoan(user.getID_TaiKhoan());
+        DecimalFormat df = new DecimalFormat("#,###");
+        String luongGv = df.format(luongGV);
+        GiaoVien_TruongHoc gv = GiaoVienDAO.getGiaoVienByID(user.getID_TaiKhoan());
+
+        // --- LOGIC XỬ LÝ NGÀY/TUẦN ĐÃ ĐƯỢC NÂNG CẤP ---
+        DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        LocalDate startDate;
+        LocalDate endDate;
+        String displayRange;
+        String viewMode = "week"; // Mặc định là xem theo tuần
+
+        // Lấy các tham số điều khiển ngày tháng từ request
+        String filterDateParam = request.getParameter("filterDate");
+        String selectedWeekParam = request.getParameter("selectedWeek");
+        String viewDateParam = request.getParameter("viewDate");
+
+        if (filterDateParam != null && !filterDateParam.isEmpty()) {
+            // ƯU TIÊN 1: LỌC THEO NGÀY CỤ THỂ
+            viewMode = "day";
+            startDate = endDate = LocalDate.parse(filterDateParam);
+            displayRange = "Ngày " + startDate.format(displayFormatter);
+        } else {
+            // XEM THEO TUẦN (như cũ)
+            LocalDate viewMonday;
+            java.time.temporal.WeekFields weekFields = java.time.temporal.WeekFields.ISO;
+
+            if (selectedWeekParam != null && !selectedWeekParam.isEmpty()) {
+                // Ưu tiên 2: Người dùng chọn tuần
+                try {
+                    int year = Integer.parseInt(selectedWeekParam.substring(0, 4));
+                    int week = Integer.parseInt(selectedWeekParam.substring(6));
+                    viewMonday = LocalDate.of(year, 1, 1)
+                            .with(weekFields.weekOfWeekBasedYear(), week)
+                            .with(java.time.temporal.TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+                } catch (Exception e) {
+                    viewMonday = LocalDate.now().with(DayOfWeek.MONDAY);
+                }
+            } else if (viewDateParam != null && !viewDateParam.isEmpty()) {
+                // Ưu tiên 3: Người dùng nhấn nút Tuần trước/sau
+                try {
+                    viewMonday = LocalDate.parse(viewDateParam);
+                } catch (Exception e) {
+                    viewMonday = LocalDate.now().with(DayOfWeek.MONDAY);
+                }
+            } else {
+                // Mặc định: Tuần hiện tại
+                viewMonday = LocalDate.now().with(DayOfWeek.MONDAY);
+            }
+            startDate = viewMonday;
+            endDate = startDate.plusDays(6);
+            displayRange = "Tuần từ " + startDate.format(displayFormatter) + " - " + endDate.format(displayFormatter);
+        }
+
+        // Lấy danh sách lịch học trong khoảng thời gian đã xác định
+        List<LichHoc> fullList = LichHocDAO.getLichHocTrongTuan(user.getID_TaiKhoan(), startDate, endDate);
+
+        // --- Phân trang (giữ nguyên) ---
+        int page = 1;
+        String pageParam = request.getParameter("page");
+        if (pageParam != null) {
+            try { page = Integer.parseInt(pageParam); } catch (NumberFormatException e) { page = 1; }
+        }
+        int pageSize = 10;
+        int totalItems = fullList.size();
+        List<LichHoc> pageList = fullList.subList(Math.max(0, (page - 1) * pageSize), Math.min(totalItems, page * pageSize));
+        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+        if(totalPages == 0) totalPages = 1;
+
+
+        // --- Gửi dữ liệu tới JSP ---
         request.setAttribute("numLopHoc", numLopHoc);
         request.setAttribute("numHocSinh", numHocSinh);
-        request.setAttribute(("luongGV"), luongGv);
-        request.setAttribute("startOfWeek", startOfWeek);
-        request.getRequestDispatcher("views/teacher/teacherDashboard.jsp").forward(request, response);
-    } 
+        request.setAttribute("gv", gv);
+        request.setAttribute("luongGV", luongGv);
 
+        request.setAttribute("tkbTrongTuan", pageList);
+        request.setAttribute("displayWeekRange", displayRange);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+
+        // Gửi các tham số để giữ lại trạng thái trên form
+        request.setAttribute("filterDateValue", filterDateParam); 
+
+        // Tạo link cho các nút điều hướng
+        DateTimeFormatter urlDateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
+        request.setAttribute("previousWeekLink", startDate.minusWeeks(1).format(urlDateFormatter));
+        request.setAttribute("nextWeekLink", startDate.plusWeeks(1).format(urlDateFormatter));
+        request.setAttribute("currentViewDate", startDate.format(urlDateFormatter));
+
+        request.getRequestDispatcher("views/teacher/teacherDashboard.jsp").forward(request, response);
+    }
     /** 
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request

@@ -29,7 +29,6 @@ public class HocSinh_ChiTietDAO {
                          on HSLH.ID_LopHoc = GVLH.ID_LopHoc
                          JOIN GiaoVien GV 
                          on GV.ID_GiaoVien = GVLH.ID_GiaoVien
-                         
                          WHERE HSLH.ID_HocSinh = ?  
                          and LH.TrangThai = N'Đang học'
                          """;
@@ -43,7 +42,6 @@ public class HocSinh_ChiTietDAO {
                         rs.getInt("ID_HocSinh"),
                         rs.getInt("ID_GiaoVien"),
                         rs.getString("TenLopHoc"),
-                        
                         rs.getString("HoTen"),
                         rs.getString("GhiChu"),
                         rs.getString("TrangThai"),
