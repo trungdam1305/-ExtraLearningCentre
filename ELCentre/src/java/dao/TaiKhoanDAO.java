@@ -3,6 +3,7 @@ package dao;
 import java.sql.*;
 import java.time.LocalDateTime;
 import model.TaiKhoan;
+import java.sql.Connection;
 
 public class TaiKhoanDAO {
     //Lấy thông tin về tài khoản đăng nhập
@@ -210,4 +211,35 @@ public class TaiKhoanDAO {
               return false;
         }
     }
+    
+    // 2 hàm bên dưới dùng trong modal đổi mật khẩu của học sinh
+    // Kiểm tra mật khẩu
+    public static boolean checkPassword(String email, String password) {
+        try (Connection con = DBContext.getInstance().getConnection()) {
+            String sql = "SELECT * FROM TaiKhoan WHERE Email = ? AND MatKhau = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    // update mật khẩu mới
+    public static boolean updatePassword(int idTaiKhoan, String newPassword) {
+        try (Connection con = DBContext.getInstance().getConnection()) {
+            String sql = "UPDATE TaiKhoan SET MatKhau = ? WHERE ID_TaiKhoan = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, newPassword);
+            ps.setInt(2, idTaiKhoan);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

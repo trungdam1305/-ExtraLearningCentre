@@ -390,4 +390,23 @@ public class PhongHocDAO {
         }
         return null;
     }
+
+    // Cập nhật ID_PhongHoc trong bảng LichHoc
+    public boolean updatePhongHocInLichHoc1(int idSchedule, int idPhongHoc) {
+        DBContext db = DBContext.getInstance();
+        String sql = "UPDATE [dbo].[LichHoc] SET ID_PhongHoc = ? WHERE ID_Schedule = ?";
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idPhongHoc);
+            stmt.setInt(2, idSchedule);
+            int rowsAffected = stmt.executeUpdate();
+            System.out.println("updatePhongHocInLichHoc1: Updated " + rowsAffected + " rows for ID_Schedule=" + idSchedule + ", ID_PhongHoc=" + idPhongHoc);
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println("SQL Error in updatePhongHocInLichHoc1: " + e.getMessage() + 
+                               " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

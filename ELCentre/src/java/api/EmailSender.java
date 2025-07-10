@@ -12,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 import jakarta.mail.internet.MimeUtility;
 
+
 public class EmailSender {
 
     private static final String USERNAME = "edupluscenterhn@gmail.com"; 
@@ -43,7 +44,6 @@ public class EmailSender {
         
         // Thiết lập nội dung với UTF-8
         message.setContent(body, "text/html; charset=UTF-8");
-        
         // Gửi
         Transport.send(message);
     }

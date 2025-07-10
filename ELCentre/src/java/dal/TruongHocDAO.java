@@ -1,5 +1,9 @@
 package dal;
 
+/**
+ *
+ * @author wrx_Chur04
+ */
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;

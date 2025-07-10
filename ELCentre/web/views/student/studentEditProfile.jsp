@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
+<%@ include file="/views/student/sidebar.jsp" %>
 <c:if test="${empty sessionScope.user}">
     <c:redirect url="${pageContext.request.contextPath}/views/login.jsp" />
 </c:if>
@@ -18,39 +18,6 @@
             padding: 0;
             display: flex;
             background-color: #f4f6f9;
-        }
-        .sidebar {
-            width: 260px;
-            background-color: #1F4E79;
-            height: 100vh;
-            padding: 20px;
-            color: white;
-        }
-        .sidebar-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 25px;
-        }
-        .sidebar-section {
-            margin-top: 20px;
-            font-size: 20px;
-            font-weight: bold;
-            color: #a9c0dc;
-            letter-spacing: 1px;
-            border-top: 1px solid #3e5f87;
-            padding-top: 10px;
-        }
-        .sidebar a {
-            display: block;
-            text-decoration: none;
-            color: white;
-            padding: 8px 0;
-            font-size: 20px;
-            transition: background-color 0.2s ease;
-        }
-        .sidebar a:hover {
-            background-color: #294f78;
-            padding-left: 10px;
         }
         .logout-link {
             margin-top: 30px;
@@ -145,79 +112,63 @@
     </style>
 </head>
 <body>
-<div class="sidebar">
-    <div class="sidebar-title">STUDENT</div>
-    <div class="sidebar-section">TỔNG QUAN</div>
-    <a href="${pageContext.request.contextPath}/StudentDashboardServlet">Trang chủ</a>
-    <div class="sidebar-section">HỌC TẬP</div>
-    <a href="${pageContext.request.contextPath}/StudentEnrollClassServlet">Đăng ký học</a>
-    <a href="${pageContext.request.contextPath}/StudentViewClassServlet">Lớp học</a>
-    <a href="${pageContext.request.contextPath}/StudentViewScheduleServlet">Lịch học</a>
-    <div class="sidebar-section">TÀI CHÍNH</div>
-    <a href="${pageContext.request.contextPath}/StudentPaymentServlet">Học phí</a>
-    <div class="sidebar-section">HỆ THỐNG</div>
-    <a href="${pageContext.request.contextPath}/StudentViewNotificationServlet">Thông báo</a>
-    <a href="${pageContext.request.contextPath}/StudentEditProfileServlet"><strong>Tài khoản</strong></a>
-    <a href="${pageContext.request.contextPath}/StudentSupportServlet">Hỗ trợ</a>
-    <a href="${pageContext.request.contextPath}/LogoutServlet" class="logout-link">Đăng xuất</a>
-</div>
-<div class="main-content">
-    <div class="header">
-        <h2>Chỉnh sửa hồ sơ</h2>
-        <span>Xin chào ${sessionScope.user.email}</span>
-    </div>
-    <form action="StudentEditProfileServlet" method="post" enctype="multipart/form-data" class="profile-form">
-        <div class="profile-grid">
-            <div class="profile-image-box">
-                <div class="avatar-box">
-                    <c:choose>
-                        <c:when test="${not empty hocSinh.avatar}">
-                            <img src="${pageContext.request.contextPath}/${hocSinh.avatar}" alt="Avatar">
-                        </c:when>
-                        <c:otherwise>
-                            <i class="fa fa-user"></i>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-                <input type="file" name="profileImage" accept="image/png, image/jpeg">
-            </div>
-            <div class="profile-info-box">
-                <label>Mã học sinh</label>
-                <input type="text" value="${hocSinh.maHocSinh}" readonly>
-                <label>Họ và tên</label>
-                <input type="text" name="hoTen" value="${hocSinh.hoTen}" required>
-                <label>Email</label>
-                <input type="text" value="${sessionScope.user.email}" readonly>
-                <label>Ngày sinh</label>
-                <input type="date" name="ngaySinh" value="${hocSinh.ngaySinh}">
-                <label>Địa chỉ</label>
-                <input type="text" name="diaChi" value="${hocSinh.diaChi}">
-                <label>Trường học</label>
-                <select name="idTruongHoc">
-                    <c:forEach var="t" items="${dsTruongHoc}">
-                        <option value="${t.ID_TruongHoc}" ${t.ID_TruongHoc == hocSinh.ID_TruongHoc ? 'selected' : ''}>
-                            ${t.tenTruongHoc}
-                        </option>
-                    </c:forEach>
-                </select>
-                <label>Lớp đang học</label>
-                <input type="text" name="lopDangHoc" value="${hocSinh.lopDangHocTrenTruong}">
-                <label>Giới tính</label>
-                <select name="gioiTinh">
-                    <option value="Nam" ${hocSinh.gioiTinh == 'Nam' ? 'selected' : ''}>Nam</option>
-                    <option value="Nữ" ${hocSinh.gioiTinh == 'Nữ' ? 'selected' : ''}>Nữ</option>
-                </select>
-                <label>Số điện thoại phụ huynh</label>
-                <input type="text" name="sdtPhuHuynh" value="${hocSinh.SDT_PhuHuynh}">
-                <label>Giới thiệu bản thân</label>
-                <textarea name="ghiChu" rows="3">${hocSinh.ghiChu}</textarea>
-                <div class="form-buttons">
-                    <button type="reset" class="cancel">Hủy</button>
-                    <button type="submit" class="save">Lưu hồ sơ</button>
-                </div>
-            </div>
+    <div class="main-content">
+        <div class="header">
+            <h2>Chỉnh sửa hồ sơ</h2>
+            <span>Xin chào ${sessionScope.user.email}</span>
         </div>
-    </form>
-</div>
+        <form action="StudentEditProfileServlet" method="post" enctype="multipart/form-data" class="profile-form">
+            <div class="profile-grid">
+                <div class="profile-image-box">
+                    <div class="avatar-box">
+                        <c:choose>
+                            <c:when test="${not empty hocSinh.avatar}">
+                                <img src="${pageContext.request.contextPath}/${hocSinh.avatar}" alt="Avatar">
+                            </c:when>
+                            <c:otherwise>
+                                <i class="fa fa-user"></i>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                    <input type="file" name="profileImage" accept="image/png, image/jpeg">
+                </div>
+                <div class="profile-info-box">
+                    <label>Mã học sinh</label>
+                    <input type="text" value="${hocSinh.maHocSinh}" readonly>
+                    <label>Họ và tên</label>
+                    <input type="text" name="hoTen" value="${hocSinh.hoTen}" required>
+                    <label>Email</label>
+                    <input type="text" value="${sessionScope.user.email}" readonly>
+                    <label>Ngày sinh</label>
+                    <input type="date" name="ngaySinh" value="${hocSinh.ngaySinh}">
+                    <label>Địa chỉ</label>
+                    <input type="text" name="diaChi" value="${hocSinh.diaChi}">
+                    <label>Trường học</label>
+                    <select name="idTruongHoc">
+                        <c:forEach var="t" items="${dsTruongHoc}">
+                            <option value="${t.ID_TruongHoc}" ${t.ID_TruongHoc == hocSinh.ID_TruongHoc ? 'selected' : ''}>
+                                ${t.tenTruongHoc}
+                            </option>
+                        </c:forEach>
+                    </select>
+                    <label>Lớp đang học</label>
+                    <input type="text" name="lopDangHoc" value="${hocSinh.lopDangHocTrenTruong}">
+                    <label>Giới tính</label>
+                    <select name="gioiTinh">
+                        <option value="Nam" ${hocSinh.gioiTinh == 'Nam' ? 'selected' : ''}>Nam</option>
+                        <option value="Nữ" ${hocSinh.gioiTinh == 'Nữ' ? 'selected' : ''}>Nữ</option>
+                    </select>
+                    <label>Số điện thoại phụ huynh</label>
+                    <input type="text" name="sdtPhuHuynh" value="${hocSinh.SDT_PhuHuynh}">
+                    <label>Giới thiệu bản thân</label>
+                    <textarea name="ghiChu" rows="3">${hocSinh.ghiChu}</textarea>
+                    <div class="form-buttons">
+                        <button type="reset" class="cancel">Hủy</button>
+                        <button type="submit" class="save">Lưu hồ sơ</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

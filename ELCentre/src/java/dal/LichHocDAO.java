@@ -1,5 +1,17 @@
 package dal;
 
+/**
+ *
+ * @author wrx_Chur04
+ */
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.util.List;
+import model.LichHoc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -48,7 +60,6 @@ public class LichHocDAO {
         } else {
             return lichhocs;
         }
-
     }
 
     // Lấy lịch học theo ID
@@ -80,31 +91,40 @@ public class LichHocDAO {
     }
 
     public static List<LichHoc> getLichHocTrongTuan(int idTaiKhoan, LocalDate startDate, LocalDate endDate) {
-        List<LichHoc> list = new ArrayList<>();
-        DBContext db = DBContext.getInstance();
+    List<LichHoc> list = new ArrayList<>();
+    DBContext db = DBContext.getInstance();
+    
+    // ✅ BƯỚC 1: Lấy ngày hiện tại của server MỘT LẦN DUY NHẤT để so sánh
+    LocalDate homNay = LocalDate.now();
 
-        String sql = """
-        SELECT * 
-        FROM LichHoc lh
-        join LopHoc lop 
-        ON lh.ID_LopHoc = lop.ID_LopHoc
-        JOIN SlotHoc sl
-        ON lh.ID_SlotHoc = sl.ID_SlotHoc
-        JOIN GiaoVien_LopHoc gvlh
-        ON gvlh.ID_LopHoc = lop.ID_LopHoc
-        JOIN GiaoVien gv 
-        ON gv.ID_GiaoVien = gvlh.ID_GiaoVien
-        WHERE gv.ID_TaiKhoan = ? 
-        AND NgayHoc BETWEEN ? AND ?
-        ORDER BY NgayHoc, sl.ID_SlotHoc;
-    """;
+    String sql = """
+                 SELECT
+                 * FROM
+                 LichHoc lh
+                 JOIN
+                 LopHoc lop ON lh.ID_LopHoc = lop.ID_LopHoc
+                 JOIN
+                 SlotHoc sl ON lh.ID_SlotHoc = sl.ID_SlotHoc
+                 JOIN
+                 GiaoVien_LopHoc gvlh ON gvlh.ID_LopHoc = lop.ID_LopHoc
+                 JOIN
+                 GiaoVien gv ON gv.ID_GiaoVien = gvlh.ID_GiaoVien
+                 JOIN 
+                 PhongHoc ph on lop.ID_PhongHoc = ph.ID_PhongHoc
+                 WHERE
+                 gv.ID_TaiKhoan = ?
+                 AND lh.NgayHoc BETWEEN ? AND ?
+                 ORDER BY
+                 lh.NgayHoc, sl.ID_SlotHoc;
+                 """;
 
-        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
-            ps.setInt(1, idTaiKhoan); // param1 1: ID_TaiKhoan
-            ps.setDate(2, Date.valueOf(startDate)); // param 2: startDate
-            ps.setDate(3, Date.valueOf(endDate));   // param 3: endDate
+    // ✅ Cải thiện: Dùng try-with-resources cho cả PreparedStatement và ResultSet
+    try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+        ps.setInt(1, idTaiKhoan);
+        ps.setDate(2, java.sql.Date.valueOf(startDate));
+        ps.setDate(3, java.sql.Date.valueOf(endDate));
 
-            ResultSet rs = ps.executeQuery();
+        try (ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 LichHoc lh = new LichHoc();
                 lh.setID_Schedule(rs.getInt("ID_Schedule"));
@@ -114,14 +134,43 @@ public class LichHocDAO {
                 lh.setSlotThoiGian(rs.getString("SlotThoiGian"));
                 lh.setTenLopHoc(rs.getString("TenLopHoc"));
                 lh.setGhiChu(rs.getString("GhiChu"));
+                lh.setTenPhongHoc(rs.getString("TenPhongHoc"));
+                lh.setDaDiemDanh(rs.getBoolean("DaDiemDanh"));
+
+                // ✅ BƯỚC 2: Thêm logic so sánh ngày và set thuộc tính coTheSua
+                if (lh.getNgayHoc() != null && lh.getNgayHoc().isEqual(homNay)) {
+                    lh.setCoTheSua(true); // Nếu là ngày hôm nay -> cho phép sửa
+                } else {
+                    lh.setCoTheSua(false); // Nếu là ngày khác -> không cho phép
+                }
+                
                 list.add(lh);
             }
+        }
+    } catch (Exception e) {
+        System.err.println("Lỗi khi lấy lịch học trong tuần: " + e.getMessage());
+        e.printStackTrace();
+    }
+    return list;
+}
 
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void main(String[] args) {
+        // DAO
+        LocalDate startOfWeek = LocalDate.now().with(DayOfWeek.MONDAY);
+        LocalDate endOfWeek = LocalDate.now().with(DayOfWeek.SUNDAY);
+
+        List<LichHoc> lichHocList = LichHocDAO.getLichHocTrongTuan(11, startOfWeek, endOfWeek);
+
+
+        for (LichHoc lh : lichHocList) {
+            System.out.println("ID Schedule: " + lh.getID_Schedule());
+            System.out.println("Ngày học: " + lh.getNgayHoc());
+            System.out.println("Ca học: " + lh.getID_SlotHoc());
+            System.out.println("Lớp học: " + lh.getTenLopHoc());
+            System.out.println("Slot" + lh.getSlotThoiGian());
+            System.out.println("------------------------");
         }
 
-        return list;
     }
 
   public List<LichHoc> getLichHocByLopHoc(int idLopHoc) {
@@ -158,7 +207,6 @@ public class LichHocDAO {
         }
         return list;
     }
-    
       // Xóa lịch học
     public boolean deleteLichHoc(int idSchedule) {
         DBContext db = DBContext.getInstance();
@@ -175,7 +223,6 @@ public class LichHocDAO {
             return false;
         }
     }
-    
     // Thêm lịch học mới
     public LichHoc addLichHoc(LocalDate ngayHoc, int idSlotHoc, String ghiChu) {
         DBContext db = DBContext.getInstance();
@@ -236,6 +283,86 @@ public class LichHocDAO {
             return false;
         }
     }
+
+    public void markAttendanceAsCompleted(int scheduleId) {
+        DBContext db = DBContext.getInstance();
+        String sql = "UPDATE LichHoc SET daDiemDanh = 1 WHERE ID_Schedule = ?";
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, scheduleId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi cập nhật trạng thái đã điểm danh: " + e.getMessage());
+        }
+    }
+    
+    public void updateNote(int scheduleId, String newNote) {
+    String sql = "UPDATE LichHoc SET GhiChu = ? WHERE ID_Schedule = ?";
+    try (Connection conn = DBContext.getInstance().getConnection(); // Hoặc cách kết nối của bạn
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        
+        ps.setString(1, newNote);
+        ps.setInt(2, scheduleId);
+        ps.executeUpdate();
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}   
+    
+    public List<LichHoc> getAllSchedulesForClass(int classId) {
+        List<LichHoc> list = new ArrayList<>();
+        String sql = "SELECT * FROM LichHoc WHERE ID_LopHoc = ? ORDER BY NgayHoc";
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, classId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                LichHoc lh = new LichHoc();
+                lh.setID_Schedule(rs.getInt("ID_Schedule"));
+                lh.setNgayHoc(rs.getDate("NgayHoc").toLocalDate());
+                list.add(lh);
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return list;
+    }
+    
+    public List<LichHoc> getLichHocTrongNgay(int idTaiKhoan, LocalDate filterDate) {
+        List<LichHoc> list = new ArrayList<>();
+        
+        String sql = """
+                     SELECT lh.*, sl.SlotThoiGian, lop.TenLopHoc, ph.TenPhongHoc
+                     FROM LichHoc lh
+                     JOIN LopHoc lop ON lh.ID_LopHoc = lop.ID_LopHoc
+                     JOIN SlotHoc sl ON lh.ID_SlotHoc = sl.ID_SlotHoc
+                     JOIN GiaoVien_LopHoc gvlh ON gvlh.ID_LopHoc = lop.ID_LopHoc
+                     JOIN GiaoVien gv ON gv.ID_GiaoVien = gvlh.ID_GiaoVien
+                     JOIN PhongHoc ph on lop.ID_PhongHoc = ph.ID_PhongHoc
+                     WHERE gv.ID_TaiKhoan = ? AND lh.NgayHoc = ?
+                     ORDER BY sl.ID_SlotHoc
+                     """;
+
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idTaiKhoan);
+            ps.setDate(2, java.sql.Date.valueOf(filterDate));
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                LichHoc lh = new LichHoc();
+                
+                lh.setNgayHoc(rs.getDate("NgayHoc").toLocalDate());
+                lh.setSlotThoiGian(rs.getString("SlotThoiGian"));
+                lh.setTenLopHoc(rs.getString("TenLopHoc"));
+                lh.setTenPhongHoc(rs.getString("TenPhongHoc"));
+                    
+                list.add(lh);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
     
     //Hàm lấy ra lịch học sắp tới của học sinh
     public static List<LichHoc> getUpcomingScheduleByHocSinhId(Integer idHocSinh) {
@@ -271,6 +398,82 @@ public class LichHocDAO {
         }
         return list;
     }
+
+     public List<LichHoc> getLichHocByMonth1(int year, int month) {
+        List<LichHoc> list = new ArrayList<>();
+        DBContext db = DBContext.getInstance();
+        String sql = """
+            SELECT 
+                lh.ID_Schedule,
+                lh.NgayHoc,
+                lh.ID_SlotHoc,
+                lh.ID_LopHoc,
+                lh.ID_PhongHoc,
+                lh.GhiChu,
+                sh.SlotThoiGian,
+                cl.TenLopHoc,
+                ph.TenPhongHoc
+            FROM 
+                [dbo].[LichHoc] lh
+                INNER JOIN [dbo].[SlotHoc] sh ON lh.ID_SlotHoc = sh.ID_SlotHoc
+                INNER JOIN [dbo].[LopHoc] cl ON lh.ID_LopHoc = cl.ID_LopHoc
+                INNER JOIN [dbo].[PhongHoc] ph ON lh.ID_PhongHoc = ph.ID_PhongHoc
+            WHERE 
+                YEAR(lh.NgayHoc) = ? 
+                AND MONTH(lh.NgayHoc) = ?
+                AND cl.TrangThai = N'Đang học'
+            ORDER BY 
+                lh.NgayHoc, sh.SlotThoiGian
+            """;
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, year);
+            stmt.setInt(2, month);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    LichHoc lichHoc = new LichHoc();
+                    lichHoc.setID_Schedule(rs.getInt("ID_Schedule"));
+                    lichHoc.setNgayHoc(rs.getDate("NgayHoc") != null ? rs.getDate("NgayHoc").toLocalDate() : null);
+                    lichHoc.setID_SlotHoc(rs.getInt("ID_SlotHoc"));
+                    lichHoc.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                    lichHoc.setID_PhongHoc(rs.getInt("ID_PhongHoc"));
+                    lichHoc.setGhiChu(rs.getString("GhiChu"));
+                    lichHoc.setSlotThoiGian(rs.getString("SlotThoiGian"));
+                    lichHoc.setTenLopHoc(rs.getString("TenLopHoc"));
+                    lichHoc.setTenPhongHoc(rs.getString("TenPhongHoc"));
+                    list.add(lichHoc);
+                }
+                System.out.println("getLichHocByMonth1: Retrieved " + list.size() + " schedules for year=" + year + ", month=" + month);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in getLichHocByMonth1: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+
+
+    // Xóa tất cả lịch học của một ngày
+    public boolean deleteLichHocByDate1(LocalDate date) {
+        DBContext db = DBContext.getInstance();
+        String sql = "DELETE FROM [dbo].[LichHoc] WHERE NgayHoc = ?";
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDate(1, java.sql.Date.valueOf(date));
+            int rowsAffected = stmt.executeUpdate();
+            System.out.println("deleteLichHocByDate1: Deleted " + rowsAffected + " schedules for date=" + date);
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println("SQL Error in deleteLichHocByDate1: " + e.getMessage() + 
+                               " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    
     
     //Lấy ra toàn bộ lịch học
     public static List<LichHoc> getLichHocByHocSinhId(int idHocSinh) {

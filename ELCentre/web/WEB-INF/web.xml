@@ -109,6 +109,18 @@
         <servlet-class>controller.adminFindInFilterGroup</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>CourseDetailsServlet</servlet-name>
+        <servlet-class>controller.CourseDetailsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>adminActionWithNotification</servlet-name>
+        <servlet-class>controller.adminActionWithNotification</servlet-class>
+    </servlet>   
+    <servlet>    
+        <servlet-name>ManageSchedule</servlet-name>
+        <servlet-class>controller.ManageCourses.ManageSchedule</servlet-class>
+    </servlet>    
+    <servlet> 
         <servlet-name>StudentClassDetailServlet</servlet-name>
         <servlet-class>controller.StudentClassDetailServlet</servlet-class>
     </servlet>
@@ -155,6 +167,14 @@
     <servlet>
         <servlet-name>StudentSupportServlet</servlet-name>
         <servlet-class>controller.StudentSupportServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ResetPasswordServlet</servlet-name>
+        <servlet-class>controller.ResetPasswordServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StudentRequestEnrollServlet</servlet-name>
+        <servlet-class>controller.StudentRequestEnrollServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
@@ -289,6 +309,18 @@
         <url-pattern>/adminFindInFilterGroup</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>adminActionWithNotification</servlet-name>
+        <url-pattern>/adminActionWithNotification</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CourseDetailsServlet</servlet-name>
+        <url-pattern>/CourseDetailsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageSchedule</servlet-name>
+        <url-pattern>/ManageSchedule</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>StudentClassDetailServlet</servlet-name>
         <url-pattern>/StudentClassDetailServlet</url-pattern>
     </servlet-mapping>
@@ -335,6 +367,14 @@
     <servlet-mapping>
         <servlet-name>StudentSupportServlet</servlet-name>
         <url-pattern>/StudentSupportServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResetPasswordServlet</servlet-name>
+        <url-pattern>/ResetPasswordServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentRequestEnrollServlet</servlet-name>
+        <url-pattern>/StudentRequestEnrollServlet</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

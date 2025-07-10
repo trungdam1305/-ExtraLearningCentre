@@ -3,9 +3,14 @@
     Created on : June 22, 2025, 10:51 PM
     Author     : chuvv
     Purpose    : This page displays detailed information about specific students (học sinh) in the EL CENTRE system, 
-                including account ID, name, birth date, gender, address, parent contact, school, and status. 
+                 including account ID, name, birth date, gender, address, parent contact, school, and status. 
+                 Also can update information of student
     Parameters:
-    - @Param hocsinhs (ArrayList<HocSinhChiTiet>): A request attribute containing the list of student have specific information objects fetched from the database.
+    - Parameters:(Handle from adminActionWithStudent servlet)
+    - Method to get data from database in HocSinh_SDTDAO - adminGetSoDienThoaiHocSinhByIDTK
+    - @Param hocsinhs (ArrayList<HocSinh_SDT>): A request attribute containing the list of student have specific information objects fetched from the database.
+    - Update send to the AdminActionWithStudent servlet (do Post) 
+    - Filter send to the adminFindInFilterGroup servlet
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
