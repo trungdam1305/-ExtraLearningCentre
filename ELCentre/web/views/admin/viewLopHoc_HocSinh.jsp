@@ -550,11 +550,12 @@
             <c:if test="${not empty error}">
                 <div class="alert alert-custom-danger" role="alert">${error}</div>
             </c:if>
-           
 
 
 
+            <input type="text" class="form-control" id="searchInput" placeholder="Tìm theo mã hoặc tên lớp" onkeyup="searchClasses()">
             <!-- Bảng danh sách -->
+
             <div class="table-container">
                 <c:if test="${not empty lopHocs}">
                     <div class="table-responsive">
@@ -635,8 +636,8 @@
 
             <!-- Nút hành động -->
             <div class="action-search-row">
-                <a href="${pageContext.request.contextPath}/views/admin/adminReceiveGiaoVien.jsp" class="btn btn-custom-action">
-                    <i class="bi bi-arrow-left"></i> Quay lại bảng giáo viên
+                <a href="${pageContext.request.contextPath}/views/admin/adminReceiveHocSinh.jsp" class="btn btn-custom-action">
+                    <i class="bi bi-arrow-left"></i> Quay lại bảng học sinh
                 </a>
             </div>
 
@@ -703,6 +704,16 @@
                     row.style.display = 'none';
                 });
             });
+            
+            function searchClasses() {
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const rows = document.querySelectorAll('.table tbody tr:not(.details-row)');
+    rows.forEach(row => {
+        const classCode = row.cells[0].textContent.toLowerCase();
+        const className = row.cells[1].textContent.toLowerCase();
+        row.style.display = (classCode.includes(input) || className.includes(input)) ? '' : 'none';
+    });
+}
         </script>
     </body>
 </html>

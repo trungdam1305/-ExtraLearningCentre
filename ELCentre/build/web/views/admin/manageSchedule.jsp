@@ -444,7 +444,6 @@
     </style>
 </head>
 <body>
-    <!-- Tạo CSRF token nếu chưa tồn tại -->
     <c:if test="${empty sessionScope.csrfToken}">
         <% 
             String csrfToken = UUID.randomUUID().toString();

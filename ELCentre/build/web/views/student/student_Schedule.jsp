@@ -1,19 +1,20 @@
 <%-- 
-    Document   : manageSchedule
-    Created on : July 8, 2025, 11:00:00 PM
+    Document   : student_Schedule
+    Created on : Jul 10, 2025, 6:08:25 PM
     Author     : Vuh26
 --%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page import="java.util.*, java.text.*, java.util.UUID, dal.AdminDAO, model.Admin" %>
+<%@ page import="java.util.*, java.text.*, java.util.UUID, model.LichHoc, dal.LopHocDAO" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Lịch Học</title>
+    <title>Lịch học của học sinh</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Bootstrap Icons -->
@@ -21,7 +22,6 @@
     <!-- Font Awesome for additional icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        /* Giữ nguyên toàn bộ CSS của bạn */
         * {
             box-sizing: border-box;
         }
@@ -30,130 +30,16 @@
             padding: 0;
             background-color: #f4f6f9;
         }
-
-        /* General container styling */
         .content-container {
             padding: 6px;
             max-width: 100%;
             margin: 0 auto;
-            margin-left: 160px;
             background-color: #ffffff;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-top: 60px;
+            margin-top: 20px;
             padding-bottom: 40px;
         }
-
-        /* Header styling */
-        .header {
-            background-color: #1F4E79;
-            color: white;
-            padding: 4px 8px;
-            text-align: left;
-            position: fixed;
-            width: calc(100% - 160px);
-            left: 160px;
-            right: 0;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .header .left-title {
-            font-size: 0.83rem;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-        }
-        .header .left-title i {
-            margin-right: 8px;
-        }
-
-        /* Footer styling */
-        .footer {
-            background-color: #1F4E79;
-            color: #B0C4DE;
-            text-align: center;
-            padding: 3px 0;
-            position: fixed;
-            width: calc(100% - 160px);
-            left: 160px;
-            right: 0;
-            bottom: 0;
-            z-index: 1000;
-        }
-        .footer p {
-            margin: 0;
-            font-size: 0.5rem;
-        }
-
-        /* Sidebar styling */
-        .sidebar {
-            width: 160px;
-            background-color: #1F4E79;
-            color: white;
-            padding: 6px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            z-index: 1001;
-        }
-        .sidebar h4 {
-            margin: 0 auto;
-            font-weight: bold;
-            letter-spacing: 1.5px;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-        .sidebar-logo {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 5px auto;
-            display: block;
-            border: 3px solid #B0C4DE;
-        }
-        .sidebar-section-title {
-            font-weight: bold;
-            margin-top: 15px;
-            font-size: 11px;
-            text-transform: uppercase;
-            color: #B0C4DE;
-            border-bottom: 1px solid #B0C4DE;
-            padding-bottom: 3px;
-        }
-        ul.sidebar-menu {
-            list-style: none;
-            padding-left: 0;
-            margin: 4px 0 0 0;
-        }
-        ul.sidebar-menu li {
-            margin: 4px 0;
-        }
-        ul.sidebar-menu li a {
-            color: white;
-            text-decoration: none;
-            padding: 4px 6px;
-            display: flex;
-            align-items: center;
-            border-radius: 5px;
-            font-size: 0.75rem;
-            transition: background-color 0.3s ease;
-        }
-        ul.sidebar-menu li a:hover {
-            background-color: #163E5C;
-        }
-        ul.sidebar-menu li a i {
-            margin-right: 5px;
-        }
-
-        /* Calendar styling */
         h2 {
             text-align: center;
             color: #003087;
@@ -308,8 +194,6 @@
             font-size: 0.57rem;
             text-align: center;
         }
-
-        /* Scroll to Top Button */
         #scrollToTopBtn {
             display: none;
             position: fixed;
@@ -330,14 +214,11 @@
         #scrollToTopBtn:hover {
             background-color: #0056b3;
         }
-
-        /* Responsive adjustments */
         @media (max-width: 768px) {
             .content-container {
                 padding: 8px;
                 margin: 5px;
-                margin-left: 0;
-                margin-top: 50px;
+                margin-top: 10px;
                 padding-bottom: 30px;
             }
             h2 {
@@ -401,49 +282,11 @@
                 height: 30px;
                 font-size: 12px;
             }
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-                box-shadow: none;
-                padding: 5px;
-            }
-            .header, .footer {
-                width: 100%;
-                margin-left: 0;
-                left: 0;
-                right: 0;
-            }
-            .sidebar h4 {
-                font-size: 0.85rem;
-            }
-            .sidebar-logo {
-                width: 50px;
-                height: 50px;
-                margin: 5px auto;
-            }
-            .sidebar-section-title {
-                margin-top: 12px;
-                font-size: 10px;
-                padding-bottom: 3px;
-            }
-            ul.sidebar-menu {
-                margin: 4px 0 0 0;
-            }
-            ul.sidebar-menu li {
-                margin: 4px 0;
-            }
-            ul.sidebar-menu li a {
-                padding: 3px 5px;
-                font-size: 0.7rem;
-            }
-            ul.sidebar-menu li a i {
-                margin-right: 5px;
-            }
         }
     </style>
 </head>
 <body>
+    <!-- Tạo CSRF token nếu chưa tồn tại -->
     <c:if test="${empty sessionScope.csrfToken}">
         <% 
             String csrfToken = UUID.randomUUID().toString();
@@ -451,64 +294,9 @@
         %>
     </c:if>
 
-    <div class="header">
-        <div class="left-title">
-            Admin Dashboard <i class="fas fa-tachometer-alt"></i>
-        </div>
-        <div class="admin-profile" onclick="toggleDropdown()">
-            <%
-                ArrayList<Admin> admins = (ArrayList) AdminDAO.getNameAdmin();
-                String adminAvatar = admins != null && !admins.isEmpty() ? admins.get(0).getAvatar() : "/img/default-avatar.png";
-                String adminName = admins != null && !admins.isEmpty() ? admins.get(0).getHoTen() : "Admin";
-            %>
-            <img src="<%= request.getContextPath() + adminAvatar %>" alt="Admin Photo" class="admin-img">
-            <span><%= adminName %></span>
-            <i class="fas fa-caret-down"></i>
-            <div class="dropdown-menu" id="adminDropdown">
-                <a href="#"><i class="fas fa-key"></i> Đổi mật khẩu</a>
-                <a href="#"><i class="fas fa-user-edit"></i> Cập nhật thông tin</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="sidebar">
-        <h4>EL CENTRE</h4>
-        <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
-        <div class="sidebar-section-title">Tổng quan</div>
-        <ul class="sidebar-menu">
-            <li><a href="#"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-        </ul>
-        <div class="sidebar-section-title">Quản lý người dùng</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocsinh">Học sinh</a></li>
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=giaovien">Giáo viên</a></li>
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=taikhoan">Tài khoản</a></li>
-        </ul>
-        <div class="sidebar-section-title">Quản lý tài chính</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocphi"><i class="fas fa-money-bill-wave"></i> Học phí</a></li>
-        </ul>
-        <div class="sidebar-section-title">Quản lý học tập</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
-            <li><a href="${pageContext.request.contextPath}/ManageSchedule"><i class="fas fa-calendar-alt"></i> Lịch học</a></li>
-        </ul>
-        <div class="sidebar-section-title">Hệ thống</div>
-        <ul class="sidebar-menu">
-            <li><a href="#"><i class="fas fa-cog"></i> Cài đặt</a></li>
-        </ul>
-        <div class="sidebar-section-title">Khác</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=yeucautuvan"><i class="fas fa-blog"></i> Yêu cầu tư vấn</a></li>
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
-            <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
-            <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-        </ul>
-    </div>
-
     <div class="content-container">
         <div class="form-container">
-            <h2>Lịch Học Tháng ${month}/${year}</h2>
+            <h2>Lịch học tháng ${month}/${year}</h2>
 
             <!-- Thông báo -->
             <c:if test="${not empty err}">
@@ -517,8 +305,18 @@
             <c:if test="${not empty suc}">
                 <div class="alert alert-custom-success">${fn:escapeXml(suc)}</div>
             </c:if>
+            <c:if test="${empty idHocSinh}">
+                <div class="alert alert-custom-danger">Thiếu tham số ID_HocSinh. Vui lòng kiểm tra lại.</div>
+            </c:if>
+            <c:if test="${danhSachLichHoc == null && not empty idHocSinh}">
+                <div class="alert alert-custom-danger">Danh sách lịch học chưa được khởi tạo. Kiểm tra servlet hoặc dữ liệu cơ sở dữ liệu.</div>
+            </c:if>
+            <c:if test="${empty danhSachLichHoc && danhSachLichHoc != null}">
+                <div class="alert alert-custom-danger">Không có lịch học nào để hiển thị.</div>
+            </c:if>
 
-            <form method="get" action="${pageContext.request.contextPath}/ManageSchedule" class="mb-4">
+            <form method="get" action="${pageContext.request.contextPath}/studentSchedule" class="mb-4">
+                <input type="hidden" name="idHocSinh" value="${idHocSinh}">
                 <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                 <div class="row g-2 align-items-end">
                     <div class="col-md-3">
@@ -538,12 +336,12 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <button type="submit" class="btn btn-custom-action"><i class="bi bi-search"></i> Xem Lịch</button>
+                        <button type="submit" class="btn btn-custom-action"><i class="bi bi-search"></i> Xem lịch</button>
                     </div>
                 </div>
             </form>
 
-            <!-- Tạo lịch -->
+            <!-- Lịch tháng -->
             <%
                 int m = (Integer) request.getAttribute("month");
                 int y = (Integer) request.getAttribute("year");
@@ -591,7 +389,7 @@
                             <button type="button" class="btn btn-view"
                                     data-bs-toggle="modal"
                                     data-bs-target="#scheduleModal"
-                                    data-day="<%= day %>"><i class="bi bi-eye"></i> Xem Lớp</button>
+                                    data-day="<%= day %>"><i class="bi bi-eye"></i> Xem lớp</button>
                             <% } %>
                         </td>
                         <%
@@ -610,12 +408,12 @@
                 </tbody>
             </table>
 
-            <!-- Modal -->
+            <!-- Modal hiển thị chi tiết lịch học -->
             <div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="scheduleModalLabel">Lịch Học Ngày <span id="modalDay"></span></h5>
+                            <h5 class="modal-title" id="scheduleModalLabel">Lịch học ngày <span id="modalDay"></span></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
                         </div>
                         <div class="modal-body">
@@ -624,8 +422,8 @@
                                     <tr>
                                         <th>Lớp</th>
                                         <th>Phòng</th>
-                                        <th>Thời Gian</th>
-                                        <th>Ghi Chú</th>
+                                        <th>Thời gian</th>
+                                        <th>Ghi chú</th>
                                     </tr>
                                 </thead>
                                 <tbody id="scheduleTableBody"></tbody>
@@ -633,23 +431,18 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x"></i> Đóng</button>
-                            <form action="${pageContext.request.contextPath}/ManageSchedule" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tất cả lịch học trong ngày này?');">
-                                <input type="hidden" name="action" value="delete">
-                                <input type="hidden" name="day" id="deleteDay">
-                                <input type="hidden" name="month" value="${month}">
-                                <input type="hidden" name="year" value="${year}">
-                                <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
-                                <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Xóa tất cả lịch</button>
-                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="footer">
-        <p>© 2025 EL CENTRE. Bản quyền thuộc về EL CENTRE.</p>
+            <!-- Nút quay lại trang chính -->
+            <div class="dashboard-button" style="text-align: center; margin-top: 10px;">
+                <form action="${pageContext.request.contextPath}/studentDashboard">
+                    <button type="submit" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Quay lại trang chính</button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <!-- Nút Scroll to Top -->
@@ -674,16 +467,10 @@
             window.scrollTo({top: 0, behavior: "smooth"});
         }
 
-        // Toggle dropdown menu
-        function toggleDropdown() {
-            const dropdown = document.getElementById('adminDropdown');
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        }
-
         // Xử lý lịch học
         document.addEventListener('DOMContentLoaded', function() {
             const lichHocList = [
-                <c:forEach items="${lichHocList}" var="lich" varStatus="status">
+                <c:forEach items="${danhSachLichHoc}" var="lich" varStatus="status">
                     {
                         tenLopHoc: "${fn:escapeXml(lich.tenLopHoc != null ? lich.tenLopHoc : 'N/A')}",
                         tenPhongHoc: "${fn:escapeXml(lich.tenPhongHoc != null ? lich.tenPhongHoc : 'N/A')}",
@@ -698,8 +485,7 @@
                 btn.addEventListener('click', function() {
                     const selectedDay = parseInt(this.getAttribute('data-day'));
                     document.getElementById('modalDay').textContent = selectedDay + '/' + ${month} + '/' + ${year};
-                    document.getElementById('deleteDay').value = selectedDay; // Gán ngày vào input hidden
-
+                    
                     const schedules = lichHocList.filter(item => item.day === selectedDay);
                     const tbody = document.getElementById('scheduleTableBody');
                     tbody.innerHTML = '';

@@ -8,7 +8,6 @@ package dal;
  *
  * @author wrx_Chur04
  */
-
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.sql.SQLException;
@@ -129,8 +128,6 @@ public class LichHocDAO {
         return list;
     }
 
-    
-
     public List<LichHoc> getLichHocByLopHoc(int idLopHoc) {
         List<LichHoc> list = new ArrayList<>();
         DBContext db = DBContext.getInstance();
@@ -142,8 +139,7 @@ public class LichHocDAO {
             JOIN [dbo].[LopHoc] lop ON lh.ID_LopHoc = lop.ID_LopHoc
             WHERE lh.ID_LopHoc = ?
         """;
-        try (Connection conn = db.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, idLopHoc);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -244,7 +240,7 @@ public class LichHocDAO {
         }
     }
 
-     public List<LichHoc> getLichHocByMonth1(int year, int month) {
+    public List<LichHoc> getLichHocByMonth1(int year, int month) {
         List<LichHoc> list = new ArrayList<>();
         DBContext db = DBContext.getInstance();
         String sql = """
@@ -271,8 +267,7 @@ public class LichHocDAO {
                 lh.NgayHoc, sh.SlotThoiGian
             """;
 
-        try (Connection conn = db.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, year);
             stmt.setInt(2, month);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -302,19 +297,306 @@ public class LichHocDAO {
     public boolean deleteLichHocByDate1(LocalDate date) {
         DBContext db = DBContext.getInstance();
         String sql = "DELETE FROM [dbo].[LichHoc] WHERE NgayHoc = ?";
-        try (Connection conn = db.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setDate(1, java.sql.Date.valueOf(date));
             int rowsAffected = stmt.executeUpdate();
             System.out.println("deleteLichHocByDate1: Deleted " + rowsAffected + " schedules for date=" + date);
             return rowsAffected > 0;
         } catch (SQLException e) {
-            System.out.println("SQL Error in deleteLichHocByDate1: " + e.getMessage() + 
-                               " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+            System.out.println("SQL Error in deleteLichHocByDate1: " + e.getMessage()
+                    + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
             e.printStackTrace();
             return false;
         }
     }
+
+    ///Lấy lịch học của học sinh dựa trên ID_HocSinh      
+    public List<LichHoc> getStudentSchedule(int idHocSinh) {
+        List<LichHoc> list = new ArrayList<>();
+        DBContext db = DBContext.getInstance();
+        String sql = """
+            SELECT 
+                lh.ID_Schedule,
+                lh.NgayHoc,
+                lh.ID_SlotHoc,
+                lh.ID_LopHoc,
+                lh.ID_PhongHoc,
+                lh.GhiChu,
+                sh.SlotThoiGian,
+                cl.TenLopHoc,
+                ph.TenPhongHoc,
+                kh.TenKhoaHoc
+            FROM 
+                [dbo].[LichHoc] lh
+                INNER JOIN [dbo].[SlotHoc] sh ON lh.ID_SlotHoc = sh.ID_SlotHoc
+                INNER JOIN [dbo].[LopHoc] cl ON lh.ID_LopHoc = cl.ID_LopHoc
+                INNER JOIN [dbo].[PhongHoc] ph ON lh.ID_PhongHoc = ph.ID_PhongHoc
+                INNER JOIN [dbo].[KhoaHoc] kh ON cl.ID_KhoaHoc = kh.ID_KhoaHoc
+                INNER JOIN [dbo].[HocSinh_LopHoc] hslh ON cl.ID_LopHoc = hslh.ID_LopHoc
+            WHERE 
+                hslh.ID_HocSinh = ?
+                AND cl.TrangThai = N'Đang học'
+            ORDER BY 
+                lh.NgayHoc, sh.SlotThoiGian
+            """;
+
+        try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idHocSinh);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    LichHoc lichHoc = new LichHoc();
+                    lichHoc.setID_Schedule(rs.getInt("ID_Schedule"));
+                    lichHoc.setNgayHoc(rs.getDate("NgayHoc") != null ? rs.getDate("NgayHoc").toLocalDate() : null);
+                    lichHoc.setID_SlotHoc(rs.getInt("ID_SlotHoc"));
+                    lichHoc.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                    lichHoc.setID_PhongHoc(rs.getInt("ID_PhongHoc"));
+                    lichHoc.setGhiChu(rs.getString("GhiChu"));
+                    lichHoc.setSlotThoiGian(rs.getString("SlotThoiGian"));
+                    lichHoc.setTenLopHoc(rs.getString("TenLopHoc"));
+                    lichHoc.setTenPhongHoc(rs.getString("TenPhongHoc"));
+                    list.add(lichHoc);
+                }
+                System.out.println("getStudentSchedule: Retrieved " + list.size() + " schedules for ID_HocSinh=" + idHocSinh);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in getStudentSchedule: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    //Lấy lịch dạy của giáo viên dựa trên ID_GiaoVien
+    public List<LichHoc> getTeacherSchedule(int idGiaoVien) {
+        List<LichHoc> list = new ArrayList<>();
+        DBContext db = DBContext.getInstance();
+        String sql = """
+            SELECT 
+                lh.ID_Schedule,
+                lh.NgayHoc,
+                lh.ID_SlotHoc,
+                lh.ID_LopHoc,
+                lh.ID_PhongHoc,
+                lh.GhiChu,
+                sh.SlotThoiGian,
+                cl.TenLopHoc,
+                ph.TenPhongHoc,
+                kh.TenKhoaHoc
+            FROM 
+                [dbo].[LichHoc] lh
+                INNER JOIN [dbo].[SlotHoc] sh ON lh.ID_SlotHoc = sh.ID_SlotHoc
+                INNER JOIN [dbo].[LopHoc] cl ON lh.ID_LopHoc = cl.ID_LopHoc
+                INNER JOIN [dbo].[PhongHoc] ph ON lh.ID_PhongHoc = ph.ID_PhongHoc
+                INNER JOIN [dbo].[KhoaHoc] kh ON cl.ID_KhoaHoc = kh.ID_KhoaHoc
+                INNER JOIN [dbo].[GiaoVien_LopHoc] gvlh ON cl.ID_LopHoc = gvlh.ID_LopHoc
+            WHERE 
+                gvlh.ID_GiaoVien = ?
+                AND cl.TrangThai = N'Đang học'
+            ORDER BY 
+                lh.NgayHoc, sh.SlotThoiGian
+            """;
+
+        try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idGiaoVien);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    LichHoc lichHoc = new LichHoc();
+                    lichHoc.setID_Schedule(rs.getInt("ID_Schedule"));
+                    lichHoc.setNgayHoc(rs.getDate("NgayHoc") != null ? rs.getDate("NgayHoc").toLocalDate() : null);
+                    lichHoc.setID_SlotHoc(rs.getInt("ID_SlotHoc"));
+                    lichHoc.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                    lichHoc.setID_PhongHoc(rs.getInt("ID_PhongHoc"));
+                    lichHoc.setGhiChu(rs.getString("GhiChu"));
+                    lichHoc.setSlotThoiGian(rs.getString("SlotThoiGian"));
+                    lichHoc.setTenLopHoc(rs.getString("TenLopHoc"));
+                    lichHoc.setTenPhongHoc(rs.getString("TenPhongHoc"));
+                    list.add(lichHoc);
+                }
+                System.out.println("getTeacherSchedule: Retrieved " + list.size() + " schedules for ID_GiaoVien=" + idGiaoVien);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in getTeacherSchedule: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    //hàm lấy ra lịch dạy của giáo viên theo ID tài khoản
+    public List<LichHoc> getTeacherScheduleByTaiKhoan(int idTaiKhoan) {
+        List<LichHoc> list = new ArrayList<>();
+        DBContext db = DBContext.getInstance();
+        String sql = """
+        SELECT 
+            lh.ID_Schedule,
+            lh.NgayHoc,
+            lh.ID_SlotHoc,
+            lh.ID_LopHoc,
+            lh.ID_PhongHoc,
+            lh.GhiChu,
+            sh.SlotThoiGian,
+            cl.TenLopHoc,
+            ph.TenPhongHoc,
+            kh.TenKhoaHoc
+        FROM 
+            [dbo].[LichHoc] lh
+            INNER JOIN [dbo].[SlotHoc] sh ON lh.ID_SlotHoc = sh.ID_SlotHoc
+            INNER JOIN [dbo].[LopHoc] cl ON lh.ID_LopHoc = cl.ID_LopHoc
+            INNER JOIN [dbo].[PhongHoc] ph ON lh.ID_PhongHoc = ph.ID_PhongHoc
+            INNER JOIN [dbo].[KhoaHoc] kh ON cl.ID_KhoaHoc = kh.ID_KhoaHoc
+            INNER JOIN [dbo].[GiaoVien_LopHoc] gvlh ON cl.ID_LopHoc = gvlh.ID_LopHoc
+            INNER JOIN [dbo].[GiaoVien] gv ON gvlh.ID_GiaoVien = gv.ID_GiaoVien
+        WHERE 
+            gv.ID_TaiKhoan = ?
+            AND cl.TrangThai = N'Đang học'
+        ORDER BY 
+            lh.NgayHoc, sh.SlotThoiGian
+        """;
+
+        try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idTaiKhoan);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    LichHoc lichHoc = new LichHoc();
+                    lichHoc.setID_Schedule(rs.getInt("ID_Schedule"));
+                    lichHoc.setNgayHoc(rs.getDate("NgayHoc") != null ? rs.getDate("NgayHoc").toLocalDate() : null);
+                    lichHoc.setID_SlotHoc(rs.getInt("ID_SlotHoc"));
+                    lichHoc.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                    lichHoc.setID_PhongHoc(rs.getInt("ID_PhongHoc"));
+                    lichHoc.setGhiChu(rs.getString("GhiChu"));
+                    lichHoc.setSlotThoiGian(rs.getString("SlotThoiGian"));
+                    lichHoc.setTenLopHoc(rs.getString("TenLopHoc"));
+                    lichHoc.setTenPhongHoc(rs.getString("TenPhongHoc"));
+                    list.add(lichHoc);
+                }
+                System.out.println("getTeacherScheduleByTaiKhoan: Retrieved " + list.size() + " schedules for ID_TaiKhoan=" + idTaiKhoan);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in getTeacherScheduleByTaiKhoan: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     
-    
+    //hàm lấy lịch dạy của giáo viên trong tháng năm xác định
+    public List<LichHoc> getLichDayByTeacherAndMonth(int idTaiKhoan, int year, int month) {
+        List<LichHoc> list = new ArrayList<>();
+        DBContext db = DBContext.getInstance();
+        String sql = """
+        SELECT 
+            lh.ID_Schedule,
+            lh.NgayHoc,
+            lh.ID_SlotHoc,
+            lh.ID_LopHoc,
+            lh.ID_PhongHoc,
+            lh.GhiChu,
+            sh.SlotThoiGian,
+            cl.TenLopHoc,
+            ph.TenPhongHoc
+        FROM 
+            [dbo].[LichHoc] lh
+            INNER JOIN [dbo].[SlotHoc] sh ON lh.ID_SlotHoc = sh.ID_SlotHoc
+            INNER JOIN [dbo].[LopHoc] cl ON lh.ID_LopHoc = cl.ID_LopHoc
+            INNER JOIN [dbo].[PhongHoc] ph ON lh.ID_PhongHoc = ph.ID_PhongHoc
+            INNER JOIN [dbo].[GiaoVien_LopHoc] gvlh ON cl.ID_LopHoc = gvlh.ID_LopHoc
+            INNER JOIN [dbo].[GiaoVien] gv ON gvlh.ID_GiaoVien = gv.ID_GiaoVien
+            INNER JOIN [dbo].[TaiKhoan] tk ON gv.ID_TaiKhoan = tk.ID_TaiKhoan
+        WHERE 
+            tk.ID_TaiKhoan = ?
+            AND YEAR(lh.NgayHoc) = ? 
+            AND MONTH(lh.NgayHoc) = ?
+            AND cl.TrangThai = N'Đang học'
+        ORDER BY 
+            lh.NgayHoc, sh.SlotThoiGian
+        """;
+
+        try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idTaiKhoan);
+            stmt.setInt(2, year);
+            stmt.setInt(3, month);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    LichHoc lichHoc = new LichHoc();
+                    lichHoc.setID_Schedule(rs.getInt("ID_Schedule"));
+                    lichHoc.setNgayHoc(rs.getDate("NgayHoc") != null ? rs.getDate("NgayHoc").toLocalDate() : null);
+                    lichHoc.setID_SlotHoc(rs.getInt("ID_SlotHoc"));
+                    lichHoc.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                    lichHoc.setID_PhongHoc(rs.getInt("ID_PhongHoc"));
+                    lichHoc.setGhiChu(rs.getString("GhiChu"));
+                    lichHoc.setSlotThoiGian(rs.getString("SlotThoiGian"));
+                    lichHoc.setTenLopHoc(rs.getString("TenLopHoc"));
+                    lichHoc.setTenPhongHoc(rs.getString("TenPhongHoc"));
+                    list.add(lichHoc);
+                }
+                System.out.println("getLichDayByTeacherAndMonth: Retrieved " + list.size()
+                        + " schedules for ID_TaiKhoan=" + idTaiKhoan
+                        + ", year=" + year + ", month=" + month);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in getLichDayByTeacherAndMonth: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    //hàm lấy lịch học của học sinh theo tài khoản
+    public List<LichHoc> getLichHocByStudentAndMonth(int idTaiKhoan, int year, int month) {
+    List<LichHoc> list = new ArrayList<>();
+    DBContext db = DBContext.getInstance();
+    String sql = """
+        SELECT 
+            lh.ID_Schedule,
+            lh.NgayHoc,
+            lh.ID_SlotHoc,
+            lh.ID_LopHoc,
+            lh.ID_PhongHoc,
+            lh.GhiChu,
+            sh.SlotThoiGian,
+            cl.TenLopHoc,
+            ph.TenPhongHoc
+        FROM 
+            [dbo].[LichHoc] lh
+            INNER JOIN [dbo].[SlotHoc] sh ON lh.ID_SlotHoc = sh.ID_SlotHoc
+            INNER JOIN [dbo].[LopHoc] cl ON lh.ID_LopHoc = cl.ID_LopHoc
+            INNER JOIN [dbo].[PhongHoc] ph ON lh.ID_PhongHoc = ph.ID_PhongHoc
+            INNER JOIN [dbo].[HocSinh_LopHoc] hslh ON cl.ID_LopHoc = hslh.ID_LopHoc
+            INNER JOIN [dbo].[HocSinh] hs ON hslh.ID_HocSinh = hs.ID_HocSinh
+            INNER JOIN [dbo].[TaiKhoan] tk ON hs.ID_TaiKhoan = tk.ID_TaiKhoan
+        WHERE 
+            tk.ID_TaiKhoan = ?
+            AND YEAR(lh.NgayHoc) = ? 
+            AND MONTH(lh.NgayHoc) = ?
+            AND cl.TrangThai = N'Đang học'
+        ORDER BY 
+            lh.NgayHoc, sh.SlotThoiGian
+        """;
+
+    try (Connection conn = db.getConnection(); 
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setInt(1, idTaiKhoan);
+        stmt.setInt(2, year);
+        stmt.setInt(3, month);
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                LichHoc lichHoc = new LichHoc();
+                lichHoc.setID_Schedule(rs.getInt("ID_Schedule"));
+                lichHoc.setNgayHoc(rs.getDate("NgayHoc") != null ? rs.getDate("NgayHoc").toLocalDate() : null);
+                lichHoc.setID_SlotHoc(rs.getInt("ID_SlotHoc"));
+                lichHoc.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                lichHoc.setID_PhongHoc(rs.getInt("ID_PhongHoc"));
+                lichHoc.setGhiChu(rs.getString("GhiChu"));
+                lichHoc.setSlotThoiGian(rs.getString("SlotThoiGian"));
+                lichHoc.setTenLopHoc(rs.getString("TenLopHoc"));
+                lichHoc.setTenPhongHoc(rs.getString("TenPhongHoc"));
+                list.add(lichHoc);
+            }
+            System.out.println("getLichHocByStudentAndMonth: Retrieved " + list.size()
+                    + " schedules for ID_TaiKhoan=" + idTaiKhoan
+                    + ", year=" + year + ", month=" + month);
+        }
+    } catch (SQLException e) {
+        System.out.println("SQL Error in getLichHocByStudentAndMonth: " + e.getMessage());
+        e.printStackTrace();
+    }
+    return list;
+}
 }

@@ -104,6 +104,14 @@
         <servlet-name>ManageSchedule</servlet-name>
         <servlet-class>controller.ManageCourses.ManageSchedule</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TeacherSchedule</servlet-name>
+        <servlet-class>controller.ManageCourses.TeacherSchedule</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StudentSchedule</servlet-name>
+        <servlet-class>controller.ManageCourses.StudentSchedule</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -231,6 +239,14 @@
     <servlet-mapping>
         <servlet-name>ManageSchedule</servlet-name>
         <url-pattern>/ManageSchedule</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TeacherSchedule</servlet-name>
+        <url-pattern>/TeacherSchedule</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentSchedule</servlet-name>
+        <url-pattern>/StudentSchedule</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

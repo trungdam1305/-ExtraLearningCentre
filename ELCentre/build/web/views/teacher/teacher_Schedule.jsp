@@ -1,5 +1,5 @@
 <%-- 
-    Document   : manageSchedule
+    Document   : teacher_Schedule
     Created on : July 8, 2025, 11:00:00 PM
     Author     : Vuh26
 --%>
@@ -7,13 +7,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page import="java.util.*, java.text.*, java.util.UUID, dal.AdminDAO, model.Admin" %>
+<%@ page import="java.util.*, java.text.*" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Lịch Học</title>
+    <title>Lịch Dạy Giáo Viên</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Bootstrap Icons -->
@@ -21,136 +21,16 @@
     <!-- Font Awesome for additional icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        /* Giữ nguyên toàn bộ CSS của bạn */
-        * {
-            box-sizing: border-box;
-        }
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f4f6f9;
-        }
-
         /* General container styling */
         .content-container {
-            padding: 6px;
+            padding: 16px;
             max-width: 100%;
             margin: 0 auto;
-            margin-left: 160px;
             background-color: #ffffff;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-top: 60px;
+            margin-top: 20px;
             padding-bottom: 40px;
-        }
-
-        /* Header styling */
-        .header {
-            background-color: #1F4E79;
-            color: white;
-            padding: 4px 8px;
-            text-align: left;
-            position: fixed;
-            width: calc(100% - 160px);
-            left: 160px;
-            right: 0;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .header .left-title {
-            font-size: 0.83rem;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-        }
-        .header .left-title i {
-            margin-right: 8px;
-        }
-
-        /* Footer styling */
-        .footer {
-            background-color: #1F4E79;
-            color: #B0C4DE;
-            text-align: center;
-            padding: 3px 0;
-            position: fixed;
-            width: calc(100% - 160px);
-            left: 160px;
-            right: 0;
-            bottom: 0;
-            z-index: 1000;
-        }
-        .footer p {
-            margin: 0;
-            font-size: 0.5rem;
-        }
-
-        /* Sidebar styling */
-        .sidebar {
-            width: 160px;
-            background-color: #1F4E79;
-            color: white;
-            padding: 6px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            z-index: 1001;
-        }
-        .sidebar h4 {
-            margin: 0 auto;
-            font-weight: bold;
-            letter-spacing: 1.5px;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-        .sidebar-logo {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 5px auto;
-            display: block;
-            border: 3px solid #B0C4DE;
-        }
-        .sidebar-section-title {
-            font-weight: bold;
-            margin-top: 15px;
-            font-size: 11px;
-            text-transform: uppercase;
-            color: #B0C4DE;
-            border-bottom: 1px solid #B0C4DE;
-            padding-bottom: 3px;
-        }
-        ul.sidebar-menu {
-            list-style: none;
-            padding-left: 0;
-            margin: 4px 0 0 0;
-        }
-        ul.sidebar-menu li {
-            margin: 4px 0;
-        }
-        ul.sidebar-menu li a {
-            color: white;
-            text-decoration: none;
-            padding: 4px 6px;
-            display: flex;
-            align-items: center;
-            border-radius: 5px;
-            font-size: 0.75rem;
-            transition: background-color 0.3s ease;
-        }
-        ul.sidebar-menu li a:hover {
-            background-color: #163E5C;
-        }
-        ul.sidebar-menu li a i {
-            margin-right: 5px;
         }
 
         /* Calendar styling */
@@ -158,7 +38,7 @@
             text-align: center;
             color: #003087;
             margin-bottom: 15px;
-            font-size: 1.07rem;
+            font-size: 1.5rem;
             font-weight: 600;
         }
         .calendar-table {
@@ -166,7 +46,7 @@
             max-width: 1400px;
             margin: 0 auto;
             border-collapse: collapse;
-            font-size: 0.58rem;
+            font-size: 0.9rem;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
         .calendar-table th, .calendar-table td {
@@ -178,10 +58,10 @@
         }
         .calendar-table th {
             background-color: #2196F3;
-            color: black;
+            color: white;
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 0.6rem;
+            font-size: 0.85rem;
             height: 30px;
         }
         .calendar-table td {
@@ -201,8 +81,8 @@
             background-color: #17a2b8;
             border-color: #17a2b8;
             color: white;
-            font-size: 0.5rem;
-            padding: 3px 5px;
+            font-size: 0.8rem;
+            padding: 3px 6px;
             border-radius: 6px;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
@@ -213,61 +93,6 @@
         }
         .btn-view i {
             margin-right: 4px;
-        }
-        .btn-custom-action {
-            background-color: #003087;
-            border-color: #003087;
-            color: white;
-            border-radius: 6px;
-            padding: 6px 12px;
-            font-size: 0.58rem;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-        .btn-custom-action:hover {
-            background-color: #00215a;
-            border-color: #00215a;
-            transform: translateY(-2px);
-        }
-        .btn-custom-action i {
-            margin-right: 4px;
-        }
-        .btn-secondary {
-            background-color: #6b7280;
-            border-color: #6b7280;
-            color: white;
-            border-radius: 6px;
-            padding: 4px 8px;
-            font-size: 0.57rem;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-        .btn-secondary:hover {
-            background-color: #4b5563;
-            border-color: #4b5563;
-            transform: translateY(-2px);
-        }
-        .modal-content {
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .modal-header {
-            background-color: #003087;
-            color: white;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-        }
-        .modal-header h5 {
-            font-size: 0.8rem;
-        }
-        .modal-body {
-            max-height: 400px;
-            overflow-y: auto;
-            font-size: 0.58rem;
-        }
-        .modal-body table {
-            font-size: 0.58rem;
-        }
-        .modal-footer .btn {
-            font-size: 0.57rem;
         }
         .form-container {
             max-width: 600px;
@@ -280,13 +105,37 @@
             border: 1px solid #ced4da;
             box-shadow: none;
             transition: border-color 0.3s ease;
-            height: 28px;
-            font-size: 0.57rem;
+            height: 32px;
+            font-size: 0.9rem;
         }
         .form-container .form-select:focus,
         .form-container .form-control:focus {
             border-color: #003087;
             box-shadow: 0 0 5px rgba(0, 48, 135, 0.3);
+        }
+        .modal-content {
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .modal-header {
+            background-color: #003087;
+            color: white;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+        .modal-header h5 {
+            font-size: 1.1rem;
+        }
+        .modal-body {
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+        }
+        .modal-body table {
+            font-size: 0.9rem;
+        }
+        .modal-footer .btn {
+            font-size: 0.9rem;
         }
         .alert-custom-success {
             background-color: #22c55e;
@@ -295,7 +144,7 @@
             border-radius: 8px;
             padding: 8px;
             margin-bottom: 10px;
-            font-size: 0.57rem;
+            font-size: 0.9rem;
             text-align: center;
         }
         .alert-custom-danger {
@@ -305,7 +154,7 @@
             border-radius: 8px;
             padding: 8px;
             margin-bottom: 10px;
-            font-size: 0.57rem;
+            font-size: 0.9rem;
             text-align: center;
         }
 
@@ -313,15 +162,15 @@
         #scrollToTopBtn {
             display: none;
             position: fixed;
-            bottom: 15px;
-            right: 15px;
+            bottom: 20px;
+            right: 20px;
             background-color: #007bff;
             color: white;
             border: none;
             border-radius: 50%;
             width: 40px;
             height: 40px;
-            font-size: 14px;
+            font-size: 16px;
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             z-index: 1000;
@@ -334,14 +183,12 @@
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .content-container {
-                padding: 8px;
-                margin: 5px;
-                margin-left: 0;
-                margin-top: 50px;
-                padding-bottom: 30px;
+                padding: 12px;
+                margin: 10px;
+                margin-top: 15px;
             }
             h2 {
-                font-size: 0.8rem;
+                font-size: 1.2rem;
             }
             .form-container {
                 max-width: 100%;
@@ -349,166 +196,55 @@
             }
             .form-container .form-select,
             .form-container .form-control {
-                font-size: 0.38rem;
-                height: 26px;
+                font-size: 0.8rem;
+                height: 28px;
             }
             .calendar-table {
-                font-size: 0.5rem;
+                font-size: 0.7rem;
             }
             .calendar-table th, .calendar-table td {
                 padding: 5px;
                 height: 80px;
-                width: 14.2857%;
             }
             .calendar-table th {
-                font-size: 0.5rem;
+                font-size: 0.7rem;
                 height: 25px;
             }
             .btn-view {
-                font-size: 0.48rem;
+                font-size: 0.7rem;
                 padding: 2px 4px;
             }
-            .btn-custom-action {
-                font-size: 0.38rem;
-                padding: 4px 8px;
-            }
-            .btn-secondary {
-                font-size: 0.38rem;
-                padding: 3px 6px;
-            }
             .modal-header h5 {
-                font-size: 0.7rem;
+                font-size: 0.9rem;
             }
             .modal-body {
-                font-size: 0.5rem;
+                font-size: 0.7rem;
             }
             .modal-body table {
-                font-size: 0.5rem;
+                font-size: 0.7rem;
             }
             .modal-footer .btn {
-                font-size: 0.38rem;
+                font-size: 0.7rem;
             }
             .alert-custom-success,
             .alert-custom-danger {
-                font-size: 0.38rem;
+                font-size: 0.7rem;
                 padding: 6px;
-                margin-bottom: 8px;
             }
             #scrollToTopBtn {
-                bottom: 8px;
-                right: 8px;
+                bottom: 10px;
+                right: 10px;
                 width: 30px;
                 height: 30px;
                 font-size: 12px;
-            }
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-                box-shadow: none;
-                padding: 5px;
-            }
-            .header, .footer {
-                width: 100%;
-                margin-left: 0;
-                left: 0;
-                right: 0;
-            }
-            .sidebar h4 {
-                font-size: 0.85rem;
-            }
-            .sidebar-logo {
-                width: 50px;
-                height: 50px;
-                margin: 5px auto;
-            }
-            .sidebar-section-title {
-                margin-top: 12px;
-                font-size: 10px;
-                padding-bottom: 3px;
-            }
-            ul.sidebar-menu {
-                margin: 4px 0 0 0;
-            }
-            ul.sidebar-menu li {
-                margin: 4px 0;
-            }
-            ul.sidebar-menu li a {
-                padding: 3px 5px;
-                font-size: 0.7rem;
-            }
-            ul.sidebar-menu li a i {
-                margin-right: 5px;
             }
         }
     </style>
 </head>
 <body>
-    <c:if test="${empty sessionScope.csrfToken}">
-        <% 
-            String csrfToken = UUID.randomUUID().toString();
-            session.setAttribute("csrfToken", csrfToken);
-        %>
-    </c:if>
-
-    <div class="header">
-        <div class="left-title">
-            Admin Dashboard <i class="fas fa-tachometer-alt"></i>
-        </div>
-        <div class="admin-profile" onclick="toggleDropdown()">
-            <%
-                ArrayList<Admin> admins = (ArrayList) AdminDAO.getNameAdmin();
-                String adminAvatar = admins != null && !admins.isEmpty() ? admins.get(0).getAvatar() : "/img/default-avatar.png";
-                String adminName = admins != null && !admins.isEmpty() ? admins.get(0).getHoTen() : "Admin";
-            %>
-            <img src="<%= request.getContextPath() + adminAvatar %>" alt="Admin Photo" class="admin-img">
-            <span><%= adminName %></span>
-            <i class="fas fa-caret-down"></i>
-            <div class="dropdown-menu" id="adminDropdown">
-                <a href="#"><i class="fas fa-key"></i> Đổi mật khẩu</a>
-                <a href="#"><i class="fas fa-user-edit"></i> Cập nhật thông tin</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="sidebar">
-        <h4>EL CENTRE</h4>
-        <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
-        <div class="sidebar-section-title">Tổng quan</div>
-        <ul class="sidebar-menu">
-            <li><a href="#"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-        </ul>
-        <div class="sidebar-section-title">Quản lý người dùng</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocsinh">Học sinh</a></li>
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=giaovien">Giáo viên</a></li>
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=taikhoan">Tài khoản</a></li>
-        </ul>
-        <div class="sidebar-section-title">Quản lý tài chính</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocphi"><i class="fas fa-money-bill-wave"></i> Học phí</a></li>
-        </ul>
-        <div class="sidebar-section-title">Quản lý học tập</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
-            <li><a href="${pageContext.request.contextPath}/ManageSchedule"><i class="fas fa-calendar-alt"></i> Lịch học</a></li>
-        </ul>
-        <div class="sidebar-section-title">Hệ thống</div>
-        <ul class="sidebar-menu">
-            <li><a href="#"><i class="fas fa-cog"></i> Cài đặt</a></li>
-        </ul>
-        <div class="sidebar-section-title">Khác</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=yeucautuvan"><i class="fas fa-blog"></i> Yêu cầu tư vấn</a></li>
-            <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
-            <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
-            <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-        </ul>
-    </div>
-
-    <div class="content-container">
+   <div class="content-container">
         <div class="form-container">
-            <h2>Lịch Học Tháng ${month}/${year}</h2>
+            <h2>Lịch Dạy Tháng ${month}/${year}</h2>
 
             <!-- Thông báo -->
             <c:if test="${not empty err}">
@@ -518,8 +254,8 @@
                 <div class="alert alert-custom-success">${fn:escapeXml(suc)}</div>
             </c:if>
 
-            <form method="get" action="${pageContext.request.contextPath}/ManageSchedule" class="mb-4">
-                <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
+            <form method="get" action="${pageContext.request.contextPath}/teacher-schedule" class="mb-4">
+                <input type="hidden" name="idTKGiaoVien" value="${idTKGiaoVien}">
                 <div class="row g-2 align-items-end">
                     <div class="col-md-3">
                         <label for="month" class="form-label">Tháng:</label>
@@ -633,23 +369,11 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x"></i> Đóng</button>
-                            <form action="${pageContext.request.contextPath}/ManageSchedule" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tất cả lịch học trong ngày này?');">
-                                <input type="hidden" name="action" value="delete">
-                                <input type="hidden" name="day" id="deleteDay">
-                                <input type="hidden" name="month" value="${month}">
-                                <input type="hidden" name="year" value="${year}">
-                                <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
-                                <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Xóa tất cả lịch</button>
-                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="footer">
-        <p>© 2025 EL CENTRE. Bản quyền thuộc về EL CENTRE.</p>
     </div>
 
     <!-- Nút Scroll to Top -->
@@ -674,12 +398,6 @@
             window.scrollTo({top: 0, behavior: "smooth"});
         }
 
-        // Toggle dropdown menu
-        function toggleDropdown() {
-            const dropdown = document.getElementById('adminDropdown');
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        }
-
         // Xử lý lịch học
         document.addEventListener('DOMContentLoaded', function() {
             const lichHocList = [
@@ -689,7 +407,7 @@
                         tenPhongHoc: "${fn:escapeXml(lich.tenPhongHoc != null ? lich.tenPhongHoc : 'N/A')}",
                         slotThoiGian: "${fn:escapeXml(lich.slotThoiGian != null ? lich.slotThoiGian : 'N/A')}",
                         ghiChu: "${fn:escapeXml(lich.ghiChu != null ? lich.ghiChu : '')}",
-                        day: ${lich.ngayHoc != null ? lich.dayOfMonth : 0}
+                        day: ${lich.ngayHoc != null ? lich.ngayHoc.dayOfMonth : 0}
                     }<c:if test="${!status.last}">,</c:if>
                 </c:forEach>
             ];
@@ -698,7 +416,6 @@
                 btn.addEventListener('click', function() {
                     const selectedDay = parseInt(this.getAttribute('data-day'));
                     document.getElementById('modalDay').textContent = selectedDay + '/' + ${month} + '/' + ${year};
-                    document.getElementById('deleteDay').value = selectedDay; // Gán ngày vào input hidden
 
                     const schedules = lichHocList.filter(item => item.day === selectedDay);
                     const tbody = document.getElementById('scheduleTableBody');
@@ -729,4 +446,4 @@
         });
     </script>
 </body>
-</html>
+</html>l

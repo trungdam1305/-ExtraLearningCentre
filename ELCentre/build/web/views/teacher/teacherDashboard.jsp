@@ -378,7 +378,7 @@
                 <!--Attendance's Management-->
                 <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=taikhoan"><i class="fas fa-book"></i>Điểm Danh</a></li>
                 <!--Schedule's Management-->
-                <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=taikhoan"><i class="fas fa-book"></i>Lịch Học</a></li>
+             <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/TeacherSchedule?idTKGiaoVien=${user.ID_TaiKhoan}"><i class="fas fa-book"></i>Lịch Học</a></li>
                 <!--HomeWork Material Management-->
                 <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=taikhoan"><i class="fas fa-book"></i>Upload Tài Liệu Học</a></li>
             </ul>

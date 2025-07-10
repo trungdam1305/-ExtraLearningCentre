@@ -3,7 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Vuh26/Desktop/hoangvmLayCode/-ExtraLearningCentre/ELCentre/web/views/admin/viewClass.jsp</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvmLayCode/-ExtraLearningCentre/ELCentre/src/java/dal/LichHocDAO.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvmLayCode/-ExtraLearningCentre/ELCentre/web/views/student/studentDashboard.jsp</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvmLayCode/-ExtraLearningCentre/ELCentre/web/views/admin/manageClass.jsp</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvmLayCode/-ExtraLearningCentre/ELCentre/web/views/teacher/teacher_Schedule.jsp</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvmLayCode/-ExtraLearningCentre/ELCentre/web/views/admin/manageSchedule.jsp</file>
         </group>
     </open-files>
 </project-private>
