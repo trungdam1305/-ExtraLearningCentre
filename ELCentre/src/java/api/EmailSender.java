@@ -10,6 +10,7 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
+import jakarta.mail.internet.MimeUtility;
 
 
 public class EmailSender {
@@ -17,13 +18,16 @@ public class EmailSender {
     private static final String USERNAME = "edupluscenterhn@gmail.com"; 
     private static final String PASSWORD = "zqlx legn nzvt anok"; 
 
-    public static void sendEmail(String toEmail, String subject, String body) throws MessagingException, UnsupportedEncodingException {
+    public static void sendEmail(String toEmail, String subject, String body) 
+            throws MessagingException, UnsupportedEncodingException {
         // Cấu hình SMTP server
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true"); // TLS
+        props.put("mail.smtp.starttls.enable", "true"); 
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
+        // Thêm cấu hình charset
+        props.put("mail.mime.charset", "UTF-8");
 
         // Phiên làm việc
         Session session = Session.getInstance(props, new Authenticator() {
@@ -36,11 +40,10 @@ public class EmailSender {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress(USERNAME, "ELCentre", "UTF-8"));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
-        message.setSubject(subject);
-        message.setText(body);
+        message.setSubject(MimeUtility.encodeText(subject, "UTF-8", "B"));
         
-        // Gửi với charset UTF-8
-        message.setContent(body.replace("\n", "<br>"), "text/html; charset=UTF-8");
+        // Thiết lập nội dung với UTF-8
+        message.setContent(body, "text/html; charset=UTF-8");
         // Gửi
         Transport.send(message);
     }

@@ -27,6 +27,7 @@ public class DiemDanh {
     private String HoTen;
     
     private String Avatar;
+
     public DiemDanh() {
     }
 

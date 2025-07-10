@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dal;
 
 /**
@@ -16,6 +12,17 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.List;
 import model.LichHoc;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import model.LichHoc;
+import model.PhongHoc;
 import java.sql.Date;
 import java.time.DayOfWeek;
 
@@ -200,7 +207,6 @@ public class LichHocDAO {
         }
         return list;
     }
-
       // Xóa lịch học
     public boolean deleteLichHoc(int idSchedule) {
         DBContext db = DBContext.getInstance();
@@ -217,7 +223,6 @@ public class LichHocDAO {
             return false;
         }
     }
-
     // Thêm lịch học mới
     public LichHoc addLichHoc(LocalDate ngayHoc, int idSlotHoc, String ghiChu) {
         DBContext db = DBContext.getInstance();
@@ -358,6 +363,41 @@ public class LichHocDAO {
         }
         return list;
     }
+    
+    //Hàm lấy ra lịch học sắp tới của học sinh
+    public static List<LichHoc> getUpcomingScheduleByHocSinhId(Integer idHocSinh) {
+        List<LichHoc> list = new ArrayList<>();
+        String sql = """
+                     SELECT lh.ID_Schedule, lh.NgayHoc, lh.ID_SlotHoc, lh.ID_LopHoc, lh.GhiChu,
+                            sh.SlotThoiGian, l.TenLopHoc
+                     FROM HocSinh_LopHoc hslh
+                     JOIN LichHoc lh ON hslh.ID_LopHoc = lh.ID_LopHoc
+                     JOIN SlotHoc sh ON lh.ID_SlotHoc = sh.ID_SlotHoc
+                     JOIN LopHoc l ON lh.ID_LopHoc = l.ID_LopHoc
+                     WHERE hslh.ID_HocSinh = ?
+                     AND lh.NgayHoc >= CAST(GETDATE() AS DATE)
+                     ORDER BY lh.NgayHoc ASC, sh.SlotThoiGian ASC;
+                    """;
+        try (Connection conn = DBContext.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idHocSinh);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                LichHoc lh = new LichHoc();
+                lh.setID_Schedule(rs.getInt("ID_Schedule"));
+                lh.setNgayHoc(rs.getDate("NgayHoc").toLocalDate());
+                lh.setID_SlotHoc(rs.getInt("ID_SlotHoc"));
+                lh.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                lh.setGhiChu(rs.getString("GhiChu"));
+                lh.setSlotThoiGian(rs.getString("SlotThoiGian"));
+                lh.setTenLopHoc(rs.getString("TenLopHoc"));
+                list.add(lh);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
      public List<LichHoc> getLichHocByMonth1(int year, int month) {
         List<LichHoc> list = new ArrayList<>();
@@ -434,4 +474,36 @@ public class LichHocDAO {
     }
     
     
+    
+    //Lấy ra toàn bộ lịch học
+    public static List<LichHoc> getLichHocByHocSinhId(int idHocSinh) {
+        List<LichHoc> list = new ArrayList<>();
+        String sql = """
+            SELECT lh.NgayHoc, sh.SlotThoiGian, lp.TenLopHoc, ph.TenPhongHoc, lh.GhiChu
+            FROM HocSinh_LopHoc hslh
+            JOIN LichHoc lh ON hslh.ID_LopHoc = lh.ID_LopHoc
+            JOIN SlotHoc sh ON lh.ID_SlotHoc = sh.ID_SlotHoc
+            JOIN LopHoc lp ON lh.ID_LopHoc = lp.ID_LopHoc
+            JOIN PhongHoc ph ON lh.ID_PhongHoc = ph.ID_PhongHoc
+            WHERE hslh.ID_HocSinh = ?
+            ORDER BY lh.NgayHoc ASC, sh.ID_SlotHoc ASC
+        """;
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idHocSinh);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                LichHoc lich = new LichHoc();
+                lich.setNgayHoc(rs.getDate("NgayHoc").toLocalDate());
+                lich.setSlotThoiGian(rs.getString("SlotThoiGian"));
+                lich.setTenLopHoc(rs.getString("TenLopHoc"));
+                lich.setTenPhongHoc(rs.getString("TenPhongHoc"));
+                lich.setGhiChu(rs.getString("GhiChu"));
+                list.add(lich);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }    
 }

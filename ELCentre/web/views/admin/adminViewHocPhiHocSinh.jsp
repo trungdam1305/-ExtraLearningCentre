@@ -115,7 +115,6 @@
                 background-color: #163b5c;
             }
 
-
             .header {
                 background-color: #1F4E79;
                 color: white;
@@ -212,7 +211,6 @@
                 margin-right: 8px;
             }
 
-
             .footer {
                 background-color: #1F4E79;
                 color: #B0C4DE;
@@ -225,7 +223,6 @@
                 margin: 0;
                 font-size: 14px;
             }
-
 
             .main-content {
                 flex: 1 0 auto;
@@ -290,7 +287,6 @@
 
 
 
-
                                     <td>${sct.getGhiChu()}</td>
                                     <td>${sct.getTrangThai()}</td>
                                     <td>${sct.getNgayTao()}</td>
@@ -312,7 +308,11 @@
                         <c:if test="${not empty message}">
                             <p style="color: red;">${message}</p>
                         </c:if>
+<<<<<<< HEAD
                         <p>Không có dữ liệu liệu lớp để hiển thị.</p>
+=======
+                        <p>Không có dữ liệu giáo viên để hiển thị.</p>
+>>>>>>> 3d998d6739f75f43b0ce9d4cf8bdb0cc5c6d3d77
                     </div>
                 </c:otherwise>
             </c:choose>

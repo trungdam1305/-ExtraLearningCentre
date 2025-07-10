@@ -80,7 +80,6 @@ public class GiaoVien_ChiTietDay {
     }
     
 
-
     public Integer getID_KhoaHoc() {
         return ID_KhoaHoc;
     }

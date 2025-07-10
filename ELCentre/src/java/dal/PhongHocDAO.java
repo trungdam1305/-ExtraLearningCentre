@@ -390,7 +390,7 @@ public class PhongHocDAO {
         }
         return null;
     }
-    
+
     // Cập nhật ID_PhongHoc trong bảng LichHoc
     public boolean updatePhongHocInLichHoc1(int idSchedule, int idPhongHoc) {
         DBContext db = DBContext.getInstance();

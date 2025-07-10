@@ -20,15 +20,6 @@ import java.time.LocalDate;
  * Author: Quang Trung Đàm
  */
 public class LichHoc {
-
-    public int getID_PhongHoc() {
-        return ID_PhongHoc;
-    }
-
-    public void setID_PhongHoc(int ID_PhongHoc) {
-        this.ID_PhongHoc = ID_PhongHoc;
-    }
-
     // Unique ID for the schedule
     private int ID_Schedule;
 
@@ -102,6 +93,17 @@ public class LichHoc {
         this.GhiChu = GhiChu;
     }
 
+    public LichHoc(int ID_Schedule, LocalDate NgayHoc, int ID_SlotHoc, int ID_LopHoc, int ID_PhongHoc, String GhiChu, String SlotThoiGian, String TenLopHoc, String TenPhongHoc) {
+        this.ID_Schedule = ID_Schedule;
+        this.NgayHoc = NgayHoc;
+        this.ID_SlotHoc = ID_SlotHoc;
+        this.ID_LopHoc = ID_LopHoc;
+        this.ID_PhongHoc = ID_PhongHoc;
+        this.GhiChu = GhiChu;
+        this.SlotThoiGian = SlotThoiGian;
+        this.TenLopHoc = TenLopHoc;
+        this.TenPhongHoc = TenPhongHoc;
+    }
     // --- Getters and Setters ---
 
     public int getID_Schedule() {
@@ -160,7 +162,6 @@ public class LichHoc {
         this.TenLopHoc = TenLopHoc;
     }
 
-
     public String getTenPhongHoc() {
         return TenPhongHoc;
     }
@@ -168,7 +169,6 @@ public class LichHoc {
     public void setTenPhongHoc(String TenPhongHoc) {
         this.TenPhongHoc = TenPhongHoc;
     }
-    
      // THÊM GETTER VÀ SETTER NÀY
     public boolean isDaDiemDanh() {
         return daDiemDanh;
@@ -205,4 +205,12 @@ public class LichHoc {
             return NgayHoc != null ? NgayHoc.getDayOfMonth() : 0;
         }
 
+
+    public int getID_PhongHoc() {
+        return ID_PhongHoc;
+    }
+
+    public void setID_PhongHoc(int ID_PhongHoc) {
+        this.ID_PhongHoc = ID_PhongHoc;
+    }
 }

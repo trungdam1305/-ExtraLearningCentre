@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dal;
 
-/**
- *
- * @author wrx_Chur04
- */
 import java.sql.Connection;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -20,9 +12,11 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import model.GiaoVien;
 import model.GiaoVien_TruongHoc;
 import model.LichHoc;
+import model.LopHoc;
 
 public class GiaoVienDAO {
 
@@ -1374,5 +1368,54 @@ public boolean removeTeacherFromClass1(int idLopHoc, int idGiaoVien) throws SQLE
         }
     }
 }
+    //Lấy thông tin giáo viên theo id
+    public static GiaoVien getGiaoVienById(int id) {
+        String sql = """
+            SELECT g.*, tk.Email
+            FROM GiaoVien g
+            JOIN TaiKhoan tk ON g.ID_TaiKhoan = tk.ID_TaiKhoan
+            WHERE g.ID_GiaoVien = ?
+        """;
 
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    GiaoVien gv = new GiaoVien();
+                    gv.setID_GiaoVien(rs.getInt("ID_GiaoVien"));
+                    gv.setHoTen(rs.getString("HoTen"));
+                    gv.setEmail(rs.getString("Email"));
+                    gv.setChuyenMon(rs.getString("ChuyenMon"));
+                    gv.setSDT(rs.getString("SDT"));
+                    gv.setAvatar(rs.getString("Avatar"));
+                    return gv;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+        public static Optional<GiaoVien> findByLopHocId(int idLopHoc) {
+        String sql = "SELECT gv.* FROM GiaoVien_LopHoc gl " +
+                     "JOIN GiaoVien gv ON gl.ID_GiaoVien = gv.ID_GiaoVien " +
+                     "WHERE gl.ID_LopHoc = ?";
+        try (Connection con = DBContext.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idLopHoc);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                GiaoVien gv = new GiaoVien();
+                gv.setID_GiaoVien(rs.getInt("ID_GiaoVien"));
+                gv.setLopDangDayTrenTruong(rs.getString("LopDangDayTrenTruong"));
+                return Optional.of(gv);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
 }

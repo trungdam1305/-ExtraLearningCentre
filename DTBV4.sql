@@ -1,5 +1,12 @@
+<<<<<<< HEAD
 ﻿
 USE SWP 
+=======
+﻿CREATE DATABASE SQP
+GO
+
+USE SQP
+>>>>>>> 3d998d6739f75f43b0ce9d4cf8bdb0cc5c6d3d77
 GO
 
 /****** Object:  Table [dbo].[VaiTro]    Script Date: 26/06/2025 23:16:00 ******/
@@ -1395,6 +1402,7 @@ select  HS.ID_TruongHoc , HS.LopDangHocTrenTruong   from HocSinh_LopHoc HSLH
 						 WHERE GV.ID_GiaoVien = 1 ; 
 
 	select * from GiaoVien					 
+<<<<<<< HEAD
 	select * from ThongBao ; 
 	SELECT * FROM LopHoc
 	select * from HocSinh_LopHoc
@@ -1487,3 +1495,28 @@ END CATCH;
 
 
 
+=======
+
+						    
+
+DECLARE @keyword NVARCHAR(100) = N'%HS00%'     -- hoặc N'%Nguyễn%'
+DECLARE @trangthai NVARCHAR(50) = N'Đang học'  -- hoặc N'Tất cả'
+DECLARE @khoa NVARCHAR(10) = N'HS'             -- hoặc N'Tất cả'
+
+SELECT *
+FROM HocSinh
+JOIN TaiKhoan ON HocSinh.ID_TaiKhoan = TaiKhoan.ID_TaiKhoan
+JOIN TruongHoc ON TruongHoc.ID_TruongHoc = HocSinh.ID_TruongHoc
+WHERE (HoTen LIKE @keyword OR MaHocSinh LIKE @keyword OR SoDienThoai LIKE @keyword)
+  AND (@trangthai = N'Tất cả' OR TrangThaiHoc = @trangthai)
+  AND (@khoa = N'Tất cả' OR MaHocSinh LIKE @khoa + N'%')
+
+
+  update GiaoVien 
+                         set 
+                         ID_TruongHoc = '1' , 
+                         IsHot =  '1' , 
+                         LopDangDayTrenTruong = '10A1' , 
+                         SDT ='0987654321'
+                         where ID_GiaoVien = 1  
+>>>>>>> 3d998d6739f75f43b0ce9d4cf8bdb0cc5c6d3d77

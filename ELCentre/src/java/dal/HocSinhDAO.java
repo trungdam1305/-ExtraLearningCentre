@@ -1,9 +1,6 @@
 package dal;
 
-/**
- *
- * @author wrx_Chur04
- */
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +10,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import model.HocSinh;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.HocSinh;
+import java.sql.Connection;
+import java.sql.Date;
+import java.time.LocalDate;
 public class HocSinhDAO {
 
     public static ArrayList<HocSinh> adminGetAllHocSinh() {
@@ -906,4 +912,192 @@ public class HocSinhDAO {
         }
         return previousStudents;
     }
+    //Lấy thông tin học sinh theo id tài khoản    
+    public static int getHocSinhIdByTaiKhoanId(int idTaiKhoan) {
+        int idHocSinh = -1;
+        String sql = "SELECT ID_HocSinh FROM HocSinh WHERE ID_TaiKhoan = ?";
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idTaiKhoan);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                idHocSinh = rs.getInt("ID_HocSinh");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return idHocSinh;
+    }
+    
+    // Lấy thông tin học sinh theo id học sinh
+    public static HocSinh getHocSinhById(int idHocSinh) {
+        HocSinh hs = null;
+        String sql = """
+            SELECT h.*, t.TenTruongHoc
+            FROM HocSinh h
+            LEFT JOIN TruongHoc t ON h.ID_TruongHoc = t.ID_TruongHoc
+            WHERE h.ID_HocSinh = ?
+        """;
+
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idHocSinh);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                hs = new HocSinh();
+                hs.setID_HocSinh(rs.getInt("ID_HocSinh"));
+                hs.setMaHocSinh(rs.getString("MaHocSinh"));
+                hs.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
+                hs.setHoTen(rs.getString("HoTen"));
+
+                // Xử lý an toàn việc hiển thị ngày sinh
+                java.sql.Date sqlNgaySinh = rs.getDate("NgaySinh");
+                if (sqlNgaySinh != null) {
+                    hs.setNgaySinh(sqlNgaySinh.toLocalDate());
+                }
+
+                hs.setGioiTinh(rs.getString("GioiTinh"));
+                hs.setDiaChi(rs.getString("DiaChi"));
+                hs.setSDT_PhuHuynh(rs.getString("SDT_PhuHuynh"));
+                hs.setID_TruongHoc(rs.getInt("ID_TruongHoc"));
+                hs.setGhiChu(rs.getString("GhiChu"));
+                hs.setTrangThai(rs.getString("TrangThai"));
+
+                //  Xử lý an toàn việc hiển thị ngày tạo
+                java.sql.Timestamp sqlNgayTao = rs.getTimestamp("NgayTao");
+                if (sqlNgayTao != null) {
+                    hs.setNgayTao(sqlNgayTao.toLocalDateTime());
+                }
+
+                hs.setTenTruongHoc(rs.getString("TenTruongHoc"));
+                hs.setLopDangHocTrenTruong(rs.getString("LopDangHocTrenTruong"));
+                hs.setTrangThaiHoc(rs.getString("TrangThaiHoc"));
+                hs.setAvatar(rs.getString("Avatar"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return hs;
+    }
+    
+//        // Lấy thông tin học sinh theo id học sinh
+//    public static List<HocSinh> getHocSinhInfoByIdHocSinh(Integer idHocSinh) {
+//        List<HocSinh> list = new ArrayList<>();
+//        String sql = """
+//            SELECT h.*, t.TenTruongHoc
+//            FROM HocSinh h
+//            LEFT JOIN TruongHoc t ON h.ID_TruongHoc = t.ID_TruongHoc
+//            WHERE h.ID_HocSinh = ?
+//        """;
+//
+//        try (Connection conn = DBContext.getInstance().getConnection();
+//             PreparedStatement ps = conn.prepareStatement(sql)) {
+//
+//            ps.setInt(1, idHocSinh);
+//            ResultSet rs = ps.executeQuery();
+//
+//            if (rs.next()) {
+//                HocSinh hs = new HocSinh();
+//                hs.setID_HocSinh(rs.getInt("ID_HocSinh"));
+//                hs.setMaHocSinh(rs.getString("MaHocSinh"));
+//                hs.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
+//                hs.setHoTen(rs.getString("HoTen"));
+//
+//                // Xử lý an toàn việc hiển thị ngày sinh
+//                java.sql.Date sqlNgaySinh = rs.getDate("NgaySinh");
+//                if (sqlNgaySinh != null) {
+//                    hs.setNgaySinh(sqlNgaySinh.toLocalDate());
+//                }
+//
+//                hs.setGioiTinh(rs.getString("GioiTinh"));
+//                hs.setDiaChi(rs.getString("DiaChi"));
+//                hs.setSDT_PhuHuynh(rs.getString("SDT_PhuHuynh"));
+//                hs.setID_TruongHoc(rs.getInt("ID_TruongHoc"));
+//                hs.setGhiChu(rs.getString("GhiChu"));
+//                hs.setTrangThai(rs.getString("TrangThai"));
+//
+//                //  Xử lý an toàn việc hiển thị ngày tạo
+//                java.sql.Timestamp sqlNgayTao = rs.getTimestamp("NgayTao");
+//                if (sqlNgayTao != null) {
+//                    hs.setNgayTao(sqlNgayTao.toLocalDateTime());
+//                }
+//
+//                hs.setTenTruongHoc(rs.getString("TenTruongHoc"));
+//                hs.setLopDangHocTrenTruong(rs.getString("LopDangHocTrenTruong"));
+//                hs.setTrangThaiHoc(rs.getString("TrangThaiHoc"));
+//                hs.setAvatar(rs.getString("Avatar"));
+//                list.add(hs);
+//            }
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return list;
+//    }
+    
+    //Cập nhật thông tin tài khoản học sinh
+    public static boolean updateHocSinh(HocSinh hs) {
+        String sql = """
+            UPDATE HocSinh SET
+                HoTen = ?,
+                NgaySinh = ?,
+                GioiTinh = ?,
+                DiaChi = ?,
+                SDT_PhuHuynh = ?,
+                ID_TruongHoc = ?,
+                GhiChu = ?,
+                LopDangHocTrenTruong = ?,
+                TrangThaiHoc = ?,
+                Avatar = ?
+            WHERE ID_HocSinh = ?
+        """;
+
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, hs.getHoTen());
+            ps.setDate(2, hs.getNgaySinh() != null ? Date.valueOf(hs.getNgaySinh()) : null);
+            ps.setString(3, hs.getGioiTinh());
+            ps.setString(4, hs.getDiaChi());
+            ps.setString(5, hs.getSDT_PhuHuynh());
+            ps.setInt(6, hs.getID_TruongHoc());
+            ps.setString(7, hs.getGhiChu());
+            ps.setString(8, hs.getLopDangHocTrenTruong());
+            ps.setString(9, hs.getTrangThaiHoc());
+            ps.setString(10, hs.getAvatar());
+            ps.setInt(11, hs.getID_HocSinh());
+
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+        public static HocSinh findByTaiKhoanId(int idTaiKhoan) {
+        String sql = "SELECT * FROM HocSinh WHERE ID_TaiKhoan = ?";
+        try (Connection con = DBContext.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idTaiKhoan);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                HocSinh hs = new HocSinh();
+                hs.setID_HocSinh(rs.getInt("ID_HocSinh"));
+                hs.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
+                hs.setLopDangHocTrenTruong(rs.getString("LopDangHocTrenTruong"));
+                return hs;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
 }

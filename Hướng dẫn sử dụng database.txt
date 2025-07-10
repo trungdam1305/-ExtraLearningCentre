@@ -1,0 +1,4 @@
+Mở file DTBV4 sau đó chạy hết việc tạo các bảng, chưa insert dữ liệu vội
+Tiếp theo design lại bảng ThongBao: cho phép null tại ID_ThongBao, và design bảng HoTro: thêm 1 trường mới tên: DaDuyet, kiểu dữ liệu: bit, cho phép null
+Sau đó lưu lại và chạy hết các câu lệnh insert dữ liệu còn lại.
+Chúc may mắn

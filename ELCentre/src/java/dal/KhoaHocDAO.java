@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dal;
 
-import com.sun.jdi.connect.spi.Connection;
+import java.sql.Connection;
 import dal.DBContext;
 import java.util.ArrayList;
 import model.KhoaHoc;
@@ -23,12 +19,10 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import model.KhoiHoc;
 import model.SubjectCategoryDTO;
+
 import model.KhoiHoc;
 
-/**
- *
- * @author Vuh26
- */
+
 public class KhoaHocDAO {
     public static ArrayList<KhoaHoc> adminGetAllKhoaHoc(){
         ArrayList<KhoaHoc> khoahocs = new ArrayList<KhoaHoc>() ; 
@@ -1439,6 +1433,7 @@ public class KhoaHocDAO {
         }
         return false;
     }
+
             
     public Map<String, Integer> getCourseCountsBySubject() {
         Map<String, Integer> subjectCounts = new HashMap<>();
@@ -1537,13 +1532,36 @@ public class KhoaHocDAO {
         }
         return categories;
     }
-    
-            public static void main(String[] args) {
-        List<KhoaHoc> kh = new ArrayList<>();
-        KhoaHocDAO dao = new KhoaHocDAO();
-        List<SubjectCategoryDTO> subjectCategories = dao.getCourseCategoriesWithCount();
-        for (SubjectCategoryDTO sl :subjectCategories){
-            System.out.println(sl.getSubjectName() + " " + sl.getCourseCount());
+     //Lấy ra khác khóa học đang mở        
+    public static List<KhoaHoc> getAllKhoaHocDangMo() {
+        List<KhoaHoc> list = new ArrayList<>();
+        String sql = """
+            SELECT kh.ID_KhoaHoc, kh.CourseCode, kh.TenKhoaHoc, kh.MoTa, kh.ThoiGianBatDau, kh.ThoiGianKetThuc,
+                   kh.GhiChu, kh.TrangThai, kh.ID_Khoi, k.TenKhoi
+            FROM KhoaHoc kh
+            LEFT JOIN KhoiHoc k ON kh.ID_Khoi = k.ID_Khoi
+            WHERE kh.TrangThai = 'Active'
+        """;
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                KhoaHoc kh = new KhoaHoc(); 
+                kh.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                kh.setCourseCode(rs.getString("CourseCode"));
+                kh.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
+                kh.setMoTa(rs.getString("MoTa"));
+                kh.setThoiGianBatDau(rs.getDate("ThoiGianBatDau").toLocalDate());
+                kh.setThoiGianKetThuc(rs.getDate("ThoiGianKetThuc").toLocalDate());
+                kh.setGhiChu(rs.getString("GhiChu"));
+                kh.setTrangThai(rs.getString("TrangThai"));
+                kh.setID_Khoi(rs.getInt("ID_Khoi")); // Bổ sung: cần khớp với SELECT
+                kh.setTenKhoi(rs.getString("TenKhoi"));
+                list.add(kh);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    }
+        return list;
+    }  
 }

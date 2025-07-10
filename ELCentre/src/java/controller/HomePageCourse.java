@@ -21,6 +21,7 @@ import model.LopHocTheoNhomDTO;
 import java.util.Map;
 import model.SubjectCategoryDTO;
 
+
 /**
  *
  * @author admin
@@ -75,6 +76,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     String keyword = request.getParameter("keyword");
     String idKhoi = request.getParameter("ID_Khoi");
     List<KhoaHoc> allCourses = dao.homepageGetAllKhoaHoc();
+
     // Initialize pagination parameters (default page = 1, page size = 12)
     int page = 1;
     int pageSize = 12;
@@ -96,6 +98,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
     // Set attributes to be used in the JSP view
     request.setAttribute("allCoursesForFilter", allCourses);
+
     request.setAttribute("keyword", keyword);         // For retaining the search box value
     request.setAttribute("ID_Khoi", idKhoi);          // For keeping the selected grade
     request.setAttribute("khoaHocList", khoaHocList); // Course list to be displayed
