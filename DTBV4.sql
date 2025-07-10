@@ -1395,26 +1395,95 @@ select  HS.ID_TruongHoc , HS.LopDangHocTrenTruong   from HocSinh_LopHoc HSLH
 						 WHERE GV.ID_GiaoVien = 1 ; 
 
 	select * from GiaoVien					 
+	select * from ThongBao ; 
+	SELECT * FROM LopHoc
+	select * from HocSinh_LopHoc
+	select * from SlotHoc 
+						
+						select * from GiaoVien_LopHoc
 
-						    
+select  LH.ID_KhoaHoc ,  HSLH.ID_LopHoc , HSLH.ID_HocSinh ,GV.ID_GiaoVien  , LH.TenLopHoc , SH.SlotThoiGian  ,  GV.HoTen , LH.GhiChu , LH.TrangThai , LH.SoTien , LH.NgayTao , LH.Image    from HocSinh_LopHoc HSLH
+                         join  LopHoc LH
+                         on HSLH.ID_LopHoc = LH.ID_LopHoc 
+                         JOIN GiaoVien_LopHoc GVLH 
+                         on HSLH.ID_LopHoc = GVLH.ID_LopHoc
+                         JOIN GiaoVien GV 
+                         on GV.ID_GiaoVien = GVLH.ID_GiaoVien
+                         JOIN SlotHoc SH 
+                         ON SH.ID_SlotHoc = LH.ID_Schedule
+                         WHERE HSLH.ID_HocSinh = 1 
+                        and 
+						LH.TrangThai = N'Đang học'
 
-DECLARE @keyword NVARCHAR(100) = N'%HS00%'     -- hoặc N'%Nguyễn%'
-DECLARE @trangthai NVARCHAR(50) = N'Đang học'  -- hoặc N'Tất cả'
-DECLARE @khoa NVARCHAR(10) = N'HS'             -- hoặc N'Tất cả'
-
-SELECT *
-FROM HocSinh
-JOIN TaiKhoan ON HocSinh.ID_TaiKhoan = TaiKhoan.ID_TaiKhoan
-JOIN TruongHoc ON TruongHoc.ID_TruongHoc = HocSinh.ID_TruongHoc
-WHERE (HoTen LIKE @keyword OR MaHocSinh LIKE @keyword OR SoDienThoai LIKE @keyword)
-  AND (@trangthai = N'Tất cả' OR TrangThaiHoc = @trangthai)
-  AND (@khoa = N'Tất cả' OR MaHocSinh LIKE @khoa + N'%')
 
 
-  update GiaoVien 
-                         set 
-                         ID_TruongHoc = '1' , 
-                         IsHot =  '1' , 
-                         LopDangDayTrenTruong = '10A1' , 
-                         SDT ='0987654321'
-                         where ID_GiaoVien = 1  
+ select LH.ID_KhoaHoc, LH.ID_LopHoc , GVLH.ID_GiaoVien , GV.HoTen , TH.TenTruongHoc  , LH.TenLopHoc , LH.SiSo  , LH.GhiChu , LH.TrangThai , LH.NgayTao , LH.Image  from GiaoVien_LopHoc GVLH 
+                         join LopHoc LH 
+                         on GVLH.ID_LopHoc = LH.ID_LopHoc 
+                         
+                         JOIN GiaoVien GV 
+                         ON GVLH.ID_GiaoVien = GV.ID_GiaoVien
+                         JOIN TruongHoc TH 
+                         ON TH.ID_TruongHoc = GV.ID_TruongHoc
+                         WHERE GV.ID_GiaoVien = 1
+
+
+
+
+-- Thay @ID_LopHoc bằng ID của lớp học cần xóa
+
+DECLARE @ID_LopHoc INT = 2; -- Ví dụ: Xóa lớp học có ID_LopHoc = 1
+
+BEGIN TRANSACTION;
+BEGIN TRY
+    -- Xóa các bản ghi trong bảng [dbo].[NopBaiTap] liên quan đến [dbo].[TaoBaiTap]
+    DELETE FROM [dbo].[NopBaiTap]
+    WHERE ID_BaiTap IN (
+        SELECT ID_BaiTap 
+        FROM [dbo].[TaoBaiTap] 
+        WHERE ID_LopHoc = @ID_LopHoc
+    );
+
+    -- Xóa các bản ghi trong bảng [dbo].[TaoBaiTap]
+    DELETE FROM [dbo].[TaoBaiTap]
+    WHERE ID_LopHoc = @ID_LopHoc;
+
+    -- Xóa các bản ghi trong bảng [dbo].[Diem]
+    DELETE FROM [dbo].[Diem]
+    WHERE ID_LopHoc = @ID_LopHoc;
+
+    -- Xóa các bản ghi trong bảng [dbo].[HocPhi]
+    DELETE FROM [dbo].[HocPhi]
+    WHERE ID_LopHoc = @ID_LopHoc;
+
+    -- Xóa các bản ghi trong bảng [dbo].[DangKyLopHoc]
+    DELETE FROM [dbo].[DangKyLopHoc]
+    WHERE ID_LopHoc = @ID_LopHoc;
+
+    -- Xóa các bản ghi trong bảng [dbo].[HocSinh_LopHoc]
+    DELETE FROM [dbo].[HocSinh_LopHoc]
+    WHERE ID_LopHoc = @ID_LopHoc;
+
+    -- Xóa các bản ghi trong bảng [dbo].[GiaoVien_LopHoc]
+    DELETE FROM [dbo].[GiaoVien_LopHoc]
+    WHERE ID_LopHoc = @ID_LopHoc;
+
+    -- Xóa các bản ghi trong bảng [dbo].[LichHoc]
+    DELETE FROM [dbo].[LichHoc]
+    WHERE ID_LopHoc = @ID_LopHoc;
+
+    -- Xóa bản ghi trong bảng [dbo].[LopHoc]
+    DELETE FROM [dbo].[LopHoc]
+    WHERE ID_LopHoc = @ID_LopHoc;
+
+    COMMIT TRANSACTION;
+    PRINT 'Xóa lớp học và các bản ghi liên quan thành công.';
+END TRY
+BEGIN CATCH
+    ROLLBACK TRANSACTION;
+    PRINT 'Lỗi khi xóa lớp học: ' + ERROR_MESSAGE();
+END CATCH;
+
+
+
+

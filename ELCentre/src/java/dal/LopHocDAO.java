@@ -414,61 +414,6 @@ public class LopHocDAO {
         return count;
     }
 
-    // Lấy lớp học theo ID
-    public LopHoc getLopHocById(int idLopHoc) {
-        DBContext db = DBContext.getInstance();
-        String sqlSelect = """
-            SELECT lh.*, kh.TenKhoaHoc, kh.ID_Khoi, sh.SlotThoiGian
-            FROM LopHoc lh
-            JOIN KhoaHoc kh ON lh.ID_KhoaHoc = kh.ID_KhoaHoc
-            LEFT JOIN LichHoc lich ON lh.ID_Schedule = lich.ID_Schedule
-            LEFT JOIN SlotHoc sh ON lich.ID_SlotHoc = sh.ID_SlotHoc
-            WHERE lh.ID_LopHoc = ?
-        """;
-        try (PreparedStatement statement = db.getConnection().prepareStatement(sqlSelect)) {
-            statement.setInt(1, idLopHoc);
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                LopHoc result = new LopHoc();
-                result.setID_LopHoc(rs.getInt("ID_LopHoc"));
-                result.setClassCode(rs.getString("ClassCode"));
-                result.setTenLopHoc(rs.getString("TenLopHoc"));
-                result.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
-                result.setSiSo(rs.getInt("SiSo"));
-                result.setID_Schedule(rs.getInt("ID_Schedule"));
-                result.setGhiChu(rs.getString("GhiChu"));
-                result.setTrangThai(rs.getString("TrangThai"));
-                result.setSoTien(rs.getString("SoTien"));
-                Timestamp ts = rs.getTimestamp("NgayTao");
-                if (ts != null) {
-                    result.setNgayTao(ts.toLocalDateTime());
-                }
-                result.setImage(rs.getString("Image"));
-                result.setSiSoToiDa(rs.getInt("SiSoToiDa"));
-                return result;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    // Xóa lớp học
-    public LopHoc deleteLopHoc(LopHoc lopHoc) {
-        DBContext db = DBContext.getInstance();
-        String sql = "DELETE FROM LopHoc WHERE ID_LopHoc = ?";
-        try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, lopHoc.getID_LopHoc());
-            int rs = statement.executeUpdate();
-            if (rs > 0) {
-                return lopHoc;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    // Lấy lớp học theo khóa học và khối
 
     public List<LopHoc> getLopHocByKhoaHocAndKhoi(int idKhoaHoc, int idKhoi) throws SQLException {
         List<LopHoc> list = new ArrayList<>();
@@ -731,7 +676,9 @@ public class LopHocDAO {
         }
         return null;
     }
-
+    
+    
+    
     // Cập nhật sĩ số của lớp học
     public boolean updateSiSo(int idLopHoc, int siSo) {
         DBContext db = DBContext.getInstance();
@@ -754,7 +701,67 @@ public class LopHocDAO {
             return false;
         }
     }
-    
+    // Lấy lớp học theo ID
+    public LopHoc getLopHocById(int idLopHoc) {
+        DBContext db = DBContext.getInstance();
+        String sqlSelect = """
+            SELECT lh.*, kh.TenKhoaHoc, kh.ID_Khoi, sh.SlotThoiGian
+            FROM LopHoc lh
+            JOIN KhoaHoc kh ON lh.ID_KhoaHoc = kh.ID_KhoaHoc
+            LEFT JOIN LichHoc lich ON lh.ID_Schedule = lich.ID_Schedule
+            LEFT JOIN SlotHoc sh ON lich.ID_SlotHoc = sh.ID_SlotHoc
+            WHERE lh.ID_LopHoc = ?
+        """;
+        try (PreparedStatement statement = db.getConnection().prepareStatement(sqlSelect)) {
+            statement.setInt(1, idLopHoc);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                LopHoc result = new LopHoc();
+                result.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                result.setClassCode(rs.getString("ClassCode"));
+                result.setTenLopHoc(rs.getString("TenLopHoc"));
+                result.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                result.setSiSo(rs.getInt("SiSo"));
+                result.setID_Schedule(rs.getInt("ID_Schedule"));
+                result.setGhiChu(rs.getString("GhiChu"));
+                result.setTrangThai(rs.getString("TrangThai"));
+                result.setSoTien(rs.getString("SoTien"));
+                Timestamp ts = rs.getTimestamp("NgayTao");
+                if (ts != null) {
+                    result.setNgayTao(ts.toLocalDateTime());
+                }
+                result.setImage(rs.getString("Image"));
+                result.setSiSoToiDa(rs.getInt("SiSoToiDa"));
+                return result;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public List<LopHoc> getClassesByCourseId(int courseId) {
+    List<LopHoc> list = new ArrayList<>();
+    // JOIN thêm để lấy tên phòng học
+    String sql = "SELECT l.*, p.TenPhongHoc FROM LopHoc l JOIN PhongHoc p ON l.ID_PhongHoc = p.ID_PhongHoc WHERE l.ID_KhoaHoc = ?";
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, courseId);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            LopHoc lop = new LopHoc();
+            // Set các thuộc tính cho đối tượng lop từ ResultSet...
+            lop.setID_LopHoc(rs.getInt("ID_LopHoc"));
+            lop.setTenLopHoc(rs.getString("TenLopHoc"));
+            lop.setClassCode(rs.getString("ClassCode"));
+            lop.setSiSo(rs.getInt("SiSo"));
+            lop.setTenPhongHoc(rs.getString("TenPhongHoc"));
+            list.add(lop);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}   
     // Đặt trong file LopHocDAO.java
      public int getFilteredLopHocCount(int idTaiKhoan, String keyword, int courseId, int creationYear) {
         int count = 0;
@@ -915,37 +922,6 @@ public class LopHocDAO {
     }
     
     
-    public List<LopHoc> getClassesByCourseId(int courseId) {
-    List<LopHoc> list = new ArrayList<>();
-    // JOIN thêm để lấy tên phòng học
-    String sql = "SELECT l.*, p.TenPhongHoc FROM LopHoc l JOIN PhongHoc p ON l.ID_PhongHoc = p.ID_PhongHoc WHERE l.ID_KhoaHoc = ?";
-    try (Connection conn = new DBContext().getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setInt(1, courseId);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            LopHoc lop = new LopHoc();
-            // Set các thuộc tính cho đối tượng lop từ ResultSet...
-            lop.setID_LopHoc(rs.getInt("ID_LopHoc"));
-            lop.setTenLopHoc(rs.getString("TenLopHoc"));
-            lop.setClassCode(rs.getString("ClassCode"));
-            lop.setSiSo(rs.getInt("SiSo"));
-            lop.setTenPhongHoc(rs.getString("TenPhongHoc"));
-            list.add(lop);
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return list;
-}
     
     
-    public static void main(String[] args) {
-        List<LopHoc> lh = new ArrayList<>();
-        LopHocDAO dao = new LopHocDAO();
-        lh = dao.getFilteredLopHoc(4, "", 1, 2025, 1, 10);
-        for(LopHoc l : lh){
-            System.out.println(l.getClassCode() + l.getTenLopHoc() + " aaa");
-        }
-    }
 }

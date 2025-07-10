@@ -112,6 +112,10 @@
         <servlet-name>CourseDetailsServlet</servlet-name>
         <servlet-class>controller.CourseDetailsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>adminActionWithNotification</servlet-name>
+        <servlet-class>controller.adminActionWithNotification</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -243,6 +247,10 @@
     <servlet-mapping>
         <servlet-name>adminFindInFilterGroup</servlet-name>
         <url-pattern>/adminFindInFilterGroup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminActionWithNotification</servlet-name>
+        <url-pattern>/adminActionWithNotification</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CourseDetailsServlet</servlet-name>

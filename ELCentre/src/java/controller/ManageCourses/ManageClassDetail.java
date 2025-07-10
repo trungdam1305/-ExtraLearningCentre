@@ -21,7 +21,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "ManageClassDetail", urlPatterns = {"/ManageClassDetail"})
 public class ManageClassDetail extends HttpServlet {
 
     @Override

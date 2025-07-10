@@ -224,16 +224,16 @@ public class HocSinh_SDTDAO {
 
 String keywordLike = "%" + keyword + "%";
 
-// (1) keyword rỗng hoặc tìm theo HoTen/SDT
+
 statement.setString(1, keyword);
 statement.setString(2, keywordLike);
 statement.setString(3, keywordLike);
 
-// (2) chuyên môn rỗng hoặc lọc theo chuyên môn
+
 statement.setString(4, chuyenmon);
 statement.setString(5, chuyenmon);
 
-// (3) trạng thái rỗng hoặc lọc theo trạng thái
+
 statement.setString(6, trangthai);
 statement.setString(7, trangthai);
 
