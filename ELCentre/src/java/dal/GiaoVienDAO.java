@@ -807,5 +807,28 @@ public class GiaoVienDAO {
             }
         }
     }
+    
+    public static String adminGetIdGiaoVienToSendNTF(String ID_LopHoc) {
+        DBContext db = DBContext.getInstance() ; 
+        
+        try {
+            String sql = """
+                         select  GV.ID_TaiKhoan from GiaoVien_LopHoc GL
+                        JOIN GiaoVien GV
+                        ON GV.ID_GiaoVien = GL.ID_GiaoVien
+                        WHERE GL.ID_LopHoc = ? ;
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1 , ID_LopHoc) ; 
+            ResultSet rs = statement.executeQuery() ; 
+            while(rs.next()) {
+                return rs.getString("ID_TaiKhoan") ; 
+            }
+        } catch(SQLException  e ) {
+            e.printStackTrace();
+            
+        }
+        return null ;  
+    }
 
 }

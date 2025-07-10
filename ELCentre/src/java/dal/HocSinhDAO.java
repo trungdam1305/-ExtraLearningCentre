@@ -527,8 +527,32 @@ public class HocSinhDAO {
         return tong;
     }
     
+    public static ArrayList<String> adminGetListIDHSbyID_LopHoc(String ID_LopHoc){
+        DBContext db = DBContext.getInstance() ; 
+        ArrayList<String> listID = new ArrayList<String>() ; 
+        
+        try {
+            String sql = """
+                          select  HS.ID_TaiKhoan from HocSinh_LopHoc HL 
+                        JOIN HocSinh HS
+                        ON HS.ID_HocSinh = HL.ID_HocSinh
+                        WHERE HL.ID_LopHoc = ?  ; 
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1,ID_LopHoc );
+            ResultSet rs = statement.executeQuery() ;  
+            while(rs.next()) {
+               listID.add(rs.getString("ID_TaiKhoan") ) ; 
+            }
+            return listID;
+        } catch(SQLException  e ) {
+            e.printStackTrace();
+            return null ; 
+        }
+    }
+    
     public static void main(String[] args) {
-        int a = getTotalHocSinh();
-        System.out.println(a);
+        String ID = "1" ; 
+        System.out.println(adminGetListIDHSbyID_LopHoc(ID).size());
     }
 }
