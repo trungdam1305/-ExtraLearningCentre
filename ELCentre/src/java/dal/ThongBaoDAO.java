@@ -15,38 +15,7 @@ import model.GiaoVien_ChiTietDay;
 
 public class ThongBaoDAO {
 
-    public static ArrayList<ThongBao> adminXemThongBao() {
-        ArrayList<ThongBao> thongbaos = new ArrayList<ThongBao>();
-
-        DBContext db = DBContext.getInstance();
-        try {
-            String sql = """
-                         select * from ThongBao 
-                         """;
-            PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            ResultSet rs = statement.executeQuery();
-
-            while (rs.next()) {
-                ThongBao thongbao = new ThongBao(
-                        rs.getInt("ID_ThongBao"),
-                        rs.getInt("ID_TaiKhoan"),
-                        rs.getString("NoiDung"),
-                        rs.getInt("ID_HocPhi"),
-                        rs.getTimestamp("ThoiGian").toLocalDateTime()
-                );
-                thongbaos.add(thongbao);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        if (thongbaos.isEmpty()) {
-            return null;
-        } else {
-            return thongbaos;
-        }
-    }
+    
 
     public static void insertThongBaoTuVan(String noiDung) throws SQLException {
         DBContext db = DBContext.getInstance();
@@ -76,7 +45,8 @@ public class ThongBaoDAO {
                         rs.getInt("ID_TaiKhoan"),
                         rs.getString("noiDung"),
                         rs.getInt("ID_HocPhi"),
-                        rs.getTimestamp("ThoiGian").toLocalDateTime()
+                        rs.getTimestamp("ThoiGian").toLocalDateTime() , 
+                        rs.getString("Status")
                 );
             }
         } catch (SQLException e) {
@@ -98,7 +68,8 @@ public class ThongBaoDAO {
                         rs.getInt("ID_TaiKhoan"),
                         rs.getString("NoiDung"),
                         rs.getInt("ID_HocPhi"),
-                        rs.getTimestamp("ThoiGian").toLocalDateTime()
+                        rs.getTimestamp("ThoiGian").toLocalDateTime(),
+                        rs.getString("Status")
                 );
                 list.add(tb);
             }
@@ -108,19 +79,20 @@ public class ThongBaoDAO {
         return list;
     }
 
-    public static boolean adminSendNotification(String ID_TaiKhoan, String NoiDung) {
+    public static boolean adminSendNotification(String ID_TaiKhoan, String NoiDung , String status) {
         int rs = 0;
         DBContext db = DBContext.getInstance();
         LocalDateTime now = LocalDateTime.now();
         try {
             String sql = """
-                         insert into ThongBao(ID_TaiKhoan , NoiDung , ThoiGian )
-                         values ( ?  , ? , ? ) 
+                         insert into ThongBao(ID_TaiKhoan , NoiDung , ThoiGian  , Status)
+                         values ( ?  , ? , ?  , ?) 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             statement.setString(1, ID_TaiKhoan);
             statement.setString(2, NoiDung);
             statement.setTimestamp(3, Timestamp.valueOf(now));
+            statement.setString(4, status);
             rs = statement.executeUpdate();
             while (rs > 0) {
                 return true;
@@ -184,20 +156,21 @@ public class ThongBaoDAO {
         }
     }
 
-    public static boolean adminSendClassNotification(ArrayList<String> ID_TaiKhoanHS, String NoiDungHS) {
+    public static boolean adminSendClassNotification(ArrayList<String> ID_TaiKhoanHS, String NoiDungHS , String Status) {
         int rs = 0;
         DBContext db = DBContext.getInstance();
         LocalDateTime now = LocalDateTime.now();
         try {
             String sql = """
-                         insert into ThongBao(ID_TaiKhoan , NoiDung , ThoiGian )
-                         values ( ?  , ? , ? ) 
+                         insert into ThongBao(ID_TaiKhoan , NoiDung , ThoiGian , Status )
+                        values ( ?  , ? , ?  , ?) 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             for (String id : ID_TaiKhoanHS) {
                 statement.setString(1, id);
                 statement.setString(2, NoiDungHS);
                 statement.setTimestamp(3, Timestamp.valueOf(now));
+                statement.setString(4, Status);
                 statement.addBatch();
             }
 
@@ -234,7 +207,6 @@ public class ThongBaoDAO {
             e.printStackTrace();
             return null;
         }
-
     }
 
     public static ArrayList<String> adminGetAllID_GiaoVienDangDayToSendNTF() {
@@ -260,20 +232,21 @@ public class ThongBaoDAO {
 
     }
 
-    public static boolean adminSendNotificationToAllUser(ArrayList<String> ID_TaiKhoan, String NoiDung) {
+    public static boolean adminSendNotificationToAllUser(ArrayList<String> ID_TaiKhoan, String NoiDung , String Status) {
         int rs = 0;
         DBContext db = DBContext.getInstance();
         LocalDateTime now = LocalDateTime.now();
         try {
             String sql = """
-                         insert into ThongBao(ID_TaiKhoan , NoiDung , ThoiGian )
-                         values ( ?  , ? , ? ) 
+                         insert into ThongBao(ID_TaiKhoan , NoiDung , ThoiGian  , Status)
+                         values ( ?  , ? , ?  , ?) 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             for (String id : ID_TaiKhoan) {
                 statement.setString(1, id);
                 statement.setString(2, NoiDung);
                 statement.setTimestamp(3, Timestamp.valueOf(now));
+                statement.setString(4, Status);
                 statement.addBatch();
             }
 
@@ -289,6 +262,8 @@ public class ThongBaoDAO {
         }
         return false;
     }
+    
+    
 
     public static ArrayList<String> adminGetListIDHSbyID_LopHoc(String ID_LopHoc) {
         DBContext db = DBContext.getInstance();
@@ -296,7 +271,7 @@ public class ThongBaoDAO {
 
         try {
             String sql = """
-                          select  HS.ID_TaiKhoan from HocSinh_LopHoc HL 
+                        select  HS.ID_TaiKhoan from HocSinh_LopHoc HL 
                         JOIN HocSinh HS
                         ON HS.ID_HocSinh = HL.ID_HocSinh
                         WHERE HL.ID_LopHoc = ?  ; 
@@ -319,7 +294,7 @@ public class ThongBaoDAO {
 
         try {
             String sql = """
-                         select  GV.ID_TaiKhoan from GiaoVien_LopHoc GL
+                        select  GV.ID_TaiKhoan from GiaoVien_LopHoc GL
                         JOIN GiaoVien GV
                         ON GV.ID_GiaoVien = GL.ID_GiaoVien
                         WHERE GL.ID_LopHoc = ? ;

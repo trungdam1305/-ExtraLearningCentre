@@ -8,20 +8,27 @@ public class ThongBao {
     private String NoiDung;
     private Integer ID_HocPhi;
     private LocalDateTime ThoiGian;
-
+    private String Status ; 
 
     public ThongBao() {
     }
 
-
-    public ThongBao(Integer ID_ThongBao, Integer ID_TaiKhoan, String NoiDung, Integer ID_HocPhi, LocalDateTime ThoiGian) {
+    public ThongBao(Integer ID_ThongBao, Integer ID_TaiKhoan, String NoiDung, Integer ID_HocPhi, LocalDateTime ThoiGian, String Status) {
         this.ID_ThongBao = ID_ThongBao;
         this.ID_TaiKhoan = ID_TaiKhoan;
         this.NoiDung = NoiDung;
         this.ID_HocPhi = ID_HocPhi;
         this.ThoiGian = ThoiGian;
+        this.Status = Status;
     }
 
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String Status) {
+        this.Status = Status;
+    }
     public Integer getID_ThongBao() { return ID_ThongBao; }
     public void setID_ThongBao(Integer ID_ThongBao) { this.ID_ThongBao = ID_ThongBao; }
 

@@ -62,8 +62,8 @@ public class adminActionWithNotification extends HttpServlet {
         request.setAttribute("ID_GiaoVien", ID_GiaoVien);
         String noidungGV = request.getParameter("noidungGV");
         String noidungHS = request.getParameter("noidungHS");
-        boolean s1 = ThongBaoDAO.adminSendClassNotification(listID_HS, noidungHS);
-        boolean s2 = ThongBaoDAO.adminSendNotification(ID_GiaoVien, noidungGV);
+        boolean s1 = ThongBaoDAO.adminSendClassNotification(listID_HS, noidungHS , "CLASS");
+        boolean s2 = ThongBaoDAO.adminSendNotification(ID_GiaoVien, noidungGV , "CLASS");
 
         if (s1 && s2) {
             request.setAttribute("message", "Gửi thông báo thành công!");
@@ -81,7 +81,7 @@ public class adminActionWithNotification extends HttpServlet {
         ArrayList<String> listID_HS = ThongBaoDAO.adminGetAllID_HocSinhDangHocToSendNTF();
 
         String noidungHS = request.getParameter("noidungHS");
-        boolean s1 = ThongBaoDAO.adminSendNotificationToAllUser(listID_HS, noidungHS);
+        boolean s1 = ThongBaoDAO.adminSendNotificationToAllUser(listID_HS, noidungHS , "ALLSTUDENT");
 
         if (s1) {
             request.setAttribute("message", "Gửi thông báo thành công!");
@@ -99,7 +99,7 @@ public class adminActionWithNotification extends HttpServlet {
         ArrayList<String> listID_TC = ThongBaoDAO.adminGetAllID_GiaoVienDangDayToSendNTF() ; 
 
         String noidungGV = request.getParameter("noidungGV");
-        boolean s1 = ThongBaoDAO.adminSendNotificationToAllUser(listID_TC, noidungGV);
+        boolean s1 = ThongBaoDAO.adminSendNotificationToAllUser(listID_TC, noidungGV , "ALLTEACHER");
 
         if (s1) {
             request.setAttribute("message", "Gửi thông báo thành công!");
@@ -119,8 +119,8 @@ public class adminActionWithNotification extends HttpServlet {
 
         String noidungHS = request.getParameter("noidungHS");
         String noidungGV = request.getParameter("noidungGV");
-        boolean s1 = ThongBaoDAO.adminSendNotificationToAllUser(listID_HS, noidungHS);
-        boolean s2 = ThongBaoDAO.adminSendNotificationToAllUser(listID_TC, noidungGV);
+        boolean s1 = ThongBaoDAO.adminSendNotificationToAllUser(listID_HS, noidungHS,"ALLCLASS");
+        boolean s2 = ThongBaoDAO.adminSendNotificationToAllUser(listID_TC, noidungGV , "ALLCLASS");
         
         if (s1&&s2) {
             request.setAttribute("message", "Gửi thông báo thành công!");
@@ -158,11 +158,6 @@ public class adminActionWithNotification extends HttpServlet {
 
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

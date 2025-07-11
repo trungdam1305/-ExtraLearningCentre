@@ -100,7 +100,7 @@
 <div class="notification-container">
     <h2>Gửi thông báo đến học sinh</h2>
 
-    <form action="${pageContext.request.contextPath}/adminActionWithTeacher" method="post">
+    <form action="${pageContext.request.contextPath}/adminActionWithStudent" method="post">
         <input type="hidden" name="idtaikhoan" value="<%= idtaikhoan %>">
         <input type="hidden" name="type" value="sendNotification">
 

@@ -175,7 +175,7 @@ public class adminActionWithTeacher extends HttpServlet {
         HttpSession session = request.getSession() ; 
         String ID_TaiKhoan = request.getParameter("idtaikhoan");
         String NoiDung = request.getParameter("noidung")  ; 
-        boolean sendNTF = ThongBaoDAO.adminSendNotification(ID_TaiKhoan, NoiDung) ; 
+        boolean sendNTF = ThongBaoDAO.adminSendNotification(ID_TaiKhoan, NoiDung , "Teacher") ; 
         if (sendNTF) {
             request.setAttribute("message", "Gửi thông báo thành công!");
             
