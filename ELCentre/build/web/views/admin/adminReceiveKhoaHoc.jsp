@@ -1,3 +1,4 @@
+
 <%-- 
     Document   : adminReceiveKhoaHoc
     Created on : May 29, 2025, 10:54:36 PM
@@ -125,7 +126,7 @@
         </c:choose>
 
         <div class="back-button">
-            <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
+            <a href="${pageContext.request.contextPath}/adminGoToFirstPage">← Quay lại trang chủ</a>
         </div>
     </body>
 </html>

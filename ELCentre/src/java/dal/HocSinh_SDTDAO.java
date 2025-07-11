@@ -127,11 +127,11 @@ public class HocSinh_SDTDAO {
                 khoa = "";
             }
             boolean isAllEmpty = keyword.trim().isEmpty() && trangthai.isEmpty() && khoa.isEmpty();
-            
+
             PreparedStatement statement;
 
             if (isAllEmpty) {
-               String sql = """
+                String sql = """
                 SELECT * 
                 FROM HocSinh HS
                 JOIN TaiKhoan TK ON HS.ID_TaiKhoan = TK.ID_TaiKhoan
@@ -139,7 +139,7 @@ public class HocSinh_SDTDAO {
             """;
                 statement = db.getConnection().prepareStatement(sql);
             } else {
-               String sql = """
+                String sql = """
                 SELECT * 
                 FROM HocSinh HS
                 JOIN TaiKhoan TK ON HS.ID_TaiKhoan = TK.ID_TaiKhoan
@@ -157,11 +157,9 @@ public class HocSinh_SDTDAO {
                 statement.setString(3, keywordLike);
                 statement.setString(4, keywordLike);
 
-                
                 statement.setString(5, trangthai);
                 statement.setString(6, trangthai);
 
-                
                 statement.setString(7, khoa);
                 statement.setString(8, khoaLike);
             }
@@ -220,29 +218,26 @@ public class HocSinh_SDTDAO {
                   AND (? = '' OR TrangThaiDay = ?)
             """;
 
-                 statement = db.getConnection().prepareStatement(sql);
+                statement = db.getConnection().prepareStatement(sql);
 
-String keywordLike = "%" + keyword + "%";
+                String keywordLike = "%" + keyword + "%";
 
+                statement.setString(1, keyword);
+                statement.setString(2, keywordLike);
+                statement.setString(3, keywordLike);
 
-statement.setString(1, keyword);
-statement.setString(2, keywordLike);
-statement.setString(3, keywordLike);
+                statement.setString(4, chuyenmon);
+                statement.setString(5, chuyenmon);
 
-
-statement.setString(4, chuyenmon);
-statement.setString(5, chuyenmon);
-
-
-statement.setString(6, trangthai);
-statement.setString(7, trangthai);
+                statement.setString(6, trangthai);
+                statement.setString(7, trangthai);
 
             }
 
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-               
-                        GiaoVien_TruongHoc giaovien = new GiaoVien_TruongHoc(
+
+                GiaoVien_TruongHoc giaovien = new GiaoVien_TruongHoc(
                         rs.getInt("ID_GiaoVien"),
                         rs.getInt("ID_TaiKhoan"),
                         rs.getString("HoTen"),
@@ -255,8 +250,8 @@ statement.setString(7, trangthai);
                         rs.getTimestamp("NgayTao").toLocalDateTime(),
                         rs.getString("Avatar"),
                         rs.getString("TenTruongHoc"),
-                        rs.getString("BangCap") , 
-                        rs.getString("LopDangDayTrenTruong") , 
+                        rs.getString("BangCap"),
+                        rs.getString("LopDangDayTrenTruong"),
                         rs.getString("TrangThaiDay")
                 );
                 list.add(giaovien);

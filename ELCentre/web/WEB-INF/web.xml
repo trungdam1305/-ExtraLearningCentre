@@ -112,6 +112,10 @@
         <servlet-name>adminActionWithNotification</servlet-name>
         <servlet-class>controller.adminActionWithNotification</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>adminGoToFirstPage</servlet-name>
+        <servlet-class>controller.adminGoToFirstPage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -247,6 +251,10 @@
     <servlet-mapping>
         <servlet-name>adminActionWithNotification</servlet-name>
         <url-pattern>/adminActionWithNotification</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminGoToFirstPage</servlet-name>
+        <url-pattern>/adminGoToFirstPage</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

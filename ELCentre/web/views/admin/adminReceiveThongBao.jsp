@@ -9,6 +9,7 @@
     - @Param thongbaos (ArrayList<ThongBao>): A request attribute containing the list of notification objects fetched from the database.
 --%>
 
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="dal.AdminDAO" %>
@@ -49,11 +50,15 @@
                 right: 0;
                 z-index: 1000;
                 box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+                transition: background-color 0.3s;
             }
 
             .header .left-title {
                 font-size: 20px;
                 font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 8px;
             }
 
             .admin-profile {
@@ -61,6 +66,7 @@
                 align-items: center;
                 position: relative;
                 cursor: pointer;
+                transition: background-color 0.3s;
             }
 
             .admin-img {
@@ -107,6 +113,7 @@
                 padding: 10px 15px;
                 font-size: 14px;
                 text-decoration: none;
+                transition: background-color 0.3s;
             }
 
             .dropdown-menu a:hover {
@@ -126,6 +133,7 @@
             .sidebar h4 {
                 text-align: center;
                 font-weight: bold;
+                letter-spacing: 1px;
             }
 
             .sidebar-logo {
@@ -198,13 +206,29 @@
                 margin: 0;
             }
 
-            .filter-bar {
+            .top-bar {
                 display: flex;
-                justify-content: flex-end;
+                justify-content: space-between;
+                align-items: center;
                 flex-wrap: wrap;
                 gap: 20px;
                 margin-bottom: 20px;
+            }
+
+            .action-bar {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
                 align-items: center;
+            }
+
+            .filter-bar {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+                align-items: center;
+                flex-grow: 1;
+                justify-content: flex-end;
             }
 
             .filter-group {
@@ -216,7 +240,7 @@
             .filter-group label {
                 font-weight: 600;
                 font-size: 14px;
-                color: #333;
+                color: var(--text-color);
             }
 
             .filter-group input[type="text"],
@@ -225,10 +249,18 @@
                 font-size: 14px;
                 border: 1px solid #ccc;
                 border-radius: 6px;
+                transition: border-color 0.3s;
+            }
+
+            .filter-group input[type="text"]:focus,
+            .filter-group select:focus {
+                border-color: var(--main-color);
+                outline: none;
             }
 
             .filter-group input[type="text"] {
                 min-width: 200px;
+                flex-grow: 1;
             }
 
             .filter-bar button {
@@ -239,11 +271,16 @@
                 border-radius: 6px;
                 cursor: pointer;
                 font-size: 14px;
+                transition: background-color 0.3s;
+            }
+
+            .filter-bar button:hover {
+                background-color: var(--hover-color);
             }
 
             .data-table-wrapper {
                 background-color: #ffffff;
-                padding: 20px 25px;
+                padding: 20px;
                 border-radius: 12px;
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
                 margin-top: 20px;
@@ -254,21 +291,29 @@
                 border-collapse: collapse;
                 font-size: 14px;
                 background-color: white;
-                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
                 border-radius: 10px;
                 overflow: hidden;
             }
 
             table th, table td {
-                padding: 10px;
+                padding: 12px;
                 border: 1px solid #ddd;
                 text-align: center;
+                vertical-align: middle;
             }
 
             table th {
                 background-color: #e2eaf0;
                 color: var(--main-color);
                 font-weight: 600;
+            }
+
+            table tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+
+            table tr:hover {
+                background-color: #f1f4f8;
             }
 
             .action-buttons {
@@ -286,21 +331,76 @@
                 cursor: pointer;
                 text-decoration: none;
                 font-weight: 600;
-                transition: background-color 0.2s;
+                transition: background-color 0.3s;
             }
 
-            .btn-action.view {
+            .btn-action.send {
+                background-color: #2ecc71;
+                color: white;
+            }
+
+            .btn-action.all-students {
                 background-color: #3498db;
                 color: white;
             }
 
-            .btn-action.delete {
-                background-color: #e74c3c;
+            .btn-action.all-teachers {
+                background-color: #2ecc71;
+                color: white;
+            }
+
+            .btn-action.all-classes {
+                background-color: #f39c12;
                 color: white;
             }
 
             .btn-action:hover {
                 opacity: 0.85;
+            }
+
+            .btn-action:focus {
+                outline: 2px solid var(--main-color);
+                outline-offset: 2px;
+            }
+
+            .notification-forms {
+                display: flex;
+                gap: 20px;
+                margin-top: 20px;
+                flex-wrap: wrap;
+            }
+
+            .notification-form {
+                flex: 1;
+                min-width: 300px;
+                background-color: #ffffff;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            }
+
+            .notification-form label {
+                font-weight: 600;
+                font-size: 14px;
+                color: var(--text-color);
+                display: block;
+                margin-bottom: 8px;
+            }
+
+            .notification-form textarea {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                font-size: 14px;
+                resize: vertical;
+                min-height: 100px;
+                transition: border-color 0.3s;
+            }
+
+            .notification-form textarea:focus {
+                border-color: var(--main-color);
+                outline: none;
             }
 
             .no-data {
@@ -317,16 +417,22 @@
 
             #pagination button {
                 margin: 0 4px;
-                padding: 6px 10px;
+                padding: 8px 12px;
                 border: none;
                 border-radius: 4px;
                 background-color: #ddd;
                 cursor: pointer;
                 font-size: 14px;
+                transition: background-color 0.3s, color 0.3s;
             }
 
             #pagination button.active {
                 background-color: var(--main-color);
+                color: white;
+            }
+
+            #pagination button:hover:not(.active) {
+                background-color: var(--hover-color);
                 color: white;
             }
 
@@ -336,9 +442,14 @@
             }
 
             .back-button a {
-                text-decoration-none ;
+                text-decoration: none;
                 color: var(--main-color);
                 font-weight: 600;
+                transition: color 0.3s;
+            }
+
+            .back-button a:hover {
+                color: var(--hover-color);
             }
 
             .footer {
@@ -351,6 +462,43 @@
                 bottom: 0;
                 left: 250px;
                 right: 0;
+            }
+
+            @media (max-width: 768px) {
+                .header {
+                    left: 0;
+                }
+
+                .sidebar {
+                    display: none;
+                }
+
+                .main-content {
+                    margin-left: 0;
+                    padding: 80px 20px 60px;
+                }
+
+                .top-bar {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                .filter-bar {
+                    justify-content: center;
+                    width: 100%;
+                }
+
+                .filter-group input[type="text"] {
+                    min-width: 100%;
+                }
+
+                .notification-forms {
+                    flex-direction: column;
+                }
+
+                .notification-form {
+                    min-width: 100%;
+                }
             }
         </style>
     </head>
@@ -378,7 +526,7 @@
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
             </ul>
             <div class="sidebar-section-title">Quản lý người dùng</div>
             <ul class="sidebar-menu">
@@ -417,7 +565,19 @@
                 <h2><i class="fas fa-bell"></i> Gửi thông báo đến các lớp học</h2>
             </div>
 
-            <form action="${pageContext.request.contextPath}/adminFindNotifications" method="post">
+            <div class="top-bar">
+                <div class="action-bar">
+                    <a href="${pageContext.request.contextPath}/views/admin/adminSendNotificationToAllStudent.jsp" class="btn-action all-students">
+                        <i class="fas fa-user-graduate"></i> Gửi tất cả học sinh
+                    </a>
+                    <a href="${pageContext.request.contextPath}/views/admin/adminSendNotificationToAllTeacher.jsp" class="btn-action all-teachers">
+                        <i class="fas fa-chalkboard-teacher"></i> Gửi tất cả giáo viên
+                    </a>
+                    <a href="${pageContext.request.contextPath}/views/admin/adminSendNotificationToAllClass.jsp" class="btn-action all-classes">
+                        <i class="fas fa-users"></i> Gửi toàn bộ lớp học
+                    </a>
+                </div>
+                <form action="${pageContext.request.contextPath}/adminFindNotifications" method="post">
                 <div class="filter-bar">
                     <div class="filter-group">
                         <label for="keyword">Từ khóa:</label>
@@ -444,6 +604,7 @@
                     <button><i class="fas fa-search"></i></button>
                 </div>
             </form>
+            </div>
 
             <c:choose>
                 <c:when test="${not empty sessionScope.lophocs}">
@@ -474,17 +635,16 @@
                                         <td>${lop.getGhiChu()}</td>
                                         <td>${lop.getNgayTao()}</td>
                                         <td class="action-buttons">
-                                            <a class="btn-action send" href="${pageContext.request.contextPath}/views/admin/adminSendNotificationToClass.jsp?&ID_LopHoc=${lop.getID_LopHoc()}">
+                                            <a class="btn-action send" href="${pageContext.request.contextPath}/views/admin/adminSendNotificationToClass.jsp?idLop=${lop.getID_LopHoc()}">
                                                 <i class="fas fa-paper-plane"></i> Gửi thông báo
                                             </a>
-
-
                                         </td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
                         </table>
                     </div>
+
                 </c:when>
                 <c:otherwise>
                     <div class="no-data">
@@ -499,7 +659,7 @@
             <div id="pagination"></div>
 
             <div class="back-button">
-                <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">← Quay lại trang chủ</a>
+                <a href="${pageContext.request.contextPath}/adminGoToFirstPage">← Quay lại trang chủ</a>
             </div>
         </div>
 
@@ -523,7 +683,7 @@
 
             const tableBody = document.getElementById("notificationTableBody");
             let allRows = [], filteredRows = [], currentPage = 1;
-            const rowsPerPage = 3;
+            const rowsPerPage = 12;
 
             window.onload = () => {
                 if (tableBody) {
@@ -567,8 +727,7 @@
                 for (let i = startPage; i <= endPage; i++) {
                     const btn = document.createElement("button");
                     btn.textContent = i;
-                    btn.style.backgroundColor = (i === currentPage) ? "#1F4E79" : "#ddd";
-                    btn.style.color = (i === currentPage) ? "white" : "black";
+                    btn.className = i === currentPage ? "active" : "";
                     btn.onclick = () => {
                         currentPage = i;
                         renderPage();
@@ -586,19 +745,6 @@
                     pagination.appendChild(nextBtn);
                 }
             }
-
-
-            searchInput?.addEventListener("input", filterRows);
-            statusFilter?.addEventListener("change", filterRows);
-            roleFilter?.addEventListener("change", filterRows);
-
-
-            window.addEventListener("DOMContentLoaded", () => {
-                const tbody = document.querySelector("#userTable tbody");
-                allRows = Array.from(tbody.rows);
-                filteredRows = [...allRows];
-                renderPage();
-            });
         </script>
     </body>
 </html>

@@ -47,15 +47,6 @@ public class adminActionWithNotification extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -65,8 +56,8 @@ public class adminActionWithNotification extends HttpServlet {
     protected void doSendNTFToClass(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String ID_LopHoc = request.getParameter("ID_LopHoc");
-        ArrayList<String> listID_HS = HocSinhDAO.adminGetListIDHSbyID_LopHoc(ID_LopHoc);
-        String ID_GiaoVien = GiaoVienDAO.adminGetIdGiaoVienToSendNTF(ID_LopHoc);
+        ArrayList<String> listID_HS = ThongBaoDAO.adminGetListIDHSbyID_LopHoc(ID_LopHoc);
+        String ID_GiaoVien = ThongBaoDAO.adminGetIdGiaoVienToSendNTF(ID_LopHoc);
         request.setAttribute("listID_HS", listID_HS);
         request.setAttribute("ID_GiaoVien", ID_GiaoVien);
         String noidungGV = request.getParameter("noidungGV");
@@ -84,6 +75,65 @@ public class adminActionWithNotification extends HttpServlet {
 
     }
 
+    protected void doSendNTFToAllStudent(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        ArrayList<String> listID_HS = ThongBaoDAO.adminGetAllID_HocSinhDangHocToSendNTF();
+
+        String noidungHS = request.getParameter("noidungHS");
+        boolean s1 = ThongBaoDAO.adminSendNotificationToAllUser(listID_HS, noidungHS);
+
+        if (s1) {
+            request.setAttribute("message", "Gửi thông báo thành công!");
+            request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);
+        } else {
+            request.setAttribute("message", "Gửi thông báo thất bại!");
+            request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);
+        }
+
+    }
+    
+    protected void doSendNTFToAllTeacher(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        ArrayList<String> listID_TC = ThongBaoDAO.adminGetAllID_GiaoVienDangDayToSendNTF() ; 
+
+        String noidungGV = request.getParameter("noidungGV");
+        boolean s1 = ThongBaoDAO.adminSendNotificationToAllUser(listID_TC, noidungGV);
+
+        if (s1) {
+            request.setAttribute("message", "Gửi thông báo thành công!");
+            request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);
+        } else {
+            request.setAttribute("message", "Gửi thông báo thất bại!");
+            request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);
+        }
+
+    }
+    
+    
+    protected void doSendNTFToAllClass(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        ArrayList<String> listID_HS = ThongBaoDAO.adminGetAllID_HocSinhDangHocToSendNTF();
+        ArrayList<String> listID_TC = ThongBaoDAO.adminGetAllID_GiaoVienDangDayToSendNTF() ; 
+
+        String noidungHS = request.getParameter("noidungHS");
+        String noidungGV = request.getParameter("noidungGV");
+        boolean s1 = ThongBaoDAO.adminSendNotificationToAllUser(listID_HS, noidungHS);
+        boolean s2 = ThongBaoDAO.adminSendNotificationToAllUser(listID_TC, noidungGV);
+        
+        if (s1&&s2) {
+            request.setAttribute("message", "Gửi thông báo thành công!");
+            request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);
+        } else {
+            request.setAttribute("message", "Gửi thông báo thất bại!");
+            request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);
+        }
+
+    }
+    
+    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -92,6 +142,18 @@ public class adminActionWithNotification extends HttpServlet {
             case "sendToClass":
                 doSendNTFToClass(request, response);
                 break;
+
+            case "sendToAllStudent":
+                doSendNTFToAllStudent(request, response);
+                break;
+                
+            case "sendToAllTeacher" : 
+                doSendNTFToAllTeacher(request, response) ; 
+                break ; 
+                
+            case "sendToAllClass" : 
+                doSendNTFToAllClass(request, response) ; 
+                break ; 
         }
 
     }

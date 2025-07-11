@@ -214,4 +214,181 @@ public class ThongBaoDAO {
         return false;
     }
 
+    public static ArrayList<String> adminGetAllID_HocSinhDangHocToSendNTF() {
+        ArrayList<String> listID = new ArrayList<String>();
+        DBContext db = DBContext.getInstance();
+        try {
+            String sql = """
+                         select HS.ID_TaiKhoan from HocSinh HS 
+                         join TaiKhoan TK 
+                         on  TK.ID_TaiKhoan = HS.ID_TaiKhoan
+                         WHERE HS.TrangThaiHoc = N'Đang học'
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                listID.add(rs.getString("ID_TaiKhoan"));
+            }
+            return listID;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public static ArrayList<String> adminGetAllID_GiaoVienDangDayToSendNTF() {
+        ArrayList<String> listID = new ArrayList<String>();
+        DBContext db = DBContext.getInstance();
+        try {
+            String sql = """
+                         select GV.ID_TaiKhoan from GiaoVien GV
+                         join TaiKhoan TK 
+                         on  TK.ID_TaiKhoan = GV.ID_TaiKhoan
+                         WHERE GV.TrangThaiDay = N'Đang dạy'
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                listID.add(rs.getString("ID_TaiKhoan"));
+            }
+            return listID;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public static boolean adminSendNotificationToAllUser(ArrayList<String> ID_TaiKhoan, String NoiDung) {
+        int rs = 0;
+        DBContext db = DBContext.getInstance();
+        LocalDateTime now = LocalDateTime.now();
+        try {
+            String sql = """
+                         insert into ThongBao(ID_TaiKhoan , NoiDung , ThoiGian )
+                         values ( ?  , ? , ? ) 
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            for (String id : ID_TaiKhoan) {
+                statement.setString(1, id);
+                statement.setString(2, NoiDung);
+                statement.setTimestamp(3, Timestamp.valueOf(now));
+                statement.addBatch();
+            }
+
+            int[] result = statement.executeBatch();
+            for (int r : result) {
+                if (r > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return false;
+    }
+
+    public static ArrayList<String> adminGetListIDHSbyID_LopHoc(String ID_LopHoc) {
+        DBContext db = DBContext.getInstance();
+        ArrayList<String> listID = new ArrayList<String>();
+
+        try {
+            String sql = """
+                          select  HS.ID_TaiKhoan from HocSinh_LopHoc HL 
+                        JOIN HocSinh HS
+                        ON HS.ID_HocSinh = HL.ID_HocSinh
+                        WHERE HL.ID_LopHoc = ?  ; 
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setString(1, ID_LopHoc);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                listID.add(rs.getString("ID_TaiKhoan"));
+            }
+            return listID;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String adminGetIdGiaoVienToSendNTF(String ID_LopHoc) {
+        DBContext db = DBContext.getInstance();
+
+        try {
+            String sql = """
+                         select  GV.ID_TaiKhoan from GiaoVien_LopHoc GL
+                        JOIN GiaoVien GV
+                        ON GV.ID_GiaoVien = GL.ID_GiaoVien
+                        WHERE GL.ID_LopHoc = ? ;
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setString(1, ID_LopHoc);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                return rs.getString("ID_TaiKhoan");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+    }
+
+    public static ArrayList<String> adminGetListIDHSToSendNTFToAllClass(){
+        DBContext db = DBContext.getInstance() ; 
+        ArrayList<String> listID = new ArrayList<String>() ; 
+        
+        try {
+            String sql = """
+                        SELECT DISTINCT HS.ID_TaiKhoan 
+                          FROM HocSinh_LopHoc HL 
+                          JOIN HocSinh HS ON HS.ID_HocSinh = HL.ID_HocSinh
+                          JOIN LopHoc LH ON LH.ID_LopHoc = HL.ID_LopHoc
+                          WHERE LH.TrangThai = N'Đang học'; 
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            
+            ResultSet rs = statement.executeQuery() ;  
+            while(rs.next()) {
+               listID.add(rs.getString("ID_TaiKhoan") ) ; 
+            }
+            return listID;
+        } catch(SQLException  e ) {
+            e.printStackTrace();
+            return null ; 
+        }
+    }
+    
+    public static ArrayList<String> adminGetListIDGVToSendNTFToAllClass(){
+        DBContext db = DBContext.getInstance() ; 
+        ArrayList<String> listID = new ArrayList<String>() ; 
+        
+        try {
+            String sql = """
+                        SELECT DISTINCT GV.ID_TaiKhoan 
+                        FROM GiaoVien_LopHoc GL
+                        JOIN GiaoVien GV ON GV.ID_GiaoVien = GL.ID_GiaoVien
+                        JOIN LopHoc LH ON LH.ID_LopHoc = GL.ID_LopHoc
+                        WHERE LH.TrangThai = N'Đang học';
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            
+            ResultSet rs = statement.executeQuery() ;  
+            while(rs.next()) {
+               listID.add(rs.getString("ID_TaiKhoan") ) ; 
+            }
+            return listID;
+        } catch(SQLException  e ) {
+            e.printStackTrace();
+            return null ; 
+        }
+    }
+    
+    
+    public static void main(String[] args) {
+        System.out.println(adminGetAllID_HocSinhDangHocToSendNTF().size());
+    }
 }

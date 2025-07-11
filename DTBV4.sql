@@ -1380,109 +1380,16 @@ INSERT [dbo].[PhongHoc] ([ID_PhongHoc], [TenPhongHoc], [SucChua], [TrangThai]) V
 (10, N'Phòng 110', 40, N'Active')
 SET IDENTITY_INSERT [dbo].[PhongHoc] OFF
 GO
-select * from HocSinh
-SELECT * FROM TruongHoc
-select  HS.ID_TruongHoc , HS.LopDangHocTrenTruong   from HocSinh_LopHoc HSLH
-                         join  LopHoc LH
-                         on HSLH.ID_LopHoc = LH.ID_LopHoc 
-                         JOIN GiaoVien_LopHoc GVLH 
-                         on HSLH.ID_LopHoc = GVLH.ID_LopHoc
-                         JOIN GiaoVien GV 
-                         on GV.ID_GiaoVien = GVLH.ID_GiaoVien
-                         
-                         join HocSinh HS 
-						 ON HS.ID_HocSinh = HSLH.ID_HocSinh
-						 WHERE GV.ID_GiaoVien = 1 ; 
-
-	select * from GiaoVien					 
-	select * from ThongBao ; 
-	SELECT * FROM LopHoc
-	select * from HocSinh_LopHoc
-	select * from SlotHoc 
-						
-						select * from GiaoVien_LopHoc
-
-select  LH.ID_KhoaHoc ,  HSLH.ID_LopHoc , HSLH.ID_HocSinh ,GV.ID_GiaoVien  , LH.TenLopHoc , SH.SlotThoiGian  ,  GV.HoTen , LH.GhiChu , LH.TrangThai , LH.SoTien , LH.NgayTao , LH.Image    from HocSinh_LopHoc HSLH
-                         join  LopHoc LH
-                         on HSLH.ID_LopHoc = LH.ID_LopHoc 
-                         JOIN GiaoVien_LopHoc GVLH 
-                         on HSLH.ID_LopHoc = GVLH.ID_LopHoc
-                         JOIN GiaoVien GV 
-                         on GV.ID_GiaoVien = GVLH.ID_GiaoVien
-                         JOIN SlotHoc SH 
-                         ON SH.ID_SlotHoc = LH.ID_Schedule
-                         WHERE HSLH.ID_HocSinh = 1 
-                        and 
-						LH.TrangThai = N'Đang học'
 
 
+select * from ThongBao
 
- select LH.ID_KhoaHoc, LH.ID_LopHoc , GVLH.ID_GiaoVien , GV.HoTen , TH.TenTruongHoc  , LH.TenLopHoc , LH.SiSo  , LH.GhiChu , LH.TrangThai , LH.NgayTao , LH.Image  from GiaoVien_LopHoc GVLH 
-                         join LopHoc LH 
-                         on GVLH.ID_LopHoc = LH.ID_LopHoc 
-                         
-                         JOIN GiaoVien GV 
-                         ON GVLH.ID_GiaoVien = GV.ID_GiaoVien
-                         JOIN TruongHoc TH 
-                         ON TH.ID_TruongHoc = GV.ID_TruongHoc
-                         WHERE GV.ID_GiaoVien = 1
+select * from HocSinh HS 
+join TaiKhoan TK 
+on  TK.ID_TaiKhoan = HS.ID_TaiKhoan
+WHERE HS.TrangThaiHoc = N'Đang học'
 
 
-
-
--- Thay @ID_LopHoc bằng ID của lớp học cần xóa
-
-DECLARE @ID_LopHoc INT = 2; -- Ví dụ: Xóa lớp học có ID_LopHoc = 1
-
-BEGIN TRANSACTION;
-BEGIN TRY
-    -- Xóa các bản ghi trong bảng [dbo].[NopBaiTap] liên quan đến [dbo].[TaoBaiTap]
-    DELETE FROM [dbo].[NopBaiTap]
-    WHERE ID_BaiTap IN (
-        SELECT ID_BaiTap 
-        FROM [dbo].[TaoBaiTap] 
-        WHERE ID_LopHoc = @ID_LopHoc
-    );
-
-    -- Xóa các bản ghi trong bảng [dbo].[TaoBaiTap]
-    DELETE FROM [dbo].[TaoBaiTap]
-    WHERE ID_LopHoc = @ID_LopHoc;
-
-    -- Xóa các bản ghi trong bảng [dbo].[Diem]
-    DELETE FROM [dbo].[Diem]
-    WHERE ID_LopHoc = @ID_LopHoc;
-
-    -- Xóa các bản ghi trong bảng [dbo].[HocPhi]
-    DELETE FROM [dbo].[HocPhi]
-    WHERE ID_LopHoc = @ID_LopHoc;
-
-    -- Xóa các bản ghi trong bảng [dbo].[DangKyLopHoc]
-    DELETE FROM [dbo].[DangKyLopHoc]
-    WHERE ID_LopHoc = @ID_LopHoc;
-
-    -- Xóa các bản ghi trong bảng [dbo].[HocSinh_LopHoc]
-    DELETE FROM [dbo].[HocSinh_LopHoc]
-    WHERE ID_LopHoc = @ID_LopHoc;
-
-    -- Xóa các bản ghi trong bảng [dbo].[GiaoVien_LopHoc]
-    DELETE FROM [dbo].[GiaoVien_LopHoc]
-    WHERE ID_LopHoc = @ID_LopHoc;
-
-    -- Xóa các bản ghi trong bảng [dbo].[LichHoc]
-    DELETE FROM [dbo].[LichHoc]
-    WHERE ID_LopHoc = @ID_LopHoc;
-
-    -- Xóa bản ghi trong bảng [dbo].[LopHoc]
-    DELETE FROM [dbo].[LopHoc]
-    WHERE ID_LopHoc = @ID_LopHoc;
-
-    COMMIT TRANSACTION;
-    PRINT 'Xóa lớp học và các bản ghi liên quan thành công.';
-END TRY
-BEGIN CATCH
-    ROLLBACK TRANSACTION;
-    PRINT 'Lỗi khi xóa lớp học: ' + ERROR_MESSAGE();
-END CATCH;
 
 
 

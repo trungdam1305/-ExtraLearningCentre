@@ -407,7 +407,7 @@
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp"><i class="fas fa-chart-line"></i> Dashboard</a>
+                <li><a href="${pageContext.request.contextPath}/adminGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
             </ul>
 
             <div class="sidebar-section-title">Quản lý người dùng</div>
@@ -535,7 +535,7 @@
             </div>
 
             <div class="back-button">
-                <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">← Quay lại trang chủ</a>
+                <a href="${pageContext.request.contextPath}/adminGoToFirstPage">← Quay lại trang chủ</a>
             </div>
         </div>
 
@@ -570,7 +570,7 @@
             const statusFilter = document.getElementById("statusFilter");
             const roleFilter = document.getElementById("roleFilter");
             const table = document.querySelector("#userTable tbody");
-            let allRows = []; // sẽ khởi tạo sau khi DOM sẵn sàng
+            let allRows = []; 
             let filteredRows = [];
             let currentPage = 1;
             const rowsPerPage = 14;
