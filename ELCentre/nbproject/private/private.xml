@@ -15,12 +15,8 @@
             <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/dal/LopHocDAO.java</file>
         </group>
         <group>
-            <file>file:/C:/Users/Vuh26/Desktop/hoangvmLayCode/-ExtraLearningCentre/ELCentre/web/views/admin/viewLopHoc_HocSinh.jsp</file>
-            <file>file:/C:/Users/Vuh26/Desktop/hoangvmLayCode/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithStudent.java</file>
-            <file>file:/C:/Users/Vuh26/Desktop/hoangvmLayCode/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageSchedule.java</file>
-            <file>file:/C:/Users/Vuh26/Desktop/hoangvmLayCode/-ExtraLearningCentre/ELCentre/src/java/dal/LopHocInfoDTODAO.java</file>
-            <file>file:/C:/Users/Vuh26/Desktop/hoangvmLayCode/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/GetScheduleDetails.java</file>
-            <file>file:/C:/Users/Vuh26/Desktop/hoangvmLayCode/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/FindSimilarClasses.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/dal/KhoaHocDAO.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageCourse.java</file>
         </group>
     </open-files>
 </project-private>

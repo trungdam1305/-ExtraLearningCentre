@@ -653,7 +653,7 @@ public class ManageCourse extends HttpServlet {
                 request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                 return;
             }
-        } else if ("submitUpdateCourse".equals(action)) {
+         } else if ("submitUpdateCourse".equals(action)) {
             try {
                 int id = Integer.parseInt(request.getParameter("ID_KhoaHoc"));
                 String ten = request.getParameter("TenKhoaHoc");
@@ -707,16 +707,16 @@ public class ManageCourse extends HttpServlet {
                 if (trangThai != null && !trangThai.trim().isEmpty()) {
                     switch (trangThai) {
                         case "Đang hoạt động":
-                            dbTrangThai = "Đang hoạt động";
+                            dbTrangThai = "Active";
                             break;
                         case "Chưa hoạt động":
-                            dbTrangThai = "Chưa hoạt động";
+                            dbTrangThai = "Inactive";
                             break;
                         case "Chưa bắt đầu":
-                            dbTrangThai = "Chưa bắt đầu";
+                            dbTrangThai = "NotStarted";
                             break;
                         case "Đã kết thúc":
-                            dbTrangThai = "Đã kết thúc";
+                            dbTrangThai = "Ended";
                             break;
                         default:
                             System.out.println("submitUpdateCourse: Invalid TrangThai - TrangThai=" + trangThai);
