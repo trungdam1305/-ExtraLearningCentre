@@ -18,7 +18,10 @@ import java.lang.reflect.Type;
 import model.LopHocInfoDTO;
 import dal.LopHocInfoDTODAO;
 
-
+/**
+ *
+ * @author Vuh26
+ */
 public class FindSimilarClasses extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

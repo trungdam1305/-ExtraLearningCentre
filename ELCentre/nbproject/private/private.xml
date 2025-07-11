@@ -16,7 +16,9 @@
         </group>
         <group>
             <file>file:/C:/Users/Vuh26/Desktop/hoangvmLayCode/-ExtraLearningCentre/ELCentre/web/views/admin/viewLopHoc_HocSinh.jsp</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvmLayCode/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithStudent.java</file>
             <file>file:/C:/Users/Vuh26/Desktop/hoangvmLayCode/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageSchedule.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvmLayCode/-ExtraLearningCentre/ELCentre/src/java/dal/LopHocInfoDTODAO.java</file>
             <file>file:/C:/Users/Vuh26/Desktop/hoangvmLayCode/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/GetScheduleDetails.java</file>
             <file>file:/C:/Users/Vuh26/Desktop/hoangvmLayCode/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/FindSimilarClasses.java</file>
         </group>

@@ -184,6 +184,10 @@
         <servlet-name>GetScheduleDetails</servlet-name>
         <servlet-class>controller.ManageCourses.GetScheduleDetails</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChangeClassForStudent</servlet-name>
+        <servlet-class>controller.ManageCourses.ChangeClassForStudent</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -391,6 +395,10 @@
     <servlet-mapping>
         <servlet-name>GetScheduleDetails</servlet-name>
         <url-pattern>/GetScheduleDetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeClassForStudent</servlet-name>
+        <url-pattern>/ChangeClassForStudent</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

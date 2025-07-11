@@ -18,6 +18,11 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import dal.DBContext;
 
+
+/**
+ *
+ * @author Vuh26
+ */
 public class GetScheduleDetails extends HttpServlet {
     private static class ScheduleDetail {
         public String tenLopHoc;
