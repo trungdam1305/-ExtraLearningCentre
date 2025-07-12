@@ -1,4 +1,3 @@
-
 package controller.ManageCourses;
 
 import dal.LopHocInfoDTODAO;
@@ -117,7 +116,7 @@ public class ManageClass extends HttpServlet {
         }
 
         // Validate trangThai
-        if (trangThai == null || trangThai.trim().isEmpty() || !List.of("Inactive", "Active", "Finished", "Chưa học","Đang học","Kết thúc").contains(trangThai)) {
+        if (trangThai == null || trangThai.trim().isEmpty() || !List.of("Inactive", "Active", "Finished", "Chưa học", "Đang học", "Kết thúc").contains(trangThai)) {
             return "Trạng thái không hợp lệ!";
         }
 
@@ -150,6 +149,9 @@ public class ManageClass extends HttpServlet {
             }
             if (siSoToiThieu > siSoToiDa) {
                 return "Sĩ số tối thiểu không được lớn hơn sĩ số tối đa!";
+            }
+            if (isUpdate && siSoCurrent < siSoToiThieu) {
+                return "Sĩ số hiện tại (" + siSoCurrent + ") nhỏ hơn sĩ số tối thiểu (" + siSoToiThieu + "), không thể cập nhật!";
             }
         } catch (NumberFormatException e) {
             return "Sĩ số tối thiểu không hợp lệ!";
@@ -193,7 +195,7 @@ public class ManageClass extends HttpServlet {
         if (ngayHocs.length != idSlotHocs.length || ngayHocs.length != idPhongHocs.length) {
             return "Dữ liệu lịch học trong tương lai không đồng bộ!";
         }
-        
+
         LocalDate today = LocalDate.now();
         for (String ngayHoc : ngayHocs) {
             if (ngayHoc == null || ngayHoc.trim().isEmpty()) {
@@ -1055,3 +1057,4 @@ public class ManageClass extends HttpServlet {
         }
     }
 }
+    

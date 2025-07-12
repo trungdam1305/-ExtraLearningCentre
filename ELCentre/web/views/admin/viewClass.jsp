@@ -976,7 +976,7 @@
 
             <!-- Nút quay lại -->
             <div class="dashboard-button">
-                <a href="${pageContext.request.contextPath}/ManageClass?action=refresh&ID_Khoi=${ID_Khoi}&ID_KhoaHoc=${ID_KhoaHoc}" class="btn btn-secondary">Quay lại</a>
+                <a href="${backUrl}" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Quay lại</a>
             </div>
         </div>
 

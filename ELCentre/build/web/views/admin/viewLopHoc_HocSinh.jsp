@@ -358,8 +358,7 @@
                 gap: 6px;
             }
             .action-search-row .form-control,
-            .action-search-row .form-select,
-            .action-search-row .btn-custom-action {
+            .action-search-row .form-select {
                 width: auto;
                 font-size: 0.38rem;
                 height: 26px;
@@ -468,6 +467,10 @@
             z-index: 1;
             position: relative;
         }
+        .highlight-row {
+            background-color: #fff3cd !important; /* Màu vàng nhạt để highlight */
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -536,7 +539,8 @@
             %>
         </c:if>
 
-       
+        
+
         <!-- Tiêu đề -->
         <div class="header-row">
             <h2>Danh Sách Lớp Học Hiện Tại Của Học Sinh</h2>
@@ -595,7 +599,7 @@
                                             <i class="bi bi-info-circle"></i> Xem chi tiết
                                         </button>
                                         <a href="${pageContext.request.contextPath}/ManageClassDetail?ID_LopHoc=${lopHoc.idLopHoc}&ID_KhoaHoc=${lopHoc.idKhoaHoc}&ID_Khoi=${lopHoc.idKhoi}&ClassCode=${lopHoc.classCode}" class="btn btn-secondary btn-sm" aria-label="Xem danh sách lớp">
-                                            <i class="bi bi-eye"></i> Danh sách học sinh
+                                            <i class="bi bi-eye"></i> Danh sách lớp
                                         </a>
                                         <button type="button" class="btn btn-warning btn-sm view-similar-classes" data-classcode="${lopHoc.classCode}" data-id-lophoc="${lopHoc.idLopHoc}">
                                             <i class="bi bi-search"></i> Xem lớp tương đồng
@@ -650,6 +654,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <input type="text" class="form-control mb-3" id="similarSearchInput" placeholder="Tìm theo mã hoặc tên lớp" onkeyup="searchSimilarClasses()">
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered table-hover align-middle" id="similarClassesTable">
                             <thead>
@@ -689,6 +694,13 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <script>
+        // Tạo mảng chứa ID_LopHoc của các lớp học sinh đang học
+        const enrolledClassIds = [
+            <c:forEach var="lopHoc" items="${lopHocs}" varStatus="status">
+                ${lopHoc.idLopHoc}${status.last ? '' : ','}
+            </c:forEach>
+        ];
+
         // Hiển thị/n ẩn nút khi cuộn
         window.onscroll = function () {
             var scrollBtn = document.getElementById("scrollToTopBtn");
@@ -749,6 +761,16 @@
             });
         }
 
+        function searchSimilarClasses() {
+            const input = document.getElementById('similarSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#similarClassesTable tbody tr');
+            rows.forEach(row => {
+                const classCode = row.cells[0].textContent.toLowerCase();
+                const className = row.cells[1].textContent.toLowerCase();
+                row.style.display = (classCode.includes(input) || className.includes(input)) ? '' : 'none';
+            });
+        }
+
         // Xử lý sự kiện click cho nút "Xem lớp tương đồng"
         document.querySelectorAll('.view-similar-classes').forEach(button => {
             button.addEventListener('click', function () {
@@ -756,10 +778,10 @@
                 const idLopHocHienTai = this.getAttribute('data-id-lophoc');
                 const modalBody = document.getElementById('similarClassesTableBody');
 
-                if (classCode && classCode.trim() !== '') {
+                if (classCode && classCode.trim() !== '' && idLopHocHienTai) {
                     modalBody.innerHTML = '<tr><td colspan="9">Đang tải dữ liệu cho mã lớp: ' + classCode + '</td></tr>';
 
-                    fetch('${pageContext.request.contextPath}/FindSimilarClasses?classCode=' + encodeURIComponent(classCode), {
+                    fetch('${pageContext.request.contextPath}/FindSimilarClasses?classCode=' + encodeURIComponent(classCode) + '&idLopHocHienTai=' + encodeURIComponent(idLopHocHienTai), {
                         method: 'GET',
                         headers: {
                             'Accept': 'application/json'
@@ -786,7 +808,8 @@
                                 const soTienValue = lopHoc.SoTien || lopHoc.soTien || 0;
                                 const thoiGianHocValue = lopHoc.ThoiGianHoc || lopHoc.thoiGianHoc || 'Chưa có';
                                 const tenGiaoVienValue = lopHoc.TenGiaoVien || lopHoc.tenGiaoVien || 'Chưa có';
-                                html += '<tr>' +
+                                const isEnrolled = enrolledClassIds.includes(lopHoc.idLopHoc);
+                                html += '<tr' + (isEnrolled ? ' class="highlight-row"' : '') + '>' +
                                         '<td>' + classCodeValue + '</td>' +
                                         '<td>' + (lopHoc.tenLopHoc || 'Chưa có') + '</td>' +
                                         '<td>' + (lopHoc.idKhoaHoc || 'Chưa có') + '</td>' +
@@ -796,16 +819,19 @@
                                         '<td>' + thoiGianHocValue + '</td>' +
                                         '<td>' + tenGiaoVienValue + '</td>' +
                                         '<td>' +
+                                            (isEnrolled ? 'Đang học' : 
                                             '<button type="button" class="btn btn-primary btn-sm change-class" ' +
                                             'data-id-lophoc="' + lopHoc.idLopHoc + '" ' +
                                             'data-id-hocsinh="<%= request.getAttribute("idHocSinh") %>" ' +
                                             'data-id-lophoc-hientai="' + idLopHocHienTai + '">' +
                                             '<i class="bi bi-arrow-right"></i> Chuyển lớp' +
-                                            '</button>' +
+                                            '</button>') +
                                         '</td>' +
                                         '</tr>';
                             });
                             modalBody.innerHTML = html;
+                            // Áp dụng tìm kiếm ngay sau khi tải dữ liệu
+                            searchSimilarClasses();
                         }
                     })
                     .catch(error => {
@@ -816,7 +842,7 @@
                     const modal = new bootstrap.Modal(document.getElementById('similarClassesModal'));
                     modal.show();
                 } else {
-                    modalBody.innerHTML = '<tr><td colspan="9">Lỗi: Mã lớp không hợp lệ hoặc trống!</td></tr>';
+                    modalBody.innerHTML = '<tr><td colspan="9">Lỗi: Mã lớp hoặc ID lớp không hợp lệ!</td></tr>';
                     const modal = new bootstrap.Modal(document.getElementById('similarClassesModal'));
                     modal.show();
                 }

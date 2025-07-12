@@ -21,7 +21,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  *
  * @author Vuh26
@@ -36,6 +35,15 @@ public class ManageClassDetail extends HttpServlet {
             int idLopHoc = Integer.parseInt(request.getParameter("ID_LopHoc"));
             int idKhoaHoc = Integer.parseInt(request.getParameter("ID_KhoaHoc"));
             int idKhoi = Integer.parseInt(request.getParameter("ID_Khoi"));
+
+            // Lấy URL referer từ header
+            String referer = request.getHeader("Referer");
+            System.out.println("Referer received: " + referer); // Thêm log
+            if (referer == null || referer.isEmpty() || !referer.startsWith(request.getContextPath())) {
+                referer = request.getContextPath() + "/ManageClass?action=refresh&ID_Khoi=" + idKhoi + "&ID_KhoaHoc=" + idKhoaHoc;
+                System.out.println("Using default backUrl: " + referer); // Log URL mặc định
+            }
+            request.setAttribute("backUrl", referer);
 
             // Khởi tạo DAO
             LopHocDAO lopHocDAO = new LopHocDAO();
@@ -60,7 +68,8 @@ public class ManageClassDetail extends HttpServlet {
                 request.getRequestDispatcher("/views/admin/viewClass.jsp").forward(request, response);
                 return;
             }
-// Xử lý ClassCode từ tham số URL nếu cột ClassCode là null
+
+            // Xử lý ClassCode từ tham số URL nếu cột ClassCode là null
             String classCodeFromUrl = request.getParameter("ClassCode");
             if (lopHoc.getClassCode() == null && classCodeFromUrl != null && !classCodeFromUrl.trim().isEmpty()) {
                 lopHoc.setClassCode(classCodeFromUrl);

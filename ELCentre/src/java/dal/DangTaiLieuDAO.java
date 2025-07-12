@@ -41,7 +41,7 @@ public class DangTaiLieuDAO {
                 list.add(dtl);
             }
         }
-    } catch (SQLException e) {
+    } catch (java.sql.SQLException e) {
         throw new RuntimeException("Lỗi khi lấy tài liệu phân trang", e);
     }
     return list;
@@ -53,7 +53,7 @@ public int countTaiLieu() {
     try (PreparedStatement ps = db.getConnection().prepareStatement(sql);
          ResultSet rs = ps.executeQuery()) {
         if (rs.next()) return rs.getInt(1);
-    } catch (SQLException e) {
+    } catch (java.sql.SQLException e) {
         throw new RuntimeException("Lỗi khi đếm số tài liệu", e);
     }
     return 0;
@@ -75,7 +75,7 @@ public int countTaiLieu() {
                 return tong;
             }
 
-        } catch (SQLException e) {
+        } catch (java.sql.SQLException e) {
             e.printStackTrace();
 
         }
@@ -98,7 +98,7 @@ public int countTaiLieu() {
                 return tong;
             }
 
-        } catch (SQLException e) {
+        } catch (java.sql.SQLException e) {
             e.printStackTrace();
 
         }
@@ -121,7 +121,7 @@ public int countTaiLieu() {
                 return tong;
             }
 
-        } catch (SQLException e) {
+        } catch (java.sql.SQLException e) {
             e.printStackTrace();
 
         }
@@ -137,7 +137,7 @@ public int countTaiLieu() {
         while (rs.next()) {
             list.add(rs.getString("DanhMuc"));
         }
-    } catch (SQLException e) {
+    } catch (java.sql.SQLException e) {
         throw new RuntimeException("Lỗi khi lấy danh sách Danh Mục", e);
     }
     return list;
