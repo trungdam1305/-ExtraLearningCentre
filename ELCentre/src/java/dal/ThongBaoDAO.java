@@ -15,8 +15,6 @@ import model.GiaoVien_ChiTietDay;
 
 public class ThongBaoDAO {
 
-    
-
     public static void insertThongBaoTuVan(String noiDung) throws SQLException {
         DBContext db = DBContext.getInstance();
         String sql = "INSERT INTO ThongBao (ID_TaiKhoan, NoiDung, ID_HocPhi, ThoiGian) " + "VALUES (?, ?, ?, GETDATE())";
@@ -45,7 +43,7 @@ public class ThongBaoDAO {
                         rs.getInt("ID_TaiKhoan"),
                         rs.getString("noiDung"),
                         rs.getInt("ID_HocPhi"),
-                        rs.getTimestamp("ThoiGian").toLocalDateTime() , 
+                        rs.getTimestamp("ThoiGian").toLocalDateTime(),
                         rs.getString("Status")
                 );
             }
@@ -79,7 +77,7 @@ public class ThongBaoDAO {
         return list;
     }
 
-    public static boolean adminSendNotification(String ID_TaiKhoan, String NoiDung , String status) {
+    public static boolean adminSendNotification(String ID_TaiKhoan, String NoiDung, String status) {
         int rs = 0;
         DBContext db = DBContext.getInstance();
         LocalDateTime now = LocalDateTime.now();
@@ -109,7 +107,7 @@ public class ThongBaoDAO {
         DBContext db = DBContext.getInstance();
         try {
             String sql = """
-                         select LH.ID_KhoaHoc, LH.ID_LopHoc , GVLH.ID_GiaoVien , GV.HoTen , TH.TenTruongHoc  , LH.TenLopHoc , LH.SiSo  , LH.GhiChu , LH.TrangThai , LH.NgayTao , LH.Image  , KH.TenKhoaHoc , KH.ID_Khoi from GiaoVien_LopHoc GVLH 
+                        select LH.ID_KhoaHoc, LH.ID_LopHoc , GVLH.ID_GiaoVien , GV.HoTen , TH.TenTruongHoc  , LH.TenLopHoc , LH.SiSo  , LH.GhiChu , LH.TrangThai , LH.NgayTao , LH.Image  , KH.TenKhoaHoc , KH.ID_Khoi from GiaoVien_LopHoc GVLH 
                         join LopHoc LH 
                         on GVLH.ID_LopHoc = LH.ID_LopHoc 
 
@@ -156,7 +154,7 @@ public class ThongBaoDAO {
         }
     }
 
-    public static boolean adminSendClassNotification(ArrayList<String> ID_TaiKhoanHS, String NoiDungHS , String Status) {
+    public static boolean adminSendClassNotification(ArrayList<String> ID_TaiKhoanHS, String NoiDungHS, String Status) {
         int rs = 0;
         DBContext db = DBContext.getInstance();
         LocalDateTime now = LocalDateTime.now();
@@ -232,7 +230,7 @@ public class ThongBaoDAO {
 
     }
 
-    public static boolean adminSendNotificationToAllUser(ArrayList<String> ID_TaiKhoan, String NoiDung , String Status) {
+    public static boolean adminSendNotificationToAllUser(ArrayList<String> ID_TaiKhoan, String NoiDung, String Status) {
         int rs = 0;
         DBContext db = DBContext.getInstance();
         LocalDateTime now = LocalDateTime.now();
@@ -262,31 +260,28 @@ public class ThongBaoDAO {
         }
         return false;
     }
-    
-    
 
     public static ArrayList<String> adminGetListIDHSbyID_LopHoc(String ID_LopHoc) {
         DBContext db = DBContext.getInstance();
-        ArrayList<String> listID = new ArrayList<String>();
+        ArrayList<String> listID = new ArrayList<>();
 
         try {
             String sql = """
-                        select  HS.ID_TaiKhoan from HocSinh_LopHoc HL 
-                        JOIN HocSinh HS
-                        ON HS.ID_HocSinh = HL.ID_HocSinh
-                        WHERE HL.ID_LopHoc = ?  ; 
-                         """;
+                    select HS.ID_TaiKhoan 
+                    from HocSinh_LopHoc HL 
+                    JOIN HocSinh HS ON HS.ID_HocSinh = HL.ID_HocSinh
+                    WHERE HL.ID_LopHoc = ?;
+                     """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             statement.setString(1, ID_LopHoc);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 listID.add(rs.getString("ID_TaiKhoan"));
             }
-            return listID;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return listID;
     }
 
     public static String adminGetIdGiaoVienToSendNTF(String ID_LopHoc) {
@@ -312,10 +307,10 @@ public class ThongBaoDAO {
         return null;
     }
 
-    public static ArrayList<String> adminGetListIDHSToSendNTFToAllClass(){
-        DBContext db = DBContext.getInstance() ; 
-        ArrayList<String> listID = new ArrayList<String>() ; 
-        
+    public static ArrayList<String> adminGetListIDHSToSendNTFToAllClass() {
+        DBContext db = DBContext.getInstance();
+        ArrayList<String> listID = new ArrayList<String>();
+
         try {
             String sql = """
                         SELECT DISTINCT HS.ID_TaiKhoan 
@@ -323,24 +318,24 @@ public class ThongBaoDAO {
                           JOIN HocSinh HS ON HS.ID_HocSinh = HL.ID_HocSinh
                           JOIN LopHoc LH ON LH.ID_LopHoc = HL.ID_LopHoc
                           WHERE LH.TrangThai = N'Đang học'; 
-                         """ ; 
-            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
-            
-            ResultSet rs = statement.executeQuery() ;  
-            while(rs.next()) {
-               listID.add(rs.getString("ID_TaiKhoan") ) ; 
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                listID.add(rs.getString("ID_TaiKhoan"));
             }
             return listID;
-        } catch(SQLException  e ) {
+        } catch (SQLException e) {
             e.printStackTrace();
-            return null ; 
+            return null;
         }
     }
-    
-    public static ArrayList<String> adminGetListIDGVToSendNTFToAllClass(){
-        DBContext db = DBContext.getInstance() ; 
-        ArrayList<String> listID = new ArrayList<String>() ; 
-        
+
+    public static ArrayList<String> adminGetListIDGVToSendNTFToAllClass() {
+        DBContext db = DBContext.getInstance();
+        ArrayList<String> listID = new ArrayList<String>();
+
         try {
             String sql = """
                         SELECT DISTINCT GV.ID_TaiKhoan 
@@ -348,22 +343,83 @@ public class ThongBaoDAO {
                         JOIN GiaoVien GV ON GV.ID_GiaoVien = GL.ID_GiaoVien
                         JOIN LopHoc LH ON LH.ID_LopHoc = GL.ID_LopHoc
                         WHERE LH.TrangThai = N'Đang học';
-                         """ ; 
-            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
-            
-            ResultSet rs = statement.executeQuery() ;  
-            while(rs.next()) {
-               listID.add(rs.getString("ID_TaiKhoan") ) ; 
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                listID.add(rs.getString("ID_TaiKhoan"));
             }
             return listID;
-        } catch(SQLException  e ) {
+        } catch (SQLException e) {
             e.printStackTrace();
-            return null ; 
+            return null;
         }
     }
-    
-    
+
+    public static ArrayList<GiaoVien_ChiTietDay> adminGetAllLopHocByFilter(String keyword, String khoi, String mon) {
+        ArrayList<GiaoVien_ChiTietDay> lophocs = new ArrayList<GiaoVien_ChiTietDay>();
+        DBContext db = DBContext.getInstance();
+        try {
+            String sql = """
+                        SELECT LH.ID_KhoaHoc, LH.ID_LopHoc, GVLH.ID_GiaoVien, GV.HoTen, 
+                                TH.TenTruongHoc, LH.TenLopHoc, LH.SiSo, LH.GhiChu, LH.TrangThai, 
+                                LH.NgayTao, LH.Image, KH.TenKhoaHoc, KH.ID_Khoi
+                         FROM GiaoVien_LopHoc GVLH
+                         JOIN LopHoc LH ON GVLH.ID_LopHoc = LH.ID_LopHoc
+                         JOIN GiaoVien GV ON GVLH.ID_GiaoVien = GV.ID_GiaoVien
+                         JOIN TruongHoc TH ON TH.ID_TruongHoc = GV.ID_TruongHoc
+                         JOIN KhoaHoc KH ON KH.ID_KhoaHoc = LH.ID_KhoaHoc
+                         WHERE LH.TrangThai = N'Đang học'
+                           AND (? = '' OR KH.ID_Khoi = ?) 
+                           AND (? = '' OR GV.HoTen LIKE ? OR LH.TenLopHoc LIKE ?)
+                           AND (? = '' OR KH.TenKhoaHoc LIKE ?)
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            String keywordLike = "%" + keyword + "%";
+            String monHocLike = "%" + mon + "%";
+
+            statement.setString(1, khoi);
+            statement.setString(2, khoi);
+            statement.setString(3, keyword);
+            statement.setString(4, keywordLike);
+            statement.setString(5, keywordLike);
+            statement.setString(6, mon);
+            statement.setString(7, monHocLike);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                GiaoVien_ChiTietDay giaovien = new GiaoVien_ChiTietDay(
+                        rs.getInt("ID_KhoaHoc"),
+                        rs.getInt("ID_LopHoc"),
+                        rs.getInt("ID_GiaoVien"),
+                        rs.getString("HoTen"),
+                        rs.getString("TenTruongHoc"),
+                        rs.getString("TenLopHoc"),
+                        rs.getString("SiSo"),
+                        rs.getString("GhiChu"),
+                        rs.getString("TrangThai"),
+                        rs.getTimestamp("NgayTao").toLocalDateTime(),
+                        rs.getString("Image"),
+                        rs.getInt("ID_Khoi"),
+                        rs.getString("TenKhoaHoc")
+                );
+                lophocs.add(giaovien);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        if (lophocs == null) {
+            return null;
+        } else {
+            return lophocs;
+        }
+    }
+
     public static void main(String[] args) {
-        System.out.println(adminGetAllID_HocSinhDangHocToSendNTF().size());
+        String id = "1";
+        System.out.println(adminGetListIDHSbyID_LopHoc(id).size());
+        System.out.println(adminGetIdGiaoVienToSendNTF(id));
     }
 }

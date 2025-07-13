@@ -540,11 +540,11 @@
                                             <td class="action-buttons">
                                                 <a class="btn-action view" title="Chi tiết" href="${pageContext.request.contextPath}/adminActionWithStudent?action=view&id=${hocsinh.getID_HocSinh()}&idtaikhoan=${hocsinh.getID_TaiKhoan()}">
                                                     <i class="fas fa-user-edit"></i> Chi tiết và chỉnh sửa    
-                                                </a>
+                                                </a >
                                                 <a class="btn-action update" title="Xem lớp và chuyển lớp" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewClass&id=${hocsinh.getID_HocSinh()}">
                                                      <i class="fas fa-exchange-alt"></i> Xem lớp & Chuyển lớp
                                                 </a>
-                                                <a class="btn-action enable" title="Học phí và Thông báo" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewTuiTionAndSendNTF&id=${hocsinh.getID_HocSinh()}&idtaikhoan=${hocsinh.getID_TaiKhoan()}">
+                                                <a class="btn-action enable" title="Học phí và Thông báo" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewTuiTionAndSendNTF&id=${hocsinh.getID_HocSinh()}&idtaikhoan=${hocsinh.getID_TaiKhoan()}&name=${hocsinh.getHoTen()}">
                                                     <i class="fas fa-money-bill-wave"></i> Học Phí & Thông báo
                                                 </a>
                                                      

@@ -250,15 +250,16 @@
                 </div>
             </div>
         </div>
-
+            <%
+             String name = (String) request.getAttribute("name");
+             String idtaikhoan = (String) request.getAttribute("idtk");
+            %>
         <div class="main-content">
-            <h2>Học phí của học sinh theo lớp</h2>
+            <h2>Học phí của học sinh <%= name%> theo lớp</h2>
             <div style="display: flex; justify-content: flex-end; align-items: center; gap: 15px;">
 
             </div>
-            <%
-             String idtaikhoan = (String) request.getAttribute("idtk");
-            %>
+            
 
             <c:choose>
                 <c:when test="${not empty hocsinhchitiets}">
@@ -277,7 +278,9 @@
 
                                 <th>Ngày Tạo</th>
                                 <th>Tên Giáo Viên</th>
-                                <th>Trạng thái học phí</th>
+                            
+                                <th>Số tiền</th>
+                                <th>Trạng thái thanh toán</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -290,16 +293,18 @@
 
 
 
-
+                                    
                                     <td>${sct.getGhiChu()}</td>
                                     <td>${sct.getTrangThai()}</td>
                                     <td>${sct.getNgayTao()}</td>
-
+                                    
                                     <td>${sct.getHoTen()}</td>
-                                    <td></td>
+                                   <td>${sct.getSoTien()}</td>
+                                    <td>${sct.getTinhTrangThanhToan()}</td>
+                                    
                                     <td>
 
-                                        <a class="action-link" href="${pageContext.request.contextPath}/views/admin/adminSendNotificationStudent.jsp?idtaikhoan=<%= idtaikhoan %>">Gửi thông báo</a>
+                                        <a class="action-link" href="${pageContext.request.contextPath}/views/admin/adminSendNotificationStudent.jsp?idtaikhoan=<%= idtaikhoan %>&sotien=${sct.getSoTien()}&tenlophoc=${sct.getTenLopHoc()}&name=<%= name %>">Gửi thông báo</a>
 
                                     </td>
                                 </tr>   

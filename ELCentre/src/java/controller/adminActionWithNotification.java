@@ -13,7 +13,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
+import model.GiaoVien_ChiTietDay;
 
 /**
  *
@@ -50,12 +52,34 @@ public class adminActionWithNotification extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        HttpSession session = request.getSession();
+            request.setCharacterEncoding("UTF-8");
+            String keyword = request.getParameter("keyword") ; 
+            String khoi = request.getParameter("khoi") ; 
+            String mon = request.getParameter("mon") ; 
+            if (keyword == null ) {
+                keyword = "" ; 
+            }
+            keyword = keyword.trim() ; 
+            if (khoi == null ) {
+                khoi = "" ; 
+            }
+            if (mon == null ) {
+                mon = "" ; 
+            }
+            ArrayList<GiaoVien_ChiTietDay> lophocs = ThongBaoDAO.adminGetAllLopHocByFilter(keyword, khoi, mon);
+    session.setAttribute("lophocs", lophocs);
+    request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);  
+            
     }
 
     protected void doSendNTFToClass(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        PrintWriter out = response.getWriter() ; 
         String ID_LopHoc = request.getParameter("ID_LopHoc");
+        
+       
+        
         ArrayList<String> listID_HS = ThongBaoDAO.adminGetListIDHSbyID_LopHoc(ID_LopHoc);
         String ID_GiaoVien = ThongBaoDAO.adminGetIdGiaoVienToSendNTF(ID_LopHoc);
         request.setAttribute("listID_HS", listID_HS);
@@ -68,8 +92,14 @@ public class adminActionWithNotification extends HttpServlet {
         if (s1 && s2) {
             request.setAttribute("message", "Gửi thông báo thành công!");
             request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);
+        } else if (s1 == true  && s2 == false ) {
+            request.setAttribute("message", "Gửi thông báo thất bại cho giáo viên trong lớp!");
+            request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);
+        } else if (s1 == false  && s2 == true  ) {
+            request.setAttribute("message", "Gửi thông báo thất bại cho học sinh trong lớp!");
+            request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);
         } else {
-            request.setAttribute("message", "Gửi thông báo thất bại!");
+            request.setAttribute("message", "Gửi thông báo thất bại cho cả học sinh và giáo viên trong lớp!");
             request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);
         }
 

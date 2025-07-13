@@ -577,33 +577,33 @@
                         <i class="fas fa-users"></i> Gửi toàn bộ lớp học
                     </a>
                 </div>
-                <form action="${pageContext.request.contextPath}/adminFindNotifications" method="post">
-                <div class="filter-bar">
-                    <div class="filter-group">
-                        <label for="keyword">Từ khóa:</label>
-                        <input type="text" id="keyword" name="keyword" placeholder="Tìm kiếm nội dung...">
+                <form action="${pageContext.request.contextPath}/adminActionWithNotification" method="get">
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label for="keyword">Từ khóa:</label>
+                            <input type="text" id="keyword" name="keyword" placeholder="Tìm kiếm nội dung...">
+                        </div>
+                        <div class="filter-group">
+                            <label for="khoi">Lọc theo khối</label>
+                            <select id="khoi" name="khoi">
+                                <option value="">Tất cả</option>
+                                <option value="1">6</option>
+                                <option value="2">7</option>
+                                <option value="3">8</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="mon">Lọc theo môn học</label>
+                            <select id="mon" name="mon">
+                                <option value="">Tất cả</option>
+                                <option value="Toán">Toán</option>
+                                <option value="Vật lý">Vật lý</option>
+                                <option value="Hóa học">Hóa học</option>
+                            </select>
+                        </div>
+                        <button><i class="fas fa-search"></i></button>
                     </div>
-                    <div class="filter-group">
-                        <label for="recipientType">Lọc theo khối</label>
-                        <select id="recipientType" name="recipientType">
-                            <option value="">Tất cả</option>
-                            <option value="hocsinh">6</option>
-                            <option value="giaovien">7</option>
-                            <option value="phuhuynh">8</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="dateRange">Lọc theo môn học</label>
-                        <select id="dateRange" name="dateRange">
-                            <option value="">Tất cả</option>
-                            <option value="today">Toán</option>
-                            <option value="week">Vật lý</option>
-                            <option value="month">Hóa học</option>
-                        </select>
-                    </div>
-                    <button><i class="fas fa-search"></i></button>
-                </div>
-            </form>
+                </form>
             </div>
 
             <c:choose>

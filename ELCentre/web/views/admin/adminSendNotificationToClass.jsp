@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    String ID_LopHoc = request.getParameter("ID_LopHoc");
+    String ID_LopHoc = request.getParameter("idLop");
 %>
 <!DOCTYPE html>
 <html>
@@ -75,7 +75,7 @@
 <form action="${pageContext.request.contextPath}/adminActionWithNotification" method="post">
     <input type="hidden" name="type" value="sendToClass">
     <input type="hidden" name="ID_LopHoc" value="<%= ID_LopHoc %>">
-
+  
     <label for="noidungGV">Nội dung gửi cho giáo viên:</label>
     <textarea id="noidungGV" name="noidungGV" rows="5" required></textarea>
 

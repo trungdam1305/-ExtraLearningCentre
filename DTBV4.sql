@@ -1381,13 +1381,14 @@ INSERT [dbo].[PhongHoc] ([ID_PhongHoc], [TenPhongHoc], [SucChua], [TrangThai]) V
 SET IDENTITY_INSERT [dbo].[PhongHoc] OFF
 GO
 
+SELECT * FROM ThongBao
+SELECT MIN(TB.Status) AS Status, TB.NoiDung, TB.ThoiGian
+FROM ThongBao TB
+WHERE TB.Status IN ('ALLSTUDENT', 'ALLTEACHER', 'ALLCLASS', 'CLASS', 'STUDENT', 'TEACHER')
+GROUP BY TB.NoiDung, TB.ThoiGian
+ORDER BY TB.ThoiGian DESC
 
-select * from ThongBao
 
-select * from HocSinh HS 
-join TaiKhoan TK 
-on  TK.ID_TaiKhoan = HS.ID_TaiKhoan
-WHERE HS.TrangThaiHoc = N'Đang học'
 
 
 
