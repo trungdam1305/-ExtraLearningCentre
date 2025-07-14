@@ -764,7 +764,6 @@ public class LopHocDAO {
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             LopHoc lop = new LopHoc();
-            
             lop.setID_LopHoc(rs.getInt("ID_LopHoc"));
             lop.setTenLopHoc(rs.getString("TenLopHoc"));
             lop.setClassCode(rs.getString("ClassCode"));
@@ -1107,7 +1106,6 @@ public class LopHocDAO {
         }
         return list;
     }
-    
     //Kiểm tra dữ liệu
     public static void main(String[] args) {
         int idKhoaHoc = 1; // thay bằng ID_KhoaHoc bạn muốn test

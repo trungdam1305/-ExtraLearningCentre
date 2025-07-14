@@ -1,4 +1,7 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package controller.ManageCourses;
 
 import dal.LopHocInfoDTODAO;
@@ -28,6 +31,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
+/**
+ *
+ * @author Vuh26
+ */
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
@@ -113,7 +121,7 @@ public class ManageClass extends HttpServlet {
         }
 
         // Validate trangThai
-        if (trangThai == null || trangThai.trim().isEmpty() || !List.of("Inactive", "Active", "Finished", "Chưa học","Đang học","Kết thúc").contains(trangThai)) {
+        if (trangThai == null || trangThai.trim().isEmpty() || !List.of("Inactive", "Active", "Finished", "Chưa học", "Đang học", "Kết thúc").contains(trangThai)) {
             return "Trạng thái không hợp lệ!";
         }
 
@@ -146,6 +154,9 @@ public class ManageClass extends HttpServlet {
             }
             if (siSoToiThieu > siSoToiDa) {
                 return "Sĩ số tối thiểu không được lớn hơn sĩ số tối đa!";
+            }
+            if (isUpdate && siSoCurrent < siSoToiThieu) {
+                return "Sĩ số hiện tại (" + siSoCurrent + ") nhỏ hơn sĩ số tối thiểu (" + siSoToiThieu + "), không thể cập nhật!";
             }
         } catch (NumberFormatException e) {
             return "Sĩ số tối thiểu không hợp lệ!";
@@ -189,7 +200,7 @@ public class ManageClass extends HttpServlet {
         if (ngayHocs.length != idSlotHocs.length || ngayHocs.length != idPhongHocs.length) {
             return "Dữ liệu lịch học trong tương lai không đồng bộ!";
         }
-        
+
         LocalDate today = LocalDate.now();
         for (String ngayHoc : ngayHocs) {
             if (ngayHoc == null || ngayHoc.trim().isEmpty()) {
@@ -1051,3 +1062,4 @@ public class ManageClass extends HttpServlet {
         }
     }
 }
+    

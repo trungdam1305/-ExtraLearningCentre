@@ -544,10 +544,14 @@
             <c:if test="${not empty error}">
                 <div class="alert alert-custom-danger" role="alert">${error}</div>
             </c:if>
-           
 
 
+<<<<<<< HEAD
 <input type="text" class="form-control" id="searchInput" placeholder="Tìm theo mã hoặc tên lớp" onkeyup="searchClasses()">
+=======
+
+            <input type="text" class="form-control" id="searchInput" placeholder="Tìm theo mã hoặc tên lớp" onkeyup="searchClasses()">
+>>>>>>> 942ba0eced369676945c15812aa61113d7de5a14
             <!-- Bảng danh sách -->
             <div class="table-container">
                 <c:if test="${not empty lopHocs}">
@@ -594,9 +598,16 @@
                                             <button type="button" class="btn btn-info btn-sm toggle-details" data-id="${lopHoc.idLopHoc}">
                                                 <i class="bi bi-info-circle"></i> Xem chi tiết
                                             </button>
-                                            <a href="${pageContext.request.contextPath}/ManageClassDetail?ID_LopHoc=${lopHoc.idLopHoc}&ID_KhoaHoc=${lopHoc.idKhoaHoc}&ID_Khoi=${lopHoc.idKhoi}&ClassCode=${lopHoc.classCode}" class="btn btn-secondary btn-sm" aria-label="Xem danh sách lớp">
-                                                <i class="bi bi-eye"></i> Danh sách học sinh
-                                            </a>
+                                            <c:choose>
+                                                <c:when test="${not empty idGiaoVien and not empty lopHoc.idLopHoc and not empty lopHoc.idKhoaHoc and not empty lopHoc.idKhoi}">
+                                                    <a href="${pageContext.request.contextPath}/ManageClassDetail_LopHoc_GiaoVien?ID_LopHoc=${lopHoc.idLopHoc}&ID_KhoaHoc=${lopHoc.idKhoaHoc}&ID_Khoi=${lopHoc.idKhoi}&ClassCode=${fn:escapeXml(lopHoc.classCode)}&idGiaoVien=${idGiaoVien}" class="btn btn-secondary btn-sm" aria-label="Xem danh sách lớp">
+                                                        <i class="bi bi-eye"></i> Danh sách học sinh
+                                                    </a>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="text-danger">Lỗi: Thiếu thông tin lớp học hoặc ID giáo viên!</span>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
                                     </tr>
                                     <tr class="details-row" id="details-${lopHoc.idLopHoc}">
@@ -697,6 +708,7 @@
                     row.style.display = 'none';
                 });
             });
+<<<<<<< HEAD
             
             function searchClasses() {
     const input = document.getElementById('searchInput').value.toLowerCase();
@@ -707,6 +719,18 @@
         row.style.display = (classCode.includes(input) || className.includes(input)) ? '' : 'none';
     });
 }
+=======
+
+            function searchClasses() {
+                const input = document.getElementById('searchInput').value.toLowerCase();
+                const rows = document.querySelectorAll('.table tbody tr:not(.details-row)');
+                rows.forEach(row => {
+                    const classCode = row.cells[0].textContent.toLowerCase();
+                    const className = row.cells[1].textContent.toLowerCase();
+                    row.style.display = (classCode.includes(input) || className.includes(input)) ? '' : 'none';
+                });
+            }
+>>>>>>> 942ba0eced369676945c15812aa61113d7de5a14
         </script>
     </body>
 </html>

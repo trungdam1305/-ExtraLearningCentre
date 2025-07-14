@@ -637,7 +637,7 @@
             </div>
         </div>
 
-       <div class="sidebar">
+        <div class="sidebar">
             <h4>EL CENTRE</h4>
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
@@ -874,7 +874,7 @@
                                             <a href="${pageContext.request.contextPath}/ManageClass?action=updateClass&ID_LopHoc=${lopHoc.idLopHoc}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="btn btn-danger btn-sm" aria-label="Cập nhật lớp học">
                                                 <i class="bi bi-pencil"></i> Sửa
                                             </a>
-                                            <a href="${pageContext.request.contextPath}/ManageClassDetail?ID_LopHoc=${lopHoc.idLopHoc}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}&ClassCode=${lopHoc.classCode}" class="btn btn-secondary btn-sm" aria-label="Xem danh sách lớp">
+                                            <a href="/ELCentre1/ManageClassDetail?ID_LopHoc=1&ID_KhoaHoc=1&ID_Khoi=1&ClassCode=ABC&backUrl=/ELCentre1/ManageClass?action=refresh&ID_Khoi=1&ID_KhoaHoc=1" class="btn btn-secondary btn-sm" aria-label="Xem danh sách lớp">
                                                 <i class="bi bi-eye"></i> Danh sách học sinh
                                             </a>
                                         </td>

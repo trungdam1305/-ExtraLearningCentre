@@ -4,7 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Gửi yêu cầu thành công</title>
+<<<<<<< HEAD
     <meta http-equiv="refresh" content="5; URL=${pageContext.request.contextPath}/HomePage">
+=======
+    <meta http-equiv="refresh" content="5; URL=HomePage.jsp">
+>>>>>>> 942ba0eced369676945c15812aa61113d7de5a14
     <!--    Tự động chuyển sau 5 giây -->
     <style>
         body {
@@ -55,7 +59,11 @@
     <div class="message-box">
         <h2>✅ Cảm ơn bạn đã gửi yêu cầu tư vấn!</h2>
         <p>Chúng tôi sẽ liên hệ với bạn sớm nhất có thể.</p>
+<<<<<<< HEAD
         <a href="${pageContext.request.contextPath}/HomePage">Quay lại trang chủ</a>
+=======
+        <a href="HomePage.jsp">Quay lại trang chủ</a>
+>>>>>>> 942ba0eced369676945c15812aa61113d7de5a14
         <div class="small-text">(Bạn sẽ được chuyển hướng về trang chủ sau vài giây...)</div>
     </div>
 </body>

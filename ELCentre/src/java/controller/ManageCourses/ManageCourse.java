@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package controller.ManageCourses;
 
 import dal.GiaoVienDAO;
@@ -653,7 +657,7 @@ public class ManageCourse extends HttpServlet {
                 request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                 return;
             }
-        } else if ("submitUpdateCourse".equals(action)) {
+         } else if ("submitUpdateCourse".equals(action)) {
             try {
                 int id = Integer.parseInt(request.getParameter("ID_KhoaHoc"));
                 String ten = request.getParameter("TenKhoaHoc");

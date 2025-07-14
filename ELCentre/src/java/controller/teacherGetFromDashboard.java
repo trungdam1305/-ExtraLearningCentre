@@ -173,14 +173,12 @@ public class teacherGetFromDashboard extends HttpServlet {
         // 3. Tính toán phân trang
         int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
         
-
         // 4. Đặt thuộc tính cho JSP
         request.setAttribute("classList", classList);
         request.setAttribute("courseList", courseList);
         request.setAttribute("yearList", yearList);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("currentPage", currentPage);
-
         // Giữ lại giá trị lọc của người dùng
         request.setAttribute("keyword", keyword);
         request.setAttribute("selectedCourseId", courseId);

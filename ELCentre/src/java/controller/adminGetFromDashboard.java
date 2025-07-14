@@ -18,18 +18,17 @@ import model.KhoaHoc;
 import model.TaiKhoanChiTiet;
 import dal.TaiKhoanChiTietDAO;
 import model.GiaoVien_TruongHoc;
-import model.HocSinh_SDT ; 
-import dal.HocSinh_SDTDAO ; 
+import model.HocSinh_SDT;
+import dal.HocSinh_SDTDAO;
 import model.GiaoVien_ChiTietDay;
-
 
 /**
  * Created on:May 24 , 2025 11:48:56 PM
- * @author: chuvv
- * This servlet do all action admin do in dashboard , like when admin click in
- * manage Users or all thing in admin dashboard , servlet can create ArrayList
- * to save data from database and send this data to specific JSP to show for
- * admin
+ *
+ * @author: chuvv This servlet do all action admin do in dashboard , like when
+ * admin click in manage Users or all thing in admin dashboard , servlet can
+ * create ArrayList to save data from database and send this data to specific
+ * JSP to show for admin
  */
 public class adminGetFromDashboard extends HttpServlet {
 
@@ -58,12 +57,12 @@ public class adminGetFromDashboard extends HttpServlet {
         switch (action) {
             case "taikhoan":            //action with account
                 ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();    //admin get All acount from database
-              
-                if (taikhoans == null) {                                  
+
+                if (taikhoans == null) {
                     request.setAttribute("message", "Không có tài khoản nào.");
                     request.setAttribute("taikhoans", taikhoans);
                     request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
-                } else {                                                    
+                } else {
                     session.setAttribute("taikhoans", taikhoans);       //create object is taikhoans to send data for jsp
                     request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);          //redirect to jsp
                 }
@@ -72,12 +71,12 @@ public class adminGetFromDashboard extends HttpServlet {
 
             case "hocsinh":       //action with student
                 ArrayList<HocSinh_SDT> hocsinhs = new ArrayList<HocSinh_SDT>();          // create arraylist to save data 
-                hocsinhs = HocSinh_SDTDAO.adminGetSoDienThoaiHocSinh() ;                //admin get All student from database
+                hocsinhs = HocSinh_SDTDAO.adminGetSoDienThoaiHocSinh();                //admin get All student from database
                 if (hocsinhs == null) {                                    // get database fail
                     request.setAttribute("message", "Không có tài khoản nào.");
                     request.setAttribute("hocsinhs", hocsinhs);
                     request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);
-                    
+
                 } else {                                                    // get database success
                     session.setAttribute("hocsinhs", hocsinhs);          //create object is hocsinhs to send data for jsp
                     request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);          //redirect to  adminReceiveHocSinh jsp
@@ -110,14 +109,13 @@ public class adminGetFromDashboard extends HttpServlet {
                     request.getRequestDispatcher("/views/admin/adminReceiveHocPhi.jsp").forward(request, response);      //redirect to adminReceiveHocPhi jsp
                 }
                 break;
-
             case "thongbao":            //action with notifications
                 ArrayList<GiaoVien_ChiTietDay> lophocs = ThongBaoDAO.adminGetAllLopHocDangHocToSendThongBao();        //admin get All notifications from database
-                if (lophocs.isEmpty()) {                                         
+                if (lophocs.isEmpty()) {
                     request.setAttribute("message", "Không có lớp học nào để gử thông báo.");
                     request.getRequestDispatcher("/views/admin/adminReceiveHocPhi.jsp").forward(request, response);
-                } else {                   
-                    session.setAttribute("lophocs", lophocs);         
+                } else {
+                    session.setAttribute("lophocs", lophocs);
                     request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);            //redirect to adminReceiveThongBao jsp    
                 }
                 break;
@@ -132,8 +130,8 @@ public class adminGetFromDashboard extends HttpServlet {
                     request.getRequestDispatcher("/views/admin/adminReceiveKhoaHoc.jsp").forward(request, response);         //redirect to adminReceiveThongBao jsp    
                 }
                 break;
-                
-            case "yeucautuvan" : //action xử lý phê duyệt yêu cầu
+
+            case "yeucautuvan": //action xử lý phê duyệt yêu cầu
                 ArrayList<ThongBao> listTuVan = ThongBaoDAO.getAllTuVan();
                 if (listTuVan == null || listTuVan.isEmpty()) {
                     request.setAttribute("message", "Không có yêu cầu tư vấn nào.");
@@ -143,7 +141,7 @@ public class adminGetFromDashboard extends HttpServlet {
                     request.getRequestDispatcher("/views/admin/adminApproveRegisterUser.jsp").forward(request, response);
 
                 }
-                break;                
+                break;
 
         }
 
