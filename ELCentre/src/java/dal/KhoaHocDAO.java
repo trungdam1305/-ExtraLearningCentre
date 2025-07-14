@@ -1083,56 +1083,66 @@ public class KhoaHocDAO {
                 return tong;
     }
     
-    public List<KhoaHoc> getKhoaHocFiltered(String keyword, String idKhoi, int page, int pageSize) {
+    public List<KhoaHoc> getKhoaHocFiltered(String keyword, String idKhoiStr, int page, int pageSize) {
     List<KhoaHoc> list = new ArrayList<>();
-    DBContext db = DBContext.getInstance();
-
-    // Start SQL query with base condition
+    List<Object> params = new ArrayList<>();
+    
+    // Bắt đầu câu lệnh SQL với điều kiện luôn đúng để dễ dàng nối các mệnh đề AND
     StringBuilder sql = new StringBuilder("SELECT * FROM KhoaHoc WHERE 1=1");
 
-    // Apply search keyword filter if provided
+    // Lọc theo từ khóa (Tên khóa học)
     if (keyword != null && !keyword.trim().isEmpty()) {
-        sql.append(" AND TenKhoaHoc LIKE ?");
+        if ("Khac".equalsIgnoreCase(keyword)) {
+            // Trường hợp đặc biệt khi lọc "Các môn khác"
+            sql.append(" AND TenKhoaHoc NOT LIKE N'%Toán%' AND TenKhoaHoc NOT LIKE N'%Văn%' ");
+        } else {
+            sql.append(" AND TenKhoaHoc LIKE ? ");
+            params.add("%" + keyword.trim() + "%");
+        }
     }
 
-    // Apply grade (Khoi) filter if provided
-    if (idKhoi != null && !idKhoi.trim().isEmpty()) {
-        sql.append(" AND ID_Khoi = ?");
+    // Lọc theo Khối học
+    if (idKhoiStr != null && !idKhoiStr.trim().isEmpty()) {
+        try {
+            int idKhoi = Integer.parseInt(idKhoiStr);
+            if (idKhoi > 0) {
+                 // ✅ Dùng = cho cột số, và thêm tham số vào danh sách
+                sql.append(" AND ID_Khoi = ? ");
+                params.add(idKhoi);
+            }
+        } catch (NumberFormatException e) {
+            // Bỏ qua nếu idKhoi không phải là số
+            System.err.println("ID_Khoi không hợp lệ: " + idKhoiStr);
+        }
     }
 
-    // Add pagination using OFFSET-FETCH
-    sql.append(" ORDER BY ID_KhoaHoc DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+    // Thêm sắp xếp và phân trang
+    sql.append(" ORDER BY [Order] ASC, NgayTao DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+    params.add((page - 1) * pageSize);
+    params.add(pageSize);
 
-    try (PreparedStatement ps = db.getConnection().prepareStatement(sql.toString())) {
-        int idx = 1;
+    try (Connection conn = DBContext.getInstance().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql.toString())) {
 
-        // Set parameters for keyword and ID_Khoi if they exist
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            ps.setString(idx++, "%" + keyword + "%");
+        // ✅ Dùng một vòng lặp duy nhất để gán tất cả tham số một cách an toàn
+        for (int i = 0; i < params.size(); i++) {
+            ps.setObject(i + 1, params.get(i));
         }
-        if (idKhoi != null && !idKhoi.trim().isEmpty()) {
-            ps.setInt(idx++, Integer.parseInt(idKhoi));
-        }
 
-        // Set OFFSET and LIMIT for pagination
-        ps.setInt(idx++, (page - 1) * pageSize);
-        ps.setInt(idx, pageSize);
-
-        // Execute query and map results to KhoaHoc objects
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            KhoaHoc kh = new KhoaHoc();
-            kh.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
-            kh.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
-            kh.setMoTa(rs.getString("MoTa"));
-            kh.setImage(rs.getString("Image"));
-            kh.setID_Khoi(rs.getInt("ID_Khoi"));
-            list.add(kh);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                KhoaHoc kh = new KhoaHoc();
+                kh.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                kh.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
+                kh.setMoTa(rs.getString("MoTa"));
+                kh.setImage(rs.getString("Image"));
+                kh.setID_Khoi(rs.getInt("ID_Khoi"));
+                list.add(kh);
+            }
         }
     } catch (Exception e) {
-        e.printStackTrace(); // Log exception for debugging
+        e.printStackTrace();
     }
-
     return list;
 }
     
@@ -1564,4 +1574,13 @@ public class KhoaHocDAO {
         }
         return list;
     }  
+    
+    public static void main(String[] args) {
+        KhoaHocDAO dao = new KhoaHocDAO();
+        List<KhoaHoc> kh = new ArrayList<>();
+        kh = dao.getKhoaHocFiltered("khac", "6", 1, 10);
+        for (KhoaHoc k : kh){
+            System.out.println(k.getCourseCode());
+        }
+    }
 }

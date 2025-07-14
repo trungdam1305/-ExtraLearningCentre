@@ -3,7 +3,7 @@
     Created on : May 21, 2025, 1:29:23 PM
     Author     : admin
 --%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -33,6 +33,49 @@
             list-style: none;
             margin: 0;
             padding: 0;
+        }
+        /* --- CSS CHO MENU DROPDOWN (ĐÃ SỬA LỖI) --- */
+
+        /* 1. Đặt thẻ li cha ở chế độ tương đối */
+        #main-menu .menu-item-has-children {
+            position: relative;
+            /* ✅ THÊM DÒNG NÀY ĐỂ TẠO "CÂY CẦU" VÔ HÌNH */
+            padding-bottom: 15px; 
+        }
+
+        /* 2. Ẩn menu con (sub-menu) đi theo mặc định */
+        #main-menu .sub-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: -15px; /* ✅ Kéo menu con lên để che đi khoảng padding */
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            list-style: none;
+            padding: 10px 0;
+            min-width: 220px;
+            border-radius: 6px;
+        }
+
+        /* 3. Khi di chuột (hover) vào mục cha, hiển thị menu con ra */
+        #main-menu .menu-item-has-children:hover > .sub-menu {
+            display: block;
+        }
+
+        /* Style cho các mục trong menu con */
+        #main-menu .sub-menu li a {
+            padding: 10px 20px;
+            display: block;
+            color: #333;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background-color 0.2s;
+        }
+
+        #main-menu .sub-menu li a:hover {
+            background-color: #f5f5f5;
         }
     </style>
 </head>
@@ -81,7 +124,7 @@
                             <ul id="menu-main-menu" class="menu" style="position: relative; transform: translateY(-10px); display: flex; align-items: center; gap: 30px 20px;">
                                 <!--HomePage-->
                                 <li class="menu-item <%= (uri.contains("/HomePage")) ? "current-menu-item" : "" %>">
-                                    <a href="<%= context %>/HomePage">
+                                    <a href="${pageContext.request.contextPath}/HomePage">
                                         <span class='menu-icon fa fa-home'> </span>Trang chủ
                                     </a>
                                 </li>
@@ -93,16 +136,35 @@
                                 </li>
                                 <!--Learning Materials-->
                                 <li class="menu-item <%= uri.contains("/Home-Material") ? "current-menu-item" : "" %>">
-                                    <a href="<%= context %>/HomePageMaterial">
+                                    <a href="${pageContext.request.contextPath}/HomePageMaterial">
                                         <span class='menu-icon fa fa-gift'> </span>Tài Liệu Học
                                     </a>
                                 </li>
                                 <!--Blog-->
-                                <li class="menu-item <%= uri.contains("/Home-Blog") ? "current-menu-item" : "" %>">
-                                    <a href="<%= context %>/HomePageBlog">
-                                        <span class='menu-icon fa fa-pencil'> </span>Blog
-                                    </a>
-                                </li>
+                                <li class="menu-item menu-item-has-children <%= (uri.contains("HomePageBlog") || uri.contains("search-by-tag")) ? "current-menu-item" : "" %>">
+                                <%-- Link chính vẫn trỏ đến trang blog tổng hợp --%>
+                                <a href="${pageContext.request.contextPath}/HomePageBlog">
+                                    <span class='menu-icon fa fa-pencil'></span>Bài Viết
+                                </a>
+
+                                <%-- Đây là menu con sẽ được thả xuống khi hover --%>
+                                <ul class="sub-menu">
+                                    <li class="menu-item">
+                                        <a href="${pageContext.request.contextPath}/HomePageBlog">Tất cả bài viết</a>
+                                    </li>
+                                    <%-- Thêm dòng kẻ phân cách nếu có tag --%>
+                                    <c:if test="${not empty keyTagList}">
+                                        <li class="menu-item-divider" style="border-top: 1px solid #eee; margin: 5px 0;"></li>
+                                        <li class="menu-item" style="padding: 5px 15px; color: #888; font-size: 0.9em;">Chủ đề nổi bật:</li>
+                                    </c:if>
+
+                                    <c:forEach var="tag" items="${keyTagList}">
+                                        <li class="menu-item">
+                                            <a href="${pageContext.request.contextPath}/TagSearchServlet?tag=${tag}">${tag}</a>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </li>
                                 <!--About Us-->
                                 <li class="menu-item <%= uri.contains("/Home-Introduction") ? "current-menu-item" : "" %>">
                                     <a href="<%= context %>/views/Home-Introduction/Homepage-Introduction.jsp">

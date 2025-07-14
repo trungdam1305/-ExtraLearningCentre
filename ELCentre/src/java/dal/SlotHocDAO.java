@@ -16,7 +16,7 @@ public class SlotHocDAO {
     public List<SlotHoc> getAllSlotHoc() throws SQLException {
         List<SlotHoc> slotHocList = new ArrayList<>();
         DBContext db = DBContext.getInstance();
-        String sql = "SELECT ID_SlotHoc, SlotThoiGian FROM [dbo].[SlotHoc]";
+        String sql = "SELECT * FROM SlotHoc ORDER BY ID_SlotHoc";
         try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 SlotHoc slot = new SlotHoc();
@@ -124,6 +124,15 @@ public class SlotHocDAO {
             System.err.println("Lỗi phân tích SlotThoiGian: slot1 = " + slotThoiGian1 + ", slot2 = " + slotThoiGian2 + ", error = " + e.getMessage());
             e.printStackTrace();
             return false;
+        }
+    }
+    
+    public static void main(String[] args) {
+        SlotHocDAO dao = new SlotHocDAO();
+        List<SlotHoc> li = new ArrayList<>();
+        li = dao.getAllSlotHoc1();
+        for (SlotHoc l : li){
+            System.out.println(l.getID_SlotHoc() + l.getSlotThoiGian());
         }
     }
 }

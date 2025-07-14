@@ -1418,4 +1418,57 @@ public boolean removeTeacherFromClass1(int idLopHoc, int idGiaoVien) throws SQLE
         }
         return Optional.empty();
     }
+        
+    public List<GiaoVien> getAllTeachers() {
+    List<GiaoVien> list = new ArrayList<>();
+    String sql = "SELECT ID_GiaoVien, HoTen FROM GiaoVien WHERE TrangThai = 'Active' order by IsHot desc"; // Chỉ lấy GV đang hoạt động
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            GiaoVien gv = new GiaoVien();
+            gv.setID_GiaoVien(rs.getInt("ID_GiaoVien"));
+            gv.setHoTen(rs.getString("HoTen"));
+            list.add(gv);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
+    public List<GiaoVien> getTeachersByCourseId(int courseId) {
+    List<GiaoVien> list = new ArrayList<>();
+    // Câu lệnh này JOIN các bảng để tìm đúng giáo viên
+    String sql = """
+        SELECT DISTINCT 
+            gv.ID_GiaoVien, 
+            gv.HoTen
+        FROM 
+            GiaoVien gv
+        JOIN 
+            GiaoVien_LopHoc gvlh ON gv.ID_GiaoVien = gvlh.ID_GiaoVien
+        JOIN 
+            LopHoc l ON gvlh.ID_LopHoc = l.ID_LopHoc
+        WHERE 
+            l.ID_KhoaHoc = ?
+        ORDER BY
+            gv.HoTen
+    """;
+
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        
+        ps.setInt(1, courseId);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            GiaoVien gv = new GiaoVien();
+            gv.setID_GiaoVien(rs.getInt("ID_GiaoVien"));
+            gv.setHoTen(rs.getString("HoTen"));
+            list.add(gv);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
 }

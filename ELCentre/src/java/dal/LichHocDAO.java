@@ -159,8 +159,7 @@ public class LichHocDAO {
         LocalDate startOfWeek = LocalDate.now().with(DayOfWeek.MONDAY);
         LocalDate endOfWeek = LocalDate.now().with(DayOfWeek.SUNDAY);
 
-        List<LichHoc> lichHocList = LichHocDAO.getLichHocTrongTuan(11, startOfWeek, endOfWeek);
-
+        List<LichHoc> lichHocList = LichHocDAO.getLichHocTrongTuan(4, startOfWeek, endOfWeek);
 
         for (LichHoc lh : lichHocList) {
             System.out.println("ID Schedule: " + lh.getID_Schedule());
@@ -506,4 +505,5 @@ public class LichHocDAO {
         }
         return list;
     }    
+
 }

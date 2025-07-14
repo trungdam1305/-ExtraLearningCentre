@@ -395,6 +395,7 @@
                                     <th>Họ Tên</th>
                                     <th>Ngày Sinh</th>
                                     <th>Giới Tính</th>
+                                    <th>Lớp đang học tại trường</th>
                                     <th>SĐT Phụ Huynh</th>
                                     <th>Ảnh</th>
                                 </tr>
@@ -432,6 +433,7 @@
                                             <%-- Kết thúc Scriptlet --%>
                                         </td>
                                         <td>${student.gioiTinh}</td>
+                                        <td>${student.getLopDangHocTrenTruong()}</td>
                                         <td>${student.SDT_PhuHuynh}</td>
                                         <td>
                                             <img src="${pageContext.request.contextPath}/img/avatar/${student.avatar}" 

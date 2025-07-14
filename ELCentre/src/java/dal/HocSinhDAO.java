@@ -317,6 +317,7 @@ public class HocSinhDAO {
                 hocSinh.setNgayTao(rs.getTimestamp("NgayTao") != null ? rs.getTimestamp("NgayTao").toLocalDateTime() : null);
                 hocSinh.setTenTruongHoc(rs.getString("TenTruongHoc"));
                 hocSinh.setAvatar(rs.getString("Avatar"));
+                hocSinh.setLopDangHocTrenTruong(rs.getString("LopDangHocTrenTruong"));
                 hocSinhList.add(hocSinh);
             }
             System.out.println("HocSinhList size for LopHoc ID " + idLopHoc + ": " + hocSinhList.size());

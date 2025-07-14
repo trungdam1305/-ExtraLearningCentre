@@ -8,6 +8,7 @@ package controller;
 import dal.GiaoVien_LopHocDAO;
 import dal.GiaoVienDAO;
 import dal.LichHocDAO;
+import dal.SlotHocDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,10 +20,15 @@ import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.GiaoVien;
 import model.GiaoVien_TruongHoc;
 import model.LichHoc;
+import model.SlotHoc;
 import model.TaiKhoan;
 
 /**
@@ -64,114 +70,100 @@ public class TeacherDashboard extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        TaiKhoan user = (TaiKhoan) session.getAttribute("user");
-
-        if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/views/login.jsp");
-            return;
-        }
-
-        // --- Lấy các thông số chung (giữ nguyên) ---
-        GiaoVien_LopHocDAO gvLhDAO = new GiaoVien_LopHocDAO();
-        int numLopHoc = GiaoVien_LopHocDAO.teacherGetTongSoLopHoc(user.getID_TaiKhoan());
-        int numHocSinh = GiaoVien_LopHocDAO.teacherGetTongSoHocSinh(user.getID_TaiKhoan());
-        GiaoVienDAO dao = new GiaoVienDAO();
-        double luongGV = dao.getLuongTheoTaiKhoan(user.getID_TaiKhoan());
-        DecimalFormat df = new DecimalFormat("#,###");
-        String luongGv = df.format(luongGV);
-        GiaoVien_TruongHoc gv = GiaoVienDAO.getGiaoVienByID(user.getID_TaiKhoan());
-
-        // --- LOGIC XỬ LÝ NGÀY/TUẦN ĐÃ ĐƯỢC NÂNG CẤP ---
-        DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        LocalDate startDate;
-        LocalDate endDate;
-        String displayRange;
-        String viewMode = "week"; // Mặc định là xem theo tuần
-
-        // Lấy các tham số điều khiển ngày tháng từ request
-        String filterDateParam = request.getParameter("filterDate");
-        String selectedWeekParam = request.getParameter("selectedWeek");
-        String viewDateParam = request.getParameter("viewDate");
-
-        if (filterDateParam != null && !filterDateParam.isEmpty()) {
-            // ƯU TIÊN 1: LỌC THEO NGÀY CỤ THỂ
-            viewMode = "day";
-            startDate = endDate = LocalDate.parse(filterDateParam);
-            displayRange = "Ngày " + startDate.format(displayFormatter);
-        } else {
-            // XEM THEO TUẦN (như cũ)
-            LocalDate viewMonday;
-            java.time.temporal.WeekFields weekFields = java.time.temporal.WeekFields.ISO;
-
-            if (selectedWeekParam != null && !selectedWeekParam.isEmpty()) {
-                // Ưu tiên 2: Người dùng chọn tuần
-                try {
-                    int year = Integer.parseInt(selectedWeekParam.substring(0, 4));
-                    int week = Integer.parseInt(selectedWeekParam.substring(6));
-                    viewMonday = LocalDate.of(year, 1, 1)
-                            .with(weekFields.weekOfWeekBasedYear(), week)
-                            .with(java.time.temporal.TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-                } catch (Exception e) {
-                    viewMonday = LocalDate.now().with(DayOfWeek.MONDAY);
-                }
-            } else if (viewDateParam != null && !viewDateParam.isEmpty()) {
-                // Ưu tiên 3: Người dùng nhấn nút Tuần trước/sau
-                try {
-                    viewMonday = LocalDate.parse(viewDateParam);
-                } catch (Exception e) {
-                    viewMonday = LocalDate.now().with(DayOfWeek.MONDAY);
-                }
-            } else {
-                // Mặc định: Tuần hiện tại
-                viewMonday = LocalDate.now().with(DayOfWeek.MONDAY);
-            }
-            startDate = viewMonday;
-            endDate = startDate.plusDays(6);
-            displayRange = "Tuần từ " + startDate.format(displayFormatter) + " - " + endDate.format(displayFormatter);
-        }
-
-        // Lấy danh sách lịch học trong khoảng thời gian đã xác định
-        List<LichHoc> fullList = LichHocDAO.getLichHocTrongTuan(user.getID_TaiKhoan(), startDate, endDate);
-
-        // --- Phân trang (giữ nguyên) ---
-        int page = 1;
-        String pageParam = request.getParameter("page");
-        if (pageParam != null) {
-            try { page = Integer.parseInt(pageParam); } catch (NumberFormatException e) { page = 1; }
-        }
-        int pageSize = 10;
-        int totalItems = fullList.size();
-        List<LichHoc> pageList = fullList.subList(Math.max(0, (page - 1) * pageSize), Math.min(totalItems, page * pageSize));
-        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
-        if(totalPages == 0) totalPages = 1;
-
-
-        // --- Gửi dữ liệu tới JSP ---
-        request.setAttribute("numLopHoc", numLopHoc);
-        request.setAttribute("numHocSinh", numHocSinh);
-        request.setAttribute("gv", gv);
-        request.setAttribute("luongGV", luongGv);
-
-        request.setAttribute("tkbTrongTuan", pageList);
-        request.setAttribute("displayWeekRange", displayRange);
-        request.setAttribute("currentPage", page);
-        request.setAttribute("totalPages", totalPages);
-
-        // Gửi các tham số để giữ lại trạng thái trên form
-        request.setAttribute("filterDateValue", filterDateParam); 
-
-        // Tạo link cho các nút điều hướng
-        DateTimeFormatter urlDateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
-        request.setAttribute("previousWeekLink", startDate.minusWeeks(1).format(urlDateFormatter));
-        request.setAttribute("nextWeekLink", startDate.plusWeeks(1).format(urlDateFormatter));
-        request.setAttribute("currentViewDate", startDate.format(urlDateFormatter));
-
-        request.getRequestDispatcher("views/teacher/teacherDashboard.jsp").forward(request, response);
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    
+    // --- BƯỚC 1: XÁC THỰC VÀ LẤY THÔNG TIN NGƯỜI DÙNG ---
+    HttpSession session = request.getSession();
+    TaiKhoan user = (TaiKhoan) session.getAttribute("user");
+    if (user == null) {
+        response.sendRedirect(request.getContextPath() + "/views/login.jsp");
+        return;
     }
+
+    // --- BƯỚC 2: TẢI DỮ LIỆU THỐNG KÊ CHO DASHBOARD ---
+    int idTaiKhoan = user.getID_TaiKhoan();
+    GiaoVienDAO gvDao = new GiaoVienDAO();
+    
+    // Lấy các thông tin thống kê
+    int numHocSinh = GiaoVien_LopHocDAO.teacherGetTongSoHocSinh(idTaiKhoan);
+    int numLopHoc = GiaoVien_LopHocDAO.teacherGetTongSoLopHoc(idTaiKhoan);
+    double luongGV = gvDao.getLuongTheoTaiKhoan(user.getID_TaiKhoan());
+    DecimalFormat df = new DecimalFormat("#,###");
+    String luongGv = df.format(luongGV);
+    
+    // Gửi thông tin người dùng và thống kê sang JSP
+    request.setAttribute("gv", gvDao.getGiaoVienByID(idTaiKhoan));
+    request.setAttribute("numHocSinh", numHocSinh);
+    request.setAttribute("numLopHoc", numLopHoc);
+    request.setAttribute("luongGV", luongGv);
+    
+    // --- BƯỚC 3: XỬ LÝ LOGIC LỌC THEO TUẦN ---
+    LocalDate startOfWeek;
+    String viewDateParam = request.getParameter("viewDate");
+    String weekParam = request.getParameter("week"); // Tham số từ <input type="week">
+
+    if (weekParam != null && !weekParam.isEmpty()) {
+        // Trường hợp người dùng chọn một tuần cụ thể (định dạng: "2025-W28")
+        int year = Integer.parseInt(weekParam.substring(0, 4));
+        int weekNumber = Integer.parseInt(weekParam.substring(6));
+        // Tính ngày đầu tuần (Thứ Hai) từ năm và số tuần
+        startOfWeek = LocalDate.of(year, 1, 1)
+                .with(java.time.temporal.IsoFields.WEEK_OF_WEEK_BASED_YEAR, weekNumber)
+                .with(java.time.temporal.TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
+    } else if (viewDateParam != null && !viewDateParam.isEmpty()) {
+        // Trường hợp người dùng nhấn nút "Tuần trước" hoặc "Tuần sau"
+        startOfWeek = LocalDate.parse(viewDateParam);
+    } else {
+        // Mặc định: lấy tuần hiện tại
+        startOfWeek = LocalDate.now().with(java.time.temporal.TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
+    }
+
+    LocalDate endOfWeek = startOfWeek.plusDays(6);
+
+    // --- BƯỚC 4: LẤY DỮ LIỆU LỊCH HỌC TỪ DATABASE ---
+    LichHocDAO lichHocDAO = new LichHocDAO();
+    SlotHocDAO slotHocDAO = new SlotHocDAO();
+    
+    List<LichHoc> scheduleList = lichHocDAO.getLichHocTrongTuan(idTaiKhoan, startOfWeek, endOfWeek);
+    List<SlotHoc> timeSlots = slotHocDAO.getAllSlotHoc1();
+
+    // Chuyển danh sách lịch học thành Map để dễ dàng truy cập trong JSP
+    Map<String, LichHoc> scheduleMap = new HashMap<>();
+    LocalDate homNay = LocalDate.now();
+    for (LichHoc lh : scheduleList) {
+        // Kiểm tra xem buổi học có phải là hôm nay không để cho phép điểm danh
+        if (lh.getNgayHoc().isEqual(homNay)) {
+            lh.setCoTheSua(true);
+        }
+        String key = lh.getID_SlotHoc() + "-" + lh.getNgayHoc().getDayOfWeek().getValue();
+        scheduleMap.put(key, lh);
+    }
+
+    // --- BƯỚC 5: CHUẨN BỊ CÁC THUỘC TÍNH ĐỂ GỬI SANG JSP ---
+    // Tạo danh sách các ngày trong tuần để hiển thị trên header của bảng
+    List<LocalDate> weekDates = java.util.stream.IntStream.range(0, 7)
+            .mapToObj(startOfWeek::plusDays)
+            .collect(java.util.stream.Collectors.toList());
+
+    // Định dạng ngày tháng
+    DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    DateTimeFormatter weekInputFormatter = DateTimeFormatter.ofPattern("YYYY'-W'ww");
+
+    // ✅ CÁC THUỘC TÍNH MỚI BẠN YÊU CẦU THÊM VÀO
+    request.setAttribute("displayWeekRange", "Tuần từ " + startOfWeek.format(displayFormatter) + " đến " + endOfWeek.format(displayFormatter));
+    request.setAttribute("previousWeekLink", startOfWeek.minusWeeks(1).toString());
+    request.setAttribute("nextWeekLink", startOfWeek.plusWeeks(1).toString());
+    request.setAttribute("selectedWeekValue", startOfWeek.format(weekInputFormatter)); // Dữ liệu cho <input type="week">
+
+    // Gửi dữ liệu chính
+    request.setAttribute("scheduleMap", scheduleMap);
+    request.setAttribute("timeSlots", timeSlots);
+    request.setAttribute("weekDates", weekDates);
+    
+    // --- BƯỚC 6: CHUYỂN TIẾP ĐẾN TRANG JSP ---
+    request.getRequestDispatcher("views/teacher/teacherDashboard.jsp").forward(request, response);
+}
     /** 
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request

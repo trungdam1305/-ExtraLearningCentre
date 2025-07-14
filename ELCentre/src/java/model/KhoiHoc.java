@@ -14,7 +14,7 @@ public class KhoiHoc {
     private int ID_Khoi;         // Unique ID of the level
     private String TenKhoi;      // Name of the level (e.g., "Primary", "Grade 10")
     private int Status_Khoi;     // Status (1 = active, 0 = inactive)
-
+    private String Image;
     /**
      * Default constructor.
      */
@@ -59,4 +59,21 @@ public class KhoiHoc {
     public void setStatus_Khoi(int Status_Khoi) {
         this.Status_Khoi = Status_Khoi;
     }
+
+    public String getImage() {
+        return Image;
+    }
+
+    public void setImage(String Image) {
+        this.Image = Image;
+    }
+
+    public KhoiHoc(int ID_Khoi, String TenKhoi, int Status_Khoi, String Image) {
+        this.ID_Khoi = ID_Khoi;
+        this.TenKhoi = TenKhoi;
+        this.Status_Khoi = Status_Khoi;
+        this.Image = Image;
+    }
+    
+    
 }
