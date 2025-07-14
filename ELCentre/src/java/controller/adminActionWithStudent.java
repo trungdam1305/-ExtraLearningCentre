@@ -181,9 +181,10 @@ public class adminActionWithStudent extends HttpServlet {
         PrintWriter out = response.getWriter();
         String ID = request.getParameter("id");
         String ID_TaiKhoan = request.getParameter("idtaikhoan");
-
+        String name = request.getParameter("name") ; 
         ArrayList<HocSinh_ChiTietHoc> hocsinhchitiets = HocSinh_ChiTietDAO.adminGetAllLopHocCuaHocSinh(ID);
         if (hocsinhchitiets != null) {
+            request.setAttribute("name", name);
             request.setAttribute("idtk", ID_TaiKhoan);
             request.setAttribute("hocsinhchitiets", hocsinhchitiets);
             request.getRequestDispatcher("views/admin/adminViewHocPhiHocSinh.jsp").forward(request, response);
@@ -194,8 +195,8 @@ public class adminActionWithStudent extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         String ID_TaiKhoan = request.getParameter("idtaikhoan");
-        String NoiDung = request.getParameter("noidung");
-        boolean sendNTF = ThongBaoDAO.adminSendNotification(ID_TaiKhoan, NoiDung);
+        String NoiDung = request.getParameter("noidung")  ; 
+        boolean sendNTF = ThongBaoDAO.adminSendNotification(ID_TaiKhoan, NoiDung , "Student") ; 
         if (sendNTF) {
             request.setAttribute("message", "Gửi thông báo thành công!");
             request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);

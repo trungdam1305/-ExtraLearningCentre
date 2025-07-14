@@ -1531,6 +1531,40 @@ public class KhoaHocDAO {
         return list;
     }  
     
+    public static KhoaHoc getKhoaHocById1(int ID_KhoaHoc) {
+        DBContext db = DBContext.getInstance();
+        KhoaHoc khoaHoc = null;
+        try {
+            String sql = """
+            SELECT ID_KhoaHoc, TenKhoaHoc, MoTa, ThoiGianBatDau,
+                   ThoiGianKetThuc, GhiChu, TrangThai, NgayTao, ID_Khoi, CourseCode, [Order]
+            FROM KhoaHoc WHERE ID_KhoaHoc = ?
+        """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setInt(1, ID_KhoaHoc);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                khoaHoc = new KhoaHoc();
+                khoaHoc.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                khoaHoc.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
+                khoaHoc.setMoTa(rs.getString("MoTa"));
+                khoaHoc.setThoiGianBatDau(rs.getDate("ThoiGianBatDau").toLocalDate());
+                khoaHoc.setThoiGianKetThuc(rs.getDate("ThoiGianKetThuc").toLocalDate());
+                khoaHoc.setGhiChu(rs.getString("GhiChu"));
+                khoaHoc.setTrangThai(rs.getString("TrangThai"));
+                khoaHoc.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+                khoaHoc.setID_Khoi(rs.getInt("ID_Khoi")); // Bổ sung dòng này
+                khoaHoc.setCourseCode(rs.getString("CourseCode"));
+                khoaHoc.setOrder(rs.getInt("Order"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return khoaHoc;
+    }
+
+    
     public static void main(String[] args) {
         KhoaHocDAO dao = new KhoaHocDAO();
         List<KhoaHoc> kh = new ArrayList<>();

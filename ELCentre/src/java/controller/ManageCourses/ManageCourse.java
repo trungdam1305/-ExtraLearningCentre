@@ -438,7 +438,7 @@ public class ManageCourse extends HttpServlet {
             } else if ("updateCourse".equalsIgnoreCase(action)) {
                 try {
                     int id = Integer.parseInt(request.getParameter("ID_KhoaHoc"));
-                    KhoaHoc khoaHoc = dao.getKhoaHocById(id);
+                    KhoaHoc khoaHoc = dao.getKhoaHocById1(id);
 
                     if (khoaHoc == null) {
                         System.out.println("updateCourse: Course not found - ID_KhoaHoc=" + id);

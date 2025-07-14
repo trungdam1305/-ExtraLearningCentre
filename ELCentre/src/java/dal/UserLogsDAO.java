@@ -23,7 +23,7 @@ public class UserLogsDAO {
         DBContext db = DBContext.getInstance();
         try {
             String sql = """
-                          SELECT 
+                          SELECT TOP 100
                                 U.ID_TaiKhoan,
                                 COALESCE(HS.HoTen, GV.HoTen, PH.HoTen , AD.HoTen , ST.HoTen) AS HoTen , 
                                   U.HanhDong , 
@@ -37,6 +37,7 @@ public class UserLogsDAO {
                                                   LEFT JOIN Staff ST ON ST.ID_TaiKhoan = U.ID_TaiKhoan
                             where U.ThoiGian >= ? 
                             order by U.ThoiGian DESC
+                         
                           """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             statement.setString(1, date);

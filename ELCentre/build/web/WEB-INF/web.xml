@@ -216,6 +216,14 @@
         <servlet-name>ManageClassDetail_LopHoc_GiaoVien</servlet-name>
         <servlet-class>controller.ManageCourses.ManageClassDetail_LopHoc_GiaoVien</servlet-class>
     </servlet>
+     <servlet>
+        <servlet-name>adminGoToFirstPage</servlet-name>
+        <servlet-class>controller.adminGoToFirstPage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>staffGoToFirstPage</servlet-name>
+        <servlet-class>controller.staffGoToFirstPage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -455,6 +463,14 @@
     <servlet-mapping>
         <servlet-name>ManageClassDetail_LopHoc_GiaoVien</servlet-name>
         <url-pattern>/ManageClassDetail_LopHoc_GiaoVien</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminGoToFirstPage</servlet-name>
+        <url-pattern>/adminGoToFirstPage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>staffGoToFirstPage</servlet-name>
+        <url-pattern>/staffGoToFirstPage</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>
