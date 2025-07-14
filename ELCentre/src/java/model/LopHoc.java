@@ -31,19 +31,48 @@ public class LopHoc {
     private Integer SiSoToiDa ; 
     private Integer SiSoToiThieu ;  
     private int ID_Schedule;            // Associated schedule ID
+    private int ID_PhongHoc ; 
     private String GhiChu;              // Class notes
     private String TrangThai;           // Status of the class
     private String SoTien;              // Tuition fee (as string for formatting reasons)
     private LocalDateTime NgayTao;      // Date and time of class creation
     private String Image;               // URL or filename of the class image
     private int Order ; 
+    private String TenPhongHoc;
     private String TenKhoaHoc;
     private String TenGiaoVien;
     private LocalDateTime ThoiGianBatDau;
     private LocalDateTime ThoiGianKetThuc;
     private Integer ID_GiaoVien;
-    private Integer ID_PhongHoc ;
     private String tenPhongHoc;
+
+    public LopHoc(Integer ID_LopHoc, String ClassCode, String TenLopHoc, Integer ID_KhoaHoc, Integer SiSo, Integer SiSoToiDa, Integer SiSoToiThieu, int ID_Schedule, int ID_PhongHoc, String GhiChu, String TrangThai, String SoTien, LocalDateTime NgayTao, String Image, int Order) {
+        this.ID_LopHoc = ID_LopHoc;
+        this.ClassCode = ClassCode;
+        this.TenLopHoc = TenLopHoc;
+        this.ID_KhoaHoc = ID_KhoaHoc;
+        this.SiSo = SiSo;
+        this.SiSoToiDa = SiSoToiDa;
+        this.SiSoToiThieu = SiSoToiThieu;
+        this.ID_Schedule = ID_Schedule;
+        this.ID_PhongHoc = ID_PhongHoc;
+        this.GhiChu = GhiChu;
+        this.TrangThai = TrangThai;
+        this.SoTien = SoTien;
+        this.NgayTao = NgayTao;
+        this.Image = Image;
+        this.Order = Order;
+    }
+
+
+    public String getTenPhongHoc() {
+        return TenPhongHoc;
+    }
+
+    public void setTenPhongHoc(String TenPhongHoc) {
+        this.TenPhongHoc = TenPhongHoc;
+    }
+    
     
     public LopHoc(Integer ID_LopHoc, String ClassCode, String TenLopHoc, Integer ID_KhoaHoc, Integer SiSo, Integer SiSoToiDa, Integer SiSoToiThieu, int ID_Schedule, int ID_PhongHoc, String GhiChu, String TrangThai, String SoTien, LocalDateTime NgayTao, String Image, int Order, String tenPhongHoc) {
         this.ID_LopHoc = ID_LopHoc;
@@ -96,6 +125,11 @@ public class LopHoc {
         this.Image = Image;
     }
 
+    // --- Getters and Setters ---
+
+    public Integer getID_LopHoc() {
+        return ID_LopHoc;
+    }
     public LopHoc(Integer ID_LopHoc, String ClassCode, String TenLopHoc, Integer ID_KhoaHoc, Integer SiSo, Integer SiSoToiDa, Integer SiSoToiThieu, int ID_Schedule, Integer ID_PhongHoc, String GhiChu, String TrangThai, String SoTien, LocalDateTime NgayTao, String Image, int Order) {
         this.ID_LopHoc = ID_LopHoc;
         this.ClassCode = ClassCode;
@@ -139,17 +173,9 @@ public class LopHoc {
         this.tenPhongHoc = tenPhongHoc;
     }
     
-    // --- Getters and Setters ---
-    public Integer getID_LopHoc() {
-        return ID_LopHoc;
-    }
 
     public void setID_LopHoc(Integer ID_LopHoc) {
         this.ID_LopHoc = ID_LopHoc;
-    }
-
-    public String getClassCode() {
-        return ClassCode;
     }
 
     public void setClassCode(String ClassCode) {
@@ -180,9 +206,6 @@ public class LopHoc {
         this.SiSo = SiSo;
     }
 
-    public Integer getSiSoToiThieu() {
-        return SiSoToiThieu;
-    }
 
     public void setSiSoToiThieu(Integer SiSoToiThieu) {
         this.SiSoToiThieu = SiSoToiThieu;
@@ -235,6 +258,15 @@ public class LopHoc {
     public void setImage(String Image) {
         this.Image = Image;
     }
+
+    public String getClassCode() {
+        return ClassCode;
+    }
+
+    public Integer getSiSoToiThieu() {
+        return SiSoToiThieu;
+    }
+
 
     public int getOrder() {
         return Order;
@@ -292,13 +324,6 @@ public class LopHoc {
         this.ID_PhongHoc = ID_PhongHoc;
     }
 
-    public String getTenPhongHoc() {
-        return tenPhongHoc;
-    }
-
-    public void setTenPhongHoc(String tenPhongHoc) {
-        this.tenPhongHoc = tenPhongHoc;
-    }
     
     
 }

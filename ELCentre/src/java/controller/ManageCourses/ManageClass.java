@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@WebServlet(name = "ManageClass", urlPatterns = {"/ManageClass"})
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
@@ -114,7 +113,7 @@ public class ManageClass extends HttpServlet {
         }
 
         // Validate trangThai
-        if (trangThai == null || trangThai.trim().isEmpty() || !List.of("Inactive", "Active", "Finished").contains(trangThai)) {
+        if (trangThai == null || trangThai.trim().isEmpty() || !List.of("Inactive", "Active", "Finished", "Chưa học","Đang học","Kết thúc").contains(trangThai)) {
             return "Trạng thái không hợp lệ!";
         }
 

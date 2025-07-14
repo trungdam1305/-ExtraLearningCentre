@@ -89,10 +89,6 @@ public class KhoaHoc {
         this.Image = Image;
         this.Order = Order;
     }
-
-    
-    
-   
     // Getter and Setter methods
 
     public Integer getID_KhoaHoc() {
@@ -198,7 +194,6 @@ public class KhoaHoc {
     public void setTenKhoi(String TenKhoi) {
         this.TenKhoi = TenKhoi;
     }
-    
 public String getNgayTaoFormatted() {
     if (NgayTao != null) {
         return NgayTao.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));

@@ -33,7 +33,6 @@ public class TruongHoc {
     public String getDiaChi() {
         return DiaChi;
     }
-
     public void setID_TruongHoc(Integer ID_TruongHoc) {
         this.ID_TruongHoc = ID_TruongHoc;
     }

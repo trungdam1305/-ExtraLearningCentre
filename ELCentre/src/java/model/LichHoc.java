@@ -1,3 +1,4 @@
+
 package model;
 
 import java.time.LocalDate;
@@ -19,7 +20,6 @@ import java.time.LocalDate;
  * Author: Quang Trung Đàm
  */
 public class LichHoc {
-
     // Unique ID for the schedule
     private int ID_Schedule;
 
@@ -44,7 +44,10 @@ public class LichHoc {
     private String TenLopHoc;
     
     private String TenPhongHoc;
-
+    
+     private boolean daDiemDanh; // THÊM THUỘC TÍNH NÀY
+     
+     private boolean coTheSua;
     /**
      * Default constructor.
      */
@@ -101,8 +104,6 @@ public class LichHoc {
         this.TenLopHoc = TenLopHoc;
         this.TenPhongHoc = TenPhongHoc;
     }
-    
-
     // --- Getters and Setters ---
 
     public int getID_Schedule() {
@@ -168,7 +169,43 @@ public class LichHoc {
     public void setTenPhongHoc(String TenPhongHoc) {
         this.TenPhongHoc = TenPhongHoc;
     }
+     // THÊM GETTER VÀ SETTER NÀY
+    public boolean isDaDiemDanh() {
+        return daDiemDanh;
+    }
+
+    public void setDaDiemDanh(boolean daDiemDanh) {
+        this.daDiemDanh = daDiemDanh;
+    }
+
+    public boolean isCoTheSua() {
+        return coTheSua;
+    }
+
+    public void setCoTheSua(boolean coTheSua) {
+        this.coTheSua = coTheSua;
+    }
+
+    public LichHoc(int ID_Schedule, LocalDate NgayHoc, int ID_SlotHoc, int ID_LopHoc, int ID_PhongHoc, String GhiChu, String SlotThoiGian, String TenLopHoc, String TenPhongHoc, boolean daDiemDanh, boolean coTheSua) {
+        this.ID_Schedule = ID_Schedule;
+        this.NgayHoc = NgayHoc;
+        this.ID_SlotHoc = ID_SlotHoc;
+        this.ID_LopHoc = ID_LopHoc;
+        this.ID_PhongHoc = ID_PhongHoc;
+        this.GhiChu = GhiChu;
+        this.SlotThoiGian = SlotThoiGian;
+        this.TenLopHoc = TenLopHoc;
+        this.TenPhongHoc = TenPhongHoc;
+        this.daDiemDanh = daDiemDanh;
+        this.coTheSua = coTheSua;
+    }
     
+    // Phương thức để JSP truy cập dayOfMonth
+        public int getDayOfMonth() {
+            return NgayHoc != null ? NgayHoc.getDayOfMonth() : 0;
+        }
+
+
     public int getID_PhongHoc() {
         return ID_PhongHoc;
     }

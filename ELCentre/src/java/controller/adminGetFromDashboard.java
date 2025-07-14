@@ -20,6 +20,8 @@ import dal.TaiKhoanChiTietDAO;
 import model.GiaoVien_TruongHoc;
 import model.HocSinh_SDT ; 
 import dal.HocSinh_SDTDAO ; 
+import model.GiaoVien_ChiTietDay;
+
 
 /**
  * Created on:May 24 , 2025 11:48:56 PM
@@ -109,13 +111,13 @@ public class adminGetFromDashboard extends HttpServlet {
                 }
                 break;
 
-            case "thongbao":            //action with notifications
-                ArrayList<ThongBao> thongbaos = ThongBaoDAO.adminXemThongBao();        //admin get All notifications from database
-                if (thongbaos.isEmpty()) {                                              // get database fail
-                    request.setAttribute("message", "Không có thông báo nào đã được gửi.");
+                case "thongbao":            //action with notifications
+                ArrayList<GiaoVien_ChiTietDay> lophocs = ThongBaoDAO.adminGetAllLopHocDangHocToSendThongBao();        //admin get All notifications from database
+                if (lophocs.isEmpty()) {                                         
+                    request.setAttribute("message", "Không có lớp học nào để gử thông báo.");
                     request.getRequestDispatcher("/views/admin/adminReceiveHocPhi.jsp").forward(request, response);
-                } else {                     // get database success    
-                    request.setAttribute("thongbaos", thongbaos);             //create object is thongbaos to send data for jsp
+                } else {                   
+                    session.setAttribute("lophocs", lophocs);         
                     request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);            //redirect to adminReceiveThongBao jsp    
                 }
                 break;

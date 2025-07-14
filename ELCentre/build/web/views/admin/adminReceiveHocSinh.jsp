@@ -544,9 +544,10 @@
                                                 <a class="btn-action update" title="Xem lớp và chuyển lớp" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewClass&id=${hocsinh.getID_HocSinh()}">
                                                      <i class="fas fa-exchange-alt"></i> Xem lớp & Chuyển lớp
                                                 </a>
-                                                <a class="btn-action enable" title="Học phí và Thông báo" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewTuiTionAndSendNTF&id=${hocsinh.getID_HocSinh()}">
+                                                <a class="btn-action enable" title="Học phí và Thông báo" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewTuiTionAndSendNTF&id=${hocsinh.getID_HocSinh()}&idtaikhoan=${hocsinh.getID_TaiKhoan()}">
                                                     <i class="fas fa-money-bill-wave"></i> Học Phí & Thông báo
                                                 </a>
+                                                     
                                             </td>
 
                                         </tr>   

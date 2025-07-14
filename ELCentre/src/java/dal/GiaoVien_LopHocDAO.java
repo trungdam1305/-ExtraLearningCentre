@@ -28,7 +28,10 @@ public static int teacherGetTongSoLopHoc(int id){
                            on gvlh.ID_GiaoVien = gv.ID_GiaoVien
                            JOIN TaiKhoan tk 
                            on gv.ID_TaiKhoan = tk.ID_TaiKhoan
+                           JOIN LopHoc lh
+                           on gvlh.ID_LopHoc = lh.ID_LopHoc
                            WHERE gv.ID_TaiKhoan = ?
+                           and lh.TrangThai COLLATE Vietnamese_CI_AI = N'Đang học';
                          """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
             statement.setInt(1, id);
@@ -50,14 +53,14 @@ public static int teacherGetTongSoLopHoc(int id){
         int tong = 0 ; 
         try {
             String sql = """
-                            SELECT COUNT( hslh.ID_HocSinh) 
-                            	FROM HocSinh_LopHoc hslh join LopHoc lh
-                            	on hslh.ID_LopHoc = lh.ID_LopHoc
-                            	JOIN GiaoVien_LopHoc gvlh
-                            	ON gvlh.ID_LopHoc = lh.ID_LopHoc
-                            	JOIN GiaoVien gv 
-                            	ON gv.ID_GiaoVien = gvlh.ID_GiaoVien
-                            	WHERE gv.ID_TaiKhoan = ?
+                             SELECT COUNT(hslh.ID_HocSinh)
+                            FROM HocSinh_LopHoc hslh
+                            JOIN LopHoc lh ON hslh.ID_LopHoc = lh.ID_LopHoc
+                            JOIN GiaoVien_LopHoc gvlh ON gvlh.ID_LopHoc = lh.ID_LopHoc
+                            JOIN GiaoVien gv ON gv.ID_GiaoVien = gvlh.ID_GiaoVien
+                            JOIN HocSinh hs ON hslh.ID_HocSinh = hs.ID_HocSinh
+                            WHERE gv.ID_TaiKhoan = ?
+                              AND lh.TrangThai COLLATE Vietnamese_CI_AI = N'Đang học';
                          """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
             statement.setInt(1, id);

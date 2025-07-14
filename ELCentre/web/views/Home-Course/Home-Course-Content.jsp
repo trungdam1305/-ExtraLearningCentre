@@ -1,8 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+        
 <html lang="vi">
-
+    
 <body class="bp-legacy page-template-default page page-id-2385 page-child parent-pageid-45 wp-embed-responsive theme-guru woocommerce-js tribe-js js"><div id="yith-wcwl-popup-message" style="display: none;"><div id="yith-wcwl-message"></div></div>
 			  <!-- breadcrumb ends here -->
 	  <!-- content starts here -->
@@ -18,7 +19,7 @@
                                             <div class="product-wrapper" style="display: flex; flex-direction: column; height: 100%;">
                                                 <div class="product-thumb" style="text-align: center;">
                                                     <a href="#" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                                                        <img src="${pageContext.request.contextPath}/img/avatar/${khoaHoc.image}"
+                                                        <img src="${pageContext.request.contextPath}/${khoaHoc.image}"
                                                              alt="${khoaHoc.tenKhoaHoc}" width="100%" height="auto"
                                                              style="object-fit: cover; height: 200px;" />
                                                     </a>
@@ -38,7 +39,10 @@
                                                     <span class="price" style="margin-top: auto;">
                                                         <span class="woocommerce-Price-amount amount">
                                                             <bdi>
-                                                                <a href="#" class="woocommerce-Price-currencySymbol">Xem Chi Tiết Khóa Học</a>
+                                                                <%-- ✅ SỬA LẠI ĐƯỜNG DẪN Ở ĐÂY --%>
+                                                                <a href="${pageContext.request.contextPath}/CourseDetailsServlet?courseId=${khoaHoc.ID_KhoaHoc}" class="woocommerce-Price-currencySymbol">
+                                                                    Xem Chi Tiết Khóa Học
+                                                                </a>
                                                             </bdi>
                                                         </span>
                                                     </span>
@@ -84,33 +88,28 @@
                         <button type="submit">Lọc / Tìm</button>
                     </form>
                   <aside id="woocommerce_product_categories-7" class="widget woocommerce widget_product_categories">
-                        <div class="widget-title"><h3>Phân loại khóa học</h3><div class="title-sep"><span></span></div>
-                        </div>
+                    <div class="widget-title">
+                        <h3>Phân loại khóa học</h3>
+                        <div class="title-sep"><span></span></div>
+                    </div>
+
+                    <ul class="product-categories">
                         <li>
-                            <a href="#" title="">Toán <span>${numToan}</span></a> 
+                            <a href="HomePageCourse" title="Xem tất cả">Tất cả khóa học</a>
                         </li>
-                        <li>
-                            <a href="#" title="">Văn <span>${numVan}</span></a> 
-                        </li>
-                        <li>
-                            <a href="#" title="">Anh <span>${numAnh}</span></a> 
-                        </li>
-                        <li>
-                            <a href="#" title="">Lý <span>${numLy}</span></a> 
-                        </li>
-                        <li>
-                            <a href="#" title="">Hóa <span>${numHoa}</span></a> 
-                        </li>
-                        <li>
-                            <a href="#" title="">Sinh <span>${numSinh}</span></a> 
-                        </li>
-                        <li>
-                            <a href="#" title="">Sử <span>${numSu}</span></a> 
-                        </li>
-                        <li>
-                            <a href="#" title="">Địa <span>${numDia}</span></a> 
-                        </li>
-                    </aside>
+
+                        <%-- ✅ SỬA LẠI VÒNG LẶP NÀY --%>
+                        <c:forEach var="category" items="${subjectCategories}">
+                            <c:if test="${category.courseCount > 0}"> 
+                                <li>
+                                    <a href="HomePageCourse?keyword=${category.subjectName}" title="Các khóa học môn ${category.subjectName}">
+                                        ${category.subjectName} <span>${category.courseCount}</span>
+                                    </a>
+                                </li>
+                            </c:if>
+                        </c:forEach>
+                    </ul>
+                </aside>
               </section>
                       	
           </div>

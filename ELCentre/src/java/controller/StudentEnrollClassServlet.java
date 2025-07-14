@@ -2,6 +2,7 @@ package controller;
 
 import dal.HocSinhDAO;
 import dal.KhoaHocDAO;
+import dal.KhoiHocDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import model.KhoaHoc;
@@ -10,6 +11,7 @@ import model.TaiKhoan;
 import java.io.IOException;
 import java.util.List;
 import model.HocSinh;
+import model.KhoiHoc;
 
 public class StudentEnrollClassServlet extends HttpServlet {
     @Override
@@ -32,6 +34,9 @@ public class StudentEnrollClassServlet extends HttpServlet {
         
         List<KhoaHoc> danhSachKhoaHoc = KhoaHocDAO.getAllKhoaHocDangMo();
         
+        List<KhoiHoc> dsKhoi = KhoiHocDAO.getAllKhoiFromKhoaHoc();
+                
+        request.setAttribute("dsKhoi", dsKhoi);
         request.setAttribute("hocSinhInfo", hocSinh);
         request.setAttribute("dsKhoaHoc", danhSachKhoaHoc);
         request.getRequestDispatcher("/views/student/studentEnrollClass.jsp").forward(request, response);

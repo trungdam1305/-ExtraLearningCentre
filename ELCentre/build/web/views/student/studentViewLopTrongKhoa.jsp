@@ -89,6 +89,12 @@
 
 <!-- MAIN CONTENT -->
 <div class="main-content">
+    <c:if test="${not empty sessionScope.message}">
+        <div style="margin-bottom: 20px; padding: 10px; color: green; background-color: #e6ffe6; border: 1px solid #b2ffb2; border-radius: 4px;">
+            ${sessionScope.message}
+        </div>
+        <c:remove var="message" scope="session" />
+    </c:if>
     <div class="header">
         <h2>Danh sách lớp trong khóa học</h2>
         <span>Xin chào ${sessionScope.user.email}</span>

@@ -17,6 +17,7 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-pagination.js@1.6/jquery.simplePagination.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-pagination.js@1.6/simplePagination.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
         <style>
             body {
@@ -232,6 +233,26 @@
             .modal-actions .cancel {
                 background-color: #999;
             }
+            .new-support-btn {
+                background-color: #1F4E79;
+                color: white;
+                padding: 8px 14px;
+                border-radius: 5px;
+                font-weight: bold;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+                font-size: 14px;
+            }
+
+            .new-support-btn i {
+                margin-right: 6px;
+            }
+
+            .new-support-btn:hover {
+                background-color: #163d5c;
+            }
+
+
 
 
 
@@ -249,20 +270,30 @@
                         ☰ </span>
                     </div>
                     <div class="user-dropdown" id="userDropdown">
-                        <a href="#" onclick="openModal(); return false;">🔑 Đổi mật khẩu</a>
+                        <a href="${pageContext.request.contextPath}/ResetPasswordServlet" onclick="openModal(); return false;">🔑 Đổi mật khẩu</a>
                         <a href="${pageContext.request.contextPath}/LogoutServlet">🚪 Đăng xuất</a>
                     </div>
                 </div>
             </div>
                                   
             <!--Hiển thị thông tin lớp học đã đăng kí của học sinh-->
-            <h3>Lớp học đã đăng kí</h3>                       
-            <div style="text-align: right; margin-bottom: 20px;">
-                <form method="get" style="display: inline-block;">
-                    <input id="searchInput" type="text" name="keyword" placeholder="Tìm kiếm..." value="${param.keyword}" style="padding: 8px; font-size: 14px; width: 300px;">
+            <h3>Lớp học đã đăng ký</h3>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <!-- Nút Gửi hỗ trợ mới -->
+                <a href="${pageContext.request.contextPath}/StudentSupportServlet" class="new-support-btn">
+                    <i class="fas fa-plus-circle"></i> Gửi hỗ trợ mới
+                </a>
+
+                <!-- Ô tìm kiếm -->
+                <form method="get" style="display: flex; align-items: center; gap: 10px;">
+                    <input id="searchInput" type="text" name="keyword" placeholder="Tìm kiếm..." 
+                           value="${param.keyword}" 
+                           style="padding: 8px; font-size: 14px; width: 300px;">
                     <button type="submit" class="action-btn">Tìm</button>
                 </form>
             </div>
+
             <table>
                 <thead>
                     <tr>
