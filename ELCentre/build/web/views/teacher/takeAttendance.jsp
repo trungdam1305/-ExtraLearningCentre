@@ -499,8 +499,6 @@
                 <ul class="sidebar-menu">
                     <!--Teacher's Notification Management-->
                     <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
-                    <!--Blog's View-->
-                    <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=blog"><i class="fas fa-blog"></i> Blog</a></li>
                     <!--Help Request to Admin-->
                     <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=hotro"><i class="fas fa-question"></i> Yêu Cầu Hỗ Trợ</a></li>
                     <!--Logout-->
@@ -509,6 +507,7 @@
             </div>
         <div class="main-content">            
             <div>
+                <!--Attendance for each slot-->
                 <div class="card">
                     <div class="card-header">
                         <h3>Điểm Danh Buổi Học (Mã Lịch Học: ${scheduleId})</h3>
@@ -529,13 +528,12 @@
                         <c:if test="${empty studentList}">
                             <div class="alert alert-warning">Lớp học này chưa có học sinh nào.</div>
                         </c:if>
-
+                            
                         <c:if test="${not empty studentList}">
                             <form action="${pageContext.request.contextPath}/teacherGetFromDashboard" method="post">
-
                                 <input type="hidden" name="action" value="submitAttendance">
                                 <input type="hidden" name="scheduleId" value="${scheduleId}">
-
+                                <!--Table display data and status for check student's attendance-->
                                 <table class="table table-bordered table-hover attendance-table">
                                     <thead>
                                         <tr>
@@ -576,6 +574,7 @@
                                         </c:forEach>
                                     </tbody>
                                 </table>
+                                <!--Note for each slot-->
                                 <div class="mt-4">
                                     <label for="scheduleNotes" class="form-label fw-bold">Đánh giá & Ghi chú buổi học:</label>
                                     <textarea class="form-control" 

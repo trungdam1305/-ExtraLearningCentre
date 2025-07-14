@@ -620,8 +620,6 @@
             <ul class="sidebar-menu">
                 <!--Teacher's Notification Management-->
                 <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
-                <!--Blog's View-->
-                <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=blog"><i class="fas fa-blog"></i> Blog</a></li>
                 <!--Help Request to Admin-->
                 <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=hotro"><i class="fas fa-question"></i> Yêu Cầu Hỗ Trợ</a></li>
                 <!--Logout-->
@@ -649,7 +647,8 @@
                     <h3><i class="fas fa-money-bill"></i> Lương hằng tháng</h3>
                     <p>${luongGV}</p>
                 </div>
-            </div>             
+            </div>  
+                    <!--Weekly Timetable and Schedule for take Attendance-->
                     <div class="data-table-container schedule-container">
                         <h3 class="section-title"><i class="fas fa-calendar-alt"></i> Thời Khóa Biểu</h3>
 
@@ -677,31 +676,28 @@
                                     <th style="width: 12%; background-color: #343a40;">Ca học</th>
                                     <c:forEach var="date" items="${weekDates}">
                                         <th style="width: 12.5%;">
-                                            <%-- Bắt đầu Scriptlet để định dạng ngày tháng --%>
                                             <%
-                                                // Lấy đối tượng 'date' (kiểu LocalDate) từ vòng lặp
+                                                // get date from object in servlet
                                                 Object obj = pageContext.getAttribute("date");
                                                 if (obj instanceof java.time.LocalDate) {
                                                     java.time.LocalDate currentDate = (java.time.LocalDate) obj;
 
-                                                    // Định dạng cho ngày trong tuần (VD: "Thứ Hai")
-                                                    // Cần có Locale("vi", "VN") để hiển thị đúng tiếng Việt
+                                                    // format for day in week
                                                     java.util.Locale localeVN = new java.util.Locale("vi", "VN");
                                                     java.time.format.DateTimeFormatter dayFormatter = 
                                                         java.time.format.DateTimeFormatter.ofPattern("EEEE", localeVN);
 
-                                                    // Định dạng cho ngày/tháng (VD: "12/07")
+                                                    // format for date (day and month)
                                                     java.time.format.DateTimeFormatter dateFormatter = 
                                                         java.time.format.DateTimeFormatter.ofPattern("dd/MM");
 
-                                                    // In kết quả ra HTML
+                                                    // HTML file
                                                     out.print(currentDate.format(dayFormatter));
                                                     out.print("<br><small>");
                                                     out.print(currentDate.format(dateFormatter));
                                                     out.print("</small>");
                                                 }
                                             %>
-                                            <%-- Kết thúc Scriptlet --%>
                                         </th>
                                     </c:forEach>
                                 </tr>
@@ -769,73 +765,6 @@
             });
             document.addEventListener('DOMContentLoaded', function() {
     const tableBody = document.querySelector('tbody');
-
-    // Hàm để chuyển đổi giữa chế độ xem và sửa cho một dòng
-    function toggleEditState(row, isEditing) {
-        const noteDisplay = row.querySelector('.note-display');
-        const noteEdit = row.querySelector('.note-edit');
-        const actionView = row.querySelector('.action-view');
-        const actionEdit = row.querySelector('.action-edit');
-
-        noteDisplay.style.display = isEditing ? 'none' : 'block';
-        noteEdit.style.display = isEditing ? 'block' : 'none';
-        actionView.style.display = isEditing ? 'none' : 'flex';
-        actionEdit.style.display = isEditing ? 'flex' : 'none';
-
-        if (isEditing) {
-            noteEdit.focus(); // Tự động focus vào ô input khi sửa
-        }
-    }
-
-    // Sử dụng event delegation để xử lý click cho toàn bộ bảng
-    tableBody.addEventListener('click', function(event) {
-        const target = event.target;
-        const row = target.closest('tr');
-        if (!row) return;
-
-        // 1. Khi nhấn nút "Sửa"
-        if (target.classList.contains('edit-note-btn')) {
-            toggleEditState(row, true);
-        }
-
-        // 2. Khi nhấn nút "Hủy"
-        if (target.classList.contains('cancel-note-btn')) {
-            // Reset lại giá trị ô input về giá trị ban đầu
-            row.querySelector('.note-edit').value = row.querySelector('.note-display').innerText;
-            toggleEditState(row, false);
-        }
-
-        // 3. Khi nhấn nút "Lưu"
-        if (target.classList.contains('save-note-btn')) {
-            const scheduleId = row.dataset.scheduleId;
-            const noteInput = row.querySelector('.note-edit');
-            const newNote = noteInput.value;
-
-            const formData = new URLSearchParams();
-            formData.append('action', 'updateNote');
-            formData.append('scheduleId', scheduleId);
-            formData.append('noteText', newNote);
-
-            // Gửi yêu cầu lên server
-            fetch('${pageContext.request.contextPath}/teacherGetFromDashboard', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Lỗi từ server');
-                }
-                // Cập nhật giao diện nếu thành công
-                row.querySelector('.note-display').innerText = newNote;
-                toggleEditState(row, false);
-                // alert('Đã cập nhật ghi chú thành công!');
-            })
-            .catch(error => {
-                console.error('Lỗi:', error);
-                alert('Không thể cập nhật ghi chú. Vui lòng thử lại.');
-            });
-        }
-    });
 });
         </script>
     </body>

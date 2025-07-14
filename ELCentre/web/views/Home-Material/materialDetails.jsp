@@ -80,7 +80,11 @@
                         </table>
                         
                         <div class="mt-4">
-                            <a href="${pageContext.request.contextPath}/DownloadMaterialServlet?id=${material.ID_Material}" class="btn btn-primary download-button">
+                            <%-- ✅ SỬA LẠI ĐƯỜNG DẪN VÀ THÊM THUỘC TÍNH 'download' --%>
+                            <a href="${pageContext.request.contextPath}/uploads/${material.duongDan}" 
+                               class="btn btn-primary download-button" 
+                               download> <%-- Thuộc tính 'download' sẽ gợi ý tên file khi tải về --%>
+
                                 <i class="fas fa-download"></i> Tải Về Tài Liệu
                             </a>
                              <a href="HomePageMaterial" class="btn btn-outline-secondary ms-2">Quay lại danh sách</a>

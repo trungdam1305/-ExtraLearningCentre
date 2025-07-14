@@ -641,8 +641,6 @@
                 <ul class="sidebar-menu">
                     <!--Teacher's Notification Management-->
                     <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
-                    <!--Blog's View-->
-                    <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=blog"><i class="fas fa-blog"></i> Blog</a></li>
                     <!--Help Request to Admin-->
                     <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=hotro"><i class="fas fa-question"></i> Yêu Cầu Hỗ Trợ</a></li>
                     <!--Logout-->
@@ -650,6 +648,7 @@
                 </ul>
             </div>
         <div class="main-content">
+            <!--Attendance Report-->
             <div class="card">
                 <div class="card-header">
                     <h1><i class="fas fa-calendar-check"></i> Báo Cáo Điểm Danh Lớp: ${lopHoc.tenLopHoc}</h1>
@@ -661,67 +660,61 @@
                                 <th class="student-name-col" style="min-width: 130px;">Họ Tên Học Sinh</th>
                                 <c:forEach var="schedule" items="${scheduleList}">
                                     <th style="font-size: 0.85em;">
-                                        <%-- Scriptlet để định dạng ngày tháng --%>
                                         <%
-                                            // Lấy đối tượng 'schedule' từ vòng lặp JSTL
+                                            // Get Object Schedule from Servlet
                                             Object obj = pageContext.getAttribute("schedule");
                                             if (obj instanceof model.LichHoc) {
                                                 model.LichHoc currentSchedule = (model.LichHoc) obj;
                                                 java.time.LocalDate ngayHoc = currentSchedule.getNgayHoc();
 
-                                                // Kiểm tra null để tránh lỗi
+                                            //check null
                                                 if (ngayHoc != null) {
-                                                    // Định dạng theo mẫu "dd/MM" và in ra
+                                                    // format by (dd/mm)
                                                     out.print(ngayHoc.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM")));
                                                 }
                                             }
                                         %>
                                     </th>
-                                    
                                 </c:forEach>
                             </tr>
                         </thead>
                         <tbody>
                             <c:forEach var="student" items="${studentList}">
-
-                                <%-- BƯỚC 1: TÍNH TOÁN NGẦM SỐ BUỔI VẮNG VÀ ĐI MUỘN --%>
+                                <%-- create absenceCount --%>
                                 <c:set var="absenceCount" value="0"/>
-                                <c:set var="lateCount" value="0"/> <%-- ✅ Thêm biến đếm đi muộn --%>
+                                <%-- create lateCount --%>
+                                <c:set var="lateCount" value="0"/> 
 
                                 <c:forEach var="schedule" items="${scheduleList}">
                                     <c:set var="key" value="${student.ID_HocSinh}-${schedule.ID_Schedule}"/>
                                     <c:set var="status" value="${attendanceMap[key].trangThai}"/>
-
                                     <c:if test="${status == 'Vắng'}">
                                         <c:set var="absenceCount" value="${absenceCount + 1}"/>
                                     </c:if>
-                                    <%-- ✅ Đếm thêm số lần đi muộn --%>
                                     <c:if test="${status == 'Đi muộn'}">
                                         <c:set var="lateCount" value="${lateCount + 1}"/>
                                     </c:if>
                                 </c:forEach>
 
-                                <%-- BƯỚC 2: HIỂN THỊ DÒNG DỮ LIỆU --%>
+                                <%-- Display Data in box --%>
                                 <tr>
-                                    <%-- Ô đầu tiên: Hiển thị tên và cả 2 tỷ lệ --%>
+                                    <%-- Present name and both two number --%>
                                     <td class="student-name-col">
                                         ${student.hoTen}
                                         <c:if test="${scheduleList.size() > 0}">
                                             <div class="text-muted" style="font-size: 0.85em;">
-                                                <%-- Tỷ lệ vắng --%>
+                                                <%-- Absence Rate --%>
                                                 <span title="${absenceCount} / ${scheduleList.size()} buổi">
                                                     Vắng: <fmt:formatNumber value="${(absenceCount / scheduleList.size()) * 100}" maxFractionDigits="1"/>%
                                                 </span>
-
-                                                <%-- ✅ Tỷ lệ đi muộn --%>
+                                                <%-- Late Rate --%>
                                                 <span style="margin-left: 10px;" title="${lateCount} / ${scheduleList.size()} buổi">
                                                     Đi muộn: <fmt:formatNumber value="${(lateCount / scheduleList.size()) * 100}" maxFractionDigits="1"/>%
                                                 </span>
                                             </div>
                                         </c:if>
                                     </td>
-
-                                    <%-- BƯỚC 3: VÒNG LẶP CHỈ ĐỂ HIỂN THỊ TRẠNG THÁI ĐIỂM DANH --%>
+                                    <%-- Loop for present status of attendance --%>
                                     <c:forEach var="schedule" items="${scheduleList}">
                                         <td>
                                             <c:set var="key" value="${student.ID_HocSinh}-${schedule.ID_Schedule}"/>
