@@ -9,6 +9,7 @@ import dal.HoTroDAO;
 import dal.HocSinhDAO;
 import dal.LopHocDAO;
 import dal.StaffDAO;
+import dal.ThongBaoDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import model.HoTro;
 import model.Staff;
 import model.TaiKhoan;
+import model.ThongBao;
 
 /**
  *
@@ -56,7 +58,8 @@ public class staffGoToFirstPage extends HttpServlet {
         Integer tongSoLopHocDangHoc = LopHocDAO.adminGetTongSoLopHocDangHoc();
         Integer tongSoHocSinhChoHoc = HocSinhDAO.adminGetTongSoHocSinhChoHoc();
         ArrayList<HoTro> HoTroList = (ArrayList) HoTroDAO.adminGetHoTroDashBoard();
-
+        ArrayList<ThongBao> ConsultationList = ThongBaoDAO.getAllTuVan();
+        request.setAttribute("ConsultationList", ConsultationList);
         request.setAttribute("staffs", staffs);
 
         request.setAttribute("tongHS", tongSoHocSinhDangHoc);

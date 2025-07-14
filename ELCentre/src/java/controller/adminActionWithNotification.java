@@ -162,12 +162,19 @@ public class adminActionWithNotification extends HttpServlet {
 
     }
     
+    protected void doViewHistoryNoification(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+
+    }
+    
     
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String type = request.getParameter("type");
+        PrintWriter out = response.getWriter() ; 
         switch (type) {
             case "sendToClass":
                 doSendNTFToClass(request, response);
@@ -183,7 +190,11 @@ public class adminActionWithNotification extends HttpServlet {
                 
             case "sendToAllClass" : 
                 doSendNTFToAllClass(request, response) ; 
-                break ; 
+                break ;
+                
+            case "historyNotification" : 
+                doViewHistoryNoification(request, response) ; 
+                break;
         }
 
     }

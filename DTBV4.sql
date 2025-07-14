@@ -247,10 +247,12 @@ GO
 /****** Object:  Table [dbo].[ThongBao]    Script Date: 26/06/2025 23:16:00 ******/
 CREATE TABLE [dbo].[ThongBao](
     [ID_ThongBao] [int] IDENTITY(1,1) NOT NULL,
-    [ID_TaiKhoan] [int] NOT NULL,
+    [ID_TaiKhoan] [int] NULL ,
     [NoiDung] [nvarchar](max) NULL,
     [ID_HocPhi] [int] NULL,
+
     [ThoiGian] [datetime] NOT NULL DEFAULT GETDATE(),
+	[Status] [varchar](50) NULL,
     CONSTRAINT [PK_ThongBao] PRIMARY KEY CLUSTERED ([ID_ThongBao] ASC),
     CONSTRAINT [FK_ThongBao_TaiKhoan] FOREIGN KEY ([ID_TaiKhoan]) REFERENCES [dbo].[TaiKhoan] ([ID_TaiKhoan]) ON DELETE CASCADE,
     CONSTRAINT [FK_ThongBao_HocPhi] FOREIGN KEY ([ID_HocPhi]) REFERENCES [dbo].[HocPhi] ([ID_HocPhi])
@@ -1381,6 +1383,8 @@ INSERT [dbo].[PhongHoc] ([ID_PhongHoc], [TenPhongHoc], [SucChua], [TrangThai]) V
 SET IDENTITY_INSERT [dbo].[PhongHoc] OFF
 GO
 
+
+select * from HoTro
 SELECT * FROM ThongBao
 SELECT MIN(TB.Status) AS Status, TB.NoiDung, TB.ThoiGian
 FROM ThongBao TB
@@ -1388,6 +1392,7 @@ WHERE TB.Status IN ('ALLSTUDENT', 'ALLTEACHER', 'ALLCLASS', 'CLASS', 'STUDENT', 
 GROUP BY TB.NoiDung, TB.ThoiGian
 ORDER BY TB.ThoiGian DESC
 
+SELECT * FROM ThongBao WHERE NoiDung LIKE N'%tư vấn%' ORDER BY ThoiGian DESC
 
 
 

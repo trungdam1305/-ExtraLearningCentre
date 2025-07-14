@@ -354,6 +354,12 @@
                 color: white;
             }
 
+            .btn-action.notification-history {
+                background-color: #9b59b6;
+                color: white;
+            }
+
+
             .btn-action:hover {
                 opacity: 0.85;
             }
@@ -576,6 +582,10 @@
                     <a href="${pageContext.request.contextPath}/views/admin/adminSendNotificationToAllClass.jsp" class="btn-action all-classes">
                         <i class="fas fa-users"></i> Gửi toàn bộ lớp học
                     </a>
+                    <a href="${pageContext.request.contextPath}/adminActionWithNotification?action=historyNotification" class="btn-action notification-history">
+                        <i class="fas fa-history"></i> Xem lịch sử thông báo
+                    </a>
+
                 </div>
                 <form action="${pageContext.request.contextPath}/adminActionWithNotification" method="get">
                     <div class="filter-bar">
