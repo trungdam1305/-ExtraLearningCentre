@@ -24,10 +24,6 @@ public class DiemDanh {
     // Reason for absence (if applicable)
     private String LyDoVang;
 
-    private String HoTen;
-    
-    private String Avatar;
-
     public DiemDanh() {
     }
 
@@ -82,31 +78,4 @@ public class DiemDanh {
     public void setLyDoVang(String LyDoVang) {
         this.LyDoVang = LyDoVang;
     }
-
-    public void setHoTen(String HoTen) {
-        this.HoTen = HoTen;
-    }
-
-    public String getHoTen() {
-        return HoTen;
-    }
-
-    public DiemDanh(Integer ID_DiemDanh, Integer ID_HocSinh, Integer ID_Schedule, String TrangThai, String LyDoVang, String HoTen, String Avatar) {
-        this.ID_DiemDanh = ID_DiemDanh;
-        this.ID_HocSinh = ID_HocSinh;
-        this.ID_Schedule = ID_Schedule;
-        this.TrangThai = TrangThai;
-        this.LyDoVang = LyDoVang;
-        this.HoTen = HoTen;
-        this.Avatar = Avatar;
-    }
-
-    public String getAvatar() {
-        return Avatar;
-    }
-
-    public void setAvatar(String Avatar) {
-        this.Avatar = Avatar;
-    }
-
 }

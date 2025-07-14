@@ -6,8 +6,6 @@
                 including details like name, birth date, gender, address, parent contact, school, and status. 
                 It supports filtering by gender, searching, and pagination, with action links for viewing details, scores, and editing student records.
     Parameters:
-     Parameters:(Handle from adminGetFromDashboard servlet)
-    - Method to get data from database in HocSinh_SDTDAO - adminGetSoDienThoaiHocSinh
     - @Param hocsinhs (ArrayList<HocSinh>): A request attribute containing the list of student objects fetched from the database.
 --%>
 
@@ -467,7 +465,7 @@
                 <h2><i class="fas fa-user-graduate"></i> Tất cả học sinh</h2>
             </div>
 
-            <form  action="${pageContext.request.contextPath}/adminFindInFilterGroup" method="get">
+            <form  action="adminFindInFilterGroup" method="get">
                 <div class="filter-bar">
 
                     <div class="filter-group">
@@ -544,10 +542,9 @@
                                                 <a class="btn-action update" title="Xem lớp và chuyển lớp" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewClass&id=${hocsinh.getID_HocSinh()}">
                                                      <i class="fas fa-exchange-alt"></i> Xem lớp & Chuyển lớp
                                                 </a>
-                                                <a class="btn-action enable" title="Học phí và Thông báo" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewTuiTionAndSendNTF&id=${hocsinh.getID_HocSinh()}&idtaikhoan=${hocsinh.getID_TaiKhoan()}">
+                                                <a class="btn-action enable" title="Học phí và Thông báo" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewTuiTionAndSendNTF&id=${hocsinh.getID_HocSinh()}">
                                                     <i class="fas fa-money-bill-wave"></i> Học Phí & Thông báo
                                                 </a>
-                                                     
                                             </td>
 
                                         </tr>   

@@ -1,6 +1,10 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package dal;
 
-import java.sql.Connection;
+import com.sun.jdi.connect.spi.Connection;
 import dal.DBContext;
 import java.util.ArrayList;
 import model.KhoaHoc;
@@ -13,16 +17,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 import model.KhoiHoc;
-import model.SubjectCategoryDTO;
 
-import model.KhoiHoc;
-
-
+/**
+ *
+ * @author Vuh26
+ */
 public class KhoaHocDAO {
     public static ArrayList<KhoaHoc> adminGetAllKhoaHoc(){
         ArrayList<KhoaHoc> khoahocs = new ArrayList<KhoaHoc>() ; 
@@ -1174,7 +1176,68 @@ public class KhoaHocDAO {
 }
 
     
-    
+    public List<KhoaHoc> getCoursesSortedPaged(String sortColumn, String sortOrder, String searchName, int page, int pageSize) {
+        List<KhoaHoc> list = new ArrayList<>();
+        List<String> allowedColumns = new ArrayList<>();
+        allowedColumns.add("ID_KhoaHoc");
+        allowedColumns.add("TenKhoaHoc");
+        allowedColumns.add("MoTa");
+        allowedColumns.add("ThoiGianBatDau");
+        allowedColumns.add("ThoiGianKetThuc");
+        allowedColumns.add("GhiChu");
+        allowedColumns.add("TrangThai");
+        allowedColumns.add("NgayTao");
+        allowedColumns.add("ID_Khoi");
+
+        if (!allowedColumns.contains(sortColumn)) {
+            sortColumn = "ID_KhoaHoc";
+        }
+        if (!sortOrder.equalsIgnoreCase("asc") && !sortOrder.equalsIgnoreCase("desc")) {
+            sortOrder = "asc";
+        }
+
+        int offset = (page - 1) * pageSize;
+        DBContext db = DBContext.getInstance();
+
+        String sql = "SELECT * FROM KhoaHoc ";
+        if (searchName != null && !searchName.trim().isEmpty()) {
+            sql += "WHERE TenKhoaHoc LIKE ? ";
+        }
+        sql += "ORDER BY " + sortColumn + " " + sortOrder + " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
+            int paramIndex = 1;
+            if (searchName != null && !searchName.trim().isEmpty()) {
+                statement.setString(paramIndex++, "%" + searchName + "%");
+            }
+            // Đặt offset trước, pageSize sau
+            statement.setInt(paramIndex++, offset);
+            statement.setInt(paramIndex, pageSize);
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                KhoaHoc khoaHoc = new KhoaHoc();
+                khoaHoc.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                khoaHoc.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
+                khoaHoc.setMoTa(rs.getString("MoTa"));
+                khoaHoc.setThoiGianBatDau(rs.getDate("ThoiGianBatDau") != null ? rs.getDate("ThoiGianBatDau").toLocalDate() : null);
+                khoaHoc.setThoiGianKetThuc(rs.getDate("ThoiGianKetThuc") != null ? rs.getDate("ThoiGianKetThuc").toLocalDate() : null);
+                khoaHoc.setGhiChu(rs.getString("GhiChu"));
+                khoaHoc.setTrangThai(rs.getString("TrangThai"));
+                khoaHoc.setNgayTao(rs.getTimestamp("NgayTao") != null ? rs.getTimestamp("NgayTao").toLocalDateTime() : null);
+                khoaHoc.setID_Khoi(rs.getInt("ID_Khoi"));
+                list.add(khoaHoc);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+    public static void main(String[] args) {
+        int a = KhoaHocDAO.getKhoaHocVan();
+        System.out.println(a);
+    }
     
      public int countCourses(String searchName) {
         DBContext db = DBContext.getInstance();
@@ -1199,48 +1262,41 @@ public class KhoaHocDAO {
         return 0;
     }
      
-      public List<KhoaHoc> getCoursesSortedPaged(String sortColumn, String sortOrder, String searchName, String trangThai, Integer idKhoi, Integer order, LocalDate startDate, LocalDate endDate, int page, int pageSize) {
+     public List<KhoaHoc> getCoursesSortedPaged(String sortColumn, String sortOrder, String searchName, String statusFilter, int page, int pageSize) {
+        List<KhoaHoc> list = new ArrayList<>();
         List<String> allowedColumns = Arrays.asList(
-                "ID_KhoaHoc", "TenKhoaHoc", "MoTa", "ThoiGianBatDau", 
-                "ThoiGianKetThuc", "GhiChu", "TrangThai", "NgayTao", "ID_Khoi",
-                "CourseCode", "Image", "Order"
+            "ID_KhoaHoc", "TenKhoaHoc", "MoTa", "ThoiGianBatDau", 
+            "ThoiGianKetThuc", "GhiChu", "TrangThai", "NgayTao", "ID_Khoi"
         );
+
+        // Validate sortColumn để chống SQL injection
         if (!allowedColumns.contains(sortColumn)) {
             sortColumn = "ID_KhoaHoc";
         }
+        // Validate sortOrder
         if (!sortOrder.equalsIgnoreCase("asc") && !sortOrder.equalsIgnoreCase("desc")) {
             sortOrder = "asc";
         }
+
         DBContext db = DBContext.getInstance();
-        List<KhoaHoc> list = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM KhoaHoc WHERE 1=1");
         List<Object> params = new ArrayList<>();
+
+        // Thêm điều kiện tìm kiếm theo tên
         if (searchName != null && !searchName.trim().isEmpty()) {
-            sql.append(" AND REPLACE(TenKhoaHoc, 'đ', 'd') COLLATE Latin1_General_CI_AI LIKE ?");
-            params.add("%" + removeAccent(searchName.trim().replaceAll("\\s+", " ")) + "%");
+            sql.append(" AND TenKhoaHoc LIKE ?");
+            params.add("%" + searchName + "%");
         }
-        if (trangThai != null && !trangThai.trim().isEmpty()) {
+
+        // Thêm điều kiện lọc trạng thái
+        if (statusFilter != null && !statusFilter.trim().isEmpty()) {
             sql.append(" AND TrangThai = ?");
-            params.add(trangThai);
+            params.add(statusFilter);
         }
-        if (idKhoi != null) {
-            sql.append(" AND ID_Khoi = ?");
-            params.add(idKhoi);
-        }
-        if (order != null) {
-            sql.append(" AND [Order] = ?");
-            params.add(order);
-        }
-        if (startDate != null) {
-            sql.append(" AND ThoiGianBatDau >= ?");
-            params.add(startDate);
-        }
-        if (endDate != null) {
-            sql.append(" AND ThoiGianKetThuc <= ?");
-            params.add(endDate);
-        }
+
         sql.append(" ORDER BY ").append(sortColumn).append(" ").append(sortOrder);
         sql.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+
         try (PreparedStatement statement = db.getConnection().prepareStatement(sql.toString())) {
             int paramIndex = 1;
             for (Object param : params) {
@@ -1248,11 +1304,11 @@ public class KhoaHocDAO {
             }
             statement.setInt(paramIndex++, (page - 1) * pageSize);
             statement.setInt(paramIndex, pageSize);
+
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 KhoaHoc khoaHoc = new KhoaHoc();
                 khoaHoc.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
-                khoaHoc.setCourseCode(rs.getString("CourseCode"));
                 khoaHoc.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
                 khoaHoc.setMoTa(rs.getString("MoTa"));
                 khoaHoc.setThoiGianBatDau(rs.getDate("ThoiGianBatDau") != null ? rs.getDate("ThoiGianBatDau").toLocalDate() : null);
@@ -1261,21 +1317,15 @@ public class KhoaHocDAO {
                 khoaHoc.setTrangThai(rs.getString("TrangThai"));
                 khoaHoc.setNgayTao(rs.getTimestamp("NgayTao") != null ? rs.getTimestamp("NgayTao").toLocalDateTime() : null);
                 khoaHoc.setID_Khoi(rs.getInt("ID_Khoi"));
-                khoaHoc.setImage(rs.getString("Image"));
-                khoaHoc.setOrder(rs.getInt("Order"));
                 list.add(khoaHoc);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             return Collections.emptyList();
         }
+
         return list;
     }
-
-      
-      
-      
-      
      
       public int countCourses(String searchName, String statusFilter) {
         DBContext db = DBContext.getInstance();
@@ -1308,260 +1358,4 @@ public class KhoaHocDAO {
 
         return 0;
     }
-      
-       public List<KhoaHoc> getCoursesByFilters(String searchName, String trangThai, Integer idKhoi, Integer order, LocalDate startDate, LocalDate endDate, int offset, int pageSize) {
-        DBContext db = DBContext.getInstance();
-        List<KhoaHoc> khoaHocList = new ArrayList<>();
-        try {
-            StringBuilder sql = new StringBuilder("SELECT * FROM KhoaHoc WHERE 1=1");
-            List<Object> params = new ArrayList<>();
-            if (searchName != null && !searchName.trim().isEmpty()) {
-                sql.append(" AND REPLACE(TenKhoaHoc, 'đ', 'd') COLLATE Latin1_General_CI_AI LIKE ?");
-                params.add("%" + removeAccent(searchName.trim().replaceAll("\\s+", " ")) + "%");
-            }
-            if (trangThai != null && !trangThai.trim().isEmpty()) {
-                sql.append(" AND TrangThai = ?");
-                params.add(trangThai);
-            }
-            if (idKhoi != null) {
-                sql.append(" AND ID_Khoi = ?");
-                params.add(idKhoi);
-            }
-            if (order != null) {
-                sql.append(" AND [Order] = ?");
-                params.add(order);
-            }
-            if (startDate != null) {
-                sql.append(" AND ThoiGianBatDau >= ?");
-                params.add(startDate);
-            }
-            if (endDate != null) {
-                sql.append(" AND ThoiGianKetThuc <= ?");
-                params.add(endDate);
-            }
-            sql.append(" ORDER BY ID_KhoaHoc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
-            PreparedStatement statement = db.getConnection().prepareStatement(sql.toString());
-            int paramIndex = 1;
-            for (Object param : params) {
-                statement.setObject(paramIndex++, param);
-            }
-            statement.setInt(paramIndex++, offset);
-            statement.setInt(paramIndex, pageSize);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                KhoaHoc khoaHoc = new KhoaHoc();
-                khoaHoc.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
-                khoaHoc.setCourseCode(rs.getString("CourseCode"));
-                khoaHoc.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
-                khoaHoc.setMoTa(rs.getString("MoTa"));
-                khoaHoc.setThoiGianBatDau(rs.getDate("ThoiGianBatDau") != null ? rs.getDate("ThoiGianBatDau").toLocalDate() : null);
-                khoaHoc.setThoiGianKetThuc(rs.getDate("ThoiGianKetThuc") != null ? rs.getDate("ThoiGianKetThuc").toLocalDate() : null);
-                khoaHoc.setGhiChu(rs.getString("GhiChu"));
-                khoaHoc.setTrangThai(rs.getString("TrangThai"));
-                khoaHoc.setNgayTao(rs.getTimestamp("NgayTao") != null ? rs.getTimestamp("NgayTao").toLocalDateTime() : null);
-                khoaHoc.setID_Khoi(rs.getInt("ID_Khoi"));
-                khoaHoc.setImage(rs.getString("Image"));
-                khoaHoc.setOrder(rs.getInt("Order"));
-                khoaHocList.add(khoaHoc);
-            }
-            rs.close();
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return khoaHocList;
-    }
-       
-           public int getTotalCoursesByFilters(String searchName, String trangThai, Integer idKhoi, Integer order, LocalDate startDate, LocalDate endDate) {
-        DBContext db = DBContext.getInstance();
-        try {
-            StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM KhoaHoc WHERE 1=1");
-            List<Object> params = new ArrayList<>();
-            if (searchName != null && !searchName.trim().isEmpty()) {
-                sql.append(" AND REPLACE(TenKhoaHoc, 'đ', 'd') COLLATE Latin1_General_CI_AI LIKE ?");
-                params.add("%" + removeAccent(searchName.trim().replaceAll("\\s+", " ")) + "%");
-            }
-            if (trangThai != null && !trangThai.trim().isEmpty()) {
-                sql.append(" AND TrangThai = ?");
-                params.add(trangThai);
-            }
-            if (idKhoi != null) {
-                sql.append(" AND ID_Khoi = ?");
-                params.add(idKhoi);
-            }
-            if (order != null) {
-                sql.append(" AND [Order] = ?");
-                params.add(order);
-            }
-            if (startDate != null) {
-                sql.append(" AND ThoiGianBatDau >= ?");
-                params.add(startDate);
-            }
-            if (endDate != null) {
-                sql.append(" AND ThoiGianKetThuc <= ?");
-                params.add(endDate);
-            }
-            PreparedStatement stmt = db.getConnection().prepareStatement(sql.toString());
-            int paramIndex = 1;
-            for (Object param : params) {
-                stmt.setObject(paramIndex++, param);
-            }
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-           
-           
-            public static boolean isDuplicateCourseCode(String courseCode) {
-        DBContext db = DBContext.getInstance();
-        try {
-            String sql = "SELECT COUNT(*) FROM KhoaHoc WHERE CourseCode = ?";
-            PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            statement.setString(1, courseCode);
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-            
-    public Map<String, Integer> getCourseCountsBySubject() {
-        Map<String, Integer> subjectCounts = new HashMap<>();
-        DBContext db = DBContext.getInstance();
-        // Danh sách các môn học bạn muốn đếm
-        String[] subjects = {"Toán", "Văn", "Anh", "Lý", "Hóa", "Sinh", "Sử", "Địa"};
-        
-        String sql = "SELECT COUNT(*) FROM KhoaHoc WHERE TenKhoaHoc LIKE ?";
-
-        try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
-            
-            for (String subject : subjects) {
-                statement.setString(1, "%" + subject + "%");
-                try (ResultSet rs = statement.executeQuery()) {
-                    if (rs.next()) {
-                        subjectCounts.put(subject, rs.getInt(1));
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return subjectCounts;
-    }
-    
-    public static ArrayList<KhoaHoc> homepageGetAllKhoaHoc(){
-        ArrayList<KhoaHoc> khoahocs = new ArrayList<KhoaHoc>() ; 
-        DBContext db = DBContext.getInstance() ; 
-        try {
-            String sql = """
-                         select * from KhoaHoc
-                         ORDER BY [Order] ASC
-                         """ ; 
-            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
-            ResultSet rs = statement.executeQuery() ; 
-            while(rs.next()){
-                KhoaHoc khoahoc = new KhoaHoc(
-                        rs.getInt("ID_KhoaHoc") , 
-                        rs.getString("CourseCode") , 
-                        rs.getString("TenKhoaHoc") , 
-                        rs.getString("MoTa") , 
-                        rs.getDate("ThoiGianBatDau").toLocalDate() , 
-                        rs.getDate("ThoiGianKetThuc").toLocalDate() ,  
-                        rs.getString("GhiChu") , 
-                        rs.getString("TrangThai") , 
-                        rs.getTimestamp("NgayTao").toLocalDateTime() , 
-                        rs.getInt("ID_Khoi") , 
-                        rs.getString("Image") , 
-                        rs.getInt("Order")
-                        
-                
-                ) ; 
-                khoahocs.add(khoahoc) ; 
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
-            return null ; 
-        }
-        
-        if (khoahocs.isEmpty()){
-            return null ; 
-        } else {
-            return khoahocs ; 
-        }
-    }   
-    
-    public List<SubjectCategoryDTO> getCourseCategoriesWithCount() {
-        List<SubjectCategoryDTO> categories = new ArrayList<>();
-        DBContext db = DBContext.getInstance() ; 
-        // Câu lệnh này JOIN 2 bảng, đếm, nhóm và sắp xếp
-        String sql = """
-            SELECT 
-                m.TenKhoaHoc, 
-                m.[Order],
-                COUNT(m.ID_KhoaHoc) AS CourseCount
-            FROM 
-                KhoaHoc m
-            GROUP BY 
-                m.TenKhoaHoc, m.[Order]
-            ORDER BY 
-                m.[Order] ASC
-        """;
-
-        try (PreparedStatement statement = db.getConnection().prepareStatement(sql);
-             ResultSet rs = statement.executeQuery()) {
-            
-            while (rs.next()) {
-                SubjectCategoryDTO dto = new SubjectCategoryDTO();
-                dto.setSubjectName(rs.getString("TenKhoaHoc"));
-                dto.setCourseCount(rs.getInt("CourseCount"));
-                dto.setOrder(rs.getInt("Order"));
-                categories.add(dto);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return categories;
-    }
-     //Lấy ra khác khóa học đang mở        
-    public static List<KhoaHoc> getAllKhoaHocDangMo() {
-        List<KhoaHoc> list = new ArrayList<>();
-        String sql = """
-            SELECT kh.ID_KhoaHoc, kh.CourseCode, kh.TenKhoaHoc, kh.MoTa, kh.ThoiGianBatDau, kh.ThoiGianKetThuc,
-                   kh.GhiChu, kh.TrangThai, kh.ID_Khoi, k.TenKhoi
-            FROM KhoaHoc kh
-            LEFT JOIN KhoiHoc k ON kh.ID_Khoi = k.ID_Khoi
-            WHERE kh.TrangThai = 'Active'
-        """;
-        try (Connection conn = DBContext.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                KhoaHoc kh = new KhoaHoc(); 
-                kh.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
-                kh.setCourseCode(rs.getString("CourseCode"));
-                kh.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
-                kh.setMoTa(rs.getString("MoTa"));
-                kh.setThoiGianBatDau(rs.getDate("ThoiGianBatDau").toLocalDate());
-                kh.setThoiGianKetThuc(rs.getDate("ThoiGianKetThuc").toLocalDate());
-                kh.setGhiChu(rs.getString("GhiChu"));
-                kh.setTrangThai(rs.getString("TrangThai"));
-                kh.setID_Khoi(rs.getInt("ID_Khoi")); // Bổ sung: cần khớp với SELECT
-                kh.setTenKhoi(rs.getString("TenKhoi"));
-                list.add(kh);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }  
 }

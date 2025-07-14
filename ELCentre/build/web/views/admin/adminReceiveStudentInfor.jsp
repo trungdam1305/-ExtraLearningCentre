@@ -4,8 +4,7 @@
     Author     : chuvv
     Purpose    : This page displays detailed information about specific students (học sinh) in the EL CENTRE system, 
                 including account ID, name, birth date, gender, address, parent contact, school, and status. 
-    Parameters: (Handle from adminActionWithUser servlet)
-    - Method to get data from database in HocSinhDAO - (adminGetHocSinhByID)
+    Parameters:
     - @Param hocsinhs (ArrayList<HocSinh>): A request attribute containing the list of student objects fetched from the database.
 --%>
 

@@ -24,7 +24,7 @@ public class NopBaiTap {
     private LocalDate NgayNop;     // Submission date
     private BigDecimal Diem;       // Grade/score
     private String NhanXet;        // Feedback/comment from teacher
-    private int ID_LopHoc;
+
     // Getter and Setter for ID_HocSinh
     public Integer getID_HocSinh() {
         return ID_HocSinh;
@@ -77,26 +77,5 @@ public class NopBaiTap {
 
     public void setNhanXet(String NhanXet) {
         this.NhanXet = NhanXet;
-    }
-
-    public int getID_LopHoc() {
-        return ID_LopHoc;
-    }
-
-    public void setID_LopHoc(int ID_LopHoc) {
-        this.ID_LopHoc = ID_LopHoc;
-    }
-
-    public NopBaiTap(Integer ID_HocSinh, Integer ID_BaiTap, String TepNop, LocalDate NgayNop, BigDecimal Diem, String NhanXet, int ID_LopHoc) {
-        this.ID_HocSinh = ID_HocSinh;
-        this.ID_BaiTap = ID_BaiTap;
-        this.TepNop = TepNop;
-        this.NgayNop = NgayNop;
-        this.Diem = Diem;
-        this.NhanXet = NhanXet;
-        this.ID_LopHoc = ID_LopHoc;
-    }
-
-    public NopBaiTap() {
     }
 }

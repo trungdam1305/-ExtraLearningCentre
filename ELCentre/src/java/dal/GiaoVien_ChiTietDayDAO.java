@@ -20,16 +20,16 @@ public class GiaoVien_ChiTietDayDAO {
         DBContext db = DBContext.getInstance() ; 
         try {
             String sql = """
-                         select LH.ID_KhoaHoc, LH.ID_LopHoc , GVLH.ID_GiaoVien , GV.HoTen , TH.TenTruongHoc  , LH.TenLopHoc , LH.SiSo  , LH.GhiChu , LH.TrangThai , LH.NgayTao , LH.Image  from GiaoVien_LopHoc GVLH 
-                                                  join LopHoc LH 
-                                                  on GVLH.ID_LopHoc = LH.ID_LopHoc 
-                                                  
-                                                  JOIN GiaoVien GV 
-                                                  ON GVLH.ID_GiaoVien = GV.ID_GiaoVien
-                                                  JOIN TruongHoc TH 
-                                                  ON TH.ID_TruongHoc = GV.ID_TruongHoc
-                                                  WHERE GV.ID_GiaoVien = ? 
-                                                  and LH.TrangThai = N'Đang học'; 
+                         select LH.ID_KhoaHoc, LH.ID_LopHoc , GVLH.ID_GiaoVien , GV.HoTen , TH.TenTruongHoc  , LH.TenLopHoc , LH.SiSo , SL.SlotThoiGian , LH.GhiChu , LH.TrangThai , LH.NgayTao , LH.Image  from GiaoVien_LopHoc GVLH 
+                         join LopHoc LH 
+                         on GVLH.ID_LopHoc = LH.ID_LopHoc 
+                         JOIN SlotHoc SL
+                         on SL.ID_SlotHoc = LH.ID_Schedule 
+                         JOIN GiaoVien GV 
+                         ON GVLH.ID_GiaoVien = GV.ID_GiaoVien
+                         JOIN TruongHoc TH 
+                         ON TH.ID_TruongHoc = GV.ID_TruongHoc
+                         WHERE GV.ID_GiaoVien = ?  ; 
                          """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
             statement.setString(1, ID_GiaoVien);
@@ -62,6 +62,8 @@ public class GiaoVien_ChiTietDayDAO {
             return giaovienchitiets ; 
         }
     }
+    
+    
     
     
 }

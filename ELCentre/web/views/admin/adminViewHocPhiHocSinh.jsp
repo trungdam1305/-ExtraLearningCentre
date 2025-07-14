@@ -1,14 +1,11 @@
 <%-- 
     Document   : adminViewHocPhiHocSinh
-    Created on : Jul 10, 2025, 8:49:56 AM
+    Created on : Jun 23, 2025, 9:24:13 AM
     Author     : chuvv
-    Purpose    : This page displays a list of all classes (lớp học đang học) and tuition (học phí)  of one student  in the EL CENTRE system, including details like name, specialization, 
+    Purpose    : This page displays a list of all classes (lớp học) and tuition (học phí)  of one student  in the EL CENTRE system, including details like name, specialization, 
                  time of class , note , status name of teacher , image of class . And admin can view tuition of student amd change score of student in this classes
     Parameters:
-    - Parameters:(Handle from adminActionWithStudent servlet)
-    - Method to get data from database in HocSinh_ChiTietDAO - adminGetAllLopHocCuaHocSinh
-    - @Param hocsinhchitiets (ArrayList<HocSinh_ChiTietHoc>): A request attribute containing the list of class of student objects fetched from the database.
-    - Send to the do Post adminActionWithStudent to action with notification
+    - @Param giaoviens (ArrayList<hocsinhchitiets>): A request attribute containing the list of class of student objects fetched from the database.
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -115,6 +112,7 @@
                 background-color: #163b5c;
             }
 
+            
             .header {
                 background-color: #1F4E79;
                 color: white;
@@ -211,6 +209,7 @@
                 margin-right: 8px;
             }
 
+           
             .footer {
                 background-color: #1F4E79;
                 color: #B0C4DE;
@@ -224,6 +223,7 @@
                 font-size: 14px;
             }
 
+            
             .main-content {
                 flex: 1 0 auto;
                 padding-bottom: 40px;
@@ -249,23 +249,20 @@
         </div>
 
         <div class="main-content">
-            <h2>Học phí của học sinh theo lớp</h2>
+            <h2>Quản lý điểm học sinh theo lớp</h2>
             <div style="display: flex; justify-content: flex-end; align-items: center; gap: 15px;">
-
+                
             </div>
-            <%
-             String idtaikhoan = (String) request.getAttribute("idtk");
-            %>
 
             <c:choose>
                 <c:when test="${not empty hocsinhchitiets}">
                     <table>
                         <thead>
                             <tr>
-                                <th>Lớp Học</th>
+                                <th>ID Lớp Học</th>
                                 <th>Image</th>
                                 <th>Tên Lớp Học</th>
-
+                                <th>Thời Gian</th>
 
                                 <th>Ghi Chú</th>
 
@@ -274,7 +271,6 @@
 
                                 <th>Ngày Tạo</th>
                                 <th>Tên Giáo Viên</th>
-                                <th>Trạng thái học phí</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -285,17 +281,16 @@
                                     <td>${sct.getImage()}</td>
                                     <td>${sct.getTenLopHoc()}</td>
 
+                                    <td>${sct.getSlotThoiGian()}</td>
 
 
                                     <td>${sct.getGhiChu()}</td>
                                     <td>${sct.getTrangThai()}</td>
                                     <td>${sct.getNgayTao()}</td>
-
                                     <td>${sct.getHoTen()}</td>
-                                    <td></td>
                                     <td>
-
-                                        <a class="action-link" href="${pageContext.request.contextPath}/views/admin/adminSendNotificationStudent.jsp?idtaikhoan=<%= idtaikhoan %>">Gửi thông báo</a>
+                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWith?action=view&id=${giaovien.getID_LopHoc()}">Tình trạng học phí</a> 
+                                         <a class="action-link" href="${pageContext.request.contextPath}/adminActionWith?action=view&id=${giaovien.getID_LopHoc()}">Chuyển học sinh khỏi lớp</a>  
 
                                     </td>
                                 </tr>   
@@ -308,11 +303,7 @@
                         <c:if test="${not empty message}">
                             <p style="color: red;">${message}</p>
                         </c:if>
-<<<<<<< HEAD
-                        <p>Không có dữ liệu liệu lớp để hiển thị.</p>
-=======
                         <p>Không có dữ liệu giáo viên để hiển thị.</p>
->>>>>>> 3d998d6739f75f43b0ce9d4cf8bdb0cc5c6d3d77
                     </div>
                 </c:otherwise>
             </c:choose>

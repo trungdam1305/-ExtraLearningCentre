@@ -17,10 +17,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@WebServlet(name = "ManageClassDetail", urlPatterns = {"/ManageClassDetail"})
 public class ManageClassDetail extends HttpServlet {
 
     @Override
@@ -43,82 +43,49 @@ public class ManageClassDetail extends HttpServlet {
             LopHoc lopHoc = lopHocDAO.getLopHocById(idLopHoc);
             if (lopHoc == null) {
                 request.setAttribute("err", "Không tìm thấy lớp học.");
-                request.setAttribute("lichHocList", new ArrayList<LichHoc>());
-                request.setAttribute("giaoVien", null);
-                request.setAttribute("hocSinhList", new ArrayList<HocSinh>());
-                request.setAttribute("allStudents", new ArrayList<HocSinh>());
-                request.setAttribute("availableTeachers", new ArrayList<GiaoVien>());
-                request.setAttribute("previousTeachers", new ArrayList<GiaoVien>());
-                request.setAttribute("previousStudents", new ArrayList<HocSinh>());
-                request.setAttribute("ID_KhoaHoc", idKhoaHoc);
-                request.setAttribute("ID_Khoi", idKhoi);
                 request.getRequestDispatcher("/views/admin/viewClass.jsp").forward(request, response);
                 return;
             }
-// Xử lý ClassCode từ tham số URL nếu cột ClassCode là null
-            String classCodeFromUrl = request.getParameter("ClassCode");
-            if (lopHoc.getClassCode() == null && classCodeFromUrl != null && !classCodeFromUrl.trim().isEmpty()) {
-                lopHoc.setClassCode(classCodeFromUrl);
-                System.out.println("doGet: Set ClassCode from URL: " + classCodeFromUrl);
-            }
 
-            // Lấy danh sách lịch học
-            List<LichHoc> lichHocList = lichHocDAO.getLichHocByLopHoc(idLopHoc);
+            // Lấy lịch học
+            LichHoc lichHoc = lichHocDAO.getLichHocByLopHoc(idLopHoc);
 
             // Lấy giáo viên của lớp
-            GiaoVien giaoVien = giaoVienDAO.getGiaoVienByLopHoc1(idLopHoc);
-            System.out.printf("doGet: GiaoVien for ID_LopHoc=%d: %s%n", idLopHoc,
-                    giaoVien != null ? giaoVien.getHoTen() : "null");
+            GiaoVien giaoVien = giaoVienDAO.getGiaoVienByLopHoc(idLopHoc);
+            System.out.println("GiaoVien in doGet: " + (giaoVien != null ? giaoVien.getHoTen() : "null"));
 
             // Lấy danh sách học sinh trong lớp
-            List<HocSinh> hocSinhList = hocSinhDAO.getHocSinhByLopHoc1(idLopHoc);
-            System.out.printf("doGet: HocSinhList size for ID_LopHoc=%d: %d%n", idLopHoc,
-                    hocSinhList != null ? hocSinhList.size() : 0);
+            List<HocSinh> hocSinhList = hocSinhDAO.getHocSinhByLopHoc(idLopHoc);
+            System.out.println("HocSinhList size in doGet: " + (hocSinhList != null ? hocSinhList.size() : "null"));
 
             // Lấy danh sách tất cả học sinh
-            List<HocSinh> allStudents = hocSinhDAO.adminGetAllHocSinh11();
+            List<HocSinh> allStudents = hocSinhDAO.adminGetAllHocSinh();
 
             // Lấy danh sách giáo viên phù hợp với khóa học
             KhoaHoc khoaHoc = khoaHocDAO.getKhoaHocById(idKhoaHoc);
             List<GiaoVien> availableTeachers = new ArrayList<>();
             if (khoaHoc != null) {
                 String tenKhoaHoc = khoaHoc.getTenKhoaHoc().toLowerCase();
-                availableTeachers = giaoVienDAO.getTeachersBySpecialization1(tenKhoaHoc);
-                System.out.printf("doGet: AvailableTeachers size for ID_KhoaHoc=%d: %d%n",
-                        idKhoaHoc, availableTeachers.size());
+                availableTeachers = giaoVienDAO.getTeachersBySpecialization(tenKhoaHoc);
+                System.out.println("AvailableTeachers size in doGet: " + availableTeachers.size());
             } else {
-                System.out.printf("doGet: KhoaHoc is null for ID_KhoaHoc=%d%n", idKhoaHoc);
+                System.out.println("KhoaHoc is null for ID: " + idKhoaHoc);
             }
-
-            // Lấy danh sách giáo viên và học sinh đã tham gia các buổi học trước
-            List<GiaoVien> previousTeachers = giaoVienDAO.getPreviousTeachersByLopHoc1(idLopHoc);
-            List<HocSinh> previousStudents = hocSinhDAO.getPreviousStudentsByLopHoc1(idLopHoc);
-            System.out.printf("doGet: PreviousTeachers size for ID_LopHoc=%d: %d%n",
-                    idLopHoc, previousTeachers != null ? previousTeachers.size() : 0);
-            System.out.printf("doGet: PreviousStudents size for ID_LopHoc=%d: %d%n",
-                    idLopHoc, previousStudents != null ? previousStudents.size() : 0);
 
             // Đặt thuộc tính cho JSP
             request.setAttribute("lopHoc", lopHoc);
-            request.setAttribute("lichHocList", lichHocList);
+            request.setAttribute("lichHoc", lichHoc);
             request.setAttribute("giaoVien", giaoVien);
             request.setAttribute("hocSinhList", hocSinhList);
             request.setAttribute("allStudents", allStudents);
             request.setAttribute("availableTeachers", availableTeachers);
-            request.setAttribute("previousTeachers", previousTeachers);
-            request.setAttribute("previousStudents", previousStudents);
             request.setAttribute("ID_KhoaHoc", idKhoaHoc);
             request.setAttribute("ID_Khoi", idKhoi);
 
             // Chuyển tiếp đến JSP
             request.getRequestDispatcher("/views/admin/viewClass.jsp").forward(request, response);
-        } catch (NumberFormatException e) {
-            System.out.println("doGet: Invalid parameter: " + e.getMessage());
-            e.printStackTrace();
-            request.setAttribute("err", "Tham số không hợp lệ!");
-            request.getRequestDispatcher("/views/admin/viewClass.jsp").forward(request, response);
         } catch (Exception e) {
-            System.out.println("doGet: Error: " + e.getMessage());
+            System.out.println("Error in doGet: " + e.getMessage());
             e.printStackTrace();
             request.setAttribute("err", "Lỗi khi tải thông tin lớp học: " + e.getMessage());
             request.getRequestDispatcher("/views/admin/viewClass.jsp").forward(request, response);
@@ -141,8 +108,7 @@ public class ManageClassDetail extends HttpServlet {
             idKhoaHoc = Integer.parseInt(request.getParameter("ID_KhoaHoc"));
             idKhoi = Integer.parseInt(request.getParameter("ID_Khoi"));
         } catch (NumberFormatException e) {
-            System.out.println("doPost: Invalid parameter: " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("Tham số không hợp lệ: " + e.getMessage());
             request.setAttribute("err", "Tham số không hợp lệ!");
             request.getRequestDispatcher("/views/admin/viewClass.jsp").forward(request, response);
             return;
@@ -163,85 +129,82 @@ public class ManageClassDetail extends HttpServlet {
                 request.getRequestDispatcher("/views/admin/viewClass.jsp").forward(request, response);
                 return;
             }
-
-            // Lấy danh sách lịch học
-            List<LichHoc> lichHocList = lichHocDAO.getLichHocByLopHoc(idLopHoc);
+            LichHoc lichHoc = lichHocDAO.getLichHocByLopHoc(idLopHoc);
 
             if ("assignTeacher".equals(action)) {
                 try {
                     int idGiaoVien = Integer.parseInt(request.getParameter("ID_GiaoVien"));
-                    GiaoVien currentTeacher = giaoVienDAO.getGiaoVienByLopHoc1(idLopHoc);
+                    GiaoVien currentTeacher = giaoVienDAO.getGiaoVienByLopHoc(idLopHoc);
+                    boolean success = false;
 
-                    if (currentTeacher != null && currentTeacher.getID_GiaoVien() == idGiaoVien) {
-                        request.setAttribute("teacherErr", "Giáo viên này đã được phân công cho lớp!");
-                        System.out.printf("doPost: Giáo viên ID=%d đã được phân công cho lớp ID=%d%n", idGiaoVien, idLopHoc);
-                    } else {
-                        boolean success = giaoVienDAO.assignTeacherToClass1(idLopHoc, idGiaoVien);
-                        if (success) {
-                            request.setAttribute("teacherSuc", "Giáo viên đã được phân công thành công!");
-                            System.out.printf("doPost: Successfully assigned ID_GiaoVien=%d to ID_LopHoc=%d%n", idGiaoVien, idLopHoc);
+                    if (currentTeacher != null && currentTeacher.getID_GiaoVien() != idGiaoVien) {
+                        // Cập nhật phân công
+                        success = giaoVienDAO.updateTeacherAssignment(idLopHoc, idGiaoVien);
+                        System.out.println("Kết quả cập nhật phân công giáo viên: " + success);
+                    } else if (currentTeacher == null) {
+                        // Thêm phân công mới
+                        LichHoc lichHocCheck = lichHocDAO.getLichHocByLopHoc(idLopHoc);
+                        if (lichHocCheck == null) {
+                            request.setAttribute("teacherErr", "Không thể phân công giáo viên vì lớp học chưa có lịch học!");
+                        } else if (giaoVienDAO.hasSlotConflict(idGiaoVien, idLopHoc, lichHocCheck.getID_SlotHoc(), lichHocCheck.getNgayHoc())) {
+                            request.setAttribute("teacherErr", "Không thể phân công giáo viên do xung đột thời gian slot học!");
                         } else {
-                            request.setAttribute("teacherErr", "Không thể phân công giáo viên!");
-                            System.out.printf("doPost: Failed to assign ID_GiaoVien=%d to ID_LopHoc=%d%n", idGiaoVien, idLopHoc);
+                            success = giaoVienDAO.assignTeacherToClass(idLopHoc, idGiaoVien);
+                            System.out.println("Kết quả thêm phân công giáo viên: " + success);
                         }
+                    } else {
+                        // Giáo viên đã được phân công
+                        request.setAttribute("teacherErr", "Giáo viên này đã được phân công cho lớp!");
+                        System.out.println("Giáo viên ID " + idGiaoVien + " đã được phân công cho lớp học ID " + idLopHoc);
+                        success = false;
+                    }
+
+                    if (success) {
+                        request.setAttribute("teacherSuc", "Giáo viên đã được phân công thành công!");
                     }
                 } catch (NumberFormatException e) {
                     request.setAttribute("teacherErr", "Vui lòng chọn một giáo viên hợp lệ!");
-                    System.out.println("doPost: Invalid ID_GiaoVien: " + e.getMessage());
-                    e.printStackTrace();
-                } catch (SQLException e) {
-                    request.setAttribute("teacherErr", "Lỗi khi phân công giáo viên: " + e.getMessage());
-                    System.out.println("doPost: SQL Error in assignTeacher: " + e.getMessage());
-                    e.printStackTrace();
+                    System.out.println("ID_GiaoVien không hợp lệ: " + e.getMessage());
                 }
             } else if ("addStudent".equals(action)) {
                 try {
                     int idHocSinh = Integer.parseInt(request.getParameter("ID_HocSinh"));
                     if (lopHoc.getSiSo() >= lopHoc.getSiSoToiDa()) {
                         request.setAttribute("studentErr", "Lớp đã đạt sĩ số tối đa!");
-                        System.out.printf("doPost: Class ID=%d has reached maximum capacity (SiSo=%d, SiSoToiDa=%d)%n",
-                                idLopHoc, lopHoc.getSiSo(), lopHoc.getSiSoToiDa());
-                    } else if (hocSinhDAO.isStudentInClass1(idHocSinh, idLopHoc)) {
+                    } else if (hocSinhDAO.isStudentInClass(idHocSinh, idLopHoc)) {
                         request.setAttribute("studentErr", "Học sinh đã có trong lớp này!");
-                        System.out.printf("doPost: ID_HocSinh=%d already in class ID=%d%n", idHocSinh, idLopHoc);
-                    } else if (hocSinhDAO.hasSchoolConflict1(idHocSinh, idLopHoc)) {
-                        request.setAttribute("studentErr", "Không thể thêm học sinh vì học sinh và giáo viên cùng trường!");
-                        System.out.printf("doPost: School conflict for ID_HocSinh=%d in class ID=%d%n", idHocSinh, idLopHoc);
+                    } else if (hocSinhDAO.hasSchoolConflict(idHocSinh, idLopHoc)) {
+                        request.setAttribute("studentErr", "Không thể thêm học sinh vì giáo viên của lớp học cùng trường với học sinh!");
                     } else {
-                        boolean studentAdded = hocSinhDAO.addStudentToClass1(idHocSinh, idLopHoc);
+                        boolean studentAdded = hocSinhDAO.addStudentToClass(idHocSinh, idLopHoc);
                         if (studentAdded) {
                             boolean siSoUpdated = lopHocDAO.updateSiSo(idLopHoc, lopHoc.getSiSo() + 1);
                             if (siSoUpdated) {
                                 request.setAttribute("studentSuc", "Học sinh đã được thêm vào lớp thành công!");
-                                System.out.printf("doPost: Successfully added ID_HocSinh=%d to ID_LopHoc=%d, SiSo updated to %d%n",
-                                        idHocSinh, idLopHoc, lopHoc.getSiSo() + 1);
                             } else {
                                 request.setAttribute("studentErr", "Lỗi khi cập nhật sĩ số lớp!");
-                                System.out.printf("doPost: Failed to update SiSo for ID_LopHoc=%d%n", idLopHoc);
                             }
                         } else {
-                            request.setAttribute("studentErr", "Không thể thêm học sinh vào lớp!");
-                            System.out.printf("doPost: Failed to add ID_HocSinh=%d to ID_LopHoc=%d%n", idHocSinh, idLopHoc);
+                            request.setAttribute("studentErr", "Không thể thêm học sinh vào lớp. Học sinh có thể không tồn tại!");
                         }
                     }
                 } catch (NumberFormatException e) {
                     request.setAttribute("studentErr", "Vui lòng chọn một học sinh hợp lệ!");
-                    System.out.println("doPost: Invalid ID_HocSinh: " + e.getMessage());
-                    e.printStackTrace();
-                } catch (SQLException e) {
-                    request.setAttribute("studentErr", "Lỗi khi thêm học sinh: " + e.getMessage());
-                    System.out.println("doPost: SQL Error in addStudent: " + e.getMessage());
-                    e.printStackTrace();
+                    System.out.println("ID_HocSinh không hợp lệ: " + e.getMessage());
                 }
             } else if ("moveOutStudent".equalsIgnoreCase(action)) {
                 try {
                     int idHocSinh = Integer.parseInt(request.getParameter("ID_HocSinh"));
-                    if (!hocSinhDAO.isStudentInClass1(idHocSinh, idLopHoc)) {
-                        request.setAttribute("studentErr", "Học sinh không thuộc lớp này!");
-                        System.out.printf("doPost: ID_HocSinh=%d not in class ID=%d%n", idHocSinh, idLopHoc);
+
+                    // Kiểm tra học sinh có trong lớp
+                    boolean isStudentInClass = hocSinhDAO.isStudentInClass(idHocSinh, idLopHoc);
+                    if (!isStudentInClass) {
+                        request.setAttribute("studentErr", "Học sinh không thuộc lớp này.");
                     } else {
-                        boolean removed = hocSinhDAO.removeStudentFromClass1(idHocSinh, idLopHoc);
+                        // Xóa học sinh khỏi lớp
+                        boolean removed = hocSinhDAO.removeStudentFromClass(idHocSinh, idLopHoc);
                         if (removed) {
+                            // Cập nhật sĩ số
                             int newSiSo = lopHoc.getSiSo() - 1;
                             if (newSiSo < 0) {
                                 newSiSo = 0;
@@ -249,102 +212,59 @@ public class ManageClassDetail extends HttpServlet {
                             boolean siSoUpdated = lopHocDAO.updateSiSo(idLopHoc, newSiSo);
                             if (siSoUpdated) {
                                 request.setAttribute("studentSuc", "Xóa học sinh khỏi lớp thành công!");
-                                System.out.printf("doPost: Successfully removed ID_HocSinh=%d from ID_LopHoc=%d, SiSo updated to %d%n",
-                                        idHocSinh, idLopHoc, newSiSo);
                             } else {
-                                request.setAttribute("studentErr", "Xóa học sinh thành công nhưng không thể cập nhật sĩ số!");
-                                System.out.printf("doPost: Failed to update SiSo for ID_LopHoc=%d after removing ID_HocSinh=%d%n",
-                                        idLopHoc, idHocSinh);
+                                request.setAttribute("studentErr", "Xóa học sinh thành công nhưng không thể cập nhật sĩ số.");
                             }
                         } else {
-                            request.setAttribute("studentErr", "Không thể xóa học sinh khỏi lớp!");
-                            System.out.printf("doPost: Failed to remove ID_HocSinh=%d from ID_LopHoc=%d%n", idHocSinh, idLopHoc);
+                            request.setAttribute("studentErr", "Không thể xóa học sinh khỏi lớp.");
                         }
                     }
                 } catch (NumberFormatException e) {
                     request.setAttribute("studentErr", "Vui lòng chọn một học sinh hợp lệ!");
-                    System.out.println("doPost: Invalid ID_HocSinh: " + e.getMessage());
-                    e.printStackTrace();
-                } catch (SQLException e) {
-                    request.setAttribute("studentErr", "Lỗi khi xóa học sinh: " + e.getMessage());
-                    System.out.println("doPost: SQL Error in moveOutStudent: " + e.getMessage());
-                    e.printStackTrace();
-                }
-            } else if ("removeTeacher".equals(action)) {
-                try {
-                    int idGiaoVien = Integer.parseInt(request.getParameter("ID_GiaoVien"));
-                    GiaoVien currentTeacher = giaoVienDAO.getGiaoVienByLopHoc1(idLopHoc);
-                    if (currentTeacher == null || currentTeacher.getID_GiaoVien() != idGiaoVien) {
-                        request.setAttribute("teacherErr", "Giáo viên không thuộc lớp này!");
-                        System.out.printf("doPost: ID_GiaoVien=%d not assigned to ID_LopHoc=%d%n", idGiaoVien, idLopHoc);
-                    } else {
-                        boolean removed = giaoVienDAO.removeTeacherFromClass1(idLopHoc, idGiaoVien);
-                        if (removed) {
-                            request.setAttribute("teacherSuc", "Xóa giáo viên khỏi lớp thành công!");
-                            System.out.printf("doPost: Successfully removed ID_GiaoVien=%d from ID_LopHoc=%d%n", idGiaoVien, idLopHoc);
-                        } else {
-                            request.setAttribute("teacherErr", "Không thể xóa giáo viên khỏi lớp!");
-                            System.out.printf("doPost: Failed to remove ID_GiaoVien=%d from ID_LopHoc=%d%n", idGiaoVien, idLopHoc);
-                        }
-                    }
-                } catch (NumberFormatException e) {
-                    request.setAttribute("teacherErr", "Vui lòng chọn một giáo viên hợp lệ!");
-                    System.out.println("doPost: Invalid ID_GiaoVien: " + e.getMessage());
-                    e.printStackTrace();
+                    System.out.println("ID_HocSinh không hợp lệ: " + e.getMessage());
                 }
             }
 
             // Làm mới dữ liệu
             lopHoc = lopHocDAO.getLopHocById(idLopHoc);
-            lichHocList = lichHocDAO.getLichHocByLopHoc(idLopHoc);
-            GiaoVien giaoVien = giaoVienDAO.getGiaoVienByLopHoc1(idLopHoc);
-            List<HocSinh> hocSinhList = hocSinhDAO.getHocSinhByLopHoc1(idLopHoc);
-            List<HocSinh> allStudents = hocSinhDAO.adminGetAllHocSinh11();
+            lichHoc = lichHocDAO.getLichHocByLopHoc(idLopHoc);
+            GiaoVien giaoVien = giaoVienDAO.getGiaoVienByLopHoc(idLopHoc);
+            List<HocSinh> hocSinhList = hocSinhDAO.getHocSinhByLopHoc(idLopHoc);
+            List<HocSinh> allStudents = hocSinhDAO.adminGetAllHocSinh();
             KhoaHoc khoaHoc = khoaHocDAO.getKhoaHocById(idKhoaHoc);
             List<GiaoVien> availableTeachers = new ArrayList<>();
-            List<GiaoVien> previousTeachers = giaoVienDAO.getPreviousTeachersByLopHoc1(idLopHoc);
-            List<HocSinh> previousStudents = hocSinhDAO.getPreviousStudentsByLopHoc1(idLopHoc);
             if (khoaHoc != null) {
                 String tenKhoaHoc = khoaHoc.getTenKhoaHoc().toLowerCase();
-                availableTeachers = giaoVienDAO.getTeachersBySpecialization1(tenKhoaHoc);
-                System.out.printf("doPost: AvailableTeachers size for ID_KhoaHoc=%d: %d%n",
-                        idKhoaHoc, availableTeachers.size());
+                availableTeachers = giaoVienDAO.getTeachersBySpecialization(tenKhoaHoc);
+                System.out.println("Số lượng giáo viên khả dụng trong doPost: " + availableTeachers.size());
             } else {
-                System.out.printf("doPost: KhoaHoc is null for ID_KhoaHoc=%d%n", idKhoaHoc);
+                System.out.println("Không tìm thấy khóa học với ID: " + idKhoaHoc);
             }
 
             // Ghi log debug
-            System.out.printf("doPost: GiaoVien for ID_LopHoc=%d: %s%n", idLopHoc,
-                    giaoVien != null ? giaoVien.getHoTen() : "null");
-            System.out.printf("doPost: HocSinhList size for ID_LopHoc=%d: %d%n", idLopHoc,
-                    hocSinhList != null ? hocSinhList.size() : 0);
-            System.out.printf("doPost: PreviousTeachers size for ID_LopHoc=%d: %d%n", idLopHoc,
-                    previousTeachers != null ? previousTeachers.size() : 0);
-            System.out.printf("doPost: PreviousStudents size for ID_LopHoc=%d: %d%n", idLopHoc,
-                    previousStudents != null ? previousStudents.size() : 0);
+            System.out.println("Giáo viên trong doPost: " + (giaoVien != null ? giaoVien.getHoTen() : "null"));
+            System.out.println("Số học sinh trong lớp trong doPost: " + (hocSinhList != null ? hocSinhList.size() : "null"));
 
             // Đặt thuộc tính cho JSP
             request.setAttribute("lopHoc", lopHoc);
-            request.setAttribute("lichHocList", lichHocList);
+            request.setAttribute("lichHoc", lichHoc);
             request.setAttribute("giaoVien", giaoVien);
             request.setAttribute("hocSinhList", hocSinhList);
             request.setAttribute("allStudents", allStudents);
             request.setAttribute("availableTeachers", availableTeachers);
-            request.setAttribute("previousTeachers", previousTeachers);
-            request.setAttribute("previousStudents", previousStudents);
             request.setAttribute("ID_KhoaHoc", idKhoaHoc);
             request.setAttribute("ID_Khoi", idKhoi);
 
             // Chuyển tiếp đến JSP
             request.getRequestDispatcher("/views/admin/viewClass.jsp").forward(request, response);
         } catch (Exception e) {
-            System.out.println("doPost: Error: " + e.getMessage());
+            System.out.println("Lỗi trong doPost: " + e.getMessage());
             e.printStackTrace();
             request.setAttribute("err", "Lỗi khi xử lý yêu cầu: " + e.getMessage());
             LopHocDAO lopHocDAO = new LopHocDAO();
             LichHocDAO lichHocDAO = new LichHocDAO();
             request.setAttribute("lopHoc", lopHocDAO.getLopHocById(idLopHoc));
-            request.setAttribute("lichHocList", lichHocDAO.getLichHocByLopHoc(idLopHoc));
+            request.setAttribute("lichHoc", lichHocDAO.getLichHocByLopHoc(idLopHoc));
             request.setAttribute("ID_KhoaHoc", idKhoaHoc);
             request.setAttribute("ID_Khoi", idKhoi);
             request.getRequestDispatcher("/views/admin/viewClass.jsp").forward(request, response);

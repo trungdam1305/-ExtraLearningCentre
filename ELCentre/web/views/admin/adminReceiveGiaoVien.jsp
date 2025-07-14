@@ -6,8 +6,6 @@
                  contact info, salary, and status. It supports filtering by specialization, searching, and pagination, 
                  with action links for viewing details, managing classes, and editing teacher records.
     Parameters:
-    - Parameters:(Handle from adminGetFromDashboard servlet)
-    - Method to get data from database in GiaoVienDAO - admminGetAllGiaoVien
     - @Param giaoviens (ArrayList<GiaoVien>): A request attribute containing the list of teacher objects fetched from the database.
 --%>
 
@@ -464,7 +462,7 @@
                 <h2><i class="fas fa-chalkboard-teacher"></i> Tất cả giáo viên</h2>
             </div>
 
-            <form  action="${pageContext.request.contextPath}/adminFindInFilterGroup" method="post">
+            <form action="adminFindInFilterGroup" method="post">
                 <div class="filter-bar">
                     <div class="filter-group">
                         <label for="keyword">Từ khóa:</label>
@@ -484,7 +482,7 @@
                         <select id="trangthaiday" name="trangthaiday">
                             <option value="">Tất cả</option>
                             <option value="Đang dạy">Đang dạy</option>
-                            <option value="Chờ dạy">Chưa lớp</option>
+                            <option value="Chờ dạy">Chờ lớp</option>
                             <option value="Đã dạy">Đã dạy</option>
                         </select>
                     </div>
@@ -541,9 +539,9 @@
                                                    <i class="fas fa-chalkboard-teacher"></i> Xem lớp & Chuyển lớp
                                                 </a>
 
-                                                <a class="btn-action enable" title="Gửi thông báo" href="${pageContext.request.contextPath}/views/admin/adminSendNotificationTeacher.jsp?idtaikhoan=${giaovien.getID_TaiKhoan()}">
+                                                <a class="btn-action enable" title="Gửi thông báo" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=sendNoTiFiCaTion&id=${giaovien.getID_GiaoVien()}">
                                                     <i class="fas fa-bell"></i> Gửi thông báo
-                                                
+                                                </a>
                                             </td>
                                         </tr>   
                                     </c:forEach>

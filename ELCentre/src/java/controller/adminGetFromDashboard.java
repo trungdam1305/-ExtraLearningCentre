@@ -20,8 +20,6 @@ import dal.TaiKhoanChiTietDAO;
 import model.GiaoVien_TruongHoc;
 import model.HocSinh_SDT ; 
 import dal.HocSinh_SDTDAO ; 
-import model.GiaoVien_ChiTietDay;
-
 
 /**
  * Created on:May 24 , 2025 11:48:56 PM

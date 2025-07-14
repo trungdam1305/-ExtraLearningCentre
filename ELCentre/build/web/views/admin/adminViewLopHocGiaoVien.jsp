@@ -263,7 +263,10 @@
                                 <td>ID_Lớp Học</td>
                                 <td>Tên Giảng Viên</td>
                                <td>Trường Đang Giảng Dạy</td>
+
                                 <td>Tên Lớp Học</td>
+
+
                                  <td>Sĩ số lớp</td>
 
                                 <td>Thời Gian</td>

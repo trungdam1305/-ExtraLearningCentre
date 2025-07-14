@@ -13,8 +13,7 @@
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://dtguru.wpengine.com/feed/" />
 	<link rel="profile" href="http://gmpg.org/xfn/11" />
 	<link rel="pingback" href="https://dtguru.wpengine.com/xmlrpc.php" />
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 	<script>document.documentElement.className = document.documentElement.className + ' yes-js js_active js'</script>
 	<title>Extra Learning Centre</title>
 <link href='${pageContext.request.contextPath}/img/SieuLogo.png' rel='shortcut icon' type='image/x-icon' />

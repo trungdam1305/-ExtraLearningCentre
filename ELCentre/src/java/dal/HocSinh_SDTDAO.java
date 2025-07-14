@@ -208,29 +208,38 @@ public class HocSinh_SDTDAO {
 
             if (isAllEmpty) {
                 sql = """
-                select * from GiaoVien gv JOIN TruongHoc th ON gv.ID_TruongHoc = th.ID_TruongHoc
-                order by IsHot DESC 
+                SELECT *
+                FROM GiaoVien GV
+                JOIN TaiKhoan TK ON GV.ID_TaiKhoan = TK.ID_TaiKhoan
             """;
                 statement = db.getConnection().prepareStatement(sql);
             } else {
                 sql = """
-                select * from GiaoVien gv JOIN TruongHoc th ON gv.ID_TruongHoc = th.ID_TruongHoc
+                SELECT *
+                FROM GiaoVien GV
+                JOIN TaiKhoan TK ON GV.ID_TaiKhoan = TK.ID_TaiKhoan
                 WHERE (? = '' OR HoTen LIKE ?  OR SDT LIKE ?)
                   AND (? = '' OR ChuyenMon = ?)
                   AND (? = '' OR TrangThaiDay = ?)
             """;
 
-                 statement = db.getConnection().prepareStatement(sql);
+                statement = db.getConnection().prepareStatement(sql);
 
-String keywordLike = "%" + keyword + "%";
-statement.setString(1, keyword);
-statement.setString(2, keywordLike);
-statement.setString(3, keywordLike);
-statement.setString(4, chuyenmon);
-statement.setString(5, chuyenmon);
-statement.setString(6, trangthai);
-statement.setString(7, trangthai);
+                String keywordLike = "%" + keyword + "%";
 
+                
+                statement.setString(1, keyword);
+                statement.setString(2, keywordLike);
+                statement.setString(3, keywordLike);
+                statement.setString(4, keywordLike);
+
+                
+                statement.setString(5, chuyenmon);
+                statement.setString(6, chuyenmon);
+
+                
+                statement.setString(7, trangthai);
+                statement.setString(8, trangthai);
             }
 
             ResultSet rs = statement.executeQuery();

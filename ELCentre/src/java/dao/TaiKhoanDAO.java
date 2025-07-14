@@ -3,10 +3,9 @@ package dao;
 import java.sql.*;
 import java.time.LocalDateTime;
 import model.TaiKhoan;
-import java.sql.Connection;
 
 public class TaiKhoanDAO {
-    //Lấy thông tin về tài khoản đăng nhập
+
     public static TaiKhoan login(String email, String password) throws SQLException {
                String sql = "SELECT * FROM TaiKhoan WHERE Email = ? AND MatKhau = ? AND TrangThai = 'Active'";
 
@@ -27,8 +26,7 @@ public class TaiKhoanDAO {
                 tk.setMatKhau(rs.getString("MatKhau"));
                 tk.setID_VaiTro(rs.getInt("ID_VaiTro"));
                 tk.setUserType(rs.getString("UserType"));
-                tk.setSoDienThoai(rs.getString("SoDienThoai"));
-                tk.setTrangThai(rs.getString("TrangThai")); 
+                tk.setTrangThai(rs.getString("TrangThai"));
                 tk.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
                 return tk;
             }
@@ -37,8 +35,7 @@ public class TaiKhoanDAO {
         }
         return null;
     }
-    
-    //Đang phát triển
+
     public TaiKhoan findOrCreateFacebookUser(String email, String name) {
         try (Connection conn = DBContext.getInstance().getConnection()) {
             String sql = "SELECT * FROM TaiKhoan WHERE Email = ?";
@@ -78,8 +75,7 @@ public class TaiKhoanDAO {
         }
         return null;
     }
-    
-    //Đăng kí tài khoản mới (Đang bị thiếu ) 
+
     public boolean register(TaiKhoan user) {
         String sql = "INSERT INTO TaiKhoan (Email, MatKhau, ID_VaiTro, TrangThai, NgayTao, UserType, SoDienThoai) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBContext.getInstance().getConnection();
@@ -101,8 +97,7 @@ public class TaiKhoanDAO {
             return false;
         }
     }
-    
-    //Kiểm tra mail đã đăng kí trong hệ thống hay chưa
+
     public boolean checkEmailExists(String email) {
         String sql = "SELECT 1 FROM TaiKhoan WHERE Email = ?";
         try (Connection conn = DBContext.getInstance().getConnection();
@@ -115,8 +110,7 @@ public class TaiKhoanDAO {
             return false;
         }
     }
-    
-    //Lấy ra tên vai trò theo ID_VaiTro
+
     public String getUserTypeByRoleId(int roleId) {
         String userType = "Local"; 
         try (Connection conn = DBContext.getInstance().getConnection()) {
@@ -132,8 +126,7 @@ public class TaiKhoanDAO {
         }
         return userType;
     }
-    
-    //Kiểm tra mail và số điện thoại xác thực cho việc đổi mật khẩu
+
     public TaiKhoan findByEmailAndPhone(String email, String phone) {
         TaiKhoan user = null;
         String sql = "SELECT * FROM TaiKhoan WHERE Email = ? AND TRIM(SoDienThoai) = ?";
@@ -159,7 +152,7 @@ public class TaiKhoanDAO {
         return user;
     }
 
-    // Cập nhật mật khẩu mới
+
     public boolean updatePassword(String email, String newPassword) {
         String sql = "UPDATE TaiKhoan SET MatKhau = ? WHERE Email = ?";
         try (Connection conn = DBContext.getInstance().getConnection();
@@ -194,8 +187,7 @@ public class TaiKhoanDAO {
         }
         return user;
     }
-    
-    //Nhập dữ liệu tài khoản (Đang bị thiếu join vào các bảng theo từng role)
+
     public boolean insertTaiKhoan(TaiKhoan user) {
         String sql = "INSERT INTO TaiKhoan (Email, MatKhau, HoTen, ID_VaiTro, TrangThai) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DBContext.getInstance().getConnection();
@@ -211,35 +203,4 @@ public class TaiKhoanDAO {
               return false;
         }
     }
-    
-    // 2 hàm bên dưới dùng trong modal đổi mật khẩu của học sinh
-    // Kiểm tra mật khẩu
-    public static boolean checkPassword(String email, String password) {
-        try (Connection con = DBContext.getInstance().getConnection()) {
-            String sql = "SELECT * FROM TaiKhoan WHERE Email = ? AND MatKhau = ?";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, email);
-            ps.setString(2, password);
-            ResultSet rs = ps.executeQuery();
-            return rs.next();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-    
-    // update mật khẩu mới
-    public static boolean updatePassword(int idTaiKhoan, String newPassword) {
-        try (Connection con = DBContext.getInstance().getConnection()) {
-            String sql = "UPDATE TaiKhoan SET MatKhau = ? WHERE ID_TaiKhoan = ?";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, newPassword);
-            ps.setInt(2, idTaiKhoan);
-            return ps.executeUpdate() > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
 }
