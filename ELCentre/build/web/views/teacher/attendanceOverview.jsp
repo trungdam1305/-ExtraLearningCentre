@@ -19,10 +19,10 @@
     <style>
         h1 {
             margin-top: 30px;
-            color: #1F4E79; /* Màu chữ */
-            text-align: center; /* Căn giữa */
-            font-size: 24px; /* Cỡ chữ */
-            font-weight: bold; /* In đậm */
+            color: #1F4E79; 
+            text-align: center; 
+            font-size: 24px; 
+            font-weight: bold;
         }
             body {
                 margin: 0;
@@ -145,7 +145,7 @@
                 font-weight: bold;
                 letter-spacing: 1.5px;
                 text-align: center; 
-                width: 230px; /* nhỏ hơn 250px */
+                width: 230px; 
             }
 
             .sidebar-logo {
@@ -340,11 +340,10 @@
             .filter-container {
                 display: flex;
                 align-items: center;
-                gap: 20px; /* Tăng khoảng cách một chút */
+                gap: 20px;
                 flex-wrap: wrap;
-                justify-content: flex-end; /* Đẩy các phần tử sang phải */
+                justify-content: flex-end; 
             }
-
 
             .filter-container .filter-group {
                 display: flex;
@@ -352,22 +351,19 @@
                 gap: 8px;
             }
 
-
             .filter-container label {
                 font-weight: bold;
                 color: #333;
-                white-space: nowrap; /* Ngăn không cho label bị xuống dòng */
+                white-space: nowrap; 
             }
-
 
             .filter-container input,
             .filter-container select {
                 padding: 8px 12px;
                 border: 1px solid #ccc;
                 border-radius: 6px;
-                min-width: 150px; /* Điều chỉnh độ rộng nếu cần */
+                min-width: 150px; 
             }
-
 
             .filter-container button {
                 padding: 8px 15px;
@@ -381,7 +377,6 @@
                 align-items: center;
             }
 
-
             .filter-container button:hover {
                 background-color: #163E5C;
             }
@@ -393,43 +388,39 @@
             }
 
             .pagination a {
-                color: #555; /* Màu chữ xám nhẹ */
+                color: #555; 
                 text-decoration: none;
-                padding: 6px 12px; /* Giảm padding để nhỏ hơn */
-                margin: 0 2px; /* Giảm margin để gần nhau hơn */
-                border-radius: 4px; /* Bo góc mềm mại */
+                padding: 6px 12px; 
+                margin: 0 2px; 
+                border-radius: 4px; 
                 transition: background-color 0.3s, color 0.3s;
-                border: 1px solid #ddd; /* Thêm viền mỏng */
+                border: 1px solid #ddd;
             }
 
-            /* Style cho trang đang được chọn */
             .pagination a.active {
-                background-color: #1F4E79; /* Màu xanh chủ đạo */
-                color: white; /* Chữ trắng */
-                border-color: #1F4E79; /* Viền cùng màu */
+                background-color: #1F4E79; 
+                color: white; 
+                border-color: #1F4E79; 
                 font-weight: bold;
             }
 
-            /* Hiệu ứng khi di chuột vào các trang khác */
             .pagination a:hover:not(.active) {
-                background-color: #e2eaf0; /* Màu nền nhạt khi hover */
+                background-color: #e2eaf0; 
                 color: #1F4E79;
             }
             
-            /* === BỔ SUNG CSS CHO CÁC NÚT HÀNH ĐỘNG MỚI === */
             .action-buttons {
                 display: flex;
                 align-items: center;
-                gap: 8px; /* Khoảng cách giữa các nút */
+                gap: 8px; 
             }
 
-            /* Kiểu dáng chung cho nút hành động */
             .action-btn {
                 display: inline-flex;
                 align-items: center;
-                gap: 6px; /* Khoảng cách giữa icon và chữ */
+                gap: 6px;
                 padding: 6px 12px;
-                border-radius: 20px; /* Bo tròn các góc */
+                border-radius: 20px; 
                 color: white;
                 font-size: 13px;
                 font-weight: 500;
@@ -437,60 +428,55 @@
                 border: none;
                 cursor: pointer;
                 transition: transform 0.2s ease, box-shadow 0.2s ease;
-                white-space: nowrap; /* Ngăn không cho chữ xuống dòng */
+                white-space: nowrap; 
             }
 
             .action-btn:hover {
-                transform: translateY(-2px); /* Hiệu ứng nhấc lên khi hover */
+                transform: translateY(-2px);
                 box-shadow: 0 4px 8px rgba(0,0,0,0.15);
             }
 
-            /* Nút Sửa (Màu cam) */
             .action-btn.edit {
                 background-color: #f39c12; 
             }
 
-            /* Nút Danh sách học sinh (Màu xám) */
             .action-btn.view-students {
                 background-color: #6c7a89;
             }
 
-            /* Nút Upload (Màu xanh lá) */
             .action-btn.upload {
                 background-color: #27ae60;
             }
             .filter-bar {
                 display: flex;
-                flex-wrap: wrap; /* Cho phép xuống dòng trên màn hình nhỏ */
+                flex-wrap: wrap;
                 align-items: center;
-                gap: 15px; /* Khoảng cách giữa các nhóm filter */
+                gap: 15px; 
                 padding: 15px;
                 background-color: #f8f9fa;
                 border: 1px solid #dee2e6;
                 border-radius: 8px;
-                margin-bottom: 2rem !important; /* Ghi đè class mb-4 để có khoảng cách lớn hơn */
+                margin-bottom: 2rem !important;
             }
 
             .filter-group {
                 display: flex;
                 align-items: center;
-                flex-grow: 1; /* Cho phép các nhóm co giãn bằng nhau */
+                flex-grow: 1; 
                 position: relative;
             }
 
             .filter-icon {
                 position: absolute;
                 left: 15px;
-                color: #6c757d; /* Màu xám cho icon */
+                color: #6c757d;
             }
 
-            /* Style chung cho input và select trong filter bar */
             .filter-bar .form-control,
             .filter-bar .form-select {
                 flex: 1;
                 min-width: 200px;
-                padding-left: 40px; /* Tạo không gian cho icon */
-                /* Các style nhất quán với form trong modal */
+                padding-left: 40px; 
                 background-color: #fff;
                 border: 1px solid #ced4da;
                 border-radius: 6px;
@@ -506,13 +492,11 @@
                 outline: none;
             }
 
-            /* Nhóm các nút bấm */
             .filter-buttons {
                 display: flex;
                 gap: 10px;
             }
 
-            /* Nút Lọc */
             .btn-filter-submit {
                 background-color: #1F4E79;
                 color: white;
@@ -527,7 +511,6 @@
                 background-color: #163E5C;
             }
 
-            /* Nút Reset */
             .btn-filter-reset {
                 background-color: #6c757d;
                 color: white;
@@ -591,8 +574,6 @@
                 <ul class="sidebar-menu">
                     <!--Teacher's Notification Management-->
                     <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
-                    <!--Blog's View-->
-                    <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=blog"><i class="fas fa-blog"></i> Blog</a></li>
                     <!--Help Request to Admin-->
                     <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=hotro"><i class="fas fa-question"></i> Yêu Cầu Hỗ Trợ</a></li>
                     <!--Logout-->
@@ -601,6 +582,7 @@
             </div>
     
         <div class="main-content">
+            <!--Overview Attendance from each class-->
             <div class="card">
                 <div class="card-header">
                     <h1><i class="fas fa-list-check"></i> Tổng Quan Điểm Danh các Lớp Học</h1>
@@ -608,12 +590,12 @@
                 <div class="card-body">
                     <form action="${pageContext.request.contextPath}/teacherGetFromDashboard" method="GET" class="filter-bar mb-4">
                         <input type="hidden" name="action" value="diemdanh">
-
+                        <!--Search Box-->
                         <div class="filter-group">
                             <i class="fas fa-search filter-icon"></i>
                             <input type="text" name="keyword" class="form-control" placeholder="Tìm theo tên lớp..." value="${keyword}">
                         </div>
-
+                        <!--Filter Subject-->    
                         <div class="filter-group">
                             <i class="fas fa-book-open filter-icon"></i>
                             <select name="courseId" class="form-select">
@@ -623,7 +605,7 @@
                                 </c:forEach>
                             </select>
                         </div>
-
+                        <!--Filter Year-->    
                         <div class="filter-group">
                             <i class="fas fa-calendar-alt filter-icon"></i>
                             <select name="creationYear" class="form-select">
@@ -633,17 +615,20 @@
                                 </c:forEach>
                             </select>
                         </div>
-
+                        <!--Filter Button-->
                         <div class="filter-buttons">
                             <button type="submit" class="btn-filter-submit">Lọc</button>
                             <a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=diemdanh" class="btn-filter-reset">Reset</a>
                         </div>
                     </form>
-
+                    <!--Table presents brief detail of each class-->
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Mã Lớp</th> <th>Tên Lớp</th> <th>Sĩ Số</th> <th class="text-center">Hành Động</th>
+                                <th>Mã Lớp</th> 
+                                <th>Tên Lớp</th> 
+                                <th>Sĩ Số</th> 
+                                <th class="text-center">Hành Động</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -659,14 +644,15 @@
                                     </td>
                                 </tr>
                             </c:forEach>
+                            <!--If no class, alert-->
                             <c:if test="${empty classList}">
                                 <tr><td colspan="4" class="text-center">Không tìm thấy lớp học nào phù hợp.</td></tr>
                             </c:if>
                         </tbody>
                     </table>
-                    
+                    <!--Pagination -->
                     <div class="pagination">
-                        <%-- Tạo URL cơ sở với các bộ lọc hiện tại --%>
+                        <!--Set URL for pagination after press => request to servlet with value-->
                         <c:url var="paginationUrl" value="/teacherGetFromDashboard">
                             <c:param name="action" value="diemdanh" />
                             <c:param name="keyword" value="${keyword}" />
@@ -674,17 +660,17 @@
                             <c:param name="creationYear" value="${selectedYear}" />
                         </c:url>
 
-                        <%-- Nút 'Trang Trước' --%>
+                        <%-- Button 'Trang Trước' to link to the previous page--%>
                         <c:if test="${currentPage > 1}">
                             <a class="pagination-link" href="${paginationUrl}&page=${currentPage - 1}">Trước</a>
                         </c:if>
 
-                        <%-- Các nút số trang --%>
+                        <%-- Number of pages --%>
                         <c:forEach begin="1" end="${totalPages}" var="i">
                             <a class="pagination-link ${i == currentPage ? 'active' : ''}" href="${paginationUrl}&page=${i}">${i}</a>
                         </c:forEach>
 
-                        <%-- Nút 'Trang Sau' --%>
+                        <%-- Button 'Trang Sau' to link to the next page--%>
                         <c:if test="${currentPage < totalPages}">
                             <a class="pagination-link" href="${paginationUrl}&page=${currentPage + 1}">Sau</a>
                         </c:if>

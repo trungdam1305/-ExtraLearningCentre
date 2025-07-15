@@ -154,24 +154,6 @@ public class LichHocDAO {
     return list;
 }
 
-    public static void main(String[] args) {
-        // DAO
-        LocalDate startOfWeek = LocalDate.now().with(DayOfWeek.MONDAY);
-        LocalDate endOfWeek = LocalDate.now().with(DayOfWeek.SUNDAY);
-
-        List<LichHoc> lichHocList = LichHocDAO.getLichHocTrongTuan(11, startOfWeek, endOfWeek);
-
-
-        for (LichHoc lh : lichHocList) {
-            System.out.println("ID Schedule: " + lh.getID_Schedule());
-            System.out.println("Ngày học: " + lh.getNgayHoc());
-            System.out.println("Ca học: " + lh.getID_SlotHoc());
-            System.out.println("Lớp học: " + lh.getTenLopHoc());
-            System.out.println("Slot" + lh.getSlotThoiGian());
-            System.out.println("------------------------");
-        }
-
-    }
 
   public List<LichHoc> getLichHocByLopHoc(int idLopHoc) {
         List<LichHoc> list = new ArrayList<>();

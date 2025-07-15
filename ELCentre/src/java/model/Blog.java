@@ -40,7 +40,9 @@ public class Blog {
 
     // Name of the blog category
     private String PhanLoai;
-
+    
+    private String NoiDung; 
+    
     /**
      * Default constructor
      */
@@ -142,12 +144,20 @@ public class Blog {
     }
     
     
-
+    
     /**
      * Returns the blog date formatted as dd-MM-yyyy for display
      */
     public String getFormattedDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return BlogDate.format(formatter);
+    }
+    
+    public String getNoiDung() {
+        return NoiDung;
+    }
+
+    public void setNoiDung(String NoiDung) {
+        this.NoiDung = NoiDung;
     }
 }

@@ -95,7 +95,7 @@
                                 <!--Blog-->
                                 <li class="menu-item <%= uri.contains("/Home-Blog") ? "current-menu-item" : "" %>">
                                     <a href="<%= context %>/HomePageBlog">
-                                        <span class='menu-icon fa fa-pencil'> </span>Blog
+                                        <span class='menu-icon fa fa-pencil'> </span>Bài Viết
                                     </a>
                                 </li>
                                 <!--About Us-->

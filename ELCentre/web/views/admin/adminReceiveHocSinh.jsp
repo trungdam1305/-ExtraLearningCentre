@@ -422,7 +422,7 @@
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp"><i class="fas fa-chart-line"></i> Dashboard</a>
+                <li><a href="${pageContext.request.contextPath}/adminGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
             </ul>
 
             <div class="sidebar-section-title">Quản lý người dùng</div>
@@ -540,11 +540,11 @@
                                             <td class="action-buttons">
                                                 <a class="btn-action view" title="Chi tiết" href="${pageContext.request.contextPath}/adminActionWithStudent?action=view&id=${hocsinh.getID_HocSinh()}&idtaikhoan=${hocsinh.getID_TaiKhoan()}">
                                                     <i class="fas fa-user-edit"></i> Chi tiết và chỉnh sửa    
-                                                </a>
+                                                </a >
                                                 <a class="btn-action update" title="Xem lớp và chuyển lớp" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewClass&id=${hocsinh.getID_HocSinh()}">
                                                      <i class="fas fa-exchange-alt"></i> Xem lớp & Chuyển lớp
                                                 </a>
-                                                <a class="btn-action enable" title="Học phí và Thông báo" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewTuiTionAndSendNTF&id=${hocsinh.getID_HocSinh()}&idtaikhoan=${hocsinh.getID_TaiKhoan()}">
+                                                <a class="btn-action enable" title="Học phí và Thông báo" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewTuiTionAndSendNTF&id=${hocsinh.getID_HocSinh()}&idtaikhoan=${hocsinh.getID_TaiKhoan()}&name=${hocsinh.getHoTen()}">
                                                     <i class="fas fa-money-bill-wave"></i> Học Phí & Thông báo
                                                 </a>
                                                      
@@ -569,7 +569,7 @@
                     <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
                 </div>
                 <div class="back-button">
-                    <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">← Quay lại trang chủ</a>
+                    <a href="${pageContext.request.contextPath}/adminGoToFirstPage">← Quay lại trang chủ</a>
                 </div>
             </div>
 

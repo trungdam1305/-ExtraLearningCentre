@@ -73,7 +73,7 @@ public class adminActionWithStudent extends HttpServlet {
                 break;
 
             case "viewClass":
-                doViewClass(request, response);
+                doViewClass(request, response);     
                 break;
 
             case "viewTuiTionAndSendNTF":
@@ -91,7 +91,6 @@ public class adminActionWithStudent extends HttpServlet {
             case "update":
                 doUpdateInfor(request, response);
                 break;
-
             case "sendNotification":
                 doSendNotification(request, response);
                 break;
@@ -120,7 +119,6 @@ public class adminActionWithStudent extends HttpServlet {
         }
 
     }
-
     protected void doUpdateInfor(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
@@ -178,15 +176,15 @@ public class adminActionWithStudent extends HttpServlet {
         }
 
     }
-
     protected void doViewTuiTionAndSendNotification(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         String ID = request.getParameter("id");
         String ID_TaiKhoan = request.getParameter("idtaikhoan");
-
+        String name = request.getParameter("name") ; 
         ArrayList<HocSinh_ChiTietHoc> hocsinhchitiets = HocSinh_ChiTietDAO.adminGetAllLopHocCuaHocSinh(ID);
         if (hocsinhchitiets != null) {
+            request.setAttribute("name", name);
             request.setAttribute("idtk", ID_TaiKhoan);
             request.setAttribute("hocsinhchitiets", hocsinhchitiets);
             request.getRequestDispatcher("views/admin/adminViewHocPhiHocSinh.jsp").forward(request, response);
@@ -197,17 +195,15 @@ public class adminActionWithStudent extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         String ID_TaiKhoan = request.getParameter("idtaikhoan");
-        String NoiDung = request.getParameter("noidung");
-        boolean sendNTF = ThongBaoDAO.adminSendNotification(ID_TaiKhoan, NoiDung);
+        String NoiDung = request.getParameter("noidung")  ; 
+        boolean sendNTF = ThongBaoDAO.adminSendNotification(ID_TaiKhoan, NoiDung , "Student") ; 
         if (sendNTF) {
             request.setAttribute("message", "Gửi thông báo thành công!");
-
             request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);
         } else {
             request.setAttribute("message", "Gửi thông báo thất bại!");
             request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);
         }
-
     }
 
     protected void doViewClass(HttpServletRequest request, HttpServletResponse response)
@@ -221,7 +217,6 @@ public class adminActionWithStudent extends HttpServlet {
             request.getRequestDispatcher("/views/admin/error.jsp").forward(request, response);
             return;
         }
-
         // Lấy danh sách lớp học của học sinh
         LopHocInfoDTODAO lhd = new LopHocInfoDTODAO();
         List<LopHocInfoDTO> lopHocs = lhd.getClassesByStudentId(idHocSinh);
@@ -230,7 +225,6 @@ public class adminActionWithStudent extends HttpServlet {
             request.getRequestDispatcher("/views/admin/viewLopHoc_HocSinh.jsp").forward(request, response);
             return;
         }
-
         // Giả sử lấy lớp đầu tiên trong danh sách làm idLopHocHienTai
         // (Bạn có thể cần logic khác để xác định lớp hiện tại, ví dụ: dựa trên trạng thái "Đang học")
         int idLopHocHienTai = lopHocs.get(0).getIdLopHoc(); // Lấy ID lớp học đầu tiên
@@ -242,3 +236,4 @@ public class adminActionWithStudent extends HttpServlet {
         request.getRequestDispatcher("/views/admin/viewLopHoc_HocSinh.jsp").forward(request, response);
     }
 }
+

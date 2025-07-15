@@ -177,6 +177,26 @@
         <servlet-class>controller.StudentRequestEnrollServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>MaterialDetailsServlet</servlet-name>
+        <servlet-class>controller.MaterialDetailsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BlogDetailServlet</servlet-name>
+        <servlet-class>controller.BlogDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TagSearchServlet</servlet-name>
+        <servlet-class>controller.TagSearchServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ClassDetailsServlet</servlet-name>
+        <servlet-class>controller.ClassDetailsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DownloadMaterialServlet</servlet-name>
+        <servlet-class>controller.DownloadMaterialServlet</servlet-class>
+    </servlet>    
+    <servlet>    
         <servlet-name>FindSimilarClasses</servlet-name>
         <servlet-class>controller.ManageCourses.FindSimilarClasses</servlet-class>
     </servlet>
@@ -195,6 +215,14 @@
     <servlet>
         <servlet-name>ManageClassDetail_LopHoc_GiaoVien</servlet-name>
         <servlet-class>controller.ManageCourses.ManageClassDetail_LopHoc_GiaoVien</servlet-class>
+    </servlet>
+     <servlet>
+        <servlet-name>adminGoToFirstPage</servlet-name>
+        <servlet-class>controller.adminGoToFirstPage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>staffGoToFirstPage</servlet-name>
+        <servlet-class>controller.staffGoToFirstPage</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
@@ -397,6 +425,26 @@
         <url-pattern>/StudentRequestEnrollServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>MaterialDetailsServlet</servlet-name>
+        <url-pattern>/material-detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogDetailServlet</servlet-name>
+        <url-pattern>/BlogDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TagSearchServlet</servlet-name>
+        <url-pattern>/TagSearchServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ClassDetailsServlet</servlet-name>
+        <url-pattern>/ClassDetailsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DownloadMaterialServlet</servlet-name>
+        <url-pattern>/DownloadMaterialServlet</url-pattern>
+    </servlet-mapping>    
+    <servlet-mapping>
         <servlet-name>FindSimilarClasses</servlet-name>
         <url-pattern>/FindSimilarClasses</url-pattern>
     </servlet-mapping>
@@ -415,6 +463,14 @@
     <servlet-mapping>
         <servlet-name>ManageClassDetail_LopHoc_GiaoVien</servlet-name>
         <url-pattern>/ManageClassDetail_LopHoc_GiaoVien</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminGoToFirstPage</servlet-name>
+        <url-pattern>/adminGoToFirstPage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>staffGoToFirstPage</servlet-name>
+        <url-pattern>/staffGoToFirstPage</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

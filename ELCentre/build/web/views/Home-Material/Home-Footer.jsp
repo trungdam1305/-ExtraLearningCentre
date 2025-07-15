@@ -7,6 +7,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    <Style>
+        #footer a {
+        text-decoration: none;
+    }   
+    #footer{
+        font-weight: normal;
+        font-style: normal;
+    }
+    </style>
     <footer id="footer">
         <div class="footer-top-links">
             <div class="container">

@@ -133,7 +133,7 @@
         </c:choose>
 
         <div class="back-button">
-            <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">Quay lại trang chủ</a>
+            <a href="${pageContext.request.contextPath}/adminGoToFirstPage">← Quay lại trang chủ</a>
         </div>
     </body>
 </html>

@@ -24,6 +24,7 @@ public class KhoiHocDAO {
                 kh.setID_Khoi(rs.getInt("ID_Khoi"));
                 kh.setTenKhoi(rs.getString("TenKhoi"));
                 kh.setStatus_Khoi(rs.getInt("Status_Khoi"));
+                kh.setImage(rs.getString("Image"));
                 list.add(kh);
             }
 

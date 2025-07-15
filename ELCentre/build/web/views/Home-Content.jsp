@@ -1,205 +1,157 @@
-<%-- 
-    Document   : Home-Content
-    Created on : May 21, 2025, 6:24:33 PM
-    Author     : admin
---%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
-        <!-- Slider -->
-        <div class="banner">
-            <div id="layerslider_1_5r4q8o8aqo3t" class="ls-wp-container fitvidsignore" style="width:1000px;height:630px;margin:0 auto;margin-bottom: 0px; position: relative;">
-                <!--Get all slider from database-->
-                <c:forEach var="slide" items="${sliders}">
-                  <div class="ls-slide" data-ls="duration:5000;transition2d:1,4;timeshift:-1000;">
-                    <img 
-                      src="${pageContext.request.contextPath}/img/slider/${slide.image}" 
-                      class="ls-bg" 
-                      alt="${slide.title}" 
-                      decoding="async" 
-                      fetchpriority="high"
-                    />
-                    <p 
-                      class="ls-l" 
-                      style="position: absolute;top: 0px;left: 10px;margin: 0;font-weight: bold;text-transform: uppercase;font-size: 35px;color: #355c7d;pointer-events: none;white-space: nowrap;
-                      ">
-                      ${slide.title}
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ - Trung Tâm Đào Tạo</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* 1. Đặt font chữ mặc định một cách nhẹ nhàng */
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+        /* Đảm bảo các tiêu đề cũng dùng font này */
+        h1, h2, h3, h4, h5, h6 {
+             font-family: 'Be Vietnam Pro', sans-serif;
+        }
+        
+        /* 3. Tinh chỉnh hiển thị số lượng lớp học trong khối */
+        .course-category-card .dt-sc-course-meta {
+            display: flex;
+            justify-content: space-between; /* Căn chỉnh 2 bên */
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+         .course-category-card .dt-sc-course-meta:last-child {
+            border-bottom: none;
+        }
+        .course-category-card .dt-sc-course-meta a {
+            float: none !important; /* Ghi đè float:right cũ */
+            margin-right: 0 !important;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="banner">
+        <div id="layerslider_1_5r4q8o8aqo3t" class="ls-wp-container fitvidsignore" style="width:1000px;height:630px;margin:0 auto;margin-bottom: 0px; position: relative;">
+            <c:forEach var="slide" items="${sliders}">
+                <div class="ls-slide" data-ls="duration:5000;transition2d:1,4;timeshift:-1000;">
+                    <img src="${pageContext.request.contextPath}/${slide.image}" class="ls-bg" alt="${slide.title}" decoding="async" fetchpriority="high" style='height:80%; width: 100%'/>
+                    <p class="ls-l" style="position: absolute;top: 0px;left: 10px;margin: 0;font-weight: bold;text-transform: uppercase;font-size: 35px;color: #355c7d;pointer-events: none;white-space: nowrap;">
+                        ${slide.title}
                     </p>
-                    <a href="${slide.backLink}" class="ls-l" 
-                       style="
-                         position: absolute;top: 5px;left: 840px;padding: 10px 20px;background: rgba(0,0,0,0.5);color: #fff;text-decoration: none;font-weight: bold;white-space: nowrap;
-                       ">
-                      Xem chi tiết
+                    <a href="${slide.backLink}" class="ls-l" style="position: absolute;top: 5px;left: 840px;padding: 10px 20px;background: rgba(0,0,0,0.5);color: #fff;text-decoration: none;font-weight: bold;white-space: nowrap;">
+                        Xem chi tiết
                     </a>
-                  </div>
-                </c:forEach>
-            </div>
+                </div>
+            </c:forEach>
         </div>
-          
-	  <!-- Main Content -->
+    </div>
+      
     <div class="content">
-          <section class="content-full-width" id="primary">
-              <article id="post-8" class="post-8 page type-page status-publish hentry">
-                  <!-- Register for Email Consultant-->
-                  <div class='fullwidth-section bottom-bg '  style="background-color:#f9f9f9;">
-                      <div class="fullwidth-bg">	
-                          <div class="container">
-                              <div class="margin30">    
-                              </div>
-                              <div class="dt-sc-subscribe-wrapper">
-                                  <h2 style="font-family:'Open Sans'; font-weight: bold" >Hãy trở thành một phần của chúng tôi. Đăng Kí để được tư vấn
-                                  </h2>
-                                  <!--Get data from form and request to Servlet-->
-                                  <form id="formRegister" action="${pageContext.request.contextPath}/SendEmailServlet" method="post" class="dt-sc-subscribe-frm">
-                                    <input type="text" name="regName" id="regName" placeholder="Nhập Tên" required />
-                                    <input type="email" name="regEmail" id="regEmail" required placeholder="Nhập Email" />
-                                    <input type="text" name="regPhone" id="regPhone" required placeholder="Nhập Số Điện Thoại" maxlength="10" />
-                                    <input   type="text" name="regBirth" id="regBirth" required placeholder="Nhập Năm Sinh" maxlength="4" pattern="19[5-9][0-9]|20[0-2][0-9]" title="Nhập năm từ 1950 đến năm hiện tại (ví dụ 1950 - 2025)"/>
-                                    <input type="submit" name="btnSubmit" class="dt-sc-button small" value="Đăng Ký" />
-                                  </form>  
-                              </div>
-                              <div class="margin10"> 
-                              </div>	
-                          </div>
-                      </div> 
-                  </div>
-                                    
-                        <!--Slogan and Commitment -->                
-                    <div class='fullwidth-section  '  style="background-repeat:no-repeat;background-position:left top;">
-                        <div class="fullwidth-bg">	
-                            <div class="container" >
-                                <div  class='column dt-sc-one-fourth  first' >
-                                    <div class="dt-sc-services" >
-                                        <div class="dt-sc-iconbox">
-                                            <div class="dt-sc-icon">
-                                                <img decoding="async" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/service-ico1.png" alt="service-alt" />
-                                            </div>
-                                        </div>
-                                            <h3 style= "font-family:'Open Sans'">Giảng dạy dễ hiểu</h3>
-                                            <span>Học theo cách tốt nhất
-                                            </span>
-                                            <p>Hehe Huhuhu Tung tung tung sahur</p>
-                                    </div>
+        <section class="content-full-width" id="primary">
+            <article id="post-8" class="post-8 page type-page status-publish hentry">
+                <div class='fullwidth-section' style="background-repeat:no-repeat;background-position:left top;">
+                    <div class="fullwidth-bg">    
+                        <div class="container">
+                            <div class='column dt-sc-one-fourth first'>
+                                <div class="dt-sc-services">
+                                    <div class="dt-sc-iconbox"><div class="dt-sc-icon"><img decoding="async" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/service-ico1.png" alt="service-alt" /></div></div>
+                                    <h3>Giảng dạy dễ hiểu</h3>
+                                    <span>Học theo cách tốt nhất</span>
+                                    <p>Hehe Huhuhu Tung tung tung sahur</p>
                                 </div>
-                                <div  class='column dt-sc-one-fourth  '>
-                                    <div class="dt-sc-services">
-                                        <div class="dt-sc-iconbox">
-                                            <div class="dt-sc-icon">
-                                                <img decoding="async" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/service-ico2.png" alt="service-alt" />
-                                            </div>
-                                        </div>
-                                            <h3 style= "font-family:'Open Sans'">Khóa Học Sáng Tạo</h3>
-                                            <span>Cách giảng dạy thông minh</span>
-                                            <p>Bululbulu bombini guchini tralalero tralala</p>
-                                    </div>
-                                </div>
-                                <div  class='column dt-sc-one-fourth  '>
-                                    <div class="dt-sc-services">
-                                        <div class="dt-sc-iconbox">
-                                            <div class="dt-sc-icon">
-                                                <img decoding="async" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/service-ico3.png" alt="service-alt" />
-                                            </div>
-                                        </div>
-                                            <h3 style= "font-family:'Open Sans'">Ý Tưởng Độc Đáo</h3>
-                                            <span>Đóng góp vào bài giảng</span>
-                                            <p>Cappuchino Assassino Brrr Brrr Patapim</p>
-                                    </div>
-                                </div>
-                                <div  class='column dt-sc-one-fourth  '>
-                                    <div class="dt-sc-services">
-                                        <div class="dt-sc-iconbox">
-                                            <div class="dt-sc-icon">
-                                                <img decoding="async" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/service-ico4.png" alt="service-alt" />
-                                            </div>
-                                        </div>
-                                            <h3 style= "font-family:'Open Sans'">Cơ sở vật chất xịn xò</h3>
-                                            <span>Up-to-date Phòng học</span>
-                                            <p>Bombadiro Crocodilo Ballerina Cappuchina</p>
-                                    </div>
-                                </div>
-                                <div class='dt-sc-hr-invisible  '>
-                                </div>           
-                    <!-- Team Member and Specialised Teacher -->            
-                                <div class='hr-title'>
-                                    <h2>Our Team</h2>
-                                    <div class='title-sep'>
-                                        <span></span>
-                                    </div>
-                                </div>     
-                                <!-- Display Teacher by Name and Link to their profile -->
-                                <c:forEach var="gv" items="${listSpecialGV}" varStatus="status">
-                                    <div class="column dt-sc-one-fifth ${status.first ? 'first' : ''}">
-                                        <div class="dt-sc-team">
-                                            <div class="dt-sc-entry-thumb">
-                                                <a href="#" style="font-family:'Open Sans'">
-                                                    <img fetchpriority="high" decoding="async" width="420" height="420"
-                                                         src="${pageContext.request.contextPath}/img/avatar/${gv.avatar}"
-                                                         class="attachment-full size-full wp-post-image"
-                                                         alt="${gv.hoTen}" title="${gv.hoTen}"
-                                                         sizes="(max-width: 420px) 100vw, 420px" />
-                                                </a>
-                                            </div>
-                                            <div class="dt-sc-entry-title">
-                                                <h2><a href="#" style="font-family:'Open Sans'">${gv.hoTen}</a></h2>
-                                                <h6>${gv.chuyenMon}</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </c:forEach>
-                                <div class='dt-sc-hr-invisible-medium  '>
-                                </div>	
                             </div>
-                        </div> 
-                    </div>
-                    <!-- Centre's Achivement  -->
-                    <div class='fullwidth-section dt-sc-skin '  style="background-color:#355C7D;">
-                        <div class="fullwidth-bg">	
-                            <div class="container">
-                                <div class='dt-sc-hr-invisible'></div>
-                                <!--Number of Studied Students -->
-                                <div class='column dt-sc-one-third first'>
-
-                                    <div class="dt-sc-animate-num" >
-                                        <div class="dt-sc-icon">
-                                            <i class="fa fa-group"></i>
-                                        </div>
-                                        <span class="dt-sc-num-count" data-value="${numHocSinh}" >${numHocSinh}</span>
-                                        <h3 style="color:white">Số học sinh đã được trung tâm đào tạo</h3>
-
-                                    </div>
+                            <div class='column dt-sc-one-fourth'>
+                                <div class="dt-sc-services">
+                                    <div class="dt-sc-iconbox"><div class="dt-sc-icon"><img decoding="async" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/service-ico2.png" alt="service-alt" /></div></div>
+                                    <h3>Khóa Học Sáng Tạo</h3>
+                                    <span>Cách giảng dạy thông minh</span>
+                                    <p>Bululbulu bombini guchini tralalero tralala</p>
                                 </div>
-                                <!-- Number of Activating Class-->
-                                <div class='column dt-sc-one-third'>
-                                    <div class="dt-sc-animate-num">
-                                        <div class="dt-sc-icon">
-                                            <i class="fa fa-flag"></i>
-                                        </div>
-                                        <span class="dt-sc-num-count" data-value="${numLopHoc}">${numLopHoc}</span>
-
-                                        <h3 style="color:white">Số lớp học đã và đang hoạt động</h3>
-                                    </div>
-                                </div>
-                                <!-- Number of available Courses-->
-                                <div class='column dt-sc-one-third'>
-                                    <div class="dt-sc-animate-num">
-                                        <div class="dt-sc-icon">
-                                            <i class="fa fa-book"></i>
-                                        </div>
-                                        <span class="dt-sc-num-count" data-value="${numKhoaHoc}">${numKhoaHoc}</span>
-
-                                        <h3 style="color:white">Khóa Học sẵn có</h3>
-                                    </div>
-                                </div>
-                                <div class='dt-sc-hr-invisible'></div>	
                             </div>
-                        </div>                   
+                            <div class='column dt-sc-one-fourth'>
+                                <div class="dt-sc-services">
+                                    <div class="dt-sc-iconbox"><div class="dt-sc-icon"><img decoding="async" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/service-ico3.png" alt="service-alt" /></div></div>
+                                    <h3>Ý Tưởng Độc Đáo</h3>
+                                    <span>Đóng góp vào bài giảng</span>
+                                    <p>Cappuchino Assassino Brrr Brrr Patapim</p>
+                                </div>
+                            </div>
+                            <div class='column dt-sc-one-fourth'>
+                                <div class="dt-sc-services">
+                                    <div class="dt-sc-iconbox"><div class="dt-sc-icon"><img decoding="async" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/service-ico4.png" alt="service-alt" /></div></div>
+                                    <h3>Cơ sở vật chất xịn xò</h3>
+                                    <span>Up-to-date Phòng học</span>
+                                    <p>Bombadiro Crocodilo Ballerina Cappuchina</p>
+                                </div>
+                            </div>
+                            <div class='dt-sc-hr-invisible'></div>      
+                        </div>
                     </div>
-                         
-                         <!--Featured Class-->               
-                    <div class='fullwidth-section  '  style="background-repeat:no-repeat;background-position:left top;">
-                        <div class="fullwidth-bg">	
-                            <div class="container">
+                </div>
+
+                <div class="fullwidth-section" style="padding: 60px 0; background-color: #f8f9fa;">
+                    <div class="container">
+                        <div class='hr-title'><h2>Đội Ngũ Của Chúng Tôi</h2><div class='title-sep'><span></span></div></div>
+                        <c:forEach var="gv" items="${listSpecialGV}" varStatus="status">
+                            <div class="column dt-sc-one-fifth ${status.first ? 'first' : ''}">
+                                <div class="dt-sc-team">
+                                    <div class="dt-sc-entry-thumb">
+                                        <a href="#"><img fetchpriority="high" decoding="async" width="420" height="420" src="${pageContext.request.contextPath}/img/avatar/${gv.avatar}" class="attachment-full size-full wp-post-image" alt="${gv.hoTen}" title="${gv.hoTen}" sizes="(max-width: 420px) 100vw, 420px" /></a>
+                                    </div>
+                                    <div class="dt-sc-entry-title">
+                                        <h2><a href="#">${gv.hoTen}</a></h2>
+                                        <h6>${gv.chuyenMon}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                        <div class='dt-sc-hr-invisible-medium'></div>    
+                    </div>
+                </div>
+                
+                <div class='fullwidth-section dt-sc-skin' style="background-color:#355C7D;">
+                    <div class="fullwidth-bg">    
+                        <div class="container">
+                            <div class='dt-sc-hr-invisible'></div>
+                             <div class='column dt-sc-one-third first'>
+                                <div class="dt-sc-animate-num" >
+                                    <div class="dt-sc-icon"><i class="fa fa-group"></i></div>
+                                    <span class="dt-sc-num-count" data-value="${numHocSinh}" >${numHocSinh}</span>
+                                    <h3 style="color:white">Số học sinh đã được trung tâm đào tạo</h3>
+                                </div>
+                            </div>
+                            <div class='column dt-sc-one-third'>
+                                <div class="dt-sc-animate-num">
+                                    <div class="dt-sc-icon"><i class="fa fa-flag"></i></div>
+                                    <span class="dt-sc-num-count" data-value="${numLopHoc}">${numLopHoc}</span>
+                                    <h3 style="color:white">Số lớp học đã và đang hoạt động</h3>
+                                </div>
+                            </div>
+                            <div class='column dt-sc-one-third'>
+                                <div class="dt-sc-animate-num">
+                                    <div class="dt-sc-icon"><i class="fa fa-book"></i></div>
+                                    <span class="dt-sc-num-count" data-value="${numKhoaHoc}">${numKhoaHoc}</span>
+                                    <h3 style="color:white">Khóa Học sẵn có</h3>
+                                </div>
+                            </div>
+                            <div class='dt-sc-hr-invisible'></div>    
+                        </div>
+                    </div>                    
+                </div>
+                
+                <!--Featured Class-->               
+                            <div class="container">
                                 <div class='dt-sc-hr-invisible-medium  '>
                                 </div>
                                 <div class='hr-title'>
@@ -221,7 +173,7 @@
                                                 <article class="dt-sc-course">
                                                     <div class="dt-sc-course-thumb">
                                                         <a href="#">
-                                                            <img src="${pageContext.request.contextPath}/img/avatar/${lop.image}" 
+                                                            <img src="${pageContext.request.contextPath}/${lop.image}" 
                                                                  alt="${lop.tenLopHoc}" 
                                                                  style="width:420px; height:250px; object-fit: cover; border-radius: 5px;" />
                                                         </a>
@@ -240,169 +192,118 @@
                                         </c:forEach>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- High-School Course Category-->
-                            <div class="container">  
-                                <div class='hr-title'>
-                                    <h2 style= "font-family:'Open Sans'" >Trung Học Phổ Thông</h2>
-                                    <div class='title-sep'>
-                                        <span></span>
-                                    </div>
-                                </div>
-                                <c:forEach var="khoi" items="${listKhoi}">
-                                            <c:if test="${khoi.ID_Khoi > 4}">
-                                                <div class="column dt-sc-one-fourth first">
-                                                    <article id="post-${khoi.tenKhoi}" class="dt-sc-course post-${khoi.tenKhoi} course type-course">
-                                                        <div class="dt-sc-course-thumb">
-                                                            <a href="#" title="${khoi.tenKhoi}">
-                                                                <img src="${pageContext.request.contextPath}/img/avatar/avatarTeacher.jpg" alt="${khoi.tenKhoi}" style="width:420px; height:250px; object-fit: cover; border-radius: 5px;" />
-                                                            </a>
-                                                        </div>
-                                                        <p class="dt-sc-course-meta" style="font-weight: bold; font-size: 20px; text-align: center;">${khoi.tenKhoi}</p>
-                                                        <c:set var="toanSoLop" value="0" />
-                                                        <c:set var="vanSoLop" value="0" />
-                                                        <c:set var="khacSoLop" value="0" />
-                                            <c:forEach var="lh" items="${listLopHoc}">
-                                                <c:if test="${lh.idKhoi == khoi.ID_Khoi}">
-                                                    <c:choose>
-                                                        <c:when test="${lh.nhomMonHoc == 'Toán'}">
-                                                            <c:set var="toanSoLop" value="${lh.tongSoLopHoc}" />
-                                                        </c:when>
-                                                        <c:when test="${lh.nhomMonHoc == 'Văn'}">
-                                                            <c:set var="vanSoLop" value="${lh.tongSoLopHoc}" />
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <c:set var="khacSoLop" value="${lh.tongSoLopHoc}" />
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:if>
-                                            </c:forEach>
-                                                    <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Toán:
-                                                        <a href="#" rel="tag" style="color: #007bff; text-decoration: none; float: right; margin-right: 50px">${toanSoLop} Lớp Học</a>
-                                                    </p>
-                                                    <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Văn:
-                                                        <a href="#" rel="tag" style="color: #007bff; text-decoration: none; float: right; margin-right: 50px">${vanSoLop} Lớp Học</a>
-                                                    </p>
-                                                    <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Các môn khác:
-                                                        <a href="#" rel="tag" style="color: #007bff; text-decoration: none; float: right; margin-right: 50px">${khacSoLop} Lớp Học</a>
-                                                    </p>
-                                                </article>
-                                            </div>
-                                        </c:if>
-                                </c:forEach>
-                            </div>
-                            <!-- Secondary-School Course Category-->
-                            <div class="container">
-                                <div class='hr-title'>
-                                    <h2 style= "font-family:'Open Sans'" >Trung Học Cơ Sở</h2>
-                                    <div class='title-sep'>
-                                        <span></span>
-                                    </div>
-                                </div>
-                                <div class = "container" >
-                                    <!-- List from Database -->
-                                    <c:forEach var="khoi" items="${listKhoi}">
-                                        <c:if test="${khoi.ID_Khoi <= 4}">
-                                            <div class="column dt-sc-one-fourth first">
-                                                <article id="post-${khoi.tenKhoi}" class="dt-sc-course post-${khoi.tenKhoi} course type-course">
-                                                    <div class="dt-sc-course-thumb">
-                                                        <a href="#" title="${khoi.tenKhoi}">
-                                                            <img src="${pageContext.request.contextPath}/img/avatar/avatarTeacher.jpg" alt="${khoi.tenKhoi}" style="width:420px; height:250px; object-fit: cover; border-radius: 5px;" />
-                                                        </a>
-                                                    </div>
-                                                    <p class="dt-sc-course-meta" style="font-weight: bold; font-size: 20px; text-align: center;">${khoi.tenKhoi}</p>
-                                                    <c:set var="toanSoLop" value="0" />
-                                                    <c:set var="vanSoLop" value="0" />
-                                                    <c:set var="khacSoLop" value="0" />
-                                                    <c:forEach var="lh" items="${listLopHoc}">
-                                                        <c:if test="${lh.idKhoi == khoi.ID_Khoi}">
-                                                            <c:choose>
-                                                                <c:when test="${lh.nhomMonHoc == 'Toán'}">
-                                                                    <c:set var="toanSoLop" value="${lh.tongSoLopHoc}" />
-                                                                </c:when>
-                                                                <c:when test="${lh.nhomMonHoc == 'Văn'}">
-                                                                    <c:set var="vanSoLop" value="${lh.tongSoLopHoc}" />
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <c:set var="khacSoLop" value="${lh.tongSoLopHoc}" />
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                        </c:if>
-                                                    </c:forEach>
-                                                    <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Toán:
-                                                        <a href="#" rel="tag" style="color: #007bff; text-decoration: none; float: right; margin-right: 30px">${toanSoLop} Lớp Học</a>
-                                                    </p>
-                                                    <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Văn:
-                                                        <a href="#" rel="tag" style="color: #007bff; text-decoration: none; float: right; margin-right: 30px">${vanSoLop} Lớp Học</a>
-                                                    </p>
-                                                    <p class="dt-sc-course-meta" style="color: #333; font-size: 17px;">Các môn khác:
-                                                        <a href="#" rel="tag" style="color: #007bff; text-decoration: none; float: right; margin-right: 30px">${khacSoLop} Lớp Học</a>
-                                                    </p>
-                                                </article>
-                                            </div>
-                                        </c:if>
-                                    </c:forEach>
+                            </div>               
+                                    
+                <div class='fullwidth-section' style="padding: 60px 0;">
+                    <div class="container">
+                        <div class='hr-title'><h2>Trung Học Phổ Thông</h2><div class='title-sep'><span></span></div></div>
+                        <c:forEach var="khoi" items="${listKhoi}">
+                            <c:if test="${khoi.ID_Khoi > 4}">
+                                <div class="column dt-sc-one-fourth first" style="margin-bottom: 30px; padding: 15px">
+                                    <article id="post-${khoi.tenKhoi}" class="dt-sc-course post-${khoi.tenKhoi} course type-course course-category-card" style=" margin:15px;">
+                                        <div class="dt-sc-course-thumb">
+                                            <a href="#" title="${khoi.tenKhoi}"><img src="${pageContext.request.contextPath}/${khoi.image}" alt="${khoi.tenKhoi}" style="width:100%; height:180px; object-fit: cover; border-radius: 5px;" /></a>
+                                        </div>
+                                        <p style="font-weight: 700; font-size: 1.5em; text-align: center;">${khoi.tenKhoi}</p>
 
-                                </div>
-                            </div>
-                                          
-                            
-                    <div class='fullwidth-section  dt-sc-parallax-section'  style="background-color:#ffffff;background-image:url(${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/paralax-bg.jpg);background-repeat:repeat;background-position:left top;background-attachment:fixed; ">
-                        <div class="fullwidth-bg">	
-                            <div class="container">
-                                <div class='dt-sc-hr-invisible  '>
-                                </div>
-                                <!-- Blog for Student -->
-                        <h2 style="text-align: center;">OUR BLOG</h2>
-                        <div class="margin25"></div>
-                        <!--Blog information-->
-                        <c:forEach var="blog" items="${listBlog}">
-                            <div class="column dt-sc-one-half first">
-                                <article id="post-${blog.getID_Blog()}" class="blog-post post-${blog.getID_Blog()} post type-post status-publish format-link has-post-thumbnail hentry category-design post_format-post-format-link">
-                                    <div class="post-details" style="transform: translateX(25px); border-radius: 5px ">
-                                        <div class="date">
-                                            <p>
-                                                <span>${blog.getBlogDate().dayOfMonth}</span>
-                                                ${blog.getBlogDate().month.name()}&nbsp;${blog.getBlogDate().year}
-                                            </p>
-                                        </div>
-                                    </div>
+                                        <%-- Logic tính toán số lớp --%>
+                                        <c:set var="toanSoLop" value="0" /><c:set var="vanSoLop" value="0" /><c:set var="khacSoLop" value="0" />
+                                        <c:forEach var="lh" items="${listLopHoc}">
+                                            <c:if test="${lh.idKhoi == khoi.ID_Khoi}">
+                                                <c:choose>
+                                                    <c:when test="${lh.nhomMonHoc == 'Toán'}"><c:set var="toanSoLop" value="${lh.tongSoLopHoc}" /></c:when>
+                                                    <c:when test="${lh.nhomMonHoc == 'Văn'}"><c:set var="vanSoLop" value="${lh.tongSoLopHoc}" /></c:when>
+                                                    <c:otherwise><c:set var="khacSoLop" value="${lh.tongSoLopHoc}" /></c:otherwise>
+                                                </c:choose>
+                                            </c:if>
+                                        </c:forEach>
 
-                                    <div class="post-content">
-                                        <div class="entry-thumb">
-                                            <a href="#" title="${blog.getBlogTitle()}">
-                                                <img loading="lazy" decoding="async" width="200" height="90" src="${pageContext.request.contextPath}/img/avatar/${blog.getImage()}" alt="${blog.getBlogTitle()}" title="${blog.getBlogTitle()}" />
-                                            </a>
-                                        </div>
-                                        <div class="entry-detail">
-                                            <h2>
-                                                <a href="#" style= "font-family:'Open Sans'" title="${blog.getBlogTitle()}">${blog.getBlogTitle()}</a>
-                                            </h2>
-                                            <p>${blog.getBlogDescription()}</p>
-                                        </div>
-                                        <div class="post-meta">
-                                            <div class="post-format">
-                                                <span class="post-icon-format"></span>
-                                            </div>
-                                            <ul>
-                                                <li>
-                                                    <span class="fa fa-thumb-tack"></span>
-                                                    <a href="#" > ${blog.getPhanLoai()}</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </article>
-                            </div>
+                                        <p class="dt-sc-course-meta">Toán: <a href="HomePageCourse?ID_Khoi=${khoi.ID_Khoi}&keyword=Toán" rel="tag">${toanSoLop} Lớp Học</a></p>
+                                        <p class="dt-sc-course-meta">Văn: <a href="HomePageCourse?ID_Khoi=${khoi.ID_Khoi}&keyword=Văn" rel="tag">${vanSoLop} Lớp Học</a></p>
+                                        <p class="dt-sc-course-meta">Các môn khác: <a href="HomePageCourse?ID_Khoi=${khoi.ID_Khoi}&keyword=Khac" rel="tag">${khacSoLop} Lớp Học</a></p>
+                                    </article>
+                                </div>
+                            </c:if>
                         </c:forEach>
-                            <div class='dt-sc-hr-invisible  '>
-                            </div>	
-                            </div>    
-                        </div>
                     </div>
-                </article>
-          </section>
-    </div><!-- content ends here -->
+
+                    <div class="container" style="padding: 60px 0;">
+                        <div class='hr-title'><h2>Trung Học Cơ Sở</h2><div class='title-sep'><span></span></div></div>
+                        <c:forEach var="khoi" items="${listKhoi}">
+                            <c:if test="${khoi.ID_Khoi <= 4}">
+                                <div class="column dt-sc-one-fourth first" style="margin-bottom: 30px; padding: 15px">
+                                    <article id="post-${khoi.tenKhoi}" class="dt-sc-course post-${khoi.tenKhoi} course type-course course-category-card">
+                                        <div class="dt-sc-course-thumb">
+                                            <a href="#" title="${khoi.tenKhoi}"><img src="${pageContext.request.contextPath}/${khoi.image}" alt="${khoi.tenKhoi}" style="width:100%; height:180px; object-fit: cover; border-radius: 5px;" /></a>
+                                        </div>
+                                        <p style="font-weight: 700; font-size: 1.5em; text-align: center; margin: 0px 15px;">${khoi.tenKhoi}</p>
+
+                                        <%-- Logic tính toán số lớp --%>
+                                        <c:set var="toanSoLop" value="0" /><c:set var="vanSoLop" value="0" /><c:set var="khacSoLop" value="0" />
+                                        <c:forEach var="lh" items="${listLopHoc}">
+                                            <c:if test="${lh.idKhoi == khoi.ID_Khoi}">
+                                                    <c:choose>
+                                                    <c:when test="${lh.nhomMonHoc == 'Toán'}"><c:set var="toanSoLop" value="${lh.tongSoLopHoc}" /></c:when>
+                                                    <c:when test="${lh.nhomMonHoc == 'Văn'}"><c:set var="vanSoLop" value="${lh.tongSoLopHoc}" /></c:when>
+                                                    <c:otherwise><c:set var="khacSoLop" value="${lh.tongSoLopHoc}" /></c:otherwise>
+                                                </c:choose>
+                                            </c:if>
+                                        </c:forEach>
+
+                                        <p class="dt-sc-course-meta">Toán: <a href="HomePageCourse?ID_Khoi=${khoi.ID_Khoi}&keyword=Toán" rel="tag">${toanSoLop} Lớp Học</a></p>
+                                        <p class="dt-sc-course-meta">Văn: <a href="HomePageCourse?ID_Khoi=${khoi.ID_Khoi}&keyword=Văn" rel="tag">${vanSoLop} Lớp Học</a></p>
+                                        <p class="dt-sc-course-meta">Các môn khác: <a href="HomePageCourse?ID_Khoi=${khoi.ID_Khoi}&keyword=Khac" rel="tag">${khacSoLop} Lớp Học</a></p>
+                                    </article>
+                                </div>
+                            </c:if>
+                        </c:forEach>
+                    </div>
+                </div>
+                
+                 <div class='fullwidth-section dt-sc-parallax-section' style="background-color:#ffffff;background-image:url(${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/paralax-bg.jpg);background-repeat:repeat;background-position:left top;background-attachment:fixed;">
+                    <div class="fullwidth-bg">    
+                        <div class="container">
+                            <div class='dt-sc-hr-invisible'></div>
+                            <h2 style="text-align: center; font-weight: 700;">BLOG CỦA CHÚNG TÔI</h2>
+                            <div class="margin25"></div>
+                            <c:forEach var="blog" items="${listBlog}">
+                                <div class="column dt-sc-one-half first">
+                                    <article id="post-${blog.getID_Blog()}" class="blog-post post-${blog.getID_Blog()} post type-post status-publish format-link has-post-thumbnail hentry category-design post_format-post-format-link">
+                                        <div class="post-details" style="transform: translateX(25px); border-radius: 5px ">
+                                            <div class="date">
+                                                <p>
+                                                    <span>${blog.getBlogDate().dayOfMonth}</span>
+                                                    ${blog.getBlogDate().month.name()}&nbsp;${blog.getBlogDate().year}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="post-content">
+                                            <div class="entry-thumb">
+                                                <a href="#" title="${blog.getBlogTitle()}"><img loading="lazy" decoding="async" width="200" height="90" src="${pageContext.request.contextPath}/img/avatar/${blog.getImage()}" alt="${blog.getBlogTitle()}" title="${blog.getBlogTitle()}" /></a>
+                                            </div>
+                                            <div class="entry-detail">
+                                                <h2><a href="#" title="${blog.getBlogTitle()}">${blog.getBlogTitle()}</a></h2>
+                                                <p>${blog.getBlogDescription()}</p>
+                                            </div>
+                                            <div class="post-meta">
+                                                <div class="post-format"><span class="post-icon-format"></span></div>
+                                                <ul>
+                                                    <li><span class="fa fa-thumb-tack"></span><a href="#"> ${blog.getPhanLoai()}</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            </c:forEach>
+                            <div class='dt-sc-hr-invisible'></div>    
+                        </div>      
+                    </div>
+                </div>
+                
+            </article>
+        </section>
+    </div></body>
+</html>
     
     <!-- JavaScript -->
 <script type="text/javascript">

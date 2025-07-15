@@ -1,3 +1,4 @@
+
 package controller;
 
 import dal.GiaoVienDAO;
@@ -30,13 +31,11 @@ import model.LopHocInfoDTO;
 import model.TaiKhoan;
 import model.TruongHoc;
 import model.UserLogs;
-
 /**
  *
  * @author wrx_Chur04
  */
 public class adminActionWithTeacher extends HttpServlet {
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -71,7 +70,6 @@ public class adminActionWithTeacher extends HttpServlet {
             
             case "update":
                 break;
-            
         }
     }
     
@@ -139,7 +137,6 @@ public class adminActionWithTeacher extends HttpServlet {
         request.getRequestDispatcher("/views/admin/viewLopHoc_GiaoVien.jsp").forward(request, response);
         
     }
-
     protected void doUpdateInfor(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
@@ -173,7 +170,6 @@ public class adminActionWithTeacher extends HttpServlet {
                 if (!sdt.startsWith("0")) {
                     throw new Exception("Số điện thoại phải bắt đầu bằng số 0!");
                 }
-                
                 boolean s1 = TaiKhoanDAO.adminUpdateInformationAccount(sdt, ID_TaiKhoan);                
                 boolean s2 = HocSinh_ChiTietDAO.updateTruongLopGiaoVien(idTruong, lopTrenTruong, sdt, isHot, ID_GiaoVien);                
                 if (s1 == true && s2 == true) {
@@ -201,8 +197,8 @@ public class adminActionWithTeacher extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();        
         String ID_TaiKhoan = request.getParameter("idtaikhoan");
-        String NoiDung = request.getParameter("noidung");        
-        boolean sendNTF = ThongBaoDAO.adminSendNotification(ID_TaiKhoan, NoiDung);        
+        String NoiDung = request.getParameter("noidung")  ; 
+        boolean sendNTF = ThongBaoDAO.adminSendNotification(ID_TaiKhoan, NoiDung , "Teacher") ; 
         if (sendNTF) {
             request.setAttribute("message", "Gửi thông báo thành công!");
             
@@ -213,4 +209,5 @@ public class adminActionWithTeacher extends HttpServlet {
         }
         
     }
+    
 }

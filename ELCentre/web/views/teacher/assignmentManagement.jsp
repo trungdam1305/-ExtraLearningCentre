@@ -24,10 +24,10 @@
                 .attendance-radio-group input { margin-right: 0.25rem; }
                 h1 {
                     margin-top: 30px;
-                    color: #1F4E79; /* Màu chữ */
-                    text-align: center; /* Căn giữa */
-                    font-size: 24px; /* Cỡ chữ */
-                    font-weight: bold; /* In đậm */
+                    color: #1F4E79; 
+                    text-align: center; 
+                    font-size: 24px; 
+                    font-weight: bold; 
                 }
                     body {
                         margin: 0;
@@ -150,7 +150,7 @@
                         font-weight: bold;
                         letter-spacing: 1.5px;
                         text-align: center; 
-                        width: 230px; /* nhỏ hơn 250px */
+                        width: 230px; 
                     }
 
                     .sidebar-logo {
@@ -300,32 +300,28 @@
                         font-size: 14px;
 
                     }
-                    /* === NÚT QUAY LẠI TÙY CHỈNH === */
+                    
                     .btn-back {
-                        display: inline-flex;       /* Căn chỉnh icon và chữ */
-                        
-                        gap: 8px;                   /* Khoảng cách giữa icon và chữ */
-
-                        padding: 10px 20px;         /* Tăng kích thước cho dễ nhấn */
+                        display: inline-flex;        
+                        gap: 8px;                   
+                        padding: 10px 20px;         
                         font-size: 15px;
                         font-weight: 500;
                         text-decoration: none;
 
                         margin: 20px 0px    ;
-                        color: #1F4E79;             /* Màu chữ và viền theo màu chủ đạo */
+                        color: #1F4E79;             
                         background-color: transparent;
                         border: 2px solid #1F4E79;
-                        border-radius: 8px;         /* Bo góc mềm mại */
-
-                        cursor: pointer;
-                        transition: all 0.2s ease-in-out; /* Hiệu ứng chuyển động mượt mà */
+                        border-radius: 8px;         
+                           cursor: pointer;
+                        transition: all 0.2s ease-in-out; 
                     }
 
-                    /* Hiệu ứng khi di chuột vào nút */
                     .btn-back:hover {
-                        background-color: #1F4E79;  /* Đổi màu nền */
-                        color: white;               /* Đổi màu chữ */
-                        transform: translateY(-2px); /* Hiệu ứng nhấc lên nhẹ */
+                        background-color: #1F4E79;  
+                        color: white;              
+                        transform: translateY(-2px);
                         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
                     }
                     
@@ -334,98 +330,81 @@
                         align-items: center;
                         justify-content: center;
                         gap: 8px;
-
-                        background-color: #1F4E79; /* Màu xanh chủ đạo */
+                        background-color: #1F4E79;
                         color: white;
-
-                        padding: 12px 24px; /* Kích thước lớn hơn để nổi bật */
+                        padding: 12px 24px; 
                         font-size: 16px;
                         font-weight: 500;
-
                         border: none;
                         border-radius: 8px;
-
                         cursor: pointer;
                         text-decoration: none;
-
-                        /* Hiệu ứng đổ bóng nhẹ nhàng */
                         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
                         transition: all 0.3s ease;
                     }
 
-                    /* Hiệu ứng khi di chuột */
                     .btn-main-action:hover {
-                        transform: translateY(-3px); /* Hiệu ứng nhấc lên rõ hơn */
+                        transform: translateY(-3px); 
                         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-                        filter: brightness(110%); /* Sáng hơn một chút */
+                        filter: brightness(110%);
                     }
 
                     .btn-main-action i {
                         font-size: 15px;
                     }
                     
-                    /* === LINK TẢI VỀ ĐƠN GIẢN === */
                     .download-link {
-                        color: #0d6efd; /* Màu xanh dương của link */
-                        text-decoration: none; /* Bỏ gạch chân mặc định */
+                        color: #0d6efd; 
+                        text-decoration: none; 
                         font-weight: 500;
                         display: inline-flex;
                         align-items: center;
-                        gap: 5px; /* Khoảng cách nhỏ giữa icon và chữ */
+                        gap: 5px; 
                         transition: all 0.2s ease;
                     }
 
-                    /* Hiệu ứng khi di chuột */
                     .download-link:hover {
-                        text-decoration: underline; /* Thêm lại gạch chân khi hover */
-                        color: #0b5ed7; /* Màu link hơi sẫm lại */
+                        text-decoration: underline; 
+                        color: #0b5ed7; 
                     }
-                    /* --- Tùy chỉnh chung cho Pop-up (Modal) --- */
                     #createAssignmentModal .modal-content {
                         margin-top:150px;
                         margin-left: 50px   
                     }
-
                     #createAssignmentModal .modal-header {
-                        background-color: #f8f9fa; /* Màu nền nhẹ cho header */
+                        background-color: #f8f9fa;
                         border-bottom: 1px solid #dee2e6;
                     }
-
                     #createAssignmentModal .modal-title {
-                        color: #1F4E79; /* Màu tiêu đề theo màu chủ đạo */
+                        color: #1F4E79; 
                         font-weight: 500;
                     }
 
-                    /* --- Style cho các nhãn (Label) --- */
                     #createAssignmentModal .form-label {
                         font-weight: 500;
                         color: #495057;
                         margin-bottom: 0.5rem;
                     }
 
-                    /* --- Style cho các ô nhập liệu (Input, Textarea) --- */
                     #createAssignmentModal .form-control {
-                        background-color: #f8f9fa; /* Nền xám nhẹ để nổi bật */
+                        background-color: #f8f9fa;
                         border: 1px solid #ced4da;
-                        border-radius: 8px; /* Bo góc mềm mại */
-                        padding: 12px 15px; /* Tăng padding cho dễ nhìn */
+                        border-radius: 8px; 
+                        padding: 12px 15px; 
                         transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
                     }
 
-                    /* Hiệu ứng khi focus vào ô nhập liệu */
                     #createAssignmentModal .form-control:focus {
                         background-color: #fff;
-                        border-color: #86b7fe; /* Màu xanh dương của Bootstrap khi focus */
+                        border-color: #86b7fe;
                         box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
                         outline: none;
                     }
 
-                    /* --- Style riêng cho ô chọn file --- */
                     #createAssignmentModal .form-control[type="file"] {
                         padding: 8px 15px;
                     }
 
-                    /* Tùy chỉnh chữ và icon trong nút chọn file của trình duyệt */
                     #createAssignmentModal .form-control[type="file"]::file-selector-button {
                         background-color: #1F4E79;
                         color: white;
@@ -440,13 +419,11 @@
                         background-color: #163E5C;
                     }
 
-                    /* --- Style cho các nút bấm trong Footer --- */
                     #createAssignmentModal .modal-footer {
                         border-top: 1px solid #dee2e6;
                         background-color: #f8f9fa;
                     }
 
-                    /* Nút chính "Đăng Bài" */
                     #createAssignmentModal .btn-primary {
                         background-color: #1F4E79;
                         border-color: #1F4E79;
@@ -460,7 +437,6 @@
                         border-color: #163E5C;
                     }
 
-                    /* Nút phụ "Hủy" */
                     #createAssignmentModal .btn-secondary {
                         padding: 10px 25px;
                         font-weight: 500;
@@ -503,8 +479,6 @@
                     <ul class="sidebar-menu">
                         <!--Teacher's Notification Management-->
                         <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
-                        <!--Blog's View-->
-                        <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=blog"><i class="fas fa-blog"></i> Blog</a></li>
                         <!--Help Request to Admin-->
                         <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=hotro"><i class="fas fa-question"></i> Yêu Cầu Hỗ Trợ</a></li>
                         <!--Logout-->
@@ -512,17 +486,16 @@
                     </ul>
                 </div>
         <div class="main-wrapper">
-
-
+            <!--Assignment Management-->
             <div class="main-content">
-
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h3>Quản lý bài tập lớp: ${lopHoc.tenLopHoc}</h3>
+                    <!--Press 'Dang Bai Tap Moi' to popup a form for fill-->
                     <button type="button" class="btn-main-action" data-bs-toggle="modal" data-bs-target="#createAssignmentModal">
                         <i class="fas fa-plus-circle"></i> Đăng Bài Tập Mới
                     </button>
                 </div>
-
+                    <!--List of assignment -->
                 <div class="card">
                     <div class="card-header">
                         <h4><i class="fas fa-list-alt"></i> Danh sách bài tập đã giao</h4>
@@ -534,7 +507,7 @@
                         <c:if test="${param.create == 'error'}">
                             <div class="alert alert-danger">Có lỗi xảy ra, không thể đăng bài tập.</div>
                         </c:if>
-
+                        <!--Present data of assignment-->    
                         <table class="table table-hover">
                             <thead>
                                 <tr>
@@ -550,6 +523,7 @@
                                     <tr>
                                         <td>${bt.tenBaiTap}</td>
                                         <td>
+                                            <!--Download button-->
                                             <c:if test="${not empty bt.fileName}">
                                                 <a href="${pageContext.request.contextPath}/uploads/${bt.fileName}" class="download-link" download>
                                                     <i class="fas fa-download"></i> Tải về
@@ -560,32 +534,35 @@
                                             </c:if>
                                         </td>
                                         <td>
-                                            <%-- Scriptlet định dạng Ngày Giao --%>
                                             <%
+                                                //Get object attribute from servlet for formating
                                                 Object objNgayTao = pageContext.getAttribute("bt");
                                                 if (objNgayTao instanceof model.TaoBaiTap) {
                                                     model.TaoBaiTap currentBt = (model.TaoBaiTap) objNgayTao;
                                                     java.time.LocalDate ngayTao = currentBt.getNgayTao();
                                                     if (ngayTao != null) {
+                                                    //format date like (dd//MM//yyyy)
                                                         out.print(ngayTao.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                                                     }
                                                 }
                                             %>
                                         </td>
                                         <td>
-                                            <%-- Scriptlet định dạng Hạn Nộp --%>
-                                            <%
+                                            <%  
+                                                //get object attribute from servlet for objDeadline
                                                 Object objDeadline = pageContext.getAttribute("bt");
                                                 if (objDeadline instanceof model.TaoBaiTap) {
                                                     model.TaoBaiTap currentBt = (model.TaoBaiTap) objDeadline;
                                                     java.time.LocalDate deadline = currentBt.getDeadline();
                                                     if (deadline != null) {
+                                                    //format date like (dd//MM//yyyy)
                                                         out.print(deadline.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                                                     }
                                                 }
                                             %>
                                         </td>
                                         <td>
+                                            <!--Click button for view the submitted assignment-->
                                             <a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=viewSubmissions&assignmentId=${bt.ID_BaiTap}" class="btn btn-sm btn-info btn-back">
                                                 Xem bài nộp
                                             </a>
@@ -599,7 +576,7 @@
                         </table>
                     </div>
                 </div>
-
+                <!--Back to viewAttendedClasses-->
                 <div class="mt-4" style="text-align: center;">
                     <a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=lophoc" class="btn-back">
                         <i class="fas fa-arrow-left"></i> Quay lại danh sách lớp
@@ -607,7 +584,8 @@
                 </div>
             </div>
         </div>
-
+        
+                        <!--Popup Form for upload Assignment-->
         <div class="modal fade" id="createAssignmentModal" tabindex="-1" aria-labelledby="modalLabel" hidden>
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -617,6 +595,7 @@
                         <div class="modal-header">
                             <h5 class="modal-title" id="modalLabel"><i class="fas fa-plus-circle"></i> Đăng bài tập mới cho lớp ${lopHoc.tenLopHoc}</h5>
                         </div>
+                        <!--Form to fill -->
                         <div class="modal-body">
                             <table style="width: 100%; border-spacing: 0 15px; border-collapse: separate;">
                             <tbody>

@@ -16,7 +16,6 @@ public class LopHocInfoDTODAO {
 
     // Lớp để trả về kết quả của các thao tác như add, update, delete với thông tin lỗi
     public static class OperationResult {
-
         private boolean success;
         private String errorMessage;
 
@@ -36,7 +35,6 @@ public class LopHocInfoDTODAO {
 
     // Lớp để trả về kết quả của addLopHoc và updateLopHoc với thông tin lỗi cụ thể
     public static class AddLopHocResult {
-
         private LopHocInfoDTO lopHoc;
         private String errorMessage;
 

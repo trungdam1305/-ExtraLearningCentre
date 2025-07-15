@@ -233,7 +233,8 @@ public class adminActionWithUser extends HttpServlet {
                 String id_HoTro = request.getParameter("id") ; 
                 boolean ok = HoTroDAO.adminDanhDauDaDocHoTro(id_HoTro) ; 
                 if (ok) {
-                    request.getRequestDispatcher("/views/admin/adminDashboard.jsp").forward(request, response);
+                    response.sendRedirect(request.getContextPath() + "/adminGoToFirstPage");
+                   
                 }
                 break ; 
 

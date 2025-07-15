@@ -25,7 +25,7 @@ public class HoTroDAO {
         try {
             String sql = """
                          select * from HoTro 
-                         where DaDuyet = 0 ; 
+                         where DaDuyet = N'Chờ duyệt' ; 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
@@ -37,7 +37,8 @@ public class HoTroDAO {
                         rs.getTimestamp("ThoiGian").toLocalDateTime(),
                         rs.getString("MoTa"),
                         rs.getInt("ID_TaiKhoan") , 
-                        rs.getBoolean("DaDuyet")
+                        rs.getString("DaDuyet") , 
+                        rs.getString("PhanHoi") 
                 );
                 hotros.add(hotro);
             }
@@ -60,7 +61,7 @@ public class HoTroDAO {
             String sql = """
                          UPDATE HoTro
                          SET 
-                         DaDuyet = 1 
+                         DaDuyet = N'Đã duyệt' 
                          where ID_HoTro = ? 
                          """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 

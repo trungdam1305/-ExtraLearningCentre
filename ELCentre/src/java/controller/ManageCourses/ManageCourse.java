@@ -438,7 +438,7 @@ public class ManageCourse extends HttpServlet {
             } else if ("updateCourse".equalsIgnoreCase(action)) {
                 try {
                     int id = Integer.parseInt(request.getParameter("ID_KhoaHoc"));
-                    KhoaHoc khoaHoc = dao.getKhoaHocById(id);
+                    KhoaHoc khoaHoc = dao.getKhoaHocById1(id);
 
                     if (khoaHoc == null) {
                         System.out.println("updateCourse: Course not found - ID_KhoaHoc=" + id);
@@ -711,16 +711,16 @@ public class ManageCourse extends HttpServlet {
                 if (trangThai != null && !trangThai.trim().isEmpty()) {
                     switch (trangThai) {
                         case "Đang hoạt động":
-                            dbTrangThai = "Active";
+                            dbTrangThai = "Đang hoạt động";
                             break;
                         case "Chưa hoạt động":
-                            dbTrangThai = "Inactive";
+                            dbTrangThai = "Chưa hoạt động";
                             break;
                         case "Chưa bắt đầu":
-                            dbTrangThai = "NotStarted";
+                            dbTrangThai = "Chưa bắt đầu";
                             break;
                         case "Đã kết thúc":
-                            dbTrangThai = "Ended";
+                            dbTrangThai = "Đã kết thúc";
                             break;
                         default:
                             System.out.println("submitUpdateCourse: Invalid TrangThai - TrangThai=" + trangThai);
