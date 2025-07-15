@@ -23,13 +23,6 @@
             <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/admin/manageCourses.jsp</file>
             <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/dal/LopHocDAO.java</file>
         </group>
-        <group>
-            <file>file:/D:/Zalo%20Data/ELCentre/src/java/dal/GiaoVienDAO.java</file>
-            <file>file:/D:/Zalo%20Data/ELCentre/web/views/admin/adminReceiveHocSinh.jsp</file>
-            <file>file:/D:/Zalo%20Data/ELCentre/src/java/controller/adminFindInFilterGroup.java</file>
-            <file>file:/D:/Zalo%20Data/ELCentre/web/views/admin/adminReceiveGiaoVien.jsp</file>
-            <file>file:/D:/Zalo%20Data/ELCentre/src/java/dal/HocSinh_SDTDAO.java</file>
-        </group>
         <group name="SWT">
             <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/Home-Blog/Home-Blog-Content.jsp</file>
             <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/controller/HomePageMaterial.java</file>
@@ -44,6 +37,9 @@
             <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/Home-Content.jsp</file>
             <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/advice-success.jsp</file>
             <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/Home-Material/materialDetails.jsp</file>
+        </group>
+        <group>
+            <file>file:/C:/Users/Vuh26/Desktop/trungdam15_07/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageCourse.java</file>
         </group>
     </open-files>
 </project-private>
