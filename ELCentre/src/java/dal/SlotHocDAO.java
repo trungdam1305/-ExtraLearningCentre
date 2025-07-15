@@ -16,7 +16,7 @@ public class SlotHocDAO {
     public List<SlotHoc> getAllSlotHoc() throws SQLException {
         List<SlotHoc> slotHocList = new ArrayList<>();
         DBContext db = DBContext.getInstance();
-        String sql = "SELECT ID_SlotHoc, SlotThoiGian FROM [dbo].[SlotHoc]";
+        String sql = "SELECT * FROM SlotHoc ORDER BY ID_SlotHoc";
         try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 SlotHoc slot = new SlotHoc();
@@ -26,6 +26,27 @@ public class SlotHocDAO {
             }
         }
         return slotHocList;
+    }
+
+    
+       public List<SlotHoc> getAllSlotHoc1() {
+        List<SlotHoc> list = new ArrayList<>();
+        DBContext db = DBContext.getInstance();
+        String sql = "SELECT ID_SlotHoc, SlotThoiGian FROM SlotHoc";
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                SlotHoc slot = new SlotHoc();
+                slot.setID_SlotHoc(rs.getInt("ID_SlotHoc"));
+                slot.setSlotThoiGian(rs.getString("SlotThoiGian"));
+                list.add(slot);
+            }
+            System.out.println("getAllSlotHoc: Retrieved " + list.size() + " slots");
+        } catch (SQLException e) {
+            System.out.println("SQL Error in getAllSlotHoc: " + e.getMessage() + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+            e.printStackTrace();
+        }
+        return list;
     }
 
     // Lấy slot học theo ID
@@ -103,6 +124,15 @@ public class SlotHocDAO {
             System.err.println("Lỗi phân tích SlotThoiGian: slot1 = " + slotThoiGian1 + ", slot2 = " + slotThoiGian2 + ", error = " + e.getMessage());
             e.printStackTrace();
             return false;
+        }
+    }
+    
+    public static void main(String[] args) {
+        SlotHocDAO dao = new SlotHocDAO();
+        List<SlotHoc> li = new ArrayList<>();
+        li = dao.getAllSlotHoc1();
+        for (SlotHoc l : li){
+            System.out.println(l.getID_SlotHoc() + l.getSlotThoiGian());
         }
     }
 }

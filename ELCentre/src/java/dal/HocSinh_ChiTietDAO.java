@@ -16,22 +16,35 @@ import model.HocSinh;
 
 public class HocSinh_ChiTietDAO {
 
-    public static ArrayList<HocSinh_ChiTietHoc> adminGetAllLopHocCuaHocSinh(String ID_HocSinh) {
+   public static ArrayList<HocSinh_ChiTietHoc> adminGetAllLopHocCuaHocSinh(String ID_HocSinh) {
         ArrayList<HocSinh_ChiTietHoc> hocsinhchitiets = new ArrayList<HocSinh_ChiTietHoc>();
         DBContext db = DBContext.getInstance();
 
         try {
             String sql = """
-                         select  LH.ID_KhoaHoc ,  HSLH.ID_LopHoc , HSLH.ID_HocSinh ,GV.ID_GiaoVien  , LH.TenLopHoc , SH.SlotThoiGian  ,  GV.HoTen , LH.GhiChu , LH.TrangThai , LH.SoTien , LH.NgayTao , LH.Image    from HocSinh_LopHoc HSLH
+<<<<<<< HEAD
+                         select  LH.ID_KhoaHoc ,  HSLH.ID_LopHoc , HSLH.ID_HocSinh ,GV.ID_GiaoVien  , LH.TenLopHoc   ,  GV.HoTen , LH.GhiChu , LH.TrangThai , LH.SoTien , LH.NgayTao , LH.Image    from HocSinh_LopHoc HSLH
                          join  LopHoc LH
                          on HSLH.ID_LopHoc = LH.ID_LopHoc 
                          JOIN GiaoVien_LopHoc GVLH 
                          on HSLH.ID_LopHoc = GVLH.ID_LopHoc
                          JOIN GiaoVien GV 
                          on GV.ID_GiaoVien = GVLH.ID_GiaoVien
-                         JOIN SlotHoc SH 
-                         ON SH.ID_SlotHoc = LH.ID_Schedule
-                         WHERE HSLH.ID_HocSinh = ? ;
+                         WHERE HSLH.ID_HocSinh = ?  
+                         and LH.TrangThai = N'Đang học'
+=======
+                         select DISTINCT  LH.ID_KhoaHoc ,  HSLH.ID_LopHoc , HSLH.ID_HocSinh ,GV.ID_GiaoVien  , LH.TenLopHoc   ,  GV.HoTen , LH.GhiChu , LH.TrangThai , LH.SoTien , HP.TinhTrangThanhToan , LH.NgayTao , LH.Image    from HocSinh_LopHoc HSLH
+                        join  LopHoc LH
+                        on HSLH.ID_LopHoc = LH.ID_LopHoc 
+                        JOIN GiaoVien_LopHoc GVLH 
+                        on HSLH.ID_LopHoc = GVLH.ID_LopHoc
+                        JOIN GiaoVien GV 
+                        on GV.ID_GiaoVien = GVLH.ID_GiaoVien
+                        JOIN HocPhi HP 
+                        on  HP.ID_LopHoc = HSLH.ID_LopHoc
+                        WHERE HSLH.ID_HocSinh = ? 
+                        and LH.TrangThai = N'Đang học'
+>>>>>>> 0abab78db51bbf8b1ef4259d49c0dd9e3d189c4a
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             statement.setString(1, ID_HocSinh);
@@ -43,11 +56,12 @@ public class HocSinh_ChiTietDAO {
                         rs.getInt("ID_HocSinh"),
                         rs.getInt("ID_GiaoVien"),
                         rs.getString("TenLopHoc"),
-                        rs.getString("SlotThoiGian"),
                         rs.getString("HoTen"),
                         rs.getString("GhiChu"),
                         rs.getString("TrangThai"),
+                        
                         rs.getString("SoTien"),
+                        rs.getString("TinhTrangThanhToan") , 
                         rs.getTimestamp("NgayTao").toLocalDateTime(),
                         rs.getString("Image")
                 );

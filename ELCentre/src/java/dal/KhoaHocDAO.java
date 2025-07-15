@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dal;
 
-import com.sun.jdi.connect.spi.Connection;
+import java.sql.Connection;
 import dal.DBContext;
 import java.util.ArrayList;
 import model.KhoaHoc;
@@ -17,56 +13,56 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import model.KhoiHoc;
+import model.SubjectCategoryDTO;
 
-/**
- *
- * @author Vuh26
- */
+import model.KhoiHoc;
+
 public class KhoaHocDAO {
-    public static ArrayList<KhoaHoc> adminGetAllKhoaHoc(){
-        ArrayList<KhoaHoc> khoahocs = new ArrayList<KhoaHoc>() ; 
-        DBContext db = DBContext.getInstance() ; 
+
+    public static ArrayList<KhoaHoc> adminGetAllKhoaHoc() {
+        ArrayList<KhoaHoc> khoahocs = new ArrayList<KhoaHoc>();
+        DBContext db = DBContext.getInstance();
         try {
             String sql = """
                          select * from KhoaHoc 
-                         """ ; 
-            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
-            ResultSet rs = statement.executeQuery() ; 
-            while(rs.next()){
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
                 KhoaHoc khoahoc = new KhoaHoc(
-                        rs.getInt("ID_KhoaHoc") , 
-                        rs.getString("CourseCode") , 
-                        rs.getString("TenKhoaHoc") , 
-                        rs.getString("MoTa") , 
-                        rs.getDate("ThoiGianBatDau").toLocalDate() , 
-                        rs.getDate("ThoiGianKetThuc").toLocalDate() ,  
-                        rs.getString("GhiChu") , 
-                        rs.getString("TrangThai") , 
-                        rs.getTimestamp("NgayTao").toLocalDateTime() , 
-                        rs.getInt("ID_Khoi") , 
-                        rs.getString("Image") , 
+                        rs.getInt("ID_KhoaHoc"),
+                        rs.getString("CourseCode"),
+                        rs.getString("TenKhoaHoc"),
+                        rs.getString("MoTa"),
+                        rs.getDate("ThoiGianBatDau").toLocalDate(),
+                        rs.getDate("ThoiGianKetThuc").toLocalDate(),
+                        rs.getString("GhiChu"),
+                        rs.getString("TrangThai"),
+                        rs.getTimestamp("NgayTao").toLocalDateTime(),
+                        rs.getInt("ID_Khoi"),
+                        rs.getString("Image"),
                         rs.getInt("Order")
-                        
-                
-                ) ; 
-                khoahocs.add(khoahoc) ; 
+                );
+                khoahocs.add(khoahoc);
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-            return null ; 
+            return null;
         }
-        
-        if (khoahocs.isEmpty()){
-            return null ; 
+
+        if (khoahocs.isEmpty()) {
+            return null;
         } else {
-            return khoahocs ; 
+            return khoahocs;
         }
     }
-    
-  public static ArrayList<KhoaHoc> getKhoaHoc() {
+
+    public static ArrayList<KhoaHoc> getKhoaHoc() {
         ArrayList<KhoaHoc> courses = new ArrayList<>();
         DBContext db = DBContext.getInstance();
         try {
@@ -98,13 +94,13 @@ public class KhoaHocDAO {
 
         return courses;
     }
-    
-    public List<KhoaHoc> getKhoaHocByPage(int pageIndex, int pageSize) {
-    List<KhoaHoc> list = new ArrayList<>();
-    DBContext db = DBContext.getInstance();
 
-    try {
-        String sql = """
+    public List<KhoaHoc> getKhoaHocByPage(int pageIndex, int pageSize) {
+        List<KhoaHoc> list = new ArrayList<>();
+        DBContext db = DBContext.getInstance();
+
+        try {
+            String sql = """
             SELECT * FROM (
                 SELECT ROW_NUMBER() OVER (ORDER BY ID_KhoaHoc) AS RowNum, *
                 FROM KhoaHoc
@@ -112,35 +108,36 @@ public class KhoaHocDAO {
             WHERE RowNum BETWEEN ? AND ?
         """;
 
-        PreparedStatement ps = db.getConnection().prepareStatement(sql);
-        int start = (pageIndex - 1) * pageSize + 1;
-        int end = pageIndex * pageSize;
-        ps.setInt(1, start);
-        ps.setInt(2, end);
+            PreparedStatement ps = db.getConnection().prepareStatement(sql);
+            int start = (pageIndex - 1) * pageSize + 1;
+            int end = pageIndex * pageSize;
+            ps.setInt(1, start);
+            ps.setInt(2, end);
 
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            KhoaHoc kh = new KhoaHoc();
-            kh.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
-            kh.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
-            kh.setMoTa(rs.getString("MoTa"));
-            kh.setThoiGianBatDau(rs.getDate("ThoiGianBatDau").toLocalDate());
-            kh.setThoiGianKetThuc(rs.getDate("ThoiGianKetThuc").toLocalDate());
-            kh.setGhiChu(rs.getString("GhiChu"));
-            kh.setTrangThai(rs.getString("TrangThai"));
-            kh.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
-            kh.setID_Khoi(rs.getInt("ID_Khoi"));
-            kh.setImage(rs.getString("Image"));
-            list.add(kh);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                KhoaHoc kh = new KhoaHoc();
+                kh.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                kh.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
+                kh.setMoTa(rs.getString("MoTa"));
+                kh.setThoiGianBatDau(rs.getDate("ThoiGianBatDau").toLocalDate());
+                kh.setThoiGianKetThuc(rs.getDate("ThoiGianKetThuc").toLocalDate());
+                kh.setGhiChu(rs.getString("GhiChu"));
+                kh.setTrangThai(rs.getString("TrangThai"));
+                kh.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+                kh.setID_Khoi(rs.getInt("ID_Khoi"));
+                kh.setImage(rs.getString("Image"));
+                list.add(kh);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-    } catch (Exception e) {
-        e.printStackTrace();
+        return list;
     }
 
-    return list;
-}
-  
+   
      public static KhoaHoc getKhoaHocById(int ID_KhoaHoc) {
         DBContext db = DBContext.getInstance();
         KhoaHoc khoaHoc = null;
@@ -171,7 +168,6 @@ public class KhoaHocDAO {
         }
         return khoaHoc;
     }
-
     public static List<KhoaHoc> getKhoaHocByName(String name) {
         DBContext db = DBContext.getInstance();
         List<KhoaHoc> list = new ArrayList<>();
@@ -206,63 +202,54 @@ public class KhoaHocDAO {
         return list;
     }
 
-     public static KhoaHoc deleteKhoaHoc(KhoaHoc khoaHoc) {
-        DBContext db = DBContext.getInstance(); // (1)
-        int rs = 0;
-        try {
-            String sql = """
-            delete from KhoaHoc
-            where ID_KhoaHoc = ?
-            """; // (2)
-            PreparedStatement statment = db.getConnection().prepareStatement(sql); // (3)
-            statment.setInt(1, khoaHoc.getID_KhoaHoc()); // (4)
-            rs = statment.executeUpdate(); // (5)
-        } catch (Exception e) {
-            return null;
-        }
-        if (rs == 0) {
-            return null;
-        } else {
-            return khoaHoc;
-        }
-    }
-
-   public static KhoaHoc addKhoaHoc(KhoaHoc khoaHoc) {
+    public static KhoaHoc deleteKhoaHoc(KhoaHoc khoaHoc) {
         DBContext db = DBContext.getInstance();
         int rs = 0;
-
         try {
-            String sql = """
-            INSERT INTO KhoaHoc (TenKhoaHoc, MoTa, ThoiGianBatDau, ThoiGianKetThuc, GhiChu, TrangThai, ID_Khoi)
-            VALUES (?, ?, ?,  ?, ?, ?,?)
-        """;
-
+            String sql = "DELETE FROM KhoaHoc WHERE ID_KhoaHoc = ?";
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-
-            statement.setString(1, khoaHoc.getTenKhoaHoc());
-            statement.setString(2, khoaHoc.getMoTa());
-            statement.setDate(3, java.sql.Date.valueOf(khoaHoc.getThoiGianBatDau()));
-            statement.setDate(4, java.sql.Date.valueOf(khoaHoc.getThoiGianKetThuc()));
-            statement.setString(5, khoaHoc.getGhiChu());
-            statement.setString(6, khoaHoc.getTrangThai());
-            statement.setInt(7, khoaHoc.getID_Khoi());
-
+            statement.setInt(1, khoaHoc.getID_KhoaHoc());
             rs = statement.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace(); // bạn nên log lỗi ra để debug
+        } catch (SQLException e) {
+            e.printStackTrace();
             return null;
         }
-
         return rs > 0 ? khoaHoc : null;
     }
-    
+
+    public static KhoaHoc addKhoaHoc(KhoaHoc khoaHoc) {
+        DBContext db = DBContext.getInstance();
+        int rs = 0;
+        try {
+            String sql = """
+                INSERT INTO KhoaHoc (CourseCode, TenKhoaHoc, MoTa, ThoiGianBatDau, ThoiGianKetThuc, GhiChu, TrangThai, NgayTao, ID_Khoi, Image, [Order])
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setString(1, khoaHoc.getCourseCode());
+            statement.setString(2, khoaHoc.getTenKhoaHoc());
+            statement.setString(3, khoaHoc.getMoTa());
+            statement.setDate(4, khoaHoc.getThoiGianBatDau() != null ? java.sql.Date.valueOf(khoaHoc.getThoiGianBatDau()) : null);
+            statement.setDate(5, khoaHoc.getThoiGianKetThuc() != null ? java.sql.Date.valueOf(khoaHoc.getThoiGianKetThuc()) : null);
+            statement.setString(6, khoaHoc.getGhiChu());
+            statement.setString(7, khoaHoc.getTrangThai());
+            statement.setTimestamp(8, khoaHoc.getNgayTao() != null ? java.sql.Timestamp.valueOf(khoaHoc.getNgayTao()) : null);
+            statement.setInt(9, khoaHoc.getID_Khoi());
+            statement.setString(10, khoaHoc.getImage());
+            statement.setInt(11, khoaHoc.getOrder());
+            rs = statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return rs > 0 ? khoaHoc : null;
+    }
+
     public static int getTotalCourses() {
         DBContext db = DBContext.getInstance();
         int total = 0;
         try {
-            String sql = """
-            SELECT COUNT(*) FROM KhoaHoc
-        """;
+            String sql = "SELECT COUNT(*) FROM KhoaHoc";
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
@@ -270,8 +257,9 @@ public class KhoaHocDAO {
             }
             rs.close();
             statement.close();
-        } catch (Exception e) {
-            return 0; // hoặc có thể trả về -1 để phân biệt có lỗi
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
         }
         return total;
     }
@@ -383,7 +371,7 @@ public class KhoaHocDAO {
             return Collections.emptyList();
         }
 
-                return khoaHocList;
+        return khoaHocList;
     }
 
     public static List<KhoaHoc> getSortedByName(String sortName) {
@@ -421,7 +409,7 @@ public class KhoaHocDAO {
             return Collections.emptyList();
         }
 
-                return khoaHocList;
+        return khoaHocList;
     }
 
     public static List<KhoaHoc> getSortedByTrangThai(String sortOrder) {
@@ -455,7 +443,7 @@ public class KhoaHocDAO {
 
         } catch (Exception e) {
             e.printStackTrace();
-                        return Collections.emptyList();
+            return Collections.emptyList();
         }
 
         return khoaHocList;
@@ -499,7 +487,7 @@ public class KhoaHocDAO {
             return Collections.emptyList();
         }
 
-                    return khoaHocList;
+        return khoaHocList;
     }
 
     public static boolean isTenKhoaHocDuplicate(String tenKhoaHoc) {
@@ -526,30 +514,21 @@ public class KhoaHocDAO {
         return isDuplicate;
     }
 
-     public static boolean isDuplicateTenKhoaHocAndIDKhoi(String tenKhoaHoc, int idKhoi) {
+    public static boolean isDuplicateTenKhoaHocAndIDKhoi(String tenKhoaHoc, int idKhoi) {
         DBContext db = DBContext.getInstance();
         boolean isDuplicate = false;
-
         try {
-            String sql = """
-        SELECT COUNT(*)
-        FROM KhoaHoc
-        WHERE LOWER(TenKhoaHoc) = LOWER(?)
-        AND ID_Khoi = ?
-        """;
-
+            String sql = "SELECT COUNT(*) FROM KhoaHoc WHERE LOWER(TenKhoaHoc) = LOWER(?) AND ID_Khoi = ?";
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             statement.setString(1, tenKhoaHoc);
             statement.setInt(2, idKhoi);
             ResultSet rs = statement.executeQuery();
-
             if (rs.next()) {
                 isDuplicate = rs.getInt(1) > 0;
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return isDuplicate;
     }
 
@@ -607,7 +586,7 @@ public class KhoaHocDAO {
             e.printStackTrace();
             return null; // hoặc Collections.emptyList()
         }
-                    return khoaHocList;
+        return khoaHocList;
     }
 
     public static int countCoursesByTrangThai(String trangThai) {
@@ -663,7 +642,7 @@ public class KhoaHocDAO {
             e.printStackTrace();
             return null;
         }
-                    return khoaHocList;
+        return khoaHocList;
     }
 
     public static List<KhoaHoc> getKhoaHocByNamePaging(String name, int offset, int pageSize) {
@@ -701,7 +680,7 @@ public class KhoaHocDAO {
                 list.add(kh);
             }
         } catch (Exception e) {
-                        e.printStackTrace();
+            e.printStackTrace();
         }
         return list;
     }
@@ -783,29 +762,29 @@ public class KhoaHocDAO {
         return pattern.matcher(temp).replaceAll("").replaceAll("đ", "d").replaceAll("Đ", "D");
     }
 
-   public static int getTotalCoursesByTrangThaiVaTen(String trangThai, String tenKhoaHoc) {
-    DBContext db = DBContext.getInstance();
-    try {
-        // Chuẩn hóa tên tìm kiếm: loại bỏ dấu, bỏ khoảng trắng thừa
-        String normalizedTen = removeAccent(tenKhoaHoc.trim().replaceAll("\\s+", " "));
+    public static int getTotalCoursesByTrangThaiVaTen(String trangThai, String tenKhoaHoc) {
+        DBContext db = DBContext.getInstance();
+        try {
+            // Chuẩn hóa tên tìm kiếm: loại bỏ dấu, bỏ khoảng trắng thừa
+            String normalizedTen = removeAccent(tenKhoaHoc.trim().replaceAll("\\s+", " "));
 
-            String sql = "SELECT COUNT(*) FROM KhoaHoc " +
-                     "WHERE TrangThai = ? " +
-                     "AND REPLACE(TenKhoaHoc, 'đ', 'd') COLLATE Latin1_General_CI_AI LIKE ?";
+            String sql = "SELECT COUNT(*) FROM KhoaHoc "
+                    + "WHERE TrangThai = ? "
+                    + "AND REPLACE(TenKhoaHoc, 'đ', 'd') COLLATE Latin1_General_CI_AI LIKE ?";
 
-        PreparedStatement stmt = db.getConnection().prepareStatement(sql);
-        stmt.setString(1, trangThai);
-        stmt.setString(2, "%" + normalizedTen + "%");
-        ResultSet rs = stmt.executeQuery();
+            PreparedStatement stmt = db.getConnection().prepareStatement(sql);
+            stmt.setString(1, trangThai);
+            stmt.setString(2, "%" + normalizedTen + "%");
+            ResultSet rs = stmt.executeQuery();
 
-        if (rs.next()) {
-            return rs.getInt(1);
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+        return 0;
     }
-    return 0;
-}
 
     public static int getTotalCoursesByTen(String tenKhoaHoc) {
         DBContext db = DBContext.getInstance();
@@ -864,7 +843,7 @@ public class KhoaHocDAO {
                 khoaHoc.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
                 khoaHoc.setMoTa(rs.getString("MoTa"));
                 khoaHoc.setThoiGianBatDau(rs.getDate("ThoiGianBatDau") != null ? rs.getDate("ThoiGianBatDau").toLocalDate() : null);
-                     khoaHoc.setThoiGianKetThuc(rs.getDate("ThoiGianKetThuc") != null ? rs.getDate("ThoiGianKetThuc").toLocalDate() : null);
+                khoaHoc.setThoiGianKetThuc(rs.getDate("ThoiGianKetThuc") != null ? rs.getDate("ThoiGianKetThuc").toLocalDate() : null);
                 khoaHoc.setGhiChu(rs.getString("GhiChu"));
                 khoaHoc.setTrangThai(rs.getString("TrangThai"));
                 khoaHoc.setNgayTao(rs.getTimestamp("NgayTao") != null ? rs.getTimestamp("NgayTao").toLocalDateTime() : null);
@@ -905,9 +884,9 @@ public class KhoaHocDAO {
             e.printStackTrace();
         }
 
-            return isDuplicate;
+        return isDuplicate;
     }
-    
+
     public static int getKhoaHocVan() {
         ArrayList<KhoaHoc> courses = new ArrayList<>();
         DBContext db = DBContext.getInstance();
@@ -918,7 +897,7 @@ public class KhoaHocDAO {
                         WHERE TenKhoaHoc Collate Latin1_General_CI_AI LIKE '%van%'
                      """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-             ResultSet rs = statement.executeQuery();
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 tong = rs.getInt(1);
                 return tong;
@@ -928,8 +907,9 @@ public class KhoaHocDAO {
             e.printStackTrace();
 
         }
-                return tong;
+        return tong;
     }
+
     public static int getKhoaHocAnh() {
         ArrayList<KhoaHoc> courses = new ArrayList<>();
         DBContext db = DBContext.getInstance();
@@ -940,7 +920,7 @@ public class KhoaHocDAO {
                         WHERE TenKhoaHoc Collate Latin1_General_CI_AI LIKE '%anh%'
                      """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-             ResultSet rs = statement.executeQuery();
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 tong = rs.getInt(1);
                 return tong;
@@ -950,8 +930,9 @@ public class KhoaHocDAO {
             e.printStackTrace();
 
         }
-                return tong;
+        return tong;
     }
+
     public static int getKhoaHocSu() {
         ArrayList<KhoaHoc> courses = new ArrayList<>();
         DBContext db = DBContext.getInstance();
@@ -962,7 +943,7 @@ public class KhoaHocDAO {
                         WHERE TenKhoaHoc Collate Latin1_General_CI_AI LIKE '%su%'
                      """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-             ResultSet rs = statement.executeQuery();
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 tong = rs.getInt(1);
                 return tong;
@@ -972,8 +953,9 @@ public class KhoaHocDAO {
             e.printStackTrace();
 
         }
-                return tong;
+        return tong;
     }
+
     public static int getKhoaHocToan() {
         ArrayList<KhoaHoc> courses = new ArrayList<>();
         DBContext db = DBContext.getInstance();
@@ -984,7 +966,7 @@ public class KhoaHocDAO {
                         WHERE TenKhoaHoc Collate Latin1_General_CI_AI LIKE '%toan%'
                      """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-             ResultSet rs = statement.executeQuery();
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 tong = rs.getInt(1);
                 return tong;
@@ -994,8 +976,9 @@ public class KhoaHocDAO {
             e.printStackTrace();
 
         }
-                return tong;
+        return tong;
     }
+
     public static int getKhoaHocDia() {
         ArrayList<KhoaHoc> courses = new ArrayList<>();
         DBContext db = DBContext.getInstance();
@@ -1006,7 +989,7 @@ public class KhoaHocDAO {
                         WHERE TenKhoaHoc Collate Latin1_General_CI_AI LIKE '%dia%'
                      """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-             ResultSet rs = statement.executeQuery();
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 tong = rs.getInt(1);
                 return tong;
@@ -1016,8 +999,9 @@ public class KhoaHocDAO {
             e.printStackTrace();
 
         }
-                return tong;
+        return tong;
     }
+
     public static int getKhoaHocLy() {
         ArrayList<KhoaHoc> courses = new ArrayList<>();
         DBContext db = DBContext.getInstance();
@@ -1028,7 +1012,7 @@ public class KhoaHocDAO {
                         WHERE TenKhoaHoc Collate Latin1_General_CI_AI LIKE '%ly%'
                      """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-             ResultSet rs = statement.executeQuery();
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 tong = rs.getInt(1);
                 return tong;
@@ -1038,8 +1022,9 @@ public class KhoaHocDAO {
             e.printStackTrace();
 
         }
-                return tong;
+        return tong;
     }
+
     public static int getKhoaHocHoa() {
         ArrayList<KhoaHoc> courses = new ArrayList<>();
         DBContext db = DBContext.getInstance();
@@ -1050,7 +1035,7 @@ public class KhoaHocDAO {
                         WHERE TenKhoaHoc Collate Latin1_General_CI_AI LIKE '%hoa%'
                      """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-             ResultSet rs = statement.executeQuery();
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 tong = rs.getInt(1);
                 return tong;
@@ -1060,8 +1045,9 @@ public class KhoaHocDAO {
             e.printStackTrace();
 
         }
-                return tong;
+        return tong;
     }
+
     public static int getKhoaHocSinh() {
         ArrayList<KhoaHoc> courses = new ArrayList<>();
         DBContext db = DBContext.getInstance();
@@ -1072,7 +1058,7 @@ public class KhoaHocDAO {
                         WHERE TenKhoaHoc Collate Latin1_General_CI_AI LIKE '%sinh%'
                      """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
-             ResultSet rs = statement.executeQuery();
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 tong = rs.getInt(1);
                 return tong;
@@ -1082,59 +1068,69 @@ public class KhoaHocDAO {
             e.printStackTrace();
 
         }
-                return tong;
+        return tong;
     }
     
-    public List<KhoaHoc> getKhoaHocFiltered(String keyword, String idKhoi, int page, int pageSize) {
+    public List<KhoaHoc> getKhoaHocFiltered(String keyword, String idKhoiStr, int page, int pageSize) {
     List<KhoaHoc> list = new ArrayList<>();
-    DBContext db = DBContext.getInstance();
-
-    // Start SQL query with base condition
+    List<Object> params = new ArrayList<>();
+    
+    // Bắt đầu câu lệnh SQL với điều kiện luôn đúng để dễ dàng nối các mệnh đề AND
     StringBuilder sql = new StringBuilder("SELECT * FROM KhoaHoc WHERE 1=1");
 
-    // Apply search keyword filter if provided
+    // Lọc theo từ khóa (Tên khóa học)
     if (keyword != null && !keyword.trim().isEmpty()) {
-        sql.append(" AND TenKhoaHoc LIKE ?");
+        if ("Khac".equalsIgnoreCase(keyword)) {
+            // Trường hợp đặc biệt khi lọc "Các môn khác"
+            sql.append(" AND TenKhoaHoc NOT LIKE N'%Toán%' AND TenKhoaHoc NOT LIKE N'%Văn%' ");
+        } else {
+            sql.append(" AND TenKhoaHoc LIKE ? ");
+            params.add("%" + keyword.trim() + "%");
+        }
     }
 
-    // Apply grade (Khoi) filter if provided
-    if (idKhoi != null && !idKhoi.trim().isEmpty()) {
-        sql.append(" AND ID_Khoi = ?");
+    // Lọc theo Khối học
+    if (idKhoiStr != null && !idKhoiStr.trim().isEmpty()) {
+        try {
+            int idKhoi = Integer.parseInt(idKhoiStr);
+            if (idKhoi > 0) {
+                 // ✅ Dùng = cho cột số, và thêm tham số vào danh sách
+                sql.append(" AND ID_Khoi = ? ");
+                params.add(idKhoi);
+            }
+        } catch (NumberFormatException e) {
+            // Bỏ qua nếu idKhoi không phải là số
+            System.err.println("ID_Khoi không hợp lệ: " + idKhoiStr);
+        }
     }
 
-    // Add pagination using OFFSET-FETCH
-    sql.append(" ORDER BY ID_KhoaHoc DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+    // Thêm sắp xếp và phân trang
+    sql.append(" ORDER BY [Order] ASC, NgayTao DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+    params.add((page - 1) * pageSize);
+    params.add(pageSize);
 
-    try (PreparedStatement ps = db.getConnection().prepareStatement(sql.toString())) {
-        int idx = 1;
+    try (Connection conn = DBContext.getInstance().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql.toString())) {
 
-        // Set parameters for keyword and ID_Khoi if they exist
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            ps.setString(idx++, "%" + keyword + "%");
+        // ✅ Dùng một vòng lặp duy nhất để gán tất cả tham số một cách an toàn
+        for (int i = 0; i < params.size(); i++) {
+            ps.setObject(i + 1, params.get(i));
         }
-        if (idKhoi != null && !idKhoi.trim().isEmpty()) {
-            ps.setInt(idx++, Integer.parseInt(idKhoi));
-        }
 
-        // Set OFFSET and LIMIT for pagination
-        ps.setInt(idx++, (page - 1) * pageSize);
-        ps.setInt(idx, pageSize);
-
-        // Execute query and map results to KhoaHoc objects
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            KhoaHoc kh = new KhoaHoc();
-            kh.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
-            kh.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
-            kh.setMoTa(rs.getString("MoTa"));
-            kh.setImage(rs.getString("Image"));
-            kh.setID_Khoi(rs.getInt("ID_Khoi"));
-            list.add(kh);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                KhoaHoc kh = new KhoaHoc();
+                kh.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                kh.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
+                kh.setMoTa(rs.getString("MoTa"));
+                kh.setImage(rs.getString("Image"));
+                kh.setID_Khoi(rs.getInt("ID_Khoi"));
+                list.add(kh);
+            }
         }
     } catch (Exception e) {
-        e.printStackTrace(); // Log exception for debugging
+        e.printStackTrace();
     }
-
     return list;
 }
     
@@ -1175,128 +1171,49 @@ public class KhoaHocDAO {
     return 0; // Return 0 if exception occurs or no match
 }
 
-    
-    public List<KhoaHoc> getCoursesSortedPaged(String sortColumn, String sortOrder, String searchName, int page, int pageSize) {
-        List<KhoaHoc> list = new ArrayList<>();
-        List<String> allowedColumns = new ArrayList<>();
-        allowedColumns.add("ID_KhoaHoc");
-        allowedColumns.add("TenKhoaHoc");
-        allowedColumns.add("MoTa");
-        allowedColumns.add("ThoiGianBatDau");
-        allowedColumns.add("ThoiGianKetThuc");
-        allowedColumns.add("GhiChu");
-        allowedColumns.add("TrangThai");
-        allowedColumns.add("NgayTao");
-        allowedColumns.add("ID_Khoi");
 
-        if (!allowedColumns.contains(sortColumn)) {
-            sortColumn = "ID_KhoaHoc";
-        }
-        if (!sortOrder.equalsIgnoreCase("asc") && !sortOrder.equalsIgnoreCase("desc")) {
-            sortOrder = "asc";
-        }
-
-        int offset = (page - 1) * pageSize;
-        DBContext db = DBContext.getInstance();
-
-        String sql = "SELECT * FROM KhoaHoc ";
-        if (searchName != null && !searchName.trim().isEmpty()) {
-            sql += "WHERE TenKhoaHoc LIKE ? ";
-        }
-        sql += "ORDER BY " + sortColumn + " " + sortOrder + " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-
-        try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
-            int paramIndex = 1;
-            if (searchName != null && !searchName.trim().isEmpty()) {
-                statement.setString(paramIndex++, "%" + searchName + "%");
-            }
-            // Đặt offset trước, pageSize sau
-            statement.setInt(paramIndex++, offset);
-            statement.setInt(paramIndex, pageSize);
-
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                KhoaHoc khoaHoc = new KhoaHoc();
-                khoaHoc.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
-                khoaHoc.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
-                khoaHoc.setMoTa(rs.getString("MoTa"));
-                khoaHoc.setThoiGianBatDau(rs.getDate("ThoiGianBatDau") != null ? rs.getDate("ThoiGianBatDau").toLocalDate() : null);
-                khoaHoc.setThoiGianKetThuc(rs.getDate("ThoiGianKetThuc") != null ? rs.getDate("ThoiGianKetThuc").toLocalDate() : null);
-                khoaHoc.setGhiChu(rs.getString("GhiChu"));
-                khoaHoc.setTrangThai(rs.getString("TrangThai"));
-                khoaHoc.setNgayTao(rs.getTimestamp("NgayTao") != null ? rs.getTimestamp("NgayTao").toLocalDateTime() : null);
-                khoaHoc.setID_Khoi(rs.getInt("ID_Khoi"));
-                list.add(khoaHoc);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return list;
-    }
-    public static void main(String[] args) {
-        int a = KhoaHocDAO.getKhoaHocVan();
-        System.out.println(a);
-    }
-    
-     public int countCourses(String searchName) {
-        DBContext db = DBContext.getInstance();
-        String sql = "SELECT COUNT(*) FROM KhoaHoc";
-        if (searchName != null && !searchName.trim().isEmpty()) {
-            sql += " WHERE TenKhoaHoc LIKE ?";
-        }
-
-        try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
-            if (searchName != null && !searchName.trim().isEmpty()) {
-                statement.setString(1, "%" + searchName + "%");
-            }
-
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return 0;
-    }
-     
-     public List<KhoaHoc> getCoursesSortedPaged(String sortColumn, String sortOrder, String searchName, String statusFilter, int page, int pageSize) {
-        List<KhoaHoc> list = new ArrayList<>();
+    public List<KhoaHoc> getCoursesSortedPaged(String sortColumn, String sortOrder, String searchName, String trangThai, Integer idKhoi, Integer order, LocalDate startDate, LocalDate endDate, int page, int pageSize) {
         List<String> allowedColumns = Arrays.asList(
-            "ID_KhoaHoc", "TenKhoaHoc", "MoTa", "ThoiGianBatDau", 
-            "ThoiGianKetThuc", "GhiChu", "TrangThai", "NgayTao", "ID_Khoi"
+                "ID_KhoaHoc", "TenKhoaHoc", "MoTa", "ThoiGianBatDau",
+                "ThoiGianKetThuc", "GhiChu", "TrangThai", "NgayTao", "ID_Khoi",
+                "CourseCode", "Image", "Order"
         );
-
-        // Validate sortColumn để chống SQL injection
         if (!allowedColumns.contains(sortColumn)) {
             sortColumn = "ID_KhoaHoc";
         }
-        // Validate sortOrder
         if (!sortOrder.equalsIgnoreCase("asc") && !sortOrder.equalsIgnoreCase("desc")) {
             sortOrder = "asc";
         }
-
         DBContext db = DBContext.getInstance();
+        List<KhoaHoc> list = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM KhoaHoc WHERE 1=1");
         List<Object> params = new ArrayList<>();
-
-        // Thêm điều kiện tìm kiếm theo tên
         if (searchName != null && !searchName.trim().isEmpty()) {
-            sql.append(" AND TenKhoaHoc LIKE ?");
-            params.add("%" + searchName + "%");
+            sql.append(" AND REPLACE(TenKhoaHoc, 'đ', 'd') COLLATE Latin1_General_CI_AI LIKE ?");
+            params.add("%" + removeAccent(searchName.trim().replaceAll("\\s+", " ")) + "%");
         }
-
-        // Thêm điều kiện lọc trạng thái
-        if (statusFilter != null && !statusFilter.trim().isEmpty()) {
+        if (trangThai != null && !trangThai.trim().isEmpty()) {
             sql.append(" AND TrangThai = ?");
-            params.add(statusFilter);
+            params.add(trangThai);
         }
-
+        if (idKhoi != null) {
+            sql.append(" AND ID_Khoi = ?");
+            params.add(idKhoi);
+        }
+        if (order != null) {
+            sql.append(" AND [Order] = ?");
+            params.add(order);
+        }
+        if (startDate != null) {
+            sql.append(" AND ThoiGianBatDau >= ?");
+            params.add(startDate);
+        }
+        if (endDate != null) {
+            sql.append(" AND ThoiGianKetThuc <= ?");
+            params.add(endDate);
+        }
         sql.append(" ORDER BY ").append(sortColumn).append(" ").append(sortOrder);
         sql.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
-
         try (PreparedStatement statement = db.getConnection().prepareStatement(sql.toString())) {
             int paramIndex = 1;
             for (Object param : params) {
@@ -1304,11 +1221,11 @@ public class KhoaHocDAO {
             }
             statement.setInt(paramIndex++, (page - 1) * pageSize);
             statement.setInt(paramIndex, pageSize);
-
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 KhoaHoc khoaHoc = new KhoaHoc();
                 khoaHoc.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                khoaHoc.setCourseCode(rs.getString("CourseCode"));
                 khoaHoc.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
                 khoaHoc.setMoTa(rs.getString("MoTa"));
                 khoaHoc.setThoiGianBatDau(rs.getDate("ThoiGianBatDau") != null ? rs.getDate("ThoiGianBatDau").toLocalDate() : null);
@@ -1317,17 +1234,18 @@ public class KhoaHocDAO {
                 khoaHoc.setTrangThai(rs.getString("TrangThai"));
                 khoaHoc.setNgayTao(rs.getTimestamp("NgayTao") != null ? rs.getTimestamp("NgayTao").toLocalDateTime() : null);
                 khoaHoc.setID_Khoi(rs.getInt("ID_Khoi"));
+                khoaHoc.setImage(rs.getString("Image"));
+                khoaHoc.setOrder(rs.getInt("Order"));
                 list.add(khoaHoc);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             return Collections.emptyList();
         }
-
         return list;
     }
-     
-      public int countCourses(String searchName, String statusFilter) {
+
+    public int countCourses(String searchName, String statusFilter) {
         DBContext db = DBContext.getInstance();
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM KhoaHoc WHERE 1=1");
         List<Object> params = new ArrayList<>();
@@ -1357,5 +1275,302 @@ public class KhoaHocDAO {
         }
 
         return 0;
+    }
+
+    public List<KhoaHoc> getCoursesByFilters(String searchName, String trangThai, Integer idKhoi, Integer order, LocalDate startDate, LocalDate endDate, int offset, int pageSize) {
+        DBContext db = DBContext.getInstance();
+        List<KhoaHoc> khoaHocList = new ArrayList<>();
+        try {
+            StringBuilder sql = new StringBuilder("SELECT * FROM KhoaHoc WHERE 1=1");
+            List<Object> params = new ArrayList<>();
+            if (searchName != null && !searchName.trim().isEmpty()) {
+                sql.append(" AND REPLACE(TenKhoaHoc, 'đ', 'd') COLLATE Latin1_General_CI_AI LIKE ?");
+                params.add("%" + removeAccent(searchName.trim().replaceAll("\\s+", " ")) + "%");
+            }
+            if (trangThai != null && !trangThai.trim().isEmpty()) {
+                sql.append(" AND TrangThai = ?");
+                params.add(trangThai);
+            }
+            if (idKhoi != null) {
+                sql.append(" AND ID_Khoi = ?");
+                params.add(idKhoi);
+            }
+            if (order != null) {
+                sql.append(" AND [Order] = ?");
+                params.add(order);
+            }
+            if (startDate != null) {
+                sql.append(" AND ThoiGianBatDau >= ?");
+                params.add(startDate);
+            }
+            if (endDate != null) {
+                sql.append(" AND ThoiGianKetThuc <= ?");
+                params.add(endDate);
+            }
+            sql.append(" ORDER BY ID_KhoaHoc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+            PreparedStatement statement = db.getConnection().prepareStatement(sql.toString());
+            int paramIndex = 1;
+            for (Object param : params) {
+                statement.setObject(paramIndex++, param);
+            }
+            statement.setInt(paramIndex++, offset);
+            statement.setInt(paramIndex, pageSize);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                KhoaHoc khoaHoc = new KhoaHoc();
+                khoaHoc.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                khoaHoc.setCourseCode(rs.getString("CourseCode"));
+                khoaHoc.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
+                khoaHoc.setMoTa(rs.getString("MoTa"));
+                khoaHoc.setThoiGianBatDau(rs.getDate("ThoiGianBatDau") != null ? rs.getDate("ThoiGianBatDau").toLocalDate() : null);
+                khoaHoc.setThoiGianKetThuc(rs.getDate("ThoiGianKetThuc") != null ? rs.getDate("ThoiGianKetThuc").toLocalDate() : null);
+                khoaHoc.setGhiChu(rs.getString("GhiChu"));
+                khoaHoc.setTrangThai(rs.getString("TrangThai"));
+                khoaHoc.setNgayTao(rs.getTimestamp("NgayTao") != null ? rs.getTimestamp("NgayTao").toLocalDateTime() : null);
+                khoaHoc.setID_Khoi(rs.getInt("ID_Khoi"));
+                khoaHoc.setImage(rs.getString("Image"));
+                khoaHoc.setOrder(rs.getInt("Order"));
+                khoaHocList.add(khoaHoc);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return khoaHocList;
+    }
+
+    public int getTotalCoursesByFilters(String searchName, String trangThai, Integer idKhoi, Integer order, LocalDate startDate, LocalDate endDate) {
+        DBContext db = DBContext.getInstance();
+        try {
+            StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM KhoaHoc WHERE 1=1");
+            List<Object> params = new ArrayList<>();
+            if (searchName != null && !searchName.trim().isEmpty()) {
+                sql.append(" AND REPLACE(TenKhoaHoc, 'đ', 'd') COLLATE Latin1_General_CI_AI LIKE ?");
+                params.add("%" + removeAccent(searchName.trim().replaceAll("\\s+", " ")) + "%");
+            }
+            if (trangThai != null && !trangThai.trim().isEmpty()) {
+                sql.append(" AND TrangThai = ?");
+                params.add(trangThai);
+            }
+            if (idKhoi != null) {
+                sql.append(" AND ID_Khoi = ?");
+                params.add(idKhoi);
+            }
+            if (order != null) {
+                sql.append(" AND [Order] = ?");
+                params.add(order);
+            }
+            if (startDate != null) {
+                sql.append(" AND ThoiGianBatDau >= ?");
+                params.add(startDate);
+            }
+            if (endDate != null) {
+                sql.append(" AND ThoiGianKetThuc <= ?");
+                params.add(endDate);
+            }
+            PreparedStatement stmt = db.getConnection().prepareStatement(sql.toString());
+            int paramIndex = 1;
+            for (Object param : params) {
+                stmt.setObject(paramIndex++, param);
+            }
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static boolean isDuplicateCourseCode(String courseCode) {
+        DBContext db = DBContext.getInstance();
+        try {
+            String sql = "SELECT COUNT(*) FROM KhoaHoc WHERE CourseCode = ?";
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setString(1, courseCode);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public Map<String, Integer> getCourseCountsBySubject() {
+        Map<String, Integer> subjectCounts = new HashMap<>();
+        DBContext db = DBContext.getInstance();
+        // Danh sách các môn học bạn muốn đếm
+        String[] subjects = {"Toán", "Văn", "Anh", "Lý", "Hóa", "Sinh", "Sử", "Địa"};
+        
+        String sql = "SELECT COUNT(*) FROM KhoaHoc WHERE TenKhoaHoc LIKE ?";
+
+        try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
+            
+            for (String subject : subjects) {
+                statement.setString(1, "%" + subject + "%");
+                try (ResultSet rs = statement.executeQuery()) {
+                    if (rs.next()) {
+                        subjectCounts.put(subject, rs.getInt(1));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return subjectCounts;
+    }
+    
+    public static ArrayList<KhoaHoc> homepageGetAllKhoaHoc(){
+        ArrayList<KhoaHoc> khoahocs = new ArrayList<KhoaHoc>() ; 
+        DBContext db = DBContext.getInstance() ; 
+        try {
+            String sql = """
+                         select * from KhoaHoc
+                         ORDER BY [Order] ASC
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            ResultSet rs = statement.executeQuery() ; 
+            while(rs.next()){
+                KhoaHoc khoahoc = new KhoaHoc(
+                        rs.getInt("ID_KhoaHoc") , 
+                        rs.getString("CourseCode") , 
+                        rs.getString("TenKhoaHoc") , 
+                        rs.getString("MoTa") , 
+                        rs.getDate("ThoiGianBatDau").toLocalDate() , 
+                        rs.getDate("ThoiGianKetThuc").toLocalDate() ,  
+                        rs.getString("GhiChu") , 
+                        rs.getString("TrangThai") , 
+                        rs.getTimestamp("NgayTao").toLocalDateTime() , 
+                        rs.getInt("ID_Khoi") , 
+                        rs.getString("Image") , 
+                        rs.getInt("Order")
+                        
+                
+                ) ; 
+                khoahocs.add(khoahoc) ; 
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null ; 
+        }
+        
+        if (khoahocs.isEmpty()){
+            return null ; 
+        } else {
+            return khoahocs ; 
+        }
+    }   
+    
+    public List<SubjectCategoryDTO> getCourseCategoriesWithCount() {
+        List<SubjectCategoryDTO> categories = new ArrayList<>();
+        DBContext db = DBContext.getInstance() ; 
+        // Câu lệnh này JOIN 2 bảng, đếm, nhóm và sắp xếp
+        String sql = """
+            SELECT 
+                m.TenKhoaHoc, 
+                m.[Order],
+                COUNT(m.ID_KhoaHoc) AS CourseCount
+            FROM 
+                KhoaHoc m
+            GROUP BY 
+                m.TenKhoaHoc, m.[Order]
+            ORDER BY 
+                m.[Order] ASC
+        """;
+
+        try (PreparedStatement statement = db.getConnection().prepareStatement(sql);
+             ResultSet rs = statement.executeQuery()) {
+            
+            while (rs.next()) {
+                SubjectCategoryDTO dto = new SubjectCategoryDTO();
+                dto.setSubjectName(rs.getString("TenKhoaHoc"));
+                dto.setCourseCount(rs.getInt("CourseCount"));
+                dto.setOrder(rs.getInt("Order"));
+                categories.add(dto);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return categories;
+    }
+
+    //get Active Courses
+    public static List<KhoaHoc> getAllKhoaHocDangMo() {
+        List<KhoaHoc> list = new ArrayList<>();
+        String sql = """
+            SELECT kh.ID_KhoaHoc, kh.CourseCode, kh.TenKhoaHoc, kh.MoTa, kh.ThoiGianBatDau, kh.ThoiGianKetThuc,
+                   kh.GhiChu, kh.TrangThai, kh.ID_Khoi, k.TenKhoi
+            FROM KhoaHoc kh
+            LEFT JOIN KhoiHoc k ON kh.ID_Khoi = k.ID_Khoi
+            WHERE kh.TrangThai = 'Active'
+        """;
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                KhoaHoc kh = new KhoaHoc(); 
+                kh.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                kh.setCourseCode(rs.getString("CourseCode"));
+                kh.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
+                kh.setMoTa(rs.getString("MoTa"));
+                kh.setThoiGianBatDau(rs.getDate("ThoiGianBatDau").toLocalDate());
+                kh.setThoiGianKetThuc(rs.getDate("ThoiGianKetThuc").toLocalDate());
+                kh.setGhiChu(rs.getString("GhiChu"));
+                kh.setTrangThai(rs.getString("TrangThai"));
+                kh.setID_Khoi(rs.getInt("ID_Khoi")); // Bổ sung: cần khớp với SELECT
+                kh.setTenKhoi(rs.getString("TenKhoi"));
+                list.add(kh);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }  
+    
+    public static KhoaHoc getKhoaHocById1(int ID_KhoaHoc) {
+        DBContext db = DBContext.getInstance();
+        KhoaHoc khoaHoc = null;
+        try {
+            String sql = """
+            SELECT ID_KhoaHoc, TenKhoaHoc, MoTa, ThoiGianBatDau,
+                   ThoiGianKetThuc, GhiChu, TrangThai, NgayTao, ID_Khoi, CourseCode, [Order]
+            FROM KhoaHoc WHERE ID_KhoaHoc = ?
+        """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setInt(1, ID_KhoaHoc);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                khoaHoc = new KhoaHoc();
+                khoaHoc.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                khoaHoc.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
+                khoaHoc.setMoTa(rs.getString("MoTa"));
+                khoaHoc.setThoiGianBatDau(rs.getDate("ThoiGianBatDau").toLocalDate());
+                khoaHoc.setThoiGianKetThuc(rs.getDate("ThoiGianKetThuc").toLocalDate());
+                khoaHoc.setGhiChu(rs.getString("GhiChu"));
+                khoaHoc.setTrangThai(rs.getString("TrangThai"));
+                khoaHoc.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+                khoaHoc.setID_Khoi(rs.getInt("ID_Khoi")); // Bổ sung dòng này
+                khoaHoc.setCourseCode(rs.getString("CourseCode"));
+                khoaHoc.setOrder(rs.getInt("Order"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return khoaHoc;
+    }
+
+    
+    public static void main(String[] args) {
+        KhoaHocDAO dao = new KhoaHocDAO();
+        List<KhoaHoc> kh = new ArrayList<>();
+        kh = dao.getKhoaHocFiltered("khac", "6", 1, 10);
+        for (KhoaHoc k : kh){
+            System.out.println(k.getCourseCode());
+        }
     }
 }

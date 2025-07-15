@@ -40,7 +40,6 @@ public class LoginServlet extends HttpServlet {
 //            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
 //            return;
 //        }
-
         if (email == null || email.trim().isEmpty() ||
             password == null || password.trim().isEmpty()) {
             String errorMsg = "Vui lòng nhập email và mật khẩu";
@@ -60,14 +59,6 @@ public class LoginServlet extends HttpServlet {
 
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
-
-                UserLogs log = new UserLogs();
-                log.setID_TaiKhoan(user.getID_TaiKhoan());
-                log.setHanhDong("Đăng nhập hệ thống");
-                log.setThoiGian(LocalDateTime.now());
-                UserLogsDAO.insertLog(log);
-
-                 // ✅ Gửi email thông báo đăng nhập
                 try {
                     String subject = "Thông báo đăng nhập thành công";
                     String body = "Xin chào " + user.getEmail() +
@@ -83,13 +74,13 @@ public class LoginServlet extends HttpServlet {
                 } else // Điều hướng sau khi login
                 switch (user.getID_VaiTro()) {
                     case 1 -> //admin
-                        response.sendRedirect(request.getContextPath() + "/views/admin/adminDashboard.jsp");
+                        response.sendRedirect(request.getContextPath() + "/adminGoToFirstPage");
                     case 2 -> //staff
-                        response.sendRedirect(request.getContextPath() + "/views/staff/staffDashboard.jsp");
+                        response.sendRedirect(request.getContextPath() + "/staffGoToFirstPage");
                     case 3 -> //teacher    
                         response.sendRedirect(request.getContextPath() + "/TeacherDashboard");
                     case 4 -> //student
-                        response.sendRedirect(request.getContextPath() + "/views/student/studentDashboard.jsp");
+                        response.sendRedirect(request.getContextPath() + "/StudentDashboardServlet");
                     case 5 -> //parent
                         response.sendRedirect(request.getContextPath() + "/views/parent/parentDashboard.jsp");
                     default -> response.sendRedirect(request.getContextPath() + "/views/login.jsp");

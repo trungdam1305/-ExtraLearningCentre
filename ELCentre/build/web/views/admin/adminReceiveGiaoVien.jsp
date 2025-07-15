@@ -6,6 +6,8 @@
                  contact info, salary, and status. It supports filtering by specialization, searching, and pagination, 
                  with action links for viewing details, managing classes, and editing teacher records.
     Parameters:
+    - Parameters:(Handle from adminGetFromDashboard servlet)
+    - Method to get data from database in GiaoVienDAO - admminGetAllGiaoVien
     - @Param giaoviens (ArrayList<GiaoVien>): A request attribute containing the list of teacher objects fetched from the database.
 --%>
 
@@ -417,7 +419,7 @@
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp"><i class="fas fa-chart-line"></i> Dashboard</a>
+                 <li><a href="${pageContext.request.contextPath}/adminGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
                 
             </ul>
 
@@ -462,7 +464,7 @@
                 <h2><i class="fas fa-chalkboard-teacher"></i> Tất cả giáo viên</h2>
             </div>
 
-            <form action="adminFindInFilterGroup" method="post">
+            <form  action="${pageContext.request.contextPath}/adminFindInFilterGroup" method="post">
                 <div class="filter-bar">
                     <div class="filter-group">
                         <label for="keyword">Từ khóa:</label>
@@ -482,7 +484,7 @@
                         <select id="trangthaiday" name="trangthaiday">
                             <option value="">Tất cả</option>
                             <option value="Đang dạy">Đang dạy</option>
-                            <option value="Chờ dạy">Chờ lớp</option>
+                            <option value="Chờ dạy">Chưa lớp</option>
                             <option value="Đã dạy">Đã dạy</option>
                         </select>
                     </div>
@@ -539,9 +541,9 @@
                                                    <i class="fas fa-chalkboard-teacher"></i> Xem lớp & Chuyển lớp
                                                 </a>
 
-                                                <a class="btn-action enable" title="Gửi thông báo" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=sendNoTiFiCaTion&id=${giaovien.getID_GiaoVien()}">
+                                                <a class="btn-action enable" title="Gửi thông báo" href="${pageContext.request.contextPath}/views/admin/adminSendNotificationTeacher.jsp?idtaikhoan=${giaovien.getID_TaiKhoan()}">
                                                     <i class="fas fa-bell"></i> Gửi thông báo
-                                                </a>
+                                                
                                             </td>
                                         </tr>   
                                     </c:forEach>
@@ -561,7 +563,8 @@
                     <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
                 </div>
                 <div class="back-button">
-                    <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">← Quay lại trang chủ</a>
+                    <a href="${pageContext.request.contextPath}/adminGoToFirstPage">← Quay lại trang chủ</a>
+                    
                 </div>
             </div>
 

@@ -543,14 +543,13 @@
                 Admin Dashboard <i class="fas fa-tachometer-alt"></i>
             </div>
             <div class="admin-profile" onclick="toggleDropdown()">
-                <%
-                      ArrayList<Admin> admins  = (ArrayList) AdminDAO.getNameAdmin();
-                      
-                %>
-                <img src="<%= admins.get(0).getAvatar() %>" alt="Admin Photo" class="admin-img">
+                <c:forEach var="ad" items="${admins}">
+                    <img src="${ad.getAvatar()}" alt="Admin Photo" class="admin-img">
+                    
+                     <span>${ad.getHoTen()}</span>
+                </c:forEach>
 
-
-                <span><%= admins.get(0).getHoTen() %></span>
+               
                 <i class="fas fa-caret-down"></i>
                 <div class="dropdown-menu" id="adminDropdown">
                     <a href="#"><i class="fas fa-key"></i> Change Password</a>
@@ -564,7 +563,7 @@
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="#"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
 
             </ul>
 
@@ -583,6 +582,7 @@
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
+                <li><a href="${pageContext.request.contextPath}/ManageSchedule"><i class="fas fa-calendar-alt"></i> Lịch học</a></li>
             </ul>
 
             <div class="sidebar-section-title">Hệ thống</div>
@@ -604,26 +604,20 @@
             <div class="dashboard-stats">
                 <div class="stat-card stat-hocsinh">
                     <h3><i class="fas fa-user-graduate"></i> Tổng số học sinh đang học</h3>
-                    <%
-                        Integer tongSoHocSinhDangHoc = HocSinhDAO.adminGetTongSoHocSinhDangHoc();
-                    %>
-                    <p><%= tongSoHocSinhDangHoc %></p>
+
+                    <p>${tongHS}</p>
                 </div>
 
                 <div class="stat-card stat-giaovien">
                     <h3><i class="fas fa-chalkboard-teacher"></i> Tổng số giáo viên đang dạy</h3>
-                    <%
-                        Integer tongSoGiaoVienDangDay = GiaoVienDAO.adminGetTongSoGiaoVienDangDay();
-                    %>
-                    <p><%= tongSoGiaoVienDangDay     %></p>
+
+                    <p>${tongGV}</p>
                 </div>
 
                 <div class="stat-card stat-lophoc">
                     <h3><i class="fas fa-school"></i> Tổng số lớp học đang học</h3>
-                    <%
-                        Integer tongSoLopHocDangHoc = LopHocDAO.adminGetTongSoLopHocDangHoc();
-                    %>
-                    <p><%= tongSoLopHocDangHoc   %></p>
+
+                    <p>${tongLH}</p>
                 </div>
 
                 <div class="stat-card stat-tuvan">
@@ -633,10 +627,8 @@
 
                 <div class="stat-card stat-hocsinh">
                     <h3><i class="fas fa-user-clock"></i> Tổng số học sinh đang chờ lớp</h3>
-                    <%
-                        Integer tongSoHocSinhChoHoc = HocSinhDAO.adminGetTongSoHocSinhChoHoc();
-                    %>
-                    <p><%= tongSoHocSinhChoHoc %></p>
+
+                    <p>${hsChoHoc}</p>
                 </div>  
             </div>
 
@@ -651,8 +643,7 @@
                       LocalDate date = LocalDate.now();
                       String datteBien = date.toString(); 
 
-                      ArrayList<UserLogView> userLogsList = (ArrayList) UserLogsDAO.adminGetAllUserLogs(datteBien);
-                      request.setAttribute("userLogsList", userLogsList);
+                      
                     %>
                     <select id="logDateFilter" onchange="filterUserLogsByDate()">
                         <option value="all">Tất cả</option>
@@ -697,11 +688,7 @@
                     <h3 class="section-title">Yêu Cầu Hỗ Trợ Từ Người Dùng</h3>
                     <input type="text" id="searchLogInput" placeholder="Tìm kiếm..." oninput="searchLogs()">
 
-                    <%
-                        
-                        ArrayList<HoTro> HoTroList = (ArrayList) HoTroDAO.adminGetHoTroDashBoard();
-                        request.setAttribute("HoTroList", HoTroList);
-                    %>
+
                     <c:choose>
                         <c:when test="${not empty HoTroList}">
                             <table>

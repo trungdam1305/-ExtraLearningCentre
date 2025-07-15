@@ -94,12 +94,14 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
-
+            
             .teacher-profile i {
                 color: #B0C4DE;
                 margin-left: 10px;
             }
-
+            
+            
+            
             .dropdown-menu {
                 display: none;
                 position: absolute;
@@ -209,11 +211,9 @@
                 display: flex;
                 flex-direction: column;
                 gap: 30px;
-                background-color: #f4f6f8;
                 margin-right: auto;
                 margin-left: auto;
                 max-width: 1200px;
-                
             }
 
             .dashboard-stats {
@@ -259,12 +259,27 @@
                 margin: 0;
                 color: #333;
             }
+            
+            .stat-hocsinh {
+                background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+                color: #0D47A1;
+            }
+            .stat-giaovien {
+                background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+                color: #1B5E20;
+            }
+            .stat-lophoc {
+                background: linear-gradient(135deg, #FFFDE7, #FFF9C4);
+                color: #F57F17;
+            }
 
             .data-table-container {
                 background: linear-gradient(135deg, #ffffff, #f0f4f8);
                 padding: 20px;
                 border-radius: 10px;
                 box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                margin-top: 30px;
+                transform: translateX(145px)
             }
 
             h3.section-title {
@@ -313,10 +328,8 @@
             }
 
             .tables-wrapper .data-table-container {
-                background: linear-gradient(135deg, #ffffff, #f0f4f8);
                 padding: 15px;
                 border-radius: 8px;
-                box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
             }
 
             .tables-wrapper .data-table-container:first-child {
@@ -326,34 +339,258 @@
             .tables-wrapper .data-table-container:last-child {
                 flex: 3;
             }
+            /* === CSS CHO KHU VỰC LỊCH HỌC VÀ BỘ LỌC TUẦN === */
 
-            /* Footer Styles */
-            .footer {
-                background-color: #1F4E79;
-                color: #B0C4DE;
+            /* CSS CHO LỊCH BIỂU DẠNG LƯỚI */
+            .schedule-grid {
+                table-layout: fixed; /* Giúp các cột có chiều rộng đều nhau */
+                width: 100%;
+                
+            }
+            .schedule-grid th, .schedule-grid td {
                 text-align: center;
-                padding: 5px 0;
-                position: fixed;
-                width: calc(100% - 250px);
-                bottom: 0;
-                margin-left: 290px;
-                box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+                vertical-align: top;
+                padding: 15px;
+                height: 20px; /* Chiều cao cho mỗi ô */
+            }
+            .schedule-grid th {
+                background-color: #1F4E79;
+                color: white;
+            }
+            .schedule-grid td {
+                border: 1px solid #e9ecef;
+                background-color: #fff;
+            }
+            .schedule-grid .slot-time { /* Ô hiển thị thời gian */
+                font-weight: bold;
+                background-color: #f8f9fa;
+                vertical-align: middle;
+            }
+            .class-info { /* Khung chứa thông tin lớp trong ô */
+                border-radius: 6px;
+                background-color: #e3f2fd;
+                padding: 15px 0px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+            .class-info-name {
+                font-weight: bold;
+                font-size: 0.9em;
+            }
+            .class-info-room {
+                font-size: 0.8em;
+                color: #6c757d;
+            }
+            /* === CSS CHO KHU VỰC ĐIỀU KHIỂN LỊCH HỌC === */
+            .schedule-controls {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap; /* Cho phép xuống dòng trên màn hình nhỏ */
+                gap: 15px;
+                margin-bottom: 20px;
+                padding: 15px;
+                background-color: #f8f9fa;
+                border: 1px solid #e9ecef;
+                border-radius: 8px;
             }
 
-            .footer p {
-                margin: 0;
-                font-size: 14px;
+            /* Khu vực chứa các nút bấm */
+            .schedule-controls .nav-buttons {
+                display: flex;
+                align-items: center;
+                gap: 10px;
             }
+
+            .schedule-controls .nav-button {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 15px;
+                background-color: #1F4E79;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                transition: background-color 0.2s;
+            }
+
+            .schedule-controls .nav-button:hover {
+                background-color: #163E5C;
+            }
+
+            /* Khu vực hiển thị tuần hiện tại */
+            .schedule-controls .current-week-display {
+                font-size: 1.1em;
+                font-weight: bold;
+                color: #333;
+                text-align: center;
+                flex-grow: 1; /* Cho phép co giãn để lấp đầy không gian */
+            }
+
+            /* Khu vực chọn tuần cụ thể */
+            .schedule-controls .week-picker-form {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .schedule-controls .week-picker-form label {
+                font-weight: 500;
+            }
+
+            .schedule-controls .week-picker-form input[type="week"] {
+                padding: 5px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            .schedule-controls .week-picker-form button {
+                 padding: 8px 12px;
+                background-color: #555;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            .schedule-controls .week-picker-form button:hover {
+                background-color: #333;
+            }   
+            /* === CSS CHO NÚT ĐIỂM DANH === */
+            .attendance-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 12px;
+                border-radius: 5px;
+                color: white;
+                text-decoration: none;
+                font-size: 13px;
+                font-weight: 500;
+                transition: opacity 0.2s;
+                border: none;
+                cursor: pointer;
+                white-space: nowrap;
+            }
+            .attendance-btn:hover {
+                opacity: 0.85;
+            }
+            /* Trạng thái chưa điểm danh: MÀU CAM */
+            .status-pending {
+                text-decoration: none;
+                color:red;
+                
+            }
+            /* Trạng thái đã điểm danh: MÀU XANH LÁ */
+            .status-done {
+                text-decoration: none;
+                color: #27ae60;
+            }
+            
+            .schedule-controls {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap; /* Cho phép xuống dòng trên màn hình nhỏ */
+                gap: 15px;
+                margin-bottom: 20px;
+                padding: 15px;
+                background-color: #ffffff;
+                border: 1px solid #e9ecef;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            }
+
+            /* Khu vực chứa các nút bấm */
+            .schedule-controls .nav-buttons {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .schedule-controls .nav-button {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 15px;
+                background-color: #1F4E79;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                transition: background-color 0.2s;
+                font-weight: 500;
+            }
+
+            .schedule-controls .nav-button:hover {
+                background-color: #163E5C;
+            }
+
+            /* Khu vực hiển thị tuần hiện tại */
+            .schedule-controls .current-week-display {
+                font-size: 1.2em;
+                font-weight: bold;
+                color: #333;
+                text-align: center;
+                flex-grow: 1; /* Cho phép co giãn để lấp đầy không gian */
+            }
+
+            /* Khu vực chọn tuần cụ thể */
+            .schedule-controls .week-picker-form {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .schedule-controls .week-picker-form label {
+                font-weight: 500;
+            }
+
+            .schedule-controls .week-picker-form input[type="week"] {
+                padding: 6px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            .schedule-controls .week-picker-form button {
+                padding: 8px 12px;
+                background-color: #555;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            .schedule-controls .week-picker-form button:hover {
+                background-color: #333;
+            }
+            /* Footer Styles */
+                .footer {
+                    background-color: #1F4E79;
+                    color: #B0C4DE;
+                    text-align: center;
+                    padding: 5px 0;
+                    position: fixed;
+                    width: calc(100% - 250px);
+                    bottom: 0;
+                    margin-left: 290px;
+                    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+                }
+
+                .footer p {
+                    margin: 0;
+                    font-size: 14px;
+
+                }
         </style>
     </head>
     <body>
+        
         <div class="header">
             <div class="left-title">
                 Teacher Dashboard <i class="fas fa-tachometer-alt"></i>
             </div>
             <!-- User's email and option to change or update information-->
             <div class="teacher-profile" onclick="toggleDropdown()">
-                <img src="https://png.pngtree.com/png-clipart/20250117/original/pngtree-account-avatar-user-abstract-circle-background-flat-color-icon-png-image_4965046.png" alt="Admin Photo" class="teacher-img">
+                <img src="${pageContext.request.contextPath}/img/${gv.getAvatar()}" alt="Admin Photo" class="teacher-img">
                 <span>${user.getEmail()} </span>
                 <i class="fas fa-caret-down"></i>
                 <div class="dropdown-menu" id="teacherDropdown">
@@ -368,29 +605,23 @@
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="#">Dashboard</a></li>
+                <li><a href="${pageContext.request.contextPath}/TeacherDashboard">Dashboard</a></li>
             </ul>
             <!--Academy Management-->
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">
                 <!--Teacher's Class Management-->
-                <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=giaovien"><i class="fas fa-book"></i>Lớp Học</a></li>
+            <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=lophoc"><i class="fas fa-book"></i>Lớp Học</a></li>
                 <!--Attendance's Management-->
-                <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=taikhoan"><i class="fas fa-book"></i>Điểm Danh</a></li>
-                <!--Schedule's Management-->
-                <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=taikhoan"><i class="fas fa-book"></i>Lịch Học</a></li>
-                <!--HomeWork Material Management-->
-                <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=taikhoan"><i class="fas fa-book"></i>Upload Tài Liệu Học</a></li>
+                <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=diemdanh"><i class="fas fa-book"></i>Điểm Danh</a></li>
             </ul>
             <!--Other Management-->
             <div class="sidebar-section-title">Khác</div>
             <ul class="sidebar-menu">
                 <!--Teacher's Notification Management-->
                 <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
-                <!--Blog's View-->
-                <li style="padding-top: 4px"><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
                 <!--Help Request to Admin-->
-                <li style="padding-top: 4px"><a href="#"><i class="fas fa-question"></i> Yêu Cầu Hỗ Trợ</a></li>
+                <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=hotro"><i class="fas fa-question"></i> Yêu Cầu Hỗ Trợ</a></li>
                 <!--Logout-->
                 <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
@@ -399,82 +630,123 @@
         <div class="main-content">
             <!-- Dashboard Stats -->
             <div class="dashboard-stats">
-                <div class="stat-card">
+                <div class="stat-card stat-hocsinh">
                     <!--Teacher's Num of Student-->
                     <h3><i class="fas fa-user-graduate"></i> Tổng số học sinh đang giảng dạy</h3>
                     <p>${numHocSinh}</p>
                 </div>
 
-                <div class="stat-card">
+                <div class="stat-card stat-giaovien">
                     <!--Teacher's Num of Class-->
                     <h3><i class="fas fa-school"></i> Tổng số lớp học đang giảng dạy</h3>
                     <p>${numLopHoc}</p>
                 </div>
 
-                <div class="stat-card">
+                <div class="stat-card stat-lophoc">
                     <!--Teacher's Salary-->
                     <h3><i class="fas fa-money-bill"></i> Lương hằng tháng</h3>
                     <p>${luongGV}</p>
                 </div>
-            </div>
+            </div>  
+                    <!--Weekly Timetable and Schedule for take Attendance-->
+                    <div class="data-table-container schedule-container">
+                        <h3 class="section-title"><i class="fas fa-calendar-alt"></i> Thời Khóa Biểu</h3>
 
-            <div class="tables-wrapper">
-                <!-- Teacher's Schedule -->
-                <div class="data-table-container" style="margin-top: 30px;">
-                    <h3 class="section-title"><i class="fas fa-calendar-alt"></i> Thời Khóa Biểu Trong Tuần</h3>
-                    <c:choose>
-                        <c:when test="${not empty tkbTrongTuan}">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Ngày Học</th>
-                                        <th>Ca Học</th>
-                                        <th>Thời Gian</th>
-                                        <th>Lớp Học</th>
-                                        <th>Ghi Chú</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach var="lh" items="${tkbTrongTuan}">
-                                        <tr>
-                                            <td>${lh.ngayHoc}</td>
-                                            <td>${lh.ID_SlotHoc}</td>
-                                            <td>${lh.slotThoiGian}</td>
-                                            <td>${lh.tenLopHoc}</td>
-                                            <td>${lh.ghiChu}</td>
-                                        </tr>
+                        <div class="schedule-controls">
+                            <div class="nav-buttons">
+                                <a href="TeacherDashboard?viewDate=${previousWeekLink}" class="nav-button"><i class="fas fa-chevron-left"></i> Tuần trước</a>
+                                <a href="TeacherDashboard" class="nav-button"><i class="fas fa-calendar-day"></i> Tuần này</a>
+                                <a href="TeacherDashboard?viewDate=${nextWeekLink}" class="nav-button">Tuần sau <i class="fas fa-chevron-right"></i></a>
+                            </div>
+
+                            <div class="current-week-display">
+                                <span>${displayWeekRange}</span>
+                            </div>
+
+                            <form action="TeacherDashboard" method="GET" class="week-picker-form">
+                                <label for="week-picker">Chọn tuần:</label>
+                                <input type="week" id="week-picker" name="week" value="${selectedWeekValue}">
+                                <button type="submit">Xem</button>
+                            </form>
+
+                        </div>                                
+                        <table class="table table-bordered schedule-grid">
+                            <thead>
+                                <tr>
+                                    <th style="width: 12%; background-color: #343a40;">Ca học</th>
+                                    <c:forEach var="date" items="${weekDates}">
+                                        <th style="width: 12.5%;">
+                                            <%
+                                                // get date from object in servlet
+                                                Object obj = pageContext.getAttribute("date");
+                                                if (obj instanceof java.time.LocalDate) {
+                                                    java.time.LocalDate currentDate = (java.time.LocalDate) obj;
+
+                                                    // format for day in week
+                                                    java.util.Locale localeVN = new java.util.Locale("vi", "VN");
+                                                    java.time.format.DateTimeFormatter dayFormatter = 
+                                                        java.time.format.DateTimeFormatter.ofPattern("EEEE", localeVN);
+
+                                                    // format for date (day and month)
+                                                    java.time.format.DateTimeFormatter dateFormatter = 
+                                                        java.time.format.DateTimeFormatter.ofPattern("dd/MM");
+
+                                                    // HTML file
+                                                    out.print(currentDate.format(dayFormatter));
+                                                    out.print("<br><small>");
+                                                    out.print(currentDate.format(dateFormatter));
+                                                    out.print("</small>");
+                                                }
+                                            %>
+                                        </th>
                                     </c:forEach>
-                                </tbody>
-                            </table>
-                        </c:when>
-                        <c:otherwise>
-                            <!--If tkbTrongTuan eq null-->
-                            <p class="no-data">Không có lịch học trong tuần này.</p>
-                        </c:otherwise>
-                    </c:choose>
-                    <!--Pagination-->
-                    <div style="text-align:center; margin-top: 15px;">
-                        <c:if test="${totalPages > 1}">
-                            <c:forEach begin="1" end="${totalPages}" var="i">
-                                <c:choose>
-                                    <c:when test="${i == currentPage}">
-                                        <span style="margin: 0 5px; font-weight:bold; color: #1F4E79;">${i}</span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a href="?page=${i}" style="margin: 0 5px;">${i}</a>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:forEach>
-                        </c:if>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="slot" items="${timeSlots}">
+                                    <tr>
+                                        <td class="slot-time">${slot.slotThoiGian}</td>
+
+                                        <c:forEach var="date" items="${weekDates}" varStatus="loop">
+                                            <c:set var="dayOfWeek" value="${date.dayOfWeek.value}" />
+                                            <c:set var="key" value="${slot.ID_SlotHoc}-${dayOfWeek}"/>
+                                            <c:set var="lh" value="${scheduleMap[key]}" />
+
+                                            <td>
+                                                <c:if test="${not empty lh}">
+                                                    <div class="class-info">
+                                                        <div>
+                                                            <div class="class-info-name">${lh.tenLopHoc}</div>
+                                                            <div class="class-info-room"><i class="fas fa-map-marker-alt fa-xs"></i> ${lh.tenPhongHoc}</div>
+                                                        </div>
+                                                        <div class="mt-auto">
+                                                            <c:choose>
+                                                                <c:when test="${lh.coTheSua}">
+                                                                    <a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=lichhoc&scheduleId=${lh.ID_Schedule}" 
+                                                                       class="btn btn-sm ${lh.daDiemDanh ? 'status-done' : 'status-pending'} w-100">
+                                                                       ${lh.daDiemDanh ? 'Đã Điểm Danh' : 'Điểm Danh'}
+                                                                    </a>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <button class="btn btn-sm btn-secondary w-100" disabled>Đã Khóa</button>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </div>
+                                                    </div>
+                                                </c:if>
+                                            </td>
+                                        </c:forEach>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-            </div>        
         </div>
                         
         <!-- Footer -->
         <div class="footer">
             <p>&copy; 2025 EL CENTRE. All rights reserved. | Developed by ELCentre</p>
-        </div>
+        </div> 
 
         <script>
             // Toggle Dropdown Menu
@@ -491,7 +763,9 @@
                     dropdown.classList.remove('active');
                 }
             });
-
+            document.addEventListener('DOMContentLoaded', function() {
+    const tableBody = document.querySelector('tbody');
+});
         </script>
     </body>
 </html> 

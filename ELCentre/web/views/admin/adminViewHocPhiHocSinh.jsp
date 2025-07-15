@@ -1,11 +1,14 @@
 <%-- 
     Document   : adminViewHocPhiHocSinh
-    Created on : Jun 23, 2025, 9:24:13 AM
+    Created on : Jul 10, 2025, 8:49:56 AM
     Author     : chuvv
-    Purpose    : This page displays a list of all classes (lớp học) and tuition (học phí)  of one student  in the EL CENTRE system, including details like name, specialization, 
+    Purpose    : This page displays a list of all classes (lớp học đang học) and tuition (học phí)  of one student  in the EL CENTRE system, including details like name, specialization, 
                  time of class , note , status name of teacher , image of class . And admin can view tuition of student amd change score of student in this classes
     Parameters:
-    - @Param giaoviens (ArrayList<hocsinhchitiets>): A request attribute containing the list of class of student objects fetched from the database.
+    - Parameters:(Handle from adminActionWithStudent servlet)
+    - Method to get data from database in HocSinh_ChiTietDAO - adminGetAllLopHocCuaHocSinh
+    - @Param hocsinhchitiets (ArrayList<HocSinh_ChiTietHoc>): A request attribute containing the list of class of student objects fetched from the database.
+    - Send to the do Post adminActionWithStudent to action with notification
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -112,7 +115,6 @@
                 background-color: #163b5c;
             }
 
-            
             .header {
                 background-color: #1F4E79;
                 color: white;
@@ -209,7 +211,6 @@
                 margin-right: 8px;
             }
 
-           
             .footer {
                 background-color: #1F4E79;
                 color: #B0C4DE;
@@ -223,7 +224,6 @@
                 font-size: 14px;
             }
 
-            
             .main-content {
                 flex: 1 0 auto;
                 padding-bottom: 40px;
@@ -247,22 +247,26 @@
                 </div>
             </div>
         </div>
-
+            <%
+             String name = (String) request.getAttribute("name");
+             String idtaikhoan = (String) request.getAttribute("idtk");
+            %>
         <div class="main-content">
-            <h2>Quản lý điểm học sinh theo lớp</h2>
+            <h2>Học phí của học sinh <%= name%> theo lớp</h2>
             <div style="display: flex; justify-content: flex-end; align-items: center; gap: 15px;">
-                
+
             </div>
+            
 
             <c:choose>
                 <c:when test="${not empty hocsinhchitiets}">
                     <table>
                         <thead>
                             <tr>
-                                <th>ID Lớp Học</th>
+                                <th>Lớp Học</th>
                                 <th>Image</th>
                                 <th>Tên Lớp Học</th>
-                                <th>Thời Gian</th>
+
 
                                 <th>Ghi Chú</th>
 
@@ -271,6 +275,9 @@
 
                                 <th>Ngày Tạo</th>
                                 <th>Tên Giáo Viên</th>
+                            
+                                <th>Số tiền</th>
+                                <th>Trạng thái thanh toán</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -281,16 +288,23 @@
                                     <td>${sct.getImage()}</td>
                                     <td>${sct.getTenLopHoc()}</td>
 
-                                    <td>${sct.getSlotThoiGian()}</td>
 
 
+<<<<<<< HEAD
+=======
+                                    
+>>>>>>> 0abab78db51bbf8b1ef4259d49c0dd9e3d189c4a
                                     <td>${sct.getGhiChu()}</td>
                                     <td>${sct.getTrangThai()}</td>
                                     <td>${sct.getNgayTao()}</td>
+                                    
                                     <td>${sct.getHoTen()}</td>
+                                   <td>${sct.getSoTien()}</td>
+                                    <td>${sct.getTinhTrangThanhToan()}</td>
+                                    
                                     <td>
-                                        <a class="action-link" href="${pageContext.request.contextPath}/adminActionWith?action=view&id=${giaovien.getID_LopHoc()}">Tình trạng học phí</a> 
-                                         <a class="action-link" href="${pageContext.request.contextPath}/adminActionWith?action=view&id=${giaovien.getID_LopHoc()}">Chuyển học sinh khỏi lớp</a>  
+
+                                        <a class="action-link" href="${pageContext.request.contextPath}/views/admin/adminSendNotificationStudent.jsp?idtaikhoan=<%= idtaikhoan %>&sotien=${sct.getSoTien()}&tenlophoc=${sct.getTenLopHoc()}&name=<%= name %>">Gửi thông báo</a>
 
                                     </td>
                                 </tr>   
@@ -303,7 +317,11 @@
                         <c:if test="${not empty message}">
                             <p style="color: red;">${message}</p>
                         </c:if>
+<<<<<<< HEAD
+                        <p>Không có dữ liệu liệu lớp để hiển thị.</p>
+=======
                         <p>Không có dữ liệu giáo viên để hiển thị.</p>
+>>>>>>> 3d998d6739f75f43b0ce9d4cf8bdb0cc5c6d3d77
                     </div>
                 </c:otherwise>
             </c:choose>

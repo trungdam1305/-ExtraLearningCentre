@@ -4,8 +4,9 @@
     Author     : chuvv
     Purpose    : This page displays detailed information about specific teachers (giáo viên) in the EL CENTRE system, 
                 including account ID, name, specialization, contact details, school, salary, and status. 
-    Parameters:
-    - @Param giaoviens (ArrayList<GiaoVien>): A request attribute containing the list of teacher objects fetched from the database.
+    Parameters: (Handle from adminActionWithUser servlet)
+    - Method to get data from database in GiaoVienDAO - (adminGetGiaoVienByID)
+    - @Param giaoviens (ArrayList<GiaoVien_TruongHoc>): A request attribute containing the list of teacher objects fetched from the database.
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -160,9 +161,6 @@
                 margin-bottom: 5px;
             }
 
-           
-
-           
             .footer {
                 background-color: #1F4E79;
                 color: #B0C4DE;
