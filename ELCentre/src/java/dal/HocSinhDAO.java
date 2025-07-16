@@ -453,65 +453,46 @@ public class HocSinhDAO {
     }
 
     public void insertHocSinh(HocSinh hs) throws SQLException {
-        DBContext db = DBContext.getInstance();
-        String sql = """
-                     INSERT INTO HocSinh (ID_TaiKhoan, HoTen, NgaySinh, GioiTinh, DiaChi, SDT_PhuHuynh, TruongHoc, GhiChu, TrangThai, NgayTao)
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                     """;
-        try (PreparedStatement statement = db.getConnection().prepareStatement(sql) ) {
-            statement.setInt(1, hs.getID_TaiKhoan());
-            statement.setString(2, hs.getHoTen());
-        
-            if (hs.getNgaySinh() != null) {
-                statement.setDate(3, java.sql.Date.valueOf(hs.getNgaySinh()));
-            } else {
-                statement.setNull(3, java.sql.Types.DATE);
-            }
+    String sql = "INSERT INTO HocSinh " +
+            "(MaHocSinh, ID_TaiKhoan, HoTen, NgaySinh, GioiTinh, DiaChi, SDT_PhuHuynh, " +
+            "ID_TruongHoc, GhiChu, TrangThai, NgayTao, LopDangHocTrenTruong, TrangThaiHoc, Avatar) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            if (hs.getGioiTinh() != null) {
-                statement.setString(4, hs.getGioiTinh());
-            } else {
-                statement.setNull(4, java.sql.Types.VARCHAR);
-            }
+    try (Connection conn = DBContext.getInstance().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            if (hs.getDiaChi() != null) {
-                statement.setString(5, hs.getDiaChi());
-            } else {
-                statement.setNull(5, java.sql.Types.VARCHAR);
-            }
+        ps.setString(1, hs.getMaHocSinh());
+        ps.setInt(2, hs.getID_TaiKhoan());
+        ps.setString(3, hs.getHoTen());
+        ps.setDate(4, java.sql.Date.valueOf(hs.getNgaySinh()));
+        ps.setString(5, hs.getGioiTinh());
+        ps.setString(6, hs.getDiaChi());
+        ps.setString(7, hs.getSDT_PhuHuynh());
+        ps.setInt(8, hs.getID_TruongHoc());
 
-            if (hs.getSDT_PhuHuynh() != null) {
-                statement.setString(6, hs.getSDT_PhuHuynh());
-            } else {
-                statement.setNull(6, java.sql.Types.VARCHAR);
-            }
-
-            if (hs.getTenTruongHoc() != null) {
-                statement.setString(7, hs.getTenTruongHoc());
-            } else {
-                statement.setNull(7, java.sql.Types.VARCHAR);
-            }
-
-            if (hs.getGhiChu() != null) {
-                statement.setString(8, hs.getGhiChu());
-            } else {
-                statement.setNull(8, java.sql.Types.VARCHAR);
-            }
-
-            statement.setString(9, hs.getTrangThai());
-
-            if (hs.getNgayTao() != null) {
-                statement.setTimestamp(10, java.sql.Timestamp.valueOf(hs.getNgayTao()));
-            } else {
-                statement.setNull(10, java.sql.Types.TIMESTAMP);
-            }
-
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+        // nullable
+        if (hs.getGhiChu() != null) {
+            ps.setString(9, hs.getGhiChu());
+        } else {
+            ps.setNull(9, java.sql.Types.VARCHAR);
         }
+
+        ps.setString(10, hs.getTrangThai());
+        ps.setTimestamp(11, java.sql.Timestamp.valueOf(hs.getNgayTao()));
+        ps.setString(12, hs.getLopDangHocTrenTruong());
+        ps.setString(13, hs.getTrangThaiHoc());
+
+        // Avatar nullable
+        if (hs.getAvatar() != null) {
+            ps.setString(14, hs.getAvatar());
+        } else {
+            ps.setNull(14, java.sql.Types.VARCHAR);
+        }
+
+        ps.executeUpdate();
     }
+}
+
     
     public static int adminGetTongSoHocSinhChoHoc() {
         DBContext db = DBContext.getInstance();
@@ -1100,4 +1081,18 @@ public class HocSinhDAO {
         return null;
     }
     
+    //Kiểm tra mã học sinh mới tạo có trung với database     
+    public boolean isMaHocSinhDuplicate(String maHocSinh) {
+        String sql = "SELECT 1 FROM HocSinh WHERE MaHocSinh = ?";
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maHocSinh);
+            ResultSet rs = ps.executeQuery();
+            return rs.next(); // Nếu tồn tại thì là trùng
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

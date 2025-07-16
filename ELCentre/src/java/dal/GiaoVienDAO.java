@@ -17,11 +17,11 @@ import model.GiaoVien;
 import model.GiaoVien_TruongHoc;
 import model.LichHoc;
 import model.LopHoc;
+import java.sql.Types;
 
 public class GiaoVienDAO {
 
     private Connection conn;
-
     public static ArrayList<GiaoVien_TruongHoc> admminGetAllGiaoVien() {
         DBContext db = DBContext.getInstance();
         ArrayList<GiaoVien_TruongHoc> giaoviens = new ArrayList<GiaoVien_TruongHoc>();
@@ -1417,5 +1417,80 @@ public boolean removeTeacherFromClass1(int idLopHoc, int idGiaoVien) throws SQLE
             e.printStackTrace();
         }
         return Optional.empty();
+    }
+
+    public void insertGiaoVien(GiaoVien gv) throws SQLException {
+        DBContext db = DBContext.getInstance();
+        String sql = """
+            INSERT INTO GiaoVien (ID_TaiKhoan, HoTen, SDT, ChuyenMon, ID_TruongHoc, BangCap,
+                                  Luong, IsHot, TrangThaiDay, LopDangDayTrenTruong, Avatar,
+                                  TrangThai, NgayTao)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """;
+
+        try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, gv.getID_TaiKhoan());
+            statement.setString(2, gv.getHoTen());
+
+            if (gv.getSDT() != null) {
+                statement.setString(3, gv.getSDT());
+            } else {
+                statement.setNull(3, Types.VARCHAR);
+            }
+
+            if (gv.getChuyenMon() != null) {
+                statement.setString(4, gv.getChuyenMon());
+            } else {
+                statement.setNull(4, Types.VARCHAR);
+            }
+
+//            if (gv.getID_TruongHoc() != null) {
+//                statement.setInt(5, gv.getID_TruongHoc());
+//            } else {
+//                statement.setNull(5, Types.INTEGER);
+//            }
+
+            if (gv.getBangCap() != null) {
+                statement.setString(6, gv.getBangCap());
+            } else {
+                statement.setNull(6, Types.VARCHAR);
+            }
+
+//            if (gv.getLuong() != null) {
+//                statement.setDouble(7, gv.getLuong());
+//            } else {
+//                statement.setNull(7, Types.DOUBLE);
+//            }
+
+//            statement.setInt(8, gv.getIsHot() != null ? gv.getIsHot() : 0);
+
+            if (gv.getTrangThaiDay() != null) {
+                statement.setString(9, gv.getTrangThaiDay());
+            } else {
+                statement.setNull(9, Types.VARCHAR);
+            }
+
+            if (gv.getLopDangDayTrenTruong() != null) {
+                statement.setString(10, gv.getLopDangDayTrenTruong());
+            } else {
+                statement.setNull(10, Types.VARCHAR);
+            }
+
+            if (gv.getAvatar() != null) {
+                statement.setString(11, gv.getAvatar());
+            } else {
+                statement.setNull(11, Types.VARCHAR);
+            }
+
+            statement.setString(12, gv.getTrangThai());
+
+            if (gv.getNgayTao() != null) {
+                statement.setTimestamp(13, Timestamp.valueOf(gv.getNgayTao()));
+            } else {
+                statement.setNull(13, Types.TIMESTAMP);
+            }
+
+            statement.executeUpdate();
+        }
     }
 }

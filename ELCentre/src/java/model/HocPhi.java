@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.sql.Date;
 
 /**
  * Represents tuition payment information for a student in a specific class and subject.
@@ -8,40 +9,38 @@ import java.time.LocalDate;
  * Author: trungdam1305
  */
 public class HocPhi {
-
-    // Unique ID for the tuition record
     private Integer ID_HocPhi;
-
-    // ID of the student who paid the tuition
     private Integer ID_HocSinh;
-
-    // ID of the class associated with this tuition
     private Integer ID_LopHoc;
-
-    // Subject name related to this tuition fee
     private String MonHoc;
-
-    // Payment method used (e.g., Cash, Bank Transfer, Online)
     private String PhuongThucThanhToan;
-
-    // Payment status (e.g., Paid, Unpaid, Pending)
     private String TinhTrangThanhToan;
-
-    // Date when the tuition was paid
     private LocalDate NgayThanhToan;
-
-    // Additional notes or remarks
     private String GhiChu;
 
-    /**
-     * Default constructor
-     */
+    private Integer tongHocPhi;
+    private Integer soTienDaDong;
+    private Integer conThieu;
+
     public HocPhi() {
     }
 
-    /**
-     * Constructor with all fields
-     */
+    public HocPhi(Integer ID_HocPhi, Integer ID_HocSinh, Integer ID_LopHoc, String MonHoc, String PhuongThucThanhToan,
+                  String TinhTrangThanhToan, LocalDate NgayThanhToan, String GhiChu, Integer tongHocPhi,
+                  Integer soTienDaDong, Integer conThieu) {
+        this.ID_HocPhi = ID_HocPhi;
+        this.ID_HocSinh = ID_HocSinh;
+        this.ID_LopHoc = ID_LopHoc;
+        this.MonHoc = MonHoc;
+        this.PhuongThucThanhToan = PhuongThucThanhToan;
+        this.TinhTrangThanhToan = TinhTrangThanhToan;
+        this.NgayThanhToan = NgayThanhToan;
+        this.GhiChu = GhiChu;
+        this.tongHocPhi = tongHocPhi;
+        this.soTienDaDong = soTienDaDong;
+        this.conThieu = conThieu;
+    }
+
     public HocPhi(Integer ID_HocPhi, Integer ID_HocSinh, Integer ID_LopHoc, String MonHoc,
                   String PhuongThucThanhToan, String TinhTrangThanhToan, LocalDate NgayThanhToan, String GhiChu) {
         this.ID_HocPhi = ID_HocPhi;
@@ -53,8 +52,6 @@ public class HocPhi {
         this.NgayThanhToan = NgayThanhToan;
         this.GhiChu = GhiChu;
     }
-
-    // Getter and Setter methods
 
     public Integer getID_HocPhi() {
         return ID_HocPhi;
@@ -118,5 +115,29 @@ public class HocPhi {
 
     public void setGhiChu(String GhiChu) {
         this.GhiChu = GhiChu;
+    }
+
+    public Integer getTongHocPhi() {
+        return tongHocPhi;
+    }
+
+    public void setTongHocPhi(Integer tongHocPhi) {
+        this.tongHocPhi = tongHocPhi;
+    }
+
+    public Integer getSoTienDaDong() {
+        return soTienDaDong;
+    }
+
+    public void setSoTienDaDong(Integer soTienDaDong) {
+        this.soTienDaDong = soTienDaDong;
+    }
+
+    public Integer getConThieu() {
+        return conThieu;
+    }
+
+    public void setConThieu(Integer conThieu) {
+        this.conThieu = conThieu;
     }
 }

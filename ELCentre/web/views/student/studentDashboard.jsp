@@ -88,8 +88,8 @@
                 cursor: pointer;
                 color: white;
                 background-color: #1F4E79;
+                transition: background-color 0.2s ease;
             }
-
             .action-btn:hover {
                 background-color: #163d5c;
             }
