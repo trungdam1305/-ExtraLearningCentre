@@ -1,13 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ include file="/views/student/sidebar.jsp" %>
 <c:if test="${empty sessionScope.user}">
     <c:redirect url="${pageContext.request.contextPath}/views/login.jsp" />
 </c:if>
 <!DOCTYPE html>
 <html>
-    <!<!-- CSS -->
+    <!-- CSS -->
     <head>
         <meta charset="UTF-8">
         <title>Trang chủ</title>
@@ -34,7 +33,7 @@
             }
             .main-content {
                 flex: 1;
-                padding: 30px;
+                padding: 0px;
             }
             .header {
                 display: flex;
@@ -136,10 +135,12 @@
             .pagination li.active span {
                 background-color: #163d5c;
             }
+            
             .header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
+                position: sticky;
+                top: 0;
+                z-index: 999;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             }
 
             .user-menu {
@@ -252,22 +253,70 @@
                 background-color: #163d5c;
             }
 
-
+            /* Wrapper layout */
+            .wrapper {
+                display: flex;
+                min-height: 100vh;
+                width: 100%;
+            }
+            
+            .main-area {
+               flex: 1;
+               display: flex;
+               flex-direction: column;
+               background-color: #f4f6f9;
+               overflow-x: auto;
+            }
+            
+            .header {
+                background-color: #1F4E79;
+                color: white;
+                padding: 16px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .main-content {
+                flex: 1;
+                padding: 30px;
+                max-width: 100%; /* Đảm bảo không giới hạn chiều rộng */
+                box-sizing: border-box; /* Bao gồm padding trong chiều rộng */
+            }
+            
 
 
 
         </style>
     </head>
     <body>
-        <div class="main-content">
-            <!<!-- Header -->
-            <div class="header">
-                <h2>Trang chủ</h2>
+        <div class="wrapper">
+            <%@ include file="/views/student/sidebar.jsp" %>
+            <div class="main-area">
+            
+            <div class="header" style="
+                background-color: #1F4E79;
+                color: white;
+                padding: 16px 30px;
+                margin: 0;
+                width: 100%;
+                box-sizing: border-box;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-radius: 0;
+                position: relative;
+                top: 0;
+                left: 0;
+                z-index: 999;
+            ">
+                <h2 style="margin: 0; color: white;">Trang chủ</h2>
                 <div class="user-menu">
-                    <div class="user-toggle" onclick="toggleUserMenu()">
-                        <span>👋 Xin chào <strong>${hocSinhInfo.hoTen}</strong> 
-                        <img src="${pageContext.request.contextPath}/${hocSinhInfo.avatar}" class="user-avatar" alt="Avatar">
-                        ☰ </span>
+                    <div class="user-toggle" onclick="toggleUserMenu()" style="color: white;">
+                        <span>👋 Xin chào <strong>${hocSinhInfo.hoTen}</strong>
+                            <img src="${pageContext.request.contextPath}/${hocSinhInfo.avatar}" class="user-avatar" alt="Avatar">
+                            ☰
+                        </span>
                     </div>
                     <div class="user-dropdown" id="userDropdown">
                         <a href="${pageContext.request.contextPath}/ResetPasswordServlet" onclick="openModal(); return false;">🔑 Đổi mật khẩu</a>
@@ -275,7 +324,9 @@
                     </div>
                 </div>
             </div>
-                                  
+        
+        
+        <div class="main-content" style="padding: 30px;">            
             <!--Hiển thị thông tin lớp học đã đăng kí của học sinh-->
             <h3>Lớp học đã đăng ký</h3>
 
@@ -318,10 +369,10 @@
                     </c:forEach>
                 </tbody>
             </table>                  
-            <!<!-- Phân trang -->
+            <!-- Phân trang -->
             <div id="pagination-lophoc"></div>
             
-            <!<!-- Thông báo và lịch học sắp tới -->
+            <!-- Thông báo và lịch học sắp tới -->
             <div class="section-box">
                 <div class="section">
                     <h3>Thông báo</h3>
@@ -366,93 +417,98 @@
                     <div id="pagination-lichhoc"></div>
                 </div>
             </div>
-        </div>          
+                  
         
-        <!<!-- Java script phân trang -->            
-        <script>
-            $(document).ready(function () {
-                function applyPagination(containerSelector, itemSelector, paginationSelector, itemsPerPage = 5) {
-                    const items = $(containerSelector).children(itemSelector);
-                    const numItems = items.length;
+                <!-- Java script phân trang -->            
+                <script>
+                    $(document).ready(function () {
+                        function applyPagination(containerSelector, itemSelector, paginationSelector, itemsPerPage = 5) {
+                            const items = $(containerSelector).children(itemSelector);
+                            const numItems = items.length;
 
-                    if (numItems === 0) return;
+                            if (numItems === 0) return;
 
-                    function showPage(page) {
-                        const start = (page - 1) * itemsPerPage;
-                        const end = start + itemsPerPage;
-                        items.hide().slice(start, end).show();
+                            function showPage(page) {
+                                const start = (page - 1) * itemsPerPage;
+                                const end = start + itemsPerPage;
+                                items.hide().slice(start, end).show();
+                            }
+
+                            showPage(1);
+                            $(paginationSelector).pagination({
+                                items: numItems,
+                                itemsOnPage: itemsPerPage,
+                                onPageClick: function (pageNumber) {
+                                    showPage(pageNumber);
+                                }
+                            });
+                        }
+
+                        // Gọi hàm cho từng khu vực
+                        applyPagination("#tableLopHoc", "tr", "#pagination-lophoc", 5);
+                        applyPagination("#listThongBao", ".box-item", "#pagination-thongbao", 5);
+                        applyPagination("#listLichHoc", ".box-item", "#pagination-lichhoc", 5);
+                    });
+                </script>
+        
+                <!-- Java script thanh menu người dùng --> 
+                <script>
+                    function toggleUserMenu() {
+                        const dropdown = document.getElementById("userDropdown");
+                        dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
                     }
 
-                    showPage(1);
-                    $(paginationSelector).pagination({
-                        items: numItems,
-                        itemsOnPage: itemsPerPage,
-                        onPageClick: function (pageNumber) {
-                            showPage(pageNumber);
+                    document.addEventListener("click", function (event) {
+                        const toggle = document.querySelector(".user-toggle");
+                        const dropdown = document.getElementById("userDropdown");
+                        if (!toggle.contains(event.target) && !dropdown.contains(event.target)) {
+                            dropdown.style.display = "none";
                         }
                     });
-                }
-
-                // Gọi hàm cho từng khu vực
-                applyPagination("#tableLopHoc", "tr", "#pagination-lophoc", 5);
-                applyPagination("#listThongBao", ".box-item", "#pagination-thongbao", 5);
-                applyPagination("#listLichHoc", ".box-item", "#pagination-lichhoc", 5);
-            });
-        </script>
+                </script>
         
-        <!<!-- Java script thanh menu người dùng --> 
-        <script>
-            function toggleUserMenu() {
-                const dropdown = document.getElementById("userDropdown");
-                dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
-            }
-
-            document.addEventListener("click", function (event) {
-                const toggle = document.querySelector(".user-toggle");
-                const dropdown = document.getElementById("userDropdown");
-                if (!toggle.contains(event.target) && !dropdown.contains(event.target)) {
-                    dropdown.style.display = "none";
-                }
-            });
-        </script>
-        
-        <!-- 🔐 MODAL ĐỔI MẬT KHẨU -->
-        <div id="passwordModal" class="modal-overlay" style="display: none;">
-            <div class="modal-content">
-                <h3>🔐 Đổi mật khẩu</h3>
-                <!-- ✅ submit bình thường, không dùng fetch -->
-                <form method="post" action="${pageContext.request.contextPath}/ResetPasswordServlet">
-                    <input type="password" name="currentPassword" placeholder="Mật khẩu hiện tại" required>
-                    <input type="password" name="newPassword" placeholder="Mật khẩu mới" required>
-                    <input type="password" name="confirmPassword" placeholder="Xác nhận mật khẩu" required>
-                    <div class="modal-actions">
-                        <button type="submit" class="action-btn">Cập nhật</button>
-                        <button type="button" class="action-btn cancel" onclick="closeModal()">Hủy</button>
+                <!-- 🔐 MODAL ĐỔI MẬT KHẨU -->
+                <div id="passwordModal" class="modal-overlay" style="display: none;">
+                    <div class="modal-content">
+                        <h3>🔐 Đổi mật khẩu</h3>
+                        <!-- ✅ submit bình thường, không dùng fetch -->
+                        <form method="post" action="${pageContext.request.contextPath}/ResetPasswordServlet">
+                            <input type="password" name="currentPassword" placeholder="Mật khẩu hiện tại" required>
+                            <input type="password" name="newPassword" placeholder="Mật khẩu mới" required>
+                            <input type="password" name="confirmPassword" placeholder="Xác nhận mật khẩu" required>
+                            <div class="modal-actions">
+                                <button type="submit" class="action-btn">Cập nhật</button>
+                                <button type="button" class="action-btn cancel" onclick="closeModal()">Hủy</button>
+                            </div>
+                        </form>
+                        <!-- ✅ Hiển thị thông báo (nếu có) -->
+                        <c:if test="${not empty requestScope.message}">
+                            <p style="color: red; margin-top: 10px;">${requestScope.message}</p>
+                        </c:if>
                     </div>
-                </form>
-                <!-- ✅ Hiển thị thông báo (nếu có) -->
-                <c:if test="${not empty requestScope.message}">
-                    <p style="color: red; margin-top: 10px;">${requestScope.message}</p>
-                </c:if>
-            </div>
+                </div>
+
+                <script>
+                    function openModal() {
+                        document.getElementById("passwordModal").style.display = "flex";
+                    }
+
+                    function closeModal() {
+                        document.getElementById("passwordModal").style.display = "none";
+                    }
+
+                    // Đóng modal nếu bấm ra ngoài
+                    document.addEventListener("click", function(e) {
+                        const modal = document.getElementById("passwordModal");
+                        if (e.target === modal) {
+                            closeModal();
+                        }
+                    });
+                </script>
+                
+                </div>
+                <%@ include file="/views/student/footer.jsp" %>
+            </div>             
         </div>
-
-        <script>
-            function openModal() {
-                document.getElementById("passwordModal").style.display = "flex";
-            }
-
-            function closeModal() {
-                document.getElementById("passwordModal").style.display = "none";
-            }
-
-            // Đóng modal nếu bấm ra ngoài
-            document.addEventListener("click", function(e) {
-                const modal = document.getElementById("passwordModal");
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
-        </script>
     </body>
 </html>

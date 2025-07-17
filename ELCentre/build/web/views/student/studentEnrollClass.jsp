@@ -4,7 +4,7 @@
 <c:if test="${empty sessionScope.user}">
     <c:redirect url="${pageContext.request.contextPath}/views/login.jsp" />
 </c:if>
-<%@ include file="/views/student/sidebar.jsp" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -36,15 +36,14 @@
         }
         .main-content {
             flex: 1;
-            padding: 40px;
+            padding: 0px;
         }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
         }
-                    .user-menu {
+            .user-menu {
                 position: relative;
                 font-size: 16px;
             }
@@ -287,21 +286,70 @@
             .modal-actions .cancel {
                 background-color: #999;
             }
+                        /* Wrapper layout */
+            .wrapper {
+                display: flex;
+                min-height: 100vh;
+                width: 100%;
+            }
+            
+            .main-area {
+               flex: 1;
+               display: flex;
+               flex-direction: column;
+               background-color: #f4f6f9;
+               overflow-x: auto;
+            }
+            
+            .header {
+                background-color: #1F4E79;
+                color: white;
+                padding: 16px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .main-content {
+                flex: 1;
+                padding: 30px;
+                max-width: 100%; /* Đảm bảo không giới hạn chiều rộng */
+                box-sizing: border-box; /* Bao gồm padding trong chiều rộng */
+            }
+
     </style>
     
     
     </head>
     
     <body>
-        <!-- MAIN CONTENT -->
-        <div class="main-content">
-            <div class="header">
-                <h2>Đăng ký học</h2>
+        <div class="wrapper">
+        <%@ include file="/views/student/sidebar.jsp" %>
+        <div class="main-area">
+        <!-- Header -->
+            <div class="header" style="
+                background-color: #1F4E79;
+                color: white;
+                padding: 16px 30px;
+                margin: 0;
+                width: 100%;
+                box-sizing: border-box;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-radius: 0;
+                position: relative;
+                top: 0;
+                left: 0;
+                z-index: 999;
+            ">
+                <h2 style="margin: 0; color: white;">Đăng ký học</h2>
                 <div class="user-menu">
-                    <div class="user-toggle" onclick="toggleUserMenu()">
-                        <span><strong>${hocSinhInfo.hoTen}</strong> 
-                        <img src="${pageContext.request.contextPath}/${hocSinhInfo.avatar}" class="user-avatar" alt="Avatar">
-                        ☰ </span>
+                    <div class="user-toggle" onclick="toggleUserMenu()" style="color: white;">
+                        <span><strong>${hocSinhInfo.hoTen}</strong>
+                            <img src="${pageContext.request.contextPath}/${hocSinhInfo.avatar}" class="user-avatar" alt="Avatar">
+                            ☰
+                        </span>
                     </div>
                     <div class="user-dropdown" id="userDropdown">
                         <a href="${pageContext.request.contextPath}/ResetPasswordServlet" onclick="openModal(); return false;">🔑 Đổi mật khẩu</a>
@@ -310,6 +358,8 @@
                 </div>
             </div>
             
+        <!-- MAIN CONTENT -->
+        <div class="main-content" style="padding: 30px;">       
             <!-- 🔍 FORM tìm kiếm và lọc -->
             <form method="get" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: flex-end; margin-bottom: 20px;">
 
@@ -344,6 +394,7 @@
                 <!-- Nút -->
                 <button type="submit" class="action-btn">Tìm</button>
             </form>
+                
 
             <!-- 📋 BẢNG DANH SÁCH KHÓA HỌC -->
             <c:choose>
@@ -402,10 +453,10 @@
                     <div class="no-data">Không có khóa học nào đang mở để đăng ký.</div>
                 </c:otherwise>
             </c:choose>
-        </div>
+        
 
-        <!-- ️ SCRIPT PHÂN TRANG -->
-        <script>
+            <!-- ️ SCRIPT PHÂN TRANG -->
+            <script>
             $(document).ready(function () {
                 var itemsPerPage = 5;
                 var items = $("#tableBody tr");
@@ -430,8 +481,8 @@
             });
         </script>
         
-        <!<!-- Java script thanh menu người dùng --> 
-        <script>
+            <!-- Java script thanh menu người dùng --> 
+            <script>
             function toggleUserMenu() {
                 const dropdown = document.getElementById("userDropdown");
                 dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
@@ -447,42 +498,46 @@
         </script>
         
                 <!-- 🔐 MODAL ĐỔI MẬT KHẨU -->
-        <div id="passwordModal" class="modal-overlay" style="display: none;">
-            <div class="modal-content">
-                <h3>🔐 Đổi mật khẩu</h3>
-                <!-- ✅ submit bình thường, không dùng fetch -->
-                <form method="post" action="${pageContext.request.contextPath}/ResetPasswordServlet">
-                    <input type="password" name="currentPassword" placeholder="Mật khẩu hiện tại" required>
-                    <input type="password" name="newPassword" placeholder="Mật khẩu mới" required>
-                    <input type="password" name="confirmPassword" placeholder="Xác nhận mật khẩu" required>
-                    <div class="modal-actions">
-                        <button type="submit" class="action-btn">Cập nhật</button>
-                        <button type="button" class="action-btn cancel" onclick="closeModal()">Hủy</button>
+                 <div id="passwordModal" class="modal-overlay" style="display: none;">
+                    <div class="modal-content">
+                        <h3>🔐 Đổi mật khẩu</h3>
+                        <!-- ✅ submit bình thường, không dùng fetch -->
+                        <form method="post" action="${pageContext.request.contextPath}/ResetPasswordServlet">
+                            <input type="password" name="currentPassword" placeholder="Mật khẩu hiện tại" required>
+                            <input type="password" name="newPassword" placeholder="Mật khẩu mới" required>
+                            <input type="password" name="confirmPassword" placeholder="Xác nhận mật khẩu" required>
+                            <div class="modal-actions">
+                                <button type="submit" class="action-btn">Cập nhật</button>
+                                <button type="button" class="action-btn cancel" onclick="closeModal()">Hủy</button>
+                            </div>
+                        </form>
+                        <!-- ✅ Hiển thị thông báo (nếu có) -->
+                        <c:if test="${not empty requestScope.message}">
+                            <p style="color: red; margin-top: 10px;">${requestScope.message}</p>
+                        </c:if>
                     </div>
-                </form>
-                <!-- ✅ Hiển thị thông báo (nếu có) -->
-                <c:if test="${not empty requestScope.message}">
-                    <p style="color: red; margin-top: 10px;">${requestScope.message}</p>
-                </c:if>
+                </div>
+
+                <script>
+                    function openModal() {
+                        document.getElementById("passwordModal").style.display = "flex";
+                    }
+
+                    function closeModal() {
+                        document.getElementById("passwordModal").style.display = "none";
+                    }
+
+                    // Đóng modal nếu bấm ra ngoài
+                    document.addEventListener("click", function(e) {
+                        const modal = document.getElementById("passwordModal");
+                        if (e.target === modal) {
+                            closeModal();
+                        }
+                    });
+                </script>
+                </div>
+                <%@ include file="/views/student/footer.jsp" %>
             </div>
-        </div>
-
-        <script>
-            function openModal() {
-                document.getElementById("passwordModal").style.display = "flex";
-            }
-
-            function closeModal() {
-                document.getElementById("passwordModal").style.display = "none";
-            }
-
-            // Đóng modal nếu bấm ra ngoài
-            document.addEventListener("click", function(e) {
-                const modal = document.getElementById("passwordModal");
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
-        </script>
+        </div>            
     </body>
 </html>

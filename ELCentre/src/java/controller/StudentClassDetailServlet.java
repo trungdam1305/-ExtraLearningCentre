@@ -2,6 +2,7 @@ package controller;
 
 import dal.LopHocDAO;
 import dal.GiaoVienDAO;
+import dal.HocSinhDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import model.LopHoc;
@@ -9,6 +10,7 @@ import model.GiaoVien;
 import model.TaiKhoan;
 
 import java.io.IOException;
+import model.HocSinh;
 
 public class StudentClassDetailServlet extends HttpServlet {
     @Override
@@ -17,7 +19,13 @@ public class StudentClassDetailServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         TaiKhoan user = (TaiKhoan) session.getAttribute("user");
+                int idTaiKhoan = user.getID_TaiKhoan();
+        System.out.println("ID_TaiKhoan từ session: " + idTaiKhoan);
 
+        int idHocSinh = HocSinhDAO.getHocSinhIdByTaiKhoanId(idTaiKhoan);
+        System.out.println("ID_HocSinh từ DB: " + idHocSinh);
+        
+        HocSinh hocSinh = HocSinhDAO.getHocSinhById(idHocSinh);
         // Kiểm tra đăng nhập và vai trò học sinh
         if (user == null || user.getID_VaiTro() != 4) {
             response.sendRedirect(request.getContextPath() + "/views/login.jsp");
@@ -47,6 +55,7 @@ public class StudentClassDetailServlet extends HttpServlet {
         }
 
         // Gửi dữ liệu về JSP
+        request.setAttribute("hocSinhInfo", hocSinh);
         request.setAttribute("lopHoc", lop);
         request.setAttribute("giaoVien", gv);
         request.getRequestDispatcher("/views/student/studentClassDetail.jsp").forward(request, response);
