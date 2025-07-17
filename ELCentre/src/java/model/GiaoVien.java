@@ -54,7 +54,6 @@ public class GiaoVien {
     
     private String TrangThaiDay ; 
     private String Email;
-
     // Constructors
     public GiaoVien() {
     }

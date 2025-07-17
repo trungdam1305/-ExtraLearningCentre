@@ -1,25 +1,34 @@
 package controller;
 
 import dal.HocSinhDAO;
+import dal.PhuHuynhDAO;
+import dal.GiaoVienDAO;
 import dal.TruongHocDAO;
 import dao.TaiKhoanDAO;
 import model.TaiKhoan;
 import model.HocSinh;
-
+import model.PhuHuynh;
+import model.GiaoVien;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Random;
 
+@MultipartConfig
 public class RegisterServlet extends HttpServlet {
 
     private final TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAO();
     private final HocSinhDAO hocSinhDAO = new HocSinhDAO();
     private final TruongHocDAO truongHocDAO = new TruongHocDAO();
+    private final PhuHuynhDAO phuHuynhDAO = new PhuHuynhDAO();
+    private final GiaoVienDAO giaoVienDAO = new GiaoVienDAO();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -32,12 +41,26 @@ public class RegisterServlet extends HttpServlet {
         String email = request.getParameter("email");
         String phone = request.getParameter("soDienThoai");
         String userType = request.getParameter("userType"); // HocSinh, GiaoVien, PhuHuynh
-
-        if (isEmpty(fullName) || isEmpty(email) || isEmpty(phone) || isEmpty(userType)) {
-            redirectWithError("Vui lòng nhập đầy đủ thông tin.", request, response);
+        
+        //Kiểm tra các trường nhập vào có dữ liệu hay chưa ?
+        if (isEmpty(fullName)) {
+            redirectWithError("Vui lòng nhập họ tên.", request, response);
+            return;
+        }
+        if (isEmpty(email)) {
+            redirectWithError("Vui lòng nhập email.", request, response);
+            return;
+        }
+        if (isEmpty(phone)) {
+            redirectWithError("Vui lòng nhập số điện thoại.", request, response);
+            return;
+        }
+        if (isEmpty(userType)) {
+            redirectWithError("Vui lòng chọn loại người dùng.", request, response);
             return;
         }
 
+        //Check email trùng lặp
         if (taiKhoanDAO.checkEmailExists(email)) {
             redirectWithError("Email đã tồn tại trong hệ thống.", request, response);
             return;
@@ -70,14 +93,19 @@ public class RegisterServlet extends HttpServlet {
         TaiKhoan created = taiKhoanDAO.getTaiKhoanByEmail(email);
         int idTaiKhoan = created.getID_TaiKhoan();
 
-        // Học sinh
+        // Học sinh / Phụ Huynh 
         if (userType.equals("HocSinh")) {
             handleHocSinhRegistration(request, response, idTaiKhoan, fullName, phone);
+        } else if(userType.equals("PhuHuynh")){
+            handlePhuHuynhRegistration(request, response, idTaiKhoan, fullName, email, phone);
+        } else if (userType.equals("GiaoVien")){
+            handleGiaoVienRegistration(request, response, idTaiKhoan, fullName, phone);
         } else {
-            redirectWithError("Hiện tại chỉ hỗ trợ đăng ký học sinh.", request, response);
+            redirectWithError("Hiện tại chỉ hỗ trợ đăng ký học sinh, phụ huynh và giáo viên.", request, response);
         }
     }
-
+    
+    //Phương thức nhập thông tin đăng kí học sinh
     private void handleHocSinhRegistration(HttpServletRequest request, HttpServletResponse response,
                                            int idTaiKhoan, String fullName, String phone) throws IOException, ServletException {
         String gender = request.getParameter("gender");
@@ -138,10 +166,82 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
     }
+    
+    //Phương thức nhập thông tin đăng kí phụ huynh
+    private void handlePhuHuynhRegistration(HttpServletRequest request, HttpServletResponse response,
+                                            int idTaiKhoan, String fullName, String email, String phone) throws IOException {
+        String address = request.getParameter("address");
 
+        PhuHuynh ph = new PhuHuynh();
+        ph.setID_TaiKhoan(idTaiKhoan);
+        ph.setHoTen(fullName);
+        ph.setEmail(email);
+        ph.setSDT(phone);
+        ph.setDiaChi(address);
+        ph.setGhiChu(null);
+        ph.setTrangThai("Inactive");
+        ph.setNgayTao(LocalDateTime.now());
+
+        try {
+            phuHuynhDAO.insertPhuHuynh(ph);
+            response.sendRedirect(request.getContextPath() + "/views/login.jsp?success=" + URLEncoder.encode("Tài khoản đã được tạo, vui lòng chờ phê duyệt.", "UTF-8"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            redirectWithError("Lỗi khi lưu thông tin phụ huynh.", request, response);
+        }
+    }
+    
+    //Phương thức nhập thông tin đăng kí giáo viên
+        private void handleGiaoVienRegistration(HttpServletRequest request, HttpServletResponse response,
+                                            int idTaiKhoan, String fullName, String phone) throws IOException, ServletException {
+        try {
+            String chuyenMon = request.getParameter("chuyenMon");
+            String bangCap = request.getParameter("bangCap");
+            String tenTruongHoc = request.getParameter("tenTruongHoc");
+            String lopDangDay = request.getParameter("lopDangDay");
+
+            if (lopDangDay.matches("^(10|11|12).*") && bangCap.toLowerCase().contains("cấp 2")) {
+                redirectWithError("Giáo viên dạy lớp 10, 11 hoặc 12 cần bằng cấp từ cấp 3 trở lên.", request, response);
+                return;
+            }
+
+            int idTruongHoc = truongHocDAO.getOrInsertTruongHoc(tenTruongHoc);
+
+            Part filePart = request.getPart("fileDinhKem");
+            String fileName = System.currentTimeMillis() + "_" + Paths.get(filePart.getSubmittedFileName()).getFileName();
+            //String uploadPath = "D:/ELCentreUploads/giaovien"; Dùng trong tường hợp muốn lưu cụ thể!
+            String uploadPath = getServletContext().getRealPath("/uploads/giaovien");
+            new File(uploadPath).mkdirs();
+            filePart.write(uploadPath + File.separator + fileName);
+
+            GiaoVien gv = new GiaoVien();
+            gv.setID_TaiKhoan(idTaiKhoan);
+            gv.setHoTen(fullName);
+            gv.setChuyenMon(chuyenMon);
+            gv.setBangCap(bangCap);
+            gv.setSDT(phone);
+            gv.setID_TruongHoc(idTruongHoc);
+            gv.setLuong(null);
+            gv.setIsHot(0);
+            gv.setTrangThai("Inactive");
+            gv.setNgayTao(LocalDateTime.now());
+            gv.setAvatar(null);
+            gv.setLopDangDayTrenTruong(lopDangDay);
+            gv.setTrangThaiDay("Chưa dạy");
+
+            giaoVienDAO.insertGiaoVien(gv);
+            response.sendRedirect(request.getContextPath() + "/views/login.jsp?success=" + URLEncoder.encode("Tài khoản giáo viên đã được tạo.", "UTF-8"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectWithError("Lỗi khi đăng ký giáo viên.", request, response);
+        }
+    }
+    
+    
     private String generatePassword(String role) {
         int rand = new Random().nextInt(9999 - 1 + 1) + 1;
-        return (role.equals("HocSinh") ? "hspass" : "user") + rand;
+        return (role.equals("HocSinh") ? "hspass" : role.equals("PhuHuynh") ? "phpass" : "user") + rand;
     }
 
     private int getRoleIdFromUserType(String userType) {
@@ -169,6 +269,6 @@ public class RegisterServlet extends HttpServlet {
 
     @Override
     public String getServletInfo() {
-        return "Xử lý đăng ký tài khoản học sinh";
+        return "Xử lý đăng ký tài khoản học sinh và phụ huynh";
     }
 }

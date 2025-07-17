@@ -190,6 +190,12 @@ public class GiaoVienDAO {
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
+                //VÌ giáo viên mới đăng kí nên không thể biết chính xác được rằng lương họ bao nhiêu, phải cập nhật lương sau:
+                BigDecimal luong = rs.getBigDecimal("Luong");
+                    if (luong == null) {
+                        luong = BigDecimal.ZERO; 
+                    }
+                    
                 GiaoVien_TruongHoc giaovien = new GiaoVien_TruongHoc(
                         rs.getInt("ID_GiaoVien"),
                         rs.getInt("ID_TaiKhoan"),
@@ -197,7 +203,7 @@ public class GiaoVienDAO {
                         rs.getString("ChuyenMon"),
                         rs.getString("SDT"),
                         rs.getInt("ID_TruongHoc"),
-                        rs.getBigDecimal("Luong"),
+                        luong,
                         rs.getInt("IsHot"),
                         rs.getString("TrangThai"),
                         rs.getTimestamp("NgayTao").toLocalDateTime(),
@@ -213,14 +219,9 @@ public class GiaoVienDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            
         }
-
-        if (giaoviens.isEmpty()) {
-            return null;
-        } else {
-            return giaoviens;
-        }
+        return giaoviens;
     }
 
     public static boolean adminEnableGiaoVien(String ID_TaiKhoan) {
@@ -1418,79 +1419,29 @@ public boolean removeTeacherFromClass1(int idLopHoc, int idGiaoVien) throws SQLE
         }
         return Optional.empty();
     }
-
+    
     public void insertGiaoVien(GiaoVien gv) throws SQLException {
-        DBContext db = DBContext.getInstance();
-        String sql = """
-            INSERT INTO GiaoVien (ID_TaiKhoan, HoTen, SDT, ChuyenMon, ID_TruongHoc, BangCap,
-                                  Luong, IsHot, TrangThaiDay, LopDangDayTrenTruong, Avatar,
-                                  TrangThai, NgayTao)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """;
+        String sql = "INSERT INTO GiaoVien " +
+                     "(ID_TaiKhoan, HoTen, ChuyenMon, SDT, ID_TruongHoc, Luong, IsHot, TrangThai, NgayTao, Avatar, BangCap, LopDangDayTrenTruong, TrangThaiDay) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, gv.getID_TaiKhoan());
-            statement.setString(2, gv.getHoTen());
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            if (gv.getSDT() != null) {
-                statement.setString(3, gv.getSDT());
-            } else {
-                statement.setNull(3, Types.VARCHAR);
-            }
-
-            if (gv.getChuyenMon() != null) {
-                statement.setString(4, gv.getChuyenMon());
-            } else {
-                statement.setNull(4, Types.VARCHAR);
-            }
-
-//            if (gv.getID_TruongHoc() != null) {
-//                statement.setInt(5, gv.getID_TruongHoc());
-//            } else {
-//                statement.setNull(5, Types.INTEGER);
-//            }
-
-            if (gv.getBangCap() != null) {
-                statement.setString(6, gv.getBangCap());
-            } else {
-                statement.setNull(6, Types.VARCHAR);
-            }
-
-//            if (gv.getLuong() != null) {
-//                statement.setDouble(7, gv.getLuong());
-//            } else {
-//                statement.setNull(7, Types.DOUBLE);
-//            }
-
-//            statement.setInt(8, gv.getIsHot() != null ? gv.getIsHot() : 0);
-
-            if (gv.getTrangThaiDay() != null) {
-                statement.setString(9, gv.getTrangThaiDay());
-            } else {
-                statement.setNull(9, Types.VARCHAR);
-            }
-
-            if (gv.getLopDangDayTrenTruong() != null) {
-                statement.setString(10, gv.getLopDangDayTrenTruong());
-            } else {
-                statement.setNull(10, Types.VARCHAR);
-            }
-
-            if (gv.getAvatar() != null) {
-                statement.setString(11, gv.getAvatar());
-            } else {
-                statement.setNull(11, Types.VARCHAR);
-            }
-
-            statement.setString(12, gv.getTrangThai());
-
-            if (gv.getNgayTao() != null) {
-                statement.setTimestamp(13, Timestamp.valueOf(gv.getNgayTao()));
-            } else {
-                statement.setNull(13, Types.TIMESTAMP);
-            }
-
-            statement.executeUpdate();
+            ps.setInt(1, gv.getID_TaiKhoan());
+            ps.setString(2, gv.getHoTen());
+            ps.setString(3, gv.getChuyenMon());
+            ps.setString(4, gv.getSDT());
+            ps.setInt(5, gv.getID_TruongHoc());
+            ps.setBigDecimal(6, gv.getLuong()); // null nếu chưa có
+            ps.setInt(7, gv.getIsHot()); // 0 hoặc 1
+            ps.setString(8, gv.getTrangThai()); // "Inactive"
+            ps.setTimestamp(9, java.sql.Timestamp.valueOf(gv.getNgayTao()));
+            ps.setString(10, gv.getAvatar()); // có thể null
+            ps.setString(11, gv.getBangCap());
+            ps.setString(12, gv.getLopDangDayTrenTruong());
+            ps.setString(13, gv.getTrangThaiDay()); // "Chưa dạy"
+            ps.executeUpdate();
         }
     }
 }
