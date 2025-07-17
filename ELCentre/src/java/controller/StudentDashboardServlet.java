@@ -41,12 +41,10 @@ public class StudentDashboardServlet extends HttpServlet {
         List<LopHoc> dsLopHoc = HocSinh_LopHocDAO.getLopHocDaDangKyByHocSinhId(idHocSinh);
 
         List<ThongBao> dsThongBao = new ArrayList<>();
-        try {
+        
             dsThongBao = ThongBaoDAO.getThongBaoByTaiKhoanId(idTaiKhoan);
             
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        
 
         List<LichHoc> lichHocSapToi = LichHocDAO.getUpcomingScheduleByHocSinhId(idHocSinh);
         System.out.println("Số lượng lịch học sắp tới: " + lichHocSapToi.size());
