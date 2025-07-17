@@ -812,11 +812,7 @@
                                     // Sắp xếp lịch theo thứ tự ngày tăng dần
                                     schedules.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-                                    // Giới hạn số lượng lịch học để tránh hiệu suất kém (tùy chọn)
-                                    if (schedules.length > 50) {
-                                        alert('Số lượng lịch học quá lớn (' + schedules.length + ')! Chỉ lấy 50 lịch đầu tiên để tránh lỗi hiệu suất.');
-                                        schedules = schedules.slice(0, 50);
-                                    }
+                                    
 
                                     console.log('Generated schedules:', schedules); // Debug
 

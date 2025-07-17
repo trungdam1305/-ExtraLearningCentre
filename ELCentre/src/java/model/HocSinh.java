@@ -54,7 +54,7 @@ public class HocSinh {
     private String TrangThaiHoc ; 
     
     private String Avatar ; 
-
+    private String MatKhau ; 
     /**
      * Default constructor
      */
@@ -82,6 +82,30 @@ public class HocSinh {
         this.TrangThaiHoc = TrangThaiHoc;
         this.Avatar = Avatar;
     }
+
+    public HocSinh(Integer ID_HocSinh, String MaHocSinh, Integer ID_TaiKhoan, String HoTen, LocalDate NgaySinh, String GioiTinh, String DiaChi, String SDT_PhuHuynh, int ID_TruongHoc, String GhiChu, String TrangThai, LocalDateTime NgayTao, String TenTruongHoc, String LopDangHocTrenTruong, String TrangThaiHoc, String Avatar, String MatKhau) {
+        this.ID_HocSinh = ID_HocSinh;
+        this.MaHocSinh = MaHocSinh;
+        this.ID_TaiKhoan = ID_TaiKhoan;
+        this.HoTen = HoTen;
+        this.NgaySinh = NgaySinh;
+        this.GioiTinh = GioiTinh;
+        this.DiaChi = DiaChi;
+        this.SDT_PhuHuynh = SDT_PhuHuynh;
+        this.ID_TruongHoc = ID_TruongHoc;
+        this.GhiChu = GhiChu;
+        this.TrangThai = TrangThai;
+        this.NgayTao = NgayTao;
+        this.TenTruongHoc = TenTruongHoc;
+        this.LopDangHocTrenTruong = LopDangHocTrenTruong;
+        this.TrangThaiHoc = TrangThaiHoc;
+        this.Avatar = Avatar;
+        this.MatKhau = MatKhau;
+    }
+
+    public String getMatKhau() {
+        return MatKhau;
+    }
     
     public HocSinh(  int ID_TruongHoc,  String LopDangHocTrenTruong) {
         
@@ -108,6 +132,7 @@ public class HocSinh {
         this.NgayTao = NgayTao;
     }
 
+    
     // Getters and setters
 
     public Integer getID_HocSinh() {

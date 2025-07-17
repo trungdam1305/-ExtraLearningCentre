@@ -252,6 +252,12 @@
                                         </c:forEach>
                                     </tr>
                                     <tr>
+                                        <td>Mật khẩu</td>
+                                        <c:forEach var="giaovien" items="${giaoviens}">
+                                            <td><input type="text" name="matkhau" value= "${giaovien.getMatKhau()}" required="" /></td>
+                                        </c:forEach>
+                                    </tr>
+                                    <tr>
                                         <td>Họ tên</td>
                                         <c:forEach var="giaovien" items="${giaoviens}">
                                             <td><input type="text" value="${giaovien.getHoTen()}" readonly /></td>    
@@ -287,13 +293,7 @@
                                             <td><input type="text" name="truong" value="${giaovien.getLopDangDayTrenTruong()}" readonly /></td>
                                         </c:forEach>
                                     </tr>
-                                    <tr>
-                                        <td>Lương</td>
-                                        <c:forEach var="giaovien" items="${giaoviens}">
-                                            <td><input type="number" name="luong" value="${giaovien.getLuong()}" required="" /></td>
-                                        </c:forEach>
-                                    </tr>
-                                   
+                                    
                                     <tr>
                                         <td>Top Hot</td>
                                         <c:forEach var="giaovien" items="${giaoviens}">

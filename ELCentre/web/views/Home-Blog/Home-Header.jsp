@@ -13,7 +13,6 @@
     <!-- Link FontAwesome hoặc các CSS khác nếu cần -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Thêm CSS cơ bản cho menu active */
         .current-menu-item > a {
             color: #fff !important;
             background: rgb(201, 32, 39) !important;
@@ -34,22 +33,17 @@
             margin: 0;
             padding: 0;
         }
-        /* --- CSS CHO MENU DROPDOWN (ĐÃ SỬA LỖI) --- */
-
-        /* 1. Đặt thẻ li cha ở chế độ tương đối */
         #main-menu .menu-item-has-children {
             position: relative;
-            /* ✅ THÊM DÒNG NÀY ĐỂ TẠO "CÂY CẦU" VÔ HÌNH */
             padding-bottom: 15px; 
         }
 
-        /* 2. Ẩn menu con (sub-menu) đi theo mặc định */
         #main-menu .sub-menu {
             display: none;
             position: absolute;
             top: 100%;
             left: 0;
-            margin-top: -15px; /* ✅ Kéo menu con lên để che đi khoảng padding */
+            margin-top: -15px; 
             background-color: white;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             z-index: 1000;
@@ -59,12 +53,10 @@
             border-radius: 6px;
         }
 
-        /* 3. Khi di chuột (hover) vào mục cha, hiển thị menu con ra */
         #main-menu .menu-item-has-children:hover > .sub-menu {
             display: block;
         }
 
-        /* Style cho các mục trong menu con */
         #main-menu .sub-menu li a {
             padding: 10px 20px;
             display: block;
@@ -141,18 +133,17 @@
                                     </a>
                                 </li>
                                 <!--Blog-->
-                                <li class="menu-item menu-item-has-children <%= (uri.contains("HomePageBlog") || uri.contains("search-by-tag")) ? "current-menu-item" : "" %>">
-                                <%-- Link chính vẫn trỏ đến trang blog tổng hợp --%>
+                                <li class="menu-item menu-item-has-children <%= (uri.contains("/HomePageBlog") || uri.contains("search-by-tag")) ? "current-menu-item" : "" %>">
                                 <a href="${pageContext.request.contextPath}/HomePageBlog">
                                     <span class='menu-icon fa fa-pencil'></span>Bài Viết
                                 </a>
 
-                                <%-- Đây là menu con sẽ được thả xuống khi hover --%>
+                                <!--Submenu dropdown when hover-->
                                 <ul class="sub-menu">
                                     <li class="menu-item">
                                         <a href="${pageContext.request.contextPath}/HomePageBlog">Tất cả bài viết</a>
                                     </li>
-                                    <%-- Thêm dòng kẻ phân cách nếu có tag --%>
+                                    <!--If tag exists, a line appear-->
                                     <c:if test="${not empty keyTagList}">
                                         <li class="menu-item-divider" style="border-top: 1px solid #eee; margin: 5px 0;"></li>
                                         <li class="menu-item" style="padding: 5px 15px; color: #888; font-size: 0.9em;">Chủ đề nổi bật:</li>

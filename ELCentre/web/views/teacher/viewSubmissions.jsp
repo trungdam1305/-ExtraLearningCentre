@@ -574,7 +574,7 @@
                                         <td>${sub.hoTen} (${sub.maHocSinh})</td>
                                         <td class="text-center">
                                             <c:if test="${not empty sub.tepNop}">
-                                                <a href="${pageContext.request.contextPath}/student_uploads/${sub.tepNop}" class="download-link" download>
+                                                <a href="${pageContext.request.contextPath}/uploads/${sub.tepNop}" class="download-link" download>
                                                     <i class="fas fa-file-download"></i> Tải về
                                                 </a>
                                             </c:if>

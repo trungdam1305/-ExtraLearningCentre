@@ -312,11 +312,11 @@
             }
 
             .tables-wrapper .data-table-container:first-child {
-                flex: 7;
+                flex: 5;
             }
 
             .tables-wrapper .data-table-container:last-child {
-                flex: 3;
+                flex: 5;
             }
 
             .charts-wrapper {

@@ -319,8 +319,8 @@ public class adminActionWithUser extends HttpServlet {
         String idtaikhoan = request.getParameter("idtaikhoan");
         String idgiaovien = request.getParameter("idgiaovien");
         String SDT = request.getParameter("sdt");
-
-        String Luong = request.getParameter("luong");
+        String matkhau = request.getParameter("matkhau") ; 
+        
         String hot = request.getParameter("hot");
         HttpSession session = request.getSession();
 
@@ -338,15 +338,12 @@ public class adminActionWithUser extends HttpServlet {
             if (!SDT.startsWith("0")) {
                 throw new Exception("Số điện thoại phải bắt đầu bằng số 0!");
             }
+            
+            
 
-            BigDecimal luongg = new BigDecimal(Luong);
-
-            if (luongg.compareTo(BigDecimal.ZERO) <= 0) {
-                throw new Exception("Lương phải lớn hơn 0!");
-            }
-
-            boolean s1 = GiaoVienDAO.adminUpdateInformationOfTeacher(SDT, luongg, ishot, ID_GiaoVien);
-            boolean s2 = TaiKhoanDAO.adminUpdateInformationAccount(SDT, ID_TaiKhoan);
+            
+            boolean s1 = GiaoVienDAO.adminUpdateInformationOfTeacher(SDT, ishot ,ID_GiaoVien);
+            boolean s2 = TaiKhoanDAO.adminUpdateInformationAccountMK(SDT, matkhau, ID_TaiKhoan);
 
             if (s1 == true && s2 == true) {
                 request.setAttribute("message", "Thay đổi thành công!");
@@ -376,7 +373,7 @@ public class adminActionWithUser extends HttpServlet {
         String idhocsinh = request.getParameter("idhocsinh");
         String DiaChi = request.getParameter("diachi");
         String sdt = request.getParameter("sdt");
-
+        String matkhau = request.getParameter("matkhau") ; 
         String GhiChu = request.getParameter("ghichu");
         HttpSession session = request.getSession();
 
@@ -394,7 +391,7 @@ public class adminActionWithUser extends HttpServlet {
             
 
             boolean s1 = HocSinhDAO.adminUpdateInformationOfStudent(DiaChi, GhiChu, ID_HocSinh);
-            boolean s2 = TaiKhoanDAO.adminUpdateInformationAccount(sdt, ID_TaiKhoan) ; 
+            boolean s2 = TaiKhoanDAO.adminUpdateInformationAccountMK(sdt,matkhau , ID_TaiKhoan) ; 
             if (s1 == true && s2 == true ) {
                 request.setAttribute("message", "Thay đổi thành công!");
                 UserLogs log = new UserLogs(0 , 1 , "Thay đổi thông tin học sinh có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
@@ -423,7 +420,7 @@ public class adminActionWithUser extends HttpServlet {
         String idphuhuynh = request.getParameter("idphuhuynh");
         String SDT = request.getParameter("sdt");
         String DiaChi = request.getParameter("diachi");
-
+        String matkhau = request.getParameter("matkhau") ; 
         String GhiChu = request.getParameter("ghichu");
         HttpSession session = request.getSession();
 
@@ -440,7 +437,7 @@ public class adminActionWithUser extends HttpServlet {
             }
 
             boolean s1 = PhuHuynhDAO.adminUpdateInformationOfParent(SDT, DiaChi, GhiChu, ID_PhuHuynh);
-            boolean s2 = TaiKhoanDAO.adminUpdateInformationAccount(SDT, ID_TaiKhoan);
+            boolean s2 = TaiKhoanDAO.adminUpdateInformationAccountMK(SDT,matkhau ,ID_TaiKhoan);
 
             if (s1 == true && s2 == true) {
                 request.setAttribute("message", "Thay đổi thành công!");

@@ -122,7 +122,39 @@ public class TaiKhoanDAO {
         }
     }
     
-    public static boolean adminUpdateInformationAccount(String sdt ,  int id){
+    public static boolean adminUpdateInformationAccountMK(String sdt, String matkhau ,  int id){
+        DBContext db = DBContext.getInstance() ; 
+        int rs = 0 ; 
+        try {
+            String sql = """
+                         UPDATE TaiKhoan
+                         SET
+                         MatKhau = ? ,
+                        SoDienThoai = ?
+                        
+                         WHERE
+                         ID_TaiKhoan = ?;
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, matkhau);
+            statement.setString(2 , sdt);
+            
+            statement.setInt(3, id);
+            
+            rs = statement.executeUpdate() ; 
+        } catch (SQLException e ){
+            e.printStackTrace();
+            return false ; 
+        }
+        
+        if (rs == 0 ) {
+            return false ; 
+        } else {
+               return true ; 
+        }
+    }
+    
+    public static boolean adminUpdateInformationAccount(String sdt,  int id){
         DBContext db = DBContext.getInstance() ; 
         int rs = 0 ; 
         try {
@@ -130,7 +162,7 @@ public class TaiKhoanDAO {
                          UPDATE TaiKhoan
                          SET
                         SoDienThoai = ?
-                        
+                       
                          WHERE
                          ID_TaiKhoan = ?;
                          """ ; 
@@ -151,6 +183,7 @@ public class TaiKhoanDAO {
                return true ; 
         }
     }
+    
     public static String admingetSDTTaiKhoanByID(String id) {
         DBContext db = DBContext.getInstance();
 

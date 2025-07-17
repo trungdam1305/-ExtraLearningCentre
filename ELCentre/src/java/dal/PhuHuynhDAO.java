@@ -18,8 +18,10 @@ public class PhuHuynhDAO {
         
         try {
             String sql = """
-                         select * from PhuHuynh
-                         where ID_TaiKhoan = ? 
+                          select * from PhuHuynh PH
+                        JOIN TaiKhoan TK 
+                        ON TK.ID_TaiKhoan = PH.ID_TaiKhoan
+                         where PH.ID_TaiKhoan = ? 
                          """ ; 
             
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
@@ -37,7 +39,8 @@ public class PhuHuynhDAO {
                         rs.getString("GhiChu") , 
                         
                         rs.getString("TrangThai") , 
-                        rs.getTimestamp("NgayTao").toLocalDateTime()
+                        rs.getTimestamp("NgayTao").toLocalDateTime() ,
+                        rs.getString("MatKhau")
                 
                 
                 ) ; 

@@ -2,6 +2,7 @@ package controller;
 
 import dal.LopHocDAO;
 import dal.GiaoVienDAO;
+import dal.TaiBaiTapDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import model.LopHoc;
@@ -9,6 +10,8 @@ import model.GiaoVien;
 import model.TaiKhoan;
 
 import java.io.IOException;
+import java.util.List;
+import model.TaoBaiTap;
 
 public class StudentClassDetailServlet extends HttpServlet {
     @Override
@@ -45,10 +48,15 @@ public class StudentClassDetailServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/StudentViewClassServlet");
             return;
         }
-
+        
+        // Retrieve assignments for the class
+        TaiBaiTapDAO assignmentDAO = new TaiBaiTapDAO();
+        List<TaoBaiTap> assignments = assignmentDAO.getAssignmentsByClassId(lop.getID_LopHoc());
+        
         // Gửi dữ liệu về JSP
         request.setAttribute("lopHoc", lop);
         request.setAttribute("giaoVien", gv);
+        request.setAttribute("assignments", assignments); // Add assignments to request
         request.getRequestDispatcher("/views/student/studentClassDetail.jsp").forward(request, response);
     }
    

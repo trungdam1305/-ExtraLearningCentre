@@ -54,6 +54,7 @@ public class GiaoVien_TruongHoc {
     private String BangCap ; 
     private String LopDangDayTrenTruong ; 
     private String TrangThaiDay ; 
+    private String MatKhau ; 
 
     /**
      * Default constructor
@@ -78,6 +79,47 @@ public class GiaoVien_TruongHoc {
         this.LopDangDayTrenTruong = LopDangDayTrenTruong;
         this.TrangThaiDay = TrangThaiDay;
     }
+
+    public GiaoVien_TruongHoc(Integer ID_GiaoVien, Integer ID_TaiKhoan, String HoTen, String ChuyenMon, String SDT, int ID_TruongHoc, BigDecimal Luong, int IsHot, String TrangThai, LocalDateTime NgayTao, String Avatar, String TenTruongHoc, String BangCap, String LopDangDayTrenTruong, String TrangThaiDay, String MatKhau) {
+        this.ID_GiaoVien = ID_GiaoVien;
+        this.ID_TaiKhoan = ID_TaiKhoan;
+        this.HoTen = HoTen;
+        this.ChuyenMon = ChuyenMon;
+        this.SDT = SDT;
+        this.ID_TruongHoc = ID_TruongHoc;
+        this.Luong = Luong;
+        this.IsHot = IsHot;
+        this.TrangThai = TrangThai;
+        this.NgayTao = NgayTao;
+        this.Avatar = Avatar;
+        this.TenTruongHoc = TenTruongHoc;
+        this.BangCap = BangCap;
+        this.LopDangDayTrenTruong = LopDangDayTrenTruong;
+        this.TrangThaiDay = TrangThaiDay;
+        this.MatKhau = MatKhau;
+    }
+
+    public String getMatKhau() {
+        return MatKhau;
+    }
+
+    public void setBangCap(String BangCap) {
+        this.BangCap = BangCap;
+    }
+
+    public void setLopDangDayTrenTruong(String LopDangDayTrenTruong) {
+        this.LopDangDayTrenTruong = LopDangDayTrenTruong;
+    }
+
+    public void setTrangThaiDay(String TrangThaiDay) {
+        this.TrangThaiDay = TrangThaiDay;
+    }
+
+    public void setMatKhau(String MatKhau) {
+        this.MatKhau = MatKhau;
+    }
+    
+    
 
     // Getters
     public Integer getID_GiaoVien() {

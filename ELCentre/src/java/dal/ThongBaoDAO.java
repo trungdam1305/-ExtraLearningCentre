@@ -111,26 +111,57 @@ public class ThongBaoDAO {
         return list;
     }
 
-    //Hàm lấy thông báo theo id tài khoản
-    public static List<ThongBao> getThongBaoByTaiKhoanId(int idTaiKhoan) throws SQLException {
-         List<ThongBao> list = new ArrayList<>();
-         String sql = "SELECT * FROM ThongBao WHERE ID_TaiKhoan = ? ORDER BY ThoiGian DESC";
-         try (Connection conn = DBContext.getInstance().getConnection();
-              PreparedStatement ps = conn.prepareStatement(sql)) {
-              ps.setInt(1, idTaiKhoan);
-              ResultSet rs = ps.executeQuery();
-              while (rs.next()) {
-                 ThongBao tb = new ThongBao();
-                 tb.setID_ThongBao(rs.getInt("ID_ThongBao"));
-                 tb.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
-                 tb.setNoiDung(rs.getString("NoiDung"));
-                 tb.setThoiGian(rs.getTimestamp("ThoiGian").toLocalDateTime());
-                 list.add(tb);
+//    //Hàm lấy thông báo theo id tài khoản
+//    public static List<ThongBao> getThongBaoByTaiKhoanId(int idTaiKhoan) throws SQLException {
+//         List<ThongBao> list = new ArrayList<>();
+//         String sql = "SELECT * FROM ThongBao WHERE ID_TaiKhoan = ? ORDER BY ThoiGian DESC";
+//         try (Connection conn = DBContext.getInstance().getConnection();
+//              PreparedStatement ps = conn.prepareStatement(sql)) {
+//              ps.setInt(1, idTaiKhoan);
+//              ResultSet rs = ps.executeQuery();
+//              while (rs.next()) {
+//                 ThongBao tb = new ThongBao();
+//                 tb.setID_ThongBao(rs.getInt("ID_ThongBao"));
+//                 tb.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
+//                 tb.setNoiDung(rs.getString("NoiDung"));
+//                 tb.setThoiGian(rs.getTimestamp("ThoiGian").toLocalDateTime());
+//                 list.add(tb);
+//             }
+//         } catch (SQLException e) {
+//             e.printStackTrace();
+//         }
+//         return list;
+//     } 
+     public static ArrayList<ThongBao> getThongBaoByTaiKhoanId(int idTaiKhoan)  {
+         DBContext db = DBContext.getInstance() ; 
+         ArrayList<ThongBao> thongbaos = new ArrayList<ThongBao>() ; 
+         try {
+             String sql = """
+                         SELECT * FROM ThongBao WHERE ID_TaiKhoan = ? ORDER BY ThoiGian DESC
+                         """ ; 
+             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+             statement.setInt(1, idTaiKhoan);
+             ResultSet rs = statement.executeQuery() ; 
+             while(rs.next()){
+                 ThongBao thongbao = new ThongBao(
+                         rs.getInt("ID_ThongBao") , 
+                         rs.getInt("ID_TaiKhoan") , 
+                         rs.getString("NoiDung") , 
+                         rs.getInt("ID_HocPhi") , 
+                         rs.getTimestamp("ThoiGian").toLocalDateTime() , 
+                         rs.getString("Status")
+                 ) ; 
+                 thongbaos.add(thongbao) ; 
              }
-         } catch (SQLException e) {
-             e.printStackTrace();
+         } catch(SQLException e ) {
+             e.printStackTrace(); 
+             return null ;
          }
-         return list;
+         if (thongbaos == null ) {
+             return null ; 
+         } else {
+             return thongbaos ; 
+         }
      } 
     
     public static boolean checkRequestExists(int idTaiKhoan, String classCode) {

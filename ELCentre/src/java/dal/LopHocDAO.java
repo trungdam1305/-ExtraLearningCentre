@@ -107,6 +107,7 @@ public class LopHocDAO {
                 + "    dbo.KhoaHoc khoah ON khoc.ID_Khoi = khoah.ID_Khoi\n"
                 + "LEFT JOIN \n"
                 + "    dbo.LopHoc l ON khoah.ID_KhoaHoc = l.ID_KhoaHoc\n"
+                + "Where l.TrangThai LIKE N'%Đang Học%'"
                 + "GROUP BY \n"
                 + "    khoc.ID_Khoi, \n"
                 + "    khoc.TenKhoi,\n"
