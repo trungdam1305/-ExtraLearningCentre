@@ -83,8 +83,6 @@
     </style>
 </head>
 <body>
-    <%-- Bạn có thể include header chung của trang web tại đây --%>
-    
     <div class="container py-5">
         <div class="course-detail-header p-4 mb-4 text-white">
             <div class="container-fluid py-3">
@@ -148,7 +146,5 @@
             </div>
         </div>
         </div>
-    
-    <%-- Bạn có thể include footer chung của trang web tại đây --%>
 </body>
 </html>

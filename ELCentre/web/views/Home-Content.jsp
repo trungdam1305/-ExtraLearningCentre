@@ -12,19 +12,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
-        /* 1. Đặt font chữ mặc định một cách nhẹ nhàng */
         body {
             font-family: 'Be Vietnam Pro', sans-serif;
         }
-        /* Đảm bảo các tiêu đề cũng dùng font này */
         h1, h2, h3, h4, h5, h6 {
              font-family: 'Be Vietnam Pro', sans-serif;
         }
         
-        /* 3. Tinh chỉnh hiển thị số lượng lớp học trong khối */
         .course-category-card .dt-sc-course-meta {
             display: flex;
-            justify-content: space-between; /* Căn chỉnh 2 bên */
+            justify-content: space-between; 
             align-items: center;
             padding: 8px 0;
             border-bottom: 1px solid #f0f0f0;
@@ -33,7 +30,7 @@
             border-bottom: none;
         }
         .course-category-card .dt-sc-course-meta a {
-            float: none !important; /* Ghi đè float:right cũ */
+            float: none !important; 
             margin-right: 0 !important;
             font-weight: 700;
         }
@@ -206,7 +203,7 @@
                                         </div>
                                         <p style="font-weight: 700; font-size: 1.5em; text-align: center;">${khoi.tenKhoi}</p>
 
-                                        <%-- Logic tính toán số lớp --%>
+                                        <!--Get Total Lop-->
                                         <c:set var="toanSoLop" value="0" /><c:set var="vanSoLop" value="0" /><c:set var="khacSoLop" value="0" />
                                         <c:forEach var="lh" items="${listLopHoc}">
                                             <c:if test="${lh.idKhoi == khoi.ID_Khoi}">
@@ -238,7 +235,7 @@
                                         </div>
                                         <p style="font-weight: 700; font-size: 1.5em; text-align: center; margin: 0px 15px;">${khoi.tenKhoi}</p>
 
-                                        <%-- Logic tính toán số lớp --%>
+                                        <!--Calculate Total lop-->
                                         <c:set var="toanSoLop" value="0" /><c:set var="vanSoLop" value="0" /><c:set var="khacSoLop" value="0" />
                                         <c:forEach var="lh" items="${listLopHoc}">
                                             <c:if test="${lh.idKhoi == khoi.ID_Khoi}">
