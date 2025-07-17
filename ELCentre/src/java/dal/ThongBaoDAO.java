@@ -1,9 +1,5 @@
 package dal;
 
-/**
- *
- * @author wrx_Chur04
- */
 import model.ThongBao;
 import java.util.ArrayList;
 import java.sql.PreparedStatement;
@@ -12,31 +8,68 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import model.GiaoVien_ChiTietDay;
+import java.util.List;
+import java.sql.Connection;
+import java.sql.Timestamp;
 
 public class ThongBaoDAO {
 
+    public static ArrayList<ThongBao> adminXemThongBao() {
+        ArrayList<ThongBao> thongbaos = new ArrayList<ThongBao>();
+
+        DBContext db = DBContext.getInstance();
+        try {
+            String sql = """
+                         select * from ThongBao 
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                ThongBao thongbao = new ThongBao(
+                        rs.getInt("ID_ThongBao"),
+                        rs.getInt("ID_TaiKhoan"),
+                        rs.getString("NoiDung"),
+                        rs.getInt("ID_HocPhi"),
+                        rs.getTimestamp("ThoiGian").toLocalDateTime(),
+                        rs.getString("Status")
+                );
+                thongbaos.add(thongbao);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+                    return null;
+        }
+
+        if (thongbaos.isEmpty()) {
+            return null;
+        } else {
+               return thongbaos ; 
+        }
+    }
+    
+    //Hàm nhập thông báo tư vấn
     public static void insertThongBaoTuVan(String noiDung) throws SQLException {
         DBContext db = DBContext.getInstance();
-        String sql = "INSERT INTO ThongBao (ID_TaiKhoan, NoiDung, ID_HocPhi, ThoiGian) " + "VALUES (?, ?, ?, GETDATE())";
-
-        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+        String sql = "INSERT INTO ThongBao (ID_TaiKhoan, NoiDung, ThoiGian) " + "VALUES (?, ?, GETDATE())";
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)){
             ps.setNull(1, java.sql.Types.INTEGER);
             ps.setString(2, noiDung);
-            ps.setNull(3, java.sql.Types.INTEGER);
             ps.executeUpdate();
         }
     }
+    
 
+    //Hàm lấy thông báo theo id
     public static ThongBao getThongBaoById(int id) {
         DBContext db = DBContext.getInstance();
         ThongBao tb = null;
-
         try {
             String sql = "SELECT * FROM ThongBao WHERE ID_ThongBao = ?";
             PreparedStatement ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-
+            
             if (rs.next()) {
                 tb = new ThongBao(
                         rs.getInt("ID_ThongBao"),
@@ -47,12 +80,13 @@ public class ThongBaoDAO {
                         rs.getString("Status")
                 );
             }
-        } catch (SQLException e) {
+        } catch (SQLException e){
             e.printStackTrace();
         }
         return tb;
     }
-
+        
+    //Hàm lấy ra tất cả yêu cầu tư 
     public static ArrayList<ThongBao> getAllTuVan() {
         ArrayList<ThongBao> list = new ArrayList<>();
         DBContext db = DBContext.getInstance();
@@ -77,6 +111,42 @@ public class ThongBaoDAO {
         return list;
     }
 
+    //Hàm lấy thông báo theo id tài khoản
+    public static List<ThongBao> getThongBaoByTaiKhoanId(int idTaiKhoan) throws SQLException {
+         List<ThongBao> list = new ArrayList<>();
+         String sql = "SELECT * FROM ThongBao WHERE ID_TaiKhoan = ? ORDER BY ThoiGian DESC";
+         try (Connection conn = DBContext.getInstance().getConnection();
+              PreparedStatement ps = conn.prepareStatement(sql)) {
+              ps.setInt(1, idTaiKhoan);
+              ResultSet rs = ps.executeQuery();
+              while (rs.next()) {
+                 ThongBao tb = new ThongBao();
+                 tb.setID_ThongBao(rs.getInt("ID_ThongBao"));
+                 tb.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
+                 tb.setNoiDung(rs.getString("NoiDung"));
+                 tb.setThoiGian(rs.getTimestamp("ThoiGian").toLocalDateTime());
+                 list.add(tb);
+             }
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+         return list;
+     } 
+    
+    public static boolean checkRequestExists(int idTaiKhoan, String classCode) {
+        String sql = "SELECT 1 FROM ThongBao WHERE ID_TaiKhoan = ? AND NoiDung LIKE ?";
+        try (Connection con = DBContext.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idTaiKhoan);
+            ps.setString(2, "%" + classCode + "%");
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
     public static boolean adminSendNotification(String ID_TaiKhoan, String NoiDung, String status) {
         int rs = 0;
         DBContext db = DBContext.getInstance();
@@ -185,78 +255,16 @@ public class ThongBaoDAO {
         return false;
     }
 
-    public static ArrayList<String> adminGetAllID_HocSinhDangHocToSendNTF() {
-        ArrayList<String> listID = new ArrayList<String>();
-        DBContext db = DBContext.getInstance();
-        try {
-            String sql = """
-                         select HS.ID_TaiKhoan from HocSinh HS 
-                         join TaiKhoan TK 
-                         on  TK.ID_TaiKhoan = HS.ID_TaiKhoan
-                         WHERE HS.TrangThaiHoc = N'Đang học'
-                         """;
-            PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                listID.add(rs.getString("ID_TaiKhoan"));
-            }
-            return listID;
-        } catch (SQLException e) {
+    public static boolean insertRequestJoinClass(ThongBao tb) {
+        String sql = "INSERT INTO ThongBao (ID_TaiKhoan, NoiDung, ThoiGian) VALUES (?, ?, ?)";
+        try (Connection con = DBContext.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, tb.getID_TaiKhoan());
+            ps.setString(2, tb.getNoiDung());
+            ps.setTimestamp(3, Timestamp.valueOf(tb.getThoiGian()));
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
             e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static ArrayList<String> adminGetAllID_GiaoVienDangDayToSendNTF() {
-        ArrayList<String> listID = new ArrayList<String>();
-        DBContext db = DBContext.getInstance();
-        try {
-            String sql = """
-                         select GV.ID_TaiKhoan from GiaoVien GV
-                         join TaiKhoan TK 
-                         on  TK.ID_TaiKhoan = GV.ID_TaiKhoan
-                         WHERE GV.TrangThaiDay = N'Đang dạy'
-                         """;
-            PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                listID.add(rs.getString("ID_TaiKhoan"));
-            }
-            return listID;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-    }
-
-    public static boolean adminSendNotificationToAllUser(ArrayList<String> ID_TaiKhoan, String NoiDung, String Status) {
-        int rs = 0;
-        DBContext db = DBContext.getInstance();
-        LocalDateTime now = LocalDateTime.now();
-        try {
-            String sql = """
-                         insert into ThongBao(ID_TaiKhoan , NoiDung , ThoiGian  , Status)
-                         values ( ?  , ? , ?  , ?) 
-                         """;
-            PreparedStatement statement = db.getConnection().prepareStatement(sql);
-            for (String id : ID_TaiKhoan) {
-                statement.setString(1, id);
-                statement.setString(2, NoiDung);
-                statement.setTimestamp(3, Timestamp.valueOf(now));
-                statement.setString(4, Status);
-                statement.addBatch();
-            }
-
-            int[] result = statement.executeBatch();
-            for (int r : result) {
-                if (r > 0) {
-                    return true;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-
         }
         return false;
     }
@@ -414,6 +422,82 @@ public class ThongBaoDAO {
             return null;
         } else {
             return lophocs;
+        }
+    }
+
+    public static ArrayList<String> adminGetAllID_GiaoVienDangDayToSendNTF() {
+        ArrayList<String> listID = new ArrayList<String>();
+        DBContext db = DBContext.getInstance();
+        try {
+            String sql = """
+                         select GV.ID_TaiKhoan from GiaoVien GV
+                         join TaiKhoan TK 
+                         on  TK.ID_TaiKhoan = GV.ID_TaiKhoan
+                         WHERE GV.TrangThaiDay = N'Đang dạy'
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                listID.add(rs.getString("ID_TaiKhoan"));
+            }
+            return listID;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public static boolean adminSendNotificationToAllUser(ArrayList<String> ID_TaiKhoan, String NoiDung, String Status) {
+        int rs = 0;
+        DBContext db = DBContext.getInstance();
+        LocalDateTime now = LocalDateTime.now();
+        try {
+            String sql = """
+                         insert into ThongBao(ID_TaiKhoan , NoiDung , ThoiGian  , Status)
+                         values ( ?  , ? , ?  , ?) 
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            for (String id : ID_TaiKhoan) {
+                statement.setString(1, id);
+                statement.setString(2, NoiDung);
+                statement.setTimestamp(3, Timestamp.valueOf(now));
+                statement.setString(4, Status);
+                statement.addBatch();
+            }
+
+            int[] result = statement.executeBatch();
+            for (int r : result) {
+                if (r > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return false;
+    }
+
+    public static ArrayList<String> adminGetAllID_HocSinhDangHocToSendNTF() {
+        ArrayList<String> listID = new ArrayList<String>();
+        DBContext db = DBContext.getInstance();
+        try {
+            String sql = """
+                         select HS.ID_TaiKhoan from HocSinh HS 
+                         join TaiKhoan TK 
+                         on  TK.ID_TaiKhoan = HS.ID_TaiKhoan
+                         WHERE HS.TrangThaiHoc = N'Đang học'
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                listID.add(rs.getString("ID_TaiKhoan"));
+            }
+            return listID;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

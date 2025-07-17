@@ -43,7 +43,7 @@ public class GiaoVien_ChiTietDayDAO {
                         rs.getString("TenTruongHoc") , 
                         rs.getString("TenLopHoc") , 
                         rs.getString("SiSo") , 
-                        
+                        rs.getString("SlotThoiGian") , 
                         rs.getString("GhiChu") , 
                         rs.getString("TrangThai") , 
                         rs.getTimestamp("NgayTao").toLocalDateTime() , 
@@ -63,10 +63,5 @@ public class GiaoVien_ChiTietDayDAO {
         }
     }
     
-    
-    public static void main(String[]args) {
-        String id = "1" ; 
-        System.out.println( adminGetAllLopHocGiaoVien(id).size()); 
-    }
     
 }

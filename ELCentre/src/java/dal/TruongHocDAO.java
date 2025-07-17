@@ -62,5 +62,41 @@ public class TruongHocDAO {
             return truonghocs ; 
         }
     }
+    
+        public static List<TruongHoc> getAllSchools() {
+        List<TruongHoc> list = new ArrayList<>();
+        String sql = "SELECT ID_TruongHoc, TenTruongHoc FROM TruongHoc";
 
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                TruongHoc t = new TruongHoc();
+                t.setID_TruongHoc(rs.getInt("ID_TruongHoc"));
+                t.setTenTruongHoc(rs.getString("TenTruongHoc"));
+                list.add(t);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public static int getIdByTenTruongHoc(String tenTruong) {
+        String sql = "SELECT ID_TruongHoc FROM TruongHoc WHERE TenTruongHoc = ?";
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, tenTruong);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("ID_TruongHoc");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }

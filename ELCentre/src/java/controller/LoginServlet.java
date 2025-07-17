@@ -40,7 +40,6 @@ public class LoginServlet extends HttpServlet {
 //            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
 //            return;
 //        }
-
         if (email == null || email.trim().isEmpty() ||
             password == null || password.trim().isEmpty()) {
             String errorMsg = "Vui lòng nhập email và mật khẩu";
@@ -60,8 +59,6 @@ public class LoginServlet extends HttpServlet {
 
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
-
-                
                 try {
                     String subject = "Thông báo đăng nhập thành công";
                     String body = "Xin chào " + user.getEmail() +
@@ -83,7 +80,7 @@ public class LoginServlet extends HttpServlet {
                     case 3 -> //teacher    
                         response.sendRedirect(request.getContextPath() + "/TeacherDashboard");
                     case 4 -> //student
-                        response.sendRedirect(request.getContextPath() + "/views/student/studentDashboard.jsp");
+                        response.sendRedirect(request.getContextPath() + "/StudentDashboardServlet");
                     case 5 -> //parent
                         response.sendRedirect(request.getContextPath() + "/views/parent/parentDashboard.jsp");
                     default -> response.sendRedirect(request.getContextPath() + "/views/login.jsp");

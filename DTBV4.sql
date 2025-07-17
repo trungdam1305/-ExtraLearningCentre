@@ -1384,16 +1384,16 @@ SET IDENTITY_INSERT [dbo].[PhongHoc] OFF
 GO
 
 
-select * from HoTro
+select * from TaiKhoan 
+
 SELECT * FROM ThongBao
 SELECT MIN(TB.Status) AS Status, TB.NoiDung, TB.ThoiGian
 FROM ThongBao TB
-WHERE TB.Status IN ('ALLSTUDENT', 'ALLTEACHER', 'ALLCLASS', 'CLASS', 'STUDENT', 'TEACHER')
+WHERE TB.Status IN ('CLASS1TC' , 'CLASS1ST') 
 GROUP BY TB.NoiDung, TB.ThoiGian
 ORDER BY TB.ThoiGian DESC
 
 SELECT * FROM ThongBao WHERE NoiDung LIKE N'%tư vấn%' ORDER BY ThoiGian DESC
-
 
 
 

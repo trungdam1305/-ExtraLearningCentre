@@ -53,49 +53,47 @@ public class adminActionWithNotification extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-            request.setCharacterEncoding("UTF-8");
-            String keyword = request.getParameter("keyword") ; 
-            String khoi = request.getParameter("khoi") ; 
-            String mon = request.getParameter("mon") ; 
-            if (keyword == null ) {
-                keyword = "" ; 
-            }
-            keyword = keyword.trim() ; 
-            if (khoi == null ) {
-                khoi = "" ; 
-            }
-            if (mon == null ) {
-                mon = "" ; 
-            }
-            ArrayList<GiaoVien_ChiTietDay> lophocs = ThongBaoDAO.adminGetAllLopHocByFilter(keyword, khoi, mon);
-    session.setAttribute("lophocs", lophocs);
-    request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);  
-            
+        request.setCharacterEncoding("UTF-8");
+        String keyword = request.getParameter("keyword");
+        String khoi = request.getParameter("khoi");
+        String mon = request.getParameter("mon");
+        if (keyword == null) {
+            keyword = "";
+        }
+        keyword = keyword.trim();
+        if (khoi == null) {
+            khoi = "";
+        }
+        if (mon == null) {
+            mon = "";
+        }
+        ArrayList<GiaoVien_ChiTietDay> lophocs = ThongBaoDAO.adminGetAllLopHocByFilter(keyword, khoi, mon);
+        session.setAttribute("lophocs", lophocs);
+        request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);
+
     }
 
     protected void doSendNTFToClass(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter() ; 
+        PrintWriter out = response.getWriter();
         String ID_LopHoc = request.getParameter("ID_LopHoc");
-        
-       
-        
+
         ArrayList<String> listID_HS = ThongBaoDAO.adminGetListIDHSbyID_LopHoc(ID_LopHoc);
         String ID_GiaoVien = ThongBaoDAO.adminGetIdGiaoVienToSendNTF(ID_LopHoc);
         request.setAttribute("listID_HS", listID_HS);
         request.setAttribute("ID_GiaoVien", ID_GiaoVien);
         String noidungGV = request.getParameter("noidungGV");
         String noidungHS = request.getParameter("noidungHS");
-        boolean s1 = ThongBaoDAO.adminSendClassNotification(listID_HS, noidungHS , "CLASS");
-        boolean s2 = ThongBaoDAO.adminSendNotification(ID_GiaoVien, noidungGV , "CLASS");
+        boolean s1 = ThongBaoDAO.adminSendClassNotification(listID_HS, noidungHS, "CLASS" + ID_LopHoc + "ST");
+        boolean s2 = ThongBaoDAO.adminSendNotification(ID_GiaoVien, noidungGV, "CLASS" + ID_LopHoc + "TC");
 
         if (s1 && s2) {
             request.setAttribute("message", "Gửi thông báo thành công!");
             request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);
-        } else if (s1 == true  && s2 == false ) {
+        } else if (s1 == true && s2 == false) {
             request.setAttribute("message", "Gửi thông báo thất bại cho giáo viên trong lớp!");
             request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);
-        } else if (s1 == false  && s2 == true  ) {
+        } else if (s1 == false && s2 == true) {
             request.setAttribute("message", "Gửi thông báo thất bại cho học sinh trong lớp!");
             request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);
         } else {
@@ -111,7 +109,7 @@ public class adminActionWithNotification extends HttpServlet {
         ArrayList<String> listID_HS = ThongBaoDAO.adminGetAllID_HocSinhDangHocToSendNTF();
 
         String noidungHS = request.getParameter("noidungHS");
-        boolean s1 = ThongBaoDAO.adminSendNotificationToAllUser(listID_HS, noidungHS , "ALLSTUDENT");
+        boolean s1 = ThongBaoDAO.adminSendNotificationToAllUser(listID_HS, noidungHS, "ALLSTUDENT");
 
         if (s1) {
             request.setAttribute("message", "Gửi thông báo thành công!");
@@ -122,14 +120,14 @@ public class adminActionWithNotification extends HttpServlet {
         }
 
     }
-    
+
     protected void doSendNTFToAllTeacher(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        ArrayList<String> listID_TC = ThongBaoDAO.adminGetAllID_GiaoVienDangDayToSendNTF() ; 
+        ArrayList<String> listID_TC = ThongBaoDAO.adminGetAllID_GiaoVienDangDayToSendNTF();
 
         String noidungGV = request.getParameter("noidungGV");
-        boolean s1 = ThongBaoDAO.adminSendNotificationToAllUser(listID_TC, noidungGV , "ALLTEACHER");
+        boolean s1 = ThongBaoDAO.adminSendNotificationToAllUser(listID_TC, noidungGV, "ALLTEACHER");
 
         if (s1) {
             request.setAttribute("message", "Gửi thông báo thành công!");
@@ -140,19 +138,18 @@ public class adminActionWithNotification extends HttpServlet {
         }
 
     }
-    
-    
+
     protected void doSendNTFToAllClass(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ArrayList<String> listID_HS = ThongBaoDAO.adminGetAllID_HocSinhDangHocToSendNTF();
-        ArrayList<String> listID_TC = ThongBaoDAO.adminGetAllID_GiaoVienDangDayToSendNTF() ; 
+        ArrayList<String> listID_TC = ThongBaoDAO.adminGetAllID_GiaoVienDangDayToSendNTF();
 
         String noidungHS = request.getParameter("noidungHS");
         String noidungGV = request.getParameter("noidungGV");
-        boolean s1 = ThongBaoDAO.adminSendNotificationToAllUser(listID_HS, noidungHS,"ALLCLASS");
-        boolean s2 = ThongBaoDAO.adminSendNotificationToAllUser(listID_TC, noidungGV , "ALLCLASS");
-        
-        if (s1&&s2) {
+        boolean s1 = ThongBaoDAO.adminSendNotificationToAllUser(listID_HS, noidungHS, "ALLCLASS");
+        boolean s2 = ThongBaoDAO.adminSendNotificationToAllUser(listID_TC, noidungGV, "ALLCLASS");
+
+        if (s1 && s2) {
             request.setAttribute("message", "Gửi thông báo thành công!");
             request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);
         } else {
@@ -161,20 +158,23 @@ public class adminActionWithNotification extends HttpServlet {
         }
 
     }
-    
+
     protected void doViewHistoryNoification(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
 
     }
     
-    
+    protected void doViewHistoryNoificationClass(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        PrintWriter out = response.getWriter() ; 
+        out.print("huhuhuhuhuhu");
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String type = request.getParameter("type");
-        PrintWriter out = response.getWriter() ; 
+        PrintWriter out = response.getWriter();
         switch (type) {
             case "sendToClass":
                 doSendNTFToClass(request, response);
@@ -183,17 +183,21 @@ public class adminActionWithNotification extends HttpServlet {
             case "sendToAllStudent":
                 doSendNTFToAllStudent(request, response);
                 break;
-                
-            case "sendToAllTeacher" : 
-                doSendNTFToAllTeacher(request, response) ; 
-                break ; 
-                
-            case "sendToAllClass" : 
-                doSendNTFToAllClass(request, response) ; 
-                break ;
-                
-            case "historyNotification" : 
-                doViewHistoryNoification(request, response) ; 
+
+            case "sendToAllTeacher":
+                doSendNTFToAllTeacher(request, response);
+                break;
+
+            case "sendToAllClass":
+                doSendNTFToAllClass(request, response);
+                break;
+
+            case "historyNotification":
+                doViewHistoryNoification(request, response);
+                break;
+
+            case "historyNotificationClass":
+                doViewHistoryNoificationClass(request, response);
                 break;
         }
 

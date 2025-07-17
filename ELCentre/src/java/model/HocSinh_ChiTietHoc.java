@@ -36,7 +36,6 @@ public class HocSinh_ChiTietHoc {
         this.ID_HocSinh = ID_HocSinh;
         this.ID_GiaoVien = ID_GiaoVien;
         this.TenLopHoc = TenLopHoc;
-        
         this.HoTen = HoTen;
         this.GhiChu = GhiChu;
         this.TrangThai = TrangThai;

@@ -31,6 +31,10 @@ public class HoTro {
         this.PhanHoi = PhanHoi;
     }
 
+    public String getPhanHoi() {
+        return PhanHoi;
+    }
+
     
 
     public String getDaDuyet() {

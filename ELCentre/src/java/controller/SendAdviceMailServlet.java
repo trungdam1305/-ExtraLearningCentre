@@ -92,7 +92,7 @@ public class SendAdviceMailServlet extends HttpServlet {
             EmailSender.sendEmail(email, subject, content);
 
             request.getSession().setAttribute("successMessage", "Email đã được gửi thành công đến: " + email);
-            response.sendRedirect(request.getContextPath() + "/views/admin/adminApproveRegisterUser.jsp");
+            response.sendRedirect(request.getContextPath() + "/adminGetFromDashboard?action=yeucautuvan");
 
         } catch (Exception e) {
             e.printStackTrace();

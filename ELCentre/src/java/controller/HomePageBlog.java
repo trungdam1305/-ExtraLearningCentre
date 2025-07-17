@@ -95,8 +95,10 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
     // Get the list of all available categories (for dropdown)
     List<PhanLoaiBlog> danhMucList = phanLoaiDAO.getAllPhanLoai();
-
+    
+    List<String> keyTagList = dao.getAllKeyTags();
     // Set attributes for JSP page to access and render
+    request.setAttribute("keyTagList", keyTagList);
     request.setAttribute("blogs", blogs); // list of blog items to show
     request.setAttribute("keyword", keyword == null ? "" : keyword); // search keyword (preserve value)
     request.setAttribute("category", category == null ? "" : category); // selected category (preserve value)

@@ -582,13 +582,13 @@
 
                         <div class="mb-3">
                             <label for="siSoToiDa" class="form-label required-label">Sĩ số tối đa:</label>
-                            <input type="number" class="form-control" id="siSoToiDa" name="siSoToiDa" value="${siSoToiDa != null ? siSoToiDa : ''}" min="1" required>
+                         <input type="number" class="form-control" id="siSoToiDa" name="siSoToiDa" value="${siSoToiDa != null && siSoToiDa != '' ? siSoToiDa : '0'}" min="1" required>
                             <p class="note">Sĩ số tối đa phải lớn hơn 0 và nhỏ hơn hoặc bằng sức chứa phòng học.</p>
                         </div>
 
                         <div class="mb-3">
                             <label for="siSoToiThieu" class="form-label required-label">Sĩ số tối thiểu:</label>
-                            <input type="number" class="form-control" id="siSoToiThieu" name="siSoToiThieu" value="${siSoToiThieu != null ? siSoToiThieu : ''}" min="0" required>
+                          <input type="number" class="form-control" id="siSoToiThieu" name="siSoToiThieu" value="${siSoToiThieu != null && siSoToiThieu != '' ? siSoToiThieu : '0'}" min="0" required>
                             <p class="note">Sĩ số tối thiểu phải là số không âm và nhỏ hơn hoặc bằng sĩ số tối đa.</p>
                         </div>
 
@@ -600,7 +600,7 @@
 
                         <div class="mb-3">
                             <label for="soTien" class="form-label">Học phí:</label>
-                            <input type="number" class="form-control" id="soTien" name="soTien" value="${soTien != null ? soTien : ''}" min="0" step="1">
+                        <input type="number" class="form-control" id="soTien" name="soTien" value="${soTien != null && soTien != '' ? soTien : '0'}" min="0" step="1">
                             <p class="note">Học phí là số nguyên không âm, tối đa 10 chữ số.</p>
                         </div>
 
