@@ -1457,7 +1457,7 @@ public class LopHocInfoDTODAO {
             [dbo].[SlotHoc] sh ON lich.ID_SlotHoc = sh.ID_SlotHoc
         WHERE 
             hslh.ID_HocSinh = ? 
-            AND lh.TrangThai = N'Đang học'
+            
         GROUP BY 
             lh.ID_LopHoc,
             lh.ClassCode,
