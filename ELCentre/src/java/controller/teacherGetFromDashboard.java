@@ -4,11 +4,13 @@ package controller;
 import dal.HocSinhDAO;
 import dal.DiemDanhDAO;
 import dal.GiaoVienDAO;
+import dal.HoTroDAO;
 import dal.KhoaHocDAO;
 import dal.LichHocDAO;
 import dal.LopHocDAO;
 import dal.NopBaiTapDAO;
 import dal.TaiBaiTapDAO;
+import dal.ThongBaoDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -28,6 +30,7 @@ import java.util.Map;
 import model.DiemDanh;
 import model.GiaoVien;
 import model.GiaoVien_TruongHoc;
+import model.HoTro;
 import model.HocSinh;
 import model.KhoaHoc;
 import model.LichHoc;
@@ -35,6 +38,7 @@ import model.LopHoc;
 import model.NopBaiTapInfo;
 import model.TaiKhoan;
 import model.TaoBaiTap;
+import model.ThongBao;
 
 @MultipartConfig 
 public class teacherGetFromDashboard extends HttpServlet {
@@ -79,44 +83,76 @@ public class teacherGetFromDashboard extends HttpServlet {
             showClassAttendanceReport(request, response);
             break;
             case "thongbao":
+                showThongBao(request, response) ;
                 break;
             case "blog":
                 break;
             case "hotro":
-                break;              
+                showHoTro(request, response) ; 
+                break;
             default:
                 response.sendRedirect("TeacherDashboard");
                 break;
         }
     }
-    
-     @Override
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // get action parameter
-    String action = request.getParameter("action");
-    if (action == null) {
-        action = "";
-    }
-    switch (action) {
-        case "submitAttendance":
-            saveAttendance(request, response);
-            break;
-            
-        case "updateNote":
-            updateScheduleNote(request, response);
-            break;
+        String action = request.getParameter("action");
+        if (action == null) {
+            action = "";
+        }
+        switch (action) {
+            case "submitAttendance":
+                saveAttendance(request, response);
+                break;
 
-        case "createAssignment": 
-            createAssignment(request, response);
-            break;
-        case "gradeSubmission":
-            gradeSubmission(request, response);
-            break;
-        default:
-            doGet(request, response);
-            break;
+            case "updateNote":
+                updateScheduleNote(request, response);
+                break;
+
+            case "createAssignment":
+                createAssignment(request, response);
+                break;
+            case "gradeSubmission":
+                gradeSubmission(request, response);
+                break;
+            default:
+                doGet(request, response);
+                break;
+        }
     }
+
+    private void showHoTro(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();     
+        TaiKhoan user = (TaiKhoan) session.getAttribute("user");
+        ArrayList<HoTro> hotros = HoTroDAO.getHoTroByIdTaiKhoan(user.getID_TaiKhoan()) ; 
+        if (hotros == null ) {
+            request.setAttribute("message", "Không có yêu cầu hỗ trợ nào đã được gửi!");
+            request.getRequestDispatcher("/views/teacher/teacherReceiveHoTro.jsp").forward(request, response);
+        } else {
+            session.setAttribute("hotros",hotros );
+            request.getRequestDispatcher("/views/teacher/teacherReceiveHoTro.jsp").forward(request, response);
+        }
+    }
+    
+    private void showThongBao(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();     
+        TaiKhoan user = (TaiKhoan) session.getAttribute("user");
+       
+        List<ThongBao> dsThongBao = ThongBaoDAO.getThongBaoByTaiKhoanId(user.getID_TaiKhoan());
+            request.setAttribute("dsThongBao", dsThongBao);
+        if (dsThongBao == null ) {
+            request.setAttribute("message", "Không có yêu cầu hỗ trợ nào đã được gửi!");
+            request.getRequestDispatcher("/views/teacher/teacherReceiveThongBao.jsp").forward(request, response);
+        } else {
+            session.setAttribute("hotros",dsThongBao );
+            request.getRequestDispatcher("/views/teacher/teacherReceiveThongBao.jsp").forward(request, response);
+        }
     }
     
     private void showClassAttendanceReport(HttpServletRequest request, HttpServletResponse response)

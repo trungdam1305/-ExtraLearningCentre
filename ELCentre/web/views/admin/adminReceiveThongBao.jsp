@@ -547,6 +547,7 @@
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
+                <li><a href="${pageContext.request.contextPath}/ManageSchedule"><i class="fas fa-calendar-alt"></i> Lịch học</a></li>
             </ul>
             <div class="sidebar-section-title">Hệ thống</div>
             <ul class="sidebar-menu">
@@ -585,7 +586,7 @@
                     <a href="${pageContext.request.contextPath}/adminActionWithNotification?action=historyNotification" class="btn-action notification-history">
                         <i class="fas fa-history"></i> Xem lịch sử thông báo
                     </a>
-
+                        
                 </div>
                 <form action="${pageContext.request.contextPath}/adminActionWithNotification" method="get">
                     <div class="filter-bar">
@@ -647,6 +648,9 @@
                                         <td class="action-buttons">
                                             <a class="btn-action send" href="${pageContext.request.contextPath}/views/admin/adminSendNotificationToClass.jsp?idLop=${lop.getID_LopHoc()}">
                                                 <i class="fas fa-paper-plane"></i> Gửi thông báo
+                                            </a>
+                                            <a class="btn-action send" href="${pageContext.request.contextPath}/adminActionWithNotification?type=historyNotificationClass?idLop=${lop.getID_LopHoc()}">
+                                                <i class="fas fa-paper-plane"></i> Lịch sử thông báo lớp học
                                             </a>
                                         </td>
                                     </tr>

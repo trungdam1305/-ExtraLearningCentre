@@ -94,9 +94,11 @@ public class HocSinhDAO {
 
         try {
             String sql = """
-                         select * from HocSinh hs JOIN TruongHoc th
-                         ON hs.ID_TruongHoc = th.ID_TruongHoc
-                         where ID_TaiKhoan = ? 
+                        select * from HocSinh hs JOIN TruongHoc th
+                        ON hs.ID_TruongHoc = th.ID_TruongHoc
+                        JOIN TaiKhoan TK 
+                        ON TK.ID_TaiKhoan = hs.ID_TaiKhoan
+                        where hs.ID_TaiKhoan = ?
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             statement.setString(1, ID_TaiKhoan);
@@ -105,7 +107,7 @@ public class HocSinhDAO {
             while (rs.next()) {
                 HocSinh hocsinh = new HocSinh(
                         rs.getInt("ID_HocSinh"),
-                        rs.getString("MaHocSinh") , 
+                        rs.getString("MaHocSinh"),
                         rs.getInt("ID_TaiKhoan"),
                         rs.getString("HoTen"),
                         rs.getDate("NgaySinh").toLocalDate(),
@@ -116,10 +118,11 @@ public class HocSinhDAO {
                         rs.getString("GhiChu"),
                         rs.getString("TrangThai"),
                         rs.getTimestamp("NgayTao").toLocalDateTime(),
-                        rs.getString("TenTruongHoc") , 
-                        rs.getString("LopDangHocTrenTruong") , 
-                        rs.getString("TrangThaiHoc") , 
-                        rs.getString("Avatar")
+                        rs.getString("TenTruongHoc"),
+                        rs.getString("LopDangHocTrenTruong"),
+                        rs.getString("TrangThaiHoc"),
+                        rs.getString("Avatar"),
+                        rs.getString("MatKhau")
                 );
                 hocsinhs.add(hocsinh);
             }
@@ -1166,5 +1169,27 @@ public class HocSinhDAO {
                 updateStmt.executeUpdate();
             }
         }
+    }
+    
+    public static String getNameHocSinhToSendSupport(String ID_TaiKhoan) {
+        DBContext db = DBContext.getInstance();
+        try {
+            String sql = """
+                             select HS.HoTen from HocSinh HS 
+                             join TaiKhoan TK 
+                             ON HS.ID_TaiKhoan = TK.ID_TaiKhoan 
+                             where HS.ID_TaiKhoan = ? 
+                             """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setString(1, ID_TaiKhoan);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                return rs.getString("HoTen");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
     }
 }

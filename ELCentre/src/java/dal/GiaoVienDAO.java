@@ -182,8 +182,10 @@ public class GiaoVienDAO {
         try {
             String sql = """
                          select * from GiaoVien gv JOIN TruongHoc th 
-                         ON gv.ID_TruongHoc = th.ID_TruongHoc
-                         where ID_TaiKhoan = ? 
+                        ON gv.ID_TruongHoc = th.ID_TruongHoc
+                        JOIN TaiKhoan TK 
+                        ON TK.ID_TaiKhoan = gv.ID_TaiKhoan
+                    where gv.ID_TaiKhoan = ? ; 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             statement.setString(1, id_TaiKhoan);
@@ -205,7 +207,8 @@ public class GiaoVienDAO {
                         rs.getString("TenTruongHoc"),
                         rs.getString("BangCap"),
                         rs.getString("LopDangDayTrenTruong"),
-                        rs.getString("TrangThaiDay")
+                        rs.getString("TrangThaiDay"),
+                        rs.getString("MatKhau")
                 );
                 giaoviens.add(giaovien);
             }
@@ -1522,19 +1525,57 @@ public class GiaoVienDAO {
         return list;
     }
     
-    public static void main(String[] args) {
-        GiaoVienDAO giaoVienRepo = new GiaoVienDAO();
-        String input = "Hóa Học";
-
-        List<GiaoVien> result = giaoVienRepo.getTeachersBySpecialization1(input);
-
-        if (result.isEmpty()) {
-            System.out.println("Không tìm thấy giáo viên nào có chuyên môn gần giống với: " + input);
-        } else {
-            System.out.println("Danh sách giáo viên có chuyên môn liên quan đến: " + input);
-            for (GiaoVien gv : result) {
-                System.out.println("- " + gv.getHoTen() + " | Chuyên môn: " + gv.getChuyenMon() + " | Trường: " + gv.getTenTruongHoc());
+    public static String getNameGiaoVienToSendSupport(String ID_TaiKhoan) {
+        DBContext db = DBContext.getInstance();
+        try {
+            String sql = """
+                             select GV.HoTen from GiaoVien GV
+                             join TaiKhoan TK 
+                             ON GV.ID_TaiKhoan = TK.ID_TaiKhoan 
+                             where GV.ID_TaiKhoan = ? 
+                             """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setString(1, ID_TaiKhoan);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                return rs.getString("HoTen");
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
+    
+    public static boolean adminUpdateInformationOfTeacher(String sdt, int ishot, int idGiaoVien) {
+        DBContext db = DBContext.getInstance();
+        int rs = 0;
+
+        try {
+            String sql = """
+                             UPDATE GiaoVien 
+                             SET 
+                             SDT = ?  , 
+                             
+                             IsHot = ? 
+                             where ID_GiaoVien = ? 
+                             """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setString(1, sdt);
+
+            statement.setInt(2, ishot);
+            statement.setInt(3, idGiaoVien);
+            rs = statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+
+        if (rs == 0) {
+            return false;
+        } else {
+            return true;
         }
     }
 }

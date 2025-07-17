@@ -256,6 +256,12 @@
                                         </c:forEach>
                                     </tr>
                                     <tr>
+                                        <td>Mật khẩu</td>
+                                        <c:forEach var="ph" items="${phuhuynhs}">
+                                            <td><input type="text" name="matkhau" value="${ph.getMatKhau()}" required="" /></td>
+                                        </c:forEach>
+                                    </tr>
+                                    <tr>
                                         <td>Họ tên</td>
                                         <c:forEach var="ph" items="${phuhuynhs}">
                                             <td><input type="text" value="${ph.getHoTen()}" readonly /></td>

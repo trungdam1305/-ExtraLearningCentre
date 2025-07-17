@@ -24,7 +24,7 @@ public class StudentDashboardServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         TaiKhoan user = (TaiKhoan) session.getAttribute("user");
-
+        
         if (user == null || user.getID_VaiTro() != 4) {
             response.sendRedirect(request.getContextPath() + "/views/login.jsp");
             return;
@@ -41,15 +41,10 @@ public class StudentDashboardServlet extends HttpServlet {
         List<LopHoc> dsLopHoc = HocSinh_LopHocDAO.getLopHocDaDangKyByHocSinhId(idHocSinh);
 
         List<ThongBao> dsThongBao = new ArrayList<>();
-        try {
+        
             dsThongBao = ThongBaoDAO.getThongBaoByTaiKhoanId(idTaiKhoan);
-            System.out.println("Số lượng thông báo: " + dsThongBao.size());
-            for (ThongBao tb : dsThongBao) {
-                System.out.println("→ " + tb.getNoiDung() + " | " + tb.getThoiGian());
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            
+        
 
         List<LichHoc> lichHocSapToi = LichHocDAO.getUpcomingScheduleByHocSinhId(idHocSinh);
         System.out.println("Số lượng lịch học sắp tới: " + lichHocSapToi.size());
