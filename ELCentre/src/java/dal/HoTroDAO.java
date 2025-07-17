@@ -55,7 +55,7 @@ public class HoTroDAO {
             return hotros ; 
         }
     }
-    
+   
     public static boolean adminDanhDauDaDocHoTro(String id_HoTro){
         DBContext db = DBContext.getInstance() ; 
         int rs = 0; 
@@ -68,6 +68,56 @@ public class HoTroDAO {
                          """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
             statement.setString(1, id_HoTro);
+            rs = statement.executeUpdate() ; 
+            while(rs!= 0 ) {
+                return true ; 
+            }
+        } catch(SQLException e ) {
+            e.printStackTrace(); 
+            return false ; 
+        }
+        return false ;
+    }
+    
+    public static boolean duyetHoTroOK(String id_HoTro , String PhanHoi ){
+        DBContext db = DBContext.getInstance() ; 
+        int rs = 0; 
+        try {
+            String sql = """
+                         UPDATE HoTro
+                         SET 
+                         DaDuyet = N'Đã duyệt' ,
+                         PhanHoi =  ? 
+                         where ID_HoTro = ? 
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, PhanHoi);
+            statement.setString(2, id_HoTro);
+            rs = statement.executeUpdate() ; 
+            while(rs!= 0 ) {
+                return true ; 
+            }
+        } catch(SQLException e ) {
+            e.printStackTrace(); 
+            return false ; 
+        }
+        return false ;
+    }
+    
+    public static boolean duyetHoTroKhongOK(String id_HoTro , String PhanHoi ){
+        DBContext db = DBContext.getInstance() ; 
+        int rs = 0; 
+        try {
+            String sql = """
+                         UPDATE HoTro
+                         SET 
+                         DaDuyet = N'Từ chối' ,
+                         PhanHoi =  ? 
+                         where ID_HoTro = ? 
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, PhanHoi);
+            statement.setString(2, id_HoTro);
             rs = statement.executeUpdate() ; 
             while(rs!= 0 ) {
                 return true ; 

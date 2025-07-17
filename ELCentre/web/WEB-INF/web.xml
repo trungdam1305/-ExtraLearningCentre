@@ -228,6 +228,10 @@
         <servlet-name>teacherActionWithSP_NTF</servlet-name>
         <servlet-class>controller.teacherActionWithSP_NTF</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>staffGetSupportRequests</servlet-name>
+        <servlet-class>controller.staffGetSupportRequests</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -479,6 +483,10 @@
     <servlet-mapping>
         <servlet-name>teacherActionWithSP_NTF</servlet-name>
         <url-pattern>/teacherActionWithSP_NTF</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>staffGetSupportRequests</servlet-name>
+        <url-pattern>/staffGetSupportRequests</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>
