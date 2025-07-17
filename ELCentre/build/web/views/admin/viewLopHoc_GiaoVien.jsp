@@ -546,12 +546,9 @@
             </c:if>
 
 
-<<<<<<< HEAD
-<input type="text" class="form-control" id="searchInput" placeholder="Tìm theo mã hoặc tên lớp" onkeyup="searchClasses()">
-=======
 
             <input type="text" class="form-control" id="searchInput" placeholder="Tìm theo mã hoặc tên lớp" onkeyup="searchClasses()">
->>>>>>> 942ba0eced369676945c15812aa61113d7de5a14
+
             <!-- Bảng danh sách -->
             <div class="table-container">
                 <c:if test="${not empty lopHocs}">
@@ -708,18 +705,7 @@
                     row.style.display = 'none';
                 });
             });
-<<<<<<< HEAD
-            
-            function searchClasses() {
-    const input = document.getElementById('searchInput').value.toLowerCase();
-    const rows = document.querySelectorAll('.table tbody tr:not(.details-row)');
-    rows.forEach(row => {
-        const classCode = row.cells[0].textContent.toLowerCase();
-        const className = row.cells[1].textContent.toLowerCase();
-        row.style.display = (classCode.includes(input) || className.includes(input)) ? '' : 'none';
-    });
-}
-=======
+
 
             function searchClasses() {
                 const input = document.getElementById('searchInput').value.toLowerCase();
@@ -730,7 +716,7 @@
                     row.style.display = (classCode.includes(input) || className.includes(input)) ? '' : 'none';
                 });
             }
->>>>>>> 942ba0eced369676945c15812aa61113d7de5a14
+
         </script>
     </body>
 </html>

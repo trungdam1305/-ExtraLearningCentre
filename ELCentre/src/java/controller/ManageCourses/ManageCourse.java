@@ -21,7 +21,6 @@ import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.PrintWriter;
@@ -33,7 +32,6 @@ import model.LichHoc;
 import model.LopHoc;
 import java.text.Normalizer;
 import model.LopHocInfoDTO;
-import model.TaiKhoan;
 
 /**
  * Servlet to manage course listing, sorting, pagination, and actions.
@@ -46,7 +44,7 @@ import model.TaiKhoan;
         maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
 public class ManageCourse extends HttpServlet {
-    
+
     // Danh sách tên môn học hợp lệ
     static final List<String> TEN_MON_HOC_HOP_LE = Stream.concat(
             Arrays.asList(
@@ -162,12 +160,7 @@ public class ManageCourse extends HttpServlet {
         String action = request.getParameter("action");
         String message = request.getParameter("message");
         request.setAttribute("message", message);
-        HttpSession session = request.getSession();
-        TaiKhoan user = (TaiKhoan) session.getAttribute("user");
-        if (user.getID_VaiTro() != 1) {
-        response.sendRedirect(request.getContextPath() + "/views/login.jsp");
-        return;
-        }
+
         // Danh sách các cột hợp lệ để sắp xếp
         List<String> validColumns = Arrays.asList(
                 "ID_KhoaHoc", "CourseCode", "TenKhoaHoc", "MoTa", "ThoiGianBatDau",

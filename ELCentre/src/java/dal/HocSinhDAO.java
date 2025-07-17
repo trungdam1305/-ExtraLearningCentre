@@ -810,21 +810,60 @@ public class HocSinhDAO {
     // Thêm học sinh vào lớp
     public boolean addStudentToClass1(int idHocSinh, int idLopHoc) throws SQLException {
         DBContext db = DBContext.getInstance();
-        String sql = "INSERT INTO HocSinh_LopHoc (ID_LopHoc, ID_HocSinh) VALUES (?, ?)";
-        try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, idLopHoc);
-            stmt.setInt(2, idHocSinh);
-            int rowsAffected = stmt.executeUpdate();
-            System.out.printf("addStudentToClass1: Added ID_HocSinh=%d to ID_LopHoc=%d, Rows affected=%d%n",
-                    idHocSinh, idLopHoc, rowsAffected);
-            return rowsAffected > 0;
+        Connection conn = null;
+        try {
+            conn = db.getConnection();
+            conn.setAutoCommit(false);
+
+            // Kiểm tra học sinh có trong lớp không
+            String checkAssignmentSql = "SELECT COUNT(*) FROM HocSinh_LopHoc WHERE ID_LopHoc = ? AND ID_HocSinh = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(checkAssignmentSql)) {
+                stmt.setInt(1, idLopHoc);
+                stmt.setInt(2, idHocSinh);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next() && rs.getInt(1) > 0) {
+                    System.out.printf("addStudentToClass1: Assignment already exists for ID_LopHoc=%d, ID_HocSinh=%d%n", idLopHoc, idHocSinh);
+                    return false;
+                }
+            }
+
+            // Thêm học sinh vào lớp
+            String insertSql = "INSERT INTO HocSinh_LopHoc (ID_LopHoc, ID_HocSinh) VALUES (?, ?)";
+            try (PreparedStatement stmt = conn.prepareStatement(insertSql)) {
+                stmt.setInt(1, idLopHoc);
+                stmt.setInt(2, idHocSinh);
+                int rowsAffected = stmt.executeUpdate();
+                if (rowsAffected > 0) {
+                    conn.commit();  // Commit transaction trước khi update trạng thái để release lock sớm
+
+                    // Cập nhật trạng thái sau commit (sử dụng cùng conn nhưng autoCommit true)
+                    conn.setAutoCommit(true);  // Chuyển sang autoCommit để update riêng
+                    updateTrangThaiHoc(conn, idHocSinh);
+
+                    System.out.printf("addStudentToClass1: Successfully added ID_HocSinh=%d to ID_LopHoc=%d, Rows affected=%d%n",
+                            idHocSinh, idLopHoc, rowsAffected);
+                    return true;
+                } else {
+                    conn.rollback();
+                    System.out.printf("addStudentToClass1: Failed to insert assignment for ID_LopHoc=%d, ID_HocSinh=%d%n",
+                            idLopHoc, idHocSinh);
+                    return false;
+                }
+            }
         } catch (SQLException e) {
             System.out.println("SQL Error in addStudentToClass1: " + e.getMessage());
             e.printStackTrace();
+            if (conn != null) {
+                conn.rollback();
+            }
             throw e;
+        } finally {
+            if (conn != null) {
+                conn.setAutoCommit(true);
+                conn.close();
+            }
         }
     }
-
     // Xóa học sinh khỏi lớp
     public boolean removeStudentFromClass1(int idHocSinh, int idLopHoc) throws SQLException {
         DBContext db = DBContext.getInstance();
@@ -843,7 +882,12 @@ public class HocSinhDAO {
                 stmt.setInt(2, idLopHoc);
                 int rowsAffected = stmt.executeUpdate();
                 if (rowsAffected > 0) {
-                    conn.commit();
+                    conn.commit();  // Commit transaction trước khi update trạng thái để release lock sớm
+
+                    // Cập nhật trạng thái sau commit (sử dụng cùng conn nhưng autoCommit true)
+                    conn.setAutoCommit(true);  // Chuyển sang autoCommit để update riêng
+                    updateTrangThaiHoc(conn, idHocSinh);
+
                     System.out.printf("removeStudentFromClass1: Successfully removed ID_HocSinh=%d from ID_LopHoc=%d, Rows affected=%d%n",
                             idHocSinh, idLopHoc, rowsAffected);
                     return true;
@@ -857,7 +901,9 @@ public class HocSinhDAO {
         } catch (SQLException e) {
             System.out.println("SQL Error in removeStudentFromClass1: " + e.getMessage());
             e.printStackTrace();
-            if (conn != null) conn.rollback();
+            if (conn != null) {
+                conn.rollback();
+            }
             throw e;
         } finally {
             if (conn != null) {
@@ -1100,5 +1146,25 @@ public class HocSinhDAO {
         }
         return null;
     }
-    
+    // Method private mới để cập nhật TrangThaiHoc dựa trên số lớp đang học
+    private void updateTrangThaiHoc(Connection conn, int idHocSinh) throws SQLException {
+        String countSql = "SELECT COUNT(*) FROM [dbo].[HocSinh_LopHoc] WHERE ID_HocSinh = ?";
+        try (PreparedStatement countStmt = conn.prepareStatement(countSql)) {
+            countStmt.setInt(1, idHocSinh);
+            ResultSet rs = countStmt.executeQuery();
+            int soLop = 0;
+            if (rs.next()) {
+                soLop = rs.getInt(1);
+            }
+
+            String trangThaiHoc = (soLop > 0) ? "Đang học" : "Chờ học";
+
+            String updateSql = "UPDATE [dbo].[HocSinh] SET TrangThaiHoc = ? WHERE ID_HocSinh = ?";
+            try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
+                updateStmt.setString(1, trangThaiHoc);
+                updateStmt.setInt(2, idHocSinh);
+                updateStmt.executeUpdate();
+            }
+        }
+    }
 }
