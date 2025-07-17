@@ -49,8 +49,8 @@ public class GiaoVienDAO {
                         rs.getTimestamp("NgayTao").toLocalDateTime(),
                         rs.getString("Avatar"),
                         rs.getString("TenTruongHoc"),
-                        rs.getString("BangCap") , 
-                        rs.getString("LopDangDayTrenTruong") , 
+                        rs.getString("BangCap"),
+                        rs.getString("LopDangDayTrenTruong"),
                         rs.getString("TrangThaiDay")
                 );
                 giaoviens.add(giaovien);
@@ -203,10 +203,9 @@ public class GiaoVienDAO {
                         rs.getTimestamp("NgayTao").toLocalDateTime(),
                         rs.getString("Avatar"),
                         rs.getString("TenTruongHoc"),
-                        rs.getString("BangCap") , 
-                        rs.getString("LopDangDayTrenTruong") , 
+                        rs.getString("BangCap"),
+                        rs.getString("LopDangDayTrenTruong"),
                         rs.getString("TrangThaiDay")
-                        
                 );
                 giaoviens.add(giaovien);
             }
@@ -382,7 +381,6 @@ public class GiaoVienDAO {
         return giaoVien;
     }
 
-
     public String findConflictingClassName(int idGiaoVien, int idLopHoc, int idSlotHoc, LocalDate ngayHoc) {
         DBContext db = DBContext.getInstance();
         String sql = """
@@ -521,7 +519,6 @@ public class GiaoVienDAO {
         }
         return teachers;
     }
-
 
     public boolean updateTeacherAssignment(int idLopHoc, int idGiaoVien) throws SQLException {
         DBContext db = DBContext.getInstance();
@@ -798,31 +795,32 @@ public class GiaoVienDAO {
             }
         }
     }
-public static String adminGetIdGiaoVienToSendNTF(String ID_LopHoc) {
-        DBContext db = DBContext.getInstance() ; 
-        
+
+    public static String adminGetIdGiaoVienToSendNTF(String ID_LopHoc) {
+        DBContext db = DBContext.getInstance();
+
         try {
             String sql = """
                          select  GV.ID_TaiKhoan from GiaoVien_LopHoc GL
                         JOIN GiaoVien GV
                         ON GV.ID_GiaoVien = GL.ID_GiaoVien
                         WHERE GL.ID_LopHoc = ? ;
-                         """ ; 
-            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
-            statement.setString(1 , ID_LopHoc) ; 
-            ResultSet rs = statement.executeQuery() ; 
-            while(rs.next()) {
-                return rs.getString("ID_TaiKhoan") ; 
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setString(1, ID_LopHoc);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                return rs.getString("ID_TaiKhoan");
             }
-        } catch(SQLException  e ) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null ;  
+        return null;
     }
-    
+
     public static GiaoVien_TruongHoc getGiaoVienByID(int id_TaiKhoan) {
         // Không cần ArrayList vì chúng ta chỉ tìm một đối tượng
-        GiaoVien_TruongHoc giaovien = null; 
+        GiaoVien_TruongHoc giaovien = null;
         DBContext db = DBContext.getInstance();
 
         try {
@@ -850,8 +848,8 @@ public static String adminGetIdGiaoVienToSendNTF(String ID_LopHoc) {
                         rs.getTimestamp("NgayTao").toLocalDateTime(),
                         rs.getString("Avatar"),
                         rs.getString("TenTruongHoc"),
-                        rs.getString("BangCap"), 
-                        rs.getString("LopDangDayTrenTruong"), 
+                        rs.getString("BangCap"),
+                        rs.getString("LopDangDayTrenTruong"),
                         rs.getString("TrangThaiDay")
                 );
             }
@@ -1065,130 +1063,131 @@ public static String adminGetIdGiaoVienToSendNTF(String ID_LopHoc) {
         return teachers;
     }
 
-   public boolean assignTeacherToClass1(int idLopHoc, int idGiaoVien) throws SQLException {
-    DBContext db = DBContext.getInstance();
-    Connection conn = null;
-    try {
-        conn = db.getConnection();
-        conn.setAutoCommit(false);
-        // Set isolation level để giảm lock (optional, test nếu snapshot không đủ)
-        // conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+    public boolean assignTeacherToClass1(int idLopHoc, int idGiaoVien) throws SQLException {
+        DBContext db = DBContext.getInstance();
+        Connection conn = null;
+        try {
+            conn = db.getConnection();
+            conn.setAutoCommit(false);
+            // Set isolation level để giảm lock (optional, test nếu snapshot không đủ)
+            // conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 
-        // Kiểm tra giáo viên tồn tại và hoạt động
-        String checkGiaoVienSql = "SELECT COUNT(*) FROM [dbo].[GiaoVien] WHERE ID_GiaoVien = ? AND TrangThai = 'Active'";
-        try (PreparedStatement stmt = conn.prepareStatement(checkGiaoVienSql)) {
-            stmt.setInt(1, idGiaoVien);
-            ResultSet rs = stmt.executeQuery();
-            if (!rs.next() || rs.getInt(1) == 0) {
-                throw new SQLException("Giáo viên không tồn tại hoặc không hoạt động");
-            }
-        }
-
-        // Kiểm tra lớp học tồn tại và trạng thái hợp lệ
-        String checkLopHocSql = "SELECT TrangThai FROM [dbo].[LopHoc] WHERE ID_LopHoc = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(checkLopHocSql)) {
-            stmt.setInt(1, idLopHoc);
-            ResultSet rs = stmt.executeQuery();
-            if (!rs.next()) {
-                throw new SQLException("Lớp học không tồn tại");
-            }
-            String trangThai = rs.getString("TrangThai");
-            if (!"Đang học".equals(trangThai) && !"Chưa học".equals(trangThai)) {
-                throw new SQLException("Lớp học không ở trạng thái hợp lệ (Đang học hoặc Chưa học)");
-            }
-        }
-
-        // Kiểm tra lịch học
-        LichHocDAO lichHocDAO = new LichHocDAO();
-        List<LichHoc> lichHocList = lichHocDAO.getLichHocByLopHoc(idLopHoc);
-        if (lichHocList == null || lichHocList.isEmpty()) {
-            throw new SQLException("Lớp học chưa có lịch học");
-        }
-
-        // Kiểm tra xung đột lịch học
-        for (LichHoc lichHoc : lichHocList) {
-            if (hasSlotConflict1(idGiaoVien, idLopHoc, lichHoc.getID_SlotHoc(), lichHoc.getNgayHoc())) {
-                String conflictingClass = findConflictingClassName1(idGiaoVien, idLopHoc, lichHoc.getID_SlotHoc(), lichHoc.getNgayHoc());
-                throw new SQLException("Xung đột lịch học với lớp " + (conflictingClass != null ? conflictingClass : "khác")
-                        + " vào ngày " + lichHoc.getNgayHoc() + " tại khung giờ " + lichHoc.getSlotThoiGian());
-            }
-        }
-
-        // Lấy giáo viên hiện tại (nếu có) để ghi log và cập nhật trạng thái
-        GiaoVien currentTeacher = getGiaoVienByLopHoc1(idLopHoc);
-        boolean hasOldTeacher = (currentTeacher != null && currentTeacher.getID_GiaoVien() != idGiaoVien);
-
-        if (currentTeacher != null) {
-            logTeacherAssignmentChange1(idLopHoc, currentTeacher.getID_GiaoVien(), idGiaoVien, "Xóa phân công");
-        }
-
-        // Xóa phân công cũ
-        String deleteOldAssignmentSql = "DELETE FROM [dbo].[GiaoVien_LopHoc] WHERE ID_LopHoc = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(deleteOldAssignmentSql)) {
-            stmt.setInt(1, idLopHoc);
-            stmt.executeUpdate();
-        }
-
-        // Thêm phân công mới
-        String insertSql = "INSERT INTO [dbo].[GiaoVien_LopHoc] (ID_LopHoc, ID_GiaoVien) VALUES (?, ?)";
-        try (PreparedStatement stmt = conn.prepareStatement(insertSql)) {
-            stmt.setInt(1, idLopHoc);
-            stmt.setInt(2, idGiaoVien);
-            int rowsAffected = stmt.executeUpdate();
-            if (rowsAffected > 0) {
-                logTeacherAssignmentChange1(idLopHoc, idGiaoVien, idGiaoVien, "Thêm phân công");
-                conn.commit();  // Commit transaction trước khi update trạng thái để release lock sớm
-
-                // Cập nhật trạng thái sau commit (sử dụng cùng conn nhưng autoCommit true)
-                conn.setAutoCommit(true);  // Chuyển sang autoCommit để update riêng
-                if (hasOldTeacher) {
-                    updateTrangThaiDay(conn, currentTeacher.getID_GiaoVien());
+            // Kiểm tra giáo viên tồn tại và hoạt động
+            String checkGiaoVienSql = "SELECT COUNT(*) FROM [dbo].[GiaoVien] WHERE ID_GiaoVien = ? AND TrangThai = 'Active'";
+            try (PreparedStatement stmt = conn.prepareStatement(checkGiaoVienSql)) {
+                stmt.setInt(1, idGiaoVien);
+                ResultSet rs = stmt.executeQuery();
+                if (!rs.next() || rs.getInt(1) == 0) {
+                    throw new SQLException("Giáo viên không tồn tại hoặc không hoạt động");
                 }
-                updateTrangThaiDay(conn, idGiaoVien);
-
-                System.out.println("assignTeacherToClass1: Successfully assigned ID_GiaoVien=" + idGiaoVien + " to ID_LopHoc=" + idLopHoc);
-                return true;
-            } else {
-                conn.rollback();
-                throw new SQLException("Không thể thêm phân công giáo viên");
             }
-        }
-    } catch (SQLException e) {
-        System.out.println("SQL Error in assignTeacherToClass1: " + e.getMessage());
-        e.printStackTrace();
-        if (conn != null) {
-            conn.rollback();
-        }
-        throw e;
-    } finally {
-        if (conn != null) {
-            conn.setAutoCommit(true);
-            conn.close();
+
+            // Kiểm tra lớp học tồn tại và trạng thái hợp lệ
+            String checkLopHocSql = "SELECT TrangThai FROM [dbo].[LopHoc] WHERE ID_LopHoc = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(checkLopHocSql)) {
+                stmt.setInt(1, idLopHoc);
+                ResultSet rs = stmt.executeQuery();
+                if (!rs.next()) {
+                    throw new SQLException("Lớp học không tồn tại");
+                }
+                String trangThai = rs.getString("TrangThai");
+                if (!"Đang học".equals(trangThai) && !"Chưa học".equals(trangThai)) {
+                    throw new SQLException("Lớp học không ở trạng thái hợp lệ (Đang học hoặc Chưa học)");
+                }
+            }
+
+            // Kiểm tra lịch học
+            LichHocDAO lichHocDAO = new LichHocDAO();
+            List<LichHoc> lichHocList = lichHocDAO.getLichHocByLopHoc(idLopHoc);
+            if (lichHocList == null || lichHocList.isEmpty()) {
+                throw new SQLException("Lớp học chưa có lịch học");
+            }
+
+            // Kiểm tra xung đột lịch học
+            for (LichHoc lichHoc : lichHocList) {
+                if (hasSlotConflict1(idGiaoVien, idLopHoc, lichHoc.getID_SlotHoc(), lichHoc.getNgayHoc())) {
+                    String conflictingClass = findConflictingClassName1(idGiaoVien, idLopHoc, lichHoc.getID_SlotHoc(), lichHoc.getNgayHoc());
+                    throw new SQLException("Xung đột lịch học với lớp " + (conflictingClass != null ? conflictingClass : "khác")
+                            + " vào ngày " + lichHoc.getNgayHoc() + " tại khung giờ " + lichHoc.getSlotThoiGian());
+                }
+            }
+
+            // Lấy giáo viên hiện tại (nếu có) để ghi log và cập nhật trạng thái
+            GiaoVien currentTeacher = getGiaoVienByLopHoc1(idLopHoc);
+            boolean hasOldTeacher = (currentTeacher != null && currentTeacher.getID_GiaoVien() != idGiaoVien);
+
+            if (currentTeacher != null) {
+                logTeacherAssignmentChange1(idLopHoc, currentTeacher.getID_GiaoVien(), idGiaoVien, "Xóa phân công");
+            }
+
+            // Xóa phân công cũ
+            String deleteOldAssignmentSql = "DELETE FROM [dbo].[GiaoVien_LopHoc] WHERE ID_LopHoc = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(deleteOldAssignmentSql)) {
+                stmt.setInt(1, idLopHoc);
+                stmt.executeUpdate();
+            }
+
+            // Thêm phân công mới
+            String insertSql = "INSERT INTO [dbo].[GiaoVien_LopHoc] (ID_LopHoc, ID_GiaoVien) VALUES (?, ?)";
+            try (PreparedStatement stmt = conn.prepareStatement(insertSql)) {
+                stmt.setInt(1, idLopHoc);
+                stmt.setInt(2, idGiaoVien);
+                int rowsAffected = stmt.executeUpdate();
+                if (rowsAffected > 0) {
+                    logTeacherAssignmentChange1(idLopHoc, idGiaoVien, idGiaoVien, "Thêm phân công");
+                    conn.commit();  // Commit transaction trước khi update trạng thái để release lock sớm
+
+                    // Cập nhật trạng thái sau commit (sử dụng cùng conn nhưng autoCommit true)
+                    conn.setAutoCommit(true);  // Chuyển sang autoCommit để update riêng
+                    if (hasOldTeacher) {
+                        updateTrangThaiDay(conn, currentTeacher.getID_GiaoVien());
+                    }
+                    updateTrangThaiDay(conn, idGiaoVien);
+
+                    System.out.println("assignTeacherToClass1: Successfully assigned ID_GiaoVien=" + idGiaoVien + " to ID_LopHoc=" + idLopHoc);
+                    return true;
+                } else {
+                    conn.rollback();
+                    throw new SQLException("Không thể thêm phân công giáo viên");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in assignTeacherToClass1: " + e.getMessage());
+            e.printStackTrace();
+            if (conn != null) {
+                conn.rollback();
+            }
+            throw e;
+        } finally {
+            if (conn != null) {
+                conn.setAutoCommit(true);
+                conn.close();
+            }
         }
     }
-}
 
 // Method private mới (giữ nguyên, nhưng giờ gọi sau commit)
-private void updateTrangThaiDay(Connection conn, int idGiaoVien) throws SQLException {
-    String countSql = "SELECT COUNT(*) FROM [dbo].[GiaoVien_LopHoc] WHERE ID_GiaoVien = ?";
-    try (PreparedStatement countStmt = conn.prepareStatement(countSql)) {
-        countStmt.setInt(1, idGiaoVien);
-        ResultSet rs = countStmt.executeQuery();
-        int soLop = 0;
-        if (rs.next()) {
-            soLop = rs.getInt(1);
-        }
+    private void updateTrangThaiDay(Connection conn, int idGiaoVien) throws SQLException {
+        String countSql = "SELECT COUNT(*) FROM [dbo].[GiaoVien_LopHoc] WHERE ID_GiaoVien = ?";
+        try (PreparedStatement countStmt = conn.prepareStatement(countSql)) {
+            countStmt.setInt(1, idGiaoVien);
+            ResultSet rs = countStmt.executeQuery();
+            int soLop = 0;
+            if (rs.next()) {
+                soLop = rs.getInt(1);
+            }
 
-        String trangThaiDay = (soLop > 0) ? "Đang dạy" : "Chưa dạy";
+            String trangThaiDay = (soLop > 0) ? "Đang dạy" : "Chưa dạy";
 
-        String updateSql = "UPDATE [dbo].[GiaoVien] SET TrangThaiDay = ? WHERE ID_GiaoVien = ?";
-        try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
-            updateStmt.setString(1, trangThaiDay);
-            updateStmt.setInt(2, idGiaoVien);
-            updateStmt.executeUpdate();
+            String updateSql = "UPDATE [dbo].[GiaoVien] SET TrangThaiDay = ? WHERE ID_GiaoVien = ?";
+            try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
+                updateStmt.setString(1, trangThaiDay);
+                updateStmt.setInt(2, idGiaoVien);
+                updateStmt.executeUpdate();
+            }
         }
     }
-}
+
     // Lấy lịch sử giáo viên đã dạy dựa trên các buổi học trước
     public List<GiaoVien> getPreviousTeachersByLopHoc1(int idLopHoc) {
         List<GiaoVien> previousTeachers = new ArrayList<>();
@@ -1345,61 +1344,67 @@ private void updateTrangThaiDay(Connection conn, int idGiaoVien) throws SQLExcep
         }
         return null;
     }
-    
+
     // Xóa giáo viên khỏi lớp học
-public boolean removeTeacherFromClass1(int idLopHoc, int idGiaoVien) throws SQLException {
-    DBContext db = DBContext.getInstance();
-    Connection conn = null;
-    try {
-        conn = db.getConnection();
-        conn.setAutoCommit(false);
+    public boolean removeTeacherFromClass1(int idLopHoc, int idGiaoVien) throws SQLException {
+        DBContext db = DBContext.getInstance();
+        Connection conn = null;
+        try {
+            conn = db.getConnection();
+            conn.setAutoCommit(false);
 
-        // Kiểm tra giáo viên có trong lớp không
-        String checkAssignmentSql = "SELECT COUNT(*) FROM GiaoVien_LopHoc WHERE ID_LopHoc = ? AND ID_GiaoVien = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(checkAssignmentSql)) {
-            stmt.setInt(1, idLopHoc);
-            stmt.setInt(2, idGiaoVien);
-            ResultSet rs = stmt.executeQuery();
-            if (!rs.next() || rs.getInt(1) == 0) {
-                System.out.printf("removeTeacherFromClass1: No assignment found for ID_LopHoc=%d, ID_GiaoVien=%d%n", idLopHoc, idGiaoVien);
-                return false;
+            // Kiểm tra giáo viên có trong lớp không
+            String checkAssignmentSql = "SELECT COUNT(*) FROM GiaoVien_LopHoc WHERE ID_LopHoc = ? AND ID_GiaoVien = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(checkAssignmentSql)) {
+                stmt.setInt(1, idLopHoc);
+                stmt.setInt(2, idGiaoVien);
+                ResultSet rs = stmt.executeQuery();
+                if (!rs.next() || rs.getInt(1) == 0) {
+                    System.out.printf("removeTeacherFromClass1: No assignment found for ID_LopHoc=%d, ID_GiaoVien=%d%n", idLopHoc, idGiaoVien);
+                    return false;
+                }
             }
-        }
 
-        // Xóa phân công giáo viên
-        String deleteSql = "DELETE FROM GiaoVien_LopHoc WHERE ID_LopHoc = ? AND ID_GiaoVien = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(deleteSql)) {
-            stmt.setInt(1, idLopHoc);
-            stmt.setInt(2, idGiaoVien);
-            int rowsAffected = stmt.executeUpdate();
-            if (rowsAffected > 0) {
-                // Ghi log hành động xóa
-                logTeacherAssignmentChange1(idLopHoc, idGiaoVien, idGiaoVien, "Xóa phân công");
-                conn.commit();
-                System.out.printf("removeTeacherFromClass1: Successfully removed ID_GiaoVien=%d from ID_LopHoc=%d, Rows affected=%d%n",
-                        idGiaoVien, idLopHoc, rowsAffected);
-                return true;
-            } else {
+            // Xóa phân công giáo viên
+            String deleteSql = "DELETE FROM GiaoVien_LopHoc WHERE ID_LopHoc = ? AND ID_GiaoVien = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(deleteSql)) {
+                stmt.setInt(1, idLopHoc);
+                stmt.setInt(2, idGiaoVien);
+                int rowsAffected = stmt.executeUpdate();
+                if (rowsAffected > 0) {
+                    // Ghi log hành động xóa
+                    logTeacherAssignmentChange1(idLopHoc, idGiaoVien, idGiaoVien, "Xóa phân công");
+                    conn.commit();  // Commit transaction trước khi update trạng thái để release lock sớm
+
+                    // Cập nhật trạng thái sau commit (sử dụng cùng conn nhưng autoCommit true)
+                    conn.setAutoCommit(true);  // Chuyển sang autoCommit để update riêng
+                    updateTrangThaiDay(conn, idGiaoVien);
+
+                    System.out.printf("removeTeacherFromClass1: Successfully removed ID_GiaoVien=%d from ID_LopHoc=%d, Rows affected=%d%n",
+                            idGiaoVien, idLopHoc, rowsAffected);
+                    return true;
+                } else {
+                    conn.rollback();
+                    System.out.printf("removeTeacherFromClass1: Failed to delete assignment for ID_LopHoc=%d, ID_GiaoVien=%d%n",
+                            idLopHoc, idGiaoVien);
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in removeTeacherFromClass1: " + e.getMessage());
+            e.printStackTrace();
+            if (conn != null) {
                 conn.rollback();
-                System.out.printf("removeTeacherFromClass1: Failed to delete assignment for ID_LopHoc=%d, ID_GiaoVien=%d%n",
-                        idLopHoc, idGiaoVien);
-                return false;
             }
-        }
-    } catch (SQLException e) {
-        System.out.println("SQL Error in removeTeacherFromClass1: " + e.getMessage());
-        e.printStackTrace();
-        if (conn != null) {
-            conn.rollback();
-        }
-        throw e;
-    } finally {
-        if (conn != null) {
-            conn.setAutoCommit(true);
-            conn.close();
+            throw e;
+        } finally {
+            if (conn != null) {
+                conn.setAutoCommit(true);
+                conn.close();
+            }
         }
     }
-}
+
     //Lấy thông tin giáo viên theo id
     public static GiaoVien getGiaoVienById(int id) {
         String sql = """
@@ -1409,8 +1414,7 @@ public boolean removeTeacherFromClass1(int idLopHoc, int idGiaoVien) throws SQLE
             WHERE g.ID_GiaoVien = ?
         """;
 
-        try (Connection conn = DBContext.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBContext.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
@@ -1430,13 +1434,12 @@ public boolean removeTeacherFromClass1(int idLopHoc, int idGiaoVien) throws SQLE
         }
         return null;
     }
-    
-        public static Optional<GiaoVien> findByLopHocId(int idLopHoc) {
-        String sql = "SELECT gv.* FROM GiaoVien_LopHoc gl " +
-                     "JOIN GiaoVien gv ON gl.ID_GiaoVien = gv.ID_GiaoVien " +
-                     "WHERE gl.ID_LopHoc = ?";
-        try (Connection con = DBContext.getInstance().getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+
+    public static Optional<GiaoVien> findByLopHocId(int idLopHoc) {
+        String sql = "SELECT gv.* FROM GiaoVien_LopHoc gl "
+                + "JOIN GiaoVien gv ON gl.ID_GiaoVien = gv.ID_GiaoVien "
+                + "WHERE gl.ID_LopHoc = ?";
+        try (Connection con = DBContext.getInstance().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, idLopHoc);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -1450,28 +1453,27 @@ public boolean removeTeacherFromClass1(int idLopHoc, int idGiaoVien) throws SQLE
         }
         return Optional.empty();
     }
-        
+
     public List<GiaoVien> getAllTeachers() {
-    List<GiaoVien> list = new ArrayList<>();
-    String sql = "SELECT ID_GiaoVien, HoTen FROM GiaoVien WHERE TrangThai = 'Active' order by IsHot desc"; // Chỉ lấy GV đang hoạt động
-    try (Connection conn = new DBContext().getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql);
-         ResultSet rs = ps.executeQuery()) {
-        while (rs.next()) {
-            GiaoVien gv = new GiaoVien();
-            gv.setID_GiaoVien(rs.getInt("ID_GiaoVien"));
-            gv.setHoTen(rs.getString("HoTen"));
-            list.add(gv);
+        List<GiaoVien> list = new ArrayList<>();
+        String sql = "SELECT ID_GiaoVien, HoTen FROM GiaoVien WHERE TrangThai = 'Active' order by IsHot desc"; // Chỉ lấy GV đang hoạt động
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                GiaoVien gv = new GiaoVien();
+                gv.setID_GiaoVien(rs.getInt("ID_GiaoVien"));
+                gv.setHoTen(rs.getString("HoTen"));
+                list.add(gv);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+        return list;
     }
-    return list;
-}
+
     public List<GiaoVien> getTeachersByCourseId(int courseId) {
-    List<GiaoVien> list = new ArrayList<>();
-    // Câu lệnh này JOIN các bảng để tìm đúng giáo viên
-    String sql = """
+        List<GiaoVien> list = new ArrayList<>();
+        // Câu lệnh này JOIN các bảng để tìm đúng giáo viên
+        String sql = """
         SELECT DISTINCT 
             gv.ID_GiaoVien, 
             gv.HoTen
@@ -1487,20 +1489,19 @@ public boolean removeTeacherFromClass1(int idLopHoc, int idGiaoVien) throws SQLE
             gv.HoTen
     """;
 
-    try (Connection conn = new DBContext().getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        
-        ps.setInt(1, courseId);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            GiaoVien gv = new GiaoVien();
-            gv.setID_GiaoVien(rs.getInt("ID_GiaoVien"));
-            gv.setHoTen(rs.getString("HoTen"));
-            list.add(gv);
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, courseId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                GiaoVien gv = new GiaoVien();
+                gv.setID_GiaoVien(rs.getInt("ID_GiaoVien"));
+                gv.setHoTen(rs.getString("HoTen"));
+                list.add(gv);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+        return list;
     }
-    return list;
-}
 }
