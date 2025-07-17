@@ -16,7 +16,6 @@
             font-family: 'Segoe UI', sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
             background-color: #f4f6f9;
         }
         .sidebar {
@@ -25,6 +24,7 @@
             height: 100vh;
             padding: 20px;
             color: white;
+            position: fixed;
         }
         .sidebar-title {
             font-size: 18px;
@@ -58,8 +58,10 @@
             color: #ffcccc;
         }
         .main-content {
-            flex: 1;
-            padding: 30px;
+            margin-left: 270px; 
+            padding: 50px;
+            width: calc(100vw - 260px); 
+            box-sizing: border-box; 
         }
         .header {
             display: flex;
@@ -124,7 +126,157 @@
             border: 2px solid #28a745;
             border-radius: 4px;
         }
+        
+        .schedule-controls {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap; /* Cho phép xuống dòng trên màn hình nhỏ */
+                gap: 15px;
+                margin-bottom: 20px;
+                padding: 15px;
+                background-color: #f8f9fa;
+                border: 1px solid #e9ecef;
+                border-radius: 8px;
+            }
 
+            /* Khu vực chứa các nút bấm */
+            .schedule-controls .nav-buttons {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .schedule-controls .nav-button {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 15px;
+                background-color: #1F4E79;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                transition: background-color 0.2s;
+            }
+
+            .schedule-controls .nav-button:hover {
+                background-color: #163E5C;
+            }
+
+            /* Khu vực hiển thị tuần hiện tại */
+            .schedule-controls .current-week-display {
+                font-size: 1.1em;
+                font-weight: bold;
+                color: #333;
+                text-align: center;
+                flex-grow: 1; /* Cho phép co giãn để lấp đầy không gian */
+            }
+
+            /* Khu vực chọn tuần cụ thể */
+            .schedule-controls .week-picker-form {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .schedule-controls .week-picker-form label {
+                font-weight: 500;
+            }
+
+            .schedule-controls .week-picker-form input[type="week"] {
+                padding: 5px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            .schedule-controls .week-picker-form button {
+                 padding: 8px 12px;
+                background-color: #555;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            .schedule-controls .week-picker-form button:hover {
+                background-color: #333;
+            }   
+            
+            .attendance-status {
+                display: inline-block;
+                padding: 4px 10px;
+                border-radius: 12px;
+                font-size: 13px;
+                font-weight: bold;
+                color: white;
+                text-align: center;
+                width: 85px; /* Đặt chiều rộng cố định để các trạng thái đều nhau */
+            }
+
+            .status-present {
+                background-color: #28a745; /* Xanh lá */
+            }
+
+            .status-absent {
+                background-color: #dc3545; /* Đỏ */
+            }
+
+            .status-late {
+                background-color: #ffc107; /* Vàng */
+                color: #333;
+            }
+
+            .status-pending {
+                background-color: #6c757d; /* Xám */
+            }
+            
+            .modal-overlay {
+                display: none; /* Mặc định ẩn */
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.6);
+                justify-content: center;
+                align-items: center;
+            }
+
+            /* Nội dung của modal */
+            .modal-content {
+                background-color: #fefefe;
+                padding: 25px 30px;
+                border: 1px solid #888;
+                width: 80%;
+                max-width: 500px; /* Chiều rộng tối đa */
+                border-radius: 10px;
+                position: relative;
+                box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+                animation: fadeIn 0.3s;
+            }
+
+            /* Nút đóng (dấu X) */
+            .close-button {
+                color: #aaa;
+                position: absolute;
+                top: 10px;
+                right: 20px;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+            .close-button:hover,
+            .close-button:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            @keyframes fadeIn {
+                from {opacity: 0; transform: scale(0.9);}
+                to {opacity: 1; transform: scale(1);}
+            }
     </style>
 </head>
 <body>
@@ -154,84 +306,173 @@
         <span>Xin chào ${sessionScope.user.email}</span>
     </div>
 
-    <c:choose>
-        <c:when test="${not empty lichHocList}">
-            <table>
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Ngày học</th>
-                        <th>Giờ học</th>
-                        <th>Lớp học</th>
-                        <th>Phòng học</th>
-                        <th>Ghi chú</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="lh" items="${lichHocList}" varStatus="i">
-                        <tr>
-                            <td>${i.index + 1}</td>
-                            <td>${lh.ngayHoc}</td>
-                            <td>${lh.slotThoiGian}</td>
-                            <td>${lh.tenLopHoc}</td>
-                            <td>${lh.tenPhongHoc}</td>
-                            <td>${lh.ghiChu}</td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
-        </c:when>
-        <c:otherwise>
-            <div class="no-data">Bạn chưa có lịch học nào sắp tới!</div>
-        </c:otherwise>
-    </c:choose>
-    <br>        
-            
-    
-    
-    //Trả dữ liệu lịch sang đây
-    <div class="timetable-wrapper">
-        <h3>🗓️ Thời khóa biểu tuần này</h3>
-        <table class="timetable">
-            <thead>
-                <tr>
-                    <th>Giờ học</th>
-                    <th>Thứ 2</th>
-                    <th>Thứ 3</th>
-                    <th>Thứ 4</th>
-                    <th>Thứ 5</th>
-                    <th>Thứ 6</th>
-                    <th>Thứ 7</th>
-                    <th>Chủ nhật</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>07:00 - 09:00</td>
-                    <td class="active">Toán NC</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td class="active">Anh Văn</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>09:30 - 11:30</td>
-                    <td></td>
-                    <td class="active">Lý 9 nâng cao</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <!-- Thêm nhiều slot hơn nếu cần -->
-            </tbody>
-        </table>
-    </div>
+    <div class="data-table-container schedule-container">
+                        <h3 class="section-title"><i class="fas fa-calendar-alt"></i> Thời Khóa Biểu</h3>
+
+                        <div class="schedule-controls">
+                            <div class="nav-buttons">
+                                <a href="StudentViewScheduleServlet?viewDate=${previousWeekLink}" class="nav-button"><i class="fas fa-chevron-left"></i> Tuần trước</a>
+                                <a href="StudentViewScheduleServlet" class="nav-button"><i class="fas fa-calendar-day"></i> Tuần này</a>
+                                <a href="StudentViewScheduleServlet?viewDate=${nextWeekLink}" class="nav-button">Tuần sau <i class="fas fa-chevron-right"></i></a>
+                            </div>
+
+                            <div class="current-week-display">
+                                <span>${displayWeekRange}</span>
+                            </div>
+                            
+                            <form action="StudentViewScheduleServlet" method="GET" class="week-picker-form">
+                                <label for="week-picker">Chọn tuần:</label>
+                                <input type="week" id="week-picker" name="week" value="${selectedWeekValue}">
+                                <button type="submit">Xem</button>
+                            </form>
+
+                        </div>                                
+                        <table class="table table-bordered schedule-grid">
+                            <thead>
+                                <tr>
+                                    <th style="width: 12%; background-color: #343a40;">Ca học</th>
+                                    <c:forEach var="date" items="${weekDates}">
+                                        <th style="width: 12.5%;">
+                                            <%
+                                                // get date from object in servlet
+                                                Object obj = pageContext.getAttribute("date");
+                                                if (obj instanceof java.time.LocalDate) {
+                                                    java.time.LocalDate currentDate = (java.time.LocalDate) obj;
+
+                                                    // format for day in week
+                                                    java.util.Locale localeVN = new java.util.Locale("vi", "VN");
+                                                    java.time.format.DateTimeFormatter dayFormatter = 
+                                                        java.time.format.DateTimeFormatter.ofPattern("EEEE", localeVN);
+
+                                                    // format for date (day and month)
+                                                    java.time.format.DateTimeFormatter dateFormatter = 
+                                                        java.time.format.DateTimeFormatter.ofPattern("dd/MM");
+
+                                                    // HTML file
+                                                    out.print(currentDate.format(dayFormatter));
+                                                    out.print("<br><small>");
+                                                    out.print(currentDate.format(dateFormatter));
+                                                    out.print("</small>");
+                                                }
+                                            %>
+                                        </th>
+                                    </c:forEach>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="slot" items="${timeSlots}">
+                                    <tr>
+                                        <td class="slot-time">${slot.slotThoiGian}</td>
+
+                                        <c:forEach var="date" items="${weekDates}" varStatus="loop">
+                                            <c:set var="dayOfWeek" value="${date.dayOfWeek.value}" />
+                                            <c:set var="key" value="${slot.ID_SlotHoc}-${dayOfWeek}"/>
+                                            <c:set var="lh" value="${scheduleMap[key]}" />
+
+                                            <td>
+                                                        <div class="mt-auto">
+                                                            <c:choose>
+                                                                <c:when test="${not empty lh}">
+                                                                    <div class="class-info schedule-cell-clickable" 
+                                                                        data-note="${lh.ghiChu}" 
+                                                                        data-classname="${lh.tenLopHoc}">
+                                                                        <div>
+                                                                            <div class="class-info-name">${lh.tenLopHoc}</div>
+                                                                            <div class="class-info-room"><i class="fas fa-map-marker-alt fa-xs"></i> ${lh.tenPhongHoc}</div>
+                                                                        </div>
+                                                                        <div class="mt-auto">
+                                                                            <c:set var="statusText" value="----" />
+                                                                            <c:set var="statusClass" value="status-pending" />
+                                                                            <c:if test="${not empty lh.trangThaiDiemDanh}">
+                                                                                <c:choose>
+                                                                                    <c:when test="${lh.trangThaiDiemDanh == 'Có mặt'}">
+                                                                                        <c:set var="statusText" value="Có mặt" />
+                                                                                        <c:set var="statusClass" value="status-present" />
+                                                                                    </c:when>
+                                                                                    <c:when test="${lh.trangThaiDiemDanh == 'Vắng'}">
+                                                                                        <c:set var="statusText" value="Vắng" />
+                                                                                        <c:set var="statusClass" value="status-absent" />
+                                                                                    </c:when>
+                                                                                    <c:when test="${lh.trangThaiDiemDanh == 'Đi muộn'}">
+                                                                                        <c:set var="statusText" value="Đi muộn" />
+                                                                                        <c:set var="statusClass" value="status-late" />
+                                                                                    </c:when>
+                                                                                </c:choose>
+                                                                            </c:if>
+                                                                            <span class="attendance-status ${statusClass}">${statusText}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </div>
+                                            </td>
+                                        </c:forEach>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>    
+
         
 </div>
+              <div id="noteModal" class="modal-overlay">
+                <div class="modal-content">
+                    <span class="close-button">&times;</span>
+                    <h3 id="modalClassName">Tên lớp học</h3>
+                    <hr>
+                    <p id="modalNoteContent"></p>
+                </div>
+            </div>
+                                
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Lấy các phần tử của modal
+        const modal = document.getElementById('noteModal');
+        const modalClassName = document.getElementById('modalClassName');
+        const modalNoteContent = document.getElementById('modalNoteContent');
+        const closeButton = document.querySelector('.close-button');
 
+        // Lấy tất cả các ô lịch học có thể click
+        const clickableCells = document.querySelectorAll('.schedule-cell-clickable');
+
+        // Thêm sự kiện click cho mỗi ô
+        clickableCells.forEach(cell => {
+            cell.addEventListener('click', function () {
+                // Lấy dữ liệu từ thuộc tính data-* của ô được click
+                const className = cell.dataset.classname;
+                let note = cell.dataset.note;
+
+                // Kiểm tra nếu ghi chú rỗng hoặc không có
+                if (!note || note.trim() === '' || note.trim() === 'null') {
+                    note = 'Không có ghi chú cho buổi học này.';
+                }
+
+                // Gán dữ liệu vào modal
+                modalClassName.textContent = className;
+                modalNoteContent.textContent = note;
+
+                // Hiển thị modal
+                modal.style.display = 'flex';
+            });
+        });
+
+        // Hàm để đóng modal
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        // Đóng modal khi click vào nút X
+        closeButton.addEventListener('click', closeModal);
+
+        // Đóng modal khi click ra ngoài vùng nội dung
+        window.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+    });
+</script>
 </body>
 </html>

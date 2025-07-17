@@ -308,7 +308,6 @@
                         font-size: 15px;
                         font-weight: 500;
                         text-decoration: none;
-
                         margin: 20px 0px    ;
                         color: #1F4E79;             
                         background-color: transparent;

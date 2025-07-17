@@ -21,6 +21,18 @@
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="dal.AdminDAO" %>
 <%@ page import="model.Admin" %>
+<%
+    // Kiểm tra session và vai trò người dùng
+    User user = (User) session.getAttribute("user"); // Giả sử bạn lưu thông tin người dùng trong session với key là "user"
+
+    // Nếu người dùng chưa đăng nhập (user == null) hoặc không phải là Admin (ID_VaiTro != 1)
+    if (user == null || user.getID_VaiTro() != 1) {
+        // Gửi thông báo lỗi về trang đăng nhập
+        session.setAttribute("err", "Bạn không có quyền truy cập trang này. Vui lòng đăng nhập với tài khoản Admin.");
+        response.sendRedirect(request.getContextPath() + "views/login.jsp"); // Hoặc trang đăng nhập của bạn
+        return; // Dừng việc xử lý trang hiện tại
+    }
+%>
 <!DOCTYPE html>
 <html lang="vi">
     <head>

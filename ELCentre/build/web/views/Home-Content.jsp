@@ -279,7 +279,7 @@
                                         </div>
                                         <div class="post-content">
                                             <div class="entry-thumb">
-                                                <a href="#" title="${blog.getBlogTitle()}"><img loading="lazy" decoding="async" width="200" height="90" src="${pageContext.request.contextPath}/img/avatar/${blog.getImage()}" alt="${blog.getBlogTitle()}" title="${blog.getBlogTitle()}" /></a>
+                                                <a href="#" title="${blog.getBlogTitle()}"><img loading="lazy" decoding="async" width="300" height="90" src="${pageContext.request.contextPath}/${blog.getImage()}" alt="${blog.getBlogTitle()}" title="${blog.getBlogTitle()}" /></a>
                                             </div>
                                             <div class="entry-detail">
                                                 <h2><a href="#" title="${blog.getBlogTitle()}">${blog.getBlogTitle()}</a></h2>

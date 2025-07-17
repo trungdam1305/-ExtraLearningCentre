@@ -48,6 +48,8 @@ public class LichHoc {
      private boolean daDiemDanh; // THÊM THUỘC TÍNH NÀY
      
      private boolean coTheSua;
+     
+     private String trangThaiDiemDanh;
     /**
      * Default constructor.
      */
@@ -212,5 +214,13 @@ public class LichHoc {
 
     public void setID_PhongHoc(int ID_PhongHoc) {
         this.ID_PhongHoc = ID_PhongHoc;
+    }
+    
+    public String getTrangThaiDiemDanh() {
+        return trangThaiDiemDanh;
+    }
+    
+    public void setTrangThaiDiemDanh(String trangThaiDiemDanh) {
+        this.trangThaiDiemDanh = trangThaiDiemDanh;
     }
 }
