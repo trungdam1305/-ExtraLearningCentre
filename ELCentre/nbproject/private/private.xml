@@ -39,7 +39,10 @@
             <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/Home-Material/materialDetails.jsp</file>
         </group>
         <group>
-            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/web/views/admin/addClass.jsp</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/dal/DBContext.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageClassDetail.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/dal/GiaoVienDAO.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/dao/DBContext.java</file>
             <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/web/views/admin/viewClass.jsp</file>
         </group>
     </open-files>
