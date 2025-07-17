@@ -39,8 +39,8 @@
             <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/Home-Material/materialDetails.jsp</file>
         </group>
         <group>
-            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageClassDetail_LopHoc_GiaoVien.java</file>
-            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageClassDetail.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/dal/LopHocInfoDTODAO.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithTeacher.java</file>
         </group>
     </open-files>
 </project-private>
