@@ -1474,7 +1474,7 @@ public class GiaoVienDAO {
         DBContext db = DBContext.getInstance();
         try {
             String sql = """
-                             select HS.HoTen from GiaoVien GV
+                             select GV.HoTen from GiaoVien GV
                              join TaiKhoan TK 
                              ON GV.ID_TaiKhoan = TK.ID_TaiKhoan 
                              where GV.ID_TaiKhoan = ? 

@@ -27,7 +27,8 @@ public class HoTroDAO {
         try {
             String sql = """
                          select * from HoTro 
-                         where DaDuyet = N'Chờ duyệt' ; 
+                         where DaDuyet = N'Chờ duyệt'
+                         order by ThoiGian DESC ; 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
