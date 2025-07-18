@@ -258,45 +258,53 @@ public class ManageClassDetail_LopHoc_GiaoVien extends HttpServlet {
                     e.printStackTrace();
                 }
             } else if ("addStudent".equals(action)) {
-                try {
-                    int idHocSinh = Integer.parseInt(request.getParameter("ID_HocSinh"));
-                    if (lopHoc.getSiSo() >= lopHoc.getSiSoToiDa()) {
-                        request.setAttribute("studentErr", "Lớp đã đạt sĩ số tối đa!");
-                        System.out.printf("doPost: Class ID=%d has reached maximum capacity (SiSo=%d, SiSoToiDa=%d)%n",
-                                idLopHoc, lopHoc.getSiSo(), lopHoc.getSiSoToiDa());
-                    } else if (hocSinhDAO.isStudentInClass1(idHocSinh, idLopHoc)) {
-                        request.setAttribute("studentErr", "Học sinh đã có trong lớp này!");
-                        System.out.printf("doPost: ID_HocSinh=%d already in class ID=%d%n", idHocSinh, idLopHoc);
-                    } else if (hocSinhDAO.hasSchoolConflict1(idHocSinh, idLopHoc)) {
-                        request.setAttribute("studentErr", "Không thể thêm học sinh vì học sinh và giáo viên cùng trường!");
-                        System.out.printf("doPost: School conflict for ID_HocSinh=%d in class ID=%d%n", idHocSinh, idLopHoc);
-                    } else {
-                        boolean studentAdded = hocSinhDAO.addStudentToClass1(idHocSinh, idLopHoc);
-                        if (studentAdded) {
-                            boolean siSoUpdated = lopHocDAO.updateSiSo(idLopHoc, lopHoc.getSiSo() + 1);
-                            if (siSoUpdated) {
-                                request.setAttribute("studentSuc", "Học sinh đã được thêm vào lớp thành công!");
-                                System.out.printf("doPost: Successfully added ID_HocSinh=%d to ID_LopHoc=%d, SiSo updated to %d%n",
-                                        idHocSinh, idLopHoc, lopHoc.getSiSo() + 1);
-                            } else {
-                                request.setAttribute("studentErr", "Lỗi khi cập nhật sĩ số lớp!");
-                                System.out.printf("doPost: Failed to update SiSo for ID_LopHoc=%d%n", idLopHoc);
+                String[] selectedStudents = request.getParameterValues("selectedStudents");
+                if (selectedStudents == null || selectedStudents.length == 0) {
+                    request.setAttribute("studentErr", "Chưa chọn học sinh nào!");
+                } else {
+                    int addedCount = 0;
+                    List<String> errors = new ArrayList<>();
+                    for (String idStr : selectedStudents) {
+                        try {
+                            int id = Integer.parseInt(idStr);
+                            if (lopHoc.getSiSo() >= lopHoc.getSiSoToiDa()) {
+                                errors.add("Lớp đã đạt sĩ số tối đa cho học sinh ID " + id);
+                                continue;
                             }
-                        } else {
-                            request.setAttribute("studentErr", "Không thể thêm học sinh vào lớp!");
-                            System.out.printf("doPost: Failed to add ID_HocSinh=%d to ID_LopHoc=%d%n", idHocSinh, idLopHoc);
+                            if (hocSinhDAO.isStudentInClass1(id, idLopHoc)) {
+                                errors.add("Học sinh ID " + id + " đã có trong lớp!");
+                                continue;
+                            }
+                            if (hocSinhDAO.hasSchoolConflict1(id, idLopHoc)) {
+                                errors.add("Không thể thêm học sinh ID " + id + " vì xung đột trường học!");
+                                continue;
+                            }
+                            boolean studentAdded = hocSinhDAO.addStudentToClass1(id, idLopHoc);
+                            if (studentAdded) {
+                                lopHoc.setSiSo(lopHoc.getSiSo() + 1);
+                                boolean siSoUpdated = lopHocDAO.updateSiSo(idLopHoc, lopHoc.getSiSo());
+                                if (siSoUpdated) {
+                                    addedCount++;
+                                } else {
+                                    errors.add("Lỗi khi cập nhật sĩ số lớp cho học sinh ID " + id);
+                                }
+                            } else {
+                                errors.add("Không thể thêm học sinh ID " + id + " vào lớp!");
+                            }
+                        } catch (NumberFormatException e) {
+                            errors.add("ID học sinh không hợp lệ: " + idStr);
+                        } catch (SQLException e) {
+                            errors.add("Lỗi SQL khi thêm học sinh ID " + idStr + ": " + e.getMessage());
                         }
                     }
-                } catch (NumberFormatException e) {
-                    request.setAttribute("studentErr", "Vui lòng chọn một học sinh hợp lệ!");
-                    System.out.println("doPost: Invalid ID_HocSinh: " + e.getMessage());
-                    e.printStackTrace();
-                } catch (SQLException e) {
-                    request.setAttribute("studentErr", "Lỗi khi thêm học sinh: " + e.getMessage());
-                    System.out.println("doPost: SQL Error in addStudent: " + e.getMessage());
-                    e.printStackTrace();
+                    if (addedCount > 0) {
+                        request.setAttribute("studentSuc", "Đã thêm " + addedCount + " học sinh thành công!");
+                    }
+                    if (!errors.isEmpty()) {
+                        request.setAttribute("studentErr", String.join("<br>", errors));
+                    }
                 }
-            } else if ("moveOutStudent".equalsIgnoreCase(action)) {
+            }else if ("moveOutStudent".equalsIgnoreCase(action)) {
                 try {
                     int idHocSinh = Integer.parseInt(request.getParameter("ID_HocSinh"));
                     if (!hocSinhDAO.isStudentInClass1(idHocSinh, idLopHoc)) {
@@ -399,7 +407,7 @@ public class ManageClassDetail_LopHoc_GiaoVien extends HttpServlet {
             request.setAttribute("ID_Khoi", idKhoi);
 
             // Chuyển tiếp đến JSP
-            request.getRequestDispatcher("/views/admin/viewClass.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/admin/viewClass_LopHoc_GiaoVien.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println("doPost: Error: " + e.getMessage());
             e.printStackTrace();
@@ -410,7 +418,7 @@ public class ManageClassDetail_LopHoc_GiaoVien extends HttpServlet {
             request.setAttribute("lichHocList", lichHocDAO.getLichHocByLopHoc(idLopHoc));
             request.setAttribute("ID_KhoaHoc", idKhoaHoc);
             request.setAttribute("ID_Khoi", idKhoi);
-            request.getRequestDispatcher("/views/admin/viewClass.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/admin/viewClass_LopHoc_GiaoVien.jsp").forward(request, response);
         }
     }
 
