@@ -339,11 +339,11 @@
             .tables-wrapper .data-table-container:last-child {
                 flex: 3;
             }
-            /* === CSS CHO KHU VỰC LỊCH HỌC VÀ BỘ LỌC TUẦN === */
+            /* === CSS Shedule === */
 
-            /* CSS CHO LỊCH BIỂU DẠNG LƯỚI */
+            /* Grid */
             .schedule-grid {
-                table-layout: fixed; /* Giúp các cột có chiều rộng đều nhau */
+                table-layout: fixed; /* same width from column */
                 width: 100%;
                 
             }
@@ -351,7 +351,7 @@
                 text-align: center;
                 vertical-align: top;
                 padding: 15px;
-                height: 20px; /* Chiều cao cho mỗi ô */
+                height: 20px; 
             }
             .schedule-grid th {
                 background-color: #1F4E79;
@@ -361,12 +361,12 @@
                 border: 1px solid #e9ecef;
                 background-color: #fff;
             }
-            .schedule-grid .slot-time { /* Ô hiển thị thời gian */
+            .schedule-grid .slot-time { 
                 font-weight: bold;
                 background-color: #f8f9fa;
                 vertical-align: middle;
             }
-            .class-info { /* Khung chứa thông tin lớp trong ô */
+            .class-info { 
                 border-radius: 6px;
                 background-color: #e3f2fd;
                 padding: 15px 0px;
@@ -382,12 +382,12 @@
                 font-size: 0.8em;
                 color: #6c757d;
             }
-            /* === CSS CHO KHU VỰC ĐIỀU KHIỂN LỊCH HỌC === */
+            /* === Filter === */
             .schedule-controls {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                flex-wrap: wrap; /* Cho phép xuống dòng trên màn hình nhỏ */
+                flex-wrap: wrap; 
                 gap: 15px;
                 margin-bottom: 20px;
                 padding: 15px;
@@ -396,7 +396,6 @@
                 border-radius: 8px;
             }
 
-            /* Khu vực chứa các nút bấm */
             .schedule-controls .nav-buttons {
                 display: flex;
                 align-items: center;
@@ -419,16 +418,15 @@
                 background-color: #163E5C;
             }
 
-            /* Khu vực hiển thị tuần hiện tại */
+            /* current week */
             .schedule-controls .current-week-display {
                 font-size: 1.1em;
                 font-weight: bold;
                 color: #333;
                 text-align: center;
-                flex-grow: 1; /* Cho phép co giãn để lấp đầy không gian */
+                flex-grow: 1; 
             }
 
-            /* Khu vực chọn tuần cụ thể */
             .schedule-controls .week-picker-form {
                 display: flex;
                 align-items: center;
@@ -456,7 +454,7 @@
             .schedule-controls .week-picker-form button:hover {
                 background-color: #333;
             }   
-            /* === CSS CHO NÚT ĐIỂM DANH === */
+            /* === Attendance button === */
             .attendance-btn {
                 display: inline-flex;
                 align-items: center;
@@ -475,13 +473,12 @@
             .attendance-btn:hover {
                 opacity: 0.85;
             }
-            /* Trạng thái chưa điểm danh: MÀU CAM */
+
             .status-pending {
                 text-decoration: none;
-                color:red;
-                
+                color:red;  
             }
-            /* Trạng thái đã điểm danh: MÀU XANH LÁ */
+ 
             .status-done {
                 text-decoration: none;
                 color: #27ae60;
@@ -491,7 +488,7 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                flex-wrap: wrap; /* Cho phép xuống dòng trên màn hình nhỏ */
+                flex-wrap: wrap; 
                 gap: 15px;
                 margin-bottom: 20px;
                 padding: 15px;
@@ -501,7 +498,6 @@
                 box-shadow: 0 4px 8px rgba(0,0,0,0.05);
             }
 
-            /* Khu vực chứa các nút bấm */
             .schedule-controls .nav-buttons {
                 display: flex;
                 align-items: center;
@@ -525,16 +521,14 @@
                 background-color: #163E5C;
             }
 
-            /* Khu vực hiển thị tuần hiện tại */
             .schedule-controls .current-week-display {
                 font-size: 1.2em;
                 font-weight: bold;
                 color: #333;
                 text-align: center;
-                flex-grow: 1; /* Cho phép co giãn để lấp đầy không gian */
+                flex-grow: 1; 
             }
 
-            /* Khu vực chọn tuần cụ thể */
             .schedule-controls .week-picker-form {
                 display: flex;
                 align-items: center;
@@ -653,6 +647,7 @@
                         <h3 class="section-title"><i class="fas fa-calendar-alt"></i> Thời Khóa Biểu</h3>
 
                         <div class="schedule-controls">
+                            <!--Filter next and Previous week-->
                             <div class="nav-buttons">
                                 <a href="TeacherDashboard?viewDate=${previousWeekLink}" class="nav-button"><i class="fas fa-chevron-left"></i> Tuần trước</a>
                                 <a href="TeacherDashboard" class="nav-button"><i class="fas fa-calendar-day"></i> Tuần này</a>
@@ -662,7 +657,7 @@
                             <div class="current-week-display">
                                 <span>${displayWeekRange}</span>
                             </div>
-
+                            <!--Filter Select week-->    
                             <form action="TeacherDashboard" method="GET" class="week-picker-form">
                                 <label for="week-picker">Chọn tuần:</label>
                                 <input type="week" id="week-picker" name="week" value="${selectedWeekValue}">
@@ -670,6 +665,7 @@
                             </form>
 
                         </div>                                
+                        <!--Schedule grid-->
                         <table class="table table-bordered schedule-grid">
                             <thead>
                                 <tr>
@@ -703,6 +699,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <!--loop to get slot from db-->
                                 <c:forEach var="slot" items="${timeSlots}">
                                     <tr>
                                         <td class="slot-time">${slot.slotThoiGian}</td>

@@ -92,7 +92,7 @@ throws ServletException, IOException {
     List<LopHoc> lopHoc = lopHocDAO.getAllFeaturedLopHoc();//get List Feature Class
     List<LopHocTheoNhomDTO> listLopHoc = lopHocDAO.getTongLopHocTheoNhomMonHoc();//get List Class divided by Subject
     List<KhoiHoc> listKhoi = khoiHocDAO.getAllKhoiHoc();//get List Grade
-    List<Blog> listBlog = blogDAO.getBlogsByTrungTam("Trung Tâm");//get ListBlog that refer to centre
+    List<Blog> listBlog = blogDAO.getAllBlog();//get ListBlog that refer to centre
     List<GiaoVien> listGiaoVien = gvDAO.HomePageGetGiaoVien();//get List Teacher
     List<Slider> sliders = sliderDAO.getAllSlider();//get List Slide
     
@@ -113,33 +113,6 @@ throws ServletException, IOException {
     request.getRequestDispatcher("views/HomePage.jsp").forward(request, response);
 }
 
-    //Debugging to Test the DAO and Function
-    public static void main(String[] args) {
-    GiaoVienDAO gvDAO = new GiaoVienDAO();
-    KhoaHocDAO khoaHocDAO = new KhoaHocDAO();
-    HocSinhDAO hocSinhDAO = new HocSinhDAO();
-    LopHocDAO lopHocDAO = new LopHocDAO();
-    KhoiHocDAO khoiHocDAO = new KhoiHocDAO();
-    BlogDAO blogDAO = new BlogDAO();
-
-    List<GiaoVien> listSpecialGV = gvDAO.getSpecialised();
-    int numKhoaHoc = khoaHocDAO.getTotalCourses();
-    int numHocSinh = hocSinhDAO.getTotalHocSinh();
-    int numLopHoc = lopHocDAO.getTotalLopHoc();
-    List<LopHoc> lopHoc = lopHocDAO.getAllFeaturedLopHoc();
-    List<LopHocTheoNhomDTO> listLopHoc = lopHocDAO.getTongLopHocTheoNhomMonHoc();
-    List<KhoiHoc> listKhoi = khoiHocDAO.getAllKhoiHoc();
-    List<Blog> listBlog = blogDAO.getAllBlog();
-    List<GiaoVien> listGiaoVien = gvDAO.HomePageGetGiaoVien();
-
-    System.out.println("listLopHoc size: " + (listLopHoc == null ? 0 : listLopHoc.size()));
-    System.out.println("listKhoi size: " + (listKhoi == null ? 0 : listKhoi.size()));
-    System.out.println("listSpecialGV size: " + (listSpecialGV == null ? 0 : listSpecialGV.size()));
-    System.out.println("listGiaoVien size: " + (listGiaoVien == null ? 0 : listGiaoVien.size()));
-    System.out.println("numKhoaHoc: " + numKhoaHoc);
-    System.out.println("numHocSinh: " + numHocSinh);
-    System.out.println("numLopHoc: " + numLopHoc);
-}
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

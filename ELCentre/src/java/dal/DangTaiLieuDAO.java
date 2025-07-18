@@ -124,7 +124,7 @@ public class DangTaiLieuDAO {
             while (rs.next()) {
                 list.add(new MonHoc(rs.getInt("ID_MonHoc"), rs.getString("TenMonHoc")));
             }
-        } catch (java.sql.SQLException e) {
+        } catch (SQLException e) {
             System.err.println("Lỗi khi lấy danh sách Môn Học: " + e.getMessage());
             e.printStackTrace();
         }
@@ -143,7 +143,7 @@ public class DangTaiLieuDAO {
             while (rs.next()) {
                 list.add(new LoaiTaiLieu(rs.getInt("ID_LoaiTaiLieu"), rs.getString("LoaiTaiLieu")));
             }
-        } catch (java.sql.SQLException e) {
+        } catch (SQLException e) {
             System.err.println("Lỗi khi lấy danh sách Loại Tài Liệu: " + e.getMessage());
             e.printStackTrace();
         }
@@ -153,7 +153,7 @@ public class DangTaiLieuDAO {
     /**
      * Hàm tiện ích để chuyển đổi một hàng trong ResultSet thành đối tượng DangTaiLieu.
      */
-    private DangTaiLieu mapResultSetToDangTaiLieu(ResultSet rs) throws java.sql.SQLException {
+    private DangTaiLieu mapResultSetToDangTaiLieu(ResultSet rs) throws SQLException {
         DangTaiLieu dtl = new DangTaiLieu();
         dtl.setID_Material(rs.getInt("ID_Material"));
         dtl.setID_GiaoVien(rs.getObject("ID_GiaoVien") != null ? rs.getInt("ID_GiaoVien") : null);

@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import model.LopHoc;
 
-@WebServlet(name = "ClassDetailsServlet", urlPatterns = {"/class-details"})
+
 public class ClassDetailsServlet extends HttpServlet {
 
     @Override

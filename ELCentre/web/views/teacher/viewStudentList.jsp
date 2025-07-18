@@ -395,10 +395,7 @@
                                     <th>Họ Tên</th>
                                     <th>Ngày Sinh</th>
                                     <th>Giới Tính</th>
-<<<<<<< HEAD
                                     <th>Lớp đang học tại trường</th>
-=======
->>>>>>> 942ba0eced369676945c15812aa61113d7de5a14
                                     <th>SĐT Phụ Huynh</th>
                                     <th>Ảnh</th>
                                 </tr>
@@ -436,10 +433,7 @@
                                             <%-- Kết thúc Scriptlet --%>
                                         </td>
                                         <td>${student.gioiTinh}</td>
-<<<<<<< HEAD
                                         <td>${student.getLopDangHocTrenTruong()}</td>
-=======
->>>>>>> 942ba0eced369676945c15812aa61113d7de5a14
                                         <td>${student.SDT_PhuHuynh}</td>
                                         <td>
                                             <img src="${pageContext.request.contextPath}/img/avatar/${student.avatar}" 

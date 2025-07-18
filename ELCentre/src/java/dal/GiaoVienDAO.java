@@ -182,8 +182,10 @@ public class GiaoVienDAO {
         try {
             String sql = """
                          select * from GiaoVien gv JOIN TruongHoc th 
-                         ON gv.ID_TruongHoc = th.ID_TruongHoc
-                         where ID_TaiKhoan = ? 
+                        ON gv.ID_TruongHoc = th.ID_TruongHoc
+                        JOIN TaiKhoan TK 
+                        ON TK.ID_TaiKhoan = gv.ID_TaiKhoan
+                    where gv.ID_TaiKhoan = ? ; 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             statement.setString(1, id_TaiKhoan);
@@ -205,7 +207,8 @@ public class GiaoVienDAO {
                         rs.getString("TenTruongHoc"),
                         rs.getString("BangCap"),
                         rs.getString("LopDangDayTrenTruong"),
-                        rs.getString("TrangThaiDay")
+                        rs.getString("TrangThaiDay"),
+                        rs.getString("MatKhau")
                 );
                 giaoviens.add(giaovien);
             }
@@ -1021,20 +1024,40 @@ public class GiaoVienDAO {
     }
 
     // Lấy danh sách giáo viên theo chuyên môn
-    public List<GiaoVien> getTeachersBySpecialization1(String chuyenMon) {
+    public List<GiaoVien> getTeachersBySpecialization1(String tenKhoaHoc) {
         List<GiaoVien> teachers = new ArrayList<>();
         DBContext db = DBContext.getInstance();
-        String sql = """
-            SELECT g.ID_GiaoVien, g.ID_TaiKhoan, g.HoTen, g.ChuyenMon, g.SDT, 
-                   g.ID_TruongHoc, g.Luong, g.IsHot, g.TrangThai, g.NgayTao, 
-                   g.Avatar, g.BangCap, g.LopDangDayTrenTruong, g.TrangThaiDay, 
-                   th.TenTruongHoc
-            FROM GiaoVien g
-            LEFT JOIN TruongHoc th ON g.ID_TruongHoc = th.ID_TruongHoc
-            WHERE g.ChuyenMon LIKE ? AND g.TrangThai = 'Active'
-        """;
-        try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, "%" + chuyenMon + "%");
+
+        if (tenKhoaHoc == null || tenKhoaHoc.length() < 2) {
+            return teachers;
+        }
+
+        List<String> subStrings = new ArrayList<>();
+        String lowerTenKhoaHoc = tenKhoaHoc.toLowerCase();
+        for (int i = 0; i < lowerTenKhoaHoc.length() - 1; i++) {
+            subStrings.add(lowerTenKhoaHoc.substring(i, i + 2));
+        }
+
+        StringBuilder sql = new StringBuilder("""
+                                              SELECT gv.*, th.TenTruongHoc 
+                                              FROM GiaoVien gv 
+                                              LEFT JOIN TruongHoc th ON gv.ID_TruongHoc = th.ID_TruongHoc 
+                                              WHERE gv.TrangThai = 'Active' AND (
+                                              """);
+        List<Object> params = new ArrayList<>();
+        for (int i = 0; i < subStrings.size(); i++) {
+            if (i > 0) {
+                sql.append(" OR ");
+            }
+            sql.append("LOWER(gv.ChuyenMon) LIKE ?");
+            params.add("%" + tenKhoaHoc + "%");
+        }
+        sql.append(")");
+
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                stmt.setObject(i + 1, params.get(i));
+            }
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 GiaoVien giaoVien = new GiaoVien(
@@ -1049,15 +1072,12 @@ public class GiaoVienDAO {
                         rs.getString("TrangThai"),
                         rs.getTimestamp("NgayTao") != null ? rs.getTimestamp("NgayTao").toLocalDateTime() : null,
                         rs.getString("Avatar"),
-                        rs.getString("TenTruongHoc"),
-                        rs.getString("BangCap"),
-                        rs.getString("LopDangDayTrenTruong"),
-                        rs.getString("TrangThaiDay")
+                        rs.getString("TenTruongHoc")
                 );
                 teachers.add(giaoVien);
             }
         } catch (SQLException e) {
-            System.out.println("SQL Error in getTeachersBySpecialization1: " + e.getMessage());
+            System.out.println("SQL Error in getTeachersBySpecialization: " + e.getMessage());
             e.printStackTrace();
         }
         return teachers;
@@ -1503,5 +1523,59 @@ public class GiaoVienDAO {
             e.printStackTrace();
         }
         return list;
+    }
+    
+    public static String getNameGiaoVienToSendSupport(String ID_TaiKhoan) {
+        DBContext db = DBContext.getInstance();
+        try {
+            String sql = """
+                             select GV.HoTen from GiaoVien GV
+                             join TaiKhoan TK 
+                             ON GV.ID_TaiKhoan = TK.ID_TaiKhoan 
+                             where GV.ID_TaiKhoan = ? 
+                             """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setString(1, ID_TaiKhoan);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                return rs.getString("HoTen");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
+    
+    public static boolean adminUpdateInformationOfTeacher(String sdt, int ishot, int idGiaoVien) {
+        DBContext db = DBContext.getInstance();
+        int rs = 0;
+
+        try {
+            String sql = """
+                             UPDATE GiaoVien 
+                             SET 
+                             SDT = ?  , 
+                             
+                             IsHot = ? 
+                             where ID_GiaoVien = ? 
+                             """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setString(1, sdt);
+
+            statement.setInt(2, ishot);
+            statement.setInt(3, idGiaoVien);
+            rs = statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+
+        if (rs == 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

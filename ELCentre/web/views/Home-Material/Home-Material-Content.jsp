@@ -30,7 +30,7 @@
             <section class="with-left-sidebar" id="primary">
                 <div class="woocommerce columns-4">
 
-                    <ul class="products columns-4" style="display: flex; flex-wrap: wrap; gap: 20px; padding: 0; list-style: none;">
+                    <ul class="products columns-4" style="display: flex; flex-wrap: wrap; padding: 10; list-style: none;">
                         
                         <c:if test="${empty listTaiLieu}">
                             <p style="width: 100%; text-align: center;">Không tìm thấy tài liệu nào phù hợp.</p>
@@ -38,7 +38,7 @@
 
                         <c:forEach var="taiLieu" items="${listTaiLieu}">
                             <li class="post product type-product" 
-                                style="flex: 0 0 calc(25% - 20px); 
+                                style="flex: 0 0 25%; 
                                        border: 1px solid #e0e0e0; 
                                        border-radius: 8px; 
                                        overflow: hidden; 

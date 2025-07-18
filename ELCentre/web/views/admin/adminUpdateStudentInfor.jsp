@@ -236,7 +236,7 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Thông tin</th>
+                                        <th>Thông tin học sinh số</th>
                                             <c:forEach var="hocsinh" items="${hocsinhs}">
                                             <th><input type="text" name="idhocsinh" value="${hocsinh.getID_HocSinh()}" readonly /></th>
                                             </c:forEach>
@@ -245,9 +245,21 @@
                                 <tbody>
                                 <input type="hidden" name="type" value="${type}" />
                                 <tr>
+                                    <td>Mã tài khoản</td>
+                                    <c:forEach var="hocsinh" items="${hocsinhs}">
+                                        <td><input type="text" name="idtaikhoan" value="${hocsinh.getID_TaiKhoan()}" readonly /></td>
+                                        </c:forEach>
+                                </tr>
+                                <tr>
                                     <td>Mã học sinh</td>
                                     <c:forEach var="hocsinh" items="${hocsinhs}">
-                                        <td><input type="text" name="idtaikhoan" value="${hocsinh.getMaHocSinh()}" readonly /></td>
+                                        <td><input type="text" name="mahocsinh" value="${hocsinh.getMaHocSinh()}" readonly /></td>
+                                        </c:forEach>
+                                </tr>
+                                <tr>
+                                    <td>Mật khẩu</td>
+                                    <c:forEach var="hocsinh" items="${hocsinhs}">
+                                        <td><input type="text" name="matkhau" value="${hocsinh.getMatKhau()}" required="" /></td>
                                         </c:forEach>
                                 </tr>
                                 <tr>

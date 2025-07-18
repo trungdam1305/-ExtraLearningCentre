@@ -438,6 +438,7 @@
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
+                <li><a href="${pageContext.request.contextPath}/ManageSchedule"><i class="fas fa-calendar-alt"></i> Lịch học</a></li>
             </ul>
 
             <div class="sidebar-section-title">Hệ thống</div>
@@ -537,8 +538,8 @@
                                                 <a class="btn-action view" title="Chi tiết thông tin và chỉnh sửa thông tin" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=view&id=${giaovien.getID_GiaoVien()}&idTaiKhoan=${giaovien.getID_TaiKhoan()}">
                                                     <i class="fas fa-user-edit"></i> Chi tiết và chỉnh sửa
                                                 </a>
-                                                <a class="btn-action update" title="Xem lớp đang dạy của giáo viên và chuyển lớp" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=viewLopHocGiaoVien&id=${giaovien.getID_GiaoVien()}">
-                                                   <i class="fas fa-chalkboard-teacher"></i> Xem lớp & Chuyển lớp
+                                                <a class="btn-action update" title="Xem lớp đang dạy của giáo viên" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=viewLopHocGiaoVien&id=${giaovien.getID_GiaoVien()}">
+                                                   <i class="fas fa-chalkboard-teacher"></i> Xem tất cả lớp đang dạy
                                                 </a>
 
                                                 <a class="btn-action enable" title="Gửi thông báo" href="${pageContext.request.contextPath}/views/admin/adminSendNotificationTeacher.jsp?idtaikhoan=${giaovien.getID_TaiKhoan()}">

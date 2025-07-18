@@ -101,6 +101,12 @@
             .action-btn.leave:hover {
                 background-color: #b52b27;
             }
+            .action-btn.assignment {
+                background-color: #5E936C;
+            }
+            .action-btn.assignment:hover {
+                background-color: #3E5F44;
+            }
         </style>
     </head>
     <body>
@@ -121,7 +127,6 @@
                             <th>Tên lớp</th>
                             <th>Khóa học</th>
                             <th>Sĩ số</th>
-                            <th>Ngày tạo</th>
                             <th>Ghi chú</th>
                             <th>Hành động</th>
                         </tr>
@@ -134,13 +139,16 @@
                                 <td>${lop.tenLopHoc}</td>
                                 <td>${lop.tenKhoaHoc}</td>
                                 <td>${lop.siSo}</td>
-                                <td>${lop.ngayTao}</td>
                                 <td>${lop.ghiChu}</td>
                                 <td>
                                     <div class="action-buttons">
                                         <form action="StudentClassDetailServlet" method="get">
                                             <input type="hidden" name="classCode" value="${lop.classCode}">
                                             <button class="action-btn" type="submit">Xem giáo viên</button>
+                                        </form>
+                                        <form action="StudentAssignmentServlet" method="get">
+                                            <input type="hidden" name="classId" value="${lop.ID_LopHoc}">
+                                            <button class="action-btn assignment" type="submit">Xem Bài Tập</button>
                                         </form>
                                         <form action="StudentTransferClassServlet" method="post">
                                             <input type="hidden" name="classCode" value="${lop.classCode}">
