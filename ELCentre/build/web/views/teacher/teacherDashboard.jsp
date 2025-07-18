@@ -152,7 +152,7 @@
                 font-weight: bold;
                 letter-spacing: 1.5px;
                 text-align: center; 
-                width: 230px; /* nhỏ hơn 250px */
+                width: 230px; 
             }
 
             .sidebar-logo {
@@ -339,11 +339,9 @@
             .tables-wrapper .data-table-container:last-child {
                 flex: 3;
             }
-            /* === CSS Shedule === */
 
-            /* Grid */
             .schedule-grid {
-                table-layout: fixed; /* same width from column */
+                table-layout: fixed; 
                 width: 100%;
                 
             }
@@ -382,7 +380,7 @@
                 font-size: 0.8em;
                 color: #6c757d;
             }
-            /* === Filter === */
+
             .schedule-controls {
                 display: flex;
                 justify-content: space-between;
@@ -418,7 +416,6 @@
                 background-color: #163E5C;
             }
 
-            /* current week */
             .schedule-controls .current-week-display {
                 font-size: 1.1em;
                 font-weight: bold;
@@ -454,7 +451,7 @@
             .schedule-controls .week-picker-form button:hover {
                 background-color: #333;
             }   
-            /* === Attendance button === */
+
             .attendance-btn {
                 display: inline-flex;
                 align-items: center;
@@ -642,6 +639,14 @@
                     <p>${luongGV}</p>
                 </div>
             </div>  
+                <!--Notification table-->
+                <div>
+                    <table border='1'>
+                        kekekke
+                    </table>
+                </div>
+                <!--End Table-->
+                
                     <!--Weekly Timetable and Schedule for take Attendance-->
                     <div class="data-table-container schedule-container">
                         <h3 class="section-title"><i class="fas fa-calendar-alt"></i> Thời Khóa Biểu</h3>

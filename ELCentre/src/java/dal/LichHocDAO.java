@@ -110,7 +110,7 @@ public class LichHocDAO {
                  JOIN
                  GiaoVien gv ON gv.ID_GiaoVien = gvlh.ID_GiaoVien
                  JOIN 
-                 PhongHoc ph on lop.ID_PhongHoc = ph.ID_PhongHoc
+                 PhongHoc ph on lh.ID_PhongHoc = ph.ID_PhongHoc
                  WHERE
                  gv.ID_TaiKhoan = ?
                  AND lh.NgayHoc BETWEEN ? AND ?

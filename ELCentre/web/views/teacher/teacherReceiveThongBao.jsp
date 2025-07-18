@@ -201,19 +201,17 @@
         }
 
         .main-content {
-            margin-left: 260px;
+            margin-left: 300px;
             padding: 120px 10px 20px 10px;
             flex: 1;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             gap: 10px;
-            width: 400px; /* Minimized width */
+            width: 600px; /* Minimized width */
             background: linear-gradient(135deg, #ffffff, #f0f4f8);
             border-radius: 8px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-            margin-right: auto;
-            margin-left: auto;
         }
 
         .main-content .header {
