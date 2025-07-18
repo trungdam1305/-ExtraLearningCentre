@@ -28,8 +28,10 @@
             <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/web/WEB-INF/web.xml</file>
         </group>
         <group>
-            <file>file:/C:/Users/Vuh26/Desktop/main_18_07/-ExtraLearningCentre/ELCentre/src/java/dal/LichHocDAO.java</file>
-            <file>file:/C:/Users/Vuh26/Desktop/main_18_07/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageSchedule.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/main_18_07/-ExtraLearningCentre/ELCentre/web/views/admin/viewClass.jsp</file>
+            <file>file:/C:/Users/Vuh26/Desktop/main_18_07/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageClassDetail.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/main_18_07/-ExtraLearningCentre/ELCentre/src/java/model/HocSinh.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/main_18_07/-ExtraLearningCentre/ELCentre/src/java/dal/HocSinhDAO.java</file>
         </group>
     </open-files>
 </project-private>

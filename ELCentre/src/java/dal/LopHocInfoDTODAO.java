@@ -1564,6 +1564,7 @@ public class LopHocInfoDTODAO {
                 LEN(lh.ClassCode) = ? 
                 AND LEFT(lh.ClassCode, 1) = ? 
                 AND RIGHT(lh.ClassCode, 2) = ?
+                     AND lh.TrangThai = N'Đang học'
             GROUP BY 
                 lh.ID_LopHoc,
                 lh.ClassCode,
