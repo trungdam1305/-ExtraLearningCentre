@@ -1,7 +1,7 @@
 <%-- 
     Document   : viewStudentList.jsp
     Created on : Jul 9, 2025, 1:50:13 PM
-    Author     : admin
+    Author     : trungdam
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -148,7 +148,7 @@
                     font-weight: bold;
                     letter-spacing: 1.5px;
                     text-align: center; 
-                    width: 230px; /* nhỏ hơn 250px */
+                    width: 230px;
                 }
 
                 .sidebar-logo {
@@ -201,15 +201,14 @@
 
                 .main-content {
                     margin-top: 30px;
-                    margin-left: 300px; /* Keep this to offset for sidebar */
-                    padding: 80px 20px 20px 20px; /* Adjust padding as needed */
+                    margin-left: 300px;
+                    padding: 80px 20px 20px 20px; 
                     flex: 1;
                     min-height: 100vh;
                     display: flex;
                     flex-direction: column;
                     gap: 30px;
                     margin-right: auto;
-                    /* Adjust this to account for sidebar width */
                     max-width: calc(100% - 300px);
                 }
 
@@ -298,32 +297,30 @@
                     font-size: 14px;
 
                 }
-                /* === NÚT QUAY LẠI TÙY CHỈNH === */
                 .btn-back {
-                    display: inline-flex;       /* Căn chỉnh icon và chữ */
+                    display: inline-flex;     
                     align-items: center;
-                    gap: 8px;                   /* Khoảng cách giữa icon và chữ */
+                    gap: 8px;                   
 
-                    padding: 10px 20px;         /* Tăng kích thước cho dễ nhấn */
+                    padding: 10px 20px;         
                     font-size: 15px;
                     font-weight: 500;
                     text-decoration: none;
                     
                     margin: 20px 0px    ;
-                    color: #1F4E79;             /* Màu chữ và viền theo màu chủ đạo */
+                    color: #1F4E79;             
                     background-color: transparent;
                     border: 2px solid #1F4E79;
-                    border-radius: 8px;         /* Bo góc mềm mại */
+                    border-radius: 8px;       
 
                     cursor: pointer;
-                    transition: all 0.2s ease-in-out; /* Hiệu ứng chuyển động mượt mà */
+                    transition: all 0.2s ease-in-out; 
                 }
 
-                /* Hiệu ứng khi di chuột vào nút */
                 .btn-back:hover {
-                    background-color: #1F4E79;  /* Đổi màu nền */
-                    color: white;               /* Đổi màu chữ */
-                    transform: translateY(-2px); /* Hiệu ứng nhấc lên nhẹ */
+                    background-color: #1F4E79; 
+                    color: white;               
+                    transform: translateY(-2px); 
                     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
                 }
         </style>
@@ -385,7 +382,7 @@
                     <c:if test="${empty studentList}">
                         <div class="alert alert-info">Chưa có học sinh nào trong lớp này.</div>
                     </c:if>
-
+                    <!--Loop for display StudentList-->    
                     <c:if test="${not empty studentList}">
                         <table class="table table-hover">
                             <thead>
@@ -407,30 +404,25 @@
                                         <td>${student.maHocSinh}</td>
                                         <td>${student.hoTen}</td>
                                         <td>
-                                            <%-- Bắt đầu Scriptlet --%>
+                                            <!--Scriptlets for format date-->
                                             <%
-                                                // Lấy đối tượng 'student' từ vòng lặp forEach của JSTL
+                                                // get object student 
                                                 Object obj = pageContext.getAttribute("student");
 
                                                 if (obj instanceof model.HocSinh) {
                                                     model.HocSinh currentStudent = (model.HocSinh) obj;
 
-                                                    // Lấy ngày sinh (kiểu java.time.LocalDate)
+                                                    // get birthDate (LocalDate)
                                                     java.time.LocalDate ngaySinh = currentStudent.getNgaySinh();
-
-                                                    // QUAN TRỌNG: Kiểm tra xem ngày sinh có null không trước khi định dạng
                                                     if (ngaySinh != null) {
-                                                        // Tạo một đối tượng định dạng ngày tháng
+                                                        // initiate object format date
                                                         java.time.format.DateTimeFormatter formatter = 
                                                             java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-                                                        // Dùng out.print() để in ra chuỗi đã định dạng
                                                         out.print(ngaySinh.format(formatter));
                                                     }
-                                                    // Nếu ngaySinh là null, thẻ <td> sẽ được in ra trống, không gây lỗi
                                                 }
                                             %>
-                                            <%-- Kết thúc Scriptlet --%>
                                         </td>
                                         <td>${student.gioiTinh}</td>
                                         <td>${student.getLopDangHocTrenTruong()}</td>

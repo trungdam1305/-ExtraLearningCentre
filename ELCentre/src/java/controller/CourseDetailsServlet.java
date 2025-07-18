@@ -22,7 +22,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
     try {
         int courseId = Integer.parseInt(request.getParameter("courseId"));
-        // Lấy tham số teacherId từ bộ lọc, mặc định là 0 (tất cả)
+        // get teacherParameter
         String teacherIdParam = request.getParameter("teacherId") == null ? "0" : request.getParameter("teacherId");
         int teacherId = Integer.parseInt(teacherIdParam);
 
@@ -36,16 +36,16 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
             return;
         }
 
-        // Gọi phương thức DAO đã được cập nhật
+        // Get DAO
         List<LopHoc> classList = lopHocDAO.getClassesByCourseAndTeacher(courseId, teacherId);
         
-        // Lấy danh sách giáo viên để hiển thị trong dropdown
+        // TeacherList from db
          List<GiaoVien> teacherList = giaoVienDAO.getTeachersByCourseId(courseId);
 
         request.setAttribute("course", course);
         request.setAttribute("classList", classList);
         request.setAttribute("teacherList", teacherList);
-        request.setAttribute("selectedTeacherId", teacherId); // Giữ lại giá trị đã chọn
+        request.setAttribute("selectedTeacherId", teacherId); 
 
         request.getRequestDispatcher("/views/Home-Course/CourseDetails-main.jsp").forward(request, response);
 
