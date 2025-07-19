@@ -548,4 +548,64 @@ public class LichHocDAO {
         }
         return list;
     }
+    
+    // Thêm phương thức này vào file dal/LichHocDAO.java
+public List<LichHoc> getLichHocTrongTuanForClass(int classId, LocalDate startDate, LocalDate endDate) {
+    List<LichHoc> list = new ArrayList<>();
+    // Câu lệnh SQL JOIN các bảng để lấy đủ thông tin cần thiết
+    String sql = """
+                 SELECT lh.*, lop.TenLopHoc, ph.TenPhongHoc, sl.SlotThoiGian, kh.TenKhoaHoc
+                 FROM LichHoc lh
+                 JOIN LopHoc lop ON lh.ID_LopHoc = lop.ID_LopHoc
+                 JOIN PhongHoc ph ON lop.ID_PhongHoc = ph.ID_PhongHoc
+                 JOIN SlotHoc sl ON lh.ID_SlotHoc = sl.ID_SlotHoc
+                 JOIN KhoaHoc kh on lop.ID_KhoaHoc = kh.ID_KhoaHoc
+                 WHERE lh.ID_LopHoc = ? AND lh.NgayHoc BETWEEN ? AND ?
+                 ORDER BY lh.NgayHoc, sl.ID_SlotHoc
+                 """;
+
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        
+        ps.setInt(1, classId);
+        ps.setDate(2, java.sql.Date.valueOf(startDate));
+        ps.setDate(3, java.sql.Date.valueOf(endDate));
+        
+        try (ResultSet rs = ps.executeQuery()) {
+            // ✅ PHẦN CODE ĐỌC DỮ LIỆU ĐẦY ĐỦ
+            while (rs.next()) {
+                LichHoc lh = new LichHoc();
+                
+                // Đọc dữ liệu từ ResultSet và gán vào đối tượng LichHoc
+                lh.setID_Schedule(rs.getInt("ID_Schedule"));
+                lh.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                lh.setID_SlotHoc(rs.getInt("ID_SlotHoc"));
+                lh.setNgayHoc(rs.getDate("NgayHoc").toLocalDate());
+                lh.setGhiChu(rs.getString("GhiChu"));
+                lh.setDaDiemDanh(rs.getBoolean("daDiemDanh"));
+                
+                // Lấy các thông tin đã JOIN từ các bảng khác
+                lh.setTenLopHoc(rs.getString("TenLopHoc"));
+                lh.setTenPhongHoc(rs.getString("TenPhongHoc"));
+                lh.setSlotThoiGian(rs.getString("SlotThoiGian"));
+                lh.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
+                list.add(lh);
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}   
+    public static void main(String[] args) {
+        List<LichHoc> list = new ArrayList<>();
+        LichHocDAO dao = new LichHocDAO();
+        LocalDate today = LocalDate.now();
+        LocalDate startOfCurrentWeek = today.with(DayOfWeek.MONDAY); // Get Monday of the current week
+        LocalDate endOfCurrentWeek = startOfCurrentWeek.plusDays(6);
+        list = dao.getLichHocTrongTuanForClass(1, startOfCurrentWeek, endOfCurrentWeek);
+        for (LichHoc l : list){
+            System.out.println(l.getTenLopHoc() + l.getTenPhongHoc() + l.getDayOfMonth());
+        }
+    }
 }

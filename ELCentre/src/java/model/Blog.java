@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.time.LocalDateTime;
@@ -10,8 +6,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Represents a blog entry containing information such as title, description, 
  * date posted, image, grade level (Khoi), and category (PhanLoai).
- * 
- * Author: trungdam1305
+ * * Author: trungdam1305
  */
 public class Blog {
     // Unique identifier for the blog
@@ -35,21 +30,40 @@ public class Blog {
     // ID of the blog category
     private int ID_PhanLoai;
     
-    private String KeyTag ; 
-    private String KeyWord ; 
-
-    // Name of the blog category
+    // The actual KeyTag string (e.g., "Technology", "Education")
+    // This would typically come from a JOIN with the KeyTag table
+    private String KeyTag; 
+    
+    // The actual KeyWord string (e.g., "Java", "SQL")
+    // This would typically come from a JOIN with the Keyword table
+    private String KeyWord; 
+    
+    // Name of the blog category (from PhanLoaiBlog table)
     private String PhanLoai;
     
+    // Detailed content of the blog (from CKEditor)
     private String NoiDung; 
     
+    // Foreign key to the KeyTag table
+    private int ID_KeyTag; 
+    
+    // Foreign key to the Keyword table
+    private int ID_Keyword; 
+
     /**
      * Default constructor
      */
     public Blog() {
     }
 
-    public Blog(int ID_Blog, String BlogTitle, String BlogDescription, LocalDateTime BlogDate, String Image, int ID_Khoi, int ID_PhanLoai, String KeyTag, String KeyWord, String PhanLoai) {
+    /**
+     * Constructor for creating a Blog object with most common attributes.
+     * This might be used when retrieving data from the database where some linked names (PhanLoai)
+     * are already joined.
+     */
+    public Blog(int ID_Blog, String BlogTitle, String BlogDescription, LocalDateTime BlogDate, String Image, 
+                int ID_Khoi, int ID_PhanLoai, String KeyTag, String KeyWord, String PhanLoai, 
+                String NoiDung, int ID_KeyTag, int ID_Keyword) {
         this.ID_Blog = ID_Blog;
         this.BlogTitle = BlogTitle;
         this.BlogDescription = BlogDescription;
@@ -60,9 +74,12 @@ public class Blog {
         this.KeyTag = KeyTag;
         this.KeyWord = KeyWord;
         this.PhanLoai = PhanLoai;
+        this.NoiDung = NoiDung;
+        this.ID_KeyTag = ID_KeyTag;
+        this.ID_Keyword = ID_Keyword;
     }
 
-    // Getters and setters
+    // --- Getters and Setters ---
     public int getID_Blog() {
         return ID_Blog;
     }
@@ -131,26 +148,16 @@ public class Blog {
         return KeyTag;
     }
 
-    public String getKeyWord() {
-        return KeyWord;
-    }
-
     public void setKeyTag(String KeyTag) {
         this.KeyTag = KeyTag;
     }
 
+    public String getKeyWord() {
+        return KeyWord;
+    }
+
     public void setKeyWord(String KeyWord) {
         this.KeyWord = KeyWord;
-    }
-    
-    
-    
-    /**
-     * Returns the blog date formatted as dd-MM-yyyy for display
-     */
-    public String getFormattedDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        return BlogDate.format(formatter);
     }
     
     public String getNoiDung() {
@@ -159,5 +166,32 @@ public class Blog {
 
     public void setNoiDung(String NoiDung) {
         this.NoiDung = NoiDung;
+    }
+
+    public int getID_KeyTag() {
+        return ID_KeyTag;
+    }
+
+    public void setID_KeyTag(int ID_KeyTag) {
+        this.ID_KeyTag = ID_KeyTag;
+    }
+
+    public int getID_Keyword() {
+        return ID_Keyword;
+    }
+
+    public void setID_Keyword(int ID_Keyword) {
+        this.ID_Keyword = ID_Keyword;
+    }
+
+    /**
+     * Returns the blog date formatted as dd-MM-yyyy for display
+     */
+    public String getFormattedDate() {
+        if (BlogDate == null) {
+            return ""; // Or handle as appropriate for your application
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return BlogDate.format(formatter);
     }
 }

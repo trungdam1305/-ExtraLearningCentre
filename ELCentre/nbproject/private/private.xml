@@ -19,20 +19,10 @@
             <file>file:/D:/Zalo%20Data/ELCentre/src/java/dal/HocSinh_SDTDAO.java</file>
         </group>
         <group name="SWT">
-            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/src/java/controller/StudentAssignmentServlet.java</file>
-            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/web/views/student/studentViewClass.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/src/java/dal/TaiBaiTapDAO.java</file>
-            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/web/views/student/studentAssignments.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/src/java/dal/NopBaiTapDAO.java</file>
-            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/teacher/teacherDashboard.jsp</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/dal/GiaoVien_LopHocDAO.java</file>
+            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/controller/TeacherDashboard.java</file>
         </group>
-        <group name="SWT">
-            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/src/java/controller/StudentAssignmentServlet.java</file>
-            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/web/views/student/studentViewClass.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/src/java/dal/TaiBaiTapDAO.java</file>
-            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/web/views/student/studentAssignments.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/src/java/dal/NopBaiTapDAO.java</file>
-            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/web/WEB-INF/web.xml</file>
-        </group>
+        <group name="SWT"/>
     </open-files>
 </project-private>
