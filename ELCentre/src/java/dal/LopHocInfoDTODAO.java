@@ -1842,4 +1842,60 @@ public class LopHocInfoDTODAO {
             }
         }
     }
+    
+    public OperationResult updateTrangThaiIfMinimumSiSo(int idLopHoc) {
+    DBContext db = DBContext.getInstance();
+    Connection connection = null;
+    try {
+        connection = db.getConnection();
+        
+        // Lấy SiSo và SiSoToiThieu hiện tại
+        String sqlSelect = "SELECT SiSo, SiSoToiThieu FROM LopHoc WHERE ID_LopHoc = ?";
+        try (PreparedStatement stmtSelect = connection.prepareStatement(sqlSelect)) {
+            stmtSelect.setInt(1, idLopHoc);
+            ResultSet rs = stmtSelect.executeQuery();
+            if (rs.next()) {
+                int siSo = rs.getInt("SiSo");
+                int siSoToiThieu = rs.getInt("SiSoToiThieu");
+                
+                // Kiểm tra nếu SiSo == SiSoToiThieu
+                if (siSo == siSoToiThieu) {
+                    String sqlUpdate = "UPDATE LopHoc SET TrangThai = N'Đang học' WHERE ID_LopHoc = ?";
+                    try (PreparedStatement stmtUpdate = connection.prepareStatement(sqlUpdate)) {
+                        stmtUpdate.setInt(1, idLopHoc);
+                        int rowsAffected = stmtUpdate.executeUpdate();
+                        if (rowsAffected > 0) {
+                            System.out.println("updateTrangThaiIfMinimumSiSo: Updated TrangThai to 'Đang học' for ID_LopHoc=" + idLopHoc + " (SiSo=" + siSo + " == SiSoToiThieu=" + siSoToiThieu + ")");
+                            return new OperationResult(true, null);
+                        } else {
+                            System.out.println("updateTrangThaiIfMinimumSiSo: No rows updated for ID_LopHoc=" + idLopHoc);
+                            return new OperationResult(false, "Không thể cập nhật trạng thái lớp học!");
+                        }
+                    }
+                } else {
+                    System.out.println("updateTrangThaiIfMinimumSiSo: No update needed for ID_LopHoc=" + idLopHoc + " (SiSo=" + siSo + " != SiSoToiThieu=" + siSoToiThieu + ")");
+                    return new OperationResult(true, "Không cần cập nhật trạng thái (sĩ số chưa đạt tối thiểu).");
+                }
+            } else {
+                System.out.println("updateTrangThaiIfMinimumSiSo: Class not found for ID_LopHoc=" + idLopHoc);
+                return new OperationResult(false, "Lớp học không tồn tại!");
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("SQL Error in updateTrangThaiIfMinimumSiSo: " + e.getMessage()
+                + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+        e.printStackTrace();
+        return new OperationResult(false, "Lỗi cơ sở dữ liệu khi cập nhật trạng thái lớp học: " + e.getMessage());
+    } finally {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection Close Error in updateTrangThaiIfMinimumSiSo: " + e.getMessage()
+                    + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+            e.printStackTrace();
+        }
+    }
+}
 }

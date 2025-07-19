@@ -554,4 +554,47 @@ public class LichHocDAO {
         }
         return list;
     }
+    
+    public LocalDate getNearestFutureDate(int idLopHoc) {
+    DBContext db = DBContext.getInstance();
+    String sql = "SELECT TOP 1 NgayHoc FROM LichHoc WHERE ID_LopHoc = ? AND NgayHoc > GETDATE() ORDER BY NgayHoc ASC";
+    try (Connection conn = db.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setInt(1, idLopHoc);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return rs.getDate("NgayHoc").toLocalDate();
+        }
+    } catch (SQLException e) {
+        System.out.println("SQL Error in getNearestFutureDate: " + e.getMessage());
+        e.printStackTrace();
+    }
+    return null;
 }
+    
+    public String hasScheduleConflictForStudent(int idHocSinh, int idLopHoc) {
+    DBContext db = DBContext.getInstance();
+    String sql = """
+        SELECT TOP 1 lop.TenLopHoc
+        FROM HocSinh_LopHoc hslh
+        JOIN LichHoc lh ON hslh.ID_LopHoc = lh.ID_LopHoc
+        JOIN LichHoc newLh ON newLh.ID_LopHoc = ?
+        JOIN LopHoc lop ON hslh.ID_LopHoc = lop.ID_LopHoc
+        WHERE hslh.ID_HocSinh = ?
+        AND lh.NgayHoc = newLh.NgayHoc
+        AND lh.ID_SlotHoc = newLh.ID_SlotHoc
+    """;
+    try (Connection conn = db.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setInt(1, idLopHoc);
+        stmt.setInt(2, idHocSinh);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return rs.getString("TenLopHoc"); // Trả tên lớp trùng
+        }
+    } catch (SQLException e) {
+        System.out.println("SQL Error in hasScheduleConflictForStudent: " + e.getMessage());
+        e.printStackTrace();
+    }
+    return null; // Không trùng
+}}
