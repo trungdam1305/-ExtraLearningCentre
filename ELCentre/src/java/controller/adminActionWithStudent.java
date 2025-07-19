@@ -206,34 +206,43 @@ public class adminActionWithStudent extends HttpServlet {
         }
     }
 
-    protected void doViewClass(HttpServletRequest request, HttpServletResponse response)
+  protected void doViewClass(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String ID = request.getParameter("id");
-        int idHocSinh;
-        try {
-            idHocSinh = Integer.parseInt(ID);
-        } catch (NumberFormatException e) {
-            request.setAttribute("error", "ID học sinh không hợp lệ.");
-            request.getRequestDispatcher("/views/admin/error.jsp").forward(request, response);
-            return;
-        }
-        // Lấy danh sách lớp học của học sinh
-        LopHocInfoDTODAO lhd = new LopHocInfoDTODAO();
-        List<LopHocInfoDTO> lopHocs = lhd.getClassesByStudentId(idHocSinh);
-        if (lopHocs == null || lopHocs.isEmpty()) {
-            request.setAttribute("error", "Không tìm thấy lớp học nào cho học sinh này.");
-            request.getRequestDispatcher("/views/admin/viewLopHoc_HocSinh.jsp").forward(request, response);
-            return;
-        }
-        // Giả sử lấy lớp đầu tiên trong danh sách làm idLopHocHienTai
-        // (Bạn có thể cần logic khác để xác định lớp hiện tại, ví dụ: dựa trên trạng thái "Đang học")
-        int idLopHocHienTai = lopHocs.get(0).getIdLopHoc(); // Lấy ID lớp học đầu tiên
-
-        // Truyền các tham số cần thiết
-        request.setAttribute("idHocSinh", idHocSinh);
-        request.setAttribute("idLopHocHienTai", idLopHocHienTai);
-        request.setAttribute("lopHocs", lopHocs);
-        request.getRequestDispatcher("/views/admin/viewLopHoc_HocSinh.jsp").forward(request, response);
+    String ID = request.getParameter("id");
+    int idHocSinh;
+    try {
+        idHocSinh = Integer.parseInt(ID);
+    } catch (NumberFormatException e) {
+        request.setAttribute("error", "ID học sinh không hợp lệ.");
+        request.getRequestDispatcher("/views/admin/error.jsp").forward(request, response);
+        return;
     }
+    
+    // Lấy danh sách lớp học của học sinh
+    LopHocInfoDTODAO lhd = new LopHocInfoDTODAO();
+    List<LopHocInfoDTO> lopHocs = lhd.getClassesByStudentId(idHocSinh);
+    if (lopHocs == null || lopHocs.isEmpty()) {
+        request.setAttribute("error", "Không tìm thấy lớp học nào cho học sinh này.");
+        request.getRequestDispatcher("/views/admin/viewLopHoc_HocSinh.jsp").forward(request, response);
+        return;
+    }
+    
+    // Giả sử lấy lớp đầu tiên trong danh sách làm idLopHocHienTai
+    // (Bạn có thể cần logic khác để xác định lớp hiện tại, ví dụ: dựa trên trạng thái "Đang học")
+    int idLopHocHienTai = lopHocs.get(0).getIdLopHoc(); // Lấy ID lớp học đầu tiên
+    
+    // Lấy thông tin học sinh bằng hàm getHocSinhById1 (thêm phần này)
+    HocSinhDAO hsDAO = new HocSinhDAO();  // Giả sử đây là DAO của bạn
+    HocSinh hocSinh = hsDAO.getHocSinhById1(idHocSinh);
+    String tenHocSinh = (hocSinh != null) ? hocSinh.getHoTen() : "Không tìm thấy tên học sinh";  // Lấy tên từ object
+    
+    // Truyền các tham số cần thiết
+    request.setAttribute("idHocSinh", idHocSinh);
+    request.setAttribute("idLopHocHienTai", idLopHocHienTai);
+    request.setAttribute("lopHocs", lopHocs);
+    request.setAttribute("tenHocSinh", tenHocSinh);  // Set tên học sinh
+    
+    request.getRequestDispatcher("/views/admin/viewLopHoc_HocSinh.jsp").forward(request, response);
+}
 }
 

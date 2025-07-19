@@ -1010,7 +1010,7 @@
 
             <!-- Nút quay lại -->
             <div class="dashboard-button">
-                <a href="${pageContext.request.contextPath}/adminActionWithTeacher?action=viewLopHocGiaoVien&id=${giaoVien.ID_GiaoVien}" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Quay lại</a>
+                <a href="${pageContext.request.contextPath}/adminActionWithTeacher?action=viewLopHocGiaoVien&id=${giaoVien.ID_GiaoVien}" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Quay lại danh sách lớp của giáo viên</a>
             </div>
         </div>
 
