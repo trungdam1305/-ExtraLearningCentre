@@ -80,10 +80,9 @@
                         </table>
                         
                         <div class="mt-4">
-                            <%-- ✅ SỬA LẠI ĐƯỜNG DẪN VÀ THÊM THUỘC TÍNH 'download' --%>
-                            <a href="${pageContext.request.contextPath}/uploads/${material.duongDan}" 
+                            <a href="${pageContext.request.contextPath}/${material.duongDan}" 
                                class="btn btn-primary download-button" 
-                               download> <%-- Thuộc tính 'download' sẽ gợi ý tên file khi tải về --%>
+                               download>
 
                                 <i class="fas fa-download"></i> Tải Về Tài Liệu
                             </a>

@@ -9,8 +9,8 @@
     <title>${formTitle} - EL CENTRE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="<c:url value='img/ckeditor/ckeditor.js' />"></script>
     <style>
         /* Your existing common CSS styles go here. */
         body {
@@ -285,32 +285,34 @@
     </div>
 
     <div class="sidebar">
-        <h4>EL CENTRE</h4>
-        <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
-        <div class="sidebar-section-title">Tổng quan</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/staffGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-        </ul>
-        <div class="sidebar-section-title">Quản lý học tập</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
-            <li><a href="${pageContext.request.contextPath}/StaffManageTimeTable"><i class="fas fa-calendar-alt"></i> Thời Khóa Biểu</a></li>
-            <li><a href="${pageContext.request.contextPath}/StaffManageAttendance"><i class="fas fa-check-square"></i> Điểm danh</a></li>
-        </ul>
-        <div class="sidebar-section-title">Quản lý tài chính</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/staffViewSalary"><i class="fas fa-money-check-alt"></i> Học phí</a></li>
-        </ul>
-        <div class="sidebar-section-title">Hỗ trợ</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/staffGetSupportRequests"><i class="fas fa-envelope-open-text"></i> Yêu cầu hỗ trợ</a></li>
-            <li><a href="${pageContext.request.contextPath}/staffGetConsultationRequests"><i class="fas fa-blog"></i> Yêu cầu tư vấn</a></li>
-        </ul>
-        <div class="sidebar-section-title">Khác</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-        </ul>
-    </div>
+            <h4>EL CENTRE</h4>
+            <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
+            <div class="sidebar-section-title">Tổng quan</div>
+            <ul class="sidebar-menu">
+                <li><a href="${pageContext.request.contextPath}/staffGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            </ul>
+            <div class="sidebar-section-title">Quản lý học tập</div>
+            <ul class="sidebar-menu">
+                <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
+                <li><a href="${pageContext.request.contextPath}/StaffManageTimeTable"><i class="fas fa-calendar-alt"></i> Thời Khóa Biểu</a></li>
+                <li><a href="${pageContext.request.contextPath}/StaffManageAttendance"><i class="fas fa-check-square"></i> Điểm danh</a></li>
+            </ul>
+            <div class="sidebar-section-title">Quản lý tài chính</div>
+            <ul class="sidebar-menu">
+                <li><a href="${pageContext.request.contextPath}/staffViewSalary"><i class="fas fa-money-check-alt"></i> Học phí</a></li>
+            </ul>
+            <div class="sidebar-section-title">Hỗ trợ</div>
+            <ul class="sidebar-menu">
+                <li><a href="${pageContext.request.contextPath}/staffGetSupportRequests"><i class="fas fa-envelope-open-text"></i> Yêu cầu hỗ trợ</a></li>
+                <li><a href="${pageContext.request.contextPath}/staffGetConsultationRequests"><i class="fas fa-blog"></i> Yêu cầu tư vấn</a></li>
+            </ul>
+            <div class="sidebar-section-title">Khác</div>
+            <ul class="sidebar-menu">
+                <li><a href="${pageContext.request.contextPath}/ManagePost"><i class="fas fa-blog"></i> Bài Viết</a></li>
+                <li><a href="${pageContext.request.contextPath}/ManageMaterial"><i class="fas fa-envelope-open-text"></i> Tài Liệu</a></li>                
+                <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
 
     <main class="main-content">
         <h1>${formTitle}</h1>
@@ -434,20 +436,16 @@
                     }
                 }
             }
+        };
+        
+        $(document).ready(function () {
+        if (typeof CKEDITOR !== 'undefined') {
+            CKEDITOR.replace('noiDung');
+        } else {
+            console.error("CKEDITOR không tồn tại. Chắc chắn bạn đã import đúng chưa?");
         }
+    });
 
-        // Initialize CKEditor
-        ClassicEditor
-            .create( document.querySelector( '#noiDung' ), {
-                // CKEditor 5 configuration options
-                // toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ]
-            } )
-            .then( editor => {
-                console.log( 'CKEditor was initialized', editor );
-            } )
-            .catch( error => {
-                console.error( error );
-            } );
     </script>
 </body>
 </html>
