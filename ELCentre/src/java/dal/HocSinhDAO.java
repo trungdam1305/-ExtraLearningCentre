@@ -794,9 +794,12 @@ public class HocSinhDAO {
             FROM HocSinh hs
             JOIN GiaoVien_LopHoc glh ON glh.ID_LopHoc = ?
             JOIN GiaoVien g ON glh.ID_GiaoVien = g.ID_GiaoVien
-            WHERE hs.ID_HocSinh = ? AND hs.ID_TruongHoc = g.ID_TruongHoc
+            WHERE hs.ID_HocSinh = ? 
+            AND hs.ID_TruongHoc = g.ID_TruongHoc
+            AND hs.LopDangHocTrenTruong = g.LopDangDayTrenTruong
         """;
-        try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = db.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, idLopHoc);
             stmt.setInt(2, idHocSinh);
             ResultSet rs = stmt.executeQuery();
@@ -804,11 +807,41 @@ public class HocSinhDAO {
                 return rs.getInt(1) > 0;
             }
         } catch (SQLException e) {
-            System.out.println("SQL Error in hasSchoolConflict1: " + e.getMessage());
+            System.err.println("SQL Error in hasSchoolConflict1: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
     }
+    
+    /*
+    hàm backup khi giáo viên dạy nhiều lớp
+     public boolean hasSchoolConflict2(int idHocSinh, int idLopHoc) {
+        DBContext db = DBContext.getInstance();
+        String sql = """
+            SELECT COUNT(*) 
+            FROM HocSinh hs
+            JOIN GiaoVien_LopHoc glh ON glh.ID_LopHoc = ?
+            JOIN GiaoVien g ON glh.ID_GiaoVien = g.ID_GiaoVien
+            WHERE hs.ID_HocSinh = ? 
+            AND hs.ID_TruongHoc = g.ID_TruongHoc
+            AND CHARINDEX(',' + hs.LopDangHocTrenTruong + ',', ',' + g.LopDangDayTrenTruong + ',') > 0
+        """;
+        try (Connection conn = db.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idLopHoc);
+            stmt.setInt(2, idHocSinh);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Error in hasSchoolConflict1: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    */
 
     // Thêm học sinh vào lớp
     public boolean addStudentToClass1(int idHocSinh, int idLopHoc) throws SQLException {

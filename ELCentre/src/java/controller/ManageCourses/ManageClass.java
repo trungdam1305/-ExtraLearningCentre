@@ -155,9 +155,9 @@ public class ManageClass extends HttpServlet {
             if (siSoToiThieu > siSoToiDa) {
                 return "Sĩ số tối thiểu không được lớn hơn sĩ số tối đa!";
             }
-            if (isUpdate && siSoCurrent < siSoToiThieu) {
-                return "Sĩ số hiện tại (" + siSoCurrent + ") nhỏ hơn sĩ số tối thiểu (" + siSoToiThieu + "), không thể cập nhật!";
-            }
+//            if (isUpdate && siSoCurrent < siSoToiThieu) {
+//                return "Sĩ số hiện tại (" + siSoCurrent + ") nhỏ hơn sĩ số tối thiểu (" + siSoToiThieu + "), không thể cập nhật!";
+//            }
         } catch (NumberFormatException e) {
             return "Sĩ số tối thiểu không hợp lệ!";
         }
