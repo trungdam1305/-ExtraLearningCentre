@@ -1,3 +1,5 @@
+
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -13,7 +15,6 @@
     <script src="<c:url value='img/ckeditor/ckeditor.js' />"></script>
 
     <style>
-        /* Your existing common CSS styles (header, sidebar, footer) */
         body { margin: 0; font-family: Arial, sans-serif; display: flex; min-height: 100vh; background-color: #f9f9f9; }
         .header { background-color: #1F4E79; color: white; padding: 5px 20px; text-align: left; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: fixed; width: calc(100% - 250px); margin-left: 250px; z-index: 1000; display: flex; align-items: center; justify-content: space-between; font-size: 20px; }
         .header .left-title { font-size: 24px; letter-spacing: 1px; display: flex; align-items: center; }
@@ -60,7 +61,7 @@
             background-color: #f0f0f0;
             border-radius: 5px;
             font-size: 0.9em;
-            word-wrap: break-word; /* Ensure long file names wrap */
+            word-wrap: break-word; 
         }
         .ck-editor__editable_inline { min-height: 300px; } 
     </style>
@@ -122,13 +123,13 @@
                 <h3><i class="fas fa-file-alt"></i> Chi tiết Tài liệu</h3>
             </div>
             <div class="card-body">
-                <%-- Display error messages from servlet --%>
+                <!--Error message-->
                 <c:if test="${not empty param.error}">
                     <div class="alert alert-danger" role="alert">
                         <strong>Lỗi!</strong> ${param.error == 'upload_failed' ? 'Tải ảnh/file lên thất bại. Vui lòng thử lại.' : 'Đã có lỗi xảy ra.'}
                     </div>
                 </c:if>
-                <%-- Display error message if the servlet sets one in request scope --%>
+                <!--Error message-->
                 <c:if test="${not empty errorMessage}">
                     <div class="alert alert-danger" role="alert">
                         <strong>Lỗi!</strong> ${errorMessage}
@@ -146,7 +147,7 @@
                         <input type="text" class="form-control" id="tenTaiLieu" name="tenTaiLieu" value="${material.tenTaiLieu}" required>
                     </div>
 
-                    <%-- File Upload for DuongDan --%>
+                    <!--Duong Dan-->
                     <div class="mb-3">
                         <label for="duongDanFile" class="form-label">Tệp Tài liệu (PDF, DOCX, etc.) <span class="text-danger">*</span></label>
                         <input type="file" class="form-control" id="duongDanFile" name="duongDanFile" accept=".pdf,.doc,.docx,.ppt,.pptx">
@@ -170,13 +171,13 @@
                         <input type="text" class="form-control" id="giaTien" name="giaTien" value="${material.giaTien}">
                     </div>
                     
-                    <%-- NoiDung with CKEditor --%>
+                    <!--CKEditor-->
                     <div class="mb-3">
                         <label for="noiDung" class="form-label">Nội dung chi tiết (Mô tả)</label>
                         <textarea class="form-control" id="noiDung" name="noiDung" rows="10">${material.noiDung}</textarea>
                     </div>
 
-                    <%-- MonHoc Select Box --%>
+                    <!--Select MonHoc-->
                     <div class="mb-3">
                         <label for="idMonHoc" class="form-label">Môn học</label>
                         <select class="form-select" id="idMonHoc" name="idMonHoc">
@@ -189,7 +190,7 @@
                         </select>
                     </div>
 
-                    <%-- LoaiTaiLieu Select Box --%>
+                    <!--Select LoaiTaiLieu-->
                     <div class="mb-3">
                         <label for="idLoaiTaiLieu" class="form-label">Loại Tài liệu</label>
                         <select class="form-select" id="idLoaiTaiLieu" name="idLoaiTaiLieu">

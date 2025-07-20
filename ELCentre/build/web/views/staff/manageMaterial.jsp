@@ -125,7 +125,7 @@
                 </a>
             </div>
             <div class="card-body">
-                <%-- Display success/error messages from servlet --%>
+                <!--Error message-->
                 <c:if test="${not empty param.message || not empty param.error}">
                     <c:if test="${param.message == 'add_success'}">
                         <div class="alert alert-success" role="alert">
@@ -158,7 +158,7 @@
                         </div>
                     </c:if>
                 </c:if>
-
+                <!--Filter and Search bar-->
                 <form action="${pageContext.request.contextPath}/ManageMaterial" method="GET" class="mb-4">
                     <div class="row g-3 align-items-end">
                         <div class="col-md-4">
@@ -168,7 +168,7 @@
                         <div class="col-md-3">
                             <label for="monHoc" class="form-label">Lọc theo Môn học:</label>
                             <select class="form-select" id="monHoc" name="monHoc">
-                                <option value="0">Tất cả Môn học</option> <%-- Use 0 for "no filter" --%>
+                                <option value="0">Tất cả Môn học</option> 
                                 <c:forEach var="mh" items="${allMonHoc}">
                                     <option value="${mh.ID_MonHoc}" ${selectedMonHocId == mh.ID_MonHoc ? 'selected' : ''}>
                                         ${mh.getTenMonHoc()}
@@ -179,7 +179,7 @@
                         <div class="col-md-3">
                             <label for="loaiTaiLieu" class="form-label">Lọc theo Loại tài liệu:</label>
                             <select class="form-select" id="loaiTaiLieu" name="loaiTaiLieu">
-                                <option value="0">Tất cả Loại tài liệu</option> <%-- Use 0 for "no filter" --%>
+                                <option value="0">Tất cả Loại tài liệu</option> 
                                 <c:forEach var="ltl" items="${allLoaiTaiLieu}">
                                     <option value="${ltl.ID_LoaiTaiLieu}" ${selectedLoaiTaiLieuId == ltl.ID_LoaiTaiLieu ? 'selected' : ''}>
                                         ${ltl.getTenLoaiTaiLieu()}
@@ -192,7 +192,7 @@
                         </div>
                     </div>
                 </form>
-
+                <!--List of Material-->
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped">
                         <thead>

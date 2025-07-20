@@ -597,5 +597,20 @@
                         <div class="footer">
             <p>&copy; 2025 EL CENTRE. All rights reserved. | Developed by ELCentre</p>
         </div>
+        <script>
+            function toggleDropdown() {
+                const dropdown = document.getElementById('adminDropdown');
+                dropdown.classList.toggle('active');
+            }
+
+            document.addEventListener('click', function (event) {
+                const profile = document.querySelector('.admin-profile');
+                const dropdown = document.getElementById('adminDropdown');
+                if (!profile.contains(event.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+
+    </script>
     </body>
     </html>

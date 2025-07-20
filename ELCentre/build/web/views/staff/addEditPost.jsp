@@ -283,7 +283,7 @@
             </div>
         </div>
     </div>
-
+    <!--Sidebar-->
     <div class="sidebar">
             <h4>EL CENTRE</h4>
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
@@ -322,7 +322,7 @@
                 <h3><i class="fas fa-pen-to-square"></i> Chi tiết Blog</h3>
             </div>
             <div class="card-body">
-                <%-- Display error messages from servlet --%>
+                <!--Error message-->
                 <c:if test="${not empty param.error}">
                     <div class="alert alert-danger" role="alert">
                         <strong>Lỗi!</strong> ${param.error == 'upload_failed' ? 'Tải ảnh lên thất bại. Vui lòng thử lại.' : 'Đã có lỗi xảy ra.'}
@@ -350,7 +350,7 @@
                         <textarea class="form-control" id="noiDung" name="noiDung" rows="10">${blog.noiDung}</textarea>
                     </div>
 
-                    <%-- KeyTag Select Box (Optional, value="0" is sent if not selected) --%>
+                    <!--Select KeyTag-->
                     <div class="mb-3">
                         <label for="idKeyTag" class="form-label">KeyTag</label>
                         <select class="form-select" id="idKeyTag" name="idKeyTag">
@@ -364,7 +364,7 @@
                         </select>
                     </div>
 
-                    <%-- Keyword Select Box (Optional, value="0" is sent if not selected) --%>
+                    <!--Select KeyWord-->
                     <div class="mb-3">
                         <label for="idKeyword" class="form-label">KeyWord (SEO)</label>
                         <select class="form-select" id="idKeyword" name="idKeyword">
@@ -378,11 +378,10 @@
                         </select>
                     </div>
 
-                    <%-- PhanLoaiBlog Select Box (Now Optional, value="" is sent if not selected) --%>
+                    <!--Select PhanLoaiBlog-->
                     <div class="mb-3">
                         <label for="idPhanLoai" class="form-label">Phân loại Blog</label>
                         <select class="form-select" id="idPhanLoai" name="idPhanLoai">
-                            <%-- Default option: value="" (empty string) and selected if blog is new or ID_PhanLoai is 0/null --%>
                             <option value="" ${blog == null || blog.ID_PhanLoai == null || blog.ID_PhanLoai == 0 ? 'selected' : ''}>Chọn Phân loại (Tùy chọn)</option> 
                             <c:forEach var="phanLoai" items="${phanLoaiList}">
                                 <option value="${phanLoai.ID_PhanLoai}" ${blog != null && blog.ID_PhanLoai == phanLoai.ID_PhanLoai ? 'selected' : ''}>

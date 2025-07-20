@@ -29,7 +29,7 @@
         <div class="container">
             <section class="with-left-sidebar" id="primary">
                 <article id="post-2385" class="post-2385 page type-page status-publish hentry">
-                    
+                    <!--List of Course -->
                     <div class="woocommerce columns-4">
                         
                         <ul class="products columns-4" style="display: flex; flex-wrap: wrap; ; list-style: none;">
@@ -114,7 +114,7 @@
                     </div>
                 </article>
             </section>
-
+            <!--Filter and Search Bar-->
             <section class="left-sidebar" id="secondary">
                 <aside class="widget" style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
                     <h3 style="margin-top: 0; font-weight: 700;">Tìm kiếm & Lọc</h3>

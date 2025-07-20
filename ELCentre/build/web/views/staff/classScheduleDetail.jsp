@@ -1,6 +1,7 @@
+
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%-- Removed JSTL fmt import as it's no longer used for formatting dates --%>
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="java.time.DayOfWeek" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
@@ -520,6 +521,7 @@
     </div>
 
     <main class="main-content">
+        <!--Class Name-->
         <h1>Thời Khóa Biểu Của Lớp: ${lopHoc.tenLopHoc} (${lopHoc.classCode})</h1>
 
         <div class="card">
@@ -529,6 +531,7 @@
                     <i class="fas fa-arrow-alt-circle-left"></i> Quay lại danh sách lớp
                 </a>
             </div>
+                    <!--Filter-->
             <div class="card-body">
                 <div class="schedule-controls">
                     <a href="${pageContext.request.contextPath}/StaffManageTimeTable?action=viewDetail&classId=${lopHoc.ID_LopHoc}&viewDate=${prevWeekStart}" class="nav-button"><i class="fas fa-chevron-left"></i> Tuần trước</a>
@@ -546,7 +549,7 @@
                         <button type="submit">Xem</button>
                     </form>
                 </div>
-
+                        
                 <c:choose>
                     <c:when test="${empty timeSlots}">
                         <div class="no-schedule-message">
@@ -559,6 +562,7 @@
                         </div>
                     </c:when>
                     <c:otherwise>
+                        <!--Time Table-->
                         <div class="table-responsive">
                             <table class="schedule-table">
                                 <thead>

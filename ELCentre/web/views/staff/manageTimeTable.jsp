@@ -426,7 +426,7 @@
                     <h3><i class="fas fa-list-ul"></i> Danh sách lớp đang hoạt động</h3>
                 </div>
                 <div class="card-body">
-                    
+                    <!--Filter and Search bar-->
                     <form action="StaffManageTimeTable" method="GET" class="filter-form" style="margin-bottom: 20px" >
                         <div class="row g-3 align-items-end">
                             <div class="col-md-3">
@@ -465,7 +465,7 @@
                             </div>
                         </div>
                     </form>
-
+                    <!--List of Class to view timetable-->
                     <table class="table table-hover align-middle">
                         <thead>
                             <tr>
@@ -510,5 +510,20 @@
     <div class="footer">
             <p>© 2025 EL CENTRE. All rights reserved. | Developed by EL CENTRE</p>
         </div>
+    <script>
+            function toggleDropdown() {
+                const dropdown = document.getElementById('adminDropdown');
+                dropdown.classList.toggle('active');
+            }
+
+            document.addEventListener('click', function (event) {
+                const profile = document.querySelector('.admin-profile');
+                const dropdown = document.getElementById('adminDropdown');
+                if (!profile.contains(event.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+
+    </script>
 </body>
 </html>

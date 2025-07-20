@@ -1,3 +1,5 @@
+
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -360,11 +362,9 @@
 </head>
 <body>
     
-    <div class="header">
-            <div class="left-title">
-                Staff Dashboard <i class="fas fa-tachometer-alt"></i>
-            </div>
-            <div class="admin-profile" onclick="toggleDropdown()">
+    <header class="header">
+             <div class="left-title"><h3>Quản lý Thời Khóa Biểu</h3></div>
+             <div class="admin-profile" onclick="toggleDropdown()">
                 <c:forEach var="staff" items="${staffs}">
                     <img src="${staff.getAvatar()}" alt="Staff Photo" class="admin-img">
                     <span>${staff.getHoTen()}</span>
@@ -375,7 +375,7 @@
                     <a href="#"><i class="fas fa-user-edit"></i> Update Information</a>
                 </div>
             </div>
-        </div>
+        </header>
 
         <div class="sidebar">
             <h4>EL CENTRE</h4>
@@ -404,29 +404,16 @@
                 <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </div>
-
-        <header class="header">
-             <div class="left-title"><h3>Quản lý Thời Khóa Biểu</h3></div>
-             <div class="admin-profile" onclick="toggleDropdown()">
-                <c:forEach var="staff" items="${staffs}">
-                    <img src="${staff.getAvatar()}" alt="Staff Photo" class="admin-img">
-                    <span>${staff.getHoTen()}</span>
-                </c:forEach>
-                <i class="fas fa-caret-down"></i>
-                <div class="dropdown-menu" id="adminDropdown">
-                    <a href="#"><i class="fas fa-key"></i> Change Password</a>
-                    <a href="#"><i class="fas fa-user-edit"></i> Update Information</a>
-                </div>
-            </div>
-        </header>
-
+            
+        
+            <!--main content-->
         <main class="main-content">
             <div class="card">
                 <div class="card-header">
                     <h3><i class="fas fa-list-ul"></i> Danh sách lớp đang hoạt động</h3>
                 </div>
-                <div class="card-body">
-                    
+                <!--Filter and Search Bar-->
+                <div class="card-body">  
                     <form action="StaffManageAttendance" method="GET" class="filter-form" style="margin-bottom: 20px" >
                         <div class="row g-3 align-items-end">
                             <div class="col-md-3">
@@ -465,7 +452,7 @@
                             </div>
                         </div>
                     </form>
-
+                    <!--List Class and Action-->        
                     <table class="table table-hover align-middle">
                         <thead>
                             <tr>
@@ -510,5 +497,20 @@
     <div class="footer">
             <p>© 2025 EL CENTRE. All rights reserved. | Developed by EL CENTRE</p>
         </div>
+    <script>
+            function toggleDropdown() {
+                const dropdown = document.getElementById('adminDropdown');
+                dropdown.classList.toggle('active');
+            }
+
+            document.addEventListener('click', function (event) {
+                const profile = document.querySelector('.admin-profile');
+                const dropdown = document.getElementById('adminDropdown');
+                if (!profile.contains(event.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+
+    </script>
 </body>
 </html>

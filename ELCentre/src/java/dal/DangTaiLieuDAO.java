@@ -20,7 +20,7 @@ public class DangTaiLieuDAO {
         LEFT JOIN LoaiTaiLieu ltl ON dtl.ID_LoaiTaiLieu = ltl.ID_LoaiTaiLieu
         WHERE 1=1 
     """;
-
+    //get Material and Filter them
     public List<DangTaiLieu> getFilteredMaterials(String keyword, Integer monHocId, Integer loaiTaiLieuId, int page, int pageSize) {
         List<DangTaiLieu> list = new ArrayList<>();
         List<Object> params = new ArrayList<>();
@@ -63,7 +63,7 @@ public class DangTaiLieuDAO {
         }
         return list;
     }
-
+    //count 
     public int countFilteredMaterials(String keyword, Integer monHocId, Integer loaiTaiLieuId) {
         List<Object> params = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM DangTaiLieu WHERE 1=1 ");
@@ -98,7 +98,7 @@ public class DangTaiLieuDAO {
         }
         return 0;
     }
-    
+    //Get all Subject
     public List<MonHoc> getAllMonHoc() {
         List<MonHoc> list = new ArrayList<>();
         String sql = "SELECT ID_MonHoc, TenMonHoc FROM MonHoc";
@@ -114,7 +114,7 @@ public class DangTaiLieuDAO {
         }
         return list;
     }
-    
+    //Get all Material
     public List<LoaiTaiLieu> getAllLoaiTaiLieu() {
         List<LoaiTaiLieu> list = new ArrayList<>();
         String sql = "SELECT ID_LoaiTaiLieu, LoaiTaiLieu FROM LoaiTaiLieu ORDER BY LoaiTaiLieu";
@@ -132,8 +132,7 @@ public class DangTaiLieuDAO {
     }
 
     /**
-     * Retrieves a single material by its ID.
-     * Updated to fetch NoiDung.
+     * Get Material by ID
      */
     public DangTaiLieu getMaterialById(int materialId) {
         String sql = BASE_SELECT_SQL + " AND dtl.ID_Material = ?";
@@ -156,8 +155,7 @@ public class DangTaiLieuDAO {
     }
 
     /**
-     * Adds a new material entry to the database.
-     * Updated to handle NoiDung.
+     * add Material to DB
      */
     public void addMaterial(DangTaiLieu material) throws SQLException {
         // Updated SQL to include NoiDung
@@ -183,8 +181,7 @@ public class DangTaiLieuDAO {
     }
 
     /**
-     * Updates an existing material in the database.
-     * Updated to handle NoiDung.
+     * Update Material to DB
      */
     public void updateMaterial(DangTaiLieu material) throws SQLException {
         // Updated SQL to include NoiDung
@@ -221,7 +218,7 @@ public class DangTaiLieuDAO {
     }
 
     /**
-     * Deletes a material from the database by its ID.
+     * Delete Material from DB
      */
     public void deleteMaterial(int materialId) throws SQLException {
         String sql = "DELETE FROM DangTaiLieu WHERE ID_Material = ?";
@@ -235,10 +232,6 @@ public class DangTaiLieuDAO {
         }
     }
 
-    /**
-     * Helper method to map a ResultSet row to a DangTaiLieu object.
-     * Updated to map NoiDung.
-     */
     private DangTaiLieu mapResultSetToDangTaiLieu(ResultSet rs) throws SQLException {
         DangTaiLieu dtl = new DangTaiLieu();
         dtl.setID_Material(rs.getInt("ID_Material"));

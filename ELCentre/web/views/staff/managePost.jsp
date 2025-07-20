@@ -374,7 +374,7 @@
                 </a>
             </div>
             <div class="card-body">
-                <%-- Display success/error messages from servlet --%>
+                <!--Error message-->
                 <c:if test="${not empty param.message || not empty param.error}">
                     <c:if test="${param.message == 'add_success'}">
                         <div class="alert alert-success" role="alert">
@@ -407,7 +407,7 @@
                         </div>
                     </c:if>
                 </c:if>
-
+                <!--Filter and Search Bar-->
                 <form action="${pageContext.request.contextPath}/ManagePost" method="GET" class="mb-4">
                     <div class="row g-3 align-items-end">
                         <div class="col-md-4">
@@ -437,7 +437,7 @@
                         </div>
                     </div>
                 </form>
-
+                <!--List of Post-->
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped">
                         <thead>

@@ -45,7 +45,7 @@ public class ManageMaterial extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-
+        //get session for user
         HttpSession session = request.getSession();
         TaiKhoan user = (TaiKhoan) session.getAttribute("user");
 
@@ -53,7 +53,7 @@ public class ManageMaterial extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/views/login.jsp");
             return;
         }
-
+        //get staff name
         ArrayList<Staff> staffs = staffDAO.getNameStaff(user.getID_TaiKhoan());
         request.setAttribute("staffs", staffs);
 
@@ -84,15 +84,7 @@ public class ManageMaterial extends HttpServlet {
             log("Database error in ManageMaterial doGet: " + e.getMessage(), e);
             request.setAttribute("errorMessage", "A database error occurred: " + e.getMessage());
             request.getRequestDispatcher("/views/error.jsp").forward(request, response);
-        } catch (NumberFormatException e) {
-            log("Invalid number format in ManageMaterial doGet: " + e.getMessage(), e);
-            request.setAttribute("errorMessage", "Invalid input format for ID.");
-            request.getRequestDispatcher("/views/error.jsp").forward(request, response);
-        } catch (Exception e) {
-            log("An unexpected error occurred in ManageMaterial doGet: " + e.getMessage(), e);
-            request.setAttribute("errorMessage", "An unexpected error occurred.");
-            request.getRequestDispatcher("/views/error.jsp").forward(request, response);
-        }
+        } 
     }
 
     @Override
@@ -127,45 +119,26 @@ public class ManageMaterial extends HttpServlet {
 
     private void handleListMaterials(HttpServletRequest request, HttpServletResponse response) 
             throws SQLException, ServletException, IOException {
+        //get parameter 
         String keyword = request.getParameter("keyword");
         String monHocIdParam = request.getParameter("monHoc");
         String loaiTaiLieuIdParam = request.getParameter("loaiTaiLieu");
         String pageParam = request.getParameter("page");
 
-        int currentPage = 1;
-        try {
-            if (pageParam != null && !pageParam.isEmpty()) {
-                currentPage = Integer.parseInt(pageParam);
-            }
-        } catch (NumberFormatException e) {
-            log("Invalid page parameter: " + pageParam, e);
-        }
+        int currentPage = Integer.parseInt(pageParam);
         int pageSize = 10;
+        
+        Integer filterMonHocId = Integer.parseInt(monHocIdParam);
 
-        Integer filterMonHocId = null;
-        try {
-            if (monHocIdParam != null && !monHocIdParam.isEmpty() && !monHocIdParam.equals("0")) {
-                filterMonHocId = Integer.parseInt(monHocIdParam);
-            }
-        } catch (NumberFormatException e) {
-            log("Invalid MonHoc ID parameter: " + monHocIdParam, e);
-        }
-
-        Integer filterLoaiTaiLieuId = null;
-        try {
-            if (loaiTaiLieuIdParam != null && !loaiTaiLieuIdParam.isEmpty() && !loaiTaiLieuIdParam.equals("0")) {
-                filterLoaiTaiLieuId = Integer.parseInt(loaiTaiLieuIdParam);
-            }
-        } catch (NumberFormatException e) {
-            log("Invalid LoaiTaiLieu ID parameter: " + loaiTaiLieuIdParam, e);
-        }
+        Integer filterLoaiTaiLieuId = Integer.parseInt(loaiTaiLieuIdParam);
         
         List<DangTaiLieu> materialList = materialDAO.getFilteredMaterials(keyword, filterMonHocId, filterLoaiTaiLieuId, currentPage, pageSize);
         int totalMaterials = materialDAO.countFilteredMaterials(keyword, filterMonHocId, filterLoaiTaiLieuId);
         
         List<MonHoc> allMonHoc = materialDAO.getAllMonHoc();
         List<LoaiTaiLieu> allLoaiTaiLieu = materialDAO.getAllLoaiTaiLieu();
-
+        
+        //Pagination
         int totalPages = (int) Math.ceil((double) totalMaterials / pageSize);
 
         request.setAttribute("materialList", materialList);
@@ -181,10 +154,9 @@ public class ManageMaterial extends HttpServlet {
 
         request.getRequestDispatcher("/views/staff/manageMaterial.jsp").forward(request, response);
     }
-
+    //Add form for material
     private void showAddForm(HttpServletRequest request, HttpServletResponse response) 
             throws SQLException, ServletException, IOException {
-        
         List<MonHoc> allMonHoc = materialDAO.getAllMonHoc();
         List<LoaiTaiLieu> allLoaiTaiLieu = materialDAO.getAllLoaiTaiLieu();
 
@@ -194,17 +166,11 @@ public class ManageMaterial extends HttpServlet {
         request.setAttribute("formTitle", "Thêm Tài Liệu Mới");
         request.getRequestDispatcher("/views/staff/addEditMaterial.jsp").forward(request, response);
     }
-
+    //Edit form for Material
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) 
             throws SQLException, ServletException, IOException {
             int materialId = Integer.parseInt(request.getParameter("id"));
          DangTaiLieu material = materialDAO.getMaterialById(materialId);
-
-        if (material == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Material not found for editing.");
-            return;
-        }
-
         List<MonHoc> allMonHoc = materialDAO.getAllMonHoc();
         List<LoaiTaiLieu> allLoaiTaiLieu = materialDAO.getAllLoaiTaiLieu();
 
@@ -215,9 +181,10 @@ public class ManageMaterial extends HttpServlet {
         request.getRequestDispatcher("/views/staff/addEditMaterial.jsp").forward(request, response);
     }
 
-    private static final String UPLOAD_DIR_FILES = ""; // For actual material files (PDF, DOCX)
-    private static final String UPLOAD_DIR_IMAGES = ""; // For thumbnail images
-
+    private static final String UPLOAD_DIR_FILES = "";
+    private static final String UPLOAD_DIR_IMAGES = "";
+    
+    //Get Uploaded File Name
     private String getUploadedFileName(Part part, String uploadPath) throws IOException {
         String fileName = part.getSubmittedFileName();
         String fileExtension = "";
@@ -233,7 +200,8 @@ public class ManageMaterial extends HttpServlet {
         part.write(new File(uploadPath, uniqueFileName).getAbsolutePath());
         return uniqueFileName;
     }
-
+    
+    //Delete File
     private void deleteFile(String fileName, String uploadDirectory, HttpServletRequest request) {
         if (fileName != null && !fileName.isEmpty()) {
             String uploadPath = request.getServletContext().getRealPath("") + File.separator + uploadDirectory;
@@ -246,28 +214,23 @@ public class ManageMaterial extends HttpServlet {
         }
     }
 
-
+    //Add Material for doPost
     private void handleAddMaterial(HttpServletRequest request, HttpServletResponse response) 
             throws SQLException, ServletException, IOException {
         
         String tenTaiLieu = request.getParameter("tenTaiLieu");
-        String giaTien = request.getParameter("giaTien"); // String for now, parse later if needed
-        String noiDung = request.getParameter("noiDung"); // NEW: CKEditor content
+        String giaTien = request.getParameter("giaTien"); 
+        String noiDung = request.getParameter("noiDung"); 
 
         String idMonHocParam = request.getParameter("idMonHoc");
         String idLoaiTaiLieuParam = request.getParameter("idLoaiTaiLieu");
 
         HttpSession session = request.getSession();
         TaiKhoan user = (TaiKhoan) session.getAttribute("user");
-        Integer idGiaoVien = null;
-        if (user != null) {
-            idGiaoVien = user.getID_TaiKhoan();
-        }
 
         // Validate required fields
         if (tenTaiLieu == null || tenTaiLieu.trim().isEmpty() ||
-            noiDung == null || noiDung.trim().isEmpty()) { // NoiDung is also required
-            
+            noiDung == null || noiDung.trim().isEmpty()) { 
             request.setAttribute("errorMessage", "Tên tài liệu và nội dung không được để trống.");
             showAddForm(request, response);
             return;
@@ -301,34 +264,19 @@ public class ManageMaterial extends HttpServlet {
                                             request.getServletContext().getRealPath("") + File.separator + UPLOAD_DIR_IMAGES);
             }
         } catch (Exception e) {
-           // It's okay to continue if image is optional, but log the error
         }
 
-        Integer idMonHoc = null;
-        Integer idLoaiTaiLieu = null;
+        Integer idMonHoc = Integer.parseInt(idMonHocParam);
+        Integer idLoaiTaiLieu = Integer.parseInt(idLoaiTaiLieuParam);
 
-        try {
-            if (idMonHocParam != null && !idMonHocParam.isEmpty() && !idMonHocParam.equals("0")) {
-                idMonHoc = Integer.parseInt(idMonHocParam);
-            }
-            if (idLoaiTaiLieuParam != null && !idLoaiTaiLieuParam.isEmpty() && !idLoaiTaiLieuParam.equals("0")) {
-                idLoaiTaiLieu = Integer.parseInt(idLoaiTaiLieuParam);
-            }
-        } catch (NumberFormatException e) {
-            request.setAttribute("errorMessage", "Định dạng ID cho Môn học hoặc Loại tài liệu không hợp lệ.");
-            showAddForm(request, response);
-            return;
-        }
 
         DangTaiLieu newMaterial = new DangTaiLieu();
         newMaterial.setTenTaiLieu(tenTaiLieu);
-        newMaterial.setDuongDan(duongDanFileName); // Set the uploaded file name
+        newMaterial.setDuongDan(duongDanFileName); 
         newMaterial.setNgayTao(LocalDateTime.now());
         newMaterial.setGiaTien(giaTien);
         newMaterial.setImage(imageFileName);
-        newMaterial.setNoiDung(noiDung); // Set CKEditor content
-        
-        newMaterial.setID_GiaoVien(idGiaoVien);
+        newMaterial.setNoiDung(noiDung); 
         newMaterial.setID_MonHoc(idMonHoc);
         newMaterial.setID_LoaiTaiLieu(idLoaiTaiLieu);
 
@@ -336,28 +284,18 @@ public class ManageMaterial extends HttpServlet {
 
         response.sendRedirect(request.getContextPath() + "/ManageMaterial?message=add_success");
     }
-
+    //Update Material for doPost
     private void handleUpdateMaterial(HttpServletRequest request, HttpServletResponse response) 
             throws SQLException, ServletException, IOException {
         
-        int materialId = 0;
-        try {
-            materialId = Integer.parseInt(request.getParameter("id"));
-        } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid material ID for update.");
-            return;
-        }
+        int materialId = Integer.parseInt(request.getParameter("id"));
 
         DangTaiLieu existingMaterial = materialDAO.getMaterialById(materialId);
 
-        if (existingMaterial == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Material to update not found.");
-            return;
-        }
 
         String tenTaiLieu = request.getParameter("tenTaiLieu");
         String giaTien = request.getParameter("giaTien");
-        String noiDung = request.getParameter("noiDung"); // NEW: CKEditor content
+        String noiDung = request.getParameter("noiDung"); 
 
         // Validate required fields
         if (tenTaiLieu == null || tenTaiLieu.trim().isEmpty() ||
@@ -370,26 +308,13 @@ public class ManageMaterial extends HttpServlet {
 
         existingMaterial.setTenTaiLieu(tenTaiLieu);
         existingMaterial.setGiaTien(giaTien);
-        existingMaterial.setNoiDung(noiDung); // Update CKEditor content
+        existingMaterial.setNoiDung(noiDung); 
 
         String idMonHocParam = request.getParameter("idMonHoc");
         String idLoaiTaiLieuParam = request.getParameter("idLoaiTaiLieu");
 
-        Integer idMonHoc = null;
-        Integer idLoaiTaiLieu = null;
-
-        try {
-            if (idMonHocParam != null && !idMonHocParam.isEmpty() && !idMonHocParam.equals("0")) {
-                idMonHoc = Integer.parseInt(idMonHocParam);
-            }
-            if (idLoaiTaiLieuParam != null && !idLoaiTaiLieuParam.isEmpty() && !idLoaiTaiLieuParam.equals("0")) {
-                idLoaiTaiLieu = Integer.parseInt(idLoaiTaiLieuParam);
-            }
-        } catch (NumberFormatException e) {
-            request.setAttribute("errorMessage", "Định dạng ID cho Môn học hoặc Loại tài liệu không hợp lệ.");
-            showEditForm(request, response);
-            return;
-        }
+        Integer idMonHoc = Integer.parseInt(idMonHocParam);
+        Integer idLoaiTaiLieu = Integer.parseInt(idLoaiTaiLieuParam);
 
         existingMaterial.setID_MonHoc(idMonHoc);
         existingMaterial.setID_LoaiTaiLieu(idLoaiTaiLieu);
@@ -425,7 +350,6 @@ public class ManageMaterial extends HttpServlet {
         } catch (Exception e) {
             log("Error uploading new image for material thumbnail: " + e.getMessage(), e);
             request.setAttribute("errorMessage", "Lỗi khi tải ảnh đại diện mới lên: " + e.getMessage());
-            // Log but don't stop process if thumbnail is optional
         }
         existingMaterial.setImage(newImageFileName);
 
@@ -433,17 +357,11 @@ public class ManageMaterial extends HttpServlet {
 
         response.sendRedirect(request.getContextPath() + "/ManageMaterial?message=update_success");
     }
-
+    //Delete Material for doPost
     private void handleDeleteMaterial(HttpServletRequest request, HttpServletResponse response) 
             throws SQLException, ServletException, IOException {
         
-        int materialId = 0;
-        try {
-            materialId = Integer.parseInt(request.getParameter("id"));
-        } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid material ID for deletion.");
-            return;
-        }
+        int materialId = Integer.parseInt(request.getParameter("id"));
 
         DangTaiLieu materialToDelete = materialDAO.getMaterialById(materialId);
 
