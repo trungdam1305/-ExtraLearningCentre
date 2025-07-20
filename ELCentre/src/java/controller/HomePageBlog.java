@@ -146,6 +146,8 @@ public class HomePageBlog extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         // Redirect POST requests to GET to follow Post/Redirect/Get pattern
         // This helps prevent duplicate form submissions if the user refreshes.
         response.sendRedirect(request.getContextPath() + "/blog?" + request.getQueryString());

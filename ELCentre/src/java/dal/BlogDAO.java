@@ -12,16 +12,7 @@ import model.PhanLoaiBlog;
 import model.KeyTag; // Import the KeyTag model
 import model.Keyword;
  // Import the Keyword model (assuming you have one, needed for mapping)
-
-/**
- * Data Access Object for Blog entities.
- * Handles database operations related to blogs, including retrieval, addition,
- * update, and deletion, with advanced filtering and pagination.
- */
 public class BlogDAO { // IMPORTANT: NO LONGER extends DBContext
-
-    // No 'connection' field here, as it's not inherited.
-    // Each method will get its own connection from DBContext.getInstance().
 
     /**
      * Listing Blogs from the Database.
@@ -202,19 +193,17 @@ public class BlogDAO { // IMPORTANT: NO LONGER extends DBContext
      * @param blog The Blog object to be added.
      */
     public void addBlog(Blog blog) {
-        String sql = "INSERT INTO Blog (BlogTitle, BlogDescription, BlogDate, Image, ID_Khoi, ID_PhanLoai, ID_KeyTag, ID_Keyword, NoiDung) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Blog (BlogTitle, BlogDescription, BlogDate, Image, ID_PhanLoai, ID_KeyTag, ID_Keyword, NoiDung) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBContext.getInstance().getConnection(); // Obtain Connection
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, blog.getBlogTitle());
             ps.setString(2, blog.getBlogDescription());
             ps.setObject(3, blog.getBlogDate());
             ps.setString(4, blog.getImage());
-            ps.setInt(5, blog.getID_Khoi());
-            ps.setInt(6, blog.getID_PhanLoai());
-            ps.setInt(7, blog.getID_KeyTag());
-            ps.setInt(8, blog.getID_Keyword());
-            ps.setString(9, blog.getNoiDung());
-
+            ps.setInt(5, blog.getID_PhanLoai());
+            ps.setInt(6, blog.getID_KeyTag());
+            ps.setInt(7, blog.getID_Keyword());
+            ps.setString(8, blog.getNoiDung());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -604,8 +593,7 @@ public static void main(String[] args) {
 
     // --- IMPORTANT: Use valid IDs that exist in your database ---
     // If these foreign keys don't exist, you'll get an SQLException.
-    // Check your PhanLoaiBlog, Khoi, KeyTag, and Keyword tables.
-    newBlog.setID_Khoi(1);       // Example: Assuming Khoi ID 1 exists
+    // Check your PhanLoaiBlog, Khoi, KeyTag, and Keyword tables.    // Example: Assuming Khoi ID 1 exists
     newBlog.setID_PhanLoai(1);   // Example: Assuming PhanLoaiBlog ID 1 exists
     newBlog.setID_KeyTag(1);     // Example: Assuming KeyTag ID 1 exists
     newBlog.setID_Keyword(1);    // Example: Assuming Keyword ID 1 exists

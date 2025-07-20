@@ -1,7 +1,6 @@
 package controller;
 
 import dal.BlogDAO;
-import dal.KhoiHocDAO;
 import dal.StaffDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -16,9 +15,9 @@ import model.Blog;
 import model.Staff;
 import model.TaiKhoan;
 import model.PhanLoaiBlog;
-import model.KeyTag;    // Import KeyTag model
-import model.Keyword;   // Import Keyword model (NEW)
-import model.KhoiHoc; // Assuming you have this model and a DAO for it
+import model.KeyTag;
+import model.Keyword;
+import model.KhoiHoc;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,10 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Servlet for managing blog posts (search, filter, pagination, CRUD).
- * @author admin
- */
 @MultipartConfig(
     fileSizeThreshold = 1024 * 1024 * 2, // 2MB
     maxFileSize = 1024 * 1024 * 10,      // 10MB
@@ -41,16 +36,13 @@ public class ManagePost extends HttpServlet {
 
     private final BlogDAO blogDAO;
     private final StaffDAO staffDAO;
-    private final KhoiHocDAO khoiHocDAO = new KhoiHocDAO();
-    // Uncomment and initialize if you have these DAOs
-    // private final PhanLoaiBlogDAO phanLoaiBlogDAO;
+    // You'll need a KhoiHocDAO if you uncomment this
     // private final KhoiHocDAO khoiHocDAO;
 
     public ManagePost() {
         this.blogDAO = new BlogDAO();
         this.staffDAO = new StaffDAO();
-        // this.phanLoaiBlogDAO = new PhanLoaiBlogDAO();
-        // this.khoiHocDAO = new KhoiHocDAO();
+        // this.khoiHocDAO = new KhoiHocDAO(); // Initialize if uncommented
     }
 
     @Override
@@ -94,9 +86,9 @@ public class ManagePost extends HttpServlet {
                     break;
             }
         } catch (SQLException e) {
-            log("Database error in ManagePost doGet: " + e.getMessage(), e); // Log the full stack trace
+            log("Database error in ManagePost doGet: " + e.getMessage(), e);
             request.setAttribute("errorMessage", "A database error occurred: " + e.getMessage());
-            request.getRequestDispatcher("/views/error.jsp").forward(request, response); // Forward to an error page
+            request.getRequestDispatcher("/views/error.jsp").forward(request, response);
         } catch (NumberFormatException e) {
             log("Invalid number format in ManagePost doGet: " + e.getMessage(), e);
             request.setAttribute("errorMessage", "Invalid input format for ID or year.");
@@ -149,17 +141,12 @@ public class ManagePost extends HttpServlet {
         }
     }
 
-    /**
-     * Handles listing blogs with search, filter, and pagination.
-     */
     private void handleListBlogs(HttpServletRequest request, HttpServletResponse response) 
             throws SQLException, ServletException, IOException {
         String keyword = request.getParameter("keyword");
         String idKeyTagParam = request.getParameter("idKeyTag");
         String yearParam = request.getParameter("year");
         String pageParam = request.getParameter("page");
-        // categoryIdParam is not used in the filtering of ManagePost's table,
-        // so it's not retrieved here.
 
         int currentPage = 1;
         try {
@@ -169,7 +156,7 @@ public class ManagePost extends HttpServlet {
         } catch (NumberFormatException e) {
             log("Invalid page parameter: " + pageParam, e);
         }
-        int pageSize = 5; // Configurable items per page
+        int pageSize = 5;
 
         int filterKeyTagId = 0;
         try {
@@ -189,12 +176,9 @@ public class ManagePost extends HttpServlet {
             log("Invalid year parameter: " + yearParam, e);
         }
         
-        // Use blogDAO.getFilteredBlogs for the list of blogs
         List<Blog> blogList = blogDAO.getFilteredBlogs(keyword, filterKeyTagId, filterYear, currentPage, pageSize);
-        // Use blogDAO.countFilteredBlogs for the total count
         int totalBlogs = blogDAO.countFilteredBlogs(keyword, filterKeyTagId, filterYear);
         
-        // Fetch all available KeyTags and Years for filter dropdowns
         List<KeyTag> availableKeyTags = blogDAO.getAllKeyTags();
         List<Integer> availableYears = blogDAO.getDistinctBlogYears();
 
@@ -204,56 +188,42 @@ public class ManagePost extends HttpServlet {
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("currentPage", currentPage);
         
-        // Retain search/filter parameters for display in JSP
         request.setAttribute("keyword", keyword);
         request.setAttribute("selectedKeyTagId", filterKeyTagId);
         request.setAttribute("selectedYear", filterYear);
-
-        request.setAttribute("availableKeyTags", availableKeyTags);
-        request.setAttribute("availableYears", availableYears);
         
-        // Populate dropdowns for add/edit form (these lists are needed by addEditPost.jsp)
         List<PhanLoaiBlog> phanLoaiList = blogDAO.getAllPhanLoaiBlog(); 
         request.setAttribute("phanLoaiList", phanLoaiList);
 
-        // If you have a KhoiHocDAO and need a dropdown for KhoiHoc, uncomment this:
+        // If you had khoiHocList here, it would also be passed to managePost.jsp
         // List<KhoiHoc> khoiHocList = khoiHocDAO.getAllKhoiHoc(); 
         // request.setAttribute("khoiHocList", khoiHocList);
 
         request.getRequestDispatcher("/views/staff/managePost.jsp").forward(request, response);
     }
 
-    /**
-     * Displays the form for adding a new blog post.
-     */
     private void showAddForm(HttpServletRequest request, HttpServletResponse response) 
             throws SQLException, ServletException, IOException {
         
-        // Populate dropdowns (PhanLoaiBlog, KeyTag, Keyword, KhoiHoc) for the form
         List<PhanLoaiBlog> phanLoaiList = blogDAO.getAllPhanLoaiBlog(); 
         request.setAttribute("phanLoaiList", phanLoaiList);
 
         List<KeyTag> availableKeyTags = blogDAO.getAllKeyTags(); 
         request.setAttribute("availableKeyTags", availableKeyTags);
         
-        // --- NEW: Fetch available Keywords ---
         List<Keyword> availableKeywords = blogDAO.getAllKeywords();
         request.setAttribute("availableKeywords", availableKeywords);
-        
-        List<KhoiHoc> khoiHocList = khoiHocDAO.getAllKhoiHoc(); // <--- You need this line
-        request.setAttribute("khoiHocList", khoiHocList);
-        // If you have a KhoiHocDAO, uncomment and fetch its list
+
+        // --- NEW: Fetch available KhoiHoc List ---
+        // You'll need to uncomment this if KhoiHoc is enabled
         // List<KhoiHoc> khoiHocList = khoiHocDAO.getAllKhoiHoc(); 
         // request.setAttribute("khoiHocList", khoiHocList);
 
-        request.setAttribute("blog", null); // Indicates adding new blog
+        request.setAttribute("blog", null);
         request.setAttribute("formTitle", "Thêm Blog Mới");
         request.getRequestDispatcher("/views/staff/addEditPost.jsp").forward(request, response);
     }
 
-    /**
-     * Displays the form for editing an existing blog post.
-     */
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) 
             throws SQLException, ServletException, IOException {
         int blogId = 0;
@@ -271,32 +241,25 @@ public class ManagePost extends HttpServlet {
             return;
         }
 
-        // Populate dropdowns (PhanLoaiBlog, KeyTag, Keyword, KhoiHoc) for the form
         List<PhanLoaiBlog> phanLoaiList = blogDAO.getAllPhanLoaiBlog(); 
         request.setAttribute("phanLoaiList", phanLoaiList);
 
         List<KeyTag> availableKeyTags = blogDAO.getAllKeyTags(); 
         request.setAttribute("availableKeyTags", availableKeyTags);
         
-        // --- NEW: Fetch available Keywords ---
         List<Keyword> availableKeywords = blogDAO.getAllKeywords();
         request.setAttribute("availableKeywords", availableKeywords);
-        
-        List<KhoiHoc> khoiHocList = khoiHocDAO.getAllKhoiHoc(); // <--- You need this line
-    request.setAttribute("khoiHocList", khoiHocList);
-        
-        // If you have a KhoiHocDAO, uncomment and fetch its list
+
+        // --- NEW: Fetch available KhoiHoc List ---
+        // You'll need to uncomment this if KhoiHoc is enabled
         // List<KhoiHoc> khoiHocList = khoiHocDAO.getAllKhoiHoc(); 
         // request.setAttribute("khoiHocList", khoiHocList);
 
-        request.setAttribute("blog", blog); // Pass blog object to populate form fields
+        request.setAttribute("blog", blog);
         request.setAttribute("formTitle", "Sửa Post");
         request.getRequestDispatcher("/views/staff/addEditPost.jsp").forward(request, response);
     }
 
-    /**
-     * Handles adding a new blog post from form submission.
-     */
     private void handleAddBlog(HttpServletRequest request, HttpServletResponse response) 
             throws SQLException, ServletException, IOException {
         
@@ -304,46 +267,40 @@ public class ManagePost extends HttpServlet {
         String blogDescription = request.getParameter("blogDescription");
         String noiDung = request.getParameter("noiDung");
         String idKeyTagParam = request.getParameter("idKeyTag"); 
-        String idPhanLoaiParam = request.getParameter("idPhanLoai");
-        String idKhoiParam = request.getParameter("idKhoi");
-        String idKeywordParam = request.getParameter("idKeyword"); // NEW: Get ID_Keyword from select box
+        String idPhanLoaiParam = request.getParameter("idPhanLoai"); // Can be "" if optional        // Can be "0" or "" if optional
+        String idKeywordParam = request.getParameter("idKeyword");   // Can be "0" if optional
 
-        // Validate required fields
+        // Validate required fields (only title, description, content are *always* required)
         if (blogTitle == null || blogTitle.trim().isEmpty() ||
             blogDescription == null || blogDescription.trim().isEmpty() ||
-            noiDung == null || noiDung.trim().isEmpty() ||
-            idPhanLoaiParam == null || idPhanLoaiParam.isEmpty()) {
+            noiDung == null || noiDung.trim().isEmpty()) { // Removed idPhanLoaiParam from required check
             
-            request.setAttribute("errorMessage", "Tiêu đề, mô tả, nội dung và phân loại blog không được để trống.");
-            showAddForm(request, response); // Return to form with error and populate dropdowns again
+            request.setAttribute("errorMessage", "Tiêu đề, mô tả và nội dung blog không được để trống.");
+            showAddForm(request, response);
             return;
         }
 
-        int idPhanLoai = 0;
-        int idKeyTag = 0;
-        int idKhoi = 0; // Default or handle as nullable if your DB allows
-        int idKeyword = 0; // NEW: Initialize ID_Keyword
-        
+        // --- Handle nullable Integer IDs ---
+        Integer idPhanLoai = null; // Use Integer to allow null   // Use Integer to allow null
+        Integer idKeyTag = null;   // Use Integer to allow null
+        Integer idKeyword = null;  // Use Integer to allow null
+
         try {
-            idPhanLoai = Integer.parseInt(idPhanLoaiParam);
-            if (idKeyTagParam != null && !idKeyTagParam.isEmpty()) {
+            if (idPhanLoaiParam != null && !idPhanLoaiParam.isEmpty()) { // Check for empty string
+                idPhanLoai = Integer.parseInt(idPhanLoaiParam);
+            }
+            if (idKeyTagParam != null && !idKeyTagParam.isEmpty() && !idKeyTagParam.equals("0")) { // Check for empty string or "0"
                 idKeyTag = Integer.parseInt(idKeyTagParam);
             }
-            if (idKhoiParam != null && !idKhoiParam.isEmpty()) {
-                idKhoi = Integer.parseInt(idKhoiParam);
-            }
-            // NEW: Parse ID_Keyword
-            if (idKeywordParam != null && !idKeywordParam.isEmpty()) {
+            if (idKeywordParam != null && !idKeywordParam.isEmpty() && !idKeywordParam.equals("0")) { // Check for empty string or "0"
                 idKeyword = Integer.parseInt(idKeywordParam);
             }
         } catch (NumberFormatException e) {
-            request.setAttribute("errorMessage", "Định dạng ID không hợp lệ.");
-            showAddForm(request, response); // Return to form with error
+            request.setAttribute("errorMessage", "Định dạng ID cho phân loại, khối học, KeyTag hoặc Keyword không hợp lệ.");
+            showAddForm(request, response);
             return;
         }
-        
-        List<KhoiHoc> khoiHocList = khoiHocDAO.getAllKhoiHoc(); // <--- You need this line
-        request.setAttribute("khoiHocList", khoiHocList);
+
         String imageFileName = null;
         try {
             Part filePart = request.getPart("image");
@@ -366,7 +323,7 @@ public class ManagePost extends HttpServlet {
         } catch (Exception e) {
             log("Error uploading image for add blog: " + e.getMessage(), e);
             request.setAttribute("errorMessage", "Lỗi khi tải ảnh lên: " + e.getMessage());
-            showAddForm(request, response); // Return to form with error
+            showAddForm(request, response);
             return;
         }
 
@@ -376,19 +333,21 @@ public class ManagePost extends HttpServlet {
         newBlog.setNoiDung(noiDung);
         newBlog.setBlogDate(LocalDateTime.now());
         newBlog.setImage(imageFileName);
+        
+        // --- Set nullable Integer IDs ---
+        // Your model.Blog needs to have Integer ID fields for this to work perfectly with nulls
+        // E.g., private Integer ID_PhanLoai; in model.Blog
+        // If your Blog model still uses 'int', then set 0 or -1 as a default, and handle that in DAO SQL.
+        // For simplicity, assuming model.Blog.ID_PhanLoai, ID_Khoi, ID_KeyTag, ID_Keyword are now Integer.
         newBlog.setID_PhanLoai(idPhanLoai);
         newBlog.setID_KeyTag(idKeyTag);
-        newBlog.setID_Keyword(idKeyword); // NEW: Set ID_Keyword
-        // The blog object's string KeyTag/KeyWord fields will be populated from DB on retrieve, not set here.
+        newBlog.setID_Keyword(idKeyword);
 
         blogDAO.addBlog(newBlog);
 
         response.sendRedirect(request.getContextPath() + "/ManagePost?message=add_success");
     }
 
-    /**
-     * Handles updating an existing blog post from form submission.
-     */
     private void handleUpdateBlog(HttpServletRequest request, HttpServletResponse response) 
             throws SQLException, ServletException, IOException {
         
@@ -407,58 +366,46 @@ public class ManagePost extends HttpServlet {
             return;
         }
 
-        // Retrieve updated data from form
         existingBlog.setBlogTitle(request.getParameter("blogTitle"));
         existingBlog.setBlogDescription(request.getParameter("blogDescription"));
         existingBlog.setNoiDung(request.getParameter("noiDung"));
-        // Remove direct setting of string KeyTag/KeyWord if using IDs from select boxes
-        // existingBlog.setKeyTag(request.getParameter("keyTag")); 
-        // existingBlog.setKeyWord(request.getParameter("keyWord"));
 
         String idPhanLoaiParam = request.getParameter("idPhanLoai");
-        String idKhoiParam = request.getParameter("idKhoi");
-        String idKeyTagParam = request.getParameter("idKeyTag"); 
-        String idKeywordParam = request.getParameter("idKeyword"); // NEW: Get ID_Keyword
+        String idKeyTagParam = request.getParameter("idKeyTag");
+        String idKeywordParam = request.getParameter("idKeyword");
 
-        // Validate and parse IDs
-        int idPhanLoai = 0;
-        int idKhoi = 0;
-        int idKeyTag = 0;
-        int idKeyword = 0; // NEW: Initialize ID_Keyword
+        // --- Handle nullable Integer IDs ---
+        Integer idPhanLoai = null;
+        Integer idKeyTag = null;
+        Integer idKeyword = null;
 
         try {
             if (idPhanLoaiParam != null && !idPhanLoaiParam.isEmpty()) {
                 idPhanLoai = Integer.parseInt(idPhanLoaiParam);
             }
-            if (idKhoiParam != null && !idKhoiParam.isEmpty()) {
-                idKhoi = Integer.parseInt(idKhoiParam);
-            }
-            if (idKeyTagParam != null && !idKeyTagParam.isEmpty()) {
+            if (idKeyTagParam != null && !idKeyTagParam.isEmpty() && !idKeyTagParam.equals("0")) {
                 idKeyTag = Integer.parseInt(idKeyTagParam);
             }
-            // NEW: Parse ID_Keyword
-            if (idKeywordParam != null && !idKeywordParam.isEmpty()) {
+            if (idKeywordParam != null && !idKeywordParam.isEmpty() && !idKeywordParam.equals("0")) {
                 idKeyword = Integer.parseInt(idKeywordParam);
             }
         } catch (NumberFormatException e) {
-            request.setAttribute("errorMessage", "Định dạng ID không hợp lệ.");
-            showEditForm(request, response); // Return to form with error
+            request.setAttribute("errorMessage", "Định dạng ID cho phân loại, khối học, KeyTag hoặc Keyword không hợp lệ.");
+            showEditForm(request, response);
             return;
         }
 
         existingBlog.setID_PhanLoai(idPhanLoai);
         existingBlog.setID_KeyTag(idKeyTag);
-        existingBlog.setID_Keyword(idKeyword); // NEW: Set ID_Keyword
+        existingBlog.setID_Keyword(idKeyword);
 
-        // Handle image upload
-        String newImageFileName = existingBlog.getImage(); // Keep old image by default
+        String newImageFileName = existingBlog.getImage();
         try {
             Part filePart = request.getPart("image");
             if (filePart != null && filePart.getSize() > 0 && filePart.getSubmittedFileName() != null && !filePart.getSubmittedFileName().isEmpty()) {
                 String fileName = filePart.getSubmittedFileName();
                 String uploadPath = getServletContext().getRealPath("") + File.separator + "img" + File.separator + "blog_images";
                 
-                // Delete old image if it exists
                 if (existingBlog.getImage() != null && !existingBlog.getImage().isEmpty()) {
                     File oldImage = new File(uploadPath + File.separator + existingBlog.getImage());
                     if (oldImage.exists()) {
@@ -477,19 +424,16 @@ public class ManagePost extends HttpServlet {
         } catch (Exception e) {
             log("Error uploading new image for update blog: " + e.getMessage(), e);
             request.setAttribute("errorMessage", "Lỗi khi tải ảnh mới lên: " + e.getMessage());
-            showEditForm(request, response); // Return to form with error
+            showEditForm(request, response);
             return;
         }
-        existingBlog.setImage(newImageFileName); // Update with new image file name
+        existingBlog.setImage(newImageFileName);
 
         blogDAO.updateBlog(existingBlog);
 
         response.sendRedirect(request.getContextPath() + "/ManagePost?message=update_success");
     }
 
-    /**
-     * Handles deleting a blog post.
-     */
     private void handleDeleteBlog(HttpServletRequest request, HttpServletResponse response) 
             throws SQLException, ServletException, IOException {
         
@@ -508,7 +452,6 @@ public class ManagePost extends HttpServlet {
             return;
         }
 
-        // Delete the physical image file from the server
         if (blogToDelete.getImage() != null && !blogToDelete.getImage().isEmpty()) {
             String uploadPath = getServletContext().getRealPath("") + File.separator + "img" + File.separator + "blog_images";
             File imageFile = new File(uploadPath + File.separator + blogToDelete.getImage());

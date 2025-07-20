@@ -111,7 +111,7 @@
              <div class="col-lg-6">
                 <div class="blog-box row g-0">
                     <div class="col-md-5">
-                        <img src="${pageContext.request.contextPath}/${blog.image}" 
+                        <img src="${pageContext.request.contextPath}/img/blog_images/${blog.image}" 
                              alt="Blog Image" 
                              class="blog-img" />
                     </div>

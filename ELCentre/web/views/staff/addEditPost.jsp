@@ -12,8 +12,7 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
 
     <style>
-        /* Your existing CSS styles (header, sidebar, main-content, footer) from managePost.jsp */
-        /* Make sure these are consistent. */
+        /* Your existing common CSS styles go here. */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -349,54 +348,48 @@
                         <textarea class="form-control" id="noiDung" name="noiDung" rows="10">${blog.noiDung}</textarea>
                     </div>
 
-                    <%-- KeyTag Select Box --%>
+                    <%-- KeyTag Select Box (Optional, value="0" is sent if not selected) --%>
                     <div class="mb-3">
                         <label for="idKeyTag" class="form-label">KeyTag</label>
                         <select class="form-select" id="idKeyTag" name="idKeyTag">
-                            <option value="0">Chọn KeyTag</option> <%-- Value 0 for no KeyTag selected --%>
+                            <%-- Default option: value="0" and selected if blog is new or ID_KeyTag is 0 --%>
+                            <option value="0" ${blog == null || blog.ID_KeyTag == 0 ? 'selected' : ''}>Chọn KeyTag (Tùy chọn)</option> 
                             <c:forEach var="kt" items="${availableKeyTags}">
-                                <option value="${kt.getID_KeyTag()}" ${blog.getID_KeyTag() == kt.getID_KeyTag() ? 'selected' : ''}>
+                                <option value="${kt.ID_KeyTag}" ${blog != null && blog.ID_KeyTag == kt.ID_KeyTag ? 'selected' : ''}>
                                     ${kt.getKeyTag()}
                                 </option>
                             </c:forEach>
                         </select>
                     </div>
 
-                    <%-- Keyword Select Box --%>
+                    <%-- Keyword Select Box (Optional, value="0" is sent if not selected) --%>
                     <div class="mb-3">
                         <label for="idKeyword" class="form-label">KeyWord (SEO)</label>
                         <select class="form-select" id="idKeyword" name="idKeyword">
-                            <option value="0">Chọn Keyword</option> <%-- Value 0 for no Keyword selected --%>
+                            <%-- Default option: value="0" and selected if blog is new or ID_Keyword is 0 --%>
+                            <option value="0" ${blog == null || blog.ID_Keyword == 0 ? 'selected' : ''}>Chọn Keyword (Tùy chọn)</option> 
                             <c:forEach var="kw" items="${availableKeywords}">
-                                <option value="${kw.getID_Keyword()}" ${blog.getID_Keyword() == kw.getID_Keyword() ? 'selected' : ''}>
+                                <option value="${kw.ID_Keyword}" ${blog != null && blog.ID_Keyword == kw.ID_Keyword ? 'selected' : ''}>
                                     ${kw.getKeyword()}
                                 </option>
                             </c:forEach>
                         </select>
                     </div>
 
+                    <%-- PhanLoaiBlog Select Box (Now Optional, value="" is sent if not selected) --%>
                     <div class="mb-3">
                         <label for="idPhanLoai" class="form-label">Phân loại Blog</label>
                         <select class="form-select" id="idPhanLoai" name="idPhanLoai">
+                            <%-- Default option: value="" (empty string) and selected if blog is new or ID_PhanLoai is 0/null --%>
+                            <option value="" ${blog == null || blog.ID_PhanLoai == null || blog.ID_PhanLoai == 0 ? 'selected' : ''}>Chọn Phân loại (Tùy chọn)</option> 
                             <c:forEach var="phanLoai" items="${phanLoaiList}">
-                                <option value="${phanLoai.ID_PhanLoai}" ${blog.ID_PhanLoai == phanLoai.ID_PhanLoai ? 'selected' : ''}>
+                                <option value="${phanLoai.ID_PhanLoai}" ${blog != null && blog.ID_PhanLoai == phanLoai.ID_PhanLoai ? 'selected' : ''}>
                                     ${phanLoai.phanLoai}
                                 </option>
                             </c:forEach>
                         </select>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="idKhoi" class="form-label">Khối học (nếu có)</label>
-                        <select class="form-select" id="idKhoi" name="idKhoi">
-                            <option value="0">Không áp dụng</option> <%-- Use 0 for "not applicable" --%>
-                            <c:forEach var="khoi" items="${khoiHocList}">
-                                <option value="${khoi.ID_Khoi}" ${blog.ID_Khoi == khoi.ID_Khoi ? 'selected' : ''}>
-                                    ${khoi.tenKhoi}
-                                </option>
-                            </c:forEach>
-                        </select>
-                    </div>
 
                     <div class="mb-3">
                         <label for="image" class="form-label">Ảnh đại diện</label>

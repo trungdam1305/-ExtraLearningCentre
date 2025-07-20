@@ -24,11 +24,6 @@ public class Blog {
     // Image associated with the blog post
     private String Image;
 
-    // ID of the educational grade level the blog is associated with
-    private int ID_Khoi;
-
-    // ID of the blog category
-    private int ID_PhanLoai;
     
     // The actual KeyTag string (e.g., "Technology", "Education")
     // This would typically come from a JOIN with the KeyTag table
@@ -44,11 +39,10 @@ public class Blog {
     // Detailed content of the blog (from CKEditor)
     private String NoiDung; 
     
-    // Foreign key to the KeyTag table
-    private int ID_KeyTag; 
-    
-    // Foreign key to the Keyword table
-    private int ID_Keyword; 
+     private Integer ID_Khoi;       // Changed to Integer
+    private Integer ID_PhanLoai;   // Changed to Integer
+    private Integer ID_KeyTag;     // Changed to Integer
+    private Integer ID_Keyword;
 
     /**
      * Default constructor
@@ -78,6 +72,23 @@ public class Blog {
         this.ID_KeyTag = ID_KeyTag;
         this.ID_Keyword = ID_Keyword;
     }
+
+    public Blog(int ID_Blog, String BlogTitle, String BlogDescription, LocalDateTime BlogDate, String Image, String KeyTag, String KeyWord, String PhanLoai, String NoiDung, Integer ID_PhanLoai, Integer ID_KeyTag, Integer ID_Keyword) {
+        this.ID_Blog = ID_Blog;
+        this.BlogTitle = BlogTitle;
+        this.BlogDescription = BlogDescription;
+        this.BlogDate = BlogDate;
+        this.Image = Image;
+        this.KeyTag = KeyTag;
+        this.KeyWord = KeyWord;
+        this.PhanLoai = PhanLoai;
+        this.NoiDung = NoiDung;
+        this.ID_PhanLoai = ID_PhanLoai;
+        this.ID_KeyTag = ID_KeyTag;
+        this.ID_Keyword = ID_Keyword;
+    }
+    
+    
 
     // --- Getters and Setters ---
     public int getID_Blog() {
