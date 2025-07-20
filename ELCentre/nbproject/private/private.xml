@@ -28,10 +28,8 @@
             <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/web/WEB-INF/web.xml</file>
         </group>
         <group>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageClassDetail_LopHoc_HocSinh.java</file>
             <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageClassDetail_LopHoc_GiaoVien.java</file>
-            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageClassDetail.java</file>
-            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/web/views/admin/viewClass_LopHoc_HocSinh.jsp</file>
-            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/web/views/admin/viewClass_LopHoc_GiaoVien.jsp</file>
         </group>
     </open-files>
 </project-private>

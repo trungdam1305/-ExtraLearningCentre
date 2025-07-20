@@ -924,7 +924,7 @@
                         </button>
                     </c:otherwise>
                 </c:choose>
-                <!-- Nút thêm học sinh đã được di chuyển lên trên -->
+
 
                 <!-- Modal để thêm học sinh -->
                 <div class="modal fade" id="studentModal" tabindex="-1" aria-labelledby="studentModalLabel" aria-hidden="true">
@@ -1042,7 +1042,14 @@
 
             <!-- Nút quay lại -->
             <div class="dashboard-button">
-                <a href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewClass&id=${idHocSinh}" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Quay lại</a>
+                <c:choose>
+                    <c:when test="${not empty idHocSinh}">
+                        <a href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewClass&id=${idHocSinh}" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Quay lại</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocsinh" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Quay lại danh sách học sinh</a>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
 
@@ -1059,235 +1066,237 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" 
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
         <script>
-            // Tìm kiếm học sinh
-            document.getElementById('studentSearch')?.addEventListener('input', function () {
-                let filter = this.value.toLowerCase();
-                let table = document.getElementById('studentTable');
-                let tr = table.getElementsByTagName('tr');
-                for (let i = 1; i < tr.length; i++) {
-                    let tdMa = tr[i].getElementsByTagName('td')[0]; // Cột mã học sinh
-                    let tdTen = tr[i].getElementsByTagName('td')[1]; // Cột họ tên
-                    let txtMa = tdMa.textContent || tdMa.innerText;
-                    let txtTen = tdTen.textContent || tdTen.innerText;
-                    if (txtMa.toLowerCase().indexOf(filter) > -1 || txtTen.toLowerCase().indexOf(filter) > -1) {
-                        tr[i].style.display = '';
-                    } else {
-                        tr[i].style.display = 'none';
-                    }
-                }
-                document.getElementById('hiddenStudentSearch').value = this.value;
-            });
+                                                                // Tìm kiếm học sinh
+                                                                document.getElementById('studentSearch')?.addEventListener('input', function () {
+                                                                    let filter = this.value.toLowerCase();
+                                                                    let table = document.getElementById('studentTable');
+                                                                    let tr = table.getElementsByTagName('tr');
+                                                                    for (let i = 1; i < tr.length; i++) {
+                                                                        let tdMa = tr[i].getElementsByTagName('td')[0]; // Cột mã học sinh
+                                                                        let tdTen = tr[i].getElementsByTagName('td')[1]; // Cột họ tên
+                                                                        let txtMa = tdMa.textContent || tdMa.innerText;
+                                                                        let txtTen = tdTen.textContent || tdTen.innerText;
+                                                                        if (txtMa.toLowerCase().indexOf(filter) > -1 || txtTen.toLowerCase().indexOf(filter) > -1) {
+                                                                            tr[i].style.display = '';
+                                                                        } else {
+                                                                            tr[i].style.display = 'none';
+                                                                        }
+                                                                    }
+                                                                    document.getElementById('hiddenStudentSearch').value = this.value;
+                                                                });
 
-            // Tìm kiếm giáo viên
-            document.getElementById('teacherSearch')?.addEventListener('input', function () {
-                let filter = this.value.toLowerCase();
-                let table = document.getElementById('teacherTable');
-                let tr = table.getElementsByTagName('tr');
-                for (let i = 1; i < tr.length; i++) {
-                    let td = tr[i].getElementsByTagName('td')[1];
-                    let txtValue = td.textContent || td.innerText;
-                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                        tr[i].style.display = '';
-                    } else {
-                        tr[i].style.display = 'none';
-                    }
-                }
-                document.getElementById('hiddenTeacherSearch').value = this.value;
-            });
+                                                                // Tìm kiếm giáo viên
+                                                                document.getElementById('teacherSearch')?.addEventListener('input', function () {
+                                                                    let filter = this.value.toLowerCase();
+                                                                    let table = document.getElementById('teacherTable');
+                                                                    let tr = table.getElementsByTagName('tr');
+                                                                    for (let i = 1; i < tr.length; i++) {
+                                                                        let td = tr[i].getElementsByTagName('td')[1];
+                                                                        let txtValue = td.textContent || td.innerText;
+                                                                        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                                                                            tr[i].style.display = '';
+                                                                        } else {
+                                                                            tr[i].style.display = 'none';
+                                                                        }
+                                                                    }
+                                                                    document.getElementById('hiddenTeacherSearch').value = this.value;
+                                                                });
 
-            // Tìm kiếm lịch sử giáo viên
-            document.getElementById('previousTeacherSearch')?.addEventListener('input', function () {
-                let filter = this.value.toLowerCase();
-                let table = document.getElementById('previousTeacherTable');
-                let tr = table.getElementsByTagName('tr');
-                for (let i = 1; i < tr.length; i++) {
-                    let td = tr[i].getElementsByTagName('td')[1];
-                    let txtValue = td.textContent || td.innerText;
-                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                        tr[i].style.display = '';
-                    } else {
-                        tr[i].style.display = 'none';
-                    }
-                }
-            });
+                                                                // Tìm kiếm lịch sử giáo viên
+                                                                document.getElementById('previousTeacherSearch')?.addEventListener('input', function () {
+                                                                    let filter = this.value.toLowerCase();
+                                                                    let table = document.getElementById('previousTeacherTable');
+                                                                    let tr = table.getElementsByTagName('tr');
+                                                                    for (let i = 1; i < tr.length; i++) {
+                                                                        let td = tr[i].getElementsByTagName('td')[1];
+                                                                        let txtValue = td.textContent || td.innerText;
+                                                                        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                                                                            tr[i].style.display = '';
+                                                                        } else {
+                                                                            tr[i].style.display = 'none';
+                                                                        }
+                                                                    }
+                                                                });
 
-            // Tìm kiếm lịch sử học sinh
-            document.getElementById('previousStudentSearch')?.addEventListener('input', function () {
-                let filter = this.value.toLowerCase();
-                let table = document.getElementById('previousStudentTable');
-                let tr = table.getElementsByTagName('tr');
-                for (let i = 1; i < tr.length; i++) {
-                    let td = tr[i].getElementsByTagName('td')[1];
-                    let txtValue = td.textContent || td.innerText;
-                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                        tr[i].style.display = '';
-                    } else {
-                        tr[i].style.display = 'none';
-                    }
-                }
-            });
+                                                                // Tìm kiếm lịch sử học sinh
+                                                                document.getElementById('previousStudentSearch')?.addEventListener('input', function () {
+                                                                    let filter = this.value.toLowerCase();
+                                                                    let table = document.getElementById('previousStudentTable');
+                                                                    let tr = table.getElementsByTagName('tr');
+                                                                    for (let i = 1; i < tr.length; i++) {
+                                                                        let td = tr[i].getElementsByTagName('td')[1];
+                                                                        let txtValue = td.textContent || td.innerText;
+                                                                        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                                                                            tr[i].style.display = '';
+                                                                        } else {
+                                                                            tr[i].style.display = 'none';
+                                                                        }
+                                                                    }
+                                                                });
 
-            // Khôi phục trạng thái tìm kiếm
-            window.addEventListener('load', function () {
-                let teacherSearch = document.getElementById('teacherSearch');
-                let studentSearch = document.getElementById('studentSearch');
-                if (teacherSearch && teacherSearch.value) {
-                    teacherSearch.dispatchEvent(new Event('input'));
-                }
-                if (studentSearch && studentSearch.value) {
-                    studentSearch.dispatchEvent(new Event('input'));
-                }
-            });
+                                                                // Khôi phục trạng thái tìm kiếm
+                                                                window.addEventListener('load', function () {
+                                                                    let teacherSearch = document.getElementById('teacherSearch');
+                                                                    let studentSearch = document.getElementById('studentSearch');
+                                                                    if (teacherSearch && teacherSearch.value) {
+                                                                        teacherSearch.dispatchEvent(new Event('input'));
+                                                                    }
+                                                                    if (studentSearch && studentSearch.value) {
+                                                                        studentSearch.dispatchEvent(new Event('input'));
+                                                                    }
+                                                                });
 
-            // Xử lý nút trượt lên đầu trang
-            const scrollToTopBtn = document.getElementById('scrollToTop');
-            window.addEventListener('scroll', function () {
-                if (window.scrollY > 100) {
-                    scrollToTopBtn.style.display = 'block';
-                } else {
-                    scrollToTopBtn.style.display = 'none';
-                }
-            });
-            scrollToTopBtn.addEventListener('click', function () {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
+                                                                // Xử lý nút trượt lên đầu trang
+                                                                const scrollToTopBtn = document.getElementById('scrollToTop');
+                                                                window.addEventListener('scroll', function () {
+                                                                    if (window.scrollY > 100) {
+                                                                        scrollToTopBtn.style.display = 'block';
+                                                                    } else {
+                                                                        scrollToTopBtn.style.display = 'none';
+                                                                    }
+                                                                });
+                                                                scrollToTopBtn.addEventListener('click', function () {
+                                                                    window.scrollTo({
+                                                                        top: 0,
+                                                                        behavior: 'smooth'
+                                                                    });
+                                                                });
 
-            // Xử lý dropdown admin
-            function toggleDropdown() {
-                document.getElementById('adminDropdown').classList.toggle('hidden');
-            }
+                                                                // Xử lý dropdown admin
+                                                                function toggleDropdown() {
+                                                                    document.getElementById('adminDropdown').classList.toggle('hidden');
+                                                                }
 
-            // Kiểm tra ảnh giáo viên
-            document.querySelectorAll('img[data-class-image]').forEach(img => {
-                const imageUrl = img.getAttribute('data-class-image');
-                const fallbackUrl = 'https://via.placeholder.com/50';
-                const testImage = new Image();
-                testImage.src = imageUrl;
-                testImage.onload = () => {
-                    img.src = imageUrl;
-                };
-                testImage.onerror = () => {
-                    img.src = fallbackUrl;
-                    img.onerror = null;
-                };
-            });
+                                                                // Kiểm tra ảnh giáo viên
+                                                                document.querySelectorAll('img[data-class-image]').forEach(img => {
+                                                                    const imageUrl = img.getAttribute('data-class-image');
+                                                                    const fallbackUrl = 'https://via.placeholder.com/50';
+                                                                    const testImage = new Image();
+                                                                    testImage.src = imageUrl;
+                                                                    testImage.onload = () => {
+                                                                        img.src = imageUrl;
+                                                                    };
+                                                                    testImage.onerror = () => {
+                                                                        img.src = fallbackUrl;
+                                                                        img.onerror = null;
+                                                                    };
+                                                                });
 
 
-            // Tìm kiếm học sinh trong danh sách hiện tại
-            document.getElementById('currentStudentSearch')?.addEventListener('input', function () {
-                let filter = this.value.toLowerCase();
-                let table = document.getElementById('currentStudentTable');
-                let tr = table.getElementsByTagName('tr');
-                for (let i = 1; i < tr.length; i++) {
-                    let tdMa = tr[i].getElementsByTagName('td')[0]; // Cột mã học sinh (sau khi di chuyển checkbox sang phải)
-                    let tdTen = tr[i].getElementsByTagName('td')[1]; // Cột họ tên
-                    let txtMa = tdMa.textContent || tdMa.innerText;
-                    let txtTen = tdTen.textContent || tdTen.innerText;
-                    if (txtMa.toLowerCase().indexOf(filter) > -1 || txtTen.toLowerCase().indexOf(filter) > -1) {
-                        tr[i].style.display = '';
-                    } else {
-                        tr[i].style.display = 'none';
-                    }
-                }
-            });
+                                                                // Tìm kiếm học sinh trong danh sách hiện tại
+                                                                document.getElementById('currentStudentSearch')?.addEventListener('input', function () {
+                                                                    let filter = this.value.toLowerCase();
+                                                                    let table = document.getElementById('currentStudentTable');
+                                                                    let tr = table.getElementsByTagName('tr');
+                                                                    for (let i = 1; i < tr.length; i++) {
+                                                                        let tdMa = tr[i].getElementsByTagName('td')[0]; // Cột mã học sinh (sau khi di chuyển checkbox sang phải)
+                                                                        let tdTen = tr[i].getElementsByTagName('td')[1]; // Cột họ tên
+                                                                        let txtMa = tdMa.textContent || tdMa.innerText;
+                                                                        let txtTen = tdTen.textContent || tdTen.innerText;
+                                                                        if (txtMa.toLowerCase().indexOf(filter) > -1 || txtTen.toLowerCase().indexOf(filter) > -1) {
+                                                                            tr[i].style.display = '';
+                                                                        } else {
+                                                                            tr[i].style.display = 'none';
+                                                                        }
+                                                                    }
+                                                                });
 
-            // Chọn tất cả checkbox cho danh sách học sinh hiện tại
-            function toggleCheckAllCurrent(source) {
-                let checkboxes = document.querySelectorAll('#currentStudentTable input[type="checkbox"][name="selectedStudentsToRemove"]');
-                for (let checkbox of checkboxes) {
-                    checkbox.checked = source.checked;
-                }
-            }
+                                                                // Chọn tất cả checkbox cho danh sách học sinh hiện tại
+                                                                function toggleCheckAllCurrent(source) {
+                                                                    let checkboxes = document.querySelectorAll('#currentStudentTable input[type="checkbox"][name="selectedStudentsToRemove"]');
+                                                                    for (let checkbox of checkboxes) {
+                                                                        checkbox.checked = source.checked;
+                                                                    }
+                                                                }
 
-            // Phân trang cho bảng học sinh hiện tại
-            const rowsPerPage = 20;
-            const currentStudentTable = document.getElementById('currentStudentTable');
-            const currentStudentPagination = document.getElementById('currentStudentPagination');
-            let currentStudentRows = [];
-            let currentStudentPage = 1;
+                                                                // Phân trang cho bảng học sinh hiện tại
+                                                                const rowsPerPage = 20;
+                                                                const currentStudentTable = document.getElementById('currentStudentTable');
+                                                                const currentStudentPagination = document.getElementById('currentStudentPagination');
+                                                                let currentStudentRows = [];
+                                                                let currentStudentPage = 1;
 
-            function setupCurrentStudentPagination() {
-                if (!currentStudentTable) return;
-                currentStudentRows = Array.from(currentStudentTable.querySelector('tbody').getElementsByTagName('tr'));
-                renderPagination(currentStudentPagination, currentStudentRows.length, currentStudentPage, showCurrentStudentPage);
-                showCurrentStudentPage(1);
-            }
+                                                                function setupCurrentStudentPagination() {
+                                                                    if (!currentStudentTable)
+                                                                        return;
+                                                                    currentStudentRows = Array.from(currentStudentTable.querySelector('tbody').getElementsByTagName('tr'));
+                                                                    renderPagination(currentStudentPagination, currentStudentRows.length, currentStudentPage, showCurrentStudentPage);
+                                                                    showCurrentStudentPage(1);
+                                                                }
 
-            function showCurrentStudentPage(page) {
-                currentStudentPage = page;
-                const start = (page - 1) * rowsPerPage;
-                const end = start + rowsPerPage;
-                currentStudentRows.forEach((row, index) => {
-                    row.style.display = (index >= start && index < end) ? '' : 'none';
-                });
-                renderPagination(currentStudentPagination, currentStudentRows.length, currentStudentPage, showCurrentStudentPage);
-            }
+                                                                function showCurrentStudentPage(page) {
+                                                                    currentStudentPage = page;
+                                                                    const start = (page - 1) * rowsPerPage;
+                                                                    const end = start + rowsPerPage;
+                                                                    currentStudentRows.forEach((row, index) => {
+                                                                        row.style.display = (index >= start && index < end) ? '' : 'none';
+                                                                    });
+                                                                    renderPagination(currentStudentPagination, currentStudentRows.length, currentStudentPage, showCurrentStudentPage);
+                                                                }
 
-            // Phân trang cho bảng thêm học sinh
-            const studentTable = document.getElementById('studentTable');
-            const studentPagination = document.getElementById('studentPagination');
-            let studentRows = [];
-            let studentPage = 1;
+                                                                // Phân trang cho bảng thêm học sinh
+                                                                const studentTable = document.getElementById('studentTable');
+                                                                const studentPagination = document.getElementById('studentPagination');
+                                                                let studentRows = [];
+                                                                let studentPage = 1;
 
-            function setupStudentPagination() {
-                if (!studentTable) return;
-                studentRows = Array.from(studentTable.querySelector('tbody').getElementsByTagName('tr'));
-                renderPagination(studentPagination, studentRows.length, studentPage, showStudentPage);
-                showStudentPage(1);
-            }
+                                                                function setupStudentPagination() {
+                                                                    if (!studentTable)
+                                                                        return;
+                                                                    studentRows = Array.from(studentTable.querySelector('tbody').getElementsByTagName('tr'));
+                                                                    renderPagination(studentPagination, studentRows.length, studentPage, showStudentPage);
+                                                                    showStudentPage(1);
+                                                                }
 
-            function showStudentPage(page) {
-                studentPage = page;
-                const start = (page - 1) * rowsPerPage;
-                const end = start + rowsPerPage;
-                studentRows.forEach((row, index) => {
-                    row.style.display = (index >= start && index < end) ? '' : 'none';
-                });
-                renderPagination(studentPagination, studentRows.length, studentPage, showStudentPage);
-            }
+                                                                function showStudentPage(page) {
+                                                                    studentPage = page;
+                                                                    const start = (page - 1) * rowsPerPage;
+                                                                    const end = start + rowsPerPage;
+                                                                    studentRows.forEach((row, index) => {
+                                                                        row.style.display = (index >= start && index < end) ? '' : 'none';
+                                                                    });
+                                                                    renderPagination(studentPagination, studentRows.length, studentPage, showStudentPage);
+                                                                }
 
-            // Function to render pagination with first/last and limited pages
-            function renderPagination(paginationElement, totalRows, currentPage, pageChangeCallback) {
-                const pageCount = Math.ceil(totalRows / rowsPerPage);
-                paginationElement.innerHTML = '';
+                                                                // Function to render pagination with first/last and limited pages
+                                                                function renderPagination(paginationElement, totalRows, currentPage, pageChangeCallback) {
+                                                                    const pageCount = Math.ceil(totalRows / rowsPerPage);
+                                                                    paginationElement.innerHTML = '';
 
-                // First button
-                const firstBtn = document.createElement('button');
-                firstBtn.className = 'btn btn-secondary btn-sm mx-1';
-                firstBtn.innerText = '<<';
-                firstBtn.disabled = currentPage === 1;
-                firstBtn.addEventListener('click', () => pageChangeCallback(1));
-                paginationElement.appendChild(firstBtn);
+                                                                    // First button
+                                                                    const firstBtn = document.createElement('button');
+                                                                    firstBtn.className = 'btn btn-secondary btn-sm mx-1';
+                                                                    firstBtn.innerText = '<<';
+                                                                    firstBtn.disabled = currentPage === 1;
+                                                                    firstBtn.addEventListener('click', () => pageChangeCallback(1));
+                                                                    paginationElement.appendChild(firstBtn);
 
-                // Limited pages (show 4 pages around current)
-                let startPage = Math.max(1, currentPage - 2);
-                let endPage = Math.min(pageCount, startPage + 3);
-                startPage = Math.max(1, endPage - 3); // Adjust if near end
+                                                                    // Limited pages (show 4 pages around current)
+                                                                    let startPage = Math.max(1, currentPage - 2);
+                                                                    let endPage = Math.min(pageCount, startPage + 3);
+                                                                    startPage = Math.max(1, endPage - 3); // Adjust if near end
 
-                for (let i = startPage; i <= endPage; i++) {
-                    const btn = document.createElement('button');
-                    btn.className = 'btn btn-secondary btn-sm mx-1' + (i === currentPage ? ' active' : '');
-                    btn.innerText = i;
-                    btn.addEventListener('click', () => pageChangeCallback(i));
-                    paginationElement.appendChild(btn);
-                }
+                                                                    for (let i = startPage; i <= endPage; i++) {
+                                                                        const btn = document.createElement('button');
+                                                                        btn.className = 'btn btn-secondary btn-sm mx-1' + (i === currentPage ? ' active' : '');
+                                                                        btn.innerText = i;
+                                                                        btn.addEventListener('click', () => pageChangeCallback(i));
+                                                                        paginationElement.appendChild(btn);
+                                                                    }
 
-                // Last button
-                const lastBtn = document.createElement('button');
-                lastBtn.className = 'btn btn-secondary btn-sm mx-1';
-                lastBtn.innerText = '>>';
-                lastBtn.disabled = currentPage === pageCount;
-                lastBtn.addEventListener('click', () => pageChangeCallback(pageCount));
-                paginationElement.appendChild(lastBtn);
-            }
+                                                                    // Last button
+                                                                    const lastBtn = document.createElement('button');
+                                                                    lastBtn.className = 'btn btn-secondary btn-sm mx-1';
+                                                                    lastBtn.innerText = '>>';
+                                                                    lastBtn.disabled = currentPage === pageCount;
+                                                                    lastBtn.addEventListener('click', () => pageChangeCallback(pageCount));
+                                                                    paginationElement.appendChild(lastBtn);
+                                                                }
 
-            window.addEventListener('load', () => {
-                setupCurrentStudentPagination();
-                setupStudentPagination();
-            });
+                                                                window.addEventListener('load', () => {
+                                                                    setupCurrentStudentPagination();
+                                                                    setupStudentPagination();
+                                                                });
         </script>
     </body>
 </html>

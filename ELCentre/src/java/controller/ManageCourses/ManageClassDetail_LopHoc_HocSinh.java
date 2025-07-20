@@ -31,7 +31,7 @@ import model.LopHocInfoDTO;
  */
 public class ManageClassDetail_LopHoc_HocSinh extends HttpServlet {
 
-    /** 
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -54,7 +54,7 @@ public class ManageClassDetail_LopHoc_HocSinh extends HttpServlet {
         }
     } 
 
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -101,7 +101,7 @@ public class ManageClassDetail_LopHoc_HocSinh extends HttpServlet {
                 request.setAttribute("previousStudents", new ArrayList<HocSinh>());
                 request.setAttribute("ID_KhoaHoc", idKhoaHoc);
                 request.setAttribute("ID_Khoi", idKhoi);
-                request.setAttribute("idHocSinh", idHocSinh); 
+                request.setAttribute("idHocSinh", idHocSinh);
                 request.getRequestDispatcher("/views/admin/viewClass_LopHoc_HocSinh.jsp").forward(request, response);
                 return;
             }
@@ -160,7 +160,7 @@ public class ManageClassDetail_LopHoc_HocSinh extends HttpServlet {
             request.setAttribute("previousStudents", previousStudents);
             request.setAttribute("ID_KhoaHoc", idKhoaHoc);
             request.setAttribute("ID_Khoi", idKhoi);
-            request.setAttribute("idHocSinh", idHocSinh); 
+            request.setAttribute("idHocSinh", idHocSinh);
 
             // Chuyển tiếp đến JSP
             request.getRequestDispatcher("/views/admin/viewClass_LopHoc_HocSinh.jsp").forward(request, response);
@@ -177,14 +177,14 @@ public class ManageClassDetail_LopHoc_HocSinh extends HttpServlet {
         }
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   @Override
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -194,6 +194,7 @@ public class ManageClassDetail_LopHoc_HocSinh extends HttpServlet {
         int idLopHoc;
         int idKhoaHoc;
         int idKhoi;
+        String studentId = request.getParameter("idHocSinh"); // Đổi tên biến để tránh xung đột
 
         try {
             idLopHoc = Integer.parseInt(request.getParameter("ID_LopHoc"));
@@ -204,7 +205,10 @@ public class ManageClassDetail_LopHoc_HocSinh extends HttpServlet {
             e.printStackTrace();
             HttpSession session = request.getSession();
             session.setAttribute("err", "Tham số không hợp lệ!");
-            response.sendRedirect("ManageClassDetail?ID_LopHoc=" + request.getParameter("ID_LopHoc") + "&ID_KhoaHoc=" + request.getParameter("ID_KhoaHoc") + "&ID_Khoi=" + request.getParameter("ID_Khoi"));
+            response.sendRedirect("ManageClassDetail_LopHoc_HocSinh?ID_LopHoc=" + request.getParameter("ID_LopHoc") 
+                                + "&ID_KhoaHoc=" + request.getParameter("ID_KhoaHoc") 
+                                + "&ID_Khoi=" + request.getParameter("ID_Khoi")
+                                + (studentId != null ? "&idHocSinh=" + studentId : ""));
             return;
         }
 
@@ -222,7 +226,9 @@ public class ManageClassDetail_LopHoc_HocSinh extends HttpServlet {
             LopHocInfoDTO lopHoc = lopHocInfoDAO.getLopHocInfoById(idLopHoc);
             if (lopHoc == null) {
                 session.setAttribute("err", "Không tìm thấy lớp học.");
-                response.sendRedirect("ManageClassDetail?ID_LopHoc=" + idLopHoc + "&ID_KhoaHoc=" + idKhoaHoc + "&ID_Khoi=" + idKhoi);
+                response.sendRedirect("ManageClassDetail_LopHoc_HocSinh?ID_LopHoc=" + idLopHoc 
+                                    + "&ID_KhoaHoc=" + idKhoaHoc + "&ID_Khoi=" + idKhoi
+                                    + (studentId != null ? "&idHocSinh=" + studentId : ""));
                 return;
             }
 
@@ -345,12 +351,12 @@ public class ManageClassDetail_LopHoc_HocSinh extends HttpServlet {
                 }
             } else if ("moveOutStudent".equalsIgnoreCase(action)) {
                 try {
-                    int idHocSinh = Integer.parseInt(request.getParameter("ID_HocSinh"));
-                    if (!hocSinhDAO.isStudentInClass1(idHocSinh, idLopHoc)) {
+                    int idHocSinhRemove = Integer.parseInt(request.getParameter("ID_HocSinh"));
+                    if (!hocSinhDAO.isStudentInClass1(idHocSinhRemove, idLopHoc)) {
                         session.setAttribute("studentErr", "Học sinh không thuộc lớp này!");
-                        System.out.printf("doPost: ID_HocSinh=%d not in class ID=%d%n", idHocSinh, idLopHoc);
+                        System.out.printf("doPost: ID_HocSinh=%d not in class ID=%d%n", idHocSinhRemove, idLopHoc);
                     } else {
-                        boolean removed = hocSinhDAO.removeStudentFromClass1(idHocSinh, idLopHoc);
+                        boolean removed = hocSinhDAO.removeStudentFromClass1(idHocSinhRemove, idLopHoc);
                         if (removed) {
                             int newSiSo = lopHoc.getSiSo() - 1;
                             if (newSiSo < 0) {
@@ -359,7 +365,7 @@ public class ManageClassDetail_LopHoc_HocSinh extends HttpServlet {
                             boolean siSoUpdated = lopHocInfoDAO.updateSiSo(idLopHoc, newSiSo);
                             if (siSoUpdated) {
                                 // Gửi thông báo cho học sinh bị xóa
-                                HocSinh hs = hocSinhDAO.getHocSinhById1(idHocSinh);
+                                HocSinh hs = hocSinhDAO.getHocSinhById1(idHocSinhRemove);
                                 if (hs != null) {
                                     String idTK = String.valueOf(hs.getID_TaiKhoan());
                                     String noiDung = "Bạn đã bị xóa khỏi lớp " + lopHoc.getTenLopHoc();
@@ -368,15 +374,15 @@ public class ManageClassDetail_LopHoc_HocSinh extends HttpServlet {
 
                                 session.setAttribute("studentSuc", "Xóa học sinh khỏi lớp thành công!");
                                 System.out.printf("doPost: Successfully removed ID_HocSinh=%d from ID_LopHoc=%d, SiSo updated to %d%n",
-                                        idHocSinh, idLopHoc, newSiSo);
+                                        idHocSinhRemove, idLopHoc, newSiSo);
                             } else {
                                 session.setAttribute("studentErr", "Xóa học sinh thành công nhưng không thể cập nhật sĩ số!");
                                 System.out.printf("doPost: Failed to update SiSo for ID_LopHoc=%d after removing ID_HocSinh=%d%n",
-                                        idLopHoc, idHocSinh);
+                                        idLopHoc, idHocSinhRemove);
                             }
                         } else {
                             session.setAttribute("studentErr", "Không thể xóa học sinh khỏi lớp!");
-                            System.out.printf("doPost: Failed to remove ID_HocSinh=%d from ID_LopHoc=%d%n", idHocSinh, idLopHoc);
+                            System.out.printf("doPost: Failed to remove ID_HocSinh=%d from ID_LopHoc=%d%n", idHocSinhRemove, idLopHoc);
                         }
                     }
                 } catch (NumberFormatException e) {
@@ -476,7 +482,10 @@ public class ManageClassDetail_LopHoc_HocSinh extends HttpServlet {
                 }
             }
 
-            response.sendRedirect("ManageClassDetail?ID_LopHoc=" + idLopHoc + "&ID_KhoaHoc=" + idKhoaHoc + "&ID_Khoi=" + idKhoi);
+            // Chuyển hướng với studentId (idHocSinh)
+            response.sendRedirect("ManageClassDetail_LopHoc_HocSinh?ID_LopHoc=" + idLopHoc 
+                                + "&ID_KhoaHoc=" + idKhoaHoc + "&ID_Khoi=" + idKhoi
+                                + (studentId != null ? "&idHocSinh=" + studentId : ""));
             return;
         } catch (Exception e) {
             System.out.println("doPost: Error: " + e.getMessage());
@@ -488,13 +497,13 @@ public class ManageClassDetail_LopHoc_HocSinh extends HttpServlet {
             request.setAttribute("lichHocList", lichHocDAO.getLichHocByLopHoc(idLopHoc));
             request.setAttribute("ID_KhoaHoc", idKhoaHoc);
             request.setAttribute("ID_Khoi", idKhoi);
-            request.getRequestDispatcher("/views/admin/viewClass.jsp").forward(request, response);
+            request.setAttribute("idHocSinh", studentId); // Đảm bảo idHocSinh được truyền vào JSP
+            request.getRequestDispatcher("/views/admin/viewClass_LopHoc_HocSinh.jsp").forward(request, response);
         }
     }
-    
+
     /**
      * Returns a short description of the servlet.
-     *
      * @return a String containing servlet description
      */
     @Override
