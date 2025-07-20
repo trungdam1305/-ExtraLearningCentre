@@ -466,4 +466,9 @@ public class ManageClassDetail extends HttpServlet {
             request.getRequestDispatcher("/views/admin/viewClass.jsp").forward(request, response);
         }
     }
+    
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }
 }

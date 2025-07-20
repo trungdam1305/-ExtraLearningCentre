@@ -434,15 +434,15 @@
             }
 
             .pagination {
-                display: flex;                
-                justify-content: flex-end;    
-                align-items: center;          
-                margin-top: 1rem;             
-                gap: 0.25rem;                 
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                margin-top: 1rem;
+                gap: 0.25rem;
             }
 
             .pagination .btn {
-                min-width: 30px;              
+                min-width: 30px;
             }
 
             @media (max-width: 768px) {
@@ -562,13 +562,33 @@
                     font-size: 12px;
                 }
             }
-            
+
             .section-title {
                 font-weight: bold;
                 margin-top: 20px;
                 margin-bottom: 10px;
                 font-size: 1rem;
                 color: #003087;
+            }
+
+            /* CSS thêm để nút xóa nằm cùng hàng với nút thêm */
+            .student-select {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 10px; /* Khoảng cách giữa các phần tử */
+            }
+
+            .student-select .form-label {
+                flex-shrink: 0; /* Không co lại */
+            }
+
+            .student-select .form-control {
+                flex-grow: 1; /* Ô tìm kiếm chiếm hết chỗ còn lại */
+            }
+
+            .student-select .btn {
+                flex-shrink: 0; /* Nút không co lại */
             }
         </style>
     </head>
@@ -787,6 +807,7 @@
                                             <input type="hidden" name="ID_LopHoc" value="${lopHoc.ID_LopHoc}">
                                             <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}">
                                             <input type="hidden" name="ID_Khoi" value="${ID_Khoi}">
+                                            <input type="hidden" name="ID_GiaoVien" value="${giaoVien.ID_GiaoVien}">
                                             <input type="hidden" name="teacherSearch" id="hiddenTeacherSearch">
                                             <div class="table-responsive">
                                                 <table class="teacher-table" id="teacherTable">
@@ -836,61 +857,70 @@
                 <c:out value="Tổng số học sinh: ${hocSinhList != null ? hocSinhList.size() : 'null'}"/>
                 <c:choose>
                     <c:when test="${not empty hocSinhList}">
-                        <div class="student-select mb-3">
-                            <label for="currentStudentSearch" class="form-label">Tìm kiếm học sinh:</label>
-                            <input type="text" id="currentStudentSearch" class="form-control" placeholder="Nhập tên hoặc mã học sinh">
-                            <button id="showStudentsBtn" class="btn btn-primary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#studentModal">
-                                <i class="bi bi-plus-circle"></i> Thêm học sinh
-                            </button>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="student-table" id="currentStudentTable">
-                                <thead>
-                                    <tr>
-                                        <th>Mã học sinh</th>
-                                        <th>Họ và tên</th>
-                                        <th>Giới tính</th>
-                                        <th>Ngày sinh</th>
-                                        <th>Lớp trên trường</th>
-                                        <th>SĐT phụ huynh</th>
-                                        <th>Trường học</th>
-                                        <th>Hành động</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach var="hocSinh" items="${hocSinhList}">
+                        <form id="removeStudentsForm" action="${pageContext.request.contextPath}/ManageClassDetail_LopHoc_GiaoVien" method="post">
+                            <input type="hidden" name="action" value="removeSelectedStudents">
+                            <input type="hidden" name="ID_LopHoc" value="${lopHoc.ID_LopHoc}">
+                            <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}">
+                            <input type="hidden" name="ID_Khoi" value="${ID_Khoi}">
+                            <input type="hidden" name="ID_GiaoVien" value="${giaoVien.ID_GiaoVien}">
+                            <div class="student-select mb-3">
+                                <label for="currentStudentSearch" class="form-label">Tìm kiếm học sinh:</label>
+                                <input type="text" id="currentStudentSearch" class="form-control" placeholder="Nhập tên hoặc mã học sinh">
+                                <!-- Tách nút Thêm học sinh ra khỏi form -->
+                                <button id="showStudentsBtn" class="btn btn-primary btn-sm ms-2" type="button" data-bs-toggle="modal" data-bs-target="#studentModal">
+                                    <i class="bi bi-plus-circle"></i> Thêm học sinh
+                                </button>
+                                <button type="submit" class="btn btn-danger btn-sm ms-2" onclick="return confirm('Bạn có chắc chắn muốn xóa các học sinh đã chọn?');">
+                                    <i class="bi bi-trash"></i> Xóa đã chọn
+                                </button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="student-table" id="currentStudentTable">
+                                    <thead>
                                         <tr>
-                                            <td>${hocSinh.maHocSinh != null ? hocSinh.maHocSinh : 'Chưa có'}</td>
-                                            <td>${hocSinh.hoTen != null ? hocSinh.hoTen : 'Chưa có'}</td>
-                                            <td>${hocSinh.gioiTinh != null ? hocSinh.gioiTinh : 'Chưa có'}</td>
-                                            <td>${hocSinh.ngaySinh != null ? hocSinh.ngaySinh : 'Chưa có'}</td>
-                                            <td>${hocSinh.lopDangHocTrenTruong != null ? hocSinh.lopDangHocTrenTruong : 'Chưa có'}</td>
-                                            <td>${hocSinh.SDT_PhuHuynh != null ? hocSinh.SDT_PhuHuynh : 'Chưa có'}</td>
-                                            <td>${hocSinh.tenTruongHoc != null ? hocSinh.tenTruongHoc : 'Chưa có'}</td>
-                                            <td>
-                                                <form action="${pageContext.request.contextPath}/ManageClassDetail_LopHoc_GiaoVien" method="post" style="display:inline;">
-                                                    <input type="hidden" name="action" value="moveOutStudent">
-                                                    <input type="hidden" name="ID_LopHoc" value="${lopHoc.ID_LopHoc}">
-                                                    <input type="hidden" name="ID_HocSinh" value="${hocSinh.ID_HocSinh}">
-                                                    <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}">
-                                                    <input type="hidden" name="ID_Khoi" value="${ID_Khoi}">
-                                                    <button type="submit" class="btn btn-danger btn-sm" 
+                                            <th>Mã học sinh</th>
+                                            <th>Họ và tên</th>
+                                            <th>Giới tính</th>
+                                            <th>Ngày sinh</th>
+                                            <th>Lớp trên trường</th>
+                                            <th>SĐT phụ huynh</th>
+                                            <th>Trường học</th>
+                                            <th>Hành động</th>
+                                            <th><input type="checkbox" id="checkAllCurrent" onclick="toggleCheckAllCurrent(this)"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="hocSinh" items="${hocSinhList}">
+                                            <tr>
+                                                <td>${hocSinh.maHocSinh != null ? hocSinh.maHocSinh : 'Chưa có'}</td>
+                                                <td>${hocSinh.hoTen != null ? hocSinh.hoTen : 'Chưa có'}</td>
+                                                <td>${hocSinh.gioiTinh != null ? hocSinh.gioiTinh : 'Chưa có'}</td>
+                                                <td>${hocSinh.ngaySinh != null ? hocSinh.ngaySinh : 'Chưa có'}</td>
+                                                <td>${hocSinh.lopDangHocTrenTruong != null ? hocSinh.lopDangHocTrenTruong : 'Chưa có'}</td>
+                                                <td>${hocSinh.SDT_PhuHuynh != null ? hocSinh.SDT_PhuHuynh : 'Chưa có'}</td>
+                                                <td>${hocSinh.tenTruongHoc != null ? hocSinh.tenTruongHoc : 'Chưa có'}</td>
+                                                <td>
+                                                    <button type="submit" name="selectedStudentsToRemove" value="${hocSinh.ID_HocSinh}" class="btn btn-danger btn-sm"
                                                             onclick="return confirm('Bạn có chắc chắn muốn xóa học sinh ${hocSinh.hoTen} khỏi lớp?');">
                                                         <i class="bi bi-trash"></i> Xóa
                                                     </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="pagination mt-3" id="currentStudentPagination">
-                            <!-- Phân trang sẽ được thêm bằng JS -->
-                        </div>
+                                                </td>
+                                                <td><input type="checkbox" name="selectedStudentsToRemove" value="${hocSinh.ID_HocSinh}"></td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="pagination mt-3" id="currentStudentPagination">
+                                <!-- Phân trang sẽ được thêm bằng JS -->
+                            </div>
+                        </form>
                     </c:when>
                     <c:otherwise>
                         <div class="alert alert-custom-danger" role="alert">Chưa có học sinh nào trong lớp.</div>
+                        <button id="showStudentsBtn" class="btn btn-primary btn-sm ms-2" type="button" data-bs-toggle="modal" data-bs-target="#studentModal">
+                            <i class="bi bi-plus-circle"></i> Thêm học sinh
+                        </button>
                     </c:otherwise>
                 </c:choose>
                 <!-- Nút thêm học sinh đã được di chuyển lên trên -->
@@ -959,6 +989,7 @@
                                         <input type="hidden" name="ID_LopHoc" value="${lopHoc.ID_LopHoc}">
                                         <input type="hidden" name="ID_KhoaHoc" value="${ID_KhoaHoc}">
                                         <input type="hidden" name="ID_Khoi" value="${ID_Khoi}">
+                                        <input type="hidden" name="ID_GiaoVien" value="${giaoVien.ID_GiaoVien}">
                                         <input type="hidden" name="studentSearch" id="hiddenStudentSearch">
                                         <div class="table-responsive">
                                             <table class="student-table" id="studentTable">
@@ -1150,7 +1181,7 @@
                 let table = document.getElementById('currentStudentTable');
                 let tr = table.getElementsByTagName('tr');
                 for (let i = 1; i < tr.length; i++) {
-                    let tdMa = tr[i].getElementsByTagName('td')[0]; // Cột mã học sinh
+                    let tdMa = tr[i].getElementsByTagName('td')[0]; // Cột mã học sinh (sau khi di chuyển checkbox sang phải)
                     let tdTen = tr[i].getElementsByTagName('td')[1]; // Cột họ tên
                     let txtMa = tdMa.textContent || tdMa.innerText;
                     let txtTen = tdTen.textContent || tdTen.innerText;
@@ -1161,6 +1192,14 @@
                     }
                 }
             });
+
+            // Chọn tất cả checkbox cho danh sách học sinh hiện tại
+            function toggleCheckAllCurrent(source) {
+                let checkboxes = document.querySelectorAll('#currentStudentTable input[type="checkbox"][name="selectedStudentsToRemove"]');
+                for (let checkbox of checkboxes) {
+                    checkbox.checked = source.checked;
+                }
+            }
 
             // Phân trang cho bảng học sinh hiện tại
             const rowsPerPage = 20;
