@@ -1,16 +1,3 @@
-<%-- 
-    Document   : adminReceiveGiaoVien
-    Created on : May 29, 2025, 16:22:36 PM
-    Author     : chuvv
-    Purpose    : This page displays a list of all teachers (giáo viên) in the EL CENTRE system, including details like name, specialization, 
-                 contact info, salary, and status. It supports filtering by specialization, searching, and pagination, 
-                 with action links for viewing details, managing classes, and editing teacher records.
-    Parameters:
-    - Parameters:(Handle from adminGetFromDashboard servlet)
-    - Method to get data from database in GiaoVienDAO - admminGetAllGiaoVien
-    - @Param giaoviens (ArrayList<GiaoVien>): A request attribute containing the list of teacher objects fetched from the database.
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="dal.AdminDAO" %>
@@ -202,7 +189,7 @@
 
             .filter-bar {
                 display: flex;
-                justify-content: flex-end; /* Đẩy sang phải */
+                justify-content: flex-end;
                 flex-wrap: wrap;
                 gap: 20px;
                 margin-bottom: 20px;
@@ -244,7 +231,6 @@
                 font-size: 14px;
             }
 
-
             table {
                 width: 100%;
                 border-collapse: collapse;
@@ -284,8 +270,6 @@
                 border: 1px solid #2ecc71;
             }
 
-            
-
             .status-badge.finished {
                 background-color: #e0e0e0;
                 color: #7f8c8d;
@@ -297,6 +281,7 @@
                 color: #e74c3c;
                 border: 1px solid #e74c3c;
             }
+
             .action-buttons {
                 display: flex;
                 justify-content: center;
@@ -325,7 +310,7 @@
                 color: white;
             }
 
-            .btn-action.enable {
+            .btn-action.salary {
                 background-color: #2ecc71;
                 color: white;
             }
@@ -391,7 +376,6 @@
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
                 margin-top: 20px;
             }
-
         </style>
     </head>
     <body>
@@ -401,8 +385,7 @@
             </div>
             <div class="admin-profile" onclick="toggleDropdown()">
                 <%
-                      ArrayList<Admin> admins  = (ArrayList) AdminDAO.getNameAdmin();
-                      
+                    ArrayList<Admin> admins = (ArrayList) AdminDAO.getNameAdmin();
                 %>
                 <img src="<%= admins.get(0).getAvatar() %>" alt="Admin Photo" class="admin-img">
                 <span><%= admins.get(0).getHoTen() %></span>
@@ -419,36 +402,30 @@
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                 <li><a href="${pageContext.request.contextPath}/adminGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-                
+                <li><a href="${pageContext.request.contextPath}/adminGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
             </ul>
-
             <div class="sidebar-section-title">Quản lý người dùng</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocsinh">Học sinh</a></li>
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=giaovien">Giáo viên</a></li>
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=taikhoan">Tài khoản</a></li>
             </ul>
-
             <div class="sidebar-section-title">Quản lý tài chính</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocphi"><i class="fas fa-money-bill-wave"></i> Học phí</a></li>
             </ul>
-
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
                 <li><a href="${pageContext.request.contextPath}/ManageSchedule"><i class="fas fa-calendar-alt"></i> Lịch học</a></li>
             </ul>
-
             <div class="sidebar-section-title">Hệ thống</div>
             <ul class="sidebar-menu">
                 <li><a href="#"><i class="fas fa-cog"></i> Cài đặt</a></li>
             </ul>
-
             <div class="sidebar-section-title">Khác</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=yeucautuvan"><i class="fas fa-blog"></i>Yêu cầu tư vấn</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=yeucautuvan"><i class="fas fa-blog"></i> Yêu cầu tư vấn</a></li>
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
                 <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
                 <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
@@ -465,7 +442,7 @@
                 <h2><i class="fas fa-chalkboard-teacher"></i> Tất cả giáo viên</h2>
             </div>
 
-            <form  action="${pageContext.request.contextPath}/adminFindInFilterGroup" method="post">
+            <form action="${pageContext.request.contextPath}/adminFindInFilterGroup" method="post">
                 <div class="filter-bar">
                     <div class="filter-group">
                         <label for="keyword">Từ khóa:</label>
@@ -493,7 +470,6 @@
                 </div>
             </form>
 
-
             <c:choose>
                 <c:when test="${not empty sessionScope.giaoviens}">
                     <div class="data-table-wrapper">
@@ -506,9 +482,7 @@
                                     <th>Số điện thoại</th>
                                     <th>Trường đang dạy</th>
                                     <th>Lớp đang dạy trên trường</th>
-
                                     <th>Trạng thái dạy tại EL CENTRE</th>
-
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
@@ -521,140 +495,132 @@
                                         <td>${giaovien.getSDT()}</td>
                                         <td>${giaovien.getTenTruongHoc()}</td>
                                         <td>${giaovien.getLopDangDayTrenTruong()}</td>
-
                                         <td>
                                             <span class="status-badge
                                                   ${giaovien.trangThaiDay == 'Đang dạy' ? 'active' :
                                                     giaovien.trangThaiDay == 'Chờ dạy' ? 'waiting' :
                                                     giaovien.trangThaiDay == 'Đã dạy' ? 'finished' : 'inactive'}">
-                                                      ${giaovien.trangThaiDay}
-                                                  </span>
-                                            </td>
+                                                ${giaovien.trangThaiDay}
+                                            </span>
+                                        </td>
+                                        <td class="action-buttons">
+                                            <a class="btn-action view" title="Chi tiết thông tin và chỉnh sửa thông tin" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=view&id=${giaovien.getID_GiaoVien()}&idTaiKhoan=${giaovien.getID_TaiKhoan()}">
+                                                <i class="fas fa-user-edit"></i> Chi tiết và chỉnh sửa
+                                            </a>
+                                            <a class="btn-action update" title="Xem lớp đang dạy của giáo viên" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=viewLopHocGiaoVien&id=${giaovien.getID_GiaoVien()}">
+                                                <i class="fas fa-chalkboard-teacher"></i> Xem tất cả lớp đang dạy
+                                            </a>
+                                            <a class="btn-action salary" title="Xem lương dự tính" href="${pageContext.request.contextPath}/SalaryCalculation?idGiaoVien=${giaovien.getID_GiaoVien()}">
+                                                <i class="fas fa-money-check-alt"></i> Xem lương dự tính
+                                            </a>
+                                            <a class="btn-action enable" title="Gửi thông báo" href="${pageContext.request.contextPath}/views/admin/adminSendNotificationTeacher.jsp?idtaikhoan=${giaovien.getID_TaiKhoan()}">
+                                                <i class="fas fa-bell"></i> Gửi thông báo
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="no-data">
+                        <c:if test="${not empty message}">
+                            <p style="color: red;">${message}</p>
+                        </c:if>
+                        <p>Không có dữ liệu giáo viên để hiển thị.</p>
+                    </div>
+                </c:otherwise>
+            </c:choose>
 
-
-
-
-                                            <td class="action-buttons">
-                                                <a class="btn-action view" title="Chi tiết thông tin và chỉnh sửa thông tin" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=view&id=${giaovien.getID_GiaoVien()}&idTaiKhoan=${giaovien.getID_TaiKhoan()}">
-                                                    <i class="fas fa-user-edit"></i> Chi tiết và chỉnh sửa
-                                                </a>
-                                                <a class="btn-action update" title="Xem lớp đang dạy của giáo viên" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=viewLopHocGiaoVien&id=${giaovien.getID_GiaoVien()}">
-                                                   <i class="fas fa-chalkboard-teacher"></i> Xem tất cả lớp đang dạy
-                                                </a>
-
-                                                <a class="btn-action enable" title="Gửi thông báo" href="${pageContext.request.contextPath}/views/admin/adminSendNotificationTeacher.jsp?idtaikhoan=${giaovien.getID_TaiKhoan()}">
-                                                    <i class="fas fa-bell"></i> Gửi thông báo
-                                                
-                                            </td>
-                                        </tr>   
-                                    </c:forEach>
-                                </tbody>
-                            </table>    
-                        </c:when>
-                        <c:otherwise>   
-                            <div class="no-data">
-                                <c:if test="${not empty message}">
-                                    <p style="color: red;">${message}</p>
-                                </c:if>
-                                <p>Không có dữ liệu giáo viên để hiển thị.</p>
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
-
-                    <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
-                </div>
-                <div class="back-button">
-                    <a href="${pageContext.request.contextPath}/adminGoToFirstPage">← Quay lại trang chủ</a>
-                    
-                </div>
+            <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
+            <div class="back-button">
+                <a href="${pageContext.request.contextPath}/adminGoToFirstPage">← Quay lại trang chủ</a>
             </div>
+        </div>
 
-            <!-- Footer -->
-            <div class="footer">
-                <p>© 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
-            </div>
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2025 EL CENTRE. All rights reserved. | Developed by wrx_Chur04</p>
+        </div>
 
-            <script>
-                function toggleDropdown() {
-                    const dropdown = document.getElementById('adminDropdown');
-                    dropdown.classList.toggle('active');
+        <script>
+            function toggleDropdown() {
+                const dropdown = document.getElementById('adminDropdown');
+                dropdown.classList.toggle('active');
+            }
+
+            document.addEventListener('click', function (event) {
+                const profile = document.querySelector('.admin-profile');
+                const dropdown = document.getElementById('adminDropdown');
+                if (!profile.contains(event.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+
+            const tableBody = document.getElementById("teacherTableBody");
+            let allRows = [], filteredRows = [], currentPage = 1;
+            const rowsPerPage = 12;
+
+            window.onload = () => {
+                allRows = Array.from(tableBody.querySelectorAll("tr"));
+                filteredRows = [...allRows];
+                renderPage();
+            };
+
+            function renderPage() {
+                tableBody.innerHTML = "";
+                const start = (currentPage - 1) * rowsPerPage;
+                const end = start + rowsPerPage;
+                filteredRows.slice(start, end).forEach(row => tableBody.appendChild(row));
+                renderPagination();
+            }
+
+            function renderPagination() {
+                const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+                const pagination = document.getElementById("pagination");
+                pagination.innerHTML = "";
+
+                const maxPagesToShow = 3;
+                let startPage = Math.max(1, currentPage - 1);
+                let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+                if (endPage - startPage + 1 < maxPagesToShow) {
+                    startPage = Math.max(1, endPage - maxPagesToShow + 1);
                 }
 
-                document.addEventListener('click', function (event) {
-                    const profile = document.querySelector('.admin-profile');
-                    const dropdown = document.getElementById('adminDropdown');
-                    if (!profile.contains(event.target)) {
-                        dropdown.classList.remove('active');
-                    }
-                });
-                const tableBody = document.getElementById("teacherTableBody");
-                let allRows = [], filteredRows = [], currentPage = 1;
-                const rowsPerPage = 12;
-
-                window.onload = () => {
-                    allRows = Array.from(tableBody.querySelectorAll("tr"));
-                    filteredRows = [...allRows];
-                    renderPage();
-                };
-
-                function renderPage() {
-                    tableBody.innerHTML = "";
-                    const start = (currentPage - 1) * rowsPerPage;
-                    const end = start + rowsPerPage;
-                    filteredRows.slice(start, end).forEach(row => tableBody.appendChild(row));
-                    renderPagination();
+                if (currentPage > 1) {
+                    const prevBtn = document.createElement("button");
+                    prevBtn.textContent = "«";
+                    prevBtn.onclick = () => {
+                        currentPage--;
+                        renderPage();
+                    };
+                    pagination.appendChild(prevBtn);
                 }
 
-                function renderPagination() {
-                    const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
-                    const pagination = document.getElementById("pagination");
-                    pagination.innerHTML = "";
-
-                    const maxPagesToShow = 3;
-                    let startPage = Math.max(1, currentPage - 1);
-                    let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
-
-
-                    if (endPage - startPage + 1 < maxPagesToShow) {
-                        startPage = Math.max(1, endPage - maxPagesToShow + 1);
-                    }
-
-
-                    if (currentPage > 1) {
-                        const prevBtn = document.createElement("button");
-                        prevBtn.textContent = "«";
-                        prevBtn.onclick = () => {
-                            currentPage--;
-                            renderPage();
-                        };
-                        pagination.appendChild(prevBtn);
-                    }
-
-
-                    for (let i = startPage; i <= endPage; i++) {
-                        const btn = document.createElement("button");
-                        btn.textContent = i;
-                        btn.style.backgroundColor = (i === currentPage) ? "#1F4E79" : "#ddd";
-                        btn.style.color = (i === currentPage) ? "white" : "black";
-                        btn.onclick = () => {
-                            currentPage = i;
-                            renderPage();
-                        };
-                        pagination.appendChild(btn);
-                    }
-
-
-                    if (currentPage < totalPages) {
-                        const nextBtn = document.createElement("button");
-                        nextBtn.textContent = "»";
-                        nextBtn.onclick = () => {
-                            currentPage++;
-                            renderPage();
-                        };
-                        pagination.appendChild(nextBtn);
-                    }
+                for (let i = startPage; i <= endPage; i++) {
+                    const btn = document.createElement("button");
+                    btn.textContent = i;
+                    btn.style.backgroundColor = (i === currentPage) ? "#1F4E79" : "#ddd";
+                    btn.style.color = (i === currentPage) ? "white" : "black";
+                    btn.onclick = () => {
+                        currentPage = i;
+                        renderPage();
+                    };
+                    pagination.appendChild(btn);
                 }
-            </script>
 
-        </body>
-    </html>
+                if (currentPage < totalPages) {
+                    const nextBtn = document.createElement("button");
+                    nextBtn.textContent = "»";
+                    nextBtn.onclick = () => {
+                        currentPage++;
+                        renderPage();
+                    };
+                    pagination.appendChild(nextBtn);
+                }
+            }
+        </script>
+    </body>
+</html>

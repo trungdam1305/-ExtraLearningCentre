@@ -28,8 +28,9 @@
             <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/web/WEB-INF/web.xml</file>
         </group>
         <group>
-            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageClassDetail_LopHoc_HocSinh.java</file>
-            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageClassDetail_LopHoc_GiaoVien.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/SaveTeacherSalary.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/SalaryCalculation.java</file>
         </group>
     </open-files>
 </project-private>

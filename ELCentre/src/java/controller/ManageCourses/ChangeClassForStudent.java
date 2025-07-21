@@ -90,7 +90,7 @@ public class ChangeClassForStudent extends HttpServlet {
             return;
         }
 
-        // Đọc dữ liệu JSON từ request
+      
         StringBuilder jb = new StringBuilder();
         String line;
         try {
@@ -107,18 +107,14 @@ public class ChangeClassForStudent extends HttpServlet {
             return;
         }
 
-        // Parse JSON
         Gson gson = new Gson();
         JsonObject jsonObject = gson.fromJson(jb.toString(), JsonObject.class);
         int idHocSinh = jsonObject.get("idHocSinh").getAsInt();
         int idLopHocHienTai = jsonObject.get("idLopHocHienTai").getAsInt();
         int idLopHocTuongDong = jsonObject.get("idLopHocTuongDong").getAsInt();
 
-        // Gọi DAO để thực hiện chuyển lớp
         LopHocInfoDTODAO dao = new LopHocInfoDTODAO();
         LopHocInfoDTODAO.OperationResult result = dao.changeClassForStudent(idHocSinh, idLopHocHienTai, idLopHocTuongDong);
-
-        // Trả về kết quả
         JsonObject responseJson = new JsonObject();
         responseJson.addProperty("success", result.isSuccess());
         responseJson.addProperty("errorMessage", result.getErrorMessage() != null ? result.getErrorMessage() : "");

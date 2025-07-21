@@ -236,6 +236,14 @@
         <servlet-name>staffGetSupportRequests</servlet-name>
         <servlet-class>controller.staffGetSupportRequests</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SalaryCalculation</servlet-name>
+        <servlet-class>controller.ManageCourses.SalaryCalculation</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SaveTeacherSalary</servlet-name>
+        <servlet-class>controller.ManageCourses.SaveTeacherSalary</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -495,6 +503,14 @@
     <servlet-mapping>
         <servlet-name>staffGetSupportRequests</servlet-name>
         <url-pattern>/staffGetSupportRequests</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SalaryCalculation</servlet-name>
+        <url-pattern>/SalaryCalculation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaveTeacherSalary</servlet-name>
+        <url-pattern>/SaveTeacherSalary</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

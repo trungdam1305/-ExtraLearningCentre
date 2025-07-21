@@ -1,0 +1,1 @@
+ALTER TABLE LuongGiaoVien ADD ThuongPhat DECIMAL(10, 2) DEFAULT 0;

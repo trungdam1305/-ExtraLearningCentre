@@ -13,18 +13,7 @@
 <%@page import="model.Admin"%>
 <%@page import="dal.AdminDAO"%>
 <%@page import="java.util.UUID"%>
-<%
-    // Kiểm tra session và vai trò người dùng
-    TaiKhoan user = (TaiKhoan) session.getAttribute("user"); // Giả sử bạn lưu thông tin người dùng trong session với key là "user"
 
-    // Nếu người dùng chưa đăng nhập (user == null) hoặc không phải là Admin (ID_VaiTro != 1)
-    if (user == null || user.getID_VaiTro() != 1) {
-        // Gửi thông báo lỗi về trang đăng nhập
-        session.setAttribute("error", "Bạn không có quyền truy cập trang này. Vui lòng đăng nhập với tài khoản Admin.");
-        response.sendRedirect(request.getContextPath() + "/views/login.jsp"); // Hoặc trang đăng nhập của bạn
-        return; // Dừng việc xử lý trang hiện tại
-    }
-%>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -47,7 +36,7 @@
                 background-color: #f4f6f9;
             }
 
-            /* General container styling */
+        
             .content-container {
                 padding: 6px;
                 max-width: 100%;
@@ -60,7 +49,6 @@
                 padding-bottom: 40px;
             }
 
-            /* Form styling */
             h2 {
                 text-align: center;
                 color: #003087;
@@ -184,7 +172,6 @@
                 margin-right: 4px;
             }
 
-            /* Scroll to Top Button */
             #scrollToTopBtn {
                 display: none;
                 position: fixed;
@@ -206,7 +193,6 @@
                 background-color: #0056b3;
             }
 
-            /* Header styling */
             .header {
                 background-color: #1F4E79;
                 color: white;
@@ -232,7 +218,6 @@
                 margin-right: 8px;
             }
 
-            /* Footer styling */
             .footer {
                 background-color: #1F4E79;
                 color: #B0C4DE;
@@ -250,7 +235,6 @@
                 font-size: 0.5rem;
             }
 
-            /* Sidebar styling */
             .sidebar {
                 width: 160px;
                 background-color: #1F4E79;
@@ -315,7 +299,6 @@
                 margin-right: 5px;
             }
 
-            /* Responsive adjustments */
             @media (max-width: 768px) {
                 .content-container {
                     padding: 8px;

@@ -39,7 +39,7 @@
                 background-color: #f4f6f9;
             }
 
-            /* General container styling */
+           
             .content-container {
                 padding: 6px;
                 max-width: 100%;
@@ -49,10 +49,10 @@
                 border-radius: 8px;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                 margin-top: 60px;
-                padding-bottom: 40px; /* Prevent footer overlap */
+                padding-bottom: 40px; 
             }
 
-            /* Form styling */
+          
             h2 {
                 text-align: center;
                 color: #333;
@@ -211,7 +211,6 @@
                 gap: 5px;
             }
 
-            /* Header styling */
             .header {
                 background-color: #1F4E79;
                 color: white;
@@ -237,7 +236,6 @@
                 margin-right: 8px;
             }
 
-            /* Footer styling */
             .footer {
                 background-color: #1F4E79;
                 color: #B0C4DE;
@@ -255,7 +253,6 @@
                 font-size: 0.5rem;
             }
 
-            /* Sidebar styling */
             .sidebar {
                 width: 160px;
                 background-color: #1F4E79;
@@ -320,7 +317,6 @@
                 margin-right: 5px;
             }
 
-            /* Responsive adjustments */
             @media (max-width: 768px) {
                 .content-container {
                     padding: 8px;
@@ -907,7 +903,7 @@
                                         tenLopHoc.setCustomValidity('');
                                     }
 
-                                    // Validation cho classCode
+                                    // Validation cho classCodee
                                     if (!classCode.value || classCode.value.trim() === '') {
                                         classCode.setCustomValidity('Mã lớp học không được để trống!');
                                         isValid = false;

@@ -60,28 +60,24 @@ public class ManageClassDetail extends HttpServlet {
         }
 
         try {
-            // Lấy tham số
             int idLopHoc = Integer.parseInt(request.getParameter("ID_LopHoc"));
             int idKhoaHoc = Integer.parseInt(request.getParameter("ID_KhoaHoc"));
             int idKhoi = Integer.parseInt(request.getParameter("ID_Khoi"));
 
-            // Lấy URL referer từ header
             String referer = request.getHeader("Referer");
-            System.out.println("Referer received: " + referer); // Thêm log
+            System.out.println("Referer received: " + referer); 
             if (referer == null || referer.isEmpty() || !referer.startsWith(request.getContextPath())) {
                 referer = request.getContextPath() + "/ManageClass?action=refresh&ID_Khoi=" + idKhoi + "&ID_KhoaHoc=" + idKhoaHoc;
-                System.out.println("Using default backUrl: " + referer); // Log URL mặc định
+                System.out.println("Using default backUrl: " + referer); 
             }
             request.setAttribute("backUrl", referer);
-
-            // Khởi tạo DAO
             LopHocInfoDTODAO lopHocInfoDAO = new LopHocInfoDTODAO();
             LichHocDAO lichHocDAO = new LichHocDAO();
             GiaoVienDAO giaoVienDAO = new GiaoVienDAO();
             HocSinhDAO hocSinhDAO = new HocSinhDAO();
             KhoaHocDAO khoaHocDAO = new KhoaHocDAO();
 
-            // Lấy thông tin lớp học
+            // Lấy thông tin lớp học theo id truyền vào
             LopHocInfoDTO lopHoc = lopHocInfoDAO.getLopHocInfoById(idLopHoc);
             if (lopHoc == null) {
                 session.setAttribute("err", "Không tìm thấy lớp học.");
@@ -89,27 +85,22 @@ public class ManageClassDetail extends HttpServlet {
                 return;
             }
 
-            // Xử lý ClassCode từ tham số URL nếu cột ClassCode là null
+    
             String classCodeFromUrl = request.getParameter("ClassCode");
             if (lopHoc.getClassCode() == null && classCodeFromUrl != null && !classCodeFromUrl.trim().isEmpty()) {
                 lopHoc.setClassCode(classCodeFromUrl);
                 System.out.println("doGet: Set ClassCode from URL: " + classCodeFromUrl);
             }
 
-            // Lấy danh sách lịch học
             List<LichHoc> lichHocList = lichHocDAO.getLichHocByLopHoc(idLopHoc);
-
-            // Lấy giáo viên của lớp
             GiaoVien giaoVien = giaoVienDAO.getGiaoVienByLopHoc1(idLopHoc);
             System.out.printf("doGet: GiaoVien for ID_LopHoc=%d: %s%n", idLopHoc,
                     giaoVien != null ? giaoVien.getHoTen() : "null");
 
-            // Lấy danh sách học sinh trong lớp
             List<HocSinh> hocSinhList = hocSinhDAO.getHocSinhByLopHoc1(idLopHoc);
             System.out.printf("doGet: HocSinhList size for ID_LopHoc=%d: %d%n", idLopHoc,
                     hocSinhList != null ? hocSinhList.size() : 0);
 
-            // Lấy danh sách tất cả học sinh
             List<HocSinh> allStudents = hocSinhDAO.adminGetAllHocSinh11();
 
             // Lấy danh sách giáo viên phù hợp với khóa học
