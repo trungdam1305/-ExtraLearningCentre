@@ -541,6 +541,9 @@
                                                 <a class="btn-action update" title="Xem lớp đang dạy của giáo viên" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=viewLopHocGiaoVien&id=${giaovien.getID_GiaoVien()}">
                                                    <i class="fas fa-chalkboard-teacher"></i> Xem tất cả lớp đang dạy
                                                 </a>
+                                                   <a class="btn-action salary" title="Xem lương dự tính" href="${pageContext.request.contextPath}/SalaryCalculation?idGiaoVien=${giaovien.getID_GiaoVien()}">
+                                                <i class="fas fa-money-check-alt"></i> Xem lương dự tính
+                                            </a>
 
                                                 <a class="btn-action enable" title="Gửi thông báo" href="${pageContext.request.contextPath}/views/admin/adminSendNotificationTeacher.jsp?idtaikhoan=${giaovien.getID_TaiKhoan()}">
                                                     <i class="fas fa-bell"></i> Gửi thông báo
