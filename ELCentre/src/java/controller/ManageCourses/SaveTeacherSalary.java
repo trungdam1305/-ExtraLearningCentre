@@ -1,8 +1,8 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ * Servlet để lưu lương giáo viên với thưởng/phạt.
+ * Tên class: SaveTeacherSalary
+ * Package: controller.ManageCourses
  */
-
 package controller.ManageCourses;
 
 import dal.SalaryDAO;
@@ -10,120 +10,148 @@ import model.SalaryInfo;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-
-import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author Vuh26
- */
-
-
 public class SaveTeacherSalary extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet SaveTeacherSalaryServlet</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet SaveTeacherSalaryServlet at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    } 
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    
-    
+    private SalaryDAO salaryDAO = new SalaryDAO();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
-    } 
+            throws ServletException, IOException {
+        // Ngăn cache
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Expires", "0");
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    
-    private SalaryDAO salaryDAO = new SalaryDAO();
-   @Override
+        // Chuyển hướng về trang tính lương nếu truy cập GET
+        String idGiaoVien = request.getParameter("idGiaoVien");
+        System.out.println("SaveTeacherSalary: GET request received, redirecting to SalaryCalculation for ID_GiaoVien=" + idGiaoVien);
+        response.sendRedirect(request.getContextPath() + "/SalaryCalculation?idGiaoVien=" + idGiaoVien);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Ngăn cache
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Expires", "0");
+
+        // Đảm bảo response không bị commit trước
+        response.reset();
+
         try {
-            int idGiaoVien = Integer.parseInt(request.getParameter("idGiaoVien"));
+            // Kiểm tra và lấy tham số
+            String idGiaoVienStr = request.getParameter("idGiaoVien");
             String startDate = request.getParameter("startDate");
             String endDate = request.getParameter("endDate");
-            double bonusPenalty = Double.parseDouble(request.getParameter("bonusPenalty"));
+            String bonusPenaltyStr = request.getParameter("bonusPenalty");
 
-            // Lấy danh sách lương từ session
-            List<SalaryInfo> salaryList = (List<SalaryInfo>) request.getSession().getAttribute("salaryList");
+            // Kiểm tra tham số null
+            if (idGiaoVienStr == null || startDate == null || endDate == null || bonusPenaltyStr == null) {
+                System.out.println("SaveTeacherSalary: Missing required parameters: "
+                        + "idGiaoVien=" + idGiaoVienStr + ", startDate=" + startDate
+                        + ", endDate=" + endDate + ", bonusPenalty=" + bonusPenaltyStr);
+                request.setAttribute("error", "Thiếu tham số bắt buộc!");
+                request.getRequestDispatcher("/views/admin/salaryTeacherView.jsp").forward(request, response);
+                return;
+            }
 
-            // Nếu salaryList rỗng, thử tính lại
+            int idGiaoVien = Integer.parseInt(idGiaoVienStr);
+            double bonusPenalty = Double.parseDouble(bonusPenaltyStr);
+
+            System.out.println("SaveTeacherSalary: Processing POST for ID_GiaoVien=" + idGiaoVien
+                    + ", startDate=" + startDate + ", endDate=" + endDate
+                    + ", bonusPenalty=" + bonusPenalty);
+
+            // Tính lại lương dự tính
+            List<SalaryInfo> salaryList = salaryDAO.calculateTeacherSalary(idGiaoVien, startDate, endDate);
+            System.out.println("SaveTeacherSalary: Calculated salary for ID_GiaoVien=" + idGiaoVien
+                    + ", salaryList size=" + (salaryList != null ? salaryList.size() : 0));
+
+            // Kiểm tra nếu không có dữ liệu lương
             if (salaryList == null || salaryList.isEmpty()) {
-                System.out.println("SaveTeacherSalaryServlet: salaryList is null or empty, recalculating for ID_GiaoVien=" + idGiaoVien);
-                salaryList = salaryDAO.calculateTeacherSalary(idGiaoVien, startDate, endDate);
-                if (salaryList == null || salaryList.isEmpty()) {
-                    request.setAttribute("error", "Không có dữ liệu lương để lưu!");
-                    request.getRequestDispatcher("/views/admin/salaryTeacherView.jsp").forward(request, response);
-                    return;
-                }
-                request.getSession().setAttribute("salaryList", salaryList); // Cập nhật lại session
+                System.out.println("SaveTeacherSalary: No salary data for ID_GiaoVien=" + idGiaoVien);
+                request.setAttribute("error", "Không có lớp học nào ở trạng thái 'Đang học' trong khoảng thời gian này!");
+                request.getRequestDispatcher("/views/admin/salaryTeacherView.jsp").forward(request, response);
+                return;
+            }
+
+            // Tính tổng lương cơ bản
+            double totalBaseSalary = 0;
+            for (SalaryInfo salary : salaryList) {
+                totalBaseSalary += salary.getLuongDuTinh();
+            }
+
+            // Tính tổng lương bao gồm thưởng/phạt
+            double totalSalary = totalBaseSalary + bonusPenalty;
+
+            // Log chi tiết các bản ghi lương
+            for (SalaryInfo salary : salaryList) {
+                System.out.println("SaveTeacherSalary: Salary record - ID_LopHoc=" + salary.getIdLopHoc()
+                        + ", TenLopHoc=" + salary.getTenLopHoc() + ", SiSo=" + salary.getSiSo()
+                        + ", HocPhi=" + salary.getHocPhi() + ", SoBuoiDay=" + salary.getSoBuoiDay()
+                        + ", LuongDuTinh=" + salary.getLuongDuTinh());
             }
 
             // Lưu lương
             salaryDAO.saveTeacherSalary(idGiaoVien, startDate, endDate, salaryList, bonusPenalty);
-            System.out.println("SaveTeacherSalaryServlet: Saved salary for ID_GiaoVien=" + idGiaoVien);
+            System.out.println("SaveTeacherSalary: Saved salary for ID_GiaoVien=" + idGiaoVien);
 
-            // Xóa salaryList khỏi session sau khi lưu để tránh lưu trữ không cần thiết
-            request.getSession().removeAttribute("salaryList");
+// Lấy lại dữ liệu mới từ cơ sở dữ liệu
+            List<SalaryInfo> updatedSalaryList = salaryDAO.calculateTeacherSalary(idGiaoVien, startDate, endDate);
+            SalaryInfo updatedSavedSalary = salaryDAO.getLatestSalaryForTeacher(idGiaoVien);
+            double updatedTotalBaseSalary = 0;
+            if (updatedSalaryList != null) {
+                for (SalaryInfo salary : updatedSalaryList) {
+                    updatedTotalBaseSalary += salary.getLuongDuTinh();
+                }
+            }
+            double updatedTotalSalary = updatedTotalBaseSalary + bonusPenalty;
 
-            response.sendRedirect(request.getContextPath() + "/calculateTeacherSalary?idGiaoVien=" + idGiaoVien +
-                                "&startDate=" + startDate + "&endDate=" + endDate + "&message=Lưu lương thành công!");
+// Truyền dữ liệu mới vào request scope
+            request.setAttribute("salaryList", updatedSalaryList);
+            request.setAttribute("savedSalary", updatedSavedSalary);
+            request.setAttribute("startDate", startDate);
+            request.setAttribute("endDate", endDate);
+            request.setAttribute("totalBaseSalary", updatedTotalBaseSalary);
+            request.setAttribute("totalSalary", updatedTotalSalary);
+            request.setAttribute("message", "Lưu lương thành công!");
+            request.setAttribute("idGiaoVien", String.valueOf(idGiaoVien)); // Truyền idGiaoVien
 
-        } catch (SQLException | NumberFormatException e) {
-            System.out.println("Error in SaveTeacherSalaryServlet: " + e.getMessage());
+// Forward trực tiếp để giữ giá trị trong request scope
+            request.getRequestDispatcher("/views/admin/salaryTeacherView.jsp").forward(request, response);
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error in SaveTeacherSalary: " + e.getMessage()
+                    + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
             e.printStackTrace();
-            request.setAttribute("error", "Lỗi khi lưu lương: " + e.getMessage());
+            request.setAttribute("error", "Lỗi cơ sở dữ liệu khi lưu lương: " + e.getMessage());
+            request.getRequestDispatcher("/views/admin/salaryTeacherView.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            System.out.println("NumberFormatException in SaveTeacherSalary: " + e.getMessage());
+            e.printStackTrace();
+            request.setAttribute("error", "Dữ liệu đầu vào không hợp lệ: " + e.getMessage());
+            request.getRequestDispatcher("/views/admin/salaryTeacherView.jsp").forward(request, response);
+        } catch (IllegalStateException e) {
+            System.out.println("IllegalStateException in SaveTeacherSalary: " + e.getMessage());
+            e.printStackTrace();
+            request.setAttribute("error", "Lỗi hệ thống: Response đã bị commit trước khi redirect: " + e.getMessage());
+            request.getRequestDispatcher("/views/admin/salaryTeacherView.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println("Unexpected Error in SaveTeacherSalary: " + e.getMessage());
+            e.printStackTrace();
+            request.setAttribute("error", "Lỗi không xác định khi lưu lương: " + e.getMessage());
             request.getRequestDispatcher("/views/admin/salaryTeacherView.jsp").forward(request, response);
         }
     }
 
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Servlet to save teacher salary with bonus/penalty";
+    }
 }

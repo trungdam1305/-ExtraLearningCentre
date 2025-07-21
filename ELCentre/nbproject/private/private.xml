@@ -28,8 +28,11 @@
             <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/web/WEB-INF/web.xml</file>
         </group>
         <group>
-            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/dal/SalaryDAO.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveGiaoVien.jsp</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/PayTeacherSalary.java</file>
             <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/SaveTeacherSalary.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/web/views/admin/salaryTeacherView.jsp</file>
             <file>file:/C:/Users/Vuh26/Desktop/hoangvm/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/SalaryCalculation.java</file>
         </group>
     </open-files>

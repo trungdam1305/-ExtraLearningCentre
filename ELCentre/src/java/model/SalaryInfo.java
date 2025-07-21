@@ -10,13 +10,17 @@ package model;
  */
 public class SalaryInfo {
 
-    public int idGiaoVien;
-    public int idLopHoc;
-    public String tenLopHoc;
-    public int soBuoiDay;
-    public int siSo;
-    public double hocPhi;
-    public double luongDuTinh;
+    private int idGiaoVien;
+    private int idLopHoc;
+    private String tenLopHoc;
+    private int soBuoiDay;
+    private int siSo;
+    private double hocPhi;
+    private double luongDuTinh;
+    private int idLuong;          // ID của bản ghi lương từ LuongGiaoVien
+    private String chuKyBatDau;   // Chu kỳ bắt đầu
+    private String chuKyKetThuc;  // Chu kỳ kết thúc
+    private double thuongPhat;    // Thưởng/Phạt
 
     public SalaryInfo(int idGiaoVien, int idLopHoc, String tenLopHoc, int soBuoiDay, int siSo, double hocPhi, double luongDuTinh) {
         this.idGiaoVien = idGiaoVien;
@@ -26,8 +30,13 @@ public class SalaryInfo {
         this.siSo = siSo;
         this.hocPhi = hocPhi;
         this.luongDuTinh = luongDuTinh;
+        this.idLuong = -1;           // Giá trị mặc định nếu chưa có
+        this.chuKyBatDau = null;
+        this.chuKyKetThuc = null;
+        this.thuongPhat = 0.0;       // Giá trị mặc định
     }
 
+    // Getters và Setters hiện tại
     public int getIdGiaoVien() {
         return idGiaoVien;
     }
@@ -83,6 +92,41 @@ public class SalaryInfo {
     public void setLuongDuTinh(double luongDuTinh) {
         this.luongDuTinh = luongDuTinh;
     }
-    
-    
+
+    // Getters và Setters mới
+    public int getIdLuong() {
+        return idLuong;
+    }
+
+    public SalaryInfo setIdLuong(int idLuong) {
+        this.idLuong = idLuong;
+        return this;
+    }
+
+    public String getChuKyBatDau() {
+        return chuKyBatDau;
+    }
+
+    public SalaryInfo setChuKyBatDau(String chuKyBatDau) {
+        this.chuKyBatDau = chuKyBatDau;
+        return this;
+    }
+
+    public String getChuKyKetThuc() {
+        return chuKyKetThuc;
+    }
+
+    public SalaryInfo setChuKyKetThuc(String chuKyKetThuc) {
+        this.chuKyKetThuc = chuKyKetThuc;
+        return this;
+    }
+
+    public double getThuongPhat() {
+        return thuongPhat;
+    }
+
+    public SalaryInfo setThuongPhat(double thuongPhat) {
+        this.thuongPhat = thuongPhat;
+        return this;
+    }
 }

@@ -244,6 +244,10 @@
         <servlet-name>SaveTeacherSalary</servlet-name>
         <servlet-class>controller.ManageCourses.SaveTeacherSalary</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PayTeacherSalary</servlet-name>
+        <servlet-class>controller.ManageCourses.PayTeacherSalary</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -511,6 +515,10 @@
     <servlet-mapping>
         <servlet-name>SaveTeacherSalary</servlet-name>
         <url-pattern>/SaveTeacherSalary</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PayTeacherSalary</servlet-name>
+        <url-pattern>/PayTeacherSalary</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>
