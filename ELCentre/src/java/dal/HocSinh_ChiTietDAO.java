@@ -173,7 +173,7 @@ public class HocSinh_ChiTietDAO {
         }
     }
     
-   public static boolean updateTruongLopGiaoVien(String idTruongHoc  , String lopTrenTruong  , String sdt , String hot , String ID_GiaoVien) {
+   public static boolean updateTruongLopGiaoVien(String idTruongHoc  , String lopTrenTruong  , String sdt , String hot , String ID_GiaoVien , int Luong ) {
         
         DBContext db = DBContext.getInstance() ; 
        int rs = 0 ; 
@@ -182,6 +182,7 @@ public class HocSinh_ChiTietDAO {
                          update GiaoVien 
                          set 
                          ID_TruongHoc = ? , 
+                         Luong = ? , 
                          IsHot = ?  , 
                          LopDangDayTrenTruong = ? , 
                          SDT = ? 
@@ -189,10 +190,11 @@ public class HocSinh_ChiTietDAO {
                          """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
             statement.setString(1, idTruongHoc);
-            statement.setString(2, hot);
-            statement.setString(3, lopTrenTruong);
-            statement.setString(4, sdt);
-            statement.setString(5, ID_GiaoVien);
+            statement.setInt(2, Luong);
+            statement.setString(3, hot);
+            statement.setString(4, lopTrenTruong);
+            statement.setString(5, sdt);
+            statement.setString(6, ID_GiaoVien);
            
              rs = statement.executeUpdate() ; 
             while(rs > 0 ){
