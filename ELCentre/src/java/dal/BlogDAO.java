@@ -406,25 +406,17 @@ public class BlogDAO { // IMPORTANT: NO LONGER extends DBContext
         blog.setID_Blog(rs.getInt("ID_Blog"));
         blog.setBlogTitle(rs.getString("BlogTitle"));
         blog.setBlogDescription(rs.getString("BlogDescription"));
-
         if (rs.getTimestamp("BlogDate") != null) {
             blog.setBlogDate(rs.getTimestamp("BlogDate").toLocalDateTime());
-        } else {
-            blog.setBlogDate(null);
         }
-
         blog.setImage(rs.getString("Image"));
-        blog.setID_Khoi(rs.getInt("ID_Khoi"));
         blog.setID_PhanLoai(rs.getInt("ID_PhanLoai"));
+        blog.setPhanLoai(rs.getString("PhanLoai")); // From JOIN
         blog.setID_KeyTag(rs.getInt("ID_KeyTag"));
+        blog.setKeyTag(rs.getString("KeyTag")); // From JOIN
         blog.setID_Keyword(rs.getInt("ID_Keyword"));
-
-        // Retrieve the actual KeyTag and Keyword names from the JOINs
-        blog.setKeyTag(rs.getString("KeyTag"));
-        blog.setKeyWord(rs.getString("Keyword"));
-
+        blog.setKeyWord(rs.getString("Keyword")); // From JOIN
         blog.setNoiDung(rs.getString("NoiDung"));
-        blog.setPhanLoai(rs.getString("PhanLoai"));
         return blog;
     }
 
@@ -461,111 +453,86 @@ public class BlogDAO { // IMPORTANT: NO LONGER extends DBContext
     }
     return keywords;
 }   
-    public List<Blog> getFilteredBlogs(String keyword, int idKeyTag, Integer year, int page, int pageSize) {
-    List<Blog> list = new ArrayList<>();
-    
-    StringBuilder sql = new StringBuilder("""
-        SELECT b.*, pl.PhanLoai, kt.KeyTag, kw.Keyword
-        FROM Blog b
-        LEFT JOIN PhanLoaiBlog pl ON b.ID_PhanLoai = pl.ID_PhanLoai
-        LEFT JOIN KeyTag kt ON b.ID_KeyTag = kt.ID_KeyTag
-        LEFT JOIN Keyword kw ON b.ID_Keyword = kw.ID_Keyword
-        WHERE 1 = 1
-    """);
-
-    List<Object> params = new ArrayList<>(); // To store parameters dynamically
-
-    // Add conditions based on provided filters
-    if (keyword != null && !keyword.trim().isEmpty()) {
-        sql.append(" AND (b.BlogTitle LIKE ? OR b.BlogDescription LIKE ?)");
-        params.add("%" + keyword + "%");
-        params.add("%" + keyword + "%");
-    }
-
-    if (idKeyTag > 0) { // Apply filter only if a valid KeyTag ID is provided
-        sql.append(" AND b.ID_KeyTag = ?");
-        params.add(idKeyTag);
-    }
-
-    if (year != null) { // Apply filter only if a year is provided
-        sql.append(" AND YEAR(b.BlogDate) = ?");
-        params.add(year);
-    }
-
-    // Add sorting and pagination clauses
-    sql.append(" ORDER BY b.BlogDate DESC"); // Default sort by newest first
-    sql.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
-
-    try (Connection conn = DBContext.getInstance().getConnection(); // Obtain Connection from singleton
-         PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+    public List<Blog> getFilteredBlogs(int keywordId, int keytagId, int page, int pageSize) {
+        List<Blog> list = new ArrayList<>();
+        List<Object> params = new ArrayList<>();
         
-        int idx = 1; // Parameter index starts from 1
-        // Set dynamic parameters for filters
-        for (Object param : params) {
-            ps.setObject(idx++, param);
+        StringBuilder sql = new StringBuilder("""
+            SELECT b.*, pl.PhanLoai, kt.KeyTag, kw.Keyword
+            FROM Blog b
+            LEFT JOIN PhanLoaiBlog pl ON b.ID_PhanLoai = pl.ID_PhanLoai
+            LEFT JOIN KeyTag kt ON b.ID_KeyTag = kt.ID_KeyTag
+            LEFT JOIN Keyword kw ON b.ID_Keyword = kw.ID_Keyword
+            WHERE 1=1 
+        """);
+
+        if (keywordId > 0) {
+            sql.append(" AND b.ID_Keyword = ?");
+            params.add(keywordId);
         }
-        
-        // Set pagination parameters
-        ps.setInt(idx++, (page - 1) * pageSize); // OFFSET (skip results)
-        ps.setInt(idx, pageSize);               // FETCH NEXT (number of results to retrieve)
+        if (keytagId > 0) {
+            sql.append(" AND b.ID_KeyTag = ?");
+            params.add(keytagId);
+        }
 
-        try (ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                list.add(mapResultSetToBlog(rs)); // Use your existing mapping helper
+        sql.append(" ORDER BY b.BlogDate DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+            
+            int idx = 1;
+            for (Object param : params) {
+                ps.setObject(idx++, param);
             }
+            ps.setInt(idx++, (page - 1) * pageSize);
+            ps.setInt(idx, pageSize);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(mapResultSetToBlog(rs));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        // Log the exception for debugging. In a real application, you might throw a custom exception
-        // or handle it more gracefully (e.g., return an empty list and log the error).
-        e.printStackTrace(); 
+        return list;
     }
-    return list;
-}
+
 
 /**
  * Counts the total number of blogs based on the same keyword, KeyTag ID, and year filters.
  * This is used for pagination to determine the total number of pages.
  */
-public int countFilteredBlogs(String keyword, int idKeyTag, Integer year) {
-    StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM Blog WHERE 1=1 ");
+ public int countFilteredBlogs(int keywordId, int keytagId) {
+        List<Object> params = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM Blog WHERE 1=1 ");
 
-    List<Object> params = new ArrayList<>(); // To store parameters dynamically
-
-    // Add conditions based on provided filters (must match getFilteredBlogs)
-    if (keyword != null && !keyword.trim().isEmpty()) {
-        sql.append(" AND (BlogTitle LIKE ? OR BlogDescription LIKE ?)");
-        params.add("%" + keyword + "%");
-        params.add("%" + keyword + "%");
-    }
-
-    if (idKeyTag > 0) {
-        sql.append(" AND ID_KeyTag = ?");
-        params.add(idKeyTag);
-    }
-
-    if (year != null) {
-        sql.append(" AND YEAR(BlogDate) = ?");
-        params.add(year);
-    }
-
-    try (Connection conn = DBContext.getInstance().getConnection(); // Obtain Connection from singleton
-         PreparedStatement ps = conn.prepareStatement(sql.toString())) {
-        
-        int idx = 1; // Parameter index starts from 1
-        // Set dynamic parameters for filters
-        for (Object param : params) {
-            ps.setObject(idx++, param);
+        if (keywordId > 0) {
+            sql.append(" AND ID_Keyword = ?");
+            params.add(keywordId);
         }
-        
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                return rs.getInt(1); // Return the count from the first column
+        if (keytagId > 0) {
+            sql.append(" AND ID_KeyTag = ?");
+            params.add(keytagId);
+        }
+
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+            
+            int idx = 1;
+            for (Object param : params) {
+                ps.setObject(idx++, param);
             }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return 0;
     }
-    return 0; // Return 0 if no blogs found or an error occurs
-}
 
 }
