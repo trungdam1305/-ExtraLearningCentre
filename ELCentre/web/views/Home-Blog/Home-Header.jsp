@@ -72,7 +72,6 @@
     </style>
 </head>
 <body>
-    <%-- Lấy URI hiện tại để xác định menu active --%>
     <%
         String uri = request.getRequestURI();
         String context = request.getContextPath();
@@ -143,17 +142,22 @@
                                     <li class="menu-item">
                                         <a href="${pageContext.request.contextPath}/HomePageBlog">Tất cả bài viết</a>
                                     </li>
-                                    <!--If tag exists, a line appear-->
-                                    <c:if test="${not empty keyTagList}">
+
+                                    <%-- Kiểm tra xem danh sách keytag từ servlet có tồn tại và không rỗng không --%>
+                                    <c:if test="${not empty availableKeyTags}">
                                         <li class="menu-item-divider" style="border-top: 1px solid #eee; margin: 5px 0;"></li>
                                         <li class="menu-item" style="padding: 5px 15px; color: #888; font-size: 0.9em;">Chủ đề nổi bật:</li>
-                                    </c:if>
 
-                                    <c:forEach var="tag" items="${keyTagList}">
-                                        <li class="menu-item">
-                                            <a href="${pageContext.request.contextPath}/TagSearchServlet?tag=${tag}">${tag}</a>
-                                        </li>
-                                    </c:forEach>
+                                        <%-- Lặp qua danh sách 'availableKeyTags' do HomePageBlog cung cấp --%>
+                                        <c:forEach var="keyTag" items="${availableKeyTags}">
+                                            <li class="menu-item">
+                                                <%-- Tạo link trỏ đến chính HomePageBlog với tham số idKeyTag --%>
+                                                <a href="${pageContext.request.contextPath}/HomePageBlog?idKeyTag=${keyTag.ID_KeyTag}">
+                                                    ${keyTag.getKeyTag()} <%-- Giả sử model KeyTag có phương thức getTenKeyTag() --%>
+                                                </a>
+                                            </li>
+                                        </c:forEach>
+                                    </c:if>
                                 </ul>
                             </li>
                                 <!--About Us-->

@@ -124,7 +124,6 @@
                                         <ul class="class-info">
                                             <li><i class="fas fa-barcode"></i> <strong>Mã lớp:</strong>&nbsp; ${lop.classCode}</li>
                                             <li><i class="fas fa-users"></i> <strong>Sĩ số hiện tại:</strong>&nbsp; ${lop.siSo}</li>
-                                            <li><i class="fas fa-map-marker-alt"></i> <strong>Phòng học:</strong>&nbsp; ${lop.tenPhongHoc}</li>
                                             <li><i class="fas fa-chalkboard-teacher"></i> <strong>Giáo viên:</strong>&nbsp; ${lop.tenGiaoVien}</li>
                                         </ul>
                                         <a href="${pageContext.request.contextPath}/ClassDetailsServlet?classId=${lop.ID_LopHoc}" class="btn btn-success fw-bold w-100 mt-auto py-2">

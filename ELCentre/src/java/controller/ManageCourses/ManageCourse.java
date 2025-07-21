@@ -627,7 +627,7 @@ public class ManageCourse extends HttpServlet {
                     String filePath = uploadPath + File.separator + fileName;
                     try {
                         imagePart.write(filePath);
-                        imagePath = "/images/course/" + fileName;
+                        imagePath = "img/avatar/" + fileName;
                     } catch (IOException e) {
                         System.out.println("addKhoaHoc: Error saving image - " + e.getMessage());
                         request.setAttribute("err", "Lỗi khi lưu tệp hình ảnh: " + e.getMessage());

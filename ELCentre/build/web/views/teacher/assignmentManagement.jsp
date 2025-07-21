@@ -1,8 +1,8 @@
     <%--
         Document    : assignmentManagement.jsp
         Created on  : Jul 9, 2025
-        Author      : (Your Name)
-        Purpose     : Trang quản lý bài tập cho giáo viên
+        Author      : trungdam
+        Description     : Teacher assignment manager
     --%>
 
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -203,15 +203,14 @@
 
                     .main-content {
                         margin-top: 30px;
-                        margin-left: 300px; /* Keep this to offset for sidebar */
-                        padding: 80px 20px 20px 20px; /* Adjust padding as needed */
+                        margin-left: 300px;
+                        padding: 80px 20px 20px 20px; 
                         flex: 1;
                         min-height: 100vh;
                         display: flex;
                         flex-direction: column;
                         gap: 30px;
                         margin-right: auto;
-                        /* Adjust this to account for sidebar width */
                         max-width: calc(100% - 300px);
                     }
 

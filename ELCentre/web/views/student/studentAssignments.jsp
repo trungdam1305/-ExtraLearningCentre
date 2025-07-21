@@ -296,7 +296,8 @@
                             <div class="submission-status">
                                 <h4>Trạng thái nộp bài</h4>
                                 <c:set var="currentSubmission" value="${studentSubmissions[assignment.ID_BaiTap]}" />
-                                <c:choose>
+                                <c:choose>                                        
+                                    <!--If have submitted before-->
                                     <c:when test="${not empty currentSubmission}">
                                         <div class="submitted-file-info">
                                             <p>Bạn đã nộp bài vào: ${currentSubmission.ngayNop}</p>
@@ -319,13 +320,11 @@
                                             </c:if>    
                                             <p class="resubmit-note">Bạn có thể nộp lại bài để cập nhật.</p>
                                         </div>
-                                        <%-- Show submission form for re-submission --%>
                                         <div class="submission-form">
                                             <h5>Nộp lại bài tập (sẽ ghi đè bản nộp trước)</h5>
                                             <form action="${pageContext.request.contextPath}/StudentAssignmentServlet" method="post" enctype="multipart/form-data">
                                                 <input type="hidden" name="assignmentId" value="${assignment.ID_BaiTap}">
                                                 <input type="hidden" name="classId" value="${classId}">
-                                                <%-- Ensure search query is passed in POST form if active --%>
                                                 <c:if test="${not empty searchQuery}">
                                                     <input type="hidden" name="search" value="${searchQuery}">
                                                 </c:if>

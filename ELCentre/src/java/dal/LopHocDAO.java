@@ -883,30 +883,29 @@ public class LopHocDAO {
         List<Object> params = new ArrayList<>();
         
         StringBuilder sql = new StringBuilder("""
-            SELECT lop.*, ph.TenPhongHoc  FROM LopHoc lop
-            JOIN GiaoVien_LopHoc gvlh ON lop.ID_LopHoc = gvlh.ID_LopHoc
-            JOIN GiaoVien gv ON gvlh.ID_GiaoVien = gv.ID_GiaoVien
-            JOIN PhongHoc ph ON lop.ID_PhongHoc = ph.ID_PhongHoc
-            WHERE gv.ID_TaiKhoan = ?
-            AND lop.TrangThai LIKE N'%Đang học%'
+            			SELECT * FROM GiaoVien_LopHoc gvlh
+            			JOIN LopHoc lh ON gvlh.ID_LopHoc = lh.ID_LopHoc
+            			JOIN GiaoVien gv on gv.ID_GiaoVien = gvlh.ID_GiaoVien
+            			where gv.ID_TaiKhoan = ?
+            			and lh.TrangThai LIKE N'%Đang học%'
             """);
         params.add(idTaiKhoan);
 
         if (keyword != null && !keyword.trim().isEmpty()) {
-            sql.append("AND lop.classCode LIKE ? ");
+            sql.append("AND lh.classCode LIKE ? ");
             params.add("%" + keyword.trim() + "%");
         }
         if (courseId > 0) {
-            sql.append("AND lop.ID_KhoaHoc = ? ");
+            sql.append("AND lh.ID_KhoaHoc = ? ");
             params.add(courseId);
         }
         // ✅ THÊM LOGIC LỌC THEO NĂM
         if (creationYear > 0) {
-            sql.append("AND YEAR(lop.NgayTao) = ? ");
+            sql.append("AND YEAR(lh.NgayTao) = ? ");
             params.add(creationYear);
         }
 
-        sql.append("ORDER BY lop.NgayTao DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+        sql.append("ORDER BY lh.NgayTao DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
         int offset = (page - 1) * itemsPerPage;
         params.add(offset);
         params.add(itemsPerPage);
@@ -925,7 +924,6 @@ public class LopHocDAO {
                     lopHoc.setClassCode(rs.getString("ClassCode"));
                     lopHoc.setTenLopHoc(rs.getString("TenLopHoc"));
                     lopHoc.setSiSo(rs.getInt("SiSo"));
-                    lopHoc.setTenPhongHoc(rs.getString("TenPhongHoc"));
                     lopHoc.setGhiChu(rs.getString("GhiChu"));
                     // ... set các thuộc tính khác nếu cần
                     list.add(lopHoc);
@@ -1107,33 +1105,130 @@ public class LopHocDAO {
         }
         return list;
     }
-    //Kiểm tra dữ liệu
-    public static void main(String[] args) {
-        int idKhoaHoc = 1; // thay bằng ID_KhoaHoc bạn muốn test
-        List<LopHoc> ds = getLopHocByKhoaHocId(idKhoaHoc);
-
-        System.out.println("===== DANH SÁCH LỚP HỌC TRONG KHÓA HỌC ID: " + idKhoaHoc + " =====");
-
-        if (ds.isEmpty()) {
-            System.out.println("⚠️ Không có lớp học nào thuộc khóa học này.");
-            return;
+    
+    public List<LopHoc> getAllActiveClassesWithTeacher() {
+    List<LopHoc> list = new ArrayList<>();
+    String sql = """
+        SELECT l.*, gv.HoTen AS TenGiaoVien
+        FROM LopHoc l
+        LEFT JOIN GiaoVien_LopHoc gvlh ON l.ID_LopHoc = gvlh.ID_LopHoc
+        LEFT JOIN GiaoVien gv ON gvlh.ID_GiaoVien = gv.ID_GiaoVien
+        WHERE l.TrangThai LIKE N'%Đang học%'
+        ORDER BY l.NgayTao DESC
+    """;
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            LopHoc lop = new LopHoc();
+            lop.setID_LopHoc(rs.getInt("ID_LopHoc"));
+            lop.setClassCode(rs.getString("ClassCode"));
+            lop.setTenLopHoc(rs.getString("TenLopHoc"));
+            lop.setTenGiaoVien(rs.getString("TenGiaoVien"));
+            list.add(lop);
         }
-
-        int i = 1;
-        for (LopHoc lop : ds) {
-            System.out.println("----- Lớp " + (i++) + " -----");
-            System.out.println("Mã lớp:          " + lop.getClassCode());
-            System.out.println("Tên lớp học:     " + lop.getTenLopHoc());
-            System.out.println("Tên khóa học:    " + lop.getTenKhoaHoc());
-            System.out.println("Thời gian khóa:  " + lop.getThoiGianBatDau() + " → " + lop.getThoiGianKetThuc());
-            System.out.println("Sĩ số hiện tại:  " + lop.getSiSo());
-            System.out.println("Sĩ số tối thiểu: " + lop.getSiSoToiThieu());
-            System.out.println("Sĩ số tối đa:    " + lop.getSiSoToiDa());
-            System.out.println("Ngày tạo lớp:    " + lop.getNgayTao());
-            System.out.println("Ghi chú:         " + lop.getGhiChu());
-            System.out.println();
-        }
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    return list;
+}
+    public List<LopHoc> getFilteredActiveClasses(String keyword, Integer courseId, Integer khoiId, Integer creationYear, int page, int pageSize) {
+    List<LopHoc> list = new ArrayList<>();
+    List<Object> params = new ArrayList<>();
     
-    
+    StringBuilder sql = new StringBuilder("""
+        SELECT l.*, gv.HoTen AS TenGiaoVien 
+        FROM LopHoc l
+        LEFT JOIN GiaoVien_LopHoc gvlh ON l.ID_LopHoc = gvlh.ID_LopHoc
+        LEFT JOIN GiaoVien gv ON gvlh.ID_GiaoVien = gv.ID_GiaoVien
+        LEFT JOIN KhoaHoc k ON l.ID_KhoaHoc = k.ID_KhoaHoc
+        WHERE l.TrangThai LIKE N'%Đang học%' 
+        """);
+
+    if (keyword != null && !keyword.trim().isEmpty()) {
+        sql.append(" AND (l.TenLopHoc LIKE ? OR l.ClassCode LIKE ?) ");
+        params.add("%" + keyword.trim() + "%");
+        params.add("%" + keyword.trim() + "%");
+    }
+    if (courseId != null && courseId > 0) {
+        sql.append(" AND l.ID_KhoaHoc = ? ");
+        params.add(courseId);
+    }
+    if (khoiId != null && khoiId > 0) {
+        sql.append(" AND k.ID_Khoi = ? ");
+        params.add(khoiId);
+    }
+    if (creationYear != null && creationYear > 0) {
+        sql.append(" AND YEAR(l.NgayTao) = ? ");
+        params.add(creationYear);
+    }
+
+    sql.append(" ORDER BY l.NgayTao DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+    params.add((page - 1) * pageSize);
+    params.add(pageSize);
+
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+        for (int i = 0; i < params.size(); i++) {
+            ps.setObject(i + 1, params.get(i));
+        }
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                LopHoc lop = new LopHoc();
+                lop.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                lop.setClassCode(rs.getString("ClassCode"));
+                lop.setTenLopHoc(rs.getString("TenLopHoc"));
+                lop.setTenGiaoVien(rs.getString("TenGiaoVien"));
+                list.add(lop);
+            }
+        }
+    } catch (Exception e) { e.printStackTrace(); }
+    return list;
+}
+
+/**
+ * Đếm số lượng các lớp đang hoạt động thỏa mãn điều kiện lọc.
+ */
+public int countFilteredActiveClasses(String keyword, Integer courseId, Integer khoiId, Integer creationYear) {
+    int count = 0;
+    List<Object> params = new ArrayList<>();
+    StringBuilder sql = new StringBuilder("""
+        SELECT COUNT(*) 
+        FROM LopHoc l
+        LEFT JOIN KhoaHoc k ON l.ID_KhoaHoc = k.ID_KhoaHoc
+        WHERE l.TrangThai LIKE N'%Đang học%' 
+        """);
+
+    // Các điều kiện lọc phải giống hệt phương thức trên
+    if (keyword != null && !keyword.trim().isEmpty()) {
+        sql.append(" AND (l.TenLopHoc LIKE ? OR l.ClassCode LIKE ?) ");
+        params.add("%" + keyword.trim() + "%");
+        params.add("%" + keyword.trim() + "%");
+    }
+    if (courseId != null && courseId > 0) {
+        sql.append(" AND l.ID_KhoaHoc = ? ");
+        params.add(courseId);
+    }
+    if (khoiId != null && khoiId > 0) {
+        sql.append(" AND k.ID_Khoi = ? ");
+        params.add(khoiId);
+    }
+    if (creationYear != null && creationYear > 0) {
+        sql.append(" AND YEAR(l.NgayTao) = ? ");
+        params.add(creationYear);
+    }
+
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+        for (int i = 0; i < params.size(); i++) {
+            ps.setObject(i + 1, params.get(i));
+        }
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        }
+    } catch (Exception e) { e.printStackTrace(); }
+    return count;
+}
 }

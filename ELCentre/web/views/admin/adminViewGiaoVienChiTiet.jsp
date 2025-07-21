@@ -294,7 +294,7 @@
                                 <tr>
                                     <td>Lương</td>
                                     <c:forEach var="giaovien" items="${giaoviens}">
-                                        <td><input type="luong" name="luong" value="${giaovien.getLuong()}" readonly     /></td>
+                                        <td><input type="luong" name="luong" value="${giaovien.getLuong()}" required=""     /></td>
                                         </c:forEach>
                                 </tr>
 

@@ -1,7 +1,7 @@
 <%-- 
     Document   : classAttendanceReport
     Created on : Jul 9, 2025, 11:39:24 PM
-    Author     : admin
+    Author     : trungdam
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -16,45 +16,37 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Container cho phép cuộn ngang trên màn hình siêu nhỏ */
     .table-responsive { overflow-x: auto; }
 
-    /* Quy tắc cho bảng điểm danh */
     .attendance-grid {
-        table-layout: fixed; /* QUAN TRỌNG: Chìa khóa để kiểm soát chiều rộng cột */
+        table-layout: fixed; 
         width: 100%;
         border-collapse: collapse;
     }
 
-    /* Quy tắc chung cho các ô */
     .attendance-grid th, .attendance-grid td {
         text-align: center;
         vertical-align: middle;
-        border: 1px solid #dee2e6; /* Đường viền nhẹ hơn */
+        border: 1px solid #dee2e6; 
         padding: 8px;
-        word-wrap: break-word; /* Cho phép chữ xuống dòng nếu cần */
-        /* BỎ min-width: 120px; */
+        word-wrap: break-word; 
     }
 
-    /* Ưu tiên chiều rộng cho cột tên học sinh */
     .attendance-grid .student-name-col {
-        width: 25%; /* Cột tên luôn chiếm 25% chiều rộng của bảng */
-        text-align: left; /* Căn trái cho dễ đọc */
+        width: 25%; 
+        text-align: left; 
     }
 
-    /* Các cột ngày sẽ tự động chia đều 75% không gian còn lại */
-
-    /* Style cho các trạng thái điểm danh (giữ nguyên) */
-    .present { color: #27ae60; } /* Xanh lá */
-    .absent { color: #c0392b; } /* Đỏ */
-    .late { color: #f39c12; } /* Cam */
+    .present { color: #27ae60; } 
+    .absent { color: #c0392b; } 
+    .late { color: #f39c12; } 
         
         h1 {
             margin-top: 30px;
-            color: #1F4E79; /* Màu chữ */
-            text-align: center; /* Căn giữa */
-            font-size: 24px; /* Cỡ chữ */
-            font-weight: bold; /* In đậm */
+            color: #1F4E79;
+            text-align: center;
+            font-size: 24px; 
+            font-weight: bold; 
         }
             body {
                 margin: 0;
@@ -177,7 +169,7 @@
                 font-weight: bold;
                 letter-spacing: 1.5px;
                 text-align: center; 
-                width: 230px; /* nhỏ hơn 250px */
+                width: 230px; 
             }
 
             .sidebar-logo {
@@ -229,15 +221,15 @@
             }
 
             .main-content {
-                margin-left: 300px; /* Keep this to offset for sidebar */
-                padding: 80px 20px 20px 20px; /* Adjust padding as needed */
+                margin-left: 300px; 
+                padding: 80px 20px 20px 20px; 
                 flex: 1;
                 min-height: 100vh;
                 display: flex;
                 flex-direction: column;
                 gap: 30px;
                 margin-right: auto;
-                max-width: calc(100% - 250px); /* Adjust this to account for sidebar width */
+                max-width: calc(100% - 250px); 
             }
 
             .dashboard-stats {
@@ -372,9 +364,9 @@
             .filter-container {
                 display: flex;
                 align-items: center;
-                gap: 20px; /* Tăng khoảng cách một chút */
+                gap: 20px; 
                 flex-wrap: wrap;
-                justify-content: flex-end; /* Đẩy các phần tử sang phải */
+                justify-content: flex-end; 
             }
 
 
@@ -388,7 +380,7 @@
             .filter-container label {
                 font-weight: bold;
                 color: #333;
-                white-space: nowrap; /* Ngăn không cho label bị xuống dòng */
+                white-space: nowrap; 
             }
 
 
@@ -397,7 +389,7 @@
                 padding: 8px 12px;
                 border: 1px solid #ccc;
                 border-radius: 6px;
-                min-width: 150px; /* Điều chỉnh độ rộng nếu cần */
+                min-width: 150px; 
             }
 
 
@@ -425,43 +417,39 @@
             }
 
             .pagination a {
-                color: #555; /* Màu chữ xám nhẹ */
+                color: #555; 
                 text-decoration: none;
-                padding: 6px 12px; /* Giảm padding để nhỏ hơn */
-                margin: 0 2px; /* Giảm margin để gần nhau hơn */
-                border-radius: 4px; /* Bo góc mềm mại */
+                padding: 6px 12px; 
+                margin: 0 2px;
+                border-radius: 4px; 
                 transition: background-color 0.3s, color 0.3s;
-                border: 1px solid #ddd; /* Thêm viền mỏng */
+                border: 1px solid #ddd; 
             }
 
-            /* Style cho trang đang được chọn */
             .pagination a.active {
-                background-color: #1F4E79; /* Màu xanh chủ đạo */
-                color: white; /* Chữ trắng */
-                border-color: #1F4E79; /* Viền cùng màu */
+                background-color: #1F4E79; 
+                color: white; 
+                border-color: #1F4E79; 
                 font-weight: bold;
             }
 
-            /* Hiệu ứng khi di chuột vào các trang khác */
             .pagination a:hover:not(.active) {
-                background-color: #e2eaf0; /* Màu nền nhạt khi hover */
+                background-color: #e2eaf0; 
                 color: #1F4E79;
             }
             
-            /* === BỔ SUNG CSS CHO CÁC NÚT HÀNH ĐỘNG MỚI === */
             .action-buttons {
                 display: flex;
                 align-items: center;
-                gap: 8px; /* Khoảng cách giữa các nút */
+                gap: 8px; 
             }
 
-            /* Kiểu dáng chung cho nút hành động */
             .action-btn {
                 display: inline-flex;
                 align-items: center;
-                gap: 6px; /* Khoảng cách giữa icon và chữ */
+                gap: 6px; 
                 padding: 6px 12px;
-                border-radius: 20px; /* Bo tròn các góc */
+                border-radius: 20px; 
                 color: white;
                 font-size: 13px;
                 font-weight: 500;
@@ -469,60 +457,55 @@
                 border: none;
                 cursor: pointer;
                 transition: transform 0.2s ease, box-shadow 0.2s ease;
-                white-space: nowrap; /* Ngăn không cho chữ xuống dòng */
+                white-space: nowrap; 
             }
 
             .action-btn:hover {
-                transform: translateY(-2px); /* Hiệu ứng nhấc lên khi hover */
+                transform: translateY(-2px); 
                 box-shadow: 0 4px 8px rgba(0,0,0,0.15);
             }
 
-            /* Nút Sửa (Màu cam) */
             .action-btn.edit {
                 background-color: #f39c12; 
             }
 
-            /* Nút Danh sách học sinh (Màu xám) */
             .action-btn.view-students {
                 background-color: #6c7a89;
             }
 
-            /* Nút Upload (Màu xanh lá) */
             .action-btn.upload {
                 background-color: #27ae60;
             }
             .filter-bar {
                 display: flex;
-                flex-wrap: wrap; /* Cho phép xuống dòng trên màn hình nhỏ */
+                flex-wrap: wrap; 
                 align-items: center;
-                gap: 15px; /* Khoảng cách giữa các nhóm filter */
+                gap: 15p
                 padding: 15px;
                 background-color: #f8f9fa;
                 border: 1px solid #dee2e6;
                 border-radius: 8px;
-                margin-bottom: 2rem !important; /* Ghi đè class mb-4 để có khoảng cách lớn hơn */
+                margin-bottom: 2rem !important; 
             }
 
             .filter-group {
                 display: flex;
                 align-items: center;
-                flex-grow: 1; /* Cho phép các nhóm co giãn bằng nhau */
+                flex-grow: 1; 
                 position: relative;
             }
 
             .filter-icon {
                 position: absolute;
                 left: 15px;
-                color: #6c757d; /* Màu xám cho icon */
+                color: #6c757d;
             }
 
-            /* Style chung cho input và select trong filter bar */
             .filter-bar .form-control,
             .filter-bar .form-select {
                 flex: 1;
                 min-width: 200px;
-                padding-left: 40px; /* Tạo không gian cho icon */
-                /* Các style nhất quán với form trong modal */
+                padding-left: 40px; 
                 background-color: #fff;
                 border: 1px solid #ced4da;
                 border-radius: 6px;
@@ -538,13 +521,11 @@
                 outline: none;
             }
 
-            /* Nhóm các nút bấm */
             .filter-buttons {
                 display: flex;
                 gap: 10px;
             }
 
-            /* Nút Lọc */
             .btn-filter-submit {
                 background-color: #1F4E79;
                 color: white;
@@ -559,7 +540,6 @@
                 background-color: #163E5C;
             }
 
-            /* Nút Reset */
             .btn-filter-reset {
                 background-color: #6c757d;
                 color: white;
@@ -587,19 +567,19 @@
                         border-color: #A2D5C6;
             }
             .btn-back {
-                        display: inline-flex;       /* Căn chỉnh icon và chữ */
-                        gap: 8px;                   /* Khoảng cách giữa icon và chữ */
-                        padding: 10px 20px;         /* Tăng kích thước cho dễ nhấn */
+                        display: inline-flex;      
+                        gap: 8px;                 
+                        padding: 10px 20px;         
                         font-size: 15px;
                         font-weight: 500;
                         text-decoration: none;
                         margin: 20px 0px    ;
-                        color: #1F4E79;             /* Màu chữ và viền theo màu chủ đạo */
+                        color: #1F4E79;             
                         background-color: transparent;
                         border: 2px solid #1F4E79;
-                        border-radius: 8px;         /* Bo góc mềm mại */
+                        border-radius: 8px;   
                         cursor: pointer;
-                        transition: all 0.2s ease-in-out; /* Hiệu ứng chuyển động mượt mà */
+                        transition: all 0.2s ease-in-out; 
                     }
         </style>
     

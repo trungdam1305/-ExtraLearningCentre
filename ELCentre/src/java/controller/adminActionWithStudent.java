@@ -206,7 +206,7 @@ public class adminActionWithStudent extends HttpServlet {
         }
     }
 
-  protected void doViewClass(HttpServletRequest request, HttpServletResponse response)
+   protected void doViewClass(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     String ID = request.getParameter("id");
     int idHocSinh;

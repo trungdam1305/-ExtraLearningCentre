@@ -1,137 +1,99 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
-
 package controller;
 
 import dal.BlogDAO;
-import dal.PhanLoaiBlogDAO;
-import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import model.Blog;
-import model.PhanLoaiBlog;
+import model.KeyTag;
+import model.Keyword;
 
-/**
- *
- * @author admin
- */
 public class HomePageBlog extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+
+    private final BlogDAO blogDAO;
+
+    public HomePageBlog() {
+        this.blogDAO = new BlogDAO();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet HomePageBlog</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet HomePageBlog at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+
+        // --- 1. Lấy và xác thực tham số ---
+        String keywordIdParam = request.getParameter("keywordId");
+        String keytagIdParam = request.getParameter("keytagId");
+        String pageParam = request.getParameter("page");
+
+        int filterKeywordId = 0;
+        try {
+            if (keywordIdParam != null && !keywordIdParam.isEmpty()) {
+                filterKeywordId = Integer.parseInt(keywordIdParam);
+            }
+        } catch (NumberFormatException e) {
+            log("Invalid keyword ID parameter: " + keywordIdParam);
         }
-    } 
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+        int filterKeytagId = 0;
+        try {
+            if (keytagIdParam != null && !keytagIdParam.isEmpty()) {
+                filterKeytagId = Integer.parseInt(keytagIdParam);
+            }
+        } catch (NumberFormatException e) {
+            log("Invalid keytag ID parameter: " + keytagIdParam);
+        }
+        
+        int currentPage = 1;
+        try {
+            if (pageParam != null && !pageParam.isEmpty()) {
+                currentPage = Integer.parseInt(pageParam);
+            }
+        } catch (NumberFormatException e) {
+            log("Invalid page parameter: " + pageParam);
+        }
+        final int pageSize = 4; // Số blog trên mỗi trang
 
-    // Ensure request and response use UTF-8 encoding for Vietnamese or special characters
-    request.setCharacterEncoding("UTF-8");
-    response.setContentType("text/html;charset=UTF-8");
+        try {
+            // --- 2. Lấy dữ liệu từ DAO ---
+            List<Blog> blogs = blogDAO.getFilteredBlogs(filterKeywordId, filterKeytagId, currentPage, pageSize);
+            int totalBlogs = blogDAO.countFilteredBlogs(filterKeywordId, filterKeytagId);
+            int totalPages = (int) Math.ceil((double) totalBlogs / pageSize);
 
-    // Initialize DAO classes for blog and category (classification)
-    BlogDAO dao = new BlogDAO();
-    PhanLoaiBlogDAO phanLoaiDAO = new PhanLoaiBlogDAO();
+            // Lấy danh sách cho các dropdown
+            List<Keyword> allKeywords = blogDAO.getAllKeywords();
+            List<KeyTag> allKeytags = blogDAO.getAllKeyTags();
 
-    // Get parameters from the request
-    String keyword = request.getParameter("keyword"); // keyword for searching
-    String category = request.getParameter("category"); // category ID for filtering
-    String sort = request.getParameter("sort"); // sort by date (asc or desc)
+            // --- 3. Đặt các thuộc tính cho JSP ---
+            request.setAttribute("blogs", blogs);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("currentPage", currentPage);
 
-    // Default sort is DESC if invalid or null
-    if (sort == null || (!sort.equalsIgnoreCase("asc") && !sort.equalsIgnoreCase("desc"))) {
-        sort = "desc";
+            // Gửi danh sách cho các dropdown
+            request.setAttribute("allKeywords", allKeywords);
+            request.setAttribute("allKeytags", allKeytags);
+            
+            // Gửi các giá trị đã chọn để giữ trạng thái của form
+            request.setAttribute("selectedKeywordId", filterKeywordId);
+            request.setAttribute("selectedKeytagId", filterKeytagId);
+
+            // --- 4. Chuyển tiếp đến JSP ---
+            request.getRequestDispatcher("views/Home-Blog/Homepage-Blog.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            log("Error fetching blog data", e);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Không thể tải dữ liệu bài viết.");
+        }
     }
 
-    // Define pagination: how many items per page
-    int pageSize = 4;
-    int page = 1;
-    try {
-        page = Integer.parseInt(request.getParameter("page")); // get current page number
-    } catch (NumberFormatException ignored) {
-        // If parsing fails or page is missing, use page = 1
-    }
-
-    // Get the list of blogs based on search/filter/sort/pagination
-    List<Blog> blogs = dao.searchBlogsAdvanced(keyword, category, sort, page, pageSize);
-
-    // Get the total number of matched blogs (used to calculate number of pages)
-    int totalBlogs = dao.countBlogsAdvanced(keyword, category);
-    int totalPages = (int) Math.ceil((double) totalBlogs / pageSize);
-
-    // Get the list of all available categories (for dropdown)
-    List<PhanLoaiBlog> danhMucList = phanLoaiDAO.getAllPhanLoai();
-    
-    List<String> keyTagList = dao.getAllKeyTags();
-    // Set attributes for JSP page to access and render
-    request.setAttribute("keyTagList", keyTagList);
-    request.setAttribute("blogs", blogs); // list of blog items to show
-    request.setAttribute("keyword", keyword == null ? "" : keyword); // search keyword (preserve value)
-    request.setAttribute("category", category == null ? "" : category); // selected category (preserve value)
-    request.setAttribute("sort", sort); // current sort order
-    request.setAttribute("currentPage", page); // current page number
-    request.setAttribute("totalPages", totalPages); // total number of pages
-    request.setAttribute("danhMucList", danhMucList); // list of all categories
-
-    // Forward the request to the JSP page to render the content
-    request.getRequestDispatcher("views/Home-Blog/Homepage-Blog.jsp").forward(request, response);
-}
-
-
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Servlet for displaying and filtering blogs by Keyword and KeyTag.";
+    }
 }

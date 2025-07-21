@@ -89,7 +89,7 @@ public class ManageSchedule extends HttpServlet {
                 if (success) {
                     request.setAttribute("suc", "Xóa tất cả lịch học trong ngày " + day + "/" + month + "/" + year + " thành công!");
                 } else {
-                    request.setAttribute("err", "Không được xóa lịch học trong quá khứ!");
+                    request.setAttribute("err", "Không có lịch học để xóa hoặc xảy ra lỗi!");
                 }
             } catch (NumberFormatException e) {
                 request.setAttribute("err", "Dữ liệu ngày không hợp lệ!");

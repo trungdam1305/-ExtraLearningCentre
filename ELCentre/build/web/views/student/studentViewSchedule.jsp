@@ -306,7 +306,7 @@
         <span>Xin chào ${sessionScope.user.email}</span>
     </div>
 
-    <div class="data-table-container schedule-container">
+                <div class="data-table-container schedule-container">
                         <h3 class="section-title"><i class="fas fa-calendar-alt"></i> Thời Khóa Biểu</h3>
 
                         <div class="schedule-controls">

@@ -1,6 +1,7 @@
 package dal;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import model.DangTaiLieu;
@@ -9,10 +10,6 @@ import model.MonHoc;
 
 public class DangTaiLieuDAO {
 
-    /**
-     * Câu lệnh SQL cơ sở để lấy tài liệu với đầy đủ thông tin tên môn học và loại tài liệu.
-     * Sử dụng LEFT JOIN để đảm bảo tài liệu vẫn hiển thị ngay cả khi môn học hoặc loại tài liệu bị null.
-     */
     private final String BASE_SELECT_SQL = """
         SELECT 
             dtl.*, 
@@ -23,23 +20,16 @@ public class DangTaiLieuDAO {
         LEFT JOIN LoaiTaiLieu ltl ON dtl.ID_LoaiTaiLieu = ltl.ID_LoaiTaiLieu
         WHERE 1=1 
     """;
-
-    /**
-     * Lấy danh sách tài liệu đã được lọc và phân trang.
-     * @param keyword Từ khóa tìm kiếm theo tên tài liệu.
-     * @param monHocId ID của môn học để lọc.
-     * @param loaiTaiLieuId ID của loại tài liệu để lọc.
-     * @param page Trang hiện tại.
-     * @param pageSize Số lượng mục trên mỗi trang.
-     * @return Danh sách tài liệu.
-     */
+    //get Material and Filter them
     public List<DangTaiLieu> getFilteredMaterials(String keyword, Integer monHocId, Integer loaiTaiLieuId, int page, int pageSize) {
         List<DangTaiLieu> list = new ArrayList<>();
         List<Object> params = new ArrayList<>();
         StringBuilder sql = new StringBuilder(BASE_SELECT_SQL);
 
+        // Your current keyword filter is on `dtl.LoaiTaiLieu`. It should probably be `dtl.TenTaiLieu` for keyword search.
+        // I'll assume you want to search by TenTaiLieu for general keyword.
         if (keyword != null && !keyword.trim().isEmpty()) {
-            sql.append(" AND dtl.LoaiTaiLieu LIKE ? ");
+            sql.append(" AND dtl.TenTaiLieu LIKE ? "); // Corrected to TenTaiLieu
             params.add("%" + keyword.trim() + "%");
         }
         if (monHocId != null && monHocId > 0) {
@@ -55,7 +45,7 @@ public class DangTaiLieuDAO {
         params.add((page - 1) * pageSize);
         params.add(pageSize);
 
-        try (Connection conn = new DBContext().getConnection();
+        try (Connection conn = DBContext.getInstance().getConnection(); // Use getInstance()
              PreparedStatement ps = conn.prepareStatement(sql.toString())) {
             
             for (int i = 0; i < params.size(); i++) {
@@ -73,17 +63,14 @@ public class DangTaiLieuDAO {
         }
         return list;
     }
-
-    /**
-     * Đếm tổng số tài liệu thỏa mãn điều kiện lọc.
-     */
+    //count 
     public int countFilteredMaterials(String keyword, Integer monHocId, Integer loaiTaiLieuId) {
         List<Object> params = new ArrayList<>();
-        // Việc JOIN không cần thiết cho COUNT, giúp tối ưu hiệu suất
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM DangTaiLieu WHERE 1=1 ");
 
+        // Your current keyword filter is on `TenTaiLieu` here. Consistent.
         if (keyword != null && !keyword.trim().isEmpty()) {
-            sql.append(" AND TenTaiLieu LIKE ? ");
+            sql.append(" AND TenTaiLieu LIKE ? "); 
             params.add("%" + keyword.trim() + "%");
         }
         if (monHocId != null && monHocId > 0) {
@@ -95,7 +82,7 @@ public class DangTaiLieuDAO {
             params.add(loaiTaiLieuId);
         }
 
-        try (Connection conn = new DBContext().getConnection();
+        try (Connection conn = DBContext.getInstance().getConnection(); // Use getInstance()
              PreparedStatement ps = conn.prepareStatement(sql.toString())) {
             for (int i = 0; i < params.size(); i++) {
                 ps.setObject(i + 1, params.get(i));
@@ -111,39 +98,33 @@ public class DangTaiLieuDAO {
         }
         return 0;
     }
-    
-    /**
-     * Lấy tất cả các môn học để hiển thị trong bộ lọc.
-     */
+    //Get all Subject
     public List<MonHoc> getAllMonHoc() {
         List<MonHoc> list = new ArrayList<>();
         String sql = "SELECT ID_MonHoc, TenMonHoc FROM MonHoc";
-        try (Connection conn = new DBContext().getConnection();
+        try (Connection conn = DBContext.getInstance().getConnection(); // Use getInstance()
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 list.add(new MonHoc(rs.getInt("ID_MonHoc"), rs.getString("TenMonHoc")));
             }
-        } catch (java.sql.SQLException e) {
+        } catch (SQLException e) {
             System.err.println("Lỗi khi lấy danh sách Môn Học: " + e.getMessage());
             e.printStackTrace();
         }
         return list;
     }
-    
-    /**
-     * Lấy tất cả các loại tài liệu để hiển thị trong bộ lọc.
-     */
+    //Get all Material
     public List<LoaiTaiLieu> getAllLoaiTaiLieu() {
         List<LoaiTaiLieu> list = new ArrayList<>();
         String sql = "SELECT ID_LoaiTaiLieu, LoaiTaiLieu FROM LoaiTaiLieu ORDER BY LoaiTaiLieu";
-        try (Connection conn = new DBContext().getConnection();
+        try (Connection conn = DBContext.getInstance().getConnection(); // Use getInstance()
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 list.add(new LoaiTaiLieu(rs.getInt("ID_LoaiTaiLieu"), rs.getString("LoaiTaiLieu")));
             }
-        } catch (java.sql.SQLException e) {
+        } catch (SQLException e) {
             System.err.println("Lỗi khi lấy danh sách Loại Tài Liệu: " + e.getMessage());
             e.printStackTrace();
         }
@@ -151,45 +132,130 @@ public class DangTaiLieuDAO {
     }
 
     /**
-     * Hàm tiện ích để chuyển đổi một hàng trong ResultSet thành đối tượng DangTaiLieu.
+     * Get Material by ID
      */
-    private DangTaiLieu mapResultSetToDangTaiLieu(ResultSet rs) throws java.sql.SQLException {
+    public DangTaiLieu getMaterialById(int materialId) {
+        String sql = BASE_SELECT_SQL + " AND dtl.ID_Material = ?";
+        
+        try (Connection conn = DBContext.getInstance().getConnection(); // Use getInstance()
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, materialId);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToDangTaiLieu(rs);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Lỗi khi lấy chi tiết tài liệu: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * add Material to DB
+     */
+    public void addMaterial(DangTaiLieu material) throws SQLException {
+        // Updated SQL to include NoiDung
+        String sql = "INSERT INTO DangTaiLieu (ID_GiaoVien, TenTaiLieu, ID_LoaiTaiLieu, DuongDan, NgayTao, ID_MonHoc, GiaTien, Image, NoiDung) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DBContext.getInstance().getConnection(); // Use getInstance()
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setObject(1, material.getID_GiaoVien()); // Use setObject for Integer types (can be null)
+            ps.setString(2, material.getTenTaiLieu());
+            ps.setObject(3, material.getID_LoaiTaiLieu()); // Use setObject for Integer types
+            ps.setString(4, material.getDuongDan()); // Path to the uploaded file
+            ps.setObject(5, material.getNgayTao()); // For LocalDateTime
+            ps.setObject(6, material.getID_MonHoc()); // Use setObject for Integer types
+            ps.setString(7, material.getGiaTien());
+            ps.setString(8, material.getImage()); // Path to the thumbnail image
+            ps.setString(9, material.getNoiDung()); // NEW: Set NoiDung
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    /**
+     * Update Material to DB
+     */
+    public void updateMaterial(DangTaiLieu material) throws SQLException {
+        // Updated SQL to include NoiDung
+        String sql = """
+            UPDATE DangTaiLieu SET
+                ID_GiaoVien = ?,
+                TenTaiLieu = ?,
+                ID_LoaiTaiLieu = ?,
+                DuongDan = ?,
+                ID_MonHoc = ?,
+                GiaTien = ?,
+                Image = ?,
+                NoiDung = ?
+            WHERE ID_Material = ?
+            """;
+        try (Connection conn = DBContext.getInstance().getConnection(); // Use getInstance()
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setObject(1, material.getID_GiaoVien());
+            ps.setString(2, material.getTenTaiLieu());
+            ps.setObject(3, material.getID_LoaiTaiLieu());
+            ps.setString(4, material.getDuongDan());
+            ps.setObject(5, material.getID_MonHoc());
+            ps.setString(6, material.getGiaTien());
+            ps.setString(7, material.getImage());
+            ps.setString(8, material.getNoiDung()); // NEW: Set NoiDung
+            ps.setInt(9, material.getID_Material()); // WHERE clause
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    /**
+     * Delete Material from DB
+     */
+    public void deleteMaterial(int materialId) throws SQLException {
+        String sql = "DELETE FROM DangTaiLieu WHERE ID_Material = ?";
+        try (Connection conn = DBContext.getInstance().getConnection(); // Use getInstance()
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, materialId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    private DangTaiLieu mapResultSetToDangTaiLieu(ResultSet rs) throws SQLException {
         DangTaiLieu dtl = new DangTaiLieu();
         dtl.setID_Material(rs.getInt("ID_Material"));
+        // Use getObject then cast to Integer for nullable int columns
         dtl.setID_GiaoVien(rs.getObject("ID_GiaoVien") != null ? rs.getInt("ID_GiaoVien") : null);
         dtl.setTenTaiLieu(rs.getString("TenTaiLieu"));
-        dtl.setID_LoaiTaiLieu(rs.getInt("ID_LoaiTaiLieu"));
+        dtl.setID_LoaiTaiLieu(rs.getObject("ID_LoaiTaiLieu") != null ? rs.getInt("ID_LoaiTaiLieu") : null); // Changed to Integer
         dtl.setDuongDan(rs.getString("DuongDan"));
-        dtl.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
-        dtl.setID_MonHoc(rs.getInt("ID_MonHoc"));
+        
+        // Handle nullable LocalDateTime
+        if (rs.getTimestamp("NgayTao") != null) {
+            dtl.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+        } else {
+            dtl.setNgayTao(null);
+        }
+        
+        dtl.setID_MonHoc(rs.getObject("ID_MonHoc") != null ? rs.getInt("ID_MonHoc") : null); // Changed to Integer
         dtl.setGiaTien(rs.getString("GiaTien"));
         dtl.setImage(rs.getString("Image"));
-        
-        // Các trường được JOIN từ bảng khác
+        dtl.setNoiDung(rs.getString("NoiDung")); // NEW: Map NoiDung
+
         dtl.setMonHoc(rs.getString("TenMonHoc"));
         dtl.setLoaiTaiLieu(rs.getString("LoaiTaiLieu"));
         
         return dtl;
     }
-    public DangTaiLieu getMaterialById(int materialId) {
-    // Sử dụng lại câu lệnh SQL cơ sở đã có JOIN
-    String sql = BASE_SELECT_SQL + " AND dtl.ID_Material = ?";
-    
-    try (Connection conn = new DBContext().getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        
-        ps.setInt(1, materialId);
-        
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                // Dùng lại hàm map tiện ích đã tạo
-                return mapResultSetToDangTaiLieu(rs);
-            }
-        }
-    } catch (Exception e) {
-        System.err.println("Lỗi khi lấy chi tiết tài liệu: " + e.getMessage());
-        e.printStackTrace();
-    }
-    return null; // Trả về null nếu không tìm thấy hoặc có lỗi
-}
 }

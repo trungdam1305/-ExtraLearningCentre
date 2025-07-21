@@ -100,19 +100,19 @@ public class adminGetFromDashboard extends HttpServlet {
                 break;
 
             case "hocphi":       //action with tuition
-                ArrayList<HocPhi> hocphis = HocPhiDAO.adminGetHocPhi();          //admin get All tuition from database
-                if (hocphis.isEmpty()) {                // get database fail
-                    request.setAttribute("message", "Không có biểu học phí nào.");
+                ArrayList<GiaoVien_ChiTietDay> lophocs1 = HocPhiDAO.adminGetAllLopHocDangHocToSendHocPhi();          
+                if (lophocs1.isEmpty()) {               
+                    request.setAttribute("message", "Không có lớp học nào để gửi học phí.");
                     request.getRequestDispatcher("/views/admin/adminReceiveHocPhi.jsp").forward(request, response);
-                } else {                                 // get database success
-                    request.setAttribute("hocphis", hocphis);            //create object is hocphis to send data for jsp
-                    request.getRequestDispatcher("/views/admin/adminReceiveHocPhi.jsp").forward(request, response);      //redirect to adminReceiveHocPhi jsp
+                } else {                                
+                    session.setAttribute("lophocs1", lophocs1);            
+                    request.getRequestDispatcher("/views/admin/adminReceiveHocPhi.jsp").forward(request, response);      
                 }
                 break;
             case "thongbao":            //action with notifications
                 ArrayList<GiaoVien_ChiTietDay> lophocs = ThongBaoDAO.adminGetAllLopHocDangHocToSendThongBao();        //admin get All notifications from database
                 if (lophocs.isEmpty()) {
-                    request.setAttribute("message", "Không có lớp học nào để gử thông báo.");
+                    request.setAttribute("message", "Không có lớp học nào để gửi thông báo.");
                     request.getRequestDispatcher("/views/admin/adminReceiveHocPhi.jsp").forward(request, response);
                 } else {
                     session.setAttribute("lophocs", lophocs);

@@ -45,8 +45,6 @@ public class LopHoc {
     private LocalDateTime ThoiGianKetThuc;
     private Integer ID_GiaoVien;
     private String tenPhongHoc;
-    
-    
 
     public LopHoc(Integer ID_LopHoc, String ClassCode, String TenLopHoc, Integer ID_KhoaHoc, Integer SiSo, Integer SiSoToiDa, Integer SiSoToiThieu, int ID_Schedule, int ID_PhongHoc, String GhiChu, String TrangThai, String SoTien, LocalDateTime NgayTao, String Image, int Order) {
         this.ID_LopHoc = ID_LopHoc;
