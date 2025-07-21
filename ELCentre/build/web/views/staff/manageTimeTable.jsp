@@ -361,21 +361,22 @@
 <body>
     
     <div class="header">
-            <div class="left-title">
-                Staff Dashboard <i class="fas fa-tachometer-alt"></i>
-            </div>
-            <div class="admin-profile" onclick="toggleDropdown()">
-                <c:forEach var="staff" items="${staffs}">
-                    <img src="${staff.getAvatar()}" alt="Staff Photo" class="admin-img">
-                    <span>${staff.getHoTen()}</span>
-                </c:forEach>
-                <i class="fas fa-caret-down"></i>
-                <div class="dropdown-menu" id="adminDropdown">
-                    <a href="#"><i class="fas fa-key"></i> Change Password</a>
-                    <a href="#"><i class="fas fa-user-edit"></i> Update Information</a>
-                </div>
+        <div class="left-title">
+            Staff Dashboard <i class="fas fa-tachometer-alt"></i>
+        </div>
+        <div class="admin-profile" onclick="toggleDropdown()">
+            <c:forEach var="staff" items="${staffs}">
+                <img src="${staff.getAvatar()}" alt="Staff Photo" class="admin-img">
+                <span>${staff.getHoTen()}</span>
+            </c:forEach>
+            <i class="fas fa-caret-down"></i>
+            <div class="dropdown-menu" id="adminDropdown">
+                <a href="${pageContext.request.contextPath}/staffChangePassword"><i class="fas fa-key"></i> Change Password</a>
+                <a href="${pageContext.request.contextPath}/staffUpdateInfo"><i class="fas fa-user-edit"></i> Update Information</a>
+                <a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </div>
+    </div>
 
         <div class="sidebar">
             <h4>EL CENTRE</h4>
@@ -511,19 +512,21 @@
             <p>© 2025 EL CENTRE. All rights reserved. | Developed by EL CENTRE</p>
         </div>
     <script>
-            function toggleDropdown() {
-                const dropdown = document.getElementById('adminDropdown');
-                dropdown.classList.toggle('active');
-            }
+        function toggleDropdown() {
+            document.getElementById("adminDropdown").classList.toggle("active");
+        }
 
-            document.addEventListener('click', function (event) {
-                const profile = document.querySelector('.admin-profile');
-                const dropdown = document.getElementById('adminDropdown');
-                if (!profile.contains(event.target)) {
-                    dropdown.classList.remove('active');
+        window.onclick = function(event) {
+            if (!event.target.matches('.admin-profile') && !event.target.matches('.admin-profile *')) {
+                var dropdowns = document.getElementsByClassName("dropdown-menu");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('active')) {
+                        openDropdown.classList.remove('active');
+                    }
                 }
-            });
-
+            }
+        }
     </script>
 </body>
 </html>

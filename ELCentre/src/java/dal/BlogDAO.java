@@ -352,7 +352,6 @@ public class BlogDAO { // IMPORTANT: NO LONGER extends DBContext
                 BlogDescription = ?,
                 BlogDate = ?,
                 Image = ?,
-                ID_Khoi = ?,
                 ID_PhanLoai = ?,
                 ID_KeyTag = ?,
                 ID_Keyword = ?,
@@ -365,12 +364,11 @@ public class BlogDAO { // IMPORTANT: NO LONGER extends DBContext
             ps.setString(2, blog.getBlogDescription());
             ps.setObject(3, blog.getBlogDate());
             ps.setString(4, blog.getImage());
-            ps.setInt(5, blog.getID_Khoi());
-            ps.setInt(6, blog.getID_PhanLoai());
-            ps.setInt(7, blog.getID_KeyTag());
-            ps.setInt(8, blog.getID_Keyword());
-            ps.setString(9, blog.getNoiDung());
-            ps.setInt(10, blog.getID_Blog());
+            ps.setInt(5, blog.getID_PhanLoai());
+            ps.setInt(6, blog.getID_KeyTag());
+            ps.setInt(7, blog.getID_Keyword());
+            ps.setString(8, blog.getNoiDung());
+            ps.setInt(9, blog.getID_Blog());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -527,11 +525,6 @@ public class BlogDAO { // IMPORTANT: NO LONGER extends DBContext
 /**
  * Counts the total number of blogs based on the same keyword, KeyTag ID, and year filters.
  * This is used for pagination to determine the total number of pages.
- *
- * @param keyword Search term. Null or empty to ignore.
- * @param idKeyTag KeyTag ID to filter by. 0 or less to ignore.
- * @param year Specific year of BlogDate to filter by. Null to ignore.
- * @return Total count of blogs matching the criteria.
  */
 public int countFilteredBlogs(String keyword, int idKeyTag, Integer year) {
     StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM Blog WHERE 1=1 ");
@@ -573,73 +566,6 @@ public int countFilteredBlogs(String keyword, int idKeyTag, Integer year) {
         e.printStackTrace();
     }
     return 0; // Return 0 if no blogs found or an error occurs
-}
-
-
-// Add this main method to the end of your BlogDAO class
-
-public static void main(String[] args) {
-    BlogDAO dao = new BlogDAO();
-
-    System.out.println("--- Starting Debug Test for addBlog ---");
-
-    // --- Create a new Blog object with sample data ---
-    Blog newBlog = new Blog();
-    newBlog.setBlogTitle("Bài viết test từ Main - " + LocalDateTime.now()); // Unique title
-    newBlog.setBlogDescription("Mô tả ngắn của bài viết test.");
-    newBlog.setNoiDung("<p>Nội dung chi tiết <strong>từ hàm main</strong> của bài viết test.</p>");
-    newBlog.setBlogDate(LocalDateTime.now());
-    newBlog.setImage("default_blog_image.jpg"); // Replace with a valid image file name or leave null if nullable
-
-    // --- IMPORTANT: Use valid IDs that exist in your database ---
-    // If these foreign keys don't exist, you'll get an SQLException.
-    // Check your PhanLoaiBlog, Khoi, KeyTag, and Keyword tables.    // Example: Assuming Khoi ID 1 exists
-    newBlog.setID_PhanLoai(1);   // Example: Assuming PhanLoaiBlog ID 1 exists
-    newBlog.setID_KeyTag(1);     // Example: Assuming KeyTag ID 1 exists
-    newBlog.setID_Keyword(1);    // Example: Assuming Keyword ID 1 exists
-
-    // For debugging, if these IDs can be 0 or nullable in your DB:
-    // newBlog.setID_Khoi(0); // If 0 is accepted or means 'none'
-    // newBlog.setID_PhanLoai(0); // If 0 is accepted or means 'none'
-    // newBlog.setID_KeyTag(0); // If 0 is accepted or means 'none'
-    // newBlog.setID_Keyword(0); // If 0 is accepted or means 'none'
-
-
-    try {
-        System.out.println("\nAttempting to add new blog: \"" + newBlog.getBlogTitle() + "\"");
-        dao.addBlog(newBlog);
-        System.out.println("Blog added successfully! Check your database.");
-
-        // --- Optional: Verify by fetching recent blogs ---
-        System.out.println("\nVerifying by fetching the latest 2 blogs:");
-        List<Blog> recentBlogs = dao.getAllBlog(); // Assuming getAllBlog fetches recent ones or you have a getLatestBlogs method
-        if (!recentBlogs.isEmpty()) {
-            // Sort by date DESC to easily find the newly added one
-            recentBlogs.sort((b1, b2) -> b2.getBlogDate().compareTo(b1.getBlogDate()));
-            for (int i = 0; i < Math.min(recentBlogs.size(), 2); i++) { // Print up to 2 latest
-                Blog blog = recentBlogs.get(i);
-                System.out.println("  Found Blog ID: " + blog.getID_Blog() +
-                                   ", Title: " + blog.getBlogTitle() +
-                                   ", Desc: " + blog.getBlogDescription() +
-                                   ", PhanLoai: " + blog.getPhanLoai() +
-                                   ", KeyTag: " + blog.getKeyTag() +
-                                   ", Keyword: " + blog.getKeyWord());
-            }
-        } else {
-            System.out.println("No blogs found in the database after adding.");
-        }
-
-    } catch (RuntimeException e) {
-        // This catches RuntimeExceptions thrown by DBContext.getInstance() if connection fails
-        System.err.println("Failed to add blog due to database connection issue: " + e.getMessage());
-        e.printStackTrace();
-    } catch (Exception e) {
-        // Catch any other unexpected exceptions during the addBlog process
-        System.err.println("An unexpected error occurred while adding blog: " + e.getMessage());
-        e.printStackTrace();
-    }
-
-    System.out.println("\n--- Debug Test for addBlog Complete ---");
 }
 
 }

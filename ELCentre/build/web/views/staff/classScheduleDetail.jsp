@@ -648,22 +648,19 @@
         <p>© 2025 EL CENTRE. All rights reserved. | Developed by EL CENTRE</p>
     </div>
     <script>
-        function toggleDropdown() {
-            document.getElementById("adminDropdown").classList.toggle("active");
-        }
-
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function(event) {
-            if (!event.target.matches('.admin-profile') && !event.target.matches('.admin-profile *')) {
-                var dropdowns = document.getElementsByClassName("dropdown-menu");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('active')) {
-                        openDropdown.classList.remove('active');
-                    }
-                }
+            function toggleDropdown() {
+                const dropdown = document.getElementById('adminDropdown');
+                dropdown.classList.toggle('active');
             }
-        }
+
+            document.addEventListener('click', function (event) {
+                const profile = document.querySelector('.admin-profile');
+                const dropdown = document.getElementById('adminDropdown');
+                if (!profile.contains(event.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+
     </script>
 </body>
 </html>

@@ -252,6 +252,10 @@
         <servlet-name>ManageMaterial</servlet-name>
         <servlet-class>controller.ManageMaterial</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageSlider</servlet-name>
+        <servlet-class>controller.ManageSlider</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -527,6 +531,10 @@
     <servlet-mapping>
         <servlet-name>ManageMaterial</servlet-name>
         <url-pattern>/ManageMaterial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageSlider</servlet-name>
+        <url-pattern>/ManageSlider</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

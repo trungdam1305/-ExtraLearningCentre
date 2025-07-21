@@ -362,20 +362,23 @@
 </head>
 <body>
     
-    <header class="header">
-             <div class="left-title"><h3>Quản lý Thời Khóa Biểu</h3></div>
-             <div class="admin-profile" onclick="toggleDropdown()">
-                <c:forEach var="staff" items="${staffs}">
-                    <img src="${staff.getAvatar()}" alt="Staff Photo" class="admin-img">
-                    <span>${staff.getHoTen()}</span>
-                </c:forEach>
-                <i class="fas fa-caret-down"></i>
-                <div class="dropdown-menu" id="adminDropdown">
-                    <a href="#"><i class="fas fa-key"></i> Change Password</a>
-                    <a href="#"><i class="fas fa-user-edit"></i> Update Information</a>
-                </div>
+    <div class="header">
+        <div class="left-title">
+            Staff Dashboard <i class="fas fa-tachometer-alt"></i>
+        </div>
+        <div class="admin-profile" onclick="toggleDropdown()">
+            <c:forEach var="staff" items="${staffs}">
+                <img src="${staff.getAvatar()}" alt="Staff Photo" class="admin-img">
+                <span>${staff.getHoTen()}</span>
+            </c:forEach>
+            <i class="fas fa-caret-down"></i>
+            <div class="dropdown-menu" id="adminDropdown">
+                <a href="${pageContext.request.contextPath}/staffChangePassword"><i class="fas fa-key"></i> Change Password</a>
+                <a href="${pageContext.request.contextPath}/staffUpdateInfo"><i class="fas fa-user-edit"></i> Update Information</a>
+                <a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
-        </header>
+        </div>
+    </div>
 
         <div class="sidebar">
             <h4>EL CENTRE</h4>

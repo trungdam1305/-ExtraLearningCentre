@@ -20,7 +20,10 @@ import dal.TaiKhoanChiTietDAO;
 import model.GiaoVien_TruongHoc;
 import model.HocSinh_SDT;
 import dal.HocSinh_SDTDAO;
+import dal.SliderDAO;
+import java.util.List;
 import model.GiaoVien_ChiTietDay;
+import model.Slider;
 
 /**
  * Created on:May 24 , 2025 11:48:56 PM
@@ -142,7 +145,7 @@ public class adminGetFromDashboard extends HttpServlet {
 
                 }
                 break;
-
+            
         }
 
     }

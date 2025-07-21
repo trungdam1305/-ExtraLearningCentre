@@ -113,6 +113,7 @@
                 flex-direction: column;
                 height: 100vh;
                 position: fixed;
+                overflow-y: auto;
             }
             .sidebar h4 {
                 margin: 0 auto;
