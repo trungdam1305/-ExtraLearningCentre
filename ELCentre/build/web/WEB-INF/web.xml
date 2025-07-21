@@ -256,6 +256,10 @@
         <servlet-name>ManageSlider</servlet-name>
         <servlet-class>controller.ManageSlider</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>adminActionWithTuition</servlet-name>
+        <servlet-class>controller.adminActionWithTuition</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -535,6 +539,10 @@
     <servlet-mapping>
         <servlet-name>ManageSlider</servlet-name>
         <url-pattern>/ManageSlider</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminActionWithTuition</servlet-name>
+        <url-pattern>/adminActionWithTuition</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

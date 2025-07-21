@@ -1,14 +1,12 @@
-        <%-- 
-    Document   : adminReceiveThongBao
-    Created on : May 29, 2025, 4:12:42 PM
+<%-- 
+    Document   : adminReceiveHocPhi
+    Created on : May 29, 2025, 3:45:49 PM
     Author     : chuvv
-    Purpose    : This page displays a list of sent notifications (thông báo) in the EL CENTRE system, 
-                 including notification ID, account ID, content, associated tuition fee ID, and timestamp. 
-                 Supports filtering by date range and recipient type, with pagination and action buttons.
+    Purpose    : This page displays a table of tuition fee (học phí) details for the EL CENTRE system, 
+                 including student IDs, class IDs, subjects, payment methods, status, and dates. 
     Parameters:
-    - @Param thongbaos (ArrayList<ThongBao>): A request attribute containing the list of notification objects fetched from the database.
+    - @Param hocphis (ArrayList<HocPhi>): A request attribute containing the list of tuition fee objects fetched from the database.
 --%>
-
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -20,7 +18,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta charset="UTF-8">
-        <title>Quản lý thông báo</title>
+        <title>Quản lý học phí theo lớp học</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
             :root {
@@ -511,7 +509,7 @@
     <body>
         <div class="header">
             <div class="left-title">
-                Quản lý thông báo <i class="fas fa-bell"></i>
+                Quản lý học phí theo lớp học  <i class="fas fa-money-check-alt"></i>
             </div>
             <div class="admin-profile" onclick="toggleDropdown()">
                 <%
@@ -519,11 +517,7 @@
                 %>
                 <img src="<%= admins.get(0).getAvatar() %>" alt="Admin Photo" class="admin-img">
                 <span><%= admins.get(0).getHoTen() %></span>
-                <i class="fas fa-caret-down"></i>
-                <div class="dropdown-menu" id="adminDropdown">
-                    <a href="#"><i class="fas fa-key"></i> Change Password</a>
-                    <a href="#"><i class="fas fa-user-edit"></i> Update Information</a>
-                </div>
+
             </div>
         </div>
 
@@ -568,111 +562,98 @@
                     ${message}
                 </div>
             </c:if>
+           
             <div class="page-header">
-                <h2><i class="fas fa-bell"></i> Gửi thông báo đến các lớp học</h2>
+                <h2><i class="fas fa-money-bill-wave"></i>Học phí lớp ${sessionScope.tenlop} tháng này</h2>
+
             </div>
 
-            <div class="top-bar">
+            <div class="top-bar">   
                 <div class="action-bar">
-                    <a href="${pageContext.request.contextPath}/views/admin/adminSendNotificationToAllStudent.jsp" class="btn-action all-students">
-                        <i class="fas fa-user-graduate"></i> Gửi tất cả học sinh
-                    </a>
-                    <a href="${pageContext.request.contextPath}/views/admin/adminSendNotificationToAllTeacher.jsp" class="btn-action all-teachers">
-                        <i class="fas fa-chalkboard-teacher"></i> Gửi tất cả giáo viên
-                    </a>
-                    <a href="${pageContext.request.contextPath}/views/admin/adminSendNotificationToAllClass.jsp" class="btn-action all-classes">
-                        <i class="fas fa-users"></i> Gửi toàn bộ lớp học
-                    </a>
-                    <a href="${pageContext.request.contextPath}/adminActionWithNotification?action=historyNotification" class="btn-action notification-history">
-                        <i class="fas fa-history"></i> Xem lịch sử thông báo
-                    </a>
-                        
+                    <form action="${pageContext.request.contextPath}/" method="get">
+                        <div class="filter-bar">
+                            <div class="filter-group">
+                                <label for="keyword">Từ khóa:</label>
+                                <input type="text" id="keyword" name="keyword" placeholder="Tìm kiếm nội dung...">
+                            </div>
+                            <button><i class="fas fa-search"></i></button>
+                        </div>
+                    </form>
                 </div>
-                <form action="${pageContext.request.contextPath}/adminActionWithNotification" method="get">
-                    <div class="filter-bar">
-                        <div class="filter-group">
-                            <label for="keyword">Từ khóa:</label>
-                            <input type="text" id="keyword" name="keyword" placeholder="Tìm kiếm nội dung...">
-                        </div>
-                        <div class="filter-group">
-                            <label for="khoi">Lọc theo khối</label>
-                            <select id="khoi" name="khoi">
-                                <option value="">Tất cả</option>
-                                <option value="1">6</option>
-                                <option value="2">7</option>
-                                <option value="3">8</option>
-                                <option value="4">9</option>
-                                <option value="5">10</option>
-                                <option value="6">11</option>
-                                <option value="7">12</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label for="mon">Lọc theo môn học</label>
-                            <select id="mon" name="mon">
-                                <option value="">Tất cả</option>
-                                <option value="Toán">Toán</option>
-                                <option value="Vật lý">Vật lý</option>
-                                <option value="Hóa học">Hóa học</option>
-                            </select>
-                        </div>
-                        <button><i class="fas fa-search"></i></button>
-                    </div>
-                </form>
             </div>
 
             <c:choose>
-                <c:when test="${not empty sessionScope.lophocs}">
+                <c:when test="${not empty requestScope.hocphis}">
                     <div class="data-table-wrapper">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Tên môn học</th>
-                                    <th>Khối</th>
-                                    <th>Lớp học số</th>
-                                    <th>Tên lớp học</th>
-                                    <th>Sĩ số</th>
-                                    <th>Tên giáo viên</th>
-                                    <th>Ghi chú</th>
-                                    <th>Ngày tạo</th>
+
+                                    <th>Mã Học Sinh</th>
+                                    <th>Họ và Tên</th>
+                                    <th>Số điện thoại phụ huynh</th>
+
+                                    <th>Tháng</th>
+                                    <th>Năm</th>
+                                    <th>Số buổi có mặt</th>
+
+                                    <th>Học Phí Phải Đóng</th>
+                                    
+                                    <th>Tình trạng thanh toán</th>
+                                    <th>Ngày thanh toán</th>
+                                   
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
                             <tbody id="notificationTableBody">
-                                <c:forEach var="lop" items="${sessionScope.lophocs}">
+                                <c:forEach var="hp" items="${requestScope.hocphis}">
                                     <tr>
-                                        <td>${lop.getTenKhoaHoc()}</td>
-                                        <td>${lop.getID_Khoi()}</td>
-                                        <td>${lop.getID_LopHoc()}</td>
-                                        <td>${lop.getTenLopHoc()}</td>
-                                        <td>${lop.getSiSo()}</td>
-                                        <td>${lop.getHoTen()}</td>
-                                        <td>${lop.getGhiChu()}</td>
-                                        <td>${lop.getNgayTao()}</td>
-                                        <td class="action-buttons">
-                                            <a class="btn-action send" href="${pageContext.request.contextPath}/views/admin/adminSendNotificationToClass.jsp?idLop=${lop.getID_LopHoc()}">
-                                                <i class="fas fa-paper-plane"></i> Gửi thông báo
+
+                                        <td>${hp.getMaHocSinh()}</td>
+                                        <td>${hp.getHoTen()}</td>
+                                        <td>${hp.getSDT_PhuHuynh()}</td>
+                                        <td>${hp.getThang()}</td>
+                                        <td>${hp.getNam()}</td>
+                                        <td>${hp.getSoBuoi()}</td>
+                                        <td>${hp.getHocPhiPhaiDong()}</td>
+                                        
+                                        <td>${hp.getTinhTrangThanhToan()}</td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${not empty hp.ngayThanhToan}">
+                                                    ${hp.ngayThanhToan}
+                                                </c:when>
+                                                <c:otherwise>
+                                                    Chưa đóng
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        
+                                        <td>
+                                            <a class="btn-action btn-payment" href="${pageContext.request.contextPath}/adminActionWithTuition?action=dongtien&idLop=${hp.getID_LopHoc()}&idHocSinh=${hp.getID_HocSinh()}&thang=${hp.getThang()}&nam=${hp.getNam()}&soTienDong=${hp.getHocPhiPhaiDong()}&tenLopHoc=${tenlop}">
+                                                <i class="fas fa-money-bill-wave"></i> Đánh dấu là đã đóng tiền
                                             </a>
-                                            <a class="btn-action send" href="${pageContext.request.contextPath}/adminActionWithNotification?type=historyNotificationClass?idLop=${lop.getID_LopHoc()}">
-                                                <i class="fas fa-paper-plane"></i> Lịch sử thông báo lớp học
+                                            <a class="btn-action btn-send-tuition-notice" href="${pageContext.request.contextPath}/adminActionWithTuition?action=guithongbao&idTaiKhoanHocSinh=${hp.getID_TaiKhoan()}&sodienthoai=${hp.getSDT_PhuHuynh()}&TenHocSinh=${hp.getHoTen()}&thang=${hp.getThang()}&nam=${hp.getNam()}&soTienDong=${hp.getHocPhiPhaiDong()}">
+                                                <i class="fas fa-paper-plane"></i> Gửi thông báo đóng học phí
                                             </a>
+
                                         </td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
                         </table>
                     </div>
-
                 </c:when>
                 <c:otherwise>
                     <div class="no-data">
                         <c:if test="${not empty message}">
                             <p style="color: red;">${message}</p>
                         </c:if>
-                        <p>Không có dữ liệu lớp học để hiển thị.</p>
+                        <p>Không có dữ liệu học phí của lớp học để hiển thị.</p>
                     </div>
                 </c:otherwise>
             </c:choose>
+
 
             <div id="pagination"></div>
 
