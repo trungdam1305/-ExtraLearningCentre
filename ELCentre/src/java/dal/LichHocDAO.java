@@ -110,7 +110,7 @@ public class LichHocDAO {
                  JOIN
                  GiaoVien gv ON gv.ID_GiaoVien = gvlh.ID_GiaoVien
                  JOIN 
-                 PhongHoc ph on lop.ID_PhongHoc = ph.ID_PhongHoc
+                 PhongHoc ph on lh.ID_PhongHoc = ph.ID_PhongHoc
                  WHERE
                  gv.ID_TaiKhoan = ?
                  AND lh.NgayHoc BETWEEN ? AND ?
@@ -487,5 +487,65 @@ public class LichHocDAO {
             e.printStackTrace();
         }
         return list;
-    }    
+    } 
+    public List<LichHoc> HSgetLichHocTrongTuan(int idHocSinh, LocalDate startDate, LocalDate endDate) {
+        List<LichHoc> list = new ArrayList<>();
+        DBContext db = DBContext.getInstance();
+
+        // ✅ SỬA ĐỔI SQL: Dùng LEFT JOIN để lấy trạng thái điểm danh của đúng học sinh đó
+        String sql = """
+                     SELECT 
+                         lh.*, 
+                         lop.TenLopHoc, 
+                         sl.SlotThoiGian, 
+                         ph.TenPhongHoc, 
+                         lop.GhiChu,
+                         dd.TrangThai AS TrangThaiDiemDanh -- Lấy trạng thái từ bảng DiemDanh
+                     FROM LichHoc lh
+                     JOIN LopHoc lop ON lh.ID_LopHoc = lop.ID_LopHoc
+                     JOIN SlotHoc sl ON lh.ID_SlotHoc = sl.ID_SlotHoc
+                     JOIN HocSinh_LopHoc hslh ON lh.ID_LopHoc = hslh.ID_LopHoc
+                     JOIN PhongHoc ph ON lop.ID_PhongHoc = ph.ID_PhongHoc
+                     -- Nối với bảng DiemDanh để lấy trạng thái của chính học sinh này
+                     LEFT JOIN DiemDanh dd ON lh.ID_Schedule = dd.ID_Schedule AND dd.ID_HocSinh = ?
+                     WHERE 
+                         hslh.ID_HocSinh = ?
+                         AND lh.NgayHoc BETWEEN ? AND ?
+                     ORDER BY 
+                         lh.NgayHoc, sl.ID_SlotHoc;
+                     """;
+
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+            // Tham số đầu tiên cho điều kiện JOIN của DiemDanh
+            ps.setInt(1, idHocSinh);
+            // Tham số thứ hai cho điều kiện WHERE
+            ps.setInt(2, idHocSinh); 
+            ps.setDate(3, java.sql.Date.valueOf(startDate));
+            ps.setDate(4, java.sql.Date.valueOf(endDate));
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    LichHoc lh = new LichHoc();
+                    lh.setID_Schedule(rs.getInt("ID_Schedule"));
+                    lh.setNgayHoc(rs.getDate("NgayHoc").toLocalDate());
+                    lh.setID_SlotHoc(rs.getInt("ID_SlotHoc"));
+                    lh.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                    lh.setSlotThoiGian(rs.getString("SlotThoiGian"));
+                    lh.setTenLopHoc(rs.getString("TenLopHoc"));
+                    lh.setGhiChu(rs.getString("GhiChu"));
+                    lh.setTenPhongHoc(rs.getString("TenPhongHoc"));
+
+                    // ✅ THÊM MỚI: Đọc trạng thái điểm danh và gán vào đối tượng
+                    String trangThai = rs.getString("TrangThaiDiemDanh");
+                    lh.setTrangThaiDiemDanh(trangThai);
+
+                    list.add(lh);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Lỗi khi lấy lịch học trong tuần: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

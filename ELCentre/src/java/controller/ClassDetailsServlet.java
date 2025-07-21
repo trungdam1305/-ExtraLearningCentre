@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import model.LopHoc;
 
-@WebServlet(name = "ClassDetailsServlet", urlPatterns = {"/class-details"})
+
 public class ClassDetailsServlet extends HttpServlet {
 
     @Override
@@ -19,11 +19,11 @@ public class ClassDetailsServlet extends HttpServlet {
             int classId = Integer.parseInt(request.getParameter("classId"));
             LopHocDAO dao = new LopHocDAO();
             
-            // Lấy thông tin chi tiết của lớp học
+            // Get Class from DB
             LopHoc lopHoc = dao.getFullClassDetailsById(classId);
 
             if (lopHoc == null) {
-                // Nếu không tìm thấy lớp học, quay về trang danh sách khóa học
+                // not found => HomePageCourse
                 response.sendRedirect("HomePageCourse");
                 return;
             }

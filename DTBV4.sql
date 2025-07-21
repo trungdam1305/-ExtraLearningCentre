@@ -1383,6 +1383,19 @@ INSERT [dbo].[PhongHoc] ([ID_PhongHoc], [TenPhongHoc], [SucChua], [TrangThai]) V
 SET IDENTITY_INSERT [dbo].[PhongHoc] OFF
 GO
 
+select LH.ID_KhoaHoc, LH.ID_LopHoc , GVLH.ID_GiaoVien , GV.HoTen , TH.TenTruongHoc  , LH.TenLopHoc , LH.SiSo  , LH.GhiChu , LH.TrangThai , LH.NgayTao , LH.Image  , KH.TenKhoaHoc , KH.ID_Khoi , LH.SoTien from GiaoVien_LopHoc GVLH 
+                        join LopHoc LH 
+                        on GVLH.ID_LopHoc = LH.ID_LopHoc 
+
+                        JOIN GiaoVien GV 
+                        ON GVLH.ID_GiaoVien = GV.ID_GiaoVien
+                        JOIN TruongHoc TH 
+                        ON TH.ID_TruongHoc = GV.ID_TruongHoc
+                         JOIN KhoaHoc KH 
+                         ON KH.ID_KhoaHoc = LH.ID_KhoaHoc
+
+                        WHERE 
+                       LH.TrangThai = N'Đang học'; 
 
 select * from TaiKhoan 
 
@@ -1397,6 +1410,106 @@ SELECT * FROM ThongBao WHERE NoiDung LIKE N'%tư vấn%' ORDER BY ThoiGian DESC
 
 
 
+select * from DiemDanh ; 
+select * from LichHoc ; 
+select * from LopHoc ; 
+select * from HocSinh_LopHoc ; 
+select * from HocPhi 
+
+INSERT INTO HocPhi (
+    ID_HocSinh,
+    ID_LopHoc,
+    Thang,
+    Nam,
+    SoBuoi,
+    HocPhiPhaiDong,
+    NoConLai,
+    TinhTrangThanhToan
+)
+SELECT 
+    hs.ID_HocSinh,
+    lh.ID_LopHoc,
+    MONTH(lich.NgayHoc),
+    YEAR(lich.NgayHoc),
+    COUNT(*) AS SoBuoiCoMat,
+    CAST(lh.SoTien AS INT) * COUNT(*) AS HocPhiPhaiDong,
+    CAST(lh.SoTien AS INT) * COUNT(*) AS SoTienConNo,
+    N'Chưa thanh toán'
+FROM DiemDanh dd
+JOIN LichHoc lich ON dd.ID_Schedule = lich.ID_Schedule
+JOIN LopHoc lh ON lich.ID_LopHoc = lh.ID_LopHoc
+JOIN HocSinh hs ON dd.ID_HocSinh = hs.ID_HocSinh
+WHERE (dd.TrangThai = N'Có mặt' OR dd.TrangThai = N'Đi muộn')
+  AND lh.TrangThai IN (N'Đang học', N'Đã học')
+  AND MONTH(lich.NgayHoc) = 6  
+  AND YEAR(lich.NgayHoc) = 2025 
+  AND NOT EXISTS (
+        SELECT 1 
+        FROM HocPhi hp
+        WHERE 
+            hp.ID_HocSinh = hs.ID_HocSinh AND
+            hp.ID_LopHoc = lh.ID_LopHoc AND
+            hp.Thang = MONTH(lich.NgayHoc) AND
+            hp.Nam = YEAR(lich.NgayHoc)
+    )
+GROUP BY 
+    hs.ID_HocSinh,
+    lh.ID_LopHoc,
+    lh.SoTien,
+    MONTH(lich.NgayHoc),
+    YEAR(lich.NgayHoc);
 
 
+select * from HocPhi HP 
+JOIN HocSinh HS 
+ON HS.ID_HocSinh = HP.ID_HocSinh
+where HP.ID_LopHoc = 1 
+AND Thang = 6 
+AND Nam = 2025 
 
+ SELECT hp.ID_HocPhi, hp.ID_HocSinh, hp.ID_LopHoc,
+           hp.Thang, hp.Nam, hp.SoBuoi, hp.HocPhiPhaiDong,
+           hp.DaDong, hp.NoConLai, hp.TinhTrangThanhToan,
+           hp.PhuongThucThanhToan, hp.NgayThanhToan,
+           hp.GhiChu, hs.MaHocSinh , hp.NgayThanhToan , 
+           hs.HoTen, hs.SDT_PhuHuynh , hs.ID_TaiKhoan 
+    FROM HocPhi hp
+    JOIN HocSinh hs ON hp.ID_HocSinh = hs.ID_HocSinh
+    where HP.ID_LopHoc = 1 
+AND Thang = 6 
+AND Nam = 2025 
+
+select PH.ID_TaiKhoan from PhuHuynh PH 
+where PH.SDT = '0900111231'
+	
+
+	 SELECT 
+                            hs.ID_HocSinh,
+							hs.ID_TaiKhoan , 
+                            hs.MaHocSinh,
+							hs.SDT_PhuHuynh , 
+							ph.ID_TaiKhoan AS ID_TaiKhoanPH , 
+                            hs.HoTen,
+                            hs.LopDangHocTrenTruong,
+                            lh.ID_LopHoc,
+                            lh.TenLopHoc,
+                            MONTH(lich.NgayHoc) AS Thang,
+                            YEAR(lich.NgayHoc) AS Nam,
+                            COUNT(*) AS SoBuoiCoMat,
+                            CAST(lh.SoTien AS INT) * COUNT(*) AS HocPhiPhaiDong
+                        FROM DiemDanh dd
+                        JOIN LichHoc lich ON dd.ID_Schedule = lich.ID_Schedule
+                        JOIN LopHoc lh ON lich.ID_LopHoc = lh.ID_LopHoc
+                        JOIN HocSinh hs ON dd.ID_HocSinh = hs.ID_HocSinh
+						JOIN PhuHuynh ph ON ph.SDT = hs.SDT_PhuHuynh
+                        WHERE (dd.TrangThai = N'Có mặt' OR dd.TrangThai = N'Đi muộn')
+                          AND (lh.TrangThai = N'Đang học' or lh.TrangThai = N'Đã học')
+                          AND MONTH(lich.NgayHoc) = 6
+                          AND YEAR(lich.NgayHoc) = 2025
+                        GROUP BY 
+                            hs.ID_HocSinh, hs.MaHocSinh, hs.HoTen, hs.LopDangHocTrenTruong,
+                            lh.ID_LopHoc, lh.TenLopHoc, lh.SoTien, hs.ID_TaiKhoan , hs.SDT_PhuHuynh , ph.ID_TaiKhoan , 
+                            MONTH(lich.NgayHoc), YEAR(lich.NgayHoc)
+
+
+							select * from ThongBao ; 

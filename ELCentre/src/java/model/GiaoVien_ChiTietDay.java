@@ -27,11 +27,35 @@ public class GiaoVien_ChiTietDay {
     private String Image ; 
     private Integer ID_Khoi ; 
     private String TenKhoaHoc ; 
-
+    private String SoTien ; 
 
     public GiaoVien_ChiTietDay() {
     }
 
+    public GiaoVien_ChiTietDay(Integer ID_KhoaHoc, Integer ID_LopHoc, Integer ID_GiaoVien, String HoTen, String TenTruongHoc, String TenLopHoc, String SiSo,  String GhiChu, String TrangThai, LocalDateTime NgayTao, String Image, Integer ID_Khoi, String TenKhoaHoc, String SoTien) {
+        this.ID_KhoaHoc = ID_KhoaHoc;
+        this.ID_LopHoc = ID_LopHoc;
+        this.ID_GiaoVien = ID_GiaoVien;
+        this.HoTen = HoTen;
+        this.TenTruongHoc = TenTruongHoc;
+        this.TenLopHoc = TenLopHoc;
+        this.SiSo = SiSo;
+      
+        this.GhiChu = GhiChu;
+        this.TrangThai = TrangThai;
+        this.NgayTao = NgayTao;
+        this.Image = Image;
+        this.ID_Khoi = ID_Khoi;
+        this.TenKhoaHoc = TenKhoaHoc;
+        this.SoTien = SoTien;
+    }
+
+    public String getSoTien() {
+        return SoTien;
+    }
+
+    
+    
     public GiaoVien_ChiTietDay(Integer ID_KhoaHoc, Integer ID_LopHoc, Integer ID_GiaoVien, String HoTen, String TenTruongHoc, String TenLopHoc, String SiSo, String SlotThoiGian, String GhiChu, String TrangThai, LocalDateTime NgayTao, String Image) {
         this.ID_KhoaHoc = ID_KhoaHoc;
         this.ID_LopHoc = ID_LopHoc;

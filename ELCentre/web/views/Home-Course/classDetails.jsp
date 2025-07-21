@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #f8f9fa; font-family: 'Be Vietnam Pro', sans-serif; }
         .info-card { background-color: white; border-radius: 1rem; box-shadow: 0 4px 25px rgba(0,0,0,0.1); }
         .info-card .card-header { background-color: #1F4E79; color: white; border-top-left-radius: 1rem; border-top-right-radius: 1rem; }
         .info-list { list-style: none; padding-left: 0; }
@@ -38,7 +38,7 @@
             <div class="col-lg-8">
                 <div class="card info-card">
                     <div class="card-header">
-                        <h1 class="h3 mb-0">${lopHoc.tenLopHoc}</h1>
+                        <h1 class="h3 mb-0" style="font-family: 'Be Vietnam Pro'">${lopHoc.tenLopHoc}</h1>
                     </div>
                     <div class="card-body p-4">
                         <ul class="info-list">

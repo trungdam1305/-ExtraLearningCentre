@@ -32,7 +32,7 @@
                     
                     <div class="woocommerce columns-4">
                         
-                        <ul class="products columns-4" style="display: flex; flex-wrap: wrap; gap: 20px; padding: 0; list-style: none;">
+                        <ul class="products columns-4" style="display: flex; flex-wrap: wrap; ; list-style: none;">
                             
                             <c:if test="${empty khoaHocList}">
                                 <p style="width: 100%; text-align: center;">Không tìm thấy khóa học nào phù hợp.</p>
@@ -40,14 +40,15 @@
 
                             <c:forEach var="khoaHoc" items="${khoaHocList}">
                                 <li class="post product type-product"
-                                    style="flex: 0 0 calc(25% - 20px); 
-                                           border: 1px solid #e0e0e0; 
-                                           border-radius: 8px; 
-                                           overflow: hidden; 
-                                           background-color: #ffffff;
-                                           box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-                                           display: flex;
-                                           flex-direction: column;">
+                                    style="flex: 0 0 25%; 
+                                       border: 1px solid #e0e0e0; 
+                                       border-radius: 8px; 
+                                       overflow: hidden; 
+                                       background-color: #ffffff;
+                                       box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+                                       display: flex;
+                                       flex-direction: column;
+                                           ">
 
                                     <div class="product-wrapper" style="display: flex; flex-direction: column; height: 100%;">
                                         

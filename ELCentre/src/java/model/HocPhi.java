@@ -1,10 +1,12 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
- * Represents tuition payment information for a student in a specific class and subject.
- * 
+ * Represents tuition payment information for a student in a specific class and
+ * subject.
+ *
  * Author: trungdam1305
  */
 public class HocPhi {
@@ -18,9 +20,6 @@ public class HocPhi {
     // ID of the class associated with this tuition
     private Integer ID_LopHoc;
 
-    // Subject name related to this tuition fee
-    private String MonHoc;
-
     // Payment method used (e.g., Cash, Bank Transfer, Online)
     private String PhuongThucThanhToan;
 
@@ -28,10 +27,23 @@ public class HocPhi {
     private String TinhTrangThanhToan;
 
     // Date when the tuition was paid
-    private LocalDate NgayThanhToan;
+    private LocalDateTime NgayThanhToan;
 
     // Additional notes or remarks
     private String GhiChu;
+
+    private int Thang;
+    private int Nam;
+    private int SoBuoi ; 
+    private int HocPhiPhaiDong;
+    private int DaDong;
+    private int NoConLai;
+    private String MaHocSinh ; 
+    private int ID_TaiKhoan  ; 
+    private String HoTen ; 
+    private String SDT_PhuHuynh ; 
+   
+    
 
     /**
      * Default constructor
@@ -39,84 +51,96 @@ public class HocPhi {
     public HocPhi() {
     }
 
-    /**
-     * Constructor with all fields
-     */
-    public HocPhi(Integer ID_HocPhi, Integer ID_HocSinh, Integer ID_LopHoc, String MonHoc,
-                  String PhuongThucThanhToan, String TinhTrangThanhToan, LocalDate NgayThanhToan, String GhiChu) {
+    public HocPhi(Integer ID_HocPhi, Integer ID_HocSinh, Integer ID_LopHoc, String PhuongThucThanhToan, String TinhTrangThanhToan, LocalDateTime NgayThanhToan, String GhiChu, int Thang, int Nam, int SoBuoi, int HocPhiPhaiDong, int DaDong, int NoConLai, String MaHocSinh, int ID_TaiKhoan, String HoTen, String SDT_PhuHuynh) {
         this.ID_HocPhi = ID_HocPhi;
         this.ID_HocSinh = ID_HocSinh;
         this.ID_LopHoc = ID_LopHoc;
-        this.MonHoc = MonHoc;
         this.PhuongThucThanhToan = PhuongThucThanhToan;
         this.TinhTrangThanhToan = TinhTrangThanhToan;
         this.NgayThanhToan = NgayThanhToan;
         this.GhiChu = GhiChu;
+        this.Thang = Thang;
+        this.Nam = Nam;
+        this.SoBuoi = SoBuoi;
+        this.HocPhiPhaiDong = HocPhiPhaiDong;
+        this.DaDong = DaDong;
+        this.NoConLai = NoConLai;
+        this.MaHocSinh = MaHocSinh;
+        this.ID_TaiKhoan = ID_TaiKhoan;
+        this.HoTen = HoTen;
+        this.SDT_PhuHuynh = SDT_PhuHuynh;
     }
 
-    // Getter and Setter methods
+    public int getSoBuoi() {
+        return SoBuoi;
+    }
+
+    public String getMaHocSinh() {
+        return MaHocSinh;
+    }
+
+    public int getID_TaiKhoan() {
+        return ID_TaiKhoan;
+    }
+
+    public String getHoTen() {
+        return HoTen;
+    }
+
+    public String getSDT_PhuHuynh() {
+        return SDT_PhuHuynh;
+    }
+
+    
+
+    
 
     public Integer getID_HocPhi() {
         return ID_HocPhi;
-    }
-
-    public void setID_HocPhi(Integer ID_HocPhi) {
-        this.ID_HocPhi = ID_HocPhi;
     }
 
     public Integer getID_HocSinh() {
         return ID_HocSinh;
     }
 
-    public void setID_HocSinh(Integer ID_HocSinh) {
-        this.ID_HocSinh = ID_HocSinh;
-    }
-
     public Integer getID_LopHoc() {
         return ID_LopHoc;
-    }
-
-    public void setID_LopHoc(Integer ID_LopHoc) {
-        this.ID_LopHoc = ID_LopHoc;
-    }
-
-    public String getMonHoc() {
-        return MonHoc;
-    }
-
-    public void setMonHoc(String MonHoc) {
-        this.MonHoc = MonHoc;
     }
 
     public String getPhuongThucThanhToan() {
         return PhuongThucThanhToan;
     }
 
-    public void setPhuongThucThanhToan(String PhuongThucThanhToan) {
-        this.PhuongThucThanhToan = PhuongThucThanhToan;
-    }
-
     public String getTinhTrangThanhToan() {
         return TinhTrangThanhToan;
     }
 
-    public void setTinhTrangThanhToan(String TinhTrangThanhToan) {
-        this.TinhTrangThanhToan = TinhTrangThanhToan;
-    }
-
-    public LocalDate getNgayThanhToan() {
+    public LocalDateTime getNgayThanhToan() {
         return NgayThanhToan;
-    }
-
-    public void setNgayThanhToan(LocalDate NgayThanhToan) {
-        this.NgayThanhToan = NgayThanhToan;
     }
 
     public String getGhiChu() {
         return GhiChu;
     }
 
-    public void setGhiChu(String GhiChu) {
-        this.GhiChu = GhiChu;
+    public int getThang() {
+        return Thang;
     }
+
+    public int getNam() {
+        return Nam;
+    }
+
+    public int getHocPhiPhaiDong() {
+        return HocPhiPhaiDong;
+    }
+
+    public int getDaDong() {
+        return DaDong;
+    }
+
+    public int getNoConLai() {
+        return NoConLai;
+    }
+
 }

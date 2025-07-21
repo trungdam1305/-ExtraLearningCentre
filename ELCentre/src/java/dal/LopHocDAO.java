@@ -107,6 +107,7 @@ public class LopHocDAO {
                 + "    dbo.KhoaHoc khoah ON khoc.ID_Khoi = khoah.ID_Khoi\n"
                 + "LEFT JOIN \n"
                 + "    dbo.LopHoc l ON khoah.ID_KhoaHoc = l.ID_KhoaHoc\n"
+                + "Where l.TrangThai LIKE N'%Đang Học%'"
                 + "GROUP BY \n"
                 + "    khoc.ID_Khoi, \n"
                 + "    khoc.TenKhoi,\n"
@@ -882,30 +883,29 @@ public class LopHocDAO {
         List<Object> params = new ArrayList<>();
         
         StringBuilder sql = new StringBuilder("""
-            SELECT lop.*, ph.TenPhongHoc  FROM LopHoc lop
-            JOIN GiaoVien_LopHoc gvlh ON lop.ID_LopHoc = gvlh.ID_LopHoc
-            JOIN GiaoVien gv ON gvlh.ID_GiaoVien = gv.ID_GiaoVien
-            JOIN PhongHoc ph ON lop.ID_PhongHoc = ph.ID_PhongHoc
-            WHERE gv.ID_TaiKhoan = ?
-            AND lop.TrangThai LIKE N'%Đang học%'
+            			SELECT * FROM GiaoVien_LopHoc gvlh
+            			JOIN LopHoc lh ON gvlh.ID_LopHoc = lh.ID_LopHoc
+            			JOIN GiaoVien gv on gv.ID_GiaoVien = gvlh.ID_GiaoVien
+            			where gv.ID_TaiKhoan = ?
+            			and lh.TrangThai LIKE N'%Đang học%'
             """);
         params.add(idTaiKhoan);
 
         if (keyword != null && !keyword.trim().isEmpty()) {
-            sql.append("AND lop.classCode LIKE ? ");
+            sql.append("AND lh.classCode LIKE ? ");
             params.add("%" + keyword.trim() + "%");
         }
         if (courseId > 0) {
-            sql.append("AND lop.ID_KhoaHoc = ? ");
+            sql.append("AND lh.ID_KhoaHoc = ? ");
             params.add(courseId);
         }
         // ✅ THÊM LOGIC LỌC THEO NĂM
         if (creationYear > 0) {
-            sql.append("AND YEAR(lop.NgayTao) = ? ");
+            sql.append("AND YEAR(lh.NgayTao) = ? ");
             params.add(creationYear);
         }
 
-        sql.append("ORDER BY lop.NgayTao DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+        sql.append("ORDER BY lh.NgayTao DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
         int offset = (page - 1) * itemsPerPage;
         params.add(offset);
         params.add(itemsPerPage);
@@ -924,7 +924,6 @@ public class LopHocDAO {
                     lopHoc.setClassCode(rs.getString("ClassCode"));
                     lopHoc.setTenLopHoc(rs.getString("TenLopHoc"));
                     lopHoc.setSiSo(rs.getInt("SiSo"));
-                    lopHoc.setTenPhongHoc(rs.getString("TenPhongHoc"));
                     lopHoc.setGhiChu(rs.getString("GhiChu"));
                     // ... set các thuộc tính khác nếu cần
                     list.add(lopHoc);
@@ -1106,32 +1105,78 @@ public class LopHocDAO {
         }
         return list;
     }
-    //Kiểm tra dữ liệu
     public static void main(String[] args) {
-        int idKhoaHoc = 1; // thay bằng ID_KhoaHoc bạn muốn test
-        List<LopHoc> ds = getLopHocByKhoaHocId(idKhoaHoc);
+        LopHocDAO lopHocDAO = new LopHocDAO(); // Assuming LopHocDAO is the class containing your method
 
-        System.out.println("===== DANH SÁCH LỚP HỌC TRONG KHÓA HỌC ID: " + idKhoaHoc + " =====");
+        System.out.println("--- Debugging getFilteredLopHoc ---");
 
-        if (ds.isEmpty()) {
-            System.out.println("⚠️ Không có lớp học nào thuộc khóa học này.");
-            return;
+        // --- Test Case 1: Basic filter for a teacher, first page ---
+        System.out.println("\n=== Test Case 1: Teacher ID 4, no keyword, no course, no year, Page 1 ===");
+        int idTaiKhoan1 = 4;
+        String keyword1 = null; // No keyword
+        int courseId1 = 0;      // No specific course
+        int creationYear1 = 0;  // No specific year
+        int page1 = 1;
+        int itemsPerPage1 = 5;
+        List<LopHoc> result1 = lopHocDAO.getFilteredLopHoc(idTaiKhoan1, keyword1, courseId1, creationYear1, page1, itemsPerPage1);
+        System.out.println("Result 1 (Page " + page1 + "): " + result1.size() + " items found.");
+        for (LopHoc lh : result1) {
+            System.out.println(lh);
+        }
+        if (result1.isEmpty()) {
+            System.out.println("No LopHoc found for Test Case 1.");
         }
 
-        int i = 1;
-        for (LopHoc lop : ds) {
-            System.out.println("----- Lớp " + (i++) + " -----");
-            System.out.println("Mã lớp:          " + lop.getClassCode());
-            System.out.println("Tên lớp học:     " + lop.getTenLopHoc());
-            System.out.println("Tên khóa học:    " + lop.getTenKhoaHoc());
-            System.out.println("Thời gian khóa:  " + lop.getThoiGianBatDau() + " → " + lop.getThoiGianKetThuc());
-            System.out.println("Sĩ số hiện tại:  " + lop.getSiSo());
-            System.out.println("Sĩ số tối thiểu: " + lop.getSiSoToiThieu());
-            System.out.println("Sĩ số tối đa:    " + lop.getSiSoToiDa());
-            System.out.println("Ngày tạo lớp:    " + lop.getNgayTao());
-            System.out.println("Ghi chú:         " + lop.getGhiChu());
-            System.out.println();
+
+        // --- Test Case 2: Filter with a keyword and a specific course ID ---
+        System.out.println("\n=== Test Case 2: Teacher ID 4, keyword 'JAVA', Course ID 101, Page 1 ===");
+        int idTaiKhoan2 = 4;
+        String keyword2 = "JAVA"; // Searching for "JAVA" in classCode
+        int courseId2 = 101;     // Specific course ID
+        int creationYear2 = 0;   // No specific year
+        int page2 = 1;
+        int itemsPerPage2 = 5;
+        List<LopHoc> result2 = lopHocDAO.getFilteredLopHoc(idTaiKhoan2, keyword2, courseId2, creationYear2, page2, itemsPerPage2);
+        System.out.println("Result 2 (Page " + page2 + "): " + result2.size() + " items found.");
+        for (LopHoc lh : result2) {
+            System.out.println(lh);
         }
+        if (result2.isEmpty()) {
+            System.out.println("No LopHoc found for Test Case 2.");
+        }
+
+        // --- Test Case 3: Filter by creation year and pagination (second page) ---
+        System.out.println("\n=== Test Case 3: Teacher ID 4, creation year 2024, Page 2 ===");
+        int idTaiKhoan3 = 4;
+        String keyword3 = null;
+        int courseId3 = 0;
+        int creationYear3 = 2024; // Filter by year 2024
+        int page3 = 2;            // Requesting the second page
+        int itemsPerPage3 = 3;    // 3 items per page
+        List<LopHoc> result3 = lopHocDAO.getFilteredLopHoc(idTaiKhoan3, keyword3, courseId3, creationYear3, page3, itemsPerPage3);
+        System.out.println("Result 3 (Page " + page3 + "): " + result3.size() + " items found.");
+        for (LopHoc lh : result3) {
+            System.out.println(lh);
+        }
+        if (result3.isEmpty()) {
+            System.out.println("No LopHoc found for Test Case 3.");
+        }
+
+        // --- Test Case 4: No matching criteria (expect empty list) ---
+        System.out.println("\n=== Test Case 4: Teacher ID 999 (non-existent), expect empty list ===");
+        int idTaiKhoan4 = 999; // A teacher ID that likely doesn't exist
+        String keyword4 = null;
+        int courseId4 = 0;
+        int creationYear4 = 0;
+        int page4 = 1;
+        int itemsPerPage4 = 5;
+        List<LopHoc> result4 = lopHocDAO.getFilteredLopHoc(idTaiKhoan4, keyword4, courseId4, creationYear4, page4, itemsPerPage4);
+        System.out.println("Result 4: " + result4.size() + " items found.");
+        if (result4.isEmpty()) {
+            System.out.println("As expected, no LopHoc found for Test Case 4.");
+        }
+
+        System.out.println("\n--- Debugging finished ---");
     }
     
     

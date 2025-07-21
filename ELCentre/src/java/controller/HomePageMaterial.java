@@ -22,13 +22,12 @@ public class HomePageMaterial extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
 
-        // --- 1. Lấy các tham số từ request ---
+        // get parameter
         String keyword = request.getParameter("keyword");
         String monHocIdParam = request.getParameter("monHocId");
         String loaiTaiLieuIdParam = request.getParameter("loaiTaiLieuId");
         String pageParam = request.getParameter("page");
 
-        // --- 2. Chuyển đổi tham số sang kiểu số ---
         Integer monHocId = null;
         try {
             if (monHocIdParam != null && !monHocIdParam.isEmpty()) {
@@ -41,7 +40,7 @@ public class HomePageMaterial extends HttpServlet {
             if (loaiTaiLieuIdParam != null && !loaiTaiLieuIdParam.isEmpty()) {
                 loaiTaiLieuId = Integer.parseInt(loaiTaiLieuIdParam);
             }
-        } catch (NumberFormatException e) { /* Bỏ qua, giữ giá trị null */ }
+        } catch (NumberFormatException e) {  }
 
         int page = 1;
         try {
@@ -50,7 +49,7 @@ public class HomePageMaterial extends HttpServlet {
             }
         } catch (NumberFormatException e) { page = 1; }
         
-        // --- 3. Khởi tạo DAO và truy vấn dữ liệu ---
+        // Initiate DAO
         DangTaiLieuDAO dao = new DangTaiLieuDAO();
 
         List<DangTaiLieu> listTaiLieu = dao.getFilteredMaterials(keyword, monHocId, loaiTaiLieuId, page, PAGE_SIZE);
@@ -60,20 +59,19 @@ public class HomePageMaterial extends HttpServlet {
         List<MonHoc> listMonHoc = dao.getAllMonHoc();
         List<LoaiTaiLieu> listLoaiTaiLieu = dao.getAllLoaiTaiLieu();
 
-        // --- 4. Đặt các thuộc tính vào request để gửi tới JSP ---
+        // set Attribute
         request.setAttribute("listTaiLieu", listTaiLieu);
-        request.setAttribute("listMonHoc", listMonHoc); // Gửi danh sách đối tượng Môn Học
-        request.setAttribute("listLoaiTaiLieu", listLoaiTaiLieu); // Gửi danh sách đối tượng Loại Tài Liệu
+        request.setAttribute("listMonHoc", listMonHoc); 
+        request.setAttribute("listLoaiTaiLieu", listLoaiTaiLieu); 
         
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("currentPage", page);
 
-        // Giữ lại giá trị của các bộ lọc
         request.setAttribute("keyword", keyword);
-        request.setAttribute("selectedMonHocId", monHocId); // ID môn học đã chọn
-        request.setAttribute("selectedLoaiTaiLieuId", loaiTaiLieuId); // ID loại tài liệu đã chọn
+        request.setAttribute("selectedMonHocId", monHocId); 
+        request.setAttribute("selectedLoaiTaiLieuId", loaiTaiLieuId);
 
-        // --- 5. Forward tới trang JSP ---
+        // forward to JSP
         request.getRequestDispatcher("views/Home-Material/Homepage-Material.jsp").forward(request, response);
     }
 

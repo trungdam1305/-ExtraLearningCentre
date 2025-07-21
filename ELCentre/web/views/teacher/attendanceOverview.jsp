@@ -1,7 +1,7 @@
 <%-- 
     Document   : attendanceOverview
     Created on : Jul 9, 2025, 11:35:22 PM
-    Author     : admin
+Author     : trungdam
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -197,15 +197,15 @@
             }
 
             .main-content {
-                margin-left: 300px; /* Keep this to offset for sidebar */
-                padding: 80px 20px 20px 20px; /* Adjust padding as needed */
+                margin-left: 300px; 
+                padding: 80px 20px 20px 20px;
                 flex: 1;
                 min-height: 100vh;
                 display: flex;
                 flex-direction: column;
                 gap: 30px;
                 margin-right: auto;
-                max-width: calc(100% - 250px); /* Adjust this to account for sidebar width */
+                max-width: calc(100% - 250px);
             }
 
             .dashboard-stats {
@@ -660,17 +660,17 @@
                             <c:param name="creationYear" value="${selectedYear}" />
                         </c:url>
 
-                        <%-- Button 'Trang Trước' to link to the previous page--%>
+                        <!--Previous Button-->
                         <c:if test="${currentPage > 1}">
                             <a class="pagination-link" href="${paginationUrl}&page=${currentPage - 1}">Trước</a>
                         </c:if>
 
-                        <%-- Number of pages --%>
+                        <!--Current Week-->
                         <c:forEach begin="1" end="${totalPages}" var="i">
                             <a class="pagination-link ${i == currentPage ? 'active' : ''}" href="${paginationUrl}&page=${i}">${i}</a>
                         </c:forEach>
 
-                        <%-- Button 'Trang Sau' to link to the next page--%>
+                        <!--Next Week-->
                         <c:if test="${currentPage < totalPages}">
                             <a class="pagination-link" href="${paginationUrl}&page=${currentPage + 1}">Sau</a>
                         </c:if>

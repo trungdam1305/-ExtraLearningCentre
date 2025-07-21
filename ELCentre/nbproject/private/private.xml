@@ -12,35 +12,28 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="SWT">
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithTeacher.java</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/admin/viewLopHoc_GiaoVien.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageSchedule.java</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/admin/adminViewLopHocGiaoVien.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/dal/KhoaHocDAO.java</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/admin/manageClass.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveGiaoVien.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/dal/LopHocInfoDTODAO.java</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/admin/manageCourses.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/dal/LopHocDAO.java</file>
+            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/src/java/controller/StudentAssignmentServlet.java</file>
+            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/web/views/student/studentViewClass.jsp</file>
+            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/src/java/dal/TaiBaiTapDAO.java</file>
+            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/web/views/student/studentAssignments.jsp</file>
+            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/src/java/dal/NopBaiTapDAO.java</file>
+            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/web/WEB-INF/web.xml</file>
         </group>
         <group name="SWT">
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/Home-Blog/Home-Blog-Content.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/controller/HomePageMaterial.java</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveThongBao.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/dal/TaiBaiTapDAO.java</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/controller/DownloadMaterialServlet.java</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/Home-Blog/blog-detail.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/HomePage.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/dal/DBContext.java</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/admin/adminSendNotificationToClass.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/controller/teacherGetFromDashboard.java</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/Home-Content.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/advice-success.jsp</file>
-            <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/Home-Material/materialDetails.jsp</file>
+            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/src/java/controller/StudentAssignmentServlet.java</file>
+            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/web/views/student/studentViewClass.jsp</file>
+            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/src/java/dal/TaiBaiTapDAO.java</file>
+            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/web/views/student/studentAssignments.jsp</file>
+            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/src/java/dal/NopBaiTapDAO.java</file>
+            <file>file:/C:/Users/admin/Desktop/he/-ExtraLearningCentre/ELCentre/web/WEB-INF/web.xml</file>
         </group>
         <group>
-            <file>file:/C:/Users/wrx_Chur04/Desktop/codeInter3/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithNotification.java</file>
-            <file>file:/C:/Users/wrx_Chur04/Desktop/codeInter3/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveThongBao.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/web/views/admin/adminReceiveHocPhi.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/controller/adminGetFromDashboard.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/model/HocPhi.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/dal/HocPhiDAO.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/model/TinhHocPhi.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/okok/-ExtraLearningCentre/ELCentre/src/java/controller/adminActionWithTuition.java</file>
         </group>
     </open-files>
 </project-private>

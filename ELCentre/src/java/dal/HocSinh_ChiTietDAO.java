@@ -22,17 +22,7 @@ public class HocSinh_ChiTietDAO {
 
         try {
             String sql = """
-<<<<<<< HEAD
-                         select  LH.ID_KhoaHoc ,  HSLH.ID_LopHoc , HSLH.ID_HocSinh ,GV.ID_GiaoVien  , LH.TenLopHoc   ,  GV.HoTen , LH.GhiChu , LH.TrangThai , LH.SoTien , LH.NgayTao , LH.Image    from HocSinh_LopHoc HSLH
-                         join  LopHoc LH
-                         on HSLH.ID_LopHoc = LH.ID_LopHoc 
-                         JOIN GiaoVien_LopHoc GVLH 
-                         on HSLH.ID_LopHoc = GVLH.ID_LopHoc
-                         JOIN GiaoVien GV 
-                         on GV.ID_GiaoVien = GVLH.ID_GiaoVien
-                         WHERE HSLH.ID_HocSinh = ?  
-                         and LH.TrangThai = N'Đang học'
-=======
+
                          select DISTINCT  LH.ID_KhoaHoc ,  HSLH.ID_LopHoc , HSLH.ID_HocSinh ,GV.ID_GiaoVien  , LH.TenLopHoc   ,  GV.HoTen , LH.GhiChu , LH.TrangThai , LH.SoTien , HP.TinhTrangThanhToan , LH.NgayTao , LH.Image    from HocSinh_LopHoc HSLH
                         join  LopHoc LH
                         on HSLH.ID_LopHoc = LH.ID_LopHoc 
@@ -44,7 +34,7 @@ public class HocSinh_ChiTietDAO {
                         on  HP.ID_LopHoc = HSLH.ID_LopHoc
                         WHERE HSLH.ID_HocSinh = ? 
                         and LH.TrangThai = N'Đang học'
->>>>>>> 0abab78db51bbf8b1ef4259d49c0dd9e3d189c4a
+
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             statement.setString(1, ID_HocSinh);

@@ -225,12 +225,20 @@
         <servlet-class>controller.staffGoToFirstPage</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>StudentAssignmentServlet</servlet-name>
+        <servlet-class>controller.StudentAssignmentServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>teacherActionWithSP_NTF</servlet-name>
         <servlet-class>controller.teacherActionWithSP_NTF</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>staffGetSupportRequests</servlet-name>
         <servlet-class>controller.staffGetSupportRequests</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>adminActionWithTuition</servlet-name>
+        <servlet-class>controller.adminActionWithTuition</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
@@ -481,12 +489,20 @@
         <url-pattern>/staffGoToFirstPage</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>StudentAssignmentServlet</servlet-name>
+        <url-pattern>/StudentAssignmentServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>teacherActionWithSP_NTF</servlet-name>
         <url-pattern>/teacherActionWithSP_NTF</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>staffGetSupportRequests</servlet-name>
         <url-pattern>/staffGetSupportRequests</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminActionWithTuition</servlet-name>
+        <url-pattern>/adminActionWithTuition</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>
