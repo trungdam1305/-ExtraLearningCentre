@@ -64,7 +64,7 @@
         <c:if test="${not empty blog}">
             <div class="row">
                 <div class="col-12">
-                    <img src="${pageContext.request.contextPath}/img/blog_images/${blog.image}" alt="${blog.blogTitle}" class="blog-header-image"/>
+                    <img src="${pageContext.request.contextPath}/${blog.image}" alt="${blog.blogTitle}" class="blog-header-image"/>
                 </div>
             </div>
 

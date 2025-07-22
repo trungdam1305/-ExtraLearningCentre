@@ -143,17 +143,16 @@
                                         <a href="${pageContext.request.contextPath}/HomePageBlog">Tất cả bài viết</a>
                                     </li>
 
-                                    <%-- Kiểm tra xem danh sách keytag từ servlet có tồn tại và không rỗng không --%>
-                                    <c:if test="${not empty availableKeyTags}">
+                                    <%-- Check if keytag null --%>
+                                    <c:if test="${not empty allKeytags}">
                                         <li class="menu-item-divider" style="border-top: 1px solid #eee; margin: 5px 0;"></li>
                                         <li class="menu-item" style="padding: 5px 15px; color: #888; font-size: 0.9em;">Chủ đề nổi bật:</li>
 
-                                        <%-- Lặp qua danh sách 'availableKeyTags' do HomePageBlog cung cấp --%>
-                                        <c:forEach var="keyTag" items="${availableKeyTags}">
+                                        <%-- Loop allKeyTags --%>
+                                        <c:forEach var="keyTag" items="${allKeytags}">
                                             <li class="menu-item">
-                                                <%-- Tạo link trỏ đến chính HomePageBlog với tham số idKeyTag --%>
-                                                <a href="${pageContext.request.contextPath}/HomePageBlog?idKeyTag=${keyTag.ID_KeyTag}">
-                                                    ${keyTag.getKeyTag()} <%-- Giả sử model KeyTag có phương thức getTenKeyTag() --%>
+                                                <a href="${pageContext.request.contextPath}/HomePageBlog?keywordId=0&keytagId=${keyTag.getID_KeyTag()}">
+                                                    ${keyTag.getKeyTag()}
                                                 </a>
                                             </li>
                                         </c:forEach>

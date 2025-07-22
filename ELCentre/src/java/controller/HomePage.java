@@ -92,7 +92,7 @@ throws ServletException, IOException {
     List<LopHoc> lopHoc = lopHocDAO.getAllFeaturedLopHoc();//get List Feature Class
     List<LopHocTheoNhomDTO> listLopHoc = lopHocDAO.getTongLopHocTheoNhomMonHoc();//get List Class divided by Subject
     List<KhoiHoc> listKhoi = khoiHocDAO.getAllKhoiHoc();//get List Grade
-    List<Blog> listBlog = blogDAO.getAllBlog();//get ListBlog that refer to centre
+    List<Blog> listBlog = blogDAO.getFourBlog();//get ListBlog that refer to centre
     List<GiaoVien> listGiaoVien = gvDAO.HomePageGetGiaoVien();//get List Teacher
     List<Slider> sliders = sliderDAO.getAllSlider();//get List Slide
     

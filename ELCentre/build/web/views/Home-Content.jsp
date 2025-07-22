@@ -257,11 +257,11 @@
                     </div>
                 </div>
                 
-                 <div class='fullwidth-section dt-sc-parallax-section' style="background-color:#ffffff;background-image:url(${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/uploads/2014/05/paralax-bg.jpg);background-repeat:repeat;background-position:left top;background-attachment:fixed;">
+                 <div class='fullwidth-section dt-sc-parallax-section' style="background-color:#ffffff;background-repeat:repeat;background-position:left top;background-attachment:fixed;">
                     <div class="fullwidth-bg">    
                         <div class="container">
                             <div class='dt-sc-hr-invisible'></div>
-                            <h2 style="text-align: center; font-weight: 700;">BLOG CỦA CHÚNG TÔI</h2>
+                            <h2 style="text-align: center; font-weight: 700;">BÀI VIẾT CỦA CHÚNG TÔI</h2>
                             <div class="margin25"></div>
                             <c:forEach var="blog" items="${listBlog}">
                                 <div class="column dt-sc-one-half first">
@@ -276,16 +276,17 @@
                                         </div>
                                         <div class="post-content">
                                             <div class="entry-thumb">
-                                                <a href="#" title="${blog.getBlogTitle()}"><img loading="lazy" decoding="async" width="300" height="90" src="${pageContext.request.contextPath}/${blog.getImage()}" alt="${blog.getBlogTitle()}" title="${blog.getBlogTitle()}" /></a>
+                                                <a href="${pageContext.request.contextPath}/BlogDetailServlet?id=${blog.getID_Blog()}" title="${blog.getBlogTitle()}"><img loading="lazy" decoding="async" width="300" height="90" src="${pageContext.request.contextPath}/${blog.getImage()}" alt="${blog.getBlogTitle()}" title="${blog.getBlogTitle()}" /></a>
                                             </div>
                                             <div class="entry-detail">
-                                                <h2><a href="#" title="${blog.getBlogTitle()}">${blog.getBlogTitle()}</a></h2>
+                                                <h2><a href="${pageContext.request.contextPath}/BlogDetailServlet?id=${blog.getID_Blog()}" title="${blog.getBlogTitle()}">${blog.getBlogTitle()}</a></h2>
                                                 <p>${blog.getBlogDescription()}</p>
                                             </div>
                                             <div class="post-meta">
                                                 <div class="post-format"><span class="post-icon-format"></span></div>
                                                 <ul>
-                                                    <li><span class="fa fa-thumb-tack"></span><a href="#"> ${blog.getPhanLoai()}</a></li>
+                                                    <li><span class="fa fa-thumb-tack"></span><a href="${pageContext.request.contextPath}/HomePageBlog?keywordId=0&keytagId=${blog.getID_KeyTag()}"> ${blog.getKeyTag()}</a></li>
+                                                    <li><span class="fa "></span><a href="${pageContext.request.contextPath}/HomePageBlog?keywordId=${blog.getID_Keyword()}&keytagId=0"> ${blog.getKeyWord()}</a></li>
                                                 </ul>
                                             </div>
                                         </div>

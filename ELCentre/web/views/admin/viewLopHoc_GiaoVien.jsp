@@ -537,7 +537,16 @@
 
             <!-- Tiêu đề -->
             <div class="header-row">
-                <h2>Danh Sách Lớp Học Giáo Viên</h2>
+                <h2>
+                    <c:choose>
+                        <c:when test="${not empty tenGiaoVien}">
+                            Danh Sách Lớp Học Của Giáo Viên: ${tenGiaoVien}
+                        </c:when>
+                        <c:otherwise>
+                            Danh Sách Lớp Học Giáo Viên
+                        </c:otherwise>
+                    </c:choose>
+                </h2>
             </div>
 
             <!-- Thông báo -->

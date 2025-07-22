@@ -46,7 +46,7 @@ public class StudentAssignmentServlet extends HttpServlet {
         // Validate classId parameter
         if (classIdParam != null && !classIdParam.isEmpty()) {
             try {
-                classId = Integer.parseInt(classIdParam); // Parse class ID
+                classId = Integer.parseInt(classIdParam); 
             } catch (NumberFormatException e) {
                 response.sendRedirect(request.getContextPath() + "/StudentViewClassServlet"); // Redirect on invalid ID
                 return;
@@ -58,19 +58,15 @@ public class StudentAssignmentServlet extends HttpServlet {
 
         // Get Class details for display purposes
         LopHocDAO lopHocDAO = new LopHocDAO();
-        LopHoc currentClass = lopHocDAO.getLopHocById(classId); // get Class Details
+        LopHoc currentClass = lopHocDAO.getLopHocById(classId); 
 
-        if (currentClass == null) {
-            response.sendRedirect(request.getContextPath() + "/StudentViewClassServlet"); // Redirect if class not found
-            return;
-        }
         request.setAttribute("classCode", currentClass.getClassCode()); // Set class code for JSP
         request.setAttribute("className", currentClass.getTenLopHoc()); // Set class name for JSP
         
         // Get search query parameter
         String searchQuery = request.getParameter("search");
         if (searchQuery != null && searchQuery.trim().isEmpty()) {
-            searchQuery = null; // Normalize empty search to null
+            searchQuery = null; 
         }
         request.setAttribute("searchQuery", searchQuery); // Set search query for JSP
 
@@ -100,18 +96,16 @@ public class StudentAssignmentServlet extends HttpServlet {
         } else {
             totalAssignments = assignmentDAO.getTotalAssignmentsByClassId(classId); // Get total assignments for class
             int offset = (currentPage - 1) * ITEMS_PER_PAGE; // Calculate pagination offset
-            assignments = assignmentDAO.getAssignmentsByClassIdPaginated(classId, offset, ITEMS_PER_PAGE); // Get paginated assignments
+            assignments = assignmentDAO.getAssignmentsByClassIdPaginated(classId, offset, ITEMS_PER_PAGE); 
         }
         
         int totalPages = (int) Math.ceil((double) totalAssignments / ITEMS_PER_PAGE); // Calculate total pages
         if (totalPages == 0 && totalAssignments > 0) totalPages = 1; // Ensure at least 1 page if items exist
         
-        // Redirect if currentPage is out of bounds
         if (currentPage > totalPages && totalPages > 0) {
             response.sendRedirect(request.getContextPath() + "/StudentAssignmentServlet?classId=" + classId + "&page=" + totalPages + (searchQuery != null ? "&search=" + searchQuery : ""));
             return;
         }
-        // Handle case with no assignments
         if (totalAssignments == 0) {
             currentPage = 1;
             totalPages = 0;
@@ -130,6 +124,7 @@ public class StudentAssignmentServlet extends HttpServlet {
         request.setAttribute("studentSubmissions", studentSubmissions); // Set student submissions for JSP
 
         // Set attributes for JSP
+        request.setAttribute("currentDate", java.time.LocalDate.now()); 
         request.setAttribute("assignments", assignments); // List of assignments
         request.setAttribute("classId", classId); // Current class ID
         request.setAttribute("currentPage", currentPage); // Current page number
@@ -161,7 +156,7 @@ public class StudentAssignmentServlet extends HttpServlet {
         String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY; // Get absolute upload path
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) {
-            uploadDir.mkdir(); // Create directory if it doesn't exist
+            uploadDir.mkdir(); 
         }
 
         String fileName = null;
