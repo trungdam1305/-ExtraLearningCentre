@@ -23,16 +23,8 @@ import model.TinhHocPhi;
  * @author wrx_Chur04
  */
 public class adminActionWithTuition extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -74,7 +66,84 @@ public class adminActionWithTuition extends HttpServlet {
             case "guitgonbaotoanbo":
                 doGuiThongBaoToanBo(request, response);
                 break;
+
+            case "filterClass":
+                dofilterClass(request, response);
+                break;
+                
+            case "filterHocPhi" : 
+                doFilterHocPhi(request, response) ; 
+                break ; 
         }
+    }
+
+    protected void doFilterHocPhi(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String ID_LopHoc = request.getParameter("idLop");
+        String TenLopHoc = request.getParameter("TenLopHoc");
+        String thang = request.getParameter("thang") ; 
+        String nam = request.getParameter("nam") ; 
+        String keyword = request.getParameter("keyword") ; 
+        if (keyword == null) keyword = "";
+
+        PrintWriter out = response.getWriter();
+        
+        ArrayList<HocPhi> hocphis = HocPhiDAO.adminGetAllInforByThangNam(ID_LopHoc , thang , nam , keyword);
+
+        if (hocphis != null) {
+            request.getSession().setAttribute("tenlop", TenLopHoc);
+            request.setAttribute("hocphis", hocphis);
+            request.getRequestDispatcher("/views/admin/adminViewHocPhiTheoLopHoc.jsp").forward(request, response);
+        } else {
+            request.setAttribute("message", "Không có biểu học phí nào phù hợp với tìm kiếm");
+            request.getRequestDispatcher("/views/admin/adminViewHocPhiTheoLopHoc.jsp").forward(request, response);
+        }
+    }
+    
+    protected void dofilterClass(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        request.setCharacterEncoding("UTF-8");
+
+        String keyword = request.getParameter("keyword");
+        String khoi = request.getParameter("khoi");
+        String mon = request.getParameter("mon");
+        String trangthai = request.getParameter("trangthai");
+
+        if (keyword == null) {
+            keyword = "";
+        }
+        if (khoi == null) {
+            khoi = "";
+        }
+        if (mon == null) {
+            mon = "";
+        }
+        if (trangthai == null) {
+            trangthai = "";
+        }
+        keyword = keyword.trim();
+        if (keyword.equals("") && khoi.equals("") && mon.equals("") && trangthai.equals("")) {
+            ArrayList<GiaoVien_ChiTietDay> lophocs1 = HocPhiDAO.adminGetAllLopHocDangHocToSendHocPhi();
+            if (lophocs1.isEmpty()) {
+                request.setAttribute("message", "Không có lớp học nào để gửi học phí.");
+                request.getRequestDispatcher("/views/admin/adminReceiveHocPhi.jsp").forward(request, response);
+            } else {
+                session.setAttribute("lophocs1", lophocs1);
+                request.getRequestDispatcher("/views/admin/adminReceiveHocPhi.jsp").forward(request, response);
+            }
+        } else {
+            ArrayList<GiaoVien_ChiTietDay> lophocs1 = HocPhiDAO.adminGetAllLopHocHocPhiByFilter(trangthai, keyword, khoi, mon);
+            if (lophocs1 == null || lophocs1.isEmpty()) {
+                request.setAttribute("message", "Không có lớp học nào khớp với tìm kiếm");
+                request.getRequestDispatcher("/views/admin/adminReceiveHocPhi.jsp").forward(request, response);
+            } else {
+                session.setAttribute("lophocs1", lophocs1);
+                request.getRequestDispatcher("/views/admin/adminReceiveHocPhi.jsp").forward(request, response);
+            }
+        }
+
     }
 
     protected void doDongTien(HttpServletRequest request, HttpServletResponse response)

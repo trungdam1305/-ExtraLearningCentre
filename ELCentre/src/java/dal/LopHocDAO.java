@@ -1105,79 +1105,130 @@ public class LopHocDAO {
         }
         return list;
     }
-    public static void main(String[] args) {
-        LopHocDAO lopHocDAO = new LopHocDAO(); // Assuming LopHocDAO is the class containing your method
-
-        System.out.println("--- Debugging getFilteredLopHoc ---");
-
-        // --- Test Case 1: Basic filter for a teacher, first page ---
-        System.out.println("\n=== Test Case 1: Teacher ID 4, no keyword, no course, no year, Page 1 ===");
-        int idTaiKhoan1 = 4;
-        String keyword1 = null; // No keyword
-        int courseId1 = 0;      // No specific course
-        int creationYear1 = 0;  // No specific year
-        int page1 = 1;
-        int itemsPerPage1 = 5;
-        List<LopHoc> result1 = lopHocDAO.getFilteredLopHoc(idTaiKhoan1, keyword1, courseId1, creationYear1, page1, itemsPerPage1);
-        System.out.println("Result 1 (Page " + page1 + "): " + result1.size() + " items found.");
-        for (LopHoc lh : result1) {
-            System.out.println(lh);
+    
+    public List<LopHoc> getAllActiveClassesWithTeacher() {
+    List<LopHoc> list = new ArrayList<>();
+    String sql = """
+        SELECT l.*, gv.HoTen AS TenGiaoVien
+        FROM LopHoc l
+        LEFT JOIN GiaoVien_LopHoc gvlh ON l.ID_LopHoc = gvlh.ID_LopHoc
+        LEFT JOIN GiaoVien gv ON gvlh.ID_GiaoVien = gv.ID_GiaoVien
+        WHERE l.TrangThai LIKE N'%Đang học%'
+        ORDER BY l.NgayTao DESC
+    """;
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            LopHoc lop = new LopHoc();
+            lop.setID_LopHoc(rs.getInt("ID_LopHoc"));
+            lop.setClassCode(rs.getString("ClassCode"));
+            lop.setTenLopHoc(rs.getString("TenLopHoc"));
+            lop.setTenGiaoVien(rs.getString("TenGiaoVien"));
+            list.add(lop);
         }
-        if (result1.isEmpty()) {
-            System.out.println("No LopHoc found for Test Case 1.");
-        }
-
-
-        // --- Test Case 2: Filter with a keyword and a specific course ID ---
-        System.out.println("\n=== Test Case 2: Teacher ID 4, keyword 'JAVA', Course ID 101, Page 1 ===");
-        int idTaiKhoan2 = 4;
-        String keyword2 = "JAVA"; // Searching for "JAVA" in classCode
-        int courseId2 = 101;     // Specific course ID
-        int creationYear2 = 0;   // No specific year
-        int page2 = 1;
-        int itemsPerPage2 = 5;
-        List<LopHoc> result2 = lopHocDAO.getFilteredLopHoc(idTaiKhoan2, keyword2, courseId2, creationYear2, page2, itemsPerPage2);
-        System.out.println("Result 2 (Page " + page2 + "): " + result2.size() + " items found.");
-        for (LopHoc lh : result2) {
-            System.out.println(lh);
-        }
-        if (result2.isEmpty()) {
-            System.out.println("No LopHoc found for Test Case 2.");
-        }
-
-        // --- Test Case 3: Filter by creation year and pagination (second page) ---
-        System.out.println("\n=== Test Case 3: Teacher ID 4, creation year 2024, Page 2 ===");
-        int idTaiKhoan3 = 4;
-        String keyword3 = null;
-        int courseId3 = 0;
-        int creationYear3 = 2024; // Filter by year 2024
-        int page3 = 2;            // Requesting the second page
-        int itemsPerPage3 = 3;    // 3 items per page
-        List<LopHoc> result3 = lopHocDAO.getFilteredLopHoc(idTaiKhoan3, keyword3, courseId3, creationYear3, page3, itemsPerPage3);
-        System.out.println("Result 3 (Page " + page3 + "): " + result3.size() + " items found.");
-        for (LopHoc lh : result3) {
-            System.out.println(lh);
-        }
-        if (result3.isEmpty()) {
-            System.out.println("No LopHoc found for Test Case 3.");
-        }
-
-        // --- Test Case 4: No matching criteria (expect empty list) ---
-        System.out.println("\n=== Test Case 4: Teacher ID 999 (non-existent), expect empty list ===");
-        int idTaiKhoan4 = 999; // A teacher ID that likely doesn't exist
-        String keyword4 = null;
-        int courseId4 = 0;
-        int creationYear4 = 0;
-        int page4 = 1;
-        int itemsPerPage4 = 5;
-        List<LopHoc> result4 = lopHocDAO.getFilteredLopHoc(idTaiKhoan4, keyword4, courseId4, creationYear4, page4, itemsPerPage4);
-        System.out.println("Result 4: " + result4.size() + " items found.");
-        if (result4.isEmpty()) {
-            System.out.println("As expected, no LopHoc found for Test Case 4.");
-        }
-
-        System.out.println("\n--- Debugging finished ---");
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    return list;
+}
+    public List<LopHoc> getFilteredActiveClasses(String keyword, Integer courseId, Integer khoiId, Integer creationYear, int page, int pageSize) {
+    List<LopHoc> list = new ArrayList<>();
+    List<Object> params = new ArrayList<>();
     
-    
+    StringBuilder sql = new StringBuilder("""
+        SELECT l.*, gv.HoTen AS TenGiaoVien 
+        FROM LopHoc l
+        LEFT JOIN GiaoVien_LopHoc gvlh ON l.ID_LopHoc = gvlh.ID_LopHoc
+        LEFT JOIN GiaoVien gv ON gvlh.ID_GiaoVien = gv.ID_GiaoVien
+        LEFT JOIN KhoaHoc k ON l.ID_KhoaHoc = k.ID_KhoaHoc
+        WHERE l.TrangThai LIKE N'%Đang học%' 
+        """);
+
+    if (keyword != null && !keyword.trim().isEmpty()) {
+        sql.append(" AND (l.TenLopHoc LIKE ? OR l.ClassCode LIKE ?) ");
+        params.add("%" + keyword.trim() + "%");
+        params.add("%" + keyword.trim() + "%");
+    }
+    if (courseId != null && courseId > 0) {
+        sql.append(" AND l.ID_KhoaHoc = ? ");
+        params.add(courseId);
+    }
+    if (khoiId != null && khoiId > 0) {
+        sql.append(" AND k.ID_Khoi = ? ");
+        params.add(khoiId);
+    }
+    if (creationYear != null && creationYear > 0) {
+        sql.append(" AND YEAR(l.NgayTao) = ? ");
+        params.add(creationYear);
+    }
+
+    sql.append(" ORDER BY l.NgayTao DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+    params.add((page - 1) * pageSize);
+    params.add(pageSize);
+
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+        for (int i = 0; i < params.size(); i++) {
+            ps.setObject(i + 1, params.get(i));
+        }
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                LopHoc lop = new LopHoc();
+                lop.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                lop.setClassCode(rs.getString("ClassCode"));
+                lop.setTenLopHoc(rs.getString("TenLopHoc"));
+                lop.setTenGiaoVien(rs.getString("TenGiaoVien"));
+                list.add(lop);
+            }
+        }
+    } catch (Exception e) { e.printStackTrace(); }
+    return list;
+}
+
+/**
+ * Đếm số lượng các lớp đang hoạt động thỏa mãn điều kiện lọc.
+ */
+public int countFilteredActiveClasses(String keyword, Integer courseId, Integer khoiId, Integer creationYear) {
+    int count = 0;
+    List<Object> params = new ArrayList<>();
+    StringBuilder sql = new StringBuilder("""
+        SELECT COUNT(*) 
+        FROM LopHoc l
+        LEFT JOIN KhoaHoc k ON l.ID_KhoaHoc = k.ID_KhoaHoc
+        WHERE l.TrangThai LIKE N'%Đang học%' 
+        """);
+
+    // Các điều kiện lọc phải giống hệt phương thức trên
+    if (keyword != null && !keyword.trim().isEmpty()) {
+        sql.append(" AND (l.TenLopHoc LIKE ? OR l.ClassCode LIKE ?) ");
+        params.add("%" + keyword.trim() + "%");
+        params.add("%" + keyword.trim() + "%");
+    }
+    if (courseId != null && courseId > 0) {
+        sql.append(" AND l.ID_KhoaHoc = ? ");
+        params.add(courseId);
+    }
+    if (khoiId != null && khoiId > 0) {
+        sql.append(" AND k.ID_Khoi = ? ");
+        params.add(khoiId);
+    }
+    if (creationYear != null && creationYear > 0) {
+        sql.append(" AND YEAR(l.NgayTao) = ? ");
+        params.add(creationYear);
+    }
+
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+        for (int i = 0; i < params.size(); i++) {
+            ps.setObject(i + 1, params.get(i));
+        }
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        }
+    } catch (Exception e) { e.printStackTrace(); }
+    return count;
+}
 }

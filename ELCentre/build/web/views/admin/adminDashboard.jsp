@@ -587,14 +587,13 @@
 
             <div class="sidebar-section-title">Hệ thống</div>
             <ul class="sidebar-menu">
-                <li><a href="#"><i class="fas fa-cog"></i> Cài đặt</a></li>
+                <li><a href="${pageContext.request.contextPath}/ManageSlider"><i class="fas fa-cog"></i> Cài Đặt HomePage</a></li>
             </ul>
 
             <div class="sidebar-section-title">Khác</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=yeucautuvan"><i class="fas fa-blog"></i>Yêu cầu tư vấn</a></li>
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
-                <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
                 <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </div>
@@ -658,6 +657,7 @@
                                     <tr>
                                         <th>ID_Tài Khoản</th>
                                         <th>Họ và Tên</th>
+                                        
                                         <th>Hành Động</th>
                                         <th>Thời Gian</th>
 
@@ -668,6 +668,7 @@
                                         <tr>
                                             <td>${log.getID_TaiKhoan()}</td>
                                             <td>${log.getHoTen()}</td>
+                                            
                                             <td>${log.getHanhDong()}</td>
                                             <td>${log.getThoiGian()}</td>
                                         </tr>
@@ -696,6 +697,8 @@
                                     <tr>
 
                                         <th>Họ Tên</th>
+                                        <th>Vai Trò</th>
+                                        <th>Số Điện Thoại</th>
                                         <th>Yêu Cầu</th>
                                         <th>Mô Tả</th>
                                         <th>Thời Gian</th>
@@ -707,6 +710,8 @@
                                         <tr>
 
                                             <td>${sp.getHoTen()}</td>
+                                            <td>${sp.getVaiTro()}</td>
+                                            <td>${sp.getSoDienThoai()}</td>
                                             <td>${sp.getTenHoTro()}</td>
                                             <td>${sp.getMoTa()}</td>
                                             <td>${sp.getThoiGian()}</td>

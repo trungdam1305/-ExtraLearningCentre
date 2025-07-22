@@ -10,44 +10,52 @@
 
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Chi Tiết Điểm Danh - ${lopHoc.tenLopHoc}</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/dashboard.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-    .table-responsive { overflow-x: auto; }
+    <head>
+        <meta charset="UTF-8">
+        <title>Chi Tiết Điểm Danh - ${lopHoc.tenLopHoc}</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/dashboard.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <style>
+            .table-responsive {
+                overflow-x: auto;
+            }
 
-    .attendance-grid {
-        table-layout: fixed; 
-        width: 100%;
-        border-collapse: collapse;
-    }
+            .attendance-grid {
+                table-layout: fixed;
+                width: 100%;
+                border-collapse: collapse;
+            }
 
-    .attendance-grid th, .attendance-grid td {
-        text-align: center;
-        vertical-align: middle;
-        border: 1px solid #dee2e6; 
-        padding: 8px;
-        word-wrap: break-word; 
-    }
+            .attendance-grid th, .attendance-grid td {
+                text-align: center;
+                vertical-align: middle;
+                border: 1px solid #dee2e6;
+                padding: 8px;
+                word-wrap: break-word;
+            }
 
-    .attendance-grid .student-name-col {
-        width: 25%; 
-        text-align: left; 
-    }
+            .attendance-grid .student-name-col {
+                width: 25%;
+                text-align: left;
+            }
 
-    .present { color: #27ae60; } 
-    .absent { color: #c0392b; } 
-    .late { color: #f39c12; } 
-        
-        h1 {
-            margin-top: 30px;
-            color: #1F4E79;
-            text-align: center;
-            font-size: 24px; 
-            font-weight: bold; 
-        }
+            .present {
+                color: #27ae60;
+            }
+            .absent {
+                color: #c0392b;
+            }
+            .late {
+                color: #f39c12;
+            }
+
+            h1 {
+                margin-top: 30px;
+                color: #1F4E79;
+                text-align: center;
+                font-size: 24px;
+                font-weight: bold;
+            }
             body {
                 margin: 0;
                 font-family: Arial, sans-serif;
@@ -87,21 +95,21 @@
                 position: relative;
                 display: flex;
                 flex-direction: column;
-                align-items: center; 
+                align-items: center;
                 cursor: pointer;
-                margin-left: 20px; 
-                margin-right: 100px; 
-                
+                margin-left: 20px;
+                margin-right: 100px;
+
             }
 
             .teacher-profile .teacher-img {
                 width: 40px;
                 height: 40px;
-                border-radius: 50%; 
+                border-radius: 50%;
                 object-fit: cover;
                 border: 2px solid #B0C4DE;
                 margin-bottom: 5px;
-                
+
             }
 
             .teacher-profile span {
@@ -165,17 +173,17 @@
             }
 
             .sidebar h4 {
-                margin: 0 auto; 
+                margin: 0 auto;
                 font-weight: bold;
                 letter-spacing: 1.5px;
-                text-align: center; 
-                width: 230px; 
+                text-align: center;
+                width: 230px;
             }
 
             .sidebar-logo {
                 width: 60px;
                 height: 60px;
-                border-radius: 50%; 
+                border-radius: 50%;
                 object-fit: cover;
                 margin: 15px auto;
                 display: block;
@@ -221,15 +229,15 @@
             }
 
             .main-content {
-                margin-left: 300px; 
-                padding: 80px 20px 20px 20px; 
+                margin-left: 300px;
+                padding: 80px 20px 20px 20px;
                 flex: 1;
                 min-height: 100vh;
                 display: flex;
                 flex-direction: column;
                 gap: 30px;
                 margin-right: auto;
-                max-width: calc(100% - 250px); 
+                max-width: calc(100% - 250px);
             }
 
             .dashboard-stats {
@@ -237,7 +245,7 @@
                 gap: 20px;
                 flex-wrap: wrap;
                 transform: translate(145px, 30px);
-                
+
             }
 
             .stat-card {
@@ -342,7 +350,7 @@
             .tables-wrapper .data-table-container:last-child {
                 flex: 3;
             }
-            
+
             /* Footer Styles */
             .footer {
                 background-color: #1F4E79;
@@ -359,14 +367,14 @@
             .footer p {
                 margin: 0;
                 font-size: 14px;
-               
+
             }
             .filter-container {
                 display: flex;
                 align-items: center;
-                gap: 20px; 
+                gap: 20px;
                 flex-wrap: wrap;
-                justify-content: flex-end; 
+                justify-content: flex-end;
             }
 
 
@@ -380,7 +388,7 @@
             .filter-container label {
                 font-weight: bold;
                 color: #333;
-                white-space: nowrap; 
+                white-space: nowrap;
             }
 
 
@@ -389,7 +397,7 @@
                 padding: 8px 12px;
                 border: 1px solid #ccc;
                 border-radius: 6px;
-                min-width: 150px; 
+                min-width: 150px;
             }
 
 
@@ -410,46 +418,46 @@
                 background-color: #163E5C;
             }
             .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 25px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 25px;
             }
 
             .pagination a {
-                color: #555; 
+                color: #555;
                 text-decoration: none;
-                padding: 6px 12px; 
+                padding: 6px 12px;
                 margin: 0 2px;
-                border-radius: 4px; 
+                border-radius: 4px;
                 transition: background-color 0.3s, color 0.3s;
-                border: 1px solid #ddd; 
+                border: 1px solid #ddd;
             }
 
             .pagination a.active {
-                background-color: #1F4E79; 
-                color: white; 
-                border-color: #1F4E79; 
+                background-color: #1F4E79;
+                color: white;
+                border-color: #1F4E79;
                 font-weight: bold;
             }
 
             .pagination a:hover:not(.active) {
-                background-color: #e2eaf0; 
+                background-color: #e2eaf0;
                 color: #1F4E79;
             }
-            
+
             .action-buttons {
                 display: flex;
                 align-items: center;
-                gap: 8px; 
+                gap: 8px;
             }
 
             .action-btn {
                 display: inline-flex;
                 align-items: center;
-                gap: 6px; 
+                gap: 6px;
                 padding: 6px 12px;
-                border-radius: 20px; 
+                border-radius: 20px;
                 color: white;
                 font-size: 13px;
                 font-weight: 500;
@@ -457,16 +465,16 @@
                 border: none;
                 cursor: pointer;
                 transition: transform 0.2s ease, box-shadow 0.2s ease;
-                white-space: nowrap; 
+                white-space: nowrap;
             }
 
             .action-btn:hover {
-                transform: translateY(-2px); 
+                transform: translateY(-2px);
                 box-shadow: 0 4px 8px rgba(0,0,0,0.15);
             }
 
             .action-btn.edit {
-                background-color: #f39c12; 
+                background-color: #f39c12;
             }
 
             .action-btn.view-students {
@@ -478,20 +486,20 @@
             }
             .filter-bar {
                 display: flex;
-                flex-wrap: wrap; 
+                flex-wrap: wrap;
                 align-items: center;
                 gap: 15p ; 
-                padding: 15px;
+                    padding: 15px;
                 background-color: #f8f9fa;
                 border: 1px solid #dee2e6;
                 border-radius: 8px;
-                margin-bottom: 2rem !important; 
+                margin-bottom: 2rem !important;
             }
 
             .filter-group {
                 display: flex;
                 align-items: center;
-                flex-grow: 1; 
+                flex-grow: 1;
                 position: relative;
             }
 
@@ -505,7 +513,7 @@
             .filter-bar .form-select {
                 flex: 1;
                 min-width: 200px;
-                padding-left: 40px; 
+                padding-left: 40px;
                 background-color: #fff;
                 border: 1px solid #ced4da;
                 border-radius: 6px;
@@ -555,78 +563,78 @@
             }
             .btn-primary {
                 color: white;
-                        background-color: #27ae60;
-                        border-color: #27ae60;
-                        padding: 8px 10px;
-                        font-weight: 300;
-                        border-radius: 6px;
-                        text-decoration: none;
+                background-color: #27ae60;
+                border-color: #27ae60;
+                padding: 8px 10px;
+                font-weight: 300;
+                border-radius: 6px;
+                text-decoration: none;
             }
             .btn-primary:hover {
-                        background-color: #A2D5C6;
-                        border-color: #A2D5C6;
+                background-color: #A2D5C6;
+                border-color: #A2D5C6;
             }
             .btn-back {
-                        display: inline-flex;      
-                        gap: 8px;                 
-                        padding: 10px 20px;         
-                        font-size: 15px;
-                        font-weight: 500;
-                        text-decoration: none;
-                        margin: 20px 0px    ;
-                        color: #1F4E79;             
-                        background-color: transparent;
-                        border: 2px solid #1F4E79;
-                        border-radius: 8px;   
-                        cursor: pointer;
-                        transition: all 0.2s ease-in-out; 
-                    }
+                display: inline-flex;
+                gap: 8px;
+                padding: 10px 20px;
+                font-size: 15px;
+                font-weight: 500;
+                text-decoration: none;
+                margin: 20px 0px    ;
+                color: #1F4E79;
+                background-color: transparent;
+                border: 2px solid #1F4E79;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.2s ease-in-out;
+            }
         </style>
-    
-</head>
-<body>
-    <div class="header">
-                <div class="left-title">
-                    Teacher Dashboard <i class="fas fa-tachometer-alt"></i>
+
+    </head>
+    <body>
+        <div class="header">
+            <div class="left-title">
+                Teacher Dashboard <i class="fas fa-tachometer-alt"></i>
+            </div>
+            <!-- User's email and option to change or update information-->
+            <div class="teacher-profile" onclick="toggleDropdown()">
+                <img src="${pageContext.request.contextPath}/img/${gv.getAvatar()}" alt="Admin Photo" class="teacher-img">
+                <span>${user.getEmail()} </span>
+                <i class="fas fa-caret-down"></i>
+                <div class="dropdown-menu" id="teacherDropdown">
+                    <a href="#"><i class="fas fa-key"></i> Change Password</a>
+                    <a href="#"><i class="fas fa-user-edit"></i> Update Information</a>
                 </div>
-                <!-- User's email and option to change or update information-->
-                <div class="teacher-profile" onclick="toggleDropdown()">
-                    <img src="${pageContext.request.contextPath}/img/${gv.getAvatar()}" alt="Admin Photo" class="teacher-img">
-                    <span>${user.getEmail()} </span>
-                    <i class="fas fa-caret-down"></i>
-                    <div class="dropdown-menu" id="teacherDropdown">
-                        <a href="#"><i class="fas fa-key"></i> Change Password</a>
-                        <a href="#"><i class="fas fa-user-edit"></i> Update Information</a>
-                    </div>
-                </div>
+            </div>
         </div>
         <!--Navigation Bar-->    
-            <div class="sidebar">
-                <h4>EL CENTRE</h4>
-                <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
-                <div class="sidebar-section-title">Tổng quan</div>
-                <ul class="sidebar-menu">
-                    <li><a href="${pageContext.request.contextPath}/TeacherDashboard">Dashboard</a></li>
-                </ul>
-                <!--Academy Management-->
-                <div class="sidebar-section-title">Quản lý học tập</div>
-                <ul class="sidebar-menu">
-                    <!--Teacher's Class Management-->
+        <div class="sidebar">
+            <h4>EL CENTRE</h4>
+            <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
+            <div class="sidebar-section-title">Tổng quan</div>
+            <ul class="sidebar-menu">
+                <li><a href="${pageContext.request.contextPath}/TeacherDashboard">Dashboard</a></li>
+            </ul>
+            <!--Academy Management-->
+            <div class="sidebar-section-title">Quản lý học tập</div>
+            <ul class="sidebar-menu">
+                <!--Teacher's Class Management-->
                 <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=lophoc"><i class="fas fa-book"></i>Lớp Học</a></li>
-                    <!--Attendance's Management-->
-                    <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=diemdanh"><i class="fas fa-book"></i>Điểm Danh</a></li>
-                </ul>
-                <!--Other Management-->
-                <div class="sidebar-section-title">Khác</div>
-                <ul class="sidebar-menu">
-                    <!--Teacher's Notification Management-->
-                    <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
-                    <!--Help Request to Admin-->
-                    <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=hotro"><i class="fas fa-question"></i> Yêu Cầu Hỗ Trợ</a></li>
-                    <!--Logout-->
-                    <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                </ul>
-            </div>
+                <!--Attendance's Management-->
+                <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=diemdanh"><i class="fas fa-book"></i>Điểm Danh</a></li>
+            </ul>
+            <!--Other Management-->
+            <div class="sidebar-section-title">Khác</div>
+            <ul class="sidebar-menu">
+                <!--Teacher's Notification Management-->
+                <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
+                <!--Help Request to Admin-->
+                <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=hotro"><i class="fas fa-question"></i> Yêu Cầu Hỗ Trợ</a></li>
+                <!--Logout-->
+                <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
         <div class="main-content">
             <!--Attendance Report-->
             <div class="card">
@@ -638,7 +646,7 @@
                         <thead>
                             <tr>
                                 <th class="student-name-col" style="min-width: 130px;">Họ Tên Học Sinh</th>
-                                <c:forEach var="schedule" items="${scheduleList}">
+                                    <c:forEach var="schedule" items="${scheduleList}">
                                     <th style="font-size: 0.85em;">
                                         <%
                                             // Get Object Schedule from Servlet
@@ -720,9 +728,9 @@
                 </div>
             </div>
         </div>
-    <!-- Footer -->
+        <!-- Footer -->
         <div class="footer">
             <p>&copy; 2025 EL CENTRE. All rights reserved. | Developed by ELCentre</p>
         </div>                    
-</body>
+    </body>
 </html>

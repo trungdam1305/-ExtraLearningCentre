@@ -1,5 +1,5 @@
 <%-- 
-    Document   : satffDashboard
+    Document   : staffDashboard
     Created on : Jul 13, 2025, 12:35:02 AM
     Author     : wrx_Chur04
 --%>
@@ -113,6 +113,7 @@
                 flex-direction: column;
                 height: 100vh;
                 position: fixed;
+                overflow-y: auto;
             }
             .sidebar h4 {
                 margin: 0 auto;
@@ -368,13 +369,13 @@
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/staffGoToDashboard"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="${pageContext.request.contextPath}/staffGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
             </ul>
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
-                <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-calendar-alt"></i> Lịch học</a></li>
-                <li><a href="${pageContext.request.contextPath}/staffManageAttendance"><i class="fas fa-check-square"></i> Điểm danh</a></li>
+                <li><a href="${pageContext.request.contextPath}/StaffManageTimeTable"><i class="fas fa-calendar-alt"></i> Thời Khóa Biểu</a></li>
+                <li><a href="${pageContext.request.contextPath}/StaffManageAttendance"><i class="fas fa-check-square"></i> Điểm danh</a></li>
             </ul>
             <div class="sidebar-section-title">Quản lý tài chính</div>
             <ul class="sidebar-menu">
@@ -387,6 +388,8 @@
             </ul>
             <div class="sidebar-section-title">Khác</div>
             <ul class="sidebar-menu">
+                <li><a href="${pageContext.request.contextPath}/ManagePost"><i class="fas fa-blog"></i> Bài Viết</a></li>
+                <li><a href="${pageContext.request.contextPath}/ManageMaterial"><i class="fas fa-envelope-open-text"></i> Tài Liệu</a></li>                
                 <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </div>
@@ -427,6 +430,8 @@
                                 <thead>
                                     <tr>
                                         <th>Họ Tên</th>
+                                        <th>Vai Trò</th>
+                                        <th>Số Điện Thoại</th>
                                         <th>Yêu Cầu</th>
                                         <th>Mô Tả</th>
                                         <th>Thời Gian</th>
@@ -437,6 +442,8 @@
                                     <c:forEach var="sp" items="${HoTroList}">
                                         <tr>
                                             <td>${sp.getHoTen()}</td>
+                                            <td>${sp.getVaiTro()}</td>
+                                            <td>${sp.getSoDienThoai()}</td>
                                             <td>${sp.getTenHoTro()}</td>
                                             <td>${sp.getMoTa()}</td>
                                             <td>${sp.getThoiGian()}</td>

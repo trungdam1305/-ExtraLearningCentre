@@ -629,7 +629,7 @@
                                 <tr>
                                     <th>Tên môn học</th>
                                     <th>Khối</th>
-                                    <th>Lớp học số</th>
+                                   
                                     <th>Tên lớp học</th>
                                     <th>Sĩ số</th>
                                     <th>Tên giáo viên</th>
@@ -642,8 +642,8 @@
                                 <c:forEach var="lop" items="${sessionScope.lophocs}">
                                     <tr>
                                         <td>${lop.getTenKhoaHoc()}</td>
-                                        <td>${lop.getID_Khoi()}</td>
-                                        <td>${lop.getID_LopHoc()}</td>
+                                        <td>${lop.getID_Khoi() + 5}  </td>
+                                       
                                         <td>${lop.getTenLopHoc()}</td>
                                         <td>${lop.getSiSo()}</td>
                                         <td>${lop.getHoTen()}</td>

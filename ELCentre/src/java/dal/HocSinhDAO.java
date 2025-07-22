@@ -1192,4 +1192,25 @@ public class HocSinhDAO {
         }
         return null;
     }
+    
+    public static String  adminGetTrangThaiHocHocSinhByID_TaiKhoan(String ID_TaiKhoan) {
+       
+        DBContext db = DBContext.getInstance() ; 
+        try {
+            String sql = """
+                         select HS.TrangThaiHoc from HocSinh HS
+                         WHERE HS.ID_TaiKhoan = ? 
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, ID_TaiKhoan);
+            ResultSet rs = statement.executeQuery() ; 
+            while(rs.next()) {
+                return rs.getString("TrangThaiHoc") ; 
+            }
+        } catch(SQLException  e) {
+            e.printStackTrace();
+            return null ; 
+        }
+        return null ; 
+    }
 }

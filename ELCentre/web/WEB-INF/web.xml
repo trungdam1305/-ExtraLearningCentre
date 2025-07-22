@@ -237,8 +237,40 @@
         <servlet-class>controller.staffGetSupportRequests</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>StaffManageTimeTable</servlet-name>
+        <servlet-class>controller.StaffManageTimeTable</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaffManageAttendance</servlet-name>
+        <servlet-class>controller.StaffManageAttendance</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManagePost</servlet-name>
+        <servlet-class>controller.ManagePost</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageMaterial</servlet-name>
+        <servlet-class>controller.ManageMaterial</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageSlider</servlet-name>
+        <servlet-class>controller.ManageSlider</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>adminActionWithTuition</servlet-name>
         <servlet-class>controller.adminActionWithTuition</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SaveTeacherSalary</servlet-name>
+        <servlet-class>controller.ManageCourses.SaveTeacherSalary</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SalaryCalculation</servlet-name>
+        <servlet-class>controller.ManageCourses.SalaryCalculation</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PayTeacherSalary</servlet-name>
+        <servlet-class>controller.ManageCourses.PayTeacherSalary</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
@@ -501,8 +533,40 @@
         <url-pattern>/staffGetSupportRequests</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>StaffManageTimeTable</servlet-name>
+        <url-pattern>/StaffManageTimeTable</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffManageAttendance</servlet-name>
+        <url-pattern>/StaffManageAttendance</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManagePost</servlet-name>
+        <url-pattern>/ManagePost</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageMaterial</servlet-name>
+        <url-pattern>/ManageMaterial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageSlider</servlet-name>
+        <url-pattern>/ManageSlider</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>adminActionWithTuition</servlet-name>
         <url-pattern>/adminActionWithTuition</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaveTeacherSalary</servlet-name>
+        <url-pattern>/SaveTeacherSalary</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SalaryCalculation</servlet-name>
+        <url-pattern>/SalaryCalculation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PayTeacherSalary</servlet-name>
+        <url-pattern>/PayTeacherSalary</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

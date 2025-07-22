@@ -306,13 +306,13 @@
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/staffGoToDashboard"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="${pageContext.request.contextPath}/staffGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
             </ul>
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
-                <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-calendar-alt"></i> Lịch học</a></li>
-                <li><a href="${pageContext.request.contextPath}/staffManageAttendance"><i class="fas fa-check-square"></i> Điểm danh</a></li>
+                <li><a href="${pageContext.request.contextPath}/StaffManageTimeTable"><i class="fas fa-calendar-alt"></i> Thời Khóa Biểu</a></li>
+                <li><a href="${pageContext.request.contextPath}/StaffManageAttendance"><i class="fas fa-check-square"></i> Điểm danh</a></li>
                 <li><a href="#" class="btn-action upload-document"><i class="fas fa-calendar-alt"></i> Đăng tài liệu</a></li>
             </ul>
             <div class="sidebar-section-title">Quản lý tài chính</div>
@@ -341,6 +341,8 @@
                                 <tr>
                                     <th>ID Hỗ Trợ</th>
                                     <th>Họ Tên</th>
+                                    <th>Vai Trò</th>
+                                    <th>Số Điện Thoại</th>
                                     <th>Yêu Cầu</th>
                                     <th>Thời Gian</th>
                                     <th>Mô Tả</th>
@@ -352,6 +354,8 @@
                                     <tr>
                                         <td>${sp.getID_HoTro()}</td>
                                         <td>${sp.getHoTen()}</td>
+                                        <td>${sp.getVaiTro()}</td>
+                                        <td>${sp.getSoDienThoai()}</td>
                                         <td>${sp.getTenHoTro()}</td>
                                         <td>${sp.getThoiGian()}</td>
                                         <td>${sp.getMoTa()}</td>

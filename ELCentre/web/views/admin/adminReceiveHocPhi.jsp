@@ -583,7 +583,8 @@
 
                         
                 </div>
-                <form action="${pageContext.request.contextPath}/admin" method="get">
+                <form action="${pageContext.request.contextPath}/adminActionWithTuition" method="get">
+                    <input type="hidden" name="action" value="filterClass" />
                     <div class="filter-bar">
                         <div class="filter-group">
                             <label for="keyword">Từ khóa:</label>
@@ -611,6 +612,14 @@
                                 <option value="Hóa học">Hóa học</option>
                             </select>
                         </div>
+                        <div class="filter-group">
+                            <label for="trangthai">Lọc theo trạng thái lớp</label>
+                            <select id="trangthai" name="trangthai">
+                                <option value="">Tất cả</option>
+                                <option value="Đang học">Đang học</option>
+                                <option value="Đã học">Đã học</option>
+                            </select>
+                        </div>
                         <button><i class="fas fa-search"></i></button>
                     </div>
                 </form>
@@ -624,7 +633,7 @@
                                 <tr>
                                     <th>Tên môn học</th>
                                     <th>Khối</th>
-                                    <th>Lớp học số</th>
+                                   
 
                                     <th>Tên lớp học</th>
                                     <th>Số tiền</th>
@@ -639,10 +648,9 @@
                                 <c:forEach var="lop" items="${sessionScope.lophocs1}">
                                     <tr>
                                         <td>${lop.getTenKhoaHoc()}</td>
-                                        <td>${lop.getID_Khoi()}</td>
-                                        <td>${lop.getID_LopHoc()}</td>
+                                        <td>${lop.getID_Khoi() + 5}</td>      
                                         <td>${lop.getTenLopHoc()}</td>
-                                        <td>${lop.getSoTien()}</td>
+                                        <td>${lop.getSoTien()} VND</td>
                                         <td>${lop.getSiSo()}</td>
                                         <td>${lop.getHoTen()}</td>
                                         <td>${lop.getGhiChu()}</td>

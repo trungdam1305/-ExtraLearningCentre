@@ -61,7 +61,7 @@
 
                     <div class="detail-content">
                         <h1 class="detail-title mb-4" style="font-family: 'Times New Roman', Times, serif;" >${material.tenTaiLieu}</h1>
-
+                        <!--Material's Details-->
                         <table class="table table-borderless info-table">
                             <tbody>
                                 <tr>
@@ -78,12 +78,10 @@
                                 </tr>
                                 </tbody>
                         </table>
-                        
                         <div class="mt-4">
-                            <%-- ✅ SỬA LẠI ĐƯỜNG DẪN VÀ THÊM THUỘC TÍNH 'download' --%>
-                            <a href="${pageContext.request.contextPath}/uploads/${material.duongDan}" 
+                            <a href="${pageContext.request.contextPath}/${material.duongDan}" 
                                class="btn btn-primary download-button" 
-                               download> <%-- Thuộc tính 'download' sẽ gợi ý tên file khi tải về --%>
+                               download>
 
                                 <i class="fas fa-download"></i> Tải Về Tài Liệu
                             </a>

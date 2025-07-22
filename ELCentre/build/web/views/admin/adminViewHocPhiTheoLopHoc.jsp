@@ -562,24 +562,57 @@
                     ${message}
                 </div>
             </c:if>
-           
-            <div class="page-header">
-                <h2><i class="fas fa-money-bill-wave"></i>Học phí lớp ${sessionScope.tenlop} tháng này</h2>
 
+            <div class="page-header">
+                <h2><i class="fas fa-money-bill-wave"></i>Học phí lớp ${sessionScope.tenlop} tháng </h2>
             </div>
 
-            <div class="top-bar">   
+           <div class="top-bar">   
                 <div class="action-bar">
-                    <form action="${pageContext.request.contextPath}/" method="get">
-                        <div class="filter-bar">
-                            <div class="filter-group">
-                                <label for="keyword">Từ khóa:</label>
-                                <input type="text" id="keyword" name="keyword" placeholder="Tìm kiếm nội dung...">
-                            </div>
-                            <button><i class="fas fa-search"></i></button>
-                        </div>
-                    </form>
+                    
+
+                    
+
+                        
                 </div>
+                <form action="${pageContext.request.contextPath}/adminActionWithTuition" method="get">
+                    <input type="hidden" name="action" value="filterHocPhi" />
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label for="keyword">Từ khóa:</label>
+                            <input type="text" id="keyword" name="keyword" placeholder="Tìm kiếm nội dung...">
+                        </div>
+                        <div class="filter-group">
+                            <label for="thang">Lọc theo tháng</label>
+                            <select id="thang" name="thang">
+                               
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="nam">Lọc theo năm</label>
+                            <select id="nam" name="nam">
+                                
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                            </select>
+                        </div>
+                        
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                </form>
             </div>
 
             <c:choose>
@@ -598,10 +631,10 @@
                                     <th>Số buổi có mặt</th>
 
                                     <th>Học Phí Phải Đóng</th>
-                                    
+
                                     <th>Tình trạng thanh toán</th>
                                     <th>Ngày thanh toán</th>
-                                   
+
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
@@ -615,8 +648,8 @@
                                         <td>${hp.getThang()}</td>
                                         <td>${hp.getNam()}</td>
                                         <td>${hp.getSoBuoi()}</td>
-                                        <td>${hp.getHocPhiPhaiDong()}</td>
-                                        
+                                        <td>${hp.getHocPhiPhaiDong()} VND</td>
+
                                         <td>${hp.getTinhTrangThanhToan()}</td>
                                         <td>
                                             <c:choose>
@@ -628,16 +661,18 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
-                                        
-                                        <td>
-                                            <a class="btn-action btn-payment" href="${pageContext.request.contextPath}/adminActionWithTuition?action=dongtien&idLop=${hp.getID_LopHoc()}&idHocSinh=${hp.getID_HocSinh()}&thang=${hp.getThang()}&nam=${hp.getNam()}&soTienDong=${hp.getHocPhiPhaiDong()}&tenLopHoc=${tenlop}">
-                                                <i class="fas fa-money-bill-wave"></i> Đánh dấu là đã đóng tiền
-                                            </a>
-                                            <a class="btn-action btn-send-tuition-notice" href="${pageContext.request.contextPath}/adminActionWithTuition?action=guithongbao&idTaiKhoanHocSinh=${hp.getID_TaiKhoan()}&sodienthoai=${hp.getSDT_PhuHuynh()}&TenHocSinh=${hp.getHoTen()}&thang=${hp.getThang()}&nam=${hp.getNam()}&soTienDong=${hp.getHocPhiPhaiDong()}">
-                                                <i class="fas fa-paper-plane"></i> Gửi thông báo đóng học phí
-                                            </a>
 
+                                        <td>
+                                            <c:if test="${hp.getTinhTrangThanhToan() ne 'Đã thanh toán'}">
+                                                <a class="btn-action btn-payment" href="${pageContext.request.contextPath}/adminActionWithTuition?action=dongtien&idLop=${hp.getID_LopHoc()}&idHocSinh=${hp.getID_HocSinh()}&thang=${hp.getThang()}&nam=${hp.getNam()}&soTienDong=${hp.getHocPhiPhaiDong()}&tenLopHoc=${tenlop}">
+                                                    <i class="fas fa-money-bill-wave"></i> Đánh dấu là đã đóng tiền
+                                                </a>
+                                                <a class="btn-action btn-send-tuition-notice" href="${pageContext.request.contextPath}/adminActionWithTuition?action=guithongbao&idTaiKhoanHocSinh=${hp.getID_TaiKhoan()}&sodienthoai=${hp.getSDT_PhuHuynh()}&TenHocSinh=${hp.getHoTen()}&thang=${hp.getThang()}&nam=${hp.getNam()}&soTienDong=${hp.getHocPhiPhaiDong()}">
+                                                    <i class="fas fa-paper-plane"></i> Gửi thông báo đóng học phí
+                                                </a>
+                                            </c:if>
                                         </td>
+
                                     </tr>
                                 </c:forEach>
                             </tbody>
