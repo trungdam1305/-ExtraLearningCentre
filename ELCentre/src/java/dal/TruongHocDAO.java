@@ -1,6 +1,9 @@
 package dal;
 
-import java.sql.Statement;
+/**
+ *
+ * @author wrx_Chur04
+ */
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
@@ -96,29 +99,4 @@ public class TruongHocDAO {
         }
         return -1;
     }
-    
-    public int getOrInsertTruongHoc(String tenTruongHoc) {
-        try (Connection conn = DBContext.getInstance().getConnection()) {
-            // Check if exists
-            String checkSql = "SELECT ID_TruongHoc FROM TruongHoc WHERE TenTruongHoc = ?";
-            try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
-                checkStmt.setString(1, tenTruongHoc);
-                ResultSet rs = checkStmt.executeQuery();
-                if (rs.next()) return rs.getInt("ID_TruongHoc");
-            }
-
-            // Insert if not found
-            String insertSql = "INSERT INTO TruongHoc (TenTruongHoc) VALUES (?)";
-            try (PreparedStatement insertStmt = conn.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
-                insertStmt.setString(1, tenTruongHoc);
-                insertStmt.executeUpdate();
-                ResultSet rs = insertStmt.getGeneratedKeys();
-                if (rs.next()) return rs.getInt(1);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
-
 }

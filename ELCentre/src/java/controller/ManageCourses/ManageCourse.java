@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package controller.ManageCourses;
 
 import dal.GiaoVienDAO;
@@ -434,7 +438,7 @@ public class ManageCourse extends HttpServlet {
             } else if ("updateCourse".equalsIgnoreCase(action)) {
                 try {
                     int id = Integer.parseInt(request.getParameter("ID_KhoaHoc"));
-                    KhoaHoc khoaHoc = dao.getKhoaHocById(id);
+                    KhoaHoc khoaHoc = dao.getKhoaHocById1(id);
 
                     if (khoaHoc == null) {
                         System.out.println("updateCourse: Course not found - ID_KhoaHoc=" + id);
@@ -623,7 +627,7 @@ public class ManageCourse extends HttpServlet {
                     String filePath = uploadPath + File.separator + fileName;
                     try {
                         imagePart.write(filePath);
-                        imagePath = "/images/course/" + fileName;
+                        imagePath = "img/avatar/" + fileName;
                     } catch (IOException e) {
                         System.out.println("addKhoaHoc: Error saving image - " + e.getMessage());
                         request.setAttribute("err", "Lỗi khi lưu tệp hình ảnh: " + e.getMessage());
@@ -653,7 +657,7 @@ public class ManageCourse extends HttpServlet {
                 request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                 return;
             }
-        } else if ("submitUpdateCourse".equals(action)) {
+         } else if ("submitUpdateCourse".equals(action)) {
             try {
                 int id = Integer.parseInt(request.getParameter("ID_KhoaHoc"));
                 String ten = request.getParameter("TenKhoaHoc");

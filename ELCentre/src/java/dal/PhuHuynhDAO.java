@@ -1,12 +1,14 @@
 
 package dal;
 
-import java.sql.Types;
+/**
+ *
+ * @author wrx_Chur04
+ */
 import java.math.BigDecimal;
 import java.sql.SQLException ; 
 import java.util.ArrayList ; 
 import java.sql.ResultSet ; 
-import java.sql.Timestamp;
 import java.sql.PreparedStatement ; 
 import model.PhuHuynh ; 
 public class PhuHuynhDAO {
@@ -16,8 +18,10 @@ public class PhuHuynhDAO {
         
         try {
             String sql = """
-                         select * from PhuHuynh
-                         where ID_TaiKhoan = ? 
+                          select * from PhuHuynh PH
+                        JOIN TaiKhoan TK 
+                        ON TK.ID_TaiKhoan = PH.ID_TaiKhoan
+                         where PH.ID_TaiKhoan = ? 
                          """ ; 
             
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
@@ -35,7 +39,8 @@ public class PhuHuynhDAO {
                         rs.getString("GhiChu") , 
                         
                         rs.getString("TrangThai") , 
-                        rs.getTimestamp("NgayTao").toLocalDateTime()
+                        rs.getTimestamp("NgayTao").toLocalDateTime() ,
+                        rs.getString("MatKhau")
                 
                 
                 ) ; 
@@ -130,53 +135,6 @@ public class PhuHuynhDAO {
             return false ; 
         } else {
                return true ; 
-        }
-    }
-
-    public void insertPhuHuynh(PhuHuynh ph) throws SQLException {
-        DBContext db = DBContext.getInstance();
-        String sql = """
-            INSERT INTO PhuHuynh (ID_TaiKhoan, HoTen, Email, SDT, DiaChi, GhiChu, TrangThai, NgayTao)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """;
-
-        try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, ph.getID_TaiKhoan());
-            statement.setString(2, ph.getHoTen());
-
-            if (ph.getEmail() != null) {
-                statement.setString(3, ph.getEmail());
-            } else {
-                statement.setNull(3, Types.VARCHAR);
-            }
-
-            if (ph.getSDT() != null) {
-                statement.setString(4, ph.getSDT());
-            } else {
-                statement.setNull(4, Types.VARCHAR);
-            }
-
-            if (ph.getDiaChi() != null) {
-                statement.setString(5, ph.getDiaChi());
-            } else {
-                statement.setNull(5, Types.VARCHAR);
-            }
-
-            if (ph.getGhiChu() != null) {
-                statement.setString(6, ph.getGhiChu());
-            } else {
-                statement.setNull(6, Types.VARCHAR);
-            }
-
-            statement.setString(7, ph.getTrangThai());
-
-            if (ph.getNgayTao() != null) {
-                statement.setTimestamp(8, Timestamp.valueOf(ph.getNgayTao()));
-            } else {
-                statement.setNull(8, Types.TIMESTAMP);
-            }
-
-            statement.executeUpdate();
         }
     }
 }

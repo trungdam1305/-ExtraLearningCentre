@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import model.LopHocInfoDTO;
+import java.sql.Date;
 
 public class LopHocInfoDTODAO {
 
@@ -1358,7 +1359,7 @@ public class LopHocInfoDTODAO {
                 [dbo].[SlotHoc] sh ON lich.ID_SlotHoc = sh.ID_SlotHoc
             WHERE 
                 glh.ID_GiaoVien = ? 
-                AND lh.TrangThai = N'Đang học'
+               
             GROUP BY 
                 lh.ID_LopHoc,
                 lh.ClassCode,
@@ -1419,10 +1420,10 @@ public class LopHocInfoDTODAO {
 
         return classList;
     }
-    
+
     public List<LopHocInfoDTO> getClassesByStudentId(int idHocSinh) {
-    List<LopHocInfoDTO> classList = new ArrayList<>();
-    String sql = """
+        List<LopHocInfoDTO> classList = new ArrayList<>();
+        String sql = """
         SELECT 
             lh.ID_LopHoc,
             lh.ClassCode,
@@ -1456,7 +1457,7 @@ public class LopHocInfoDTODAO {
             [dbo].[SlotHoc] sh ON lich.ID_SlotHoc = sh.ID_SlotHoc
         WHERE 
             hslh.ID_HocSinh = ? 
-            AND lh.TrangThai = N'Đang học'
+            
         GROUP BY 
             lh.ID_LopHoc,
             lh.ClassCode,
@@ -1475,62 +1476,426 @@ public class LopHocInfoDTODAO {
             g.HoTen
     """;
 
-    try (Connection conn = DBContext.getInstance().getConnection(); 
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
-        stmt.setInt(1, idHocSinh);
-        ResultSet rs = stmt.executeQuery();
+        try (Connection conn = DBContext.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idHocSinh);
+            ResultSet rs = stmt.executeQuery();
 
-        while (rs.next()) {
-            LopHocInfoDTO lopHoc = new LopHocInfoDTO();
-            lopHoc.setIdLopHoc(rs.getInt("ID_LopHoc"));
-            lopHoc.setClassCode(rs.getString("ClassCode"));
-            lopHoc.setTenLopHoc(rs.getString("TenLopHoc"));
-            lopHoc.setIdKhoaHoc(rs.getInt("ID_KhoaHoc"));
-            lopHoc.setSiSo(rs.getInt("SiSo"));
-            lopHoc.setSiSoToiDa(rs.getInt("SiSoToiDa"));
-            lopHoc.setSiSoToiThieu(rs.getInt("SiSoToiThieu"));
-            lopHoc.setGhiChu(rs.getString("GhiChu"));
-            lopHoc.setTrangThai(rs.getString("TrangThai"));
-            // Chuyển đổi SoTien từ nvarchar sang int
-            String soTienStr = rs.getString("SoTien");
-            try {
-                lopHoc.setSoTien(soTienStr != null ? Integer.parseInt(soTienStr) : 0);
-            } catch (NumberFormatException e) {
-                System.out.println("Error parsing SoTien: " + soTienStr);
-                lopHoc.setSoTien(0);
-            }
-            // Chuyển đổi từ java.sql.Timestamp sang LocalDateTime
-            if (rs.getTimestamp("NgayTao") != null) {
-                lopHoc.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
-            }
-            lopHoc.setOrder(rs.getInt("Order"));
-            lopHoc.setAvatarGiaoVien(rs.getString("Image"));
-            lopHoc.setIdKhoi(rs.getInt("ID_Khoi"));
-            lopHoc.setTenGiaoVien(rs.getString("TenGiaoVien"));
-            lopHoc.setThoiGianHoc(rs.getString("ThoiGianHoc"));
+            while (rs.next()) {
+                LopHocInfoDTO lopHoc = new LopHocInfoDTO();
+                lopHoc.setIdLopHoc(rs.getInt("ID_LopHoc"));
+                lopHoc.setClassCode(rs.getString("ClassCode"));
+                lopHoc.setTenLopHoc(rs.getString("TenLopHoc"));
+                lopHoc.setIdKhoaHoc(rs.getInt("ID_KhoaHoc"));
+                lopHoc.setSiSo(rs.getInt("SiSo"));
+                lopHoc.setSiSoToiDa(rs.getInt("SiSoToiDa"));
+                lopHoc.setSiSoToiThieu(rs.getInt("SiSoToiThieu"));
+                lopHoc.setGhiChu(rs.getString("GhiChu"));
+                lopHoc.setTrangThai(rs.getString("TrangThai"));
 
-            classList.add(lopHoc);
+                String soTienStr = rs.getString("SoTien");
+                try {
+                    lopHoc.setSoTien(soTienStr != null ? Integer.parseInt(soTienStr) : 0);
+                } catch (NumberFormatException e) {
+                    System.out.println("Error parsing SoTien: " + soTienStr);
+                    lopHoc.setSoTien(0);
+                }
+
+                if (rs.getTimestamp("NgayTao") != null) {
+                    lopHoc.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+                }
+                lopHoc.setOrder(rs.getInt("Order"));
+                lopHoc.setAvatarGiaoVien(rs.getString("Image"));
+                lopHoc.setIdKhoi(rs.getInt("ID_Khoi"));
+                lopHoc.setTenGiaoVien(rs.getString("TenGiaoVien"));
+                lopHoc.setThoiGianHoc(rs.getString("ThoiGianHoc"));
+
+                classList.add(lopHoc);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in getClassesByStudentId: " + e.getMessage());
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        System.out.println("SQL Error in getClassesByStudentId: " + e.getMessage());
-        e.printStackTrace();
+
+        return classList;
     }
 
-    return classList;
-}
+    public List<LopHocInfoDTO> findSimilarClasses(String classCode) {
+        List<LopHocInfoDTO> similarClasses = new ArrayList<>();
+        if (classCode == null || classCode.trim().isEmpty()) {
+            System.out.println("findSimilarClasses: Mã lớp không hợp lệ: " + classCode);
+            return similarClasses;
+        }
+
+        int codeLength = classCode.length();
+        String firstChar = classCode.substring(0, 1);
+        String lastTwoChars = classCode.length() >= 2 ? classCode.substring(classCode.length() - 2) : "";
+
+        String sql = """
+            SELECT 
+                lh.ID_LopHoc,
+                lh.ClassCode,
+                lh.TenLopHoc,
+                lh.ID_KhoaHoc,
+                lh.SiSo,
+                lh.SiSoToiDa,
+                lh.SiSoToiThieu,
+                lh.GhiChu,
+                lh.TrangThai,
+                lh.SoTien,
+                lh.NgayTao,
+                lh.Image,
+                lh.[Order],
+                kh.ID_Khoi,
+                g.HoTen AS TenGiaoVien,
+                STRING_AGG(sh.SlotThoiGian + ' (' + CONVERT(varchar, lich.NgayHoc, 103) + ')', ';') AS ThoiGianHoc
+            FROM 
+                [dbo].[LopHoc] lh
+            LEFT JOIN 
+                [dbo].[KhoaHoc] kh ON lh.ID_KhoaHoc = kh.ID_KhoaHoc
+            LEFT JOIN 
+                [dbo].[GiaoVien_LopHoc] glh ON lh.ID_LopHoc = glh.ID_LopHoc
+            LEFT JOIN 
+                [dbo].[GiaoVien] g ON glh.ID_GiaoVien = g.ID_GiaoVien
+            LEFT JOIN 
+                [dbo].[LichHoc] lich ON lh.ID_LopHoc = lich.ID_LopHoc
+            LEFT JOIN 
+                [dbo].[SlotHoc] sh ON lich.ID_SlotHoc = sh.ID_SlotHoc
+            WHERE 
+                LEN(lh.ClassCode) = ? 
+                AND LEFT(lh.ClassCode, 1) = ? 
+                AND RIGHT(lh.ClassCode, 2) = ?
+                     AND lh.TrangThai = N'Đang học'
+            GROUP BY 
+                lh.ID_LopHoc,
+                lh.ClassCode,
+                lh.TenLopHoc,
+                lh.ID_KhoaHoc,
+                lh.SiSo,
+                lh.SiSoToiDa,
+                lh.SiSoToiThieu,
+                lh.GhiChu,
+                lh.TrangThai,
+                lh.SoTien,
+                lh.NgayTao,
+                lh.Image,
+                lh.[Order],
+                kh.ID_Khoi,
+                g.HoTen
+        """;
+
+        try (Connection conn = DBContext.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            if (conn == null) {
+                System.out.println("findSimilarClasses: Kết nối cơ sở dữ liệu là null");
+                return similarClasses;
+            }
+            stmt.setInt(1, codeLength);
+            stmt.setString(2, firstChar);
+            stmt.setString(3, lastTwoChars);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    LopHocInfoDTO lopHoc = new LopHocInfoDTO();
+                    lopHoc.setIdLopHoc(rs.getInt("ID_LopHoc"));
+                    lopHoc.setClassCode(rs.getString("ClassCode"));
+                    lopHoc.setTenLopHoc(rs.getString("TenLopHoc"));
+                    lopHoc.setIdKhoaHoc(rs.getInt("ID_KhoaHoc"));
+                    lopHoc.setSiSo(rs.getInt("SiSo"));
+                    lopHoc.setSiSoToiDa(rs.getInt("SiSoToiDa"));
+                    lopHoc.setSiSoToiThieu(rs.getInt("SiSoToiThieu"));
+                    lopHoc.setGhiChu(rs.getString("GhiChu"));
+                    lopHoc.setTrangThai(rs.getString("TrangThai"));
+                    String soTienStr = rs.getString("SoTien");
+                    System.out.println("findSimilarClasses: Raw SoTien for ClassCode " + rs.getString("ClassCode") + ": " + soTienStr);
+                    try {
+                        lopHoc.setSoTien(soTienStr != null && !soTienStr.trim().isEmpty() ? Integer.parseInt(soTienStr.trim()) : 0);
+                    } catch (NumberFormatException e) {
+                        System.out.println("findSimilarClasses: Error parsing SoTien for ClassCode " + rs.getString("ClassCode") + ": " + soTienStr + ", Error: " + e.getMessage());
+                        lopHoc.setSoTien(0);
+                    }
+                    if (rs.getTimestamp("NgayTao") != null) {
+                        lopHoc.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+                    }
+                    lopHoc.setOrder(rs.getInt("Order"));
+                    lopHoc.setAvatarGiaoVien(rs.getString("Image"));
+                    lopHoc.setIdKhoi(rs.getInt("ID_Khoi"));
+                    lopHoc.setTenGiaoVien(rs.getString("TenGiaoVien"));
+                    lopHoc.setThoiGianHoc(rs.getString("ThoiGianHoc"));
+                    similarClasses.add(lopHoc);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("findSimilarClasses: SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return similarClasses;
+    }
 
     public static void main(String[] args) {
+        // Giả sử bạn có một DAO tên là ClassDAO hoặc LopHocDAO
         LopHocInfoDTODAO dao = new LopHocInfoDTODAO();
-        int testIdGiaoVien = 3;
 
-        List<LopHocInfoDTO> list = dao.getClassesByStudentId(testIdGiaoVien);
-        if (list.isEmpty()) {
-            System.out.println("Không có lớp học nào cho giáo viên ID = " + testIdGiaoVien);
+        // Mã lớp để test, ví dụ: "A1234"
+        String classCode = "TCBO06";
+
+        // Gọi phương thức tìm lớp tương đồng
+        List<LopHocInfoDTO> similarClasses = dao.findSimilarClasses(classCode);
+
+        // In kết quả ra màn hình
+        if (similarClasses.isEmpty()) {
+            System.out.println("Không tìm thấy lớp tương đồng với mã lớp: " + classCode);
         } else {
-            System.out.println("Danh sách lớp học giáo viên ID = " + testIdGiaoVien + ":");
-            for (LopHocInfoDTO dto : list) {
-                System.out.println("- " + dto.getTenLopHoc() + " | " + dto.getThoiGianHoc() + " | GV: " + dto.getTenGiaoVien());
+            System.out.println("Các lớp tương đồng với mã lớp '" + classCode + "':");
+            for (LopHocInfoDTO lop : similarClasses) {
+                System.out.println(lop);
             }
         }
     }
+
+    // Hàm chuyển lớp học cho học sinh (bỏ idTaiKhoanAdmin)
+    public OperationResult changeClassForStudent(int idHocSinh, int idLopHocHienTai, int idLopHocTuongDong) {
+        DBContext db = DBContext.getInstance();
+        Connection connection = null;
+
+        try {
+            connection = db.getConnection();
+            connection.setAutoCommit(false);
+
+            // Bước 1: Kiểm tra lớp hiện tại và lớp tương đồng có tồn tại
+            String sqlCheckClasses = "SELECT ID_LopHoc, SiSo, SiSoToiDa, TrangThai, ID_KhoaHoc FROM LopHoc WHERE ID_LopHoc IN (?, ?)";
+            try (PreparedStatement stmt = connection.prepareStatement(sqlCheckClasses)) {
+                stmt.setInt(1, idLopHocHienTai);
+                stmt.setInt(2, idLopHocTuongDong);
+                ResultSet rs = stmt.executeQuery();
+                int count = 0;
+                int siSoTuongDong = 0;
+                int siSoToiDaTuongDong = 0;
+                String trangThaiHienTai = null;
+                String trangThaiTuongDong = null;
+                int idKhoaHocTuongDong = 0;
+                while (rs.next()) {
+                    count++;
+                    if (rs.getInt("ID_LopHoc") == idLopHocTuongDong) {
+                        siSoTuongDong = rs.getInt("SiSo");
+                        siSoToiDaTuongDong = rs.getInt("SiSoToiDa");
+                        trangThaiTuongDong = rs.getString("TrangThai");
+                        idKhoaHocTuongDong = rs.getInt("ID_KhoaHoc");
+                    } else if (rs.getInt("ID_LopHoc") == idLopHocHienTai) {
+                        trangThaiHienTai = rs.getString("TrangThai");
+                    }
+                }
+                if (count != 2) {
+                    System.out.println("changeClassForStudent: Một trong hai lớp không tồn tại (ID_LopHocHienTai=" + idLopHocHienTai + ", ID_LopHocTuongDong=" + idLopHocTuongDong + ")");
+                    return new OperationResult(false, "Một trong hai lớp học không tồn tại!");
+                }
+                if (!"Đang học".equalsIgnoreCase(trangThaiTuongDong)) {
+                    System.out.println("changeClassForStudent: Lớp tương đồng không ở trạng thái Đang học (ID_LopHocTuongDong=" + idLopHocTuongDong + ", TrangThai=" + trangThaiTuongDong + ")");
+                    return new OperationResult(false, "Lớp tương đồng phải ở trạng thái Đang học!");
+                }
+                if (siSoTuongDong >= siSoToiDaTuongDong) {
+                    System.out.println("changeClassForStudent: Lớp tương đồng đã đầy (ID_LopHocTuongDong=" + idLopHocTuongDong + ", SiSo=" + siSoTuongDong + ", SiSoToiDa=" + siSoToiDaTuongDong + ")");
+                    return new OperationResult(false, "Lớp tương đồng đã đạt sĩ số tối đa!");
+                }
+            }
+
+            // Bước 2: Kiểm tra học sinh có trong lớp hiện tại
+            String sqlCheckStudent = "SELECT COUNT(*) FROM HocSinh_LopHoc WHERE ID_HocSinh = ? AND ID_LopHoc = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(sqlCheckStudent)) {
+                stmt.setInt(1, idHocSinh);
+                stmt.setInt(2, idLopHocHienTai);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next() && rs.getInt(1) == 0) {
+                    System.out.println("changeClassForStudent: Học sinh không thuộc lớp hiện tại (ID_HocSinh=" + idHocSinh + ", ID_LopHocHienTai=" + idLopHocHienTai + ")");
+                    return new OperationResult(false, "Học sinh không thuộc lớp hiện tại!");
+                }
+            }
+
+            // Bước 3: Lấy thông tin LopDangHocTrenTruong của học sinh
+            String lopDangHocTrenTruong = null;
+            String sqlHocSinh = "SELECT LopDangHocTrenTruong FROM HocSinh WHERE ID_HocSinh = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(sqlHocSinh)) {
+                stmt.setInt(1, idHocSinh);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    lopDangHocTrenTruong = rs.getString("LopDangHocTrenTruong");
+                } else {
+                    System.out.println("changeClassForStudent: Không tìm thấy thông tin học sinh (ID_HocSinh=" + idHocSinh + ")");
+                    return new OperationResult(false, "Không tìm thấy thông tin học sinh!");
+                }
+            }
+
+            // Bước 4: Lấy danh sách giáo viên của lớp tương đồng và kiểm tra LopDangDayTrenTruong
+            List<Integer> teacherIds = new ArrayList<>();
+            String sqlTeachers = "SELECT ID_GiaoVien FROM GiaoVien_LopHoc WHERE ID_LopHoc = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(sqlTeachers)) {
+                stmt.setInt(1, idLopHocTuongDong);
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    teacherIds.add(rs.getInt("ID_GiaoVien"));
+                }
+            }
+            for (Integer idGiaoVien : teacherIds) {
+                String sqlTeacher = "SELECT LopDangDayTrenTruong FROM GiaoVien WHERE ID_GiaoVien = ?";
+                try (PreparedStatement stmt = connection.prepareStatement(sqlTeacher)) {
+                    stmt.setInt(1, idGiaoVien);
+                    ResultSet rs = stmt.executeQuery();
+                    if (rs.next()) {
+                        String lopDangDay = rs.getString("LopDangDayTrenTruong");
+                        if (lopDangHocTrenTruong != null && lopDangDay != null && lopDangHocTrenTruong.equalsIgnoreCase(lopDangDay)) {
+                            System.out.println("changeClassForStudent: Xung đột LopDangHocTrenTruong và LopDangDayTrenTruong (ID_HocSinh=" + idHocSinh + ", ID_GiaoVien=" + idGiaoVien + ")");
+                            return new OperationResult(false, "Xung đột giữa lớp đang học trên trường của học sinh và lớp đang dạy trên trường của giáo viên!");
+                        }
+                    }
+                }
+            }
+
+            // Bước 5: Kiểm tra xung đột lịch học của học sinh với các lớp khác
+            List<Integer> idSlotHocList = new ArrayList<>();
+            List<LocalDate> ngayHocList = new ArrayList<>();
+            List<Integer> idPhongHocList = new ArrayList<>();
+            String sqlLichHoc = "SELECT NgayHoc, ID_SlotHoc, ID_PhongHoc FROM LichHoc WHERE ID_LopHoc = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(sqlLichHoc)) {
+                stmt.setInt(1, idLopHocTuongDong);
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    ngayHocList.add(rs.getDate("NgayHoc").toLocalDate());
+                    idSlotHocList.add(rs.getInt("ID_SlotHoc"));
+                    idPhongHocList.add(rs.getInt("ID_PhongHoc"));
+                }
+            }
+            String conflictError = checkTeacherStudentScheduleConflict(idLopHocTuongDong, idPhongHocList, idSlotHocList, ngayHocList);
+            if (conflictError != null) {
+                System.out.println("changeClassForStudent: Xung đột lịch học (ID_LopHocTuongDong=" + idLopHocTuongDong + "): " + conflictError);
+                return new OperationResult(false, conflictError);
+            }
+
+            // Bước 6: Xóa dữ liệu liên quan đến lớp hiện tại
+            String[] deleteQueries = {
+                "DELETE FROM Diem WHERE ID_HocSinh = ? AND ID_LopHoc = ?",
+                "DELETE FROM DiemDanh WHERE ID_HocSinh = ? AND ID_Schedule IN (SELECT ID_Schedule FROM LichHoc WHERE ID_LopHoc = ?)",
+                "DELETE FROM NopBaiTap WHERE ID_HocSinh = ? AND ID_BaiTap IN (SELECT ID_BaiTap FROM TaoBaiTap WHERE ID_LopHoc = ?)",
+                "DELETE FROM DangKyLopHoc WHERE ID_HocSinh = ? AND ID_LopHoc = ?",
+                "DELETE FROM HocSinh_LopHoc WHERE ID_HocSinh = ? AND ID_LopHoc = ?"
+            };
+            for (String query : deleteQueries) {
+                try (PreparedStatement stmt = connection.prepareStatement(query)) {
+                    stmt.setInt(1, idHocSinh);
+                    stmt.setInt(2, idLopHocHienTai);
+                    stmt.executeUpdate();
+                }
+            }
+
+            // Bước 7: Cập nhật sĩ số của lớp hiện tại
+            String sqlUpdateSiSoHienTai = "UPDATE LopHoc SET SiSo = SiSo - 1 WHERE ID_LopHoc = ? AND SiSo > 0";
+            try (PreparedStatement stmt = connection.prepareStatement(sqlUpdateSiSoHienTai)) {
+                stmt.setInt(1, idLopHocHienTai);
+                stmt.executeUpdate();
+            }
+
+            // Bước 8: Thêm học sinh vào lớp tương đồng
+            String sqlInsertHocSinhLopHoc = "INSERT INTO HocSinh_LopHoc (ID_LopHoc, ID_HocSinh) VALUES (?, ?)";
+            try (PreparedStatement stmt = connection.prepareStatement(sqlInsertHocSinhLopHoc)) {
+                stmt.setInt(1, idLopHocTuongDong);
+                stmt.setInt(2, idHocSinh);
+                stmt.executeUpdate();
+            }
+
+            String sqlInsertDangKyLopHoc = "INSERT INTO DangKyLopHoc (ID_HocSinh, ID_LopHoc, NgayDangKy, TinhTrangHocPhi) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement stmt = connection.prepareStatement(sqlInsertDangKyLopHoc)) {
+                stmt.setInt(1, idHocSinh);
+                stmt.setInt(2, idLopHocTuongDong);
+                stmt.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
+                stmt.setString(4, "Chưa thanh toán");
+                stmt.executeUpdate();
+            }
+
+            // Bước 9: Cập nhật sĩ số của lớp tương đồng
+            String sqlUpdateSiSoTuongDong = "UPDATE LopHoc SET SiSo = SiSo + 1 WHERE ID_LopHoc = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(sqlUpdateSiSoTuongDong)) {
+                stmt.setInt(1, idLopHocTuongDong);
+                stmt.executeUpdate();
+            }
+
+            connection.commit();
+            System.out.println("changeClassForStudent: Successfully changed class for ID_HocSinh=" + idHocSinh + " from ID_LopHocHienTai=" + idLopHocHienTai + " to ID_LopHocTuongDong=" + idLopHocTuongDong);
+            return new OperationResult(true, null);
+        } catch (SQLException e) {
+            System.out.println("SQL Error in changeClassForStudent: " + e.getMessage() + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+            try {
+                if (connection != null) {
+                    connection.rollback();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Rollback Error in changeClassForStudent: " + ex.getMessage() + " [SQLState: " + ex.getSQLState() + ", ErrorCode: " + ex.getErrorCode() + "]");
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+            return new OperationResult(false, "Lỗi cơ sở dữ liệu khi chuyển lớp: " + e.getMessage());
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Connection Close Error in changeClassForStudent: " + e.getMessage() + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public OperationResult updateTrangThaiIfMinimumSiSo(int idLopHoc) {
+    DBContext db = DBContext.getInstance();
+    Connection connection = null;
+    try {
+        connection = db.getConnection();
+        
+        // Lấy SiSo và SiSoToiThieu hiện tại
+        String sqlSelect = "SELECT SiSo, SiSoToiThieu FROM LopHoc WHERE ID_LopHoc = ?";
+        try (PreparedStatement stmtSelect = connection.prepareStatement(sqlSelect)) {
+            stmtSelect.setInt(1, idLopHoc);
+            ResultSet rs = stmtSelect.executeQuery();
+            if (rs.next()) {
+                int siSo = rs.getInt("SiSo");
+                int siSoToiThieu = rs.getInt("SiSoToiThieu");
+                
+                // Kiểm tra nếu SiSo == SiSoToiThieu
+                if (siSo == siSoToiThieu) {
+                    String sqlUpdate = "UPDATE LopHoc SET TrangThai = N'Đang học' WHERE ID_LopHoc = ?";
+                    try (PreparedStatement stmtUpdate = connection.prepareStatement(sqlUpdate)) {
+                        stmtUpdate.setInt(1, idLopHoc);
+                        int rowsAffected = stmtUpdate.executeUpdate();
+                        if (rowsAffected > 0) {
+                            System.out.println("updateTrangThaiIfMinimumSiSo: Updated TrangThai to 'Đang học' for ID_LopHoc=" + idLopHoc + " (SiSo=" + siSo + " == SiSoToiThieu=" + siSoToiThieu + ")");
+                            return new OperationResult(true, null);
+                        } else {
+                            System.out.println("updateTrangThaiIfMinimumSiSo: No rows updated for ID_LopHoc=" + idLopHoc);
+                            return new OperationResult(false, "Không thể cập nhật trạng thái lớp học!");
+                        }
+                    }
+                } else {
+                    System.out.println("updateTrangThaiIfMinimumSiSo: No update needed for ID_LopHoc=" + idLopHoc + " (SiSo=" + siSo + " != SiSoToiThieu=" + siSoToiThieu + ")");
+                    return new OperationResult(true, "Không cần cập nhật trạng thái (sĩ số chưa đạt tối thiểu).");
+                }
+            } else {
+                System.out.println("updateTrangThaiIfMinimumSiSo: Class not found for ID_LopHoc=" + idLopHoc);
+                return new OperationResult(false, "Lớp học không tồn tại!");
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("SQL Error in updateTrangThaiIfMinimumSiSo: " + e.getMessage()
+                + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+        e.printStackTrace();
+        return new OperationResult(false, "Lỗi cơ sở dữ liệu khi cập nhật trạng thái lớp học: " + e.getMessage());
+    } finally {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection Close Error in updateTrangThaiIfMinimumSiSo: " + e.getMessage()
+                    + " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
+            e.printStackTrace();
+        }
+    }
+}
 }

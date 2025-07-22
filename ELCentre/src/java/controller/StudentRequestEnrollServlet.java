@@ -1,5 +1,4 @@
 package controller;
-
 import dal.*;
 import dao.*;
 import jakarta.servlet.ServletException;
@@ -24,24 +23,23 @@ public class StudentRequestEnrollServlet extends HttpServlet {
         }
 
         String classCode = request.getParameter("classCode");
-        if (classCode == null || classCode.trim().isEmpty()) {
-            session.setAttribute("message", "❌ Mã lớp không hợp lệ.");
-            response.sendRedirect("StudentViewLopTrongKhoaServlet");
+        if (classCode == null || classCode.isEmpty()) {
+            request.setAttribute("error", "Mã lớp không hợp lệ.");
+            forward(request, response);
             return;
         }
 
         LopHoc lopHoc = LopHocDAO.getLopHocByClassCode(classCode);
-        
         if (lopHoc == null) {
-            session.setAttribute("message", "❌ Không tìm thấy lớp học.");
-            response.sendRedirect("StudentViewLopTrongKhoaServlet");
+            request.setAttribute("error", "Không tìm thấy lớp học.");
+            forward(request, response);
             return;
         }
 
         HocSinh hocSinh = HocSinhDAO.findByTaiKhoanId(user.getID_TaiKhoan());
         if (hocSinh == null) {
-            session.setAttribute("message", "❌ Không tìm thấy thông tin học sinh.");
-            response.sendRedirect("StudentViewLopTrongKhoaServlet");
+            request.setAttribute("error", "Không tìm thấy thông tin học sinh.");
+            forward(request, response);
             return;
         }
 
@@ -50,31 +48,35 @@ public class StudentRequestEnrollServlet extends HttpServlet {
         if (giaoVien.isPresent()) {
             String lopDayTrenTruong = giaoVien.get().getLopDangDayTrenTruong();
             if (lopTrenTruong != null && lopTrenTruong.equalsIgnoreCase(lopDayTrenTruong)) {
-                session.setAttribute("message", "⚠️ Lớp bạn đang học trùng với lớp giáo viên đang dạy trên trường.");
-                response.sendRedirect("StudentViewLopTrongKhoaServlet");
+                request.setAttribute("error", "Lớp bạn đang học trùng với lớp giáo viên đang dạy trên trường.");
+                forward(request, response);
                 return;
             }
         }
 
         boolean daGui = ThongBaoDAO.checkRequestExists(user.getID_TaiKhoan(), classCode);
         if (daGui) {
-            session.setAttribute("message", "⚠️ Bạn đã gửi yêu cầu đăng ký lớp này trước đó.");
-            response.sendRedirect("StudentViewLopTrongKhoaServlet");
+            request.setAttribute("error", "Bạn đã gửi yêu cầu trước đó.");
+            forward(request, response);
             return;
         }
 
         ThongBao thongBao = new ThongBao();
         thongBao.setID_TaiKhoan(user.getID_TaiKhoan());
-        thongBao.setNoiDung("📝 Yêu cầu đăng ký vào lớp " + classCode);
+        thongBao.setNoiDung("Yêu cầu đăng ký vào lớp " + classCode);
         thongBao.setThoiGian(LocalDateTime.now());
 
         boolean result = ThongBaoDAO.insertRequestJoinClass(thongBao);
         if (result) {
-            session.setAttribute("message", "✅ Gửi yêu cầu đăng ký thành công. Vui lòng chờ xác nhận từ quản trị.");
+            request.setAttribute("success", "Gửi yêu cầu đăng ký thành công.");
         } else {
-            session.setAttribute("message", "❌ Không thể gửi yêu cầu đăng ký lớp. Vui lòng thử lại sau.");
+            request.setAttribute("error", "Không thể gửi yêu cầu.");
         }
+        forward(request, response);
+    }
 
-        response.sendRedirect("StudentViewLopTrongKhoaServlet");
+    private void forward(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/views/student/studentViewLopTrongKhoa.jsp").forward(request, response);
     }
 }

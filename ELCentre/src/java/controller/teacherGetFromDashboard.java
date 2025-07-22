@@ -4,11 +4,13 @@ package controller;
 import dal.HocSinhDAO;
 import dal.DiemDanhDAO;
 import dal.GiaoVienDAO;
+import dal.HoTroDAO;
 import dal.KhoaHocDAO;
 import dal.LichHocDAO;
 import dal.LopHocDAO;
 import dal.NopBaiTapDAO;
 import dal.TaiBaiTapDAO;
+import dal.ThongBaoDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -28,6 +30,7 @@ import java.util.Map;
 import model.DiemDanh;
 import model.GiaoVien;
 import model.GiaoVien_TruongHoc;
+import model.HoTro;
 import model.HocSinh;
 import model.KhoaHoc;
 import model.LichHoc;
@@ -35,6 +38,7 @@ import model.LopHoc;
 import model.NopBaiTapInfo;
 import model.TaiKhoan;
 import model.TaoBaiTap;
+import model.ThongBao;
 
 @MultipartConfig 
 public class teacherGetFromDashboard extends HttpServlet {
@@ -53,7 +57,7 @@ public class teacherGetFromDashboard extends HttpServlet {
         if (action == null) action = "";
         HttpSession session = request.getSession();
         if (session.getAttribute("user") == null) {
-            response.sendRedirect("views/login.jsp"); // Hoặc trang đăng nhập của bạn
+            response.sendRedirect("views/login.jsp"); 
             return;
         }
         switch (action) {
@@ -67,7 +71,7 @@ public class teacherGetFromDashboard extends HttpServlet {
                 showStudentList(request, response);
                 break;    
             case "assignments":
-                showAssignmentPage(request, response); // Gọi phương thức hiển thị trang bài tập
+                showAssignmentPage(request, response); 
                 break;
             case "viewSubmissions":
                 showSubmissionsPage(request, response);
@@ -79,65 +83,96 @@ public class teacherGetFromDashboard extends HttpServlet {
             showClassAttendanceReport(request, response);
             break;
             case "thongbao":
+                showThongBao(request, response) ;
                 break;
             case "blog":
                 break;
             case "hotro":
-                break;              
+                showHoTro(request, response) ; 
+                break;
             default:
                 response.sendRedirect("TeacherDashboard");
                 break;
         }
     }
-    
-     @Override
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Lấy tham số action, nếu null thì gán bằng chuỗi rỗng để tránh lỗi
-    String action = request.getParameter("action");
-    if (action == null) {
-        action = "";
+        // get action parameter
+        String action = request.getParameter("action");
+        if (action == null) {
+            action = "";
+        }
+        switch (action) {
+            case "submitAttendance":
+                saveAttendance(request, response);
+                break;
+
+            case "updateNote":
+                updateScheduleNote(request, response);
+                break;
+
+            case "createAssignment":
+                createAssignment(request, response);
+                break;
+            case "gradeSubmission":
+                gradeSubmission(request, response);
+                break;
+            default:
+                doGet(request, response);
+                break;
+        }
+    }
+
+    private void showHoTro(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();     
+        TaiKhoan user = (TaiKhoan) session.getAttribute("user");
+        ArrayList<HoTro> hotros = HoTroDAO.getHoTroByIdTaiKhoan(user.getID_TaiKhoan()) ; 
+        if (hotros == null ) {
+            request.setAttribute("message", "Không có yêu cầu hỗ trợ nào đã được gửi!");
+            request.getRequestDispatcher("/views/teacher/teacherReceiveHoTro.jsp").forward(request, response);
+        } else {
+            session.setAttribute("hotros",hotros );
+            request.getRequestDispatcher("/views/teacher/teacherReceiveHoTro.jsp").forward(request, response);
+        }
     }
     
-    // Sử dụng switch-case để dễ dàng thêm các hành động POST khác trong tương lai
-    switch (action) {
-        case "submitAttendance":
-            saveAttendance(request, response);
-            break;
-            
-        case "updateNote":
-            updateScheduleNote(request, response);
-            break;
-
-        case "createAssignment": 
-            createAssignment(request, response);
-            break;
-        case "gradeSubmission":
-            gradeSubmission(request, response);
-            break;
-        default:
-            // Nếu không có action nào khớp, có thể gọi doGet hoặc báo lỗi
-            // Gọi doGet là một lựa chọn phổ biến
-            
-            break;
-    }
+    private void showThongBao(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();     
+        TaiKhoan user = (TaiKhoan) session.getAttribute("user");
+       
+        List<ThongBao> dsThongBao = ThongBaoDAO.getThongBaoByTaiKhoanId(user.getID_TaiKhoan());
+            request.setAttribute("dsThongBao", dsThongBao);
+        if (dsThongBao == null ) {
+            request.setAttribute("message", "Không có yêu cầu hỗ trợ nào đã được gửi!");
+            request.getRequestDispatcher("/views/teacher/teacherReceiveThongBao.jsp").forward(request, response);
+        } else {
+            session.setAttribute("hotros",dsThongBao );
+            request.getRequestDispatcher("/views/teacher/teacherReceiveThongBao.jsp").forward(request, response);
+        }
     }
     
     private void showClassAttendanceReport(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
     try {
+        //get parameter classId
         int classId = Integer.parseInt(request.getParameter("classId"));
-
-        LopHoc lopHoc = lopHocDAO.getLopHocById(classId);
-        List<HocSinh> studentList = hocSinhDAO.getHocSinhByLopHoc(classId); // Giả sử có phương thức này
-        List<LichHoc> scheduleList = lichHocDAO.getAllSchedulesForClass(classId);
-        Map<String, DiemDanh> attendanceMap = diemDanhDAO.getAttendanceMapForClass(classId);
-
+        
+        LopHoc lopHoc = lopHocDAO.getLopHocById(classId);//get lophoc
+        List<HocSinh> studentList = hocSinhDAO.getHocSinhByLopHoc(classId); //get list student
+        List<LichHoc> scheduleList = lichHocDAO.getAllSchedulesForClass(classId); //get schedule
+        Map<String, DiemDanh> attendanceMap = diemDanhDAO.getAttendanceMapForClass(classId); //diemdanh
+        
+        //set Attribute 
         request.setAttribute("lopHoc", lopHoc);
         request.setAttribute("studentList", studentList);
         request.setAttribute("scheduleList", scheduleList);
         request.setAttribute("attendanceMap", attendanceMap);
         
+        //request to the new page
         request.getRequestDispatcher("/views/teacher/classAttendanceReport.jsp").forward(request, response);
     } catch (Exception e) {
         e.printStackTrace();
@@ -150,7 +185,7 @@ public class teacherGetFromDashboard extends HttpServlet {
     TaiKhoan user = (TaiKhoan) session.getAttribute("user");
     int idTaiKhoan = user.getID_TaiKhoan();
 
-    // 1. Lấy các tham số từ request
+    //get request
     String keyword = request.getParameter("keyword") == null ? "" : request.getParameter("keyword");
     String courseParam = request.getParameter("courseId") == null ? "0" : request.getParameter("courseId");
     String yearParam = request.getParameter("creationYear") == null ? "0" : request.getParameter("creationYear");
@@ -162,30 +197,30 @@ public class teacherGetFromDashboard extends HttpServlet {
         int currentPage = Integer.parseInt(pageStr);
         int itemsPerPage = 10;
 
-        // 2. Lấy dữ liệu từ DAO
+        // get data from DAO
         int totalItems = lopHocDAO.getFilteredLopHocCount(idTaiKhoan, keyword, courseId, creationYear);
         List<LopHoc> classList = lopHocDAO.getFilteredLopHoc(idTaiKhoan, keyword, courseId, creationYear, currentPage, itemsPerPage);
         
-        // Lấy dữ liệu cho các dropdown bộ lọc
+        // get data for dropdown
         KhoaHocDAO khoaHocDAO = new KhoaHocDAO();
         List<KhoaHoc> courseList = khoaHocDAO.adminGetAllKhoaHoc();
         List<Integer> yearList = lopHocDAO.getDistinctCreationYears();
         
-        // 3. Tính toán phân trang
+        // pagination
         int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
-
-        // 4. Đặt thuộc tính cho JSP
+        
+        // set attribute
         request.setAttribute("classList", classList);
         request.setAttribute("courseList", courseList);
         request.setAttribute("yearList", yearList);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("currentPage", currentPage);
         
-        // Giữ lại giá trị lọc của người dùng
         request.setAttribute("keyword", keyword);
         request.setAttribute("selectedCourseId", courseId);
         request.setAttribute("selectedYear", creationYear);
-
+        
+        //request to jsp
         request.getRequestDispatcher("/views/teacher/attendanceOverview.jsp").forward(request, response);
 
     } catch (NumberFormatException e) {
@@ -231,18 +266,16 @@ public class teacherGetFromDashboard extends HttpServlet {
     try {
         int classId = Integer.parseInt(request.getParameter("classId"));
         
-        // Lấy thông tin lớp học
+        //get class's information
         LopHoc lopHoc = lopHocDAO.getLopHocById(classId);
 
-        // ✅ KIỂM TRA NULL NGAY LẬP TỨC
+        //check null
         if (lopHoc == null) {
-            // Nếu không tìm thấy lớp, không thể tiếp tục. Chuyển hướng về trang danh sách.
-            System.err.println("Không tìm thấy lớp học với ID: " + classId);
             response.sendRedirect(request.getContextPath() + "/teacherGetFromDashboard?action=lophoc&error=class_not_found");
-            return; // Dừng lại ngay lập tức
+            return;
         }
 
-        // Nếu lớp học tồn tại, mới tiếp tục lấy danh sách bài tập
+        // if class existed, get lists
         List<TaoBaiTap> assignmentList = taiBaiTapDAO.getAssignmentsByClassId(classId);
         
         request.setAttribute("assignmentList", assignmentList);
@@ -254,11 +287,8 @@ public class teacherGetFromDashboard extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/teacherGetFromDashboard?action=lophoc&error=invalidClassId");
     }
 }
-    
-    /**
-     * ✅ THÊM PHƯƠNG THỨC MỚI
-     * Xử lý việc tạo và lưu một bài tập mới.
-     */
+        
+    //Create Assignment for each class
         private void createAssignment(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException {
             HttpSession session = request.getSession();
@@ -266,16 +296,15 @@ public class teacherGetFromDashboard extends HttpServlet {
             GiaoVienDAO gvDao = new GiaoVienDAO();
 
             try {
-                // Lấy thông tin từ form
+                //get data from form
                 String classIdStr = request.getParameter("classId");
-                System.out.println("classId received: " + classIdStr); // Log
                 int classId = Integer.parseInt(classIdStr);
                 String tenBaiTap = request.getParameter("tenBaiTap");
                 String moTa = request.getParameter("moTa");
                 LocalDate deadline = LocalDate.parse(request.getParameter("deadline"));
                 int teacherId = gvDao.getGiaoVienByID(user.getID_TaiKhoan()).getID_GiaoVien();
 
-                // Xử lý file upload
+                //execute file
                 String fileName = null;
                 Part filePart = request.getPart("assignmentFile");
                 if (filePart != null && filePart.getSize() > 0) {
@@ -283,14 +312,12 @@ public class teacherGetFromDashboard extends HttpServlet {
                     String uploadPath = getServletContext().getRealPath("") + "uploads";
                     Path uploadDirPath = Paths.get(uploadPath);
                     if (!Files.exists(uploadDirPath)) {
-                        System.out.println("Creating directory: " + uploadDirPath); // Log
                         Files.createDirectories(uploadDirPath);
                     }
-                    System.out.println("Writing file: " + fileName); // Log
                     filePart.write(uploadPath + "/" + fileName);
                 }
 
-                // Tạo đối tượng bài tập mới
+                //create object newAssignment
                 TaoBaiTap newAssignment = new TaoBaiTap();
                 newAssignment.setID_LopHoc(classId);
                 newAssignment.setTenBaiTap(tenBaiTap);
@@ -300,12 +327,10 @@ public class teacherGetFromDashboard extends HttpServlet {
                 newAssignment.setNgayTao(LocalDate.now());
                 newAssignment.setFileName(fileName);
 
-                // Lưu thông tin bài tập
-                System.out.println("Adding assignment: " + tenBaiTap); // Log
+                //add assignment to db
                 taiBaiTapDAO.addAssignment(newAssignment);
-                System.out.println("Assignment added successfully"); // Log
 
-                // Chuyển hướng thành công
+                //requests
                 response.sendRedirect(request.getContextPath() + "/teacherGetFromDashboard?action=assignments&classId=" + classId + "&create=success");;
 
             } catch (Exception e) {
@@ -324,21 +349,21 @@ public class teacherGetFromDashboard extends HttpServlet {
         try {
             int classId = Integer.parseInt(request.getParameter("classId"));
 
-            // Lấy danh sách học sinh từ DAO
+            // get studentList from DAO and db
             List<HocSinh> studentList = hocSinhDAO.getHocSinhByLopHoc(classId);
             
-            // Lấy thông tin lớp học để hiển thị tên lớp
+            // get infor to display name
             LopHoc lopHoc = lopHocDAO.getLopHocById(classId);
 
-            // Đặt các thuộc tính vào request
+            // set attribute
             request.setAttribute("studentList", studentList);
             request.setAttribute("lopHoc", lopHoc);
             
-            // Chuyển tiếp đến trang JSP hiển thị danh sách
+            // request to jsp
             request.getRequestDispatcher("/views/teacher/viewStudentList.jsp").forward(request, response);
 
         } catch (NumberFormatException e) {
-            // Xử lý nếu classId không hợp lệ
+            // if classId invalid
             response.sendRedirect(request.getContextPath() + "/teacherGetFromDashboard?action=lophoc&error=invalidClassId");
         }
     }
@@ -351,173 +376,164 @@ public class teacherGetFromDashboard extends HttpServlet {
         LichHocDAO lichHocDAO = new LichHocDAO();
         lichHocDAO.updateNote(scheduleId, noteText);
         
-        response.setStatus(HttpServletResponse.SC_OK); // Trả về mã thành công
+        response.setStatus(HttpServletResponse.SC_OK); // set ok
     } catch (Exception e) {
-        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi server");
+        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Wrong");
     }
 } 
     
-    /**
-     * Hiển thị trang điểm danh với danh sách học sinh.
-     */
+    
     private void showAttendancePage(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    try {
-        int scheduleId = Integer.parseInt(request.getParameter("scheduleId"));
-
-        // ✅ BƯỚC 1: KIỂM TRA NGÀY HỢP LỆ TRƯỚC
-        // Lấy thông tin buổi học từ DB để có ngày học chính xác
-        LichHoc schedule = lichHocDAO.getLichHocById(scheduleId);
-
-        // Nếu buổi học không tồn tại hoặc ngày học không phải hôm nay -> chặn
-        if (schedule == null || !schedule.getNgayHoc().isEqual(java.time.LocalDate.now())) {
-            // Chuyển hướng về trang lịch dạy với thông báo lỗi
-            response.sendRedirect(request.getContextPath() + "/teacher-schedule?error=not_today");
-            return; // Dừng xử lý ngay lập tức
-        }
-
-        // Nếu ngày hợp lệ, mới tiếp tục lấy danh sách sinh viên
-        // 2. Lấy danh sách học sinh và trạng thái điểm danh hiện tại từ DAO
-        List<DiemDanh> studentList = diemDanhDAO.getDiemDanhInfoForSchedule(scheduleId);
-
-        // 3. Đặt dữ liệu vào request để JSP có thể sử dụng
-        request.setAttribute("studentList", studentList);
-        request.setAttribute("scheduleId", scheduleId);
-
-        // 4. Chuyển tiếp đến trang JSP để hiển thị
-        request.getRequestDispatcher("/views/teacher/takeAttendance.jsp").forward(request, response);
-
-    } catch (NumberFormatException e) {
-        System.err.println("Lỗi: scheduleId không hợp lệ.");
-        response.sendRedirect(request.getContextPath() + "/teacher-schedule?error=invalid_id");
-    }
-}
-
-
-private void saveAttendance(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    String saveStatus = "error"; // Mặc định là lỗi
-    int scheduleId = 0;
-
-    try {
-        scheduleId = Integer.parseInt(request.getParameter("scheduleId"));
-
-        // ✅ BƯỚC 2: KIỂM TRA NGÀY HỢP LỆ TRƯỚC KHI LƯU
-        // Đây là lớp bảo vệ quan trọng nhất
-        LichHoc schedule = lichHocDAO.getLichHocById(scheduleId);
-        if (schedule == null || !schedule.getNgayHoc().isEqual(java.time.LocalDate.now())) {
-            // Nếu không phải hôm nay, chuyển hướng về trang lịch dạy với thông báo lỗi
-            response.sendRedirect(request.getContextPath() + "/teacher-schedule?error=save_forbidden");
-            return; // Dừng xử lý, không cho phép lưu
-        }
-
-        String[] studentIds = request.getParameterValues("studentId");
-
-        if (studentIds != null) {
-            List<DiemDanh> attendanceList = new ArrayList<>();
-            for (String studentIdStr : studentIds) {
-                int studentId = Integer.parseInt(studentIdStr);
-                String status = request.getParameter("status_" + studentId);
-                DiemDanh record = new DiemDanh(null, studentId, scheduleId, status, "");
-                attendanceList.add(record);
+            throws ServletException, IOException {
+        try {
+            int scheduleId = Integer.parseInt(request.getParameter("scheduleId"));
+            
+            //get schedule from db
+            LichHoc schedule = lichHocDAO.getLichHocById(scheduleId);
+            
+            //if schedule == null => fail
+            if (schedule == null || !schedule.getNgayHoc().isEqual(java.time.LocalDate.now())) {
+                response.sendRedirect(request.getContextPath() + "/teacher-schedule?error=not_today");
+                return;
             }
-
-            // Lưu từng bản ghi điểm danh
-            for (DiemDanh record : attendanceList) {
-                diemDanhDAO.saveOrUpdateAttendance(record);
-            }
-
-            // Cập nhật trạng thái 'daDiemDanh' cho buổi học
-            lichHocDAO.markAttendanceAsCompleted(scheduleId);
-
-            // Nếu mọi thứ thành công, đổi trạng thái
-            saveStatus = "success";
-        }
-
-    } catch (Exception e) {
-        saveStatus = "error";
-        e.printStackTrace();
-    } finally {
-        // Nếu scheduleId = 0 (do lỗi parse ban đầu), không làm gì cả để tránh lỗi
-        if (scheduleId != 0) {
-            // Đặt thuộc tính báo trạng thái thành công/thất bại
-            request.setAttribute("saveStatus", saveStatus);
-            // Tải lại danh sách sinh viên với trạng thái mới nhất
+            //get studentList from db
             List<DiemDanh> studentList = diemDanhDAO.getDiemDanhInfoForSchedule(scheduleId);
+            
+            //set Attribute
             request.setAttribute("studentList", studentList);
             request.setAttribute("scheduleId", scheduleId);
-            // Chuyển tiếp về trang JSP
+            request.setAttribute("currentNotes", schedule.getGhiChu());
+            
+            //request jsp
             request.getRequestDispatcher("/views/teacher/takeAttendance.jsp").forward(request, response);
+
+        } catch (NumberFormatException e) {
+            System.err.println("WRONG ScheduleID");
+            response.sendRedirect(request.getContextPath() + "/teacher-schedule?error=invalid_id");
         }
     }
-}
+
+    
+    private void saveAttendance(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String saveStatus = "error"; // Initialize status for saving attendance
+        int scheduleId = 0; // Initialize schedule ID
+
+        try {
+            scheduleId = Integer.parseInt(request.getParameter("scheduleId")); // Get schedule ID from request
+            LichHoc schedule = lichHocDAO.getLichHocById(scheduleId); // Fetch schedule details
+
+            // Validate: Ensure schedule exists and is for today's date
+            if (schedule == null || !schedule.getNgayHoc().isEqual(java.time.LocalDate.now())) {
+                response.sendRedirect(request.getContextPath() + "/teacher-schedule?error=save_forbidden"); // Redirect on invalid schedule/date
+                return; 
+            }
+
+            String scheduleNotes = request.getParameter("scheduleNotes"); // Get notes from form
+            String[] studentIds = request.getParameterValues("studentId"); // Get array of student IDs
+
+            if (studentIds != null) { // Process if student IDs are present
+                List<DiemDanh> attendanceList = new ArrayList<>(); // List to store attendance records
+                for (String studentIdStr : studentIds) { // Loop through each student ID
+                    int studentId = Integer.parseInt(studentIdStr); 
+                    String status = request.getParameter("status_" + studentId); // Get attendance status for student
+                    DiemDanh record = new DiemDanh(null, studentId, scheduleId, status, ""); // Create attendance record
+                    attendanceList.add(record); // Add to list
+                }
+
+                // Save attendance records
+                for (DiemDanh record : attendanceList) {
+                    diemDanhDAO.saveOrUpdateAttendance(record); 
+                }
+
+                lichHocDAO.updateNote(scheduleId, scheduleNotes); // Update schedule notes in DB
+                lichHocDAO.markAttendanceAsCompleted(scheduleId); // Mark attendance as complete for this schedule
+
+                saveStatus = "success"; // Set status to success
+            }
+
+        } catch (Exception e) {
+            saveStatus = "error"; // Set status to error if exception occurs
+            e.printStackTrace(); 
+        } finally {
+            if (scheduleId != 0) { // If schedule ID is valid
+                request.setAttribute("saveStatus", saveStatus); // Set save status for JSP
+
+                // Reload and set attributes for the JSP
+                List<DiemDanh> studentList = diemDanhDAO.getDiemDanhInfoForSchedule(scheduleId); 
+                LichHoc updatedSchedule = lichHocDAO.getLichHocById(scheduleId); 
+
+                request.setAttribute("studentList", studentList); // Set student list
+                request.setAttribute("scheduleId", scheduleId); // Set schedule ID
+                request.setAttribute("currentNotes", updatedSchedule.getGhiChu()); // Set updated notes
+
+                request.getRequestDispatcher("/views/teacher/takeAttendance.jsp").forward(request, response); // Forward to JSP
+            }
+        }
+    }
 
     private void getLopHocList(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+        
+        HttpSession session = request.getSession(); 
+        TaiKhoan user = (TaiKhoan) session.getAttribute("user"); // Retrieve user object from session
 
-    HttpSession session = request.getSession();
-    TaiKhoan user = (TaiKhoan) session.getAttribute("user");
+        if (user == null) { // Check if user is logged in
+            response.sendRedirect(request.getContextPath() + "/views/login.jsp"); // Redirect to login if not
+            return; // Stop execution
+        }
 
-    if (user == null) {
-        response.sendRedirect(request.getContextPath() + "/views/login.jsp");
-        return;
+        // Get filter/pagination parameters from request, provide default empty/zero values
+        String keyword = request.getParameter("keyword") == null ? "" : request.getParameter("keyword");
+        String courseParam = request.getParameter("course") == null ? "0" : request.getParameter("course");
+        String yearParam = request.getParameter("creationYear") == null ? "0" : request.getParameter("creationYear");
+        String pageStr = request.getParameter("page") == null ? "1" : request.getParameter("page");
+
+        int courseId = 0; // Initialize course ID
+        int currentPage = 1; // Initialize current page for pagination
+        int creationYear = 0; // Initialize creation year filter
+        int itemsPerPage = 10; // Define items per page for pagination
+
+        try {
+            courseId = Integer.parseInt(courseParam); // Parse course ID
+            currentPage = Integer.parseInt(pageStr); // Parse current page
+            creationYear = Integer.parseInt(yearParam); // Parse creation year
+        } catch (NumberFormatException e) {
+            System.err.println("Parameter parsing error: " + e.getMessage()); // Log parsing errors
+        }
+
+        int idTaiKhoan = user.getID_TaiKhoan(); // Get user's account ID
+
+        GiaoVien_TruongHoc gv = giaoVienDAO.getGiaoVienByID(idTaiKhoan); 
+        if (gv == null) { // Check if teacher info is found
+            response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=user_info_not_found"); // Redirect if not
+            return; // Stop execution
+        }
+
+        // Call DAO methods with all filter and pagination parameters
+        int totalItems = lopHocDAO.getFilteredLopHocCount(idTaiKhoan, keyword, courseId, creationYear); // Get total count of filtered classes
+        List<LopHoc> lopHocList = lopHocDAO.getFilteredLopHoc(idTaiKhoan, keyword, courseId, creationYear, currentPage, itemsPerPage); // Get filtered class list for current page
+
+        // Get data for filter dropdowns
+        List<KhoaHoc> khoaHocList = khoaHocDAO.adminGetAllKhoaHoc(); // Get all courses for filter dropdown
+        List<Integer> yearList = lopHocDAO.getDistinctCreationYears(); // Get distinct creation years for filter dropdown
+
+        int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage); // Calculate total pages
+        if (totalPages == 0) totalPages = 1; // Ensure at least 1 page if no items
+
+        request.setAttribute("gv", gv); // Set teacher object
+        request.setAttribute("lopHocList", lopHocList); // Set filtered class list
+        request.setAttribute("khoaHocList", khoaHocList); // Set course list for filter
+        request.setAttribute("yearList", yearList); // Set year list for filter
+        request.setAttribute("currentPage", currentPage); // Set current page for pagination
+        request.setAttribute("totalPages", totalPages); // Set total pages for pagination
+
+        // Set filter values back to request to pre-fill form on JSP
+        request.setAttribute("keyword", keyword); // Set keyword
+        request.setAttribute("selectedCourse", courseId); // Set selected course ID
+        request.setAttribute("selectedYear", creationYear); // Set selected creation year
+
+        // Forward to JSP 
+        request.getRequestDispatcher("views/teacher/viewAttendedClasses.jsp").forward(request, response); // Forward to JSP to display classes
     }
-
-    // --- 1. Đọc và xử lý tham số ---
-    String keyword = request.getParameter("keyword") == null ? "" : request.getParameter("keyword");
-    String courseParam = request.getParameter("course") == null ? "0" : request.getParameter("course");
-    String yearParam = request.getParameter("creationYear") == null ? "0" : request.getParameter("creationYear");
-    String pageStr = request.getParameter("page") == null ? "1" : request.getParameter("page");
-    
-    int courseId = 0;
-    int currentPage = 1;
-    int creationYear = 0;
-    int itemsPerPage = 10;
-    
-    try {
-        courseId = Integer.parseInt(courseParam);
-        currentPage = Integer.parseInt(pageStr);
-        creationYear = Integer.parseInt(yearParam);
-    } catch (NumberFormatException e) {
-        System.err.println("Lỗi parse tham số: " + e.getMessage());
-        // Giữ lại giá trị mặc định nếu có lỗi
-    }
-
-    // --- 2. Truy vấn dữ liệu từ Database ---
-    int idTaiKhoan = user.getID_TaiKhoan();
-    
-    GiaoVien_TruongHoc gv = giaoVienDAO.getGiaoVienByID(idTaiKhoan);
-    if (gv == null) {
-        response.sendRedirect(request.getContextPath() + "/views/login.jsp?error=user_info_not_found");
-        return;
-    }
-
-    // Gọi các phương thức DAO với đầy đủ tham số
-    int totalItems = lopHocDAO.getFilteredLopHocCount(idTaiKhoan, keyword, courseId, creationYear);
-    List<LopHoc> lopHocList = lopHocDAO.getFilteredLopHoc(idTaiKhoan, keyword, courseId, creationYear, currentPage, itemsPerPage);
-    
-    // Lấy dữ liệu cho các bộ lọc
-    List<KhoaHoc> khoaHocList = khoaHocDAO.adminGetAllKhoaHoc();
-    List<Integer> yearList = lopHocDAO.getDistinctCreationYears();
-
-    // --- 3. Tính toán phân trang ---
-    int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
-    if (totalPages == 0) totalPages = 1;
-
-    // --- 4. Gửi dữ liệu sang View (JSP) ---
-    request.setAttribute("gv", gv);
-    request.setAttribute("lopHocList", lopHocList);
-    request.setAttribute("khoaHocList", khoaHocList);
-    request.setAttribute("yearList", yearList);
-    request.setAttribute("currentPage", currentPage);
-    request.setAttribute("totalPages", totalPages);
-    
-    // Giữ lại các giá trị đã lọc để hiển thị trên form
-    request.setAttribute("keyword", keyword);
-    request.setAttribute("selectedCourse", courseId); // Đổi tên cho nhất quán
-    request.setAttribute("selectedYear", creationYear);
-
-    // --- 5. Chuyển tiếp đến JSP ---
-    request.getRequestDispatcher("views/teacher/viewAttendedClasses.jsp").forward(request, response);
-}
 }

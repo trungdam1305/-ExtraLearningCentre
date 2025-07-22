@@ -637,7 +637,7 @@
             </div>
         </div>
 
-       <div class="sidebar">
+        <div class="sidebar">
             <h4>EL CENTRE</h4>
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>

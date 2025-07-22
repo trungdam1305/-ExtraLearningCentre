@@ -1,4 +1,7 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package controller.ManageCourses;
 
 import dal.LopHocInfoDTODAO;
@@ -28,6 +31,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
+/**
+ *
+ * @author Vuh26
+ */
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
@@ -52,7 +60,7 @@ public class ManageClass extends HttpServlet {
             phongHocList = phongHocDAO.getAllPhongHoc();
             session.setAttribute("slotHocList", slotHocList);
             session.setAttribute("phongHocList", phongHocList);
-            session.setMaxInactiveInterval(1800); // 30 phút
+            session.setMaxInactiveInterval(1800); 
         }
 
         request.setAttribute("classCode", classCode);
@@ -113,7 +121,7 @@ public class ManageClass extends HttpServlet {
         }
 
         // Validate trangThai
-        if (trangThai == null || trangThai.trim().isEmpty() || !List.of("Inactive", "Active", "Finished", "Chưa học","Đang học","Kết thúc").contains(trangThai)) {
+        if (trangThai == null || trangThai.trim().isEmpty() || !List.of("Inactive", "Active", "Finished", "Chưa học", "Đang học", "Kết thúc").contains(trangThai)) {
             return "Trạng thái không hợp lệ!";
         }
 
@@ -147,6 +155,9 @@ public class ManageClass extends HttpServlet {
             if (siSoToiThieu > siSoToiDa) {
                 return "Sĩ số tối thiểu không được lớn hơn sĩ số tối đa!";
             }
+//            if (isUpdate && siSoCurrent < siSoToiThieu) {
+//                return "Sĩ số hiện tại (" + siSoCurrent + ") nhỏ hơn sĩ số tối thiểu (" + siSoToiThieu + "), không thể cập nhật!";
+//            }
         } catch (NumberFormatException e) {
             return "Sĩ số tối thiểu không hợp lệ!";
         }
@@ -189,7 +200,7 @@ public class ManageClass extends HttpServlet {
         if (ngayHocs.length != idSlotHocs.length || ngayHocs.length != idPhongHocs.length) {
             return "Dữ liệu lịch học trong tương lai không đồng bộ!";
         }
-        
+
         LocalDate today = LocalDate.now();
         for (String ngayHoc : ngayHocs) {
             if (ngayHoc == null || ngayHoc.trim().isEmpty()) {
@@ -245,7 +256,7 @@ public class ManageClass extends HttpServlet {
             return "Lỗi khi xử lý file ảnh: " + e.getMessage();
         }
 
-        return null; // Không có lỗi
+        return null; 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -361,7 +372,7 @@ public class ManageClass extends HttpServlet {
                 int totalItems = lopHocDAO.countClasses(null, null, idKhoaHoc, idKhoi, null, null, null);
                 int totalPages = (int) Math.ceil((double) totalItems / 10);
 
-                // Lấy danh sách giáo viên dựa trên chuyên môn của khóa học
+                // Lấy danh sách giáo viên dựa trên chuyên môn của khóa họcsd
                 List<GiaoVien> teacherList = giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc());
                 if (teacherList.isEmpty()) {
                     System.out.println("No teachers found for tenKhoaHoc=" + khoaHoc.getTenKhoaHoc() + " in refresh action");
@@ -424,7 +435,7 @@ public class ManageClass extends HttpServlet {
                     phongHocList = phongHocDAO.getAllPhongHoc();
                     session.setAttribute("slotHocList", slotHocList);
                     session.setAttribute("phongHocList", phongHocList);
-                    session.setMaxInactiveInterval(1800); // 30 phút
+                    session.setMaxInactiveInterval(1800);
                 }
 
                 if (slotHocList.isEmpty() || phongHocList.isEmpty()) {
@@ -467,6 +478,7 @@ public class ManageClass extends HttpServlet {
                     return;
                 }
 
+                //lấy lớp học dựa theo id lớp học truyền vô
                 LopHocInfoDTO lopHoc = lopHocDAO.getLopHocInfoById(idLopHoc);
                 if (lopHoc == null) {
                     System.out.println("LopHoc not found for ID_LopHoc=" + idLopHoc);
@@ -488,9 +500,10 @@ public class ManageClass extends HttpServlet {
                     phongHocList = phongHocDAO.getAllPhongHoc();
                     session.setAttribute("slotHocList", slotHocList);
                     session.setAttribute("phongHocList", phongHocList);
-                    session.setMaxInactiveInterval(1800); // 30 phút
+                    session.setMaxInactiveInterval(1800); 
                 }
 
+                //lấy danh sách giáo viên có chuyên môn trùng với khóa học
                 List<GiaoVien> teacherList = giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc());
                 if (teacherList.isEmpty()) {
                     System.out.println("updateClass: No teachers found for tenKhoaHoc=" + khoaHoc.getTenKhoaHoc());
@@ -566,7 +579,7 @@ public class ManageClass extends HttpServlet {
         }
 
         try {
-            if ("addClass".equalsIgnoreCase(action)) {
+            if ("addClass".equalsIgnoreCase(action)) {  //thêm lớp học
                 String classCode = request.getParameter("classCode");
                 String tenLopHoc = request.getParameter("tenLopHoc");
                 String trangThai = request.getParameter("trangThai");
@@ -672,6 +685,7 @@ public class ManageClass extends HttpServlet {
                 }
 
                 long startTime = System.currentTimeMillis();
+                //thêm khóa học
                 AddLopHocResult result = lopHocDAO.addLopHoc(
                         tenLopHoc.trim(),
                         classCode.trim(),
@@ -717,7 +731,8 @@ public class ManageClass extends HttpServlet {
                     request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc()));
                     request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
                 }
-            } else if ("deleteClass".equalsIgnoreCase(action)) {
+                
+            } else if ("deleteClass".equalsIgnoreCase(action)) { //xóa lớp học
                 String csrfToken = request.getParameter("csrfToken");
                 String sessionCsrfToken = (String) request.getSession().getAttribute("csrfToken");
                 if (csrfToken == null || !csrfToken.equals(sessionCsrfToken)) {
@@ -783,7 +798,7 @@ public class ManageClass extends HttpServlet {
                 request.setAttribute("ID_KhoaHoc", idKhoaHoc);
                 request.setAttribute("ID_Khoi", idKhoi);
                 request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
-            } else if ("updateClass".equalsIgnoreCase(action)) {
+            } else if ("updateClass".equalsIgnoreCase(action)) {  //cập nhật thông tin lướp học
                 String idLopHocStr = request.getParameter("ID_LopHoc");
                 if (idLopHocStr == null || idLopHocStr.trim().isEmpty()) {
                     System.out.println("Missing ID_LopHoc for update");
@@ -1051,3 +1066,4 @@ public class ManageClass extends HttpServlet {
         }
     }
 }
+    

@@ -203,7 +203,12 @@
         <div class="wrapper">
             <%@ include file="/views/student/sidebar.jsp" %>
             <div class="main-area">
-            
+                <c:if test="${not empty sessionScope.message}">
+                    <div class="message success">
+                        <c:out value="${sessionScope.message}" />
+                    </div>
+                    <c:remove var="message" scope="session" />
+                </c:if>            
             <div class="header" style="
                 background-color: #1F4E79;
                 color: white;

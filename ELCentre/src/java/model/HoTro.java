@@ -15,7 +15,7 @@ public class HoTro {
     private String MoTa;
     private int ID_TaiKhoan;
     private String DaDuyet ; 
-    private String PhanHoi;
+    private String PhanHoi ; 
 
     public HoTro() {
     }
@@ -31,53 +31,11 @@ public class HoTro {
         this.PhanHoi = PhanHoi;
     }
 
-    public int getID_HoTro() {
-        return ID_HoTro;
+    public String getPhanHoi() {
+        return PhanHoi;
     }
 
-    public void setID_HoTro(int ID_HoTro) {
-        this.ID_HoTro = ID_HoTro;
-    }
-
-    public String getHoTen() {
-        return HoTen;
-    }
-
-    public void setHoTen(String HoTen) {
-        this.HoTen = HoTen;
-    }
-
-    public String getTenHoTro() {
-        return TenHoTro;
-    }
-
-    public void setTenHoTro(String TenHoTro) {
-        this.TenHoTro = TenHoTro;
-    }
-
-    public LocalDateTime getThoiGian() {
-        return ThoiGian;
-    }
-
-    public void setThoiGian(LocalDateTime ThoiGian) {
-        this.ThoiGian = ThoiGian;
-    }
-
-    public String getMoTa() {
-        return MoTa;
-    }
-
-    public void setMoTa(String MoTa) {
-        this.MoTa = MoTa;
-    }
-
-    public int getID_TaiKhoan() {
-        return ID_TaiKhoan;
-    }
-
-    public void setID_TaiKhoan(int ID_TaiKhoan) {
-        this.ID_TaiKhoan = ID_TaiKhoan;
-    }
+    
 
     public String getDaDuyet() {
         return DaDuyet;
@@ -87,11 +45,54 @@ public class HoTro {
         this.DaDuyet = DaDuyet;
     }
 
-    public String getPhanHoi() {
-        return PhanHoi;
+    public int getID_HoTro() {
+        return ID_HoTro;
     }
 
-    public void setPhanHoi(String PhanHoi) {
-        this.PhanHoi = PhanHoi;
-    } 
+    public String getHoTen() {
+        return HoTen;
+    }
+
+    public String getTenHoTro() {
+        return TenHoTro;
+    }
+
+    public LocalDateTime getThoiGian() {
+        return ThoiGian;
+    }
+
+    public String getMoTa() {
+        return MoTa;
+    }
+
+    public int getID_TaiKhoan() {
+        return ID_TaiKhoan;
+    }
+
+    public void setID_HoTro(int ID_HoTro) {
+        this.ID_HoTro = ID_HoTro;
+    }
+
+    public void setHoTen(String HoTen) {
+        this.HoTen = HoTen;
+    }
+
+    public void setTenHoTro(String TenHoTro) {
+        this.TenHoTro = TenHoTro;
+    }
+
+    public void setThoiGian(LocalDateTime ThoiGian) {
+        this.ThoiGian = ThoiGian;
+    }
+
+    public void setMoTa(String MoTa) {
+        this.MoTa = MoTa;
+    }
+
+    public void setID_TaiKhoan(int ID_TaiKhoan) {
+        this.ID_TaiKhoan = ID_TaiKhoan;
+    }
+    
+    
+    
 }

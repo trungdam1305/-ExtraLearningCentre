@@ -4,10 +4,8 @@
  */
 package dal;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.KhoiHoc;
@@ -26,6 +24,7 @@ public class KhoiHocDAO {
                 kh.setID_Khoi(rs.getInt("ID_Khoi"));
                 kh.setTenKhoi(rs.getString("TenKhoi"));
                 kh.setStatus_Khoi(rs.getInt("Status_Khoi"));
+                kh.setImage(rs.getString("Image"));
                 list.add(kh);
             }
 
@@ -36,33 +35,7 @@ public class KhoiHocDAO {
     }
     
     
-        
-    public static List<KhoiHoc> getAllKhoiFromKhoaHoc() {
-        List<KhoiHoc> list = new ArrayList<>();
-        String sql = """
-            SELECT DISTINCT kh.ID_Khoi, kh.TenKhoi
-            FROM KhoaHoc k
-            JOIN KhoiHoc kh ON k.ID_Khoi = kh.ID_Khoi
-            WHERE k.TrangThai = 'Active'
-            ORDER BY kh.TenKhoi
-        """;
-
-        try (Connection conn = DBContext.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                KhoiHoc kh = new KhoiHoc();
-                kh.setID_Khoi(rs.getInt("ID_Khoi"));
-                kh.setTenKhoi(rs.getString("TenKhoi"));
-                list.add(kh);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return list;
-    }
+    
     
     //Debugging DAO
     public static void main(String[] args) {

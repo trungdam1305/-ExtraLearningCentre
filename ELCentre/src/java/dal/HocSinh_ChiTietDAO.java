@@ -22,15 +22,19 @@ public class HocSinh_ChiTietDAO {
 
         try {
             String sql = """
-                         select  LH.ID_KhoaHoc ,  HSLH.ID_LopHoc , HSLH.ID_HocSinh ,GV.ID_GiaoVien  , LH.TenLopHoc   ,  GV.HoTen , LH.GhiChu , LH.TrangThai , LH.SoTien , LH.NgayTao , LH.Image    from HocSinh_LopHoc HSLH
-                         join  LopHoc LH
-                         on HSLH.ID_LopHoc = LH.ID_LopHoc 
-                         JOIN GiaoVien_LopHoc GVLH 
-                         on HSLH.ID_LopHoc = GVLH.ID_LopHoc
-                         JOIN GiaoVien GV 
-                         on GV.ID_GiaoVien = GVLH.ID_GiaoVien
-                         WHERE HSLH.ID_HocSinh = ?  
-                         and LH.TrangThai = N'Đang học'
+
+                         select DISTINCT  LH.ID_KhoaHoc ,  HSLH.ID_LopHoc , HSLH.ID_HocSinh ,GV.ID_GiaoVien  , LH.TenLopHoc   ,  GV.HoTen , LH.GhiChu , LH.TrangThai , LH.SoTien , HP.TinhTrangThanhToan , LH.NgayTao , LH.Image    from HocSinh_LopHoc HSLH
+                        join  LopHoc LH
+                        on HSLH.ID_LopHoc = LH.ID_LopHoc 
+                        JOIN GiaoVien_LopHoc GVLH 
+                        on HSLH.ID_LopHoc = GVLH.ID_LopHoc
+                        JOIN GiaoVien GV 
+                        on GV.ID_GiaoVien = GVLH.ID_GiaoVien
+                        JOIN HocPhi HP 
+                        on  HP.ID_LopHoc = HSLH.ID_LopHoc
+                        WHERE HSLH.ID_HocSinh = ? 
+                        and LH.TrangThai = N'Đang học'
+
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             statement.setString(1, ID_HocSinh);
@@ -45,7 +49,9 @@ public class HocSinh_ChiTietDAO {
                         rs.getString("HoTen"),
                         rs.getString("GhiChu"),
                         rs.getString("TrangThai"),
+                        
                         rs.getString("SoTien"),
+                        rs.getString("TinhTrangThanhToan") , 
                         rs.getTimestamp("NgayTao").toLocalDateTime(),
                         rs.getString("Image")
                 );
@@ -167,7 +173,7 @@ public class HocSinh_ChiTietDAO {
         }
     }
     
-   public static boolean updateTruongLopGiaoVien(String idTruongHoc  , String lopTrenTruong  , String sdt , String hot , String ID_GiaoVien) {
+   public static boolean updateTruongLopGiaoVien(String idTruongHoc  , String lopTrenTruong  , String sdt , String hot , String ID_GiaoVien , int Luong ) {
         
         DBContext db = DBContext.getInstance() ; 
        int rs = 0 ; 
@@ -176,6 +182,7 @@ public class HocSinh_ChiTietDAO {
                          update GiaoVien 
                          set 
                          ID_TruongHoc = ? , 
+                         Luong = ? , 
                          IsHot = ?  , 
                          LopDangDayTrenTruong = ? , 
                          SDT = ? 
@@ -183,10 +190,11 @@ public class HocSinh_ChiTietDAO {
                          """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
             statement.setString(1, idTruongHoc);
-            statement.setString(2, hot);
-            statement.setString(3, lopTrenTruong);
-            statement.setString(4, sdt);
-            statement.setString(5, ID_GiaoVien);
+            statement.setInt(2, Luong);
+            statement.setString(3, hot);
+            statement.setString(4, lopTrenTruong);
+            statement.setString(5, sdt);
+            statement.setString(6, ID_GiaoVien);
            
              rs = statement.executeUpdate() ; 
             while(rs > 0 ){

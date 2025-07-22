@@ -3,6 +3,7 @@ package controller;
 import dal.HocSinhDAO;
 import dal.KhoaHocDAO;
 import dal.LopHocDAO;
+import dao.TaiKhoanDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import model.LopHoc;
@@ -70,57 +71,57 @@ public class LoadClassToTransferServlet extends HttpServlet {
         out.println("</form>");
     }
 
-//    Kiểm tra dữ liệu
-//    public static void main(String[] args) {
-//        String email = "hocsinh4@example.com";
-//        String password = "hspass4";
-//        try {
-//            TaiKhoan user = TaiKhoanDAO.login(email, password);
-//            if (user == null) {
-//                System.out.println("❌ Đăng nhập thất bại: Sai email hoặc mật khẩu.");
-//                return;
-//            }
-//            if (!"Active".equalsIgnoreCase(user.getTrangThai())) {
-//                System.out.println("❌ Tài khoản chưa được kích hoạt.");
-//                return;
-//            }
-//
-//            int idTaiKhoan = user.getID_TaiKhoan();
-//            int idHocSinh = HocSinhDAO.getHocSinhIdByTaiKhoanId(idTaiKhoan);
-//
-//            System.out.println("🧑 Tài khoản: " + user.getEmail());
-//            System.out.println("🎯 ID_TaiKhoan: " + idTaiKhoan + ", ID_HocSinh: " + idHocSinh);
-//
-//            List<LopHoc> lopDangHoc = LopHocDAO.getLopHocDaDangKyByHocSinhId(idHocSinh);
-//            if (lopDangHoc.isEmpty()) {
-//                System.out.println("⚠️ Học sinh chưa đăng ký lớp nào.");
-//                return;
-//            }
-//
-//            LopHoc lopHienTai = lopDangHoc.get(0);
-//            String classCode = lopHienTai.getClassCode();
-//            int khoaHocId = KhoaHocDAO.getKhoaHocIdByClassCode(classCode);
-//
-//            System.out.println("📘 Lớp hiện tại: " + classCode + " | Khóa học ID: " + khoaHocId);
-//
-//            List<String> classCodesDaDangKy = LopHocDAO.getClassCodesByStudentInCourse(idHocSinh, khoaHocId);
-//            List<LopHoc> dsLopCungKhoa = LopHocDAO.getAllClassesInSameCourse(khoaHocId);
-//
-//            List<LopHoc> lopDeChuyen = dsLopCungKhoa.stream()
-//                    .filter(lop -> !classCodesDaDangKy.contains(lop.getClassCode()))
-//                    .collect(Collectors.toList());
-//
-//            System.out.println("\n✅ Các lớp CÓ THỂ CHUYỂN đến:");
-//            if (lopDeChuyen.isEmpty()) {
-//                System.out.println("⚠️ Học sinh đã đăng ký tất cả lớp trong khóa.");
-//            } else {
-//                for (LopHoc lop : lopDeChuyen) {
-//                    System.out.println(" - " + lop.getClassCode() + " | " + lop.getTenLopHoc() + " | Sĩ số: " + lop.getSiSo());
-//                }
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    //iểm tra dữ liệu
+    public static void main(String[] args) {
+        String email = "hocsinh4@example.com";
+        String password = "hspass4";
+        try {
+            TaiKhoan user = TaiKhoanDAO.login(email, password);
+            if (user == null) {
+                System.out.println("❌ Đăng nhập thất bại: Sai email hoặc mật khẩu.");
+                return;
+            }
+            if (!"Active".equalsIgnoreCase(user.getTrangThai())) {
+                System.out.println("❌ Tài khoản chưa được kích hoạt.");
+                return;
+            }
+
+            int idTaiKhoan = user.getID_TaiKhoan();
+            int idHocSinh = HocSinhDAO.getHocSinhIdByTaiKhoanId(idTaiKhoan);
+
+            System.out.println("🧑 Tài khoản: " + user.getEmail());
+            System.out.println("🎯 ID_TaiKhoan: " + idTaiKhoan + ", ID_HocSinh: " + idHocSinh);
+
+            List<LopHoc> lopDangHoc = LopHocDAO.getLopHocDaDangKyByHocSinhId(idHocSinh);
+            if (lopDangHoc.isEmpty()) {
+                System.out.println("⚠️ Học sinh chưa đăng ký lớp nào.");
+                return;
+            }
+
+            LopHoc lopHienTai = lopDangHoc.get(0);
+            String classCode = lopHienTai.getClassCode();
+            int khoaHocId = KhoaHocDAO.getKhoaHocIdByClassCode(classCode);
+
+            System.out.println("📘 Lớp hiện tại: " + classCode + " | Khóa học ID: " + khoaHocId);
+
+            List<String> classCodesDaDangKy = LopHocDAO.getClassCodesByStudentInCourse(idHocSinh, khoaHocId);
+            List<LopHoc> dsLopCungKhoa = LopHocDAO.getAllClassesInSameCourse(khoaHocId);
+
+            List<LopHoc> lopDeChuyen = dsLopCungKhoa.stream()
+                    .filter(lop -> !classCodesDaDangKy.contains(lop.getClassCode()))
+                    .collect(Collectors.toList());
+
+            System.out.println("\n✅ Các lớp CÓ THỂ CHUYỂN đến:");
+            if (lopDeChuyen.isEmpty()) {
+                System.out.println("⚠️ Học sinh đã đăng ký tất cả lớp trong khóa.");
+            } else {
+                for (LopHoc lop : lopDeChuyen) {
+                    System.out.println(" - " + lop.getClassCode() + " | " + lop.getTenLopHoc() + " | Sĩ số: " + lop.getSiSo());
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

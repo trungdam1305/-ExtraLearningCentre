@@ -5,6 +5,7 @@
 --%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.TaiKhoan"%>
 <%@page import="model.KhoaHoc"%>
 <%@page import="dal.KhoaHocDAO"%>
 <%@page import="java.util.*"%>
@@ -12,6 +13,18 @@
 <%@page import="model.Admin"%>
 <%@page import="dal.AdminDAO"%>
 <%@page import="java.util.UUID"%>
+<%
+    // Kiểm tra session và vai trò người dùng
+    TaiKhoan user = (TaiKhoan) session.getAttribute("user"); // Giả sử bạn lưu thông tin người dùng trong session với key là "user"
+
+    // Nếu người dùng chưa đăng nhập (user == null) hoặc không phải là Admin (ID_VaiTro != 1)
+    if (user == null || user.getID_VaiTro() != 1) {
+        // Gửi thông báo lỗi về trang đăng nhập
+        session.setAttribute("error", "Bạn không có quyền truy cập trang này. Vui lòng đăng nhập với tài khoản Admin.");
+        response.sendRedirect(request.getContextPath() + "/views/login.jsp"); // Hoặc trang đăng nhập của bạn
+        return; // Dừng việc xử lý trang hiện tại
+    }
+%>
 <!DOCTYPE html>
 <html lang="vi">
     <head>

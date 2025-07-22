@@ -419,7 +419,7 @@
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp"><i class="fas fa-chart-line"></i> Dashboard</a>
+                 <li><a href="${pageContext.request.contextPath}/adminGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
                 
             </ul>
 
@@ -438,6 +438,7 @@
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
+                <li><a href="${pageContext.request.contextPath}/ManageSchedule"><i class="fas fa-calendar-alt"></i> Lịch học</a></li>
             </ul>
 
             <div class="sidebar-section-title">Hệ thống</div>
@@ -537,9 +538,12 @@
                                                 <a class="btn-action view" title="Chi tiết thông tin và chỉnh sửa thông tin" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=view&id=${giaovien.getID_GiaoVien()}&idTaiKhoan=${giaovien.getID_TaiKhoan()}">
                                                     <i class="fas fa-user-edit"></i> Chi tiết và chỉnh sửa
                                                 </a>
-                                                <a class="btn-action update" title="Xem lớp đang dạy của giáo viên và chuyển lớp" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=viewLopHocGiaoVien&id=${giaovien.getID_GiaoVien()}">
-                                                   <i class="fas fa-chalkboard-teacher"></i> Xem lớp & Chuyển lớp
+                                                <a class="btn-action update" title="Xem lớp đang dạy của giáo viên" href="${pageContext.request.contextPath}/adminActionWithTeacher?action=viewLopHocGiaoVien&id=${giaovien.getID_GiaoVien()}">
+                                                   <i class="fas fa-chalkboard-teacher"></i> Xem tất cả lớp đang dạy
                                                 </a>
+                                                   <a class="btn-action salary" title="Xem lương dự tính" href="${pageContext.request.contextPath}/SalaryCalculation?idGiaoVien=${giaovien.getID_GiaoVien()}">
+                                                <i class="fas fa-money-check-alt"></i> Xem lương dự tính
+                                            </a>
 
                                                 <a class="btn-action enable" title="Gửi thông báo" href="${pageContext.request.contextPath}/views/admin/adminSendNotificationTeacher.jsp?idtaikhoan=${giaovien.getID_TaiKhoan()}">
                                                     <i class="fas fa-bell"></i> Gửi thông báo
@@ -563,7 +567,8 @@
                     <div id="pagination" style="text-align:center; margin-top: 20px;"></div>
                 </div>
                 <div class="back-button">
-                    <a href="${pageContext.request.contextPath}/views/admin/adminDashboard.jsp">← Quay lại trang chủ</a>
+                    <a href="${pageContext.request.contextPath}/adminGoToFirstPage">← Quay lại trang chủ</a>
+                    
                 </div>
             </div>
 

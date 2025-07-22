@@ -3,7 +3,7 @@
     Created on : May 21, 2025, 1:29:23 PM
     Author     : admin
 --%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,7 +13,6 @@
     <!-- Link FontAwesome hoặc các CSS khác nếu cần -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Thêm CSS cơ bản cho menu active */
         .current-menu-item > a {
             color: #fff !important;
             background: rgb(201, 32, 39) !important;
@@ -34,10 +33,45 @@
             margin: 0;
             padding: 0;
         }
+        #main-menu .menu-item-has-children {
+            position: relative;
+            padding-bottom: 15px; 
+        }
+
+        #main-menu .sub-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: -15px; 
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            list-style: none;
+            padding: 10px 0;
+            min-width: 220px;
+            border-radius: 6px;
+        }
+
+        #main-menu .menu-item-has-children:hover > .sub-menu {
+            display: block;
+        }
+
+        #main-menu .sub-menu li a {
+            padding: 10px 20px;
+            display: block;
+            color: #333;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background-color 0.2s;
+        }
+
+        #main-menu .sub-menu li a:hover {
+            background-color: #f5f5f5;
+        }
     </style>
 </head>
 <body>
-    <%-- Lấy URI hiện tại để xác định menu active --%>
     <%
         String uri = request.getRequestURI();
         String context = request.getContextPath();
@@ -81,7 +115,7 @@
                             <ul id="menu-main-menu" class="menu" style="position: relative; transform: translateY(-10px); display: flex; align-items: center; gap: 30px 20px;">
                                 <!--HomePage-->
                                 <li class="menu-item <%= (uri.contains("/HomePage")) ? "current-menu-item" : "" %>">
-                                    <a href="<%= context %>/HomePage">
+                                    <a href="${pageContext.request.contextPath}/HomePage">
                                         <span class='menu-icon fa fa-home'> </span>Trang chủ
                                     </a>
                                 </li>
@@ -93,16 +127,39 @@
                                 </li>
                                 <!--Learning Materials-->
                                 <li class="menu-item <%= uri.contains("/Home-Material") ? "current-menu-item" : "" %>">
-                                    <a href="<%= context %>/HomePageMaterial">
+                                    <a href="${pageContext.request.contextPath}/HomePageMaterial">
                                         <span class='menu-icon fa fa-gift'> </span>Tài Liệu Học
                                     </a>
                                 </li>
                                 <!--Blog-->
-                                <li class="menu-item <%= uri.contains("/Home-Blog") ? "current-menu-item" : "" %>">
-                                    <a href="<%= context %>/HomePageBlog">
-                                        <span class='menu-icon fa fa-pencil'> </span>Blog
-                                    </a>
-                                </li>
+                                <li class="menu-item menu-item-has-children <%= (uri.contains("/HomePageBlog") || uri.contains("search-by-tag")) ? "current-menu-item" : "" %>">
+                                <a href="${pageContext.request.contextPath}/HomePageBlog">
+                                    <span class='menu-icon fa fa-pencil'></span>Bài Viết
+                                </a>
+
+                                <!--Submenu dropdown when hover-->
+                                <ul class="sub-menu">
+                                    <li class="menu-item">
+                                        <a href="${pageContext.request.contextPath}/HomePageBlog">Tất cả bài viết</a>
+                                    </li>
+
+                                    <%-- Kiểm tra xem danh sách keytag từ servlet có tồn tại và không rỗng không --%>
+                                    <c:if test="${not empty availableKeyTags}">
+                                        <li class="menu-item-divider" style="border-top: 1px solid #eee; margin: 5px 0;"></li>
+                                        <li class="menu-item" style="padding: 5px 15px; color: #888; font-size: 0.9em;">Chủ đề nổi bật:</li>
+
+                                        <%-- Lặp qua danh sách 'availableKeyTags' do HomePageBlog cung cấp --%>
+                                        <c:forEach var="keyTag" items="${availableKeyTags}">
+                                            <li class="menu-item">
+                                                <%-- Tạo link trỏ đến chính HomePageBlog với tham số idKeyTag --%>
+                                                <a href="${pageContext.request.contextPath}/HomePageBlog?idKeyTag=${keyTag.ID_KeyTag}">
+                                                    ${keyTag.getKeyTag()} <%-- Giả sử model KeyTag có phương thức getTenKeyTag() --%>
+                                                </a>
+                                            </li>
+                                        </c:forEach>
+                                    </c:if>
+                                </ul>
+                            </li>
                                 <!--About Us-->
                                 <li class="menu-item <%= uri.contains("/Home-Introduction") ? "current-menu-item" : "" %>">
                                     <a href="<%= context %>/views/Home-Introduction/Homepage-Introduction.jsp">

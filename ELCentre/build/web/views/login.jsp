@@ -87,10 +87,16 @@
                     <br>
                     <a href="${pageContext.request.contextPath}/HomePage">Quay lại trang chủ</a>
                 </p>
-                <% String error = request.getParameter("error");
-                   if (error != null) { %>
-                    <div class="alert alert-danger"><%= error %></div>
-                <% } %>
+                <% String error = (String) session.getAttribute("error");
+                    if (error != null) {
+                 %>
+                     <div class="alert alert-danger" role="alert">
+                         <%= error %>
+                     </div>
+                 <%
+                         session.removeAttribute("error"); 
+                    }
+                 %>
 
                 <form action="<%= request.getContextPath() %>/LoginServlet" method="post" class="sign-in-form">
                     <input type="text" name="email" class="form-control" placeholder="Email">

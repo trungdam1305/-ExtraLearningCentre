@@ -241,6 +241,12 @@
     <div class="wrapper">
         <%@ include file="/views/student/sidebar.jsp" %>
         <div class="main-area">
+                <c:if test="${not empty sessionScope.message}">
+                    <div class="message success">
+                        <c:out value="${sessionScope.message}" />
+                    </div>
+                    <c:remove var="message" scope="session" />
+                </c:if>            
             <div class="header">
                 <h2 style="margin: 0;">Hồ sơ người dùng</h2>
                 <div class="user-menu">

@@ -31,7 +31,7 @@ public static int teacherGetTongSoLopHoc(int id){
                            JOIN LopHoc lh
                            on gvlh.ID_LopHoc = lh.ID_LopHoc
                            WHERE gv.ID_TaiKhoan = ?
-                           and lh.TrangThai COLLATE Vietnamese_CI_AI = N'Đang học';
+                           and lh.TrangThai LIKE N'Đang học';
                          """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
             statement.setInt(1, id);

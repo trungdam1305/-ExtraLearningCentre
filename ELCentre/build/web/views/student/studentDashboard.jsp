@@ -293,7 +293,12 @@
         <div class="wrapper">
             <%@ include file="/views/student/sidebar.jsp" %>
             <div class="main-area">
-            
+                <c:if test="${not empty sessionScope.message}">
+                    <div class="message success">
+                        <c:out value="${sessionScope.message}" />
+                    </div>
+                    <c:remove var="message" scope="session" />
+                </c:if>            
             <div class="header" style="
                 background-color: #1F4E79;
                 color: white;
@@ -385,9 +390,28 @@
                             </c:when>
                             <c:otherwise>
                                 <c:forEach var="tb" items="${dsThongBao}">
-                                    <div class="box-item">
-                                        <div style="font-weight: 500;">${tb.noiDung}</div>
-                                        <div style="font-size: 13px; color: #666;">🕒 ${tb.thoiGian}</div>
+                                    <div class="box-item" style="display: flex; justify-content: space-between; align-items: stretch; border: 1px solid #ddd; border-radius: 6px; overflow: hidden; margin-bottom: 10px;">
+                                        <!-- Nội dung thông báo -->
+                                        <div style="padding: 10px; flex: 1;">
+                                            <div style="font-weight: 500;">${tb.noiDung}</div>
+                                            <div style="font-size: 13px; color: #666;">🕒 ${tb.thoiGian}</div>
+                                        </div>
+
+                                        <!-- Xử lý trạng thái với giá trị mặc định nếu trống -->
+                                        <c:set var="trangThai" value="${empty tb.status ? 'Chưa đọc' : tb.status}" />
+
+                                        <c:choose>
+                                            <c:when test="${trangThai eq 'Đã đọc'}">
+                                                <div style="padding: 10px 15px; background-color: #e6f4ea; font-size: 13px; color: #2e7d32; display: flex; align-items: center; white-space: nowrap;">
+                                                    ${trangThai}
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div style="padding: 10px 15px; background-color: #fdecea; font-size: 13px; color: #c62828; display: flex; align-items: center; white-space: nowrap;">
+                                                    ${trangThai}
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                 </c:forEach>
                             </c:otherwise>
@@ -446,7 +470,7 @@
 
                         // Gọi hàm cho từng khu vực
                         applyPagination("#tableLopHoc", "tr", "#pagination-lophoc", 5);
-                        applyPagination("#listThongBao", ".box-item", "#pagination-thongbao", 5);
+                        applyPagination("#listThongBao", ".box-item", "#pagination-thongbao", 3);
                         applyPagination("#listLichHoc", ".box-item", "#pagination-lichhoc", 5);
                     });
                 </script>

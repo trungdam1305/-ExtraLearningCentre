@@ -1,148 +1,87 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter; // Added for formatted date
 
-/**
- * Represents an uploaded teaching material by a teacher.
- * Each material has an ID, teacher ID, title, type, upload path,
- * creation date, category, price, and an associated image.
- * 
- * Author: trungdam1305
- */
 public class DangTaiLieu {
-
-    // Unique identifier for the material
-    private Integer ID_Material;
-
-    // ID of the teacher who uploaded the material
-    private Integer ID_GiaoVien;
-
-    // Title or name of the material
+    private int ID_Material;
+    private Integer ID_GiaoVien; // Changed to Integer for nullability
     private String TenTaiLieu;
+    private Integer ID_LoaiTaiLieu; // Changed to Integer for nullability
+    private String DuongDan; // Will store the file path/name
+    private LocalDateTime NgayTao;
+    private Integer ID_MonHoc; // Changed to Integer for nullability
+    private String GiaTien; // Assuming string based on your DAO for now
+    private String Image; // For thumbnail
+    private String NoiDung; // NEW: For CKEditor content
 
-    // Type or format of the material (e.g., PDF, DOCX, Video)
+    // Fields from JOINs (not directly in DangTaiLieu table, populated by DAO)
+    private String MonHoc;
     private String LoaiTaiLieu;
 
-    // File path or URL to access the material
-    private String DuongDan;
-
-    // Date and time when the material was created/uploaded
-    private LocalDateTime NgayTao;
-
-    // Category or subject area of the material
-    private String DanhMuc;
-
-    // Price of the material (could be "Free" or a number as String)
-    private String GiaTien;
-
-    // Image representing the material (e.g., thumbnail)
-    private String Image;
-
-    /**
-     * Default constructor
-     */
     public DangTaiLieu() {}
 
-    /**
-     * Full constructor to initialize all fields
-     */
-    public DangTaiLieu(Integer ID_Material, Integer ID_GiaoVien, String TenTaiLieu, String LoaiTaiLieu,
-                       String DuongDan, LocalDateTime NgayTao, String DanhMuc, String GiaTien, String Image) {
+    // Constructor (update existing ones or add new if necessary)
+    public DangTaiLieu(int ID_Material, Integer ID_GiaoVien, String TenTaiLieu, Integer ID_LoaiTaiLieu,
+                       String DuongDan, LocalDateTime NgayTao, Integer ID_MonHoc, String GiaTien,
+                       String Image, String NoiDung, String MonHoc, String LoaiTaiLieu) {
         this.ID_Material = ID_Material;
         this.ID_GiaoVien = ID_GiaoVien;
         this.TenTaiLieu = TenTaiLieu;
-        this.LoaiTaiLieu = LoaiTaiLieu;
+        this.ID_LoaiTaiLieu = ID_LoaiTaiLieu;
         this.DuongDan = DuongDan;
         this.NgayTao = NgayTao;
-        this.DanhMuc = DanhMuc;
+        this.ID_MonHoc = ID_MonHoc;
         this.GiaTien = GiaTien;
         this.Image = Image;
-    }
-
-    /**
-     * Constructor with essential fields only
-     */
-    public DangTaiLieu(Integer ID_Material, Integer ID_GiaoVien, String TenTaiLieu, String LoaiTaiLieu,
-                       String DuongDan, LocalDateTime NgayTao) {
-        this.ID_Material = ID_Material;
-        this.ID_GiaoVien = ID_GiaoVien;
-        this.TenTaiLieu = TenTaiLieu;
-        this.LoaiTaiLieu = LoaiTaiLieu;
-        this.DuongDan = DuongDan;
-        this.NgayTao = NgayTao;
-    }
-
-    // Getter and setter methods
-
-    public Integer getID_Material() {
-        return ID_Material;
-    }
-
-    public void setID_Material(Integer ID_Material) {
-        this.ID_Material = ID_Material;
-    }
-
-    public Integer getID_GiaoVien() {
-        return ID_GiaoVien;
-    }
-
-    public void setID_GiaoVien(Integer ID_GiaoVien) {
-        this.ID_GiaoVien = ID_GiaoVien;
-    }
-
-    public String getTenTaiLieu() {
-        return TenTaiLieu;
-    }
-
-    public void setTenTaiLieu(String TenTaiLieu) {
-        this.TenTaiLieu = TenTaiLieu;
-    }
-
-    public String getLoaiTaiLieu() {
-        return LoaiTaiLieu;
-    }
-
-    public void setLoaiTaiLieu(String LoaiTaiLieu) {
+        this.NoiDung = NoiDung; // NEW
+        this.MonHoc = MonHoc;
         this.LoaiTaiLieu = LoaiTaiLieu;
     }
 
-    public String getDuongDan() {
-        return DuongDan;
+    // --- Getters and Setters (add for NoiDung, update types for others) ---
+    public int getID_Material() { return ID_Material; }
+    public void setID_Material(int ID_Material) { this.ID_Material = ID_Material; }
+
+    public Integer getID_GiaoVien() { return ID_GiaoVien; } // Changed to Integer
+    public void setID_GiaoVien(Integer ID_GiaoVien) { this.ID_GiaoVien = ID_GiaoVien; } // Changed to Integer
+
+    public String getTenTaiLieu() { return TenTaiLieu; }
+    public void setTenTaiLieu(String TenTaiLieu) { this.TenTaiLieu = TenTaiLieu; }
+
+    public Integer getID_LoaiTaiLieu() { return ID_LoaiTaiLieu; } // Changed to Integer
+    public void setID_LoaiTaiLieu(Integer ID_LoaiTaiLieu) { this.ID_LoaiTaiLieu = ID_LoaiTaiLieu; } // Changed to Integer
+
+    public String getDuongDan() { return DuongDan; }
+    public void setDuongDan(String DuongDan) { this.DuongDan = DuongDan; }
+
+    public LocalDateTime getNgayTao() { return NgayTao; }
+    public void setNgayTao(LocalDateTime NgayTao) { this.NgayTao = NgayTao; }
+    
+    public String getFormattedNgayTao() { // Re-added this for table display
+        if (NgayTao == null) {
+            return "";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        return NgayTao.format(formatter);
     }
 
-    public void setDuongDan(String DuongDan) {
-        this.DuongDan = DuongDan;
-    }
+    public Integer getID_MonHoc() { return ID_MonHoc; } // Changed to Integer
+    public void setID_MonHoc(Integer ID_MonHoc) { this.ID_MonHoc = ID_MonHoc; } // Changed to Integer
 
-    public LocalDateTime getNgayTao() {
-        return NgayTao;
-    }
+    public String getGiaTien() { return GiaTien; }
+    public void setGiaTien(String GiaTien) { this.GiaTien = GiaTien; }
 
-    public void setNgayTao(LocalDateTime NgayTao) {
-        this.NgayTao = NgayTao;
-    }
+    public String getImage() { return Image; }
+    public void setImage(String Image) { this.Image = Image; }
 
-    public String getDanhMuc() {
-        return DanhMuc;
-    }
+    // --- NEW GETTER/SETTER for NoiDung ---
+    public String getNoiDung() { return NoiDung; }
+    public void setNoiDung(String NoiDung) { this.NoiDung = NoiDung; }
 
-    public void setDanhMuc(String DanhMuc) {
-        this.DanhMuc = DanhMuc;
-    }
+    public String getMonHoc() { return MonHoc; }
+    public void setMonHoc(String MonHoc) { this.MonHoc = MonHoc; }
 
-    public String getGiaTien() {
-        return GiaTien;
-    }
-
-    public void setGiaTien(String GiaTien) {
-        this.GiaTien = GiaTien;
-    }
-
-    public String getImage() {
-        return Image;
-    }
-
-    public void setImage(String Image) {
-        this.Image = Image;
-    }
+    public String getLoaiTaiLieu() { return LoaiTaiLieu; }
+    public void setLoaiTaiLieu(String LoaiTaiLieu) { this.LoaiTaiLieu = LoaiTaiLieu; }
 }

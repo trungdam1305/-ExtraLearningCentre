@@ -48,6 +48,10 @@ public class LichHoc {
      private boolean daDiemDanh; // THÊM THUỘC TÍNH NÀY
      
      private boolean coTheSua;
+     
+     private String trangThaiDiemDanh;
+     
+     private String TenKhoaHoc;
     /**
      * Default constructor.
      */
@@ -213,4 +217,38 @@ public class LichHoc {
     public void setID_PhongHoc(int ID_PhongHoc) {
         this.ID_PhongHoc = ID_PhongHoc;
     }
+    
+    public String getTrangThaiDiemDanh() {
+        return trangThaiDiemDanh;
+    }
+    
+    public void setTrangThaiDiemDanh(String trangThaiDiemDanh) {
+        this.trangThaiDiemDanh = trangThaiDiemDanh;
+    }
+
+    public LichHoc(int ID_Schedule, LocalDate NgayHoc, int ID_SlotHoc, int ID_LopHoc, int ID_PhongHoc, String GhiChu, String SlotThoiGian, String TenLopHoc, String TenPhongHoc, boolean daDiemDanh, boolean coTheSua, String trangThaiDiemDanh, String TenKhoaHoc) {
+        this.ID_Schedule = ID_Schedule;
+        this.NgayHoc = NgayHoc;
+        this.ID_SlotHoc = ID_SlotHoc;
+        this.ID_LopHoc = ID_LopHoc;
+        this.ID_PhongHoc = ID_PhongHoc;
+        this.GhiChu = GhiChu;
+        this.SlotThoiGian = SlotThoiGian;
+        this.TenLopHoc = TenLopHoc;
+        this.TenPhongHoc = TenPhongHoc;
+        this.daDiemDanh = daDiemDanh;
+        this.coTheSua = coTheSua;
+        this.trangThaiDiemDanh = trangThaiDiemDanh;
+        this.TenKhoaHoc = TenKhoaHoc;
+    }
+
+    public String getTenKhoaHoc() {
+        return TenKhoaHoc;
+    }
+
+    public void setTenKhoaHoc(String TenKhoaHoc) {
+        this.TenKhoaHoc = TenKhoaHoc;
+    }
+    
+    
 }

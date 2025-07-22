@@ -1,7 +1,7 @@
     <%-- 
         Document   : takeAttendance
         Created on : Jul 9, 2025, 2:24:57 AM
-        Author     : admin
+        Author     : trungdam
     --%>
 
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -12,7 +12,6 @@
     <head>
         <meta charset="UTF-8">
         <title>Điểm Danh Lớp Học</title>
-        <%-- Thêm các link CSS của bạn ở đây, ví dụ Bootstrap --%>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <style>
             .attendance-table th { background-color: #f8f9fa; }
@@ -20,10 +19,10 @@
             .attendance-radio-group input { margin-right: 0.25rem; }
             h1 {
                 margin-top: 30px;
-                color: #1F4E79; /* Màu chữ */
-                text-align: center; /* Căn giữa */
-                font-size: 24px; /* Cỡ chữ */
-                font-weight: bold; /* In đậm */
+                color: #1F4E79; 
+                text-align: center; 
+                font-size: 24px; 
+                font-weight: bold; 
             }
                 body {
                     margin: 0;
@@ -147,7 +146,7 @@
                     font-weight: bold;
                     letter-spacing: 1.5px;
                     text-align: center; 
-                    width: 230px; /* nhỏ hơn 250px */
+                    width: 230px; 
                 }
 
                 .sidebar-logo {
@@ -200,16 +199,15 @@
 
                 .main-content {
                     margin-top: 10px;   
-                    margin-left: 300px; /* Keep this to offset for sidebar */
-                    padding: 80px 20px 20px 20px; /* Adjust padding as needed */
+                    margin-left: 300px; 
+                    padding: 80px 20px 20px 20px;
                     flex: 1;
                     min-height: 100vh;
                     display: flex;
                     flex-direction: column;
                     gap: 30px;
-                    
                     margin-right: auto;
-                    max-width: calc(100% - 250px); /* Adjust this to account for sidebar width */
+                    max-width: calc(100% - 250px); 
                 }
 
                 .dashboard-stats {
@@ -344,9 +342,9 @@
                 .filter-container {
                     display: flex;
                     align-items: center;
-                    gap: 20px; /* Tăng khoảng cách một chút */
+                    gap: 20px; 
                     flex-wrap: wrap;
-                    justify-content: flex-end; /* Đẩy các phần tử sang phải */
+                    justify-content: flex-end; 
                 }
 
 
@@ -360,7 +358,7 @@
                 .filter-container label {
                     font-weight: bold;
                     color: #333;
-                    white-space: nowrap; /* Ngăn không cho label bị xuống dòng */
+                    white-space: nowrap; 
                 }
 
 
@@ -369,7 +367,7 @@
                     padding: 8px 12px;
                     border: 1px solid #ccc;
                     border-radius: 6px;
-                    min-width: 150px; /* Điều chỉnh độ rộng nếu cần */
+                    min-width: 150px; 
                 }
 
 
@@ -397,43 +395,39 @@
                 }
 
                 .pagination a {
-                    color: #555; /* Màu chữ xám nhẹ */
+                    color: #555; 
                     text-decoration: none;
-                    padding: 6px 12px; /* Giảm padding để nhỏ hơn */
-                    margin: 0 2px; /* Giảm margin để gần nhau hơn */
-                    border-radius: 4px; /* Bo góc mềm mại */
+                    padding: 6px 12px; 
+                    margin: 0 2px;
+                    border-radius: 4px; 
                     transition: background-color 0.3s, color 0.3s;
-                    border: 1px solid #ddd; /* Thêm viền mỏng */
+                    border: 1px solid #ddd; 
                 }
 
-                /* Style cho trang đang được chọn */
                 .pagination a.active {
-                    background-color: #1F4E79; /* Màu xanh chủ đạo */
-                    color: white; /* Chữ trắng */
-                    border-color: #1F4E79; /* Viền cùng màu */
+                    background-color: #1F4E79; 
+                    color: white; 
+                    border-color: #1F4E79; 
                     font-weight: bold;
                 }
 
-                /* Hiệu ứng khi di chuột vào các trang khác */
                 .pagination a:hover:not(.active) {
-                    background-color: #e2eaf0; /* Màu nền nhạt khi hover */
+                    background-color: #e2eaf0; 
                     color: #1F4E79;
                 }
 
-                /* === BỔ SUNG CSS CHO CÁC NÚT HÀNH ĐỘNG MỚI === */
                 .action-buttons {
                     display: flex;
                     align-items: center;
-                    gap: 8px; /* Khoảng cách giữa các nút */
+                    gap: 8px; 
                 }
 
-                /* Kiểu dáng chung cho nút hành động */
                 .action-btn {
                     display: inline-flex;
                     align-items: center;
-                    gap: 6px; /* Khoảng cách giữa icon và chữ */
+                    gap: 6px; 
                     padding: 6px 12px;
-                    border-radius: 20px; /* Bo tròn các góc */
+                    border-radius: 20px; 
                     color: white;
                     font-size: 13px;
                     font-weight: 500;
@@ -441,25 +435,22 @@
                     border: none;
                     cursor: pointer;
                     transition: transform 0.2s ease, box-shadow 0.2s ease;
-                    white-space: nowrap; /* Ngăn không cho chữ xuống dòng */
+                    white-space: nowrap; 
                 }
 
                 .action-btn:hover {
-                    transform: translateY(-2px); /* Hiệu ứng nhấc lên khi hover */
+                    transform: translateY(-2px); 
                     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
                 }
 
-                /* Nút Sửa (Màu cam) */
                 .action-btn.edit {
                     background-color: #f39c12; 
                 }
 
-                /* Nút Danh sách học sinh (Màu xám) */
                 .action-btn.view-students {
                     background-color: #6c7a89;
                 }
 
-                /* Nút Upload (Màu xanh lá) */
                 .action-btn.upload {
                     background-color: #27ae60;
                 }
@@ -502,8 +493,6 @@
                 <ul class="sidebar-menu">
                     <!--Teacher's Notification Management-->
                     <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
-                    <!--Blog's View-->
-                    <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=blog"><i class="fas fa-blog"></i> Blog</a></li>
                     <!--Help Request to Admin-->
                     <li style="padding-top: 4px"><a href="${pageContext.request.contextPath}/teacherGetFromDashboard?action=hotro"><i class="fas fa-question"></i> Yêu Cầu Hỗ Trợ</a></li>
                     <!--Logout-->
@@ -512,16 +501,16 @@
             </div>
         <div class="main-content">            
             <div>
+                <!--Attendance for each slot-->
                 <div class="card">
                     <div class="card-header">
                         <h3>Điểm Danh Buổi Học (Mã Lịch Học: ${scheduleId})</h3>
                     </div>
                     <div class="card-body">
-                        <%-- ✅ THÊM ĐOẠN CODE HIỂN THỊ THÔNG BÁO Ở ĐÂY --%>
                         <c:if test="${not empty saveStatus}">
                             <c:if test="${saveStatus == 'success'}">
                                 <div class="alert alert-success" role="alert">
-                                    <strong>Thành công!</strong> Đã lưu kết quả điểm danh.
+                                    <strong>Thành công!</strong> Đã lưu thành công tác vụ
                                 </div>
                             </c:if>
                             <c:if test="${saveStatus == 'error'}">
@@ -533,13 +522,12 @@
                         <c:if test="${empty studentList}">
                             <div class="alert alert-warning">Lớp học này chưa có học sinh nào.</div>
                         </c:if>
-
+                            
                         <c:if test="${not empty studentList}">
                             <form action="${pageContext.request.contextPath}/teacherGetFromDashboard" method="post">
-
                                 <input type="hidden" name="action" value="submitAttendance">
                                 <input type="hidden" name="scheduleId" value="${scheduleId}">
-
+                                <!--Table display data and status for check student's attendance-->
                                 <table class="table table-bordered table-hover attendance-table">
                                     <thead>
                                         <tr>
@@ -580,9 +568,18 @@
                                         </c:forEach>
                                     </tbody>
                                 </table>
+                                <!--Note for each slot-->
                                 <div class="mt-4">
-                                    <button type="submit" class="btn btn-primary">Lưu Điểm Danh</button>
-                                    <a href="${pageContext.request.contextPath}//TeacherDashboard" class="btn btn-secondary">Quay Lại</a>
+                                    <label for="scheduleNotes" class="form-label fw-bold">Đánh giá & Ghi chú buổi học:</label>
+                                    <textarea class="form-control" 
+                                              id="scheduleNotes" 
+                                              name="scheduleNotes" 
+                                              rows="5" 
+                                              placeholder="Nhập nhận xét về buổi học, tình hình học tập của lớp, các vấn đề cần lưu ý...">${currentNotes}</textarea>
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Lưu & Hoàn tất</button>
+                                    <a href="${pageContext.request.contextPath}/TeacherDashboard" class="btn btn-secondary">Quay Lại</a>
                                 </div>
                             </form>
                         </c:if>

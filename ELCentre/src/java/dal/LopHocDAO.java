@@ -107,6 +107,7 @@ public class LopHocDAO {
                 + "    dbo.KhoaHoc khoah ON khoc.ID_Khoi = khoah.ID_Khoi\n"
                 + "LEFT JOIN \n"
                 + "    dbo.LopHoc l ON khoah.ID_KhoaHoc = l.ID_KhoaHoc\n"
+                + "Where l.TrangThai LIKE N'%Đang Học%'"
                 + "GROUP BY \n"
                 + "    khoc.ID_Khoi, \n"
                 + "    khoc.TenKhoi,\n"
@@ -764,10 +765,10 @@ public class LopHocDAO {
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             LopHoc lop = new LopHoc();
-            // Set các thuộc tính cho đối tượng lop từ ResultSet...
             lop.setID_LopHoc(rs.getInt("ID_LopHoc"));
             lop.setTenLopHoc(rs.getString("TenLopHoc"));
             lop.setClassCode(rs.getString("ClassCode"));
+            lop.setTenGiaoVien(sql);
             lop.setSiSo(rs.getInt("SiSo"));
             lop.setTenPhongHoc(rs.getString("TenPhongHoc"));
             list.add(lop);
@@ -882,30 +883,29 @@ public class LopHocDAO {
         List<Object> params = new ArrayList<>();
         
         StringBuilder sql = new StringBuilder("""
-            SELECT lop.*, ph.TenPhongHoc  FROM LopHoc lop
-            JOIN GiaoVien_LopHoc gvlh ON lop.ID_LopHoc = gvlh.ID_LopHoc
-            JOIN GiaoVien gv ON gvlh.ID_GiaoVien = gv.ID_GiaoVien
-            JOIN PhongHoc ph ON lop.ID_PhongHoc = ph.ID_PhongHoc
-            WHERE gv.ID_TaiKhoan = ?
-            AND lop.TrangThai LIKE N'%Đang học%'
+            			SELECT * FROM GiaoVien_LopHoc gvlh
+            			JOIN LopHoc lh ON gvlh.ID_LopHoc = lh.ID_LopHoc
+            			JOIN GiaoVien gv on gv.ID_GiaoVien = gvlh.ID_GiaoVien
+            			where gv.ID_TaiKhoan = ?
+            			and lh.TrangThai LIKE N'%Đang học%'
             """);
         params.add(idTaiKhoan);
 
         if (keyword != null && !keyword.trim().isEmpty()) {
-            sql.append("AND lop.classCode LIKE ? ");
+            sql.append("AND lh.classCode LIKE ? ");
             params.add("%" + keyword.trim() + "%");
         }
         if (courseId > 0) {
-            sql.append("AND lop.ID_KhoaHoc = ? ");
+            sql.append("AND lh.ID_KhoaHoc = ? ");
             params.add(courseId);
         }
         // ✅ THÊM LOGIC LỌC THEO NĂM
         if (creationYear > 0) {
-            sql.append("AND YEAR(lop.NgayTao) = ? ");
+            sql.append("AND YEAR(lh.NgayTao) = ? ");
             params.add(creationYear);
         }
 
-        sql.append("ORDER BY lop.NgayTao DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+        sql.append("ORDER BY lh.NgayTao DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
         int offset = (page - 1) * itemsPerPage;
         params.add(offset);
         params.add(itemsPerPage);
@@ -924,7 +924,6 @@ public class LopHocDAO {
                     lopHoc.setClassCode(rs.getString("ClassCode"));
                     lopHoc.setTenLopHoc(rs.getString("TenLopHoc"));
                     lopHoc.setSiSo(rs.getInt("SiSo"));
-                    lopHoc.setTenPhongHoc(rs.getString("TenPhongHoc"));
                     lopHoc.setGhiChu(rs.getString("GhiChu"));
                     // ... set các thuộc tính khác nếu cần
                     list.add(lopHoc);
@@ -1013,21 +1012,121 @@ public class LopHocDAO {
         return list;
     }
 
-    //Lấy ra danh sách các lớp học khác trong khóa trừ lớp đã đăng ký
-    public static List<LopHoc> getOtherClassesInSameCourse(int khoaHocId, String excludeClassCode) {
+    public LopHoc getFullClassDetailsById(int classId) {
+    LopHoc lopHoc = null;
+    // Câu lệnh SQL này JOIN các bảng để lấy thông tin đầy đủ
+    String sql = """
+        SELECT 
+            l.*, 
+            k.TenKhoaHoc, 
+            p.TenPhongHoc, 
+            gv.HoTen AS TenGiaoVien
+        FROM LopHoc l
+        LEFT JOIN KhoaHoc k ON l.ID_KhoaHoc = k.ID_KhoaHoc
+        LEFT JOIN PhongHoc p ON l.ID_PhongHoc = p.ID_PhongHoc
+        LEFT JOIN GiaoVien_LopHoc gvlh ON l.ID_LopHoc = gvlh.ID_LopHoc
+        LEFT JOIN GiaoVien gv ON gvlh.ID_GiaoVien = gv.ID_GiaoVien
+        WHERE l.ID_LopHoc = ?
+    """;
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        
+        ps.setInt(1, classId);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                lopHoc = new LopHoc();
+                // Set tất cả thuộc tính cho đối tượng LopHoc từ ResultSet
+                lopHoc.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                lopHoc.setClassCode(rs.getString("ClassCode"));
+                lopHoc.setTenLopHoc(rs.getString("TenLopHoc"));
+                lopHoc.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                lopHoc.setSiSo(rs.getInt("SiSo"));
+                lopHoc.setSiSoToiDa(rs.getInt("SiSoToiDa"));
+                lopHoc.setSiSoToiThieu(rs.getInt("SiSoToiThieu"));
+                lopHoc.setGhiChu(rs.getString("GhiChu"));
+                lopHoc.setTrangThai(rs.getString("TrangThai"));
+                lopHoc.setSoTien(rs.getString("SoTien"));
+                lopHoc.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+                lopHoc.setImage(rs.getString("Image"));
+                
+                // Các thông tin từ bảng đã JOIN
+                lopHoc.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
+                lopHoc.setTenPhongHoc(rs.getString("TenPhongHoc"));
+                lopHoc.setTenGiaoVien(rs.getString("TenGiaoVien")); 
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return lopHoc;
+}
+    public static List<LopHoc> getClassesByCourseAndTeacher(int courseId, int teacherId) {
         List<LopHoc> list = new ArrayList<>();
-        try (Connection con = DBContext.getInstance().getConnection()) {
-            String sql = "SELECT * FROM LopHoc WHERE ID_KhoaHoc = ? AND ClassCode <> ?";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, khoaHocId);
-            ps.setString(2, excludeClassCode);
+        List<Object> params = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("""
+            SELECT l.*, p.TenPhongHoc, gv.HoTen AS TenGiaoVien , kh.TenKhoaHoc
+            FROM LopHoc l
+            JOIN PhongHoc p ON l.ID_PhongHoc = p.ID_PhongHoc
+            LEFT JOIN GiaoVien_LopHoc gvlh ON l.ID_LopHoc = gvlh.ID_LopHoc
+            LEFT JOIN GiaoVien gv ON gvlh.ID_GiaoVien = gv.ID_GiaoVien
+            JOIN KhoaHoc kh ON kh.ID_KhoaHoc = l.ID_KhoaHoc
+            WHERE l.ID_KhoaHoc = ? 
+        """);
+        params.add(courseId);
+        if (teacherId > 0) {
+        sql.append(" AND gv.ID_GiaoVien = ? ");
+        params.add(teacherId);
+        }
+    
+        try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+        
+        for (int i = 0; i < params.size(); i++) {
+            ps.setObject(i + 1, params.get(i));
+        }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    LopHoc lop = new LopHoc();
+                    lop.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                    lop.setClassCode(rs.getString("ClassCode"));
+                    lop.setTenLopHoc(rs.getString("TenLopHoc"));
+                    lop.setSiSo(rs.getInt("SiSo"));
+                    lop.setSiSoToiThieu(rs.getInt("SiSoToiThieu"));
+                    lop.setSiSoToiDa(rs.getInt("SiSoToiDa"));
+                    lop.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+                    lop.setGhiChu(rs.getString("GhiChu"));
+                    lop.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
+                    lop.setTenGiaoVien(rs.getString("TenGiaoVien"));
+                                      list.add(lop);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+        // Lấy các lớp học mà học sinh đã đăng ký trong một khóa học cụ thể
+    public static List<LopHoc> getLopHocDaDangKyByHocSinhId(int hocSinhId) {
+        List<LopHoc> list = new ArrayList<>();
+        String sql = """
+            SELECT lh.*
+            FROM HocSinh_LopHoc hslh
+            JOIN LopHoc lh ON hslh.ID_LopHoc = lh.ID_LopHoc
+            WHERE hslh.ID_HocSinh = ?
+        """;
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, hocSinhId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 LopHoc lop = new LopHoc();
                 lop.setClassCode(rs.getString("ClassCode"));
                 lop.setTenLopHoc(rs.getString("TenLopHoc"));
                 lop.setSiSo(rs.getInt("SiSo"));
+                lop.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
                 lop.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+                lop.setID_PhongHoc(rs.getInt("ID_PhongHoc"));
                 lop.setGhiChu(rs.getString("GhiChu"));
                 list.add(lop);
             }
@@ -1037,7 +1136,30 @@ public class LopHocDAO {
         return list;
     }
     
-    public static List<LopHoc> getAllClassesInSameCourse(int idKhoaHoc) {
+        //Lấy mã lớp theo các lớp mà học sinh đang học
+    public static List<String> getClassCodesByStudentInCourse(int hocSinhId, int khoaHocId) {
+        List<String> classCodes = new ArrayList<>();
+        String sql = """
+            SELECT lh.ClassCode
+            FROM HocSinh_LopHoc hslh
+            JOIN LopHoc lh ON hslh.ID_LopHoc = lh.ID_LopHoc
+            WHERE hslh.ID_HocSinh = ? AND lh.ID_KhoaHoc = ?
+        """;
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, hocSinhId);
+            ps.setInt(2, khoaHocId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                classCodes.add(rs.getString("ClassCode"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return classCodes;
+    }
+    
+        public static List<LopHoc> getAllClassesInSameCourse(int idKhoaHoc) {
         List<LopHoc> list = new ArrayList<>();
         String sql = "SELECT * FROM LopHoc WHERE ID_KhoaHoc = ?";
 
@@ -1068,86 +1190,129 @@ public class LopHocDAO {
         return list;
     }
     
-    // Lấy các lớp học mà học sinh đã đăng ký trong một khóa học cụ thể
-    public static List<LopHoc> getLopHocDaDangKyByHocSinhId(int hocSinhId) {
-        List<LopHoc> list = new ArrayList<>();
-        String sql = """
-            SELECT lh.*
-            FROM HocSinh_LopHoc hslh
-            JOIN LopHoc lh ON hslh.ID_LopHoc = lh.ID_LopHoc
-            WHERE hslh.ID_HocSinh = ?
-        """;
-        try (Connection conn = DBContext.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, hocSinhId);
-            ResultSet rs = ps.executeQuery();
+    public List<LopHoc> getAllActiveClassesWithTeacher() {
+    List<LopHoc> list = new ArrayList<>();
+    String sql = """
+        SELECT l.*, gv.HoTen AS TenGiaoVien
+        FROM LopHoc l
+        LEFT JOIN GiaoVien_LopHoc gvlh ON l.ID_LopHoc = gvlh.ID_LopHoc
+        LEFT JOIN GiaoVien gv ON gvlh.ID_GiaoVien = gv.ID_GiaoVien
+        WHERE l.TrangThai LIKE N'%Đang học%'
+        ORDER BY l.NgayTao DESC
+    """;
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            LopHoc lop = new LopHoc();
+            lop.setID_LopHoc(rs.getInt("ID_LopHoc"));
+            lop.setClassCode(rs.getString("ClassCode"));
+            lop.setTenLopHoc(rs.getString("TenLopHoc"));
+            lop.setTenGiaoVien(rs.getString("TenGiaoVien"));
+            list.add(lop);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
+    public List<LopHoc> getFilteredActiveClasses(String keyword, Integer courseId, Integer khoiId, Integer creationYear, int page, int pageSize) {
+    List<LopHoc> list = new ArrayList<>();
+    List<Object> params = new ArrayList<>();
+    
+    StringBuilder sql = new StringBuilder("""
+        SELECT l.*, gv.HoTen AS TenGiaoVien 
+        FROM LopHoc l
+        LEFT JOIN GiaoVien_LopHoc gvlh ON l.ID_LopHoc = gvlh.ID_LopHoc
+        LEFT JOIN GiaoVien gv ON gvlh.ID_GiaoVien = gv.ID_GiaoVien
+        LEFT JOIN KhoaHoc k ON l.ID_KhoaHoc = k.ID_KhoaHoc
+        WHERE l.TrangThai LIKE N'%Đang học%' 
+        """);
+
+    if (keyword != null && !keyword.trim().isEmpty()) {
+        sql.append(" AND (l.TenLopHoc LIKE ? OR l.ClassCode LIKE ?) ");
+        params.add("%" + keyword.trim() + "%");
+        params.add("%" + keyword.trim() + "%");
+    }
+    if (courseId != null && courseId > 0) {
+        sql.append(" AND l.ID_KhoaHoc = ? ");
+        params.add(courseId);
+    }
+    if (khoiId != null && khoiId > 0) {
+        sql.append(" AND k.ID_Khoi = ? ");
+        params.add(khoiId);
+    }
+    if (creationYear != null && creationYear > 0) {
+        sql.append(" AND YEAR(l.NgayTao) = ? ");
+        params.add(creationYear);
+    }
+
+    sql.append(" ORDER BY l.NgayTao DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+    params.add((page - 1) * pageSize);
+    params.add(pageSize);
+
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+        for (int i = 0; i < params.size(); i++) {
+            ps.setObject(i + 1, params.get(i));
+        }
+        try (ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 LopHoc lop = new LopHoc();
+                lop.setID_LopHoc(rs.getInt("ID_LopHoc"));
                 lop.setClassCode(rs.getString("ClassCode"));
                 lop.setTenLopHoc(rs.getString("TenLopHoc"));
-                lop.setSiSo(rs.getInt("SiSo"));
-                lop.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
-                lop.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
-                lop.setID_PhongHoc(rs.getInt("ID_PhongHoc"));
-                lop.setGhiChu(rs.getString("GhiChu"));
+                lop.setTenGiaoVien(rs.getString("TenGiaoVien"));
                 list.add(lop);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return list;
+    } catch (Exception e) { e.printStackTrace(); }
+    return list;
+}
+
+/**
+ * Đếm số lượng các lớp đang hoạt động thỏa mãn điều kiện lọc.
+ */
+public int countFilteredActiveClasses(String keyword, Integer courseId, Integer khoiId, Integer creationYear) {
+    int count = 0;
+    List<Object> params = new ArrayList<>();
+    StringBuilder sql = new StringBuilder("""
+        SELECT COUNT(*) 
+        FROM LopHoc l
+        LEFT JOIN KhoaHoc k ON l.ID_KhoaHoc = k.ID_KhoaHoc
+        WHERE l.TrangThai LIKE N'%Đang học%' 
+        """);
+
+    // Các điều kiện lọc phải giống hệt phương thức trên
+    if (keyword != null && !keyword.trim().isEmpty()) {
+        sql.append(" AND (l.TenLopHoc LIKE ? OR l.ClassCode LIKE ?) ");
+        params.add("%" + keyword.trim() + "%");
+        params.add("%" + keyword.trim() + "%");
+    }
+    if (courseId != null && courseId > 0) {
+        sql.append(" AND l.ID_KhoaHoc = ? ");
+        params.add(courseId);
+    }
+    if (khoiId != null && khoiId > 0) {
+        sql.append(" AND k.ID_Khoi = ? ");
+        params.add(khoiId);
+    }
+    if (creationYear != null && creationYear > 0) {
+        sql.append(" AND YEAR(l.NgayTao) = ? ");
+        params.add(creationYear);
     }
 
-    //Lấy mã lớp theo các lớp mà học sinh đang học
-    public static List<String> getClassCodesByStudentInCourse(int hocSinhId, int khoaHocId) {
-        List<String> classCodes = new ArrayList<>();
-        String sql = """
-            SELECT lh.ClassCode
-            FROM HocSinh_LopHoc hslh
-            JOIN LopHoc lh ON hslh.ID_LopHoc = lh.ID_LopHoc
-            WHERE hslh.ID_HocSinh = ? AND lh.ID_KhoaHoc = ?
-        """;
-        try (Connection conn = DBContext.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, hocSinhId);
-            ps.setInt(2, khoaHocId);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                classCodes.add(rs.getString("ClassCode"));
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+        for (int i = 0; i < params.size(); i++) {
+            ps.setObject(i + 1, params.get(i));
+        }
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                count = rs.getInt(1);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return classCodes;
-    }
-    
-    //Kiểm tra dữ liệu
-    public static void main(String[] args) {
-        int idKhoaHoc = 1; // thay bằng ID_KhoaHoc bạn muốn test
-        List<LopHoc> ds = getLopHocByKhoaHocId(idKhoaHoc);
-
-        System.out.println("===== DANH SÁCH LỚP HỌC TRONG KHÓA HỌC ID: " + idKhoaHoc + " =====");
-
-        if (ds.isEmpty()) {
-            System.out.println("⚠️ Không có lớp học nào thuộc khóa học này.");
-            return;
-        }
-
-        int i = 1;
-        for (LopHoc lop : ds) {
-            System.out.println("----- Lớp " + (i++) + " -----");
-            System.out.println("Mã lớp:          " + lop.getClassCode());
-            System.out.println("Tên lớp học:     " + lop.getTenLopHoc());
-            System.out.println("Tên khóa học:    " + lop.getTenKhoaHoc());
-            System.out.println("Thời gian khóa:  " + lop.getThoiGianBatDau() + " → " + lop.getThoiGianKetThuc());
-            System.out.println("Sĩ số hiện tại:  " + lop.getSiSo());
-            System.out.println("Sĩ số tối thiểu: " + lop.getSiSoToiThieu());
-            System.out.println("Sĩ số tối đa:    " + lop.getSiSoToiDa());
-            System.out.println("Ngày tạo lớp:    " + lop.getNgayTao());
-            System.out.println("Ghi chú:         " + lop.getGhiChu());
-            System.out.println();
-        }
-    }
-    
-    
+    } catch (Exception e) { e.printStackTrace(); }
+    return count;
+}
 }

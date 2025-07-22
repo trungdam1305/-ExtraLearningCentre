@@ -245,13 +245,51 @@
                 max-width: 100%; /* Đảm bảo không giới hạn chiều rộng */
                 box-sizing: border-box; /* Bao gồm padding trong chiều rộng */
             }
+
+            .action-btn {
+                padding: 6px 12px;
+                border: none;
+                border-radius: 4px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                color: white;
+                background-color: #1F4E79;
+                transition: background-color 0.2s ease;
+            }
+            .action-btn:hover {
+                background-color: #163d5c;
+            }
+            .action-btn.transfer {
+                background-color: #f0ad4e;
+            }
+            .action-btn.transfer:hover {
+                background-color: #d99632;
+            }
+            .action-btn.leave {
+                background-color: #d9534f;
+            }
+            .action-btn.leave:hover {
+                background-color: #b52b27;
+            }
+            .action-btn.assignment {
+                background-color: #5E936C;
+            }
+            .action-btn.assignment:hover {
+                background-color: #3E5F44;
+            }
         </style>
     </head>
     <body>
         <div class="wrapper">
             <%@ include file="/views/student/sidebar.jsp" %>
             <div class="main-area">
-                
+                <c:if test="${not empty sessionScope.message}">
+                    <div class="message success">
+                        <c:out value="${sessionScope.message}" />
+                    </div>
+                    <c:remove var="message" scope="session" />
+                </c:if>                
             
             <div class="header" style="
                 background-color: #1F4E79;
@@ -283,12 +321,10 @@
                     </div>
                 </div>
             </div>
-                        
-                        
-            <div class="main-content" style="padding: 30px;">            
-            <!--     Debug: Display size of dsLopHoc 
+        
+        <div class="main-content" style="padding: 30px;">
+                <!--     Debug: Display size of dsLopHoc 
                 <p>Debug: Số lượng lớp học: <c:out value="${fn:length(dsLopHoc)}" /></p>-->
-
                 <form method="get" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; margin-bottom: 20px;">
                     <c:set var="renderedClassCodes" value="," />
                     <select name="classCode" style="padding: 8px; font-size: 14px;">
@@ -322,7 +358,6 @@
                     <!-- Nút -->
                     <button type="submit" class="action-btn">Tìm</button>
                 </form>
-
                 <c:choose>
                     <c:when test="${not empty dsLopHoc}">
                         <table id="courseTable">
@@ -356,46 +391,47 @@
                                             <td><c:out value="${lop.ngayTao}" default="N/A" /></td>
                                             <td><c:out value="${lop.ghiChu}" default="N/A" /></td>
                                             <td>
-                                                <div class="action-buttons">
-                                                    <form action="StudentClassDetailServlet" method="get">
-                                                        <input type="hidden" name="classCode" value="${fn:escapeXml(lop.classCode)}">
-                                                        <button class="action-btn" type="submit">Xem giáo viên</button>
-                                                    </form>
-                                                    <button type="button" class="action-btn transfer"
-                                                            onclick="loadTransferOptions('${fn:escapeXml(lop.classCode)}')">
-                                                        Chuyển lớp
-                                                    </button>
-                                                    <form action="StudentLeaveClassServlet" method="post"
-                                                          onsubmit="return confirm('Bạn có chắc muốn rời khỏi lớp này?');">
-                                                        <input type="hidden" name="classCode" value="${fn:escapeXml(lop.classCode)}">
-                                                        <button class="action-btn leave" type="submit">Rời lớp</button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr id="transfer-row-${fn:escapeXml(lop.classCode)}" style="display:none;">
-                                            <td colspan="8" id="transfer-content-${fn:escapeXml(lop.classCode)}"></td>
-                                        </tr>
-                                    </c:if>
-                                </c:forEach>
-                            </tbody>
-                        </table>
-                        <div id="pagination-container"></div>
+                                    <div class="action-buttons">
+                                        <form action="StudentClassDetailServlet" method="get">
+                                            <input type="hidden" name="classCode" value="${fn:escapeXml(lop.classCode)}">
+                                            <button class="action-btn" type="submit">Xem giáo viên</button>
+                                        </form>
+                                        <form action="StudentAssignmentServlet" method="get">
+                                            <input type="hidden" name="classId" value="${lop.ID_LopHoc}">
+                                            <button class="action-btn assignment" type="submit">Xem Bài Tập</button>
+                                        </form>
+                                            <button type="button" class="action-btn transfer" onclick="loadTransferOptions('${fn:escapeXml(lop.classCode)}')"> Chuyển lớp </button>
+                                        <form action="StudentLeaveClassServlet" method="post"
+                                              onsubmit="return confirm('Bạn có chắc muốn rời khỏi lớp này?');">
+                                            <input type="hidden" name="classCode" value="${fn:escapeXml(lop.classCode)}">
+                                            <button class="action-btn leave" type="submit">Rời lớp</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr id="transfer-row-${fn:escapeXml(lop.classCode)}" style="display:none;">
+                                <td colspan="8" id="transfer-content-${fn:escapeXml(lop.classCode)}"></td>
+                            </tr>
+                        </c:if>
+                    </c:forEach>
+                </tbody>
+            </table>
+            <div id="pagination-container"></div>
+        </c:when>
+        <c:otherwise>
+            <div class="no-data">
+                <c:choose>
+                    <c:when test="${not empty param.keyword or not empty param.classCode or not empty param.khoaHoc}">
+                        Không tìm thấy lớp học nào khớp với tiêu chí tìm kiếm!
                     </c:when>
                     <c:otherwise>
-                        <div class="no-data">
-                            <c:choose>
-                                <c:when test="${not empty param.keyword or not empty param.classCode or not empty param.khoaHoc}">
-                                    Không tìm thấy lớp học nào khớp với tiêu chí tìm kiếm!
-                                </c:when>
-                                <c:otherwise>
-                                    Bạn chưa đăng ký lớp học nào!
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
+                        Bạn chưa đăng ký lớp học nào!
                     </c:otherwise>
                 </c:choose>
-
+            </div>
+        </c:otherwise>
+    </c:choose>
+    
                 <!-- Modal for Password Change -->
                 <div id="passwordModal" class="modal-overlay" style="display: none;">
                     <div class="modal-content">

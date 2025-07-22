@@ -21,26 +21,14 @@ public class HocSinh_ChiTietHoc {
     private String GhiChu ; 
     private String TrangThai ; 
     private String SoTien ; 
+    private String TinhTrangThanhToan ; 
     private LocalDateTime NgayTao ; 
     private String Image ; 
 
     public HocSinh_ChiTietHoc() {
     }
 
-    public HocSinh_ChiTietHoc(Integer ID_KhoaHoc, Integer ID_LopHoc, Integer ID_HocSinh, Integer ID_GiaoVien, String TenLopHoc, String SlotThoiGian, String HoTen, String GhiChu, String TrangThai, String SoTien, LocalDateTime NgayTao, String Image) {
-        this.ID_KhoaHoc = ID_KhoaHoc;
-        this.ID_LopHoc = ID_LopHoc;
-        this.ID_HocSinh = ID_HocSinh;
-        this.ID_GiaoVien = ID_GiaoVien;
-        this.TenLopHoc = TenLopHoc;
-        this.SlotThoiGian = SlotThoiGian;
-        this.HoTen = HoTen;
-        this.GhiChu = GhiChu;
-        this.TrangThai = TrangThai;
-        this.SoTien = SoTien;
-        this.NgayTao = NgayTao;
-        this.Image = Image;
-    }
+    
 
     public HocSinh_ChiTietHoc(Integer ID_KhoaHoc, Integer ID_LopHoc, Integer ID_HocSinh, Integer ID_GiaoVien, String TenLopHoc, String HoTen, String GhiChu, String TrangThai, String SoTien, LocalDateTime NgayTao, String Image) {
         this.ID_KhoaHoc = ID_KhoaHoc;
@@ -56,6 +44,32 @@ public class HocSinh_ChiTietHoc {
         this.Image = Image;
     }
 
+    public HocSinh_ChiTietHoc(Integer ID_KhoaHoc, Integer ID_LopHoc, Integer ID_HocSinh, Integer ID_GiaoVien, String TenLopHoc,  String HoTen, String GhiChu, String TrangThai, String SoTien, String TinhTrangThanhToan, LocalDateTime NgayTao, String Image) {
+        this.ID_KhoaHoc = ID_KhoaHoc;
+        this.ID_LopHoc = ID_LopHoc;
+        this.ID_HocSinh = ID_HocSinh;
+        this.ID_GiaoVien = ID_GiaoVien;
+        this.TenLopHoc = TenLopHoc;
+        
+        this.HoTen = HoTen;
+        this.GhiChu = GhiChu;
+        this.TrangThai = TrangThai;
+        this.SoTien = SoTien;
+        this.TinhTrangThanhToan = TinhTrangThanhToan;
+        this.NgayTao = NgayTao;
+        this.Image = Image;
+    }
+
+    public String getTinhTrangThanhToan() {
+        return TinhTrangThanhToan;
+    }
+
+    public void setTinhTrangThanhToan(String TinhTrangThanhToan) {
+        this.TinhTrangThanhToan = TinhTrangThanhToan;
+    }
+
+    
+    
     public Integer getID_KhoaHoc() {
         return ID_KhoaHoc;
     }

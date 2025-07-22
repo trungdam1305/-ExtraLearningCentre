@@ -3,12 +3,6 @@
     Created on : Jul 10, 2025, 1:04:02 AM
     Author     : Vuh26
 --%>
-
-<%-- 
-    Document   : viewLopHoc_GiaoVien
-    Created on : Jul 10, 2025, 12:10:44 AM
-    Author     : Vuh26
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -21,7 +15,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Danh Sách Lớp Học Giáo Viên</title>
+        <title>Danh Sách Lớp Học Hiện Tại Của Học Sinh</title>
         <!-- Bootstrap 5 CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <!-- Bootstrap Icons -->
@@ -37,8 +31,6 @@
                 padding: 0;
                 background-color: #f4f6f9;
             }
-
-            /* General container styling */
             .content-container {
                 padding: 6px;
                 max-width: 100%;
@@ -50,8 +42,6 @@
                 margin-top: 60px;
                 padding-bottom: 40px;
             }
-
-            /* Header styling */
             .header-row {
                 text-align: center;
                 margin-bottom: 15px;
@@ -61,8 +51,6 @@
                 font-size: 1.07rem;
                 font-weight: 600;
             }
-
-            /* Action and search row */
             .action-search-row {
                 display: flex;
                 justify-content: flex-end;
@@ -94,8 +82,6 @@
                 white-space: nowrap;
                 font-size: 0.57rem;
             }
-
-            /* Custom button styling */
             .btn-custom-action {
                 background-color: #003087;
                 border-color: #003087;
@@ -111,8 +97,6 @@
             .btn-custom-action i {
                 margin-right: 4px;
             }
-
-            /* Table styling */
             .table-container {
                 display: flex;
                 flex-direction: column;
@@ -166,8 +150,6 @@
                 z-index: 1;
                 position: relative;
             }
-
-            /* Action buttons in table */
             .table .action-buttons {
                 display: flex;
                 flex-wrap: wrap;
@@ -191,8 +173,6 @@
                 background-color: #117a8b;
                 border-color: #117a8b;
             }
-
-            /* Status badge styling */
             .status-badge {
                 padding: 2px 4px;
                 border-radius: 12px;
@@ -211,10 +191,8 @@
                 background-color: #6b7280;
                 color: white;
             }
-
-            /* Collapsible row styling */
             .details-row {
-                display: none; /* Ẩn hàng chi tiết mặc định */
+                display: none;
                 background-color: #f8f9fa;
             }
             .details-row td {
@@ -240,8 +218,6 @@
                 border-radius: 4px;
                 border: 2px solid lightblue;
             }
-
-            /* Header styling */
             .header {
                 background-color: #1F4E79;
                 color: white;
@@ -266,8 +242,6 @@
             .header .left-title i {
                 margin-right: 8px;
             }
-
-            /* Footer styling */
             .footer {
                 background-color: #1F4E79;
                 color: #B0C4DE;
@@ -284,8 +258,6 @@
                 margin: 0;
                 font-size: 0.5rem;
             }
-
-            /* Sidebar styling */
             .sidebar {
                 width: 160px;
                 background-color: #1F4E79;
@@ -349,8 +321,6 @@
             ul.sidebar-menu li a i {
                 margin-right: 5px;
             }
-
-            /* Scroll to Top */
             #scrollToTopBtn {
                 display: none;
                 position: fixed;
@@ -371,8 +341,6 @@
             #scrollToTopBtn:hover {
                 background-color: #0056b3;
             }
-
-            /* Responsive adjustments */
             @media (max-width: 768px) {
                 .content-container {
                     padding: 8px;
@@ -390,8 +358,7 @@
                     gap: 6px;
                 }
                 .action-search-row .form-control,
-                .action-search-row .form-select,
-                .action-search-row .btn-custom-action {
+                .action-search-row .form-select {
                     width: auto;
                     font-size: 0.38rem;
                     height: 26px;
@@ -468,10 +435,41 @@
                     margin-right: 5px;
                 }
             }
-
             .course-stats {
                 font-size: 0.67rem !important;
                 margin: 8px 0;
+            }
+            #similarClassesModal .modal-body {
+                max-height: 500px;
+                overflow-y: auto;
+            }
+            #similarClassesTable th,
+            #similarClassesTable td {
+                font-size: 0.58rem;
+                text-align: center;
+            }
+            #similarClassesTable .status-badge {
+                padding: 2px 4px;
+                border-radius: 12px;
+                font-size: 0.5rem;
+                font-weight: 500;
+            }
+            #similarClassesTable td:nth-child(7) {
+                max-width: 200px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            #similarClassesTable td:nth-child(7):hover {
+                white-space: normal;
+                overflow: visible;
+                background-color: #f8f9fa;
+                z-index: 1;
+                position: relative;
+            }
+            .highlight-row {
+                background-color: #fff3cd !important; /* Màu vàng nhạt để highlight */
+                font-weight: bold;
             }
         </style>
     </head>
@@ -541,21 +539,29 @@
                 %>
             </c:if>
 
+
+
             <!-- Tiêu đề -->
             <div class="header-row">
-                <h2>Danh Sách Lớp Học Hiẹn Tại Của Học Sinh</h2>
+                <h2>
+                    <c:choose>
+                        <c:when test="${not empty tenHocSinh}">
+                            Danh Sách Lớp Học Hiện Tại Của Học Sinh: ${tenHocSinh}
+                        </c:when>
+                        <c:otherwise>
+                            Danh Sách Lớp Học Hiện Tại Của Học Sinh
+                        </c:otherwise>
+                    </c:choose>
+                </h2>
             </div>
 
             <!-- Thông báo -->
             <c:if test="${not empty error}">
-                <div class="alert alert-custom-danger" role="alert">${error}</div>
+                <div class="alert alert-danger" role="alert">${error}</div>
             </c:if>
-
-
 
             <input type="text" class="form-control" id="searchInput" placeholder="Tìm theo mã hoặc tên lớp" onkeyup="searchClasses()">
             <!-- Bảng danh sách -->
-
             <div class="table-container">
                 <c:if test="${not empty lopHocs}">
                     <div class="table-responsive">
@@ -581,14 +587,14 @@
                                         <td>${lopHoc.siSo != null ? lopHoc.siSo : '0'}</td>
                                         <td>
                                             <c:choose>
-                                                <c:when test="${lopHoc.trangThai == 'Đang hoạt động'}">
-                                                    <span class="status-badge status-dang-hoc">Đang hoạt động</span>
+                                                <c:when test="${lopHoc.trangThai == 'Đang học'}">
+                                                    <span class="status-badge status-dang-hoc">Đang học</span>
                                                 </c:when>
-                                                <c:when test="${lopHoc.trangThai == 'Đã kết thúc'}">
-                                                    <span class="status-badge status-ket-thuc">Đã kết thúc</span>
+                                                <c:when test="${lopHoc.trangThai == 'Kết thúc'}">
+                                                    <span class="status-badge status-ket-thuc">Kết thúc</span>
                                                 </c:when>
-                                                <c:when test="${lopHoc.trangThai == 'Chưa bắt đầu'}">
-                                                    <span class="status-badge status-chua-hoc">Chưa bắt đầu</span>
+                                                <c:when test="${lopHoc.trangThai == 'Chưa học'}">
+                                                    <span class="status-badge status-chua-hoc">Chưa học</span>
                                                 </c:when>
                                                 <c:otherwise>
                                                     <span>${lopHoc.trangThai != null ? lopHoc.trangThai : 'Chưa có'}</span>
@@ -601,9 +607,12 @@
                                             <button type="button" class="btn btn-info btn-sm toggle-details" data-id="${lopHoc.idLopHoc}">
                                                 <i class="bi bi-info-circle"></i> Xem chi tiết
                                             </button>
-                                            <a href="${pageContext.request.contextPath}/ManageClassDetail?ID_LopHoc=${lopHoc.idLopHoc}&ID_KhoaHoc=${lopHoc.idKhoaHoc}&ID_Khoi=${lopHoc.idKhoi}&ClassCode=${lopHoc.classCode}" class="btn btn-secondary btn-sm" aria-label="Xem danh sách lớp">
-                                                <i class="bi bi-eye"></i> Danh sách học sinh
+                                            <a href="${pageContext.request.contextPath}/ManageClassDetail_LopHoc_HocSinh?ID_LopHoc=${lopHoc.idLopHoc}&ID_KhoaHoc=${lopHoc.idKhoaHoc}&ID_Khoi=${lopHoc.idKhoi}&ClassCode=${lopHoc.classCode}&idHocSinh=${idHocSinh}" class="btn btn-secondary btn-sm" aria-label="Xem danh sách lớp">
+                                                <i class="bi bi-eye"></i> Danh sách lớp
                                             </a>
+                                            <button type="button" class="btn btn-warning btn-sm view-similar-classes" data-classcode="${lopHoc.classCode}" data-id-lophoc="${lopHoc.idLopHoc}">
+                                                <i class="bi bi-search"></i> Xem lớp tương đồng
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr class="details-row" id="details-${lopHoc.idLopHoc}">
@@ -632,6 +641,9 @@
                         </table>
                     </div>
                 </c:if>
+                <c:if test="${empty lopHocs}">
+                    <p>Không có lớp học nào để hiển thị.</p>
+                </c:if>
             </div>
 
             <!-- Nút hành động -->
@@ -640,7 +652,43 @@
                     <i class="bi bi-arrow-left"></i> Quay lại bảng học sinh
                 </a>
             </div>
+        </div>
 
+        <!-- Modal hiển thị lớp tương đồng -->
+        <div class="modal fade" id="similarClassesModal" tabindex="-1" aria-labelledby="similarClassesModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="similarClassesModalLabel">Danh Sách Lớp Tương Đồng</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control mb-3" id="similarSearchInput" placeholder="Tìm theo mã hoặc tên lớp" onkeyup="searchSimilarClasses()">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover align-middle" id="similarClassesTable">
+                                <thead>
+                                    <tr>
+                                        <th>Mã Lớp</th>
+                                        <th>Tên Lớp</th>
+                                        <th>Khóa Học</th>
+                                        <th>Sĩ Số</th>
+                                        <th>Trạng Thái</th>
+                                        <th>Số Tiền</th>
+                                        <th>Thời Gian Học</th>
+                                        <th>Tên Giáo Viên</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="similarClassesTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Footer -->
@@ -655,6 +703,13 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
         <script>
+            // Tạo mảng chứa ID_LopHoc của các lớp học sinh đang học
+            const enrolledClassIds = [
+            <c:forEach var="lopHoc" items="${lopHocs}" varStatus="status">
+                ${lopHoc.idLopHoc}${status.last ? '' : ','}
+            </c:forEach>
+            ];
+
             // Hiển thị/n ẩn nút khi cuộn
             window.onscroll = function () {
                 var scrollBtn = document.getElementById("scrollToTopBtn");
@@ -704,16 +759,153 @@
                     row.style.display = 'none';
                 });
             });
-            
+
             function searchClasses() {
-    const input = document.getElementById('searchInput').value.toLowerCase();
-    const rows = document.querySelectorAll('.table tbody tr:not(.details-row)');
-    rows.forEach(row => {
-        const classCode = row.cells[0].textContent.toLowerCase();
-        const className = row.cells[1].textContent.toLowerCase();
-        row.style.display = (classCode.includes(input) || className.includes(input)) ? '' : 'none';
-    });
-}
+                const input = document.getElementById('searchInput').value.toLowerCase();
+                const rows = document.querySelectorAll('.table tbody tr:not(.details-row)');
+                rows.forEach(row => {
+                    const classCode = row.cells[0].textContent.toLowerCase();
+                    const className = row.cells[1].textContent.toLowerCase();
+                    row.style.display = (classCode.includes(input) || className.includes(input)) ? '' : 'none';
+                });
+            }
+
+            function searchSimilarClasses() {
+                const input = document.getElementById('similarSearchInput').value.toLowerCase();
+                const rows = document.querySelectorAll('#similarClassesTable tbody tr');
+                rows.forEach(row => {
+                    const classCode = row.cells[0].textContent.toLowerCase();
+                    const className = row.cells[1].textContent.toLowerCase();
+                    row.style.display = (classCode.includes(input) || className.includes(input)) ? '' : 'none';
+                });
+            }
+
+            // Xử lý sự kiện click cho nút "Xem lớp tương đồng"
+            document.querySelectorAll('.view-similar-classes').forEach(button => {
+                button.addEventListener('click', function () {
+                    const classCode = this.getAttribute('data-classcode');
+                    const idLopHocHienTai = this.getAttribute('data-id-lophoc');
+                    const modalBody = document.getElementById('similarClassesTableBody');
+
+                    if (classCode && classCode.trim() !== '' && idLopHocHienTai) {
+                        modalBody.innerHTML = '<tr><td colspan="9">Đang tải dữ liệu cho mã lớp: ' + classCode + '</td></tr>';
+
+                        fetch('${pageContext.request.contextPath}/FindSimilarClasses?classCode=' + encodeURIComponent(classCode) + '&idLopHocHienTai=' + encodeURIComponent(idLopHocHienTai), {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Lỗi khi gọi Servlet: ' + response.status);
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    if (data.error) {
+                                        modalBody.innerHTML = '<tr><td colspan="9">' + data.error + '</td></tr>';
+                                    } else if (data.length === 0) {
+                                        modalBody.innerHTML = '<tr><td colspan="9">Không tìm thấy lớp tương đồng.</td></tr>';
+                                    } else {
+                                        let html = '';
+                                        data.forEach(lopHoc => {
+                                            const trangThaiClass = lopHoc.trangThai === 'Đang học' ? 'status-dang-hoc' :
+                                                    lopHoc.trangThai === 'Kết thúc' ? 'status-ket-thuc' :
+                                                    lopHoc.trangThai === 'Chưa học' ? 'status-chua-hoc' : '';
+                                            const classCodeValue = lopHoc.ClassCode || lopHoc.classCode || 'Chưa có';
+                                            const soTienValue = lopHoc.SoTien || lopHoc.soTien || 0;
+                                            const thoiGianHocValue = lopHoc.ThoiGianHoc || lopHoc.thoiGianHoc || 'Chưa có';
+                                            const tenGiaoVienValue = lopHoc.TenGiaoVien || lopHoc.tenGiaoVien || 'Chưa có';
+                                            const isEnrolled = enrolledClassIds.includes(lopHoc.idLopHoc);
+                                            html += '<tr' + (isEnrolled ? ' class="highlight-row"' : '') + '>' +
+                                                    '<td>' + classCodeValue + '</td>' +
+                                                    '<td>' + (lopHoc.tenLopHoc || 'Chưa có') + '</td>' +
+                                                    '<td>' + (lopHoc.idKhoaHoc || 'Chưa có') + '</td>' +
+                                                    '<td>' + (lopHoc.siSo || 0) + '</td>' +
+                                                    '<td><span class="status-badge ' + trangThaiClass + '">' + (lopHoc.trangThai || 'Chưa có') + '</span></td>' +
+                                                    '<td>' + soTienValue + ' VND</td>' +
+                                                    '<td>' + thoiGianHocValue + '</td>' +
+                                                    '<td>' + tenGiaoVienValue + '</td>' +
+                                                    '<td>' +
+                                                    (isEnrolled ? 'Đang học' :
+                                                            '<button type="button" class="btn btn-primary btn-sm change-class" ' +
+                                                            'data-id-lophoc="' + lopHoc.idLopHoc + '" ' +
+                                                            'data-id-hocsinh="<%= request.getAttribute("idHocSinh") %>" ' +
+                                                            'data-id-lophoc-hientai="' + idLopHocHienTai + '">' +
+                                                            '<i class="bi bi-arrow-right"></i> Chuyển lớp' +
+                                                            '</button>') +
+                                                    '</td>' +
+                                                    '</tr>';
+                                        });
+                                        modalBody.innerHTML = html;
+                                        // Áp dụng tìm kiếm ngay sau khi tải dữ liệu
+                                        searchSimilarClasses();
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    modalBody.innerHTML = '<tr><td colspan="9">Lỗi khi tải dữ liệu: ' + error.message + '</td></tr>';
+                                });
+
+                        const modal = new bootstrap.Modal(document.getElementById('similarClassesModal'));
+                        modal.show();
+                    } else {
+                        modalBody.innerHTML = '<tr><td colspan="9">Lỗi: Mã lớp hoặc ID lớp không hợp lệ!</td></tr>';
+                        const modal = new bootstrap.Modal(document.getElementById('similarClassesModal'));
+                        modal.show();
+                    }
+                });
+            });
+
+            // Xử lý sự kiện click cho nút "Chuyển lớp"
+            document.addEventListener('click', function (event) {
+                if (event.target.closest('.change-class')) {
+                    const button = event.target.closest('.change-class');
+                    const idLopHocTuongDong = button.getAttribute('data-id-lophoc');
+                    const idHocSinh = button.getAttribute('data-id-hocsinh');
+                    const idLopHocHienTai = button.getAttribute('data-id-lophoc-hientai');
+
+                    if (!idLopHocTuongDong || !idHocSinh || !idLopHocHienTai) {
+                        alert('Thông tin không đầy đủ để thực hiện chuyển lớp!');
+                        return;
+                    }
+
+                    if (confirm('Bạn có chắc chắn muốn chuyển học sinh sang lớp này?')) {
+                        fetch('${pageContext.request.contextPath}/ChangeClassForStudent', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-Token': '${sessionScope.csrfToken}'
+                            },
+                            body: JSON.stringify({
+                                idHocSinh: parseInt(idHocSinh),
+                                idLopHocHienTai: parseInt(idLopHocHienTai),
+                                idLopHocTuongDong: parseInt(idLopHocTuongDong)
+                            })
+                        })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Lỗi khi gọi Servlet: ' + response.status);
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    if (data.success) {
+                                        alert('Chuyển lớp thành công!');
+                                        location.reload(); // Tải lại trang để cập nhật danh sách
+                                    } else {
+                                        alert('Lỗi: ' + data.errorMessage);
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('Lỗi khi thực hiện chuyển lớp: ' + error.message);
+                                });
+                    }
+                }
+            });
         </script>
     </body>
 </html>
+

@@ -1,7 +1,7 @@
-﻿CREATE DATABASE SQP
+﻿CREATE DATABASE SWP
 GO
 
-USE SQP
+USE SWP
 GO
 
 /****** Object:  Table [dbo].[VaiTro]    Script Date: 26/06/2025 23:16:00 ******/

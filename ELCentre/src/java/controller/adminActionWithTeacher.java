@@ -1,4 +1,3 @@
-
 package controller;
 
 import dal.GiaoVienDAO;
@@ -31,11 +30,13 @@ import model.LopHocInfoDTO;
 import model.TaiKhoan;
 import model.TruongHoc;
 import model.UserLogs;
+
 /**
  *
  * @author wrx_Chur04
  */
 public class adminActionWithTeacher extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -70,7 +71,6 @@ public class adminActionWithTeacher extends HttpServlet {
 
             case "update":
                 break;
-
         }
     }
 
@@ -82,9 +82,9 @@ public class adminActionWithTeacher extends HttpServlet {
             case "update":
                 doUpdateInfor(request, response);
                 break;
-            case "sendNotification" : 
-                doSendNotification(request, response) ; 
-                break ; 
+            case "sendNotification":
+                doSendNotification(request, response);
+                break;
         }
     }
 
@@ -108,15 +108,15 @@ public class adminActionWithTeacher extends HttpServlet {
 
     protected void doViewLopHocGiaoVien(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//       // Kiểm tra quyền truy cập (giả sử có session lưu thông tin người dùng)
-//    HttpSession session = request.getSession();
-//    TaiKhoan user = (TaiKhoan) session.getAttribute("user");
-//    if (user == null || !user.getUserType().equals("Admin")) {
-//        response.sendRedirect(request.getContextPath() + "/login");
-//        return;
-//    }
+        // Kiểm tra quyền truy cập (giả sử có session lưu thông tin người dùng)
+        // HttpSession session = request.getSession();
+        // TaiKhoan user = (TaiKhoan) session.getAttribute("user");
+        // if (user == null || !user.getUserType().equals("Admin")) {
+        //     response.sendRedirect(request.getContextPath() + "/login");
+        //     return;
+        // }
 
-    String ID = request.getParameter("id");
+        String ID = request.getParameter("id");
         int id;
         try {
             id = Integer.parseInt(ID);
@@ -126,6 +126,7 @@ public class adminActionWithTeacher extends HttpServlet {
             return;
         }
 
+        // Lấy danh sách lớp học
         LopHocInfoDTODAO lhd = new LopHocInfoDTODAO();
         List<LopHocInfoDTO> lopHocs = lhd.getClassesByTeacherId(id);
         if (lopHocs == null || lopHocs.isEmpty()) {
@@ -134,10 +135,19 @@ public class adminActionWithTeacher extends HttpServlet {
             return;
         }
 
+        // Lấy thông tin giáo viên bằng hàm getGiaoVienById1 (thêm phần này)
+        GiaoVienDAO gvDAO = new GiaoVienDAO();  // Giả sử đây là DAO của bạn
+        GiaoVien giaoVien = gvDAO.getGiaoVienById1(id);
+        String tenGiaoVien = (giaoVien != null) ? giaoVien.getHoTen() : "Không tìm thấy tên giáo viên";  // Lấy tên từ object
+
+        // Set attributes
+        request.setAttribute("idGiaoVien", id);
         request.setAttribute("lopHocs", lopHocs);
+        request.setAttribute("tenGiaoVien", tenGiaoVien);  // Set tên giáo viên
+
         request.getRequestDispatcher("/views/admin/viewLopHoc_GiaoVien.jsp").forward(request, response);
-    
     }
+
     protected void doUpdateInfor(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
@@ -147,6 +157,7 @@ public class adminActionWithTeacher extends HttpServlet {
         String idTruong = request.getParameter("idTruongHoc");
         String lopTrenTruong = request.getParameter("lop");
         String sdt = request.getParameter("sdt");
+        String luong = request.getParameter("luong");
         String isHot = request.getParameter("hot");
         int ID_TruongGV = Integer.parseInt(idTruong);
         ArrayList<HocSinh> truongVaLopDangHocCuaHocSinhTrongLopGiaoVien = HocSinh_ChiTietDAO.adminGetLopHocCuaHocSinhSoVoiGiaoVien(ID_GiaoVien);
@@ -164,6 +175,7 @@ public class adminActionWithTeacher extends HttpServlet {
         if (canUpdate) {
             try {
                 int ID_TaiKhoan = Integer.parseInt(ID_taikhoan);
+                int Luong = Integer.parseInt(luong);
                 if (sdt.length() != 10) {
                     throw new Exception("Số điện thoại phải dài 10 chữ số!");
                 }
@@ -171,45 +183,49 @@ public class adminActionWithTeacher extends HttpServlet {
                 if (!sdt.startsWith("0")) {
                     throw new Exception("Số điện thoại phải bắt đầu bằng số 0!");
                 }
-                
-                boolean s1 = TaiKhoanDAO.adminUpdateInformationAccount(sdt, ID_TaiKhoan) ; 
-                boolean s2 = HocSinh_ChiTietDAO.updateTruongLopGiaoVien(idTruong, lopTrenTruong, sdt, isHot, ID_GiaoVien) ; 
-                if (s1== true && s2 == true ) {
+
+                if (Luong < 0) {
+                    throw new Exception("Lương phải lớn hơn 0! ");
+                }
+
+                boolean s1 = TaiKhoanDAO.adminUpdateInformationAccount(sdt, ID_TaiKhoan);
+                boolean s2 = HocSinh_ChiTietDAO.updateTruongLopGiaoVien(idTruong, lopTrenTruong, sdt, isHot, ID_GiaoVien, Luong);
+                if (s1 == true && s2 == true) {
                     request.setAttribute("message", "Thay đổi thành công!");
-                    UserLogs log = new UserLogs(0 , 1 , "Thay đổi thông tin giáo viên có ID tài khoản " + ID_TaiKhoan , LocalDateTime.now());
-                     UserLogsDAO.insertLog(log);
-                     ArrayList<GiaoVien_TruongHoc> giaoviens = new ArrayList<GiaoVien_TruongHoc>();
-                     giaoviens = GiaoVienDAO.admminGetAllGiaoVien();
-                     session.setAttribute("giaoviens", giaoviens);        
-                    request.getRequestDispatcher("/views/admin/adminReceiveGiaoVien.jsp").forward(request, response);    
-                
+                    UserLogs log = new UserLogs(0, 1, "Thay đổi thông tin giáo viên có ID tài khoản " + ID_TaiKhoan, LocalDateTime.now());
+                    UserLogsDAO.insertLog(log);
+                    ArrayList<GiaoVien_TruongHoc> giaoviens = new ArrayList<GiaoVien_TruongHoc>();
+                    giaoviens = GiaoVienDAO.admminGetAllGiaoVien();
+                    session.setAttribute("giaoviens", giaoviens);
+                    request.getRequestDispatcher("/views/admin/adminReceiveGiaoVien.jsp").forward(request, response);
+
                 }
             } catch (Exception e) {
                 request.setAttribute("message", e.getMessage());
-                request.getRequestDispatcher("/views/admin/adminReceiveGiaoVien.jsp").forward(request, response);    
+                request.getRequestDispatcher("/views/admin/adminReceiveGiaoVien.jsp").forward(request, response);
             }
         } else {
             request.setAttribute("message", "Không thể thay đổi ! Vi phạm nghị đinh 29 !!");
-            request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);    
+            request.getRequestDispatcher("/views/admin/adminReceiveHocSinh.jsp").forward(request, response);
         }
 
     }
-    
-    
+
     protected void doSendNotification(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession() ; 
+        HttpSession session = request.getSession();
         String ID_TaiKhoan = request.getParameter("idtaikhoan");
-        String NoiDung = request.getParameter("noidung")  ; 
-        boolean sendNTF = ThongBaoDAO.adminSendNotification(ID_TaiKhoan, NoiDung) ; 
+        String NoiDung = request.getParameter("noidung");
+        boolean sendNTF = ThongBaoDAO.adminSendNotification(ID_TaiKhoan, NoiDung, "Teacher");
         if (sendNTF) {
             request.setAttribute("message", "Gửi thông báo thành công!");
-            
+
             request.getRequestDispatcher("/views/admin/adminReceiveGiaoVien.jsp").forward(request, response);
         } else {
             request.setAttribute("message", "Gửi thông báo thất bại!");
             request.getRequestDispatcher("/views/admin/adminReceiveGiaoVien.jsp").forward(request, response);
         }
-        
+
     }
+
 }
