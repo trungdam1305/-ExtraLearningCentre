@@ -621,7 +621,8 @@
 
                 <div class="stat-card stat-tuvan">
                     <h3><i class="fas fa-envelope-open-text"></i> Tổng đơn đăng ký tư vấn chưa duyệt</h3>
-                    <p>15</p>
+                    <p>${tongSoDonTuVan}</p>
+                   
                 </div>
 
                 <div class="stat-card stat-hocsinh">

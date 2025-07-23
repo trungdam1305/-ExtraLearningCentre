@@ -381,29 +381,6 @@
             <p>© 2025 EL CENTRE. All rights reserved. | Developed by EL CENTRE</p>
         </div>
 
-        <script>
-            function toggleDropdown() {
-                const dropdown = document.getElementById('adminDropdown');
-                dropdown.classList.toggle('active');
-            }
-
-            document.addEventListener('click', function (event) {
-                const profile = document.querySelector('.admin-profile');
-                const dropdown = document.getElementById('adminDropdown');
-                if (!profile.contains(event.target)) {
-                    dropdown.classList.remove('active');
-                }
-            });
-
-            function searchSupport() {
-                const input = document.getElementById('searchSupportInput').value.toLowerCase();
-                const rows = document.querySelectorAll('#supportTableBody tr');
-                rows.forEach(row => {
-                    const cells = row.querySelectorAll('td');
-                    const text = Array.from(cells).slice(0, -1).map(cell => cell.textContent.toLowerCase()).join(' ');
-                    row.style.display = text.includes(input) ? '' : 'none';
-                });
-            }
-        </script>
+       
     </body>
 </html>

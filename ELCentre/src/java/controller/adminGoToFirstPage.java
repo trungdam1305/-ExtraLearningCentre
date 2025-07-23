@@ -10,6 +10,7 @@ import dal.GiaoVienDAO;
 import dal.HoTroDAO;
 import dal.HocSinhDAO;
 import dal.LopHocDAO;
+import dal.ThongBaoDAO;
 import dal.UserLogsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -57,6 +58,7 @@ public class adminGoToFirstPage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        
         LocalDate date = LocalDate.now();
          String datteBien = date.toString(); 
          ArrayList<Admin> admins  =  AdminDAO.getNameAdmin() ; 
@@ -66,11 +68,12 @@ public class adminGoToFirstPage extends HttpServlet {
          Integer tongSoHocSinhChoHoc = HocSinhDAO.adminGetTongSoHocSinhChoHoc();
          ArrayList<UserLogView> userLogsList =  UserLogsDAO.adminGetAllUserLogs(datteBien);
          ArrayList<HoTro> HoTroList = (ArrayList) HoTroDAO.adminGetHoTroDashBoard();
-               
+         Integer tongSoDonTuVan = ThongBaoDAO.getSoTuVan() ;
         request.setAttribute("admins", admins);
         request.setAttribute("ngayHomNay", datteBien);
         request.setAttribute("tongHS", tongSoHocSinhDangHoc);
         request.setAttribute("tongGV", tongSoGiaoVienDangDay);
+        request.setAttribute("tongSoDonTuVan", tongSoDonTuVan);
         request.setAttribute("tongLH", tongSoLopHocDangHoc);
         request.setAttribute("hsChoHoc", tongSoHocSinhChoHoc);
         request.setAttribute("userLogsList", userLogsList);

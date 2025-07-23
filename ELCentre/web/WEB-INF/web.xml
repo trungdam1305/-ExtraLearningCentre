@@ -272,6 +272,14 @@
         <servlet-name>PayTeacherSalary</servlet-name>
         <servlet-class>controller.ManageCourses.PayTeacherSalary</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>staffGoToTuition</servlet-name>
+        <servlet-class>controller.staffGoToTuition</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>staffActionWithTuition</servlet-name>
+        <servlet-class>controller.staffActionWithTuition</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -567,6 +575,14 @@
     <servlet-mapping>
         <servlet-name>PayTeacherSalary</servlet-name>
         <url-pattern>/PayTeacherSalary</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>staffGoToTuition</servlet-name>
+        <url-pattern>/staffGoToTuition</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>staffActionWithTuition</servlet-name>
+        <url-pattern>/staffActionWithTuition</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

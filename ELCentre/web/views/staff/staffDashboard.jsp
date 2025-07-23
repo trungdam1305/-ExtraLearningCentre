@@ -379,7 +379,7 @@
             </ul>
             <div class="sidebar-section-title">Quản lý tài chính</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/staffViewSalary"><i class="fas fa-money-check-alt"></i> Học phí</a></li>
+                <li><a href="${pageContext.request.contextPath}/staffGoToTuition"><i class="fas fa-money-check-alt"></i> Học phí</a></li>
             </ul>
             <div class="sidebar-section-title">Hỗ trợ</div>
             <ul class="sidebar-menu">
@@ -399,23 +399,23 @@
             <div class="dashboard-stats">
                 <div class="stat-card stat-hocsinh">
                     <h3><i class="fas fa-user-graduate"></i> Tổng số học sinh đang học</h3>
-                    <p>59</p>
+                    <p>${tongHS}</p>
                 </div>
                 <div class="stat-card stat-giaovien">
                     <h3><i class="fas fa-chalkboard-teacher"></i> Tổng số giáo viên đang dạy</h3>
-                    <p>6</p>
+                    <p>${tongGV}</p>
                 </div>
                 <div class="stat-card stat-lophoc">
                     <h3><i class="fas fa-school"></i> Tổng số lớp học đang học</h3>
-                    <p>5</p>
+                    <p>${tongLH}</p>
                 </div>
                 <div class="stat-card stat-tuvan">
                     <h3><i class="fas fa-envelope-open-text"></i> Tổng đơn đăng ký tư vấn chưa duyệt</h3>
-                    <p>${pendingConsultations}</p>
+                    <p>${tongSoDonTuVan}</p>
                 </div>
-                <div class="stat-card stat-salary">
-                    <h3><i class="fas fa-money-check-alt"></i> Lương tháng này</h3>
-                    <p>${staffSalary}</p>
+                <div class="stat-card stat-hocsinh">
+                    <h3><i class="fas fa-user-clock"></i> Tổng số học sinh chờ lớp</h3>
+                    <p>${hsChoHoc}</p>
                 </div>
             </div>
 

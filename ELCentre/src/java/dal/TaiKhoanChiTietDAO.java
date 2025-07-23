@@ -24,9 +24,9 @@ public class TaiKhoanChiTietDAO {
                           SELECT 
                               T.ID_TaiKhoan,
                               T.Email,
-                          	
+                          
                               T.UserType,
-                              COALESCE(HS.HoTen, GV.HoTen, PH.HoTen) AS HoTen , 
+                              COALESCE(HS.HoTen, GV.HoTen, PH.HoTen , ST.HoTen) AS HoTen , 
                           	T.MatKhau , 
                           	T.ID_VaiTro , 
                           	T.UserType , 
@@ -37,7 +37,8 @@ public class TaiKhoanChiTietDAO {
                           LEFT JOIN HocSinh HS ON T.ID_TaiKhoan = HS.ID_TaiKhoan
                           LEFT JOIN GiaoVien GV ON T.ID_TaiKhoan = GV.ID_TaiKhoan
                           LEFT JOIN PhuHuynh PH ON T.ID_TaiKhoan = PH.ID_TaiKhoan 
-                          where T.UserType != 'Staff' and T.UserType != 'Admin' 
+                          LEFT JOIN Staff ST ON T.ID_TaiKhoan = ST.ID_TaiKhoan 
+                          where  T.UserType != 'Admin' 
 
                           """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 

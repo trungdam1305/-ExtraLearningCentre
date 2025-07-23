@@ -96,7 +96,6 @@ public class adminGetFromDashboard extends HttpServlet {
                     session.setAttribute("giaoviens", giaoviens);            //create object is giaoviens to send data for jsp
                     request.getRequestDispatcher("/views/admin/adminReceiveGiaoVien.jsp").forward(request, response);      //redirect to adminReceiveGiaoVien jsp
                 }
-
                 break;
 
             case "hocphi":       //action with tuition

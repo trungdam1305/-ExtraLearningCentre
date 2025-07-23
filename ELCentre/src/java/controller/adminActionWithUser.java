@@ -25,6 +25,8 @@ import dao.UserLogsDAO;
 import java.time.LocalDateTime;
 import model.UserLogs;
 import dal.HoTroDAO;
+import dal.StaffDAO;
+import model.StaffUpdate;
 
 /**
  * This servlet handle all the action of admin when admin click button manage
@@ -120,9 +122,17 @@ public class adminActionWithUser extends HttpServlet {
                 } else if (type.equalsIgnoreCase("Staff")) {         //if user is parent of staff
                     boolean b1 = TaiKhoanDAO.adminEnableAccountUser(id);         //admin enable in table account
                     if (b1 == true) {
-                        out.print("okok123");
+                        int ID_TaiKhoan = Integer.parseInt(id);
+                        UserLogs log = new UserLogs(0, 1, "Mở tài khoản Staff có ID tài khoản " + ID_TaiKhoan, LocalDateTime.now());
+
+                        UserLogsDAO.insertLog(log);
+                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();
+                        session.setAttribute("taikhoans", taikhoans);
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);       //redirect to adminReceiveUsers
                     } else {
-                        out.print("huhuhu");
+                       request.setAttribute("message", "Không có tài khoản nào.");
+
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
                     }
                 }
                 break;
@@ -192,7 +202,13 @@ public class adminActionWithUser extends HttpServlet {
                 } else if (type.equalsIgnoreCase("Staff")) {        //if user is staff
                     boolean b1 = TaiKhoanDAO.adminDisableAccountUser(id);       //admin disnable in table account
                     if (b1 == true) {
-                        out.print("okok123");
+                        int ID_TaiKhoan = Integer.parseInt(id);
+                        UserLogs log = new UserLogs(0, 1, "Vô hiệu hóa tài khoản Staff có ID tài khoản " + ID_TaiKhoan, LocalDateTime.now());
+
+                        UserLogsDAO.insertLog(log);
+                        ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();
+                        session.setAttribute("taikhoans", taikhoans);
+                        request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
                     } else {
                         out.print("huhuhu");
                     }
@@ -233,7 +249,7 @@ public class adminActionWithUser extends HttpServlet {
                     ArrayList<PhuHuynh> phuhuynhs = PhuHuynhDAO.adminGetPhuHuynhByID(id);
                     List<String> name = HocSinhDAO.nameofStudentDependPH(id);   //get name son of parent
                     if (phuhuynhs.isEmpty()) {
-                        request.setAttribute("message", "Không tìm thấy thông tin phụ huyunh này.");
+                        request.setAttribute("message", "Không tìm thấy thông tin phụ huynh này.");
                         request.getRequestDispatcher("/views/admin/adminUpdateParentInfor.jsp").forward(request, response);
                     } else {
                         request.setAttribute("name", name);
@@ -241,6 +257,17 @@ public class adminActionWithUser extends HttpServlet {
                         request.setAttribute("type", type);
                         request.getRequestDispatcher("/views/admin/adminUpdateParentInfor.jsp").forward(request, response);    // redirect to adminReceiveParentInfor.jsp
                     }
+                } else if (type.equalsIgnoreCase("Staff")){
+                    ArrayList<StaffUpdate> staffs = StaffDAO.adminGetStaff(id) ; 
+                    if (staffs.isEmpty()) {
+                        request.setAttribute("message", "Không tìm thấy thông tin staff này.");
+                        request.getRequestDispatcher("/views/admin/adminUpdateStaffInfor.jsp").forward(request, response);
+                    } else {
+                        request.setAttribute("staffs", staffs);
+                        request.setAttribute("type", type);
+                        request.getRequestDispatcher("/views/admin/adminUpdateStaffInfor.jsp").forward(request, response);    // redirect to adminReceiveParentInfor.jsp
+                    }
+                    
                 }
                 break;
 
@@ -277,10 +304,62 @@ public class adminActionWithUser extends HttpServlet {
                 //call the method update parent of student when admin want to update parent of student
                 updateParentOfStudent(request, response);
                 break;
+                
+            case "Staff" : 
+                //call the method update staff when admin want to update staff 
+                updateStaff(request, response) ; 
+                break ; 
         }
 
     }
 
+    //medthod update teacher
+    private void updateStaff(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String idtaikhoan = request.getParameter("idtaikhoan");
+        String idstaff = request.getParameter("idstaff");
+        String SDT = request.getParameter("sdt");
+        String matkhau = request.getParameter("matkhau");
+        
+        HttpSession session = request.getSession();
+
+        try {
+            int ID_TaiKhoan = Integer.parseInt(idtaikhoan);
+            
+            
+            
+            if (SDT.length() != 10) {
+                throw new Exception("Số điện thoại phải dài 10 chữ số!");
+            }
+
+            if (!SDT.startsWith("0")) {
+                throw new Exception("Số điện thoại phải bắt đầu bằng số 0!");
+            }
+
+          
+            boolean s2 = TaiKhoanDAO.adminUpdateInformationAccountMK(SDT, matkhau, ID_TaiKhoan);
+
+            if ( s2 == true) {
+                request.setAttribute("message", "Thay đổi thành công!");
+                UserLogs log = new UserLogs(0, 1, "Thay đổi thông tin nhân viên có ID tài khoản " + ID_TaiKhoan, LocalDateTime.now());
+
+                UserLogsDAO.insertLog(log);
+                ArrayList<TaiKhoanChiTiet> taikhoans = TaiKhoanChiTietDAO.adminGetAllTaiKhoanHaveName();   // create arraylist to save data 
+                session.setAttribute("taikhoans", taikhoans);
+                request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+            } else {
+                request.setAttribute("message", "Thất bại!");
+                request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+            }
+
+        } catch (Exception e) {
+
+            request.setAttribute("message", e.getMessage());
+            request.getRequestDispatcher("/views/admin/adminReceiveUsers.jsp").forward(request, response);
+        }
+    }
+    
+    
     //medthod view detail information of account
     private void doViewAccount(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

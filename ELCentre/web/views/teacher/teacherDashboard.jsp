@@ -641,8 +641,8 @@
             </div>  
                 <!--Notification table-->
                 <div>
-                    <table border='1'>
-                        kekekke
+                    <table >
+                        
                     </table>
                 </div>
                 <!--End Table-->
