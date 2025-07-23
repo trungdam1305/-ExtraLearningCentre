@@ -104,7 +104,7 @@ public class ManageClass extends HttpServlet {
         String[] idSlotHocs = request.getParameterValues("idSlotHoc[]");
         String[] idPhongHocs = request.getParameterValues("idPhongHoc[]");
 
-        // Validate classCode
+        //validate các trường hợp
         if (!isUpdate && (classCode == null || classCode.trim().isEmpty())) {
             return "Mã lớp học không được để trống!";
         }
@@ -112,7 +112,6 @@ public class ManageClass extends HttpServlet {
             return "Mã lớp học chỉ được chứa chữ cái và số, tối đa 20 ký tự!";
         }
 
-        // Validate tenLopHoc
         if (!isUpdate && (tenLopHoc == null || tenLopHoc.trim().isEmpty())) {
             return "Tên lớp học không được để trống!";
         }
@@ -120,12 +119,10 @@ public class ManageClass extends HttpServlet {
             return "Tên lớp học không được dài quá 100 ký tự!";
         }
 
-        // Validate trangThai
         if (trangThai == null || trangThai.trim().isEmpty() || !List.of("Inactive", "Active", "Finished", "Chưa học", "Đang học", "Kết thúc").contains(trangThai)) {
             return "Trạng thái không hợp lệ!";
         }
 
-        // Validate siSoToiDa
         int siSoToiDa;
         if (siSoToiDaStr == null || siSoToiDaStr.trim().isEmpty()) {
             return "Sĩ số tối đa không được để trống!";
@@ -142,7 +139,6 @@ public class ManageClass extends HttpServlet {
             return "Sĩ số tối đa không hợp lệ!";
         }
 
-        // Validate siSoToiThieu
         int siSoToiThieu;
         if (siSoToiThieuStr == null || siSoToiThieuStr.trim().isEmpty()) {
             return "Sĩ số tối thiểu không được để trống!";
@@ -162,7 +158,6 @@ public class ManageClass extends HttpServlet {
             return "Sĩ số tối thiểu không hợp lệ!";
         }
 
-        // Validate soTien
         int soTien;
         try {
             soTien = soTienStr != null && !soTienStr.trim().isEmpty() ? Integer.parseInt(soTienStr) : 0;
@@ -176,7 +171,6 @@ public class ManageClass extends HttpServlet {
             return "Học phí không hợp lệ!";
         }
 
-        // Validate order
         int order;
         try {
             order = orderStr != null && !orderStr.trim().isEmpty() ? Integer.parseInt(orderStr) : 0;
@@ -187,12 +181,10 @@ public class ManageClass extends HttpServlet {
             return "Thứ tự không hợp lệ!";
         }
 
-        // Validate ghiChu
         if (ghiChu != null && ghiChu.length() > 500) {
             return "Ghi chú không được dài quá 500 ký tự!";
         }
 
-        // Validate lịch học (chỉ kiểm tra lịch học trong tương lai)
         if (ngayHocs == null || idSlotHocs == null || idPhongHocs == null
                 || ngayHocs.length == 0 || idSlotHocs.length == 0 || idPhongHocs.length == 0) {
             return "Dữ liệu lịch học trong tương lai không được để trống!";

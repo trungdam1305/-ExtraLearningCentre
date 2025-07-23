@@ -79,7 +79,6 @@ public class ChangeClassForStudent extends HttpServlet {
       response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        // Kiểm tra CSRF token
         String csrfToken = request.getHeader("X-CSRF-Token");
         if (csrfToken == null || !csrfToken.equals(request.getSession().getAttribute("csrfToken"))) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -90,7 +89,7 @@ public class ChangeClassForStudent extends HttpServlet {
             return;
         }
 
-        // Đọc dữ liệu JSON từ request
+
         StringBuilder jb = new StringBuilder();
         String line;
         try {
@@ -106,19 +105,17 @@ public class ChangeClassForStudent extends HttpServlet {
             response.getWriter().write(new Gson().toJson(json));
             return;
         }
-
-        // Parse JSON
         Gson gson = new Gson();
         JsonObject jsonObject = gson.fromJson(jb.toString(), JsonObject.class);
         int idHocSinh = jsonObject.get("idHocSinh").getAsInt();
         int idLopHocHienTai = jsonObject.get("idLopHocHienTai").getAsInt();
         int idLopHocTuongDong = jsonObject.get("idLopHocTuongDong").getAsInt();
 
-        // Gọi DAO để thực hiện chuyển lớp
+        
         LopHocInfoDTODAO dao = new LopHocInfoDTODAO();
+        
+        //Gọi hàm changeClassForStudent để chuyển lớp học sinh
         LopHocInfoDTODAO.OperationResult result = dao.changeClassForStudent(idHocSinh, idLopHocHienTai, idLopHocTuongDong);
-
-        // Trả về kết quả
         JsonObject responseJson = new JsonObject();
         responseJson.addProperty("success", result.isSuccess());
         responseJson.addProperty("errorMessage", result.getErrorMessage() != null ? result.getErrorMessage() : "");
