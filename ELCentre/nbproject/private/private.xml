@@ -32,8 +32,8 @@
             <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/web/views/staff/staffDashboard.jsp</file>
         </group>
         <group>
-            <file>file:/C:/Users/Vuh26/Desktop/main/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/ManageClass.java</file>
-            <file>file:/C:/Users/Vuh26/Desktop/main/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/GetScheduleDetails.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/main/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/Staff_ManageCourse.java</file>
+            <file>file:/C:/Users/Vuh26/Desktop/main/-ExtraLearningCentre/ELCentre/src/java/controller/ManageCourses/Staff_ManageClassDetail.java</file>
         </group>
     </open-files>
 </project-private>
