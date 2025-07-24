@@ -469,7 +469,7 @@
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="#"><i class="bi bi-house-door"></i> Dashboard</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGoToFirstPage"><i class="bi bi-house-door"></i> Dashboard</a></li>
             </ul>
             <div class="sidebar-section-title">Quản lý người dùng</div>
             <ul class="sidebar-menu">
@@ -479,7 +479,8 @@
             </ul>
             <div class="sidebar-section-title">Quản lý tài chính</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocphi"><i class="bi bi-currency-dollar"></i> Học phí</a></li>
+                <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
+                <li><a href="${pageContext.request.contextPath}/ManageSchedule"><i class="fas fa-calendar-alt"></i> Lịch học</a></li>
             </ul>
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">
