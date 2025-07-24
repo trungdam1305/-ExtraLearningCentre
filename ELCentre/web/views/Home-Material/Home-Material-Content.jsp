@@ -30,12 +30,11 @@
             <section class="with-left-sidebar" id="primary">
                 <div class="woocommerce columns-4">
 
-                    <ul class="products columns-4" style="display: flex; flex-wrap: wrap; padding: 10; list-style: none;">
-                        
+                    <ul class="products columns-4" style="display: flex; flex-wrap: wrap; padding: 10px; list-style: none;">      
                         <c:if test="${empty listTaiLieu}">
                             <p style="width: 100%; text-align: center;">Không tìm thấy tài liệu nào phù hợp.</p>
                         </c:if>
-
+                        <!--Show brief information about Material-->
                         <c:forEach var="taiLieu" items="${listTaiLieu}">
                             <li class="post product type-product" 
                                 style="flex: 0 0 25%; 
@@ -56,17 +55,14 @@
                                                  style="width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid #e0e0e0;" />
                                         </a>
                                     </div>
-                                    
                                     <div class="product-title" style="padding: 15px; flex-grow: 1;">
                                         <h2 class="woocommerce-loop-product__title" style="font-size: 1.1em; margin: 0; line-height: 1.4; font-weight: 700;">
                                             <a href="material-detail?id=${taiLieu.ID_Material}" style="text-decoration: none; color: #333;">${taiLieu.tenTaiLieu}</a>
                                         </h2>
                                     </div>
-
                                     <div class="product-details" style="padding: 0 15px 15px 15px; border-top: 1px solid #f5f5f5;">
                                         <p style="margin: 8px 0; font-size: 0.9em; color: #555;"><b>Môn học:</b> ${taiLieu.monHoc}</p>
-                                        <p style="margin: 8px 0; font-size: 0.9em; color: #555;"><b>Loại:</b> ${taiLieu.loaiTaiLieu}</p>
-                                        <p style="margin: 8px 0; font-size: 0.9em; color: #555;"><b>Giá:</b> <span style="color: #c00; font-weight: 700;">${taiLieu.giaTien}</span></p>
+                                        <p style="margin: 8px 0; font-size: 0.9em; color: red;"><b>Loại:</b> ${taiLieu.loaiTaiLieu}</p>
                                         
                                         <span class="price" style="margin-top: 15px; display: block; text-align: center;">
                                             <a href="material-detail?id=${taiLieu.ID_Material}" 
@@ -85,7 +81,7 @@
                             </li>
                         </c:forEach>
                     </ul>
-
+                    <!--Pagination-->
                     <div class="pagination" style="width: 100%; text-align: center; margin-top: 40px;">
                         <c:forEach begin="1" end="${totalPages}" var="i">
                             <c:url value="HomePageMaterial" var="pageUrl">
@@ -109,7 +105,7 @@
                     </div>
                 </div>
             </section>
-
+            <!--Filter by subject and type of material-->
             <section class="left-sidebar" id="secondary">
                 <aside class="widget" style="background-color: #f9f9f9; padding: 20px; border-radius: 8px;">
                     <h3 style="margin-top: 0; font-weight: 700;">Tìm kiếm & Lọc</h3>
@@ -145,12 +141,8 @@
         </div>
     </div>
     
-    <script>
-        // Các script gốc bạn đã cung cấp
-    </script>
 </body>
 </html>
 
-<a href="#" id="toTop" style="display: none;"><span id="toTopHover"></span>To Top</a><div id="extension-mmplj"></div></body>
-</html>
+
     

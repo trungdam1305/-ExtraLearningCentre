@@ -272,6 +272,30 @@
         <servlet-name>PayTeacherSalary</servlet-name>
         <servlet-class>controller.ManageCourses.PayTeacherSalary</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>staffGoToTuition</servlet-name>
+        <servlet-class>controller.staffGoToTuition</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>staffActionWithTuition</servlet-name>
+        <servlet-class>controller.staffActionWithTuition</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>staffActionWithSupport</servlet-name>
+        <servlet-class>controller.staffActionWithSupport</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Staff_ManageClass</servlet-name>
+        <servlet-class>controller.ManageCourses.Staff_ManageClass</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Staff_ManageClassDetail</servlet-name>
+        <servlet-class>controller.ManageCourses.Staff_ManageClassDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Staff_ManageCourse</servlet-name>
+        <servlet-class>controller.ManageCourses.Staff_ManageCourse</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -567,6 +591,30 @@
     <servlet-mapping>
         <servlet-name>PayTeacherSalary</servlet-name>
         <url-pattern>/PayTeacherSalary</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>staffGoToTuition</servlet-name>
+        <url-pattern>/staffGoToTuition</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>staffActionWithTuition</servlet-name>
+        <url-pattern>/staffActionWithTuition</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>staffActionWithSupport</servlet-name>
+        <url-pattern>/staffActionWithSupport</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Staff_ManageClass</servlet-name>
+        <url-pattern>/Staff_ManageClass</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Staff_ManageClassDetail</servlet-name>
+        <url-pattern>/Staff_ManageClassDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Staff_ManageCourse</servlet-name>
+        <url-pattern>/Staff_ManageCourse</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

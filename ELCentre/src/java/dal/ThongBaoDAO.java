@@ -110,6 +110,8 @@ public class ThongBaoDAO {
         }
         return list;
     }
+    
+    
 
 //    //Hàm lấy thông báo theo id tài khoản
 //    public static List<ThongBao> getThongBaoByTaiKhoanId(int idTaiKhoan) throws SQLException {
@@ -532,6 +534,60 @@ public class ThongBaoDAO {
         }
     }
 
+    public static int getSoTuVan() {
+        
+        DBContext db = DBContext.getInstance();
+        try {
+            String sql = """
+                         SELECT COUNT(*) FROM ThongBao 
+                         WHERE NoiDung LIKE N'%tư vấn%'
+                         """ ;  
+            PreparedStatement ps = db.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0 ; 
+    }
+    
+    
+     public static ArrayList<ThongBao> getThongBaoByTaiKhoanIdD(int idTaiKhoan)  {
+         DBContext db = DBContext.getInstance() ; 
+         ArrayList<ThongBao> thongbaos = new ArrayList<ThongBao>() ; 
+         try {
+             String sql = """
+                         SELECT TOP 3 * FROM ThongBao 
+                         
+                         WHERE ID_TaiKhoan = ? 
+                         ORDER BY ThoiGian DESC
+                         """ ; 
+             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+             statement.setInt(1, idTaiKhoan);
+             ResultSet rs = statement.executeQuery() ; 
+             while(rs.next()){
+                 ThongBao thongbao = new ThongBao(
+                         rs.getInt("ID_ThongBao") , 
+                         rs.getInt("ID_TaiKhoan") , 
+                         rs.getString("NoiDung") , 
+                         rs.getInt("ID_HocPhi") , 
+                         rs.getTimestamp("ThoiGian").toLocalDateTime() , 
+                         rs.getString("Status")
+                 ) ; 
+                 thongbaos.add(thongbao) ; 
+             }
+         } catch(SQLException e ) {
+             e.printStackTrace(); 
+             return null ;
+         }
+         if (thongbaos == null ) {
+             return null ; 
+         } else {
+             return thongbaos ; 
+         }
+     } 
     public static void main(String[] args) {
         String id = "1";
         System.out.println(adminGetListIDHSbyID_LopHoc(id).size());

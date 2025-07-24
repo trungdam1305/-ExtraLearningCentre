@@ -37,6 +37,8 @@ public class FindSimilarClasses extends HttpServlet {
         if (classCode != null && !classCode.trim().isEmpty()) {
             try {
                 LopHocInfoDTODAO lopHocDAO = new LopHocInfoDTODAO();
+                
+                // gọi hamf findsimilarClasses để hiển thị list danh sách tương đồng
                 List<LopHocInfoDTO> similarClasses = lopHocDAO.findSimilarClasses(classCode);
                 Gson gson = new GsonBuilder()
                     .registerTypeAdapter(LocalDateTime.class, new JsonSerializer<LocalDateTime>() {

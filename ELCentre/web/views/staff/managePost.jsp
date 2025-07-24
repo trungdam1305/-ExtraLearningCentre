@@ -1,3 +1,7 @@
+<!--manage post jsp
+Author : trungdam
+-->
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -82,7 +86,7 @@
     </div>
     
     <main class="main-content">
-        <h1 class="mb-4">Quản lý Bài viết Blog</h1>
+        <h1 class="mb-4">Quản lý Bài viết</h1>
 
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">

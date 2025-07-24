@@ -40,7 +40,7 @@
         <h2 class="fw-bold">Bài viết của chúng tôi</h2>
         <p class="text-muted">Cập nhật những tin tức và kiến thức mới nhất</p>
     </div>
-    
+    <!--Filter by keytag, keyword and search bar form-->
     <form class="row justify-content-center g-3 my-4" method="get" action="HomePageBlog">
         <div class="col-md-4">
             <select class="form-select" name="keywordId">
@@ -66,6 +66,7 @@
             <button class="btn btn-primary w-100" type="submit">Lọc</button>
         </div>
     </form>
+    <!--Display blog-->
     <div class="row">
         <c:if test="${empty blogs}">
             <div class="col-12">
@@ -77,7 +78,7 @@
              <div class="col-lg-6 mb-4">
                 <div class="blog-box row g-0">
                     <div class="col-md-5">
-                        <img src="${pageContext.request.contextPath}/img/blog_images/${blog.image}" 
+                        <img src="${pageContext.request.contextPath}/${blog.image}" 
                              alt="Blog Image" 
                              class="blog-img" />
                     </div>
@@ -89,9 +90,9 @@
                             <h5 class="blog-heading">${blog.blogTitle}</h5>
                             <p class="text-muted mb-3 blog-description" style="font-size: 0.9em;">${blog.blogDescription}</p>
                             <div>
-                                <span class="badge bg-success me-2">${blog.keyWord}</span>
-                                <span class="badge bg-info text-dark me-2">${blog.keyTag}</span>
-                                <a href="BlogDetailServlet?id=${blog.ID_Blog}" class="read-more float-end">Đọc thêm →</a>
+                                <span class="badge bg-success me-2" ><a href="${pageContext.request.contextPath}/HomePageBlog?keywordId=${blog.getID_Keyword()}&keytagId=0" class="text-decoration-none text-white">  ${blog.keyWord}</a> </span>
+                                <span class="badge bg-info text-dark me-2"><a href="${pageContext.request.contextPath}/HomePageBlog?keywordId=0&keytagId=${blog.getID_KeyTag()}"  class="text-decoration-none text-white">${blog.keyTag}</a></span>
+                                <div style="margin-top:10px"><a href="BlogDetailServlet?id=${blog.ID_Blog}" class="read-more float-end">Đọc thêm →</a></div>
                             </div>
                         </div>
                     </div>
@@ -99,7 +100,7 @@
             </div>
         </c:forEach>
     </div>
-
+    <!--Pagination-->
     <nav aria-label="Blog pagination" class="mt-5">
         <ul class="pagination justify-content-center">
             <c:forEach begin="1" end="${totalPages}" var="i">

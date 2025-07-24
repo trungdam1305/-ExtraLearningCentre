@@ -1,3 +1,5 @@
+// Author: trungdam
+// Servlet: DiemDanhDAO
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -19,6 +21,9 @@ import java.util.logging.Logger;
  * @author admin
  */
 public class DiemDanhDAO {
+    /**
+     * Retrieves attendance information for all students registered in a specific schedule (class session).
+     */
     public List<DiemDanh> getDiemDanhInfoForSchedule(int scheduleId) {
     List<DiemDanh> list = new ArrayList<>();
     DBContext db = DBContext.getInstance();
@@ -30,7 +35,7 @@ public class DiemDanhDAO {
                  "LEFT JOIN DiemDanh dd ON hs.ID_HocSinh = dd.ID_HocSinh AND s.ID_Schedule = dd.ID_Schedule " +
                  "WHERE s.ID_Schedule = ?";
     try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
-        stmt.setInt(1, scheduleId); // Set the scheduleId parameter
+        stmt.setInt(1, scheduleId); 
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             int attendanceId = rs.getInt("ID_DiemDanh");
@@ -38,21 +43,24 @@ public class DiemDanhDAO {
             String studentName = rs.getString("HoTen");
             String status = rs.getString("TrangThai");
             int scheduleId1 = rs.getInt("ID_Schedule");
-            String reason = rs.getString("LyDoVang"); // Get the reason for absence (if applicable)
+            String reason = rs.getString("LyDoVang"); 
             String avatar = rs.getString("Avatar");
-            // If the attendance status is null, set it to "Chưa điểm danh"
+            
+            // If the attendance status is null, set it to "Chưa điểm danh" (Not yet attended)
             if (status == null) status = "Chưa điểm danh";
-            // Create a new DiemDanh object with all necessary fields and add it to the list
+            
             list.add(new DiemDanh(attendanceId,studentId,scheduleId1, status, reason,studentName, avatar));
         }
     } catch (SQLException ex) {
-        ex.printStackTrace(); // Log the exception
-        return null; // Return null in case of error
+        ex.printStackTrace(); 
+        return null; 
     }
-    return list; // Return the list of attendance records
+    return list; 
 }
 
-
+    /**
+     * Saves a new attendance record or updates an existing one for a student in a specific schedule.
+     */
     public void saveOrUpdateAttendance(DiemDanh diemDanh) {
         DBContext db = DBContext.getInstance();
         String checkSql = "SELECT ID_DiemDanh FROM DiemDanh WHERE ID_HocSinh = ? AND ID_Schedule = ?";
@@ -63,6 +71,7 @@ public class DiemDanhDAO {
             checkPs.setInt(2, diemDanh.getID_Schedule());
             try (ResultSet rs = checkPs.executeQuery()) {
                 if (rs.next()) {
+                    // If a record exists, update it
                     try (PreparedStatement updatePs = db.getConnection().prepareStatement(updateSql)) {
                         updatePs.setString(1, diemDanh.getTrangThai());
                         updatePs.setString(2, diemDanh.getLyDoVang());
@@ -71,6 +80,7 @@ public class DiemDanhDAO {
                         updatePs.executeUpdate();
                     }
                 } else {
+                    // If no record exists, insert a new one
                     try (PreparedStatement insertPs = db.getConnection().prepareStatement(insertSql)) {
                         insertPs.setInt(1, diemDanh.getID_HocSinh());
                         insertPs.setInt(2, diemDanh.getID_Schedule());
@@ -85,6 +95,10 @@ public class DiemDanhDAO {
         }
     }
     
+    /**
+     * Retrieves a map of attendance records for a given class.
+     * The map key is a combination of student ID and schedule ID (e.g., "studentId-scheduleId").
+     */
     public Map<String, DiemDanh> getAttendanceMapForClass(int classId) {
     Map<String, DiemDanh> map = new HashMap<>();
     DBContext db = DBContext.getInstance();
@@ -97,11 +111,14 @@ public class DiemDanhDAO {
             d.setID_HocSinh(rs.getInt("ID_HocSinh"));
             d.setID_Schedule(rs.getInt("ID_Schedule"));
             d.setTrangThai(rs.getString("TrangThai"));
-            // Tạo một key duy nhất từ ID học sinh và ID lịch học
+            // Create a unique key from student ID and schedule ID
             String key = d.getID_HocSinh() + "-" + d.getID_Schedule();
             map.put(key, d);
         }
-    } catch (Exception e) { e.printStackTrace(); }
+    } catch (Exception e) { 
+        e.printStackTrace(); 
+        System.err.println("Lỗi khi lấy bản đồ điểm danh cho lớp: " + e.getMessage());
+    }
     return map;
 }
     

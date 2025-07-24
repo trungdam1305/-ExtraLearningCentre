@@ -1,3 +1,5 @@
+// Author: trungdam
+// Servlet: HomePage
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
@@ -35,9 +37,8 @@ import model.Slider;
  * @author admin
  */
 public class HomePage extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+    
+    /** * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -61,8 +62,7 @@ public class HomePage extends HttpServlet {
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
+    /** * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -75,29 +75,28 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 throws ServletException, IOException {
     response.setContentType("text/html;charset=UTF-8");
 
-    // DAO init
-    KhoaHocDAO khoaHocDAO = new KhoaHocDAO();//Initiallize KhoaHocDAO
-    HocSinhDAO hocSinhDAO = new HocSinhDAO();//Initiallize HocSinhDAO
-    LopHocDAO lopHocDAO = new LopHocDAO();//Initiallize LopHocDAO
-    KhoiHocDAO khoiHocDAO = new KhoiHocDAO();//Initiallize KhoiHocDAO
-    BlogDAO blogDAO = new BlogDAO();//Initiallize BlogDAO
-    SliderDAO sliderDAO = new SliderDAO();//Initiallize SliderDAO
-    GiaoVienDAO gvDAO = new GiaoVienDAO();//Initiallize GiaoVienDAO
+    // Initialize Data Access Objects (DAOs) for database interaction.
+    KhoaHocDAO khoaHocDAO = new KhoaHocDAO();    // For courses
+    HocSinhDAO hocSinhDAO = new HocSinhDAO();    // For students
+    LopHocDAO lopHocDAO = new LopHocDAO();      // For classes
+    KhoiHocDAO khoiHocDAO = new KhoiHocDAO();    // For grades
+    BlogDAO blogDAO = new BlogDAO();            // For blogs
+    SliderDAO sliderDAO = new SliderDAO();      // For sliders
+    GiaoVienDAO gvDAO = new GiaoVienDAO();      // For teachers
     
-    // Get Data with DAO
-    List<GiaoVien> listSpecialGV = gvDAO.getSpecialised(); //get Hot Teacher
-    int numKhoaHoc = khoaHocDAO.getTotalCourses();  //get num of Course in centre
-    int numHocSinh = hocSinhDAO.getTotalHocSinh(); //get num of Student in centre
-    int numLopHoc = lopHocDAO.getTotalLopHoc(); //get num of classes in centre
-    List<LopHoc> lopHoc = lopHocDAO.getAllFeaturedLopHoc();//get List Feature Class
-    List<LopHocTheoNhomDTO> listLopHoc = lopHocDAO.getTongLopHocTheoNhomMonHoc();//get List Class divided by Subject
-    List<KhoiHoc> listKhoi = khoiHocDAO.getAllKhoiHoc();//get List Grade
-    List<Blog> listBlog = blogDAO.getAllBlog();//get ListBlog that refer to centre
-    List<GiaoVien> listGiaoVien = gvDAO.HomePageGetGiaoVien();//get List Teacher
-    List<Slider> sliders = sliderDAO.getAllSlider();//get List Slide
+    // Retrieve various data from the database using the DAOs.
+    List<GiaoVien> listSpecialGV = gvDAO.getSpecialised();                 // Get "hot" teachers
+    int numKhoaHoc = khoaHocDAO.getTotalCourses();                         // Get total number of courses
+    int numHocSinh = hocSinhDAO.getTotalHocSinh();                         // Get total number of students
+    int numLopHoc = lopHocDAO.getTotalLopHoc();                             // Get total number of classes
+    List<LopHoc> lopHoc = lopHocDAO.getAllFeaturedLopHoc();                // Get a list of featured classes
+    List<LopHocTheoNhomDTO> listLopHoc = lopHocDAO.getTongLopHocTheoNhomMonHoc(); // Get classes grouped by subject
+    List<KhoiHoc> listKhoi = khoiHocDAO.getAllKhoiHoc();                  // Get a list of grades
+    List<Blog> listBlog = blogDAO.getFourBlog();                           // Get the latest four blog posts
+    List<GiaoVien> listGiaoVien = gvDAO.HomePageGetGiaoVien();             // Get a general list of teachers for the homepage
+    List<Slider> sliders = sliderDAO.getAllSlider();                       // Get all sliders for the homepage carousel
     
-
-    // Set data to request and send to jsp
+    // Set the retrieved data as attributes in the request to be accessed by the JSP.
     request.setAttribute("sliders", sliders);
     request.setAttribute("listLopHoc", listLopHoc);
     request.setAttribute("listSpecialGV", listSpecialGV);
@@ -109,7 +108,7 @@ throws ServletException, IOException {
     request.setAttribute("numHocSinh", numHocSinh);
     request.setAttribute("numKhoaHoc", numKhoaHoc);
 
-    // forward to jsp
+    // Forward the request to the HomePage JSP for rendering.
     request.getRequestDispatcher("views/HomePage.jsp").forward(request, response);
 }
 
@@ -120,8 +119,7 @@ throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /** 
-     * Returns a short description of the servlet.
+    /** * Returns a short description of the servlet.
      * @return a String containing servlet description
      */
     @Override

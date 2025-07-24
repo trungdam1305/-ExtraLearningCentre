@@ -41,7 +41,49 @@ public class HoTroDAO {
                         rs.getString("MoTa"),
                         rs.getInt("ID_TaiKhoan") , 
                         rs.getString("DaDuyet") , 
-                        rs.getString("PhanHoi") 
+                        rs.getString("PhanHoi") , 
+                        rs.getString("VaiTro") , 
+                        rs.getString("SoDienThoai") 
+                );
+                hotros.add(hotro);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        
+        if (hotros == null ){
+            return null ; 
+        } else {
+            return hotros ; 
+        }
+    }
+    
+    public static ArrayList<HoTro> staffGetHoTroDashBoard() {
+        DBContext db = DBContext.getInstance();
+        ArrayList<HoTro> hotros = new ArrayList<HoTro>();
+
+        try {
+            String sql = """
+                         select * from HoTro 
+                         where DaDuyet = N'Chờ duyệt'
+                         and VaiTro != 'Staff'
+                         order by ThoiGian DESC ; 
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                HoTro hotro = new HoTro(
+                        rs.getInt("ID_HoTro"),
+                        rs.getString("HoTen"),
+                        rs.getString("TenHoTro"),
+                        rs.getTimestamp("ThoiGian").toLocalDateTime(),
+                        rs.getString("MoTa"),
+                        rs.getInt("ID_TaiKhoan") , 
+                        rs.getString("DaDuyet") , 
+                        rs.getString("PhanHoi") , 
+                        rs.getString("VaiTro") , 
+                        rs.getString("SoDienThoai") 
                 );
                 hotros.add(hotro);
             }
@@ -151,7 +193,9 @@ public class HoTroDAO {
                         rs.getString("MoTa") , 
                         rs.getInt("ID_TaiKhoan") , 
                         rs.getString("DaDuyet") ,
-                        rs.getString("PhanHoi")  
+                        rs.getString("PhanHoi")  , 
+                        rs.getString("VaiTro") , 
+                        rs.getString("SoDienThoai") 
                 
                 ) ; 
                 hotros.add(hotro) ; 
@@ -167,13 +211,13 @@ public class HoTroDAO {
         }
     }
     
-    public static boolean  sendHoTroByIdTaiKhoan(String HoTen , String TenHoTro , String MoTa , String  ID_TaiKhoan){
+    public static boolean  sendHoTroByIdTaiKhoan(String HoTen , String TenHoTro , String MoTa , String  ID_TaiKhoan , String VaiTro , String SoDienThoai){
         DBContext db = DBContext.getInstance() ; 
         int rs = 0 ; 
         try {
             String sql = """
-                        insert into HoTro(HoTen , TenHoTro , ThoiGian , MoTa , ID_TaiKhoan , DaDuyet ) 
-                        VALUES ( ? , ?  , ? , ?  , ?  , ? )
+                        insert into HoTro(HoTen , TenHoTro , ThoiGian , MoTa , ID_TaiKhoan , DaDuyet  , VaiTro , SoDienThoai ) 
+                        VALUES ( ? , ?  , ? , ?  , ?  , ?  , ?  , ? )
                          """ ; 
             
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
@@ -184,6 +228,8 @@ public class HoTroDAO {
             statement.setString(4, MoTa);
             statement.setString(5, ID_TaiKhoan);
             statement.setString(6 , "Chờ duyệt") ; 
+            statement.setString(7, VaiTro);
+            statement.setString(8, SoDienThoai);
              rs = statement.executeUpdate() ; 
             if (rs > 0 ) {
                 return true  ; 

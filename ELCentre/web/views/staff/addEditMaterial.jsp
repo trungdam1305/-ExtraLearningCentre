@@ -1,4 +1,6 @@
-
+<!--Add and Edit Material jsp
+Author : trungdam
+-->
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -15,12 +17,43 @@
     <script src="<c:url value='img/ckeditor/ckeditor.js' />"></script>
 
     <style>
-        body { margin: 0; font-family: Arial, sans-serif; display: flex; min-height: 100vh; background-color: #f9f9f9; }
-        .header { background-color: #1F4E79; color: white; padding: 5px 20px; text-align: left; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: fixed; width: calc(100% - 250px); margin-left: 250px; z-index: 1000; display: flex; align-items: center; justify-content: space-between; font-size: 20px; }
-        .header .left-title { font-size: 24px; letter-spacing: 1px; display: flex; align-items: center; }
-        .header .left-title i { margin-left: 10px; }
-        .admin-profile { position: relative; display: flex; align-items: center; cursor: pointer; margin-right: 20px; }
-        .admin-profile .admin-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #B0C4DE; margin-right: 10px; }
+        body { margin: 0; 
+               font-family: Arial, sans-serif; 
+               display: flex; 
+               min-height: 100vh; 
+               background-color: #f9f9f9; }
+        .header { background-color: #1F4E79; 
+                 color: white; 
+                 padding: 5px 20px; 
+                 text-align: left; 
+                 box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+                 position: fixed; width: calc(100% - 250px); 
+                 margin-left: 250px; 
+                 z-index: 1000; 
+                 display: flex; 
+                 align-items: center; 
+                 justify-content: space-between; 
+                 font-size: 20px; }
+        .header .left-title { 
+                    font-size: 24px; 
+                     letter-spacing: 1px; 
+                     display: flex; 
+                     align-items: center; }
+        .header .left-title i { 
+            margin-left: 10px; }
+        .admin-profile { 
+            position: relative; 
+            display: flex; 
+            align-items: center; 
+            cursor: pointer; 
+            margin-right: 20px; }
+        .admin-profile .admin-img { 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 2px solid #B0C4DE; 
+            margin-right: 10px; }
         .admin-profile span { font-size: 14px; color: #B0C4DE; font-weight: 600; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .admin-profile i { color: #B0C4DE; margin-left: 10px; }
         .dropdown-menu { display: none; position: absolute; top: 50px; right: 0; background: #163E5C; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); min-width: 180px; z-index: 1001; }
@@ -41,7 +74,6 @@
         .footer { background-color: #1F4E79; color: #B0C4DE; text-align: center; padding: 5px 0; position: fixed; width: calc(100% - 250px); bottom: 0; margin-left: 250px; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); }
         .footer p { margin: 0; font-size: 14px; }
 
-        /* Add/Edit Material specific styles */
         h1 { color: #1F4E79; text-align: center; font-size: 28px; font-weight: bold; margin-bottom: 25px; }
         .card { background: linear-gradient(135deg, #ffffff, #f0f4f8); padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .card-header { background-color: transparent; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
@@ -117,7 +149,7 @@
 
     <main class="main-content">
         <h1>${formTitle}</h1>
-
+        <!--Material's Details-->
         <div class="card">
             <div class="card-header">
                 <h3><i class="fas fa-file-alt"></i> Chi tiết Tài liệu</h3>

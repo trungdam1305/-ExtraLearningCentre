@@ -23,7 +23,7 @@ public class HocSinh_ChiTietDAO {
         try {
             String sql = """
 
-                         select DISTINCT  LH.ID_KhoaHoc ,  HSLH.ID_LopHoc , HSLH.ID_HocSinh ,GV.ID_GiaoVien  , LH.TenLopHoc   ,  GV.HoTen , LH.GhiChu , LH.TrangThai , LH.SoTien , HP.TinhTrangThanhToan , LH.NgayTao , LH.Image    from HocSinh_LopHoc HSLH
+                        select DISTINCT  LH.ID_KhoaHoc ,  HSLH.ID_LopHoc , HSLH.ID_HocSinh ,GV.ID_GiaoVien  , LH.TenLopHoc   ,  GV.HoTen , LH.GhiChu , LH.TrangThai , LH.SoTien , HP.TinhTrangThanhToan , LH.NgayTao , LH.Image    from HocSinh_LopHoc HSLH
                         join  LopHoc LH
                         on HSLH.ID_LopHoc = LH.ID_LopHoc 
                         JOIN GiaoVien_LopHoc GVLH 
@@ -34,6 +34,7 @@ public class HocSinh_ChiTietDAO {
                         on  HP.ID_LopHoc = HSLH.ID_LopHoc
                         WHERE HSLH.ID_HocSinh = ? 
                         and LH.TrangThai = N'Đang học'
+                        
 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);

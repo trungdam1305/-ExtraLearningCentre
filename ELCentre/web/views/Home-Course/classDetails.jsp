@@ -10,16 +10,43 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #f8f9fa; font-family: 'Be Vietnam Pro', sans-serif; }
-        .info-card { background-color: white; border-radius: 1rem; box-shadow: 0 4px 25px rgba(0,0,0,0.1); }
-        .info-card .card-header { background-color: #1F4E79; color: white; border-top-left-radius: 1rem; border-top-right-radius: 1rem; }
-        .info-list { list-style: none; padding-left: 0; }
-        .info-list li { display: flex; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
-        .info-list li:last-child { border-bottom: none; }
-        .info-list i { font-size: 1.1rem; color: #0d6efd; width: 30px; text-align: center; margin-top: 3px; }
-        .info-list .info-label { font-weight: 500; color: #6c757d; min-width: 120px; }
-        .info-list .info-value { color: #212529; }
-        .course-image { width: 100%; height: 300px; object-fit: cover; border-radius: 1rem; }
+        body { background-color: #f8f9fa; 
+               font-family: 'Be Vietnam Pro', sans-serif; }
+        .info-card { background-color: white; 
+                    border-radius: 1rem; 
+                    box-shadow: 0 4px 25px rgba(0,0,0,0.1); }
+        .info-card .card-header { 
+            background-color: #1F4E79; 
+            color: white; 
+            border-top-left-radius: 1rem; 
+            border-top-right-radius: 1rem; }
+        .info-list { 
+            list-style: none; 
+            padding-left: 0; }
+        .info-list li { 
+            display: flex; 
+            align-items: flex-start; 
+            padding: 12px 0; 
+            border-bottom: 1px solid #f0f0f0; }
+        .info-list li:last-child { 
+            border-bottom: none; }
+        .info-list i { 
+            font-size: 1.1rem; 
+            color: #0d6efd; 
+            width: 30px; 
+            text-align: center; 
+            margin-top: 3px; }
+        .info-list .info-label { 
+            font-weight: 500; 
+            color: #6c757d; 
+            min-width: 120px; }
+        .info-list .info-value { 
+            color: #212529; }
+        .course-image { 
+            width: 100%; 
+            height: 300px; 
+            object-fit: cover; 
+            border-radius: 1rem; }
     </style>
 </head>
 <body>
@@ -34,7 +61,7 @@
                     </a>
                 </div>
             </div>
-
+            <!--Class's information-->            
             <div class="col-lg-8">
                 <div class="card info-card">
                     <div class="card-header">

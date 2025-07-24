@@ -1,9 +1,7 @@
+// Author: trungdam
+// Servlet: LichHocDAO
 package dal;
 
-/**
- *
- * @author wrx_Chur04
- */
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.sql.SQLException;
@@ -12,30 +10,23 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.List;
 import model.LichHoc;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import model.LichHoc;
-import model.PhongHoc;
 import java.sql.Date;
 import java.time.DayOfWeek;
+import java.util.HashMap;
+import java.util.Map;
+import model.PhongHoc;
+
 
 public class LichHocDAO {
 
     public static ArrayList<LichHoc> adminGetAllLichHoc(String ngayHienTai) {
-        ArrayList<LichHoc> lichhocs = new ArrayList<LichHoc>();
+        ArrayList<LichHoc> lichhocs = new ArrayList<>();
         DBContext db = DBContext.getInstance();
         try {
             String sql = """
-                          select * from LichHoc
+                         select * from LichHoc
                          where NgayHoc <= ? 
-                          """;
+                         """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
             statement.setString(1, ngayHienTai);
             ResultSet rs = statement.executeQuery();
@@ -62,7 +53,9 @@ public class LichHocDAO {
         }
     }
 
-    // Lấy lịch học theo ID
+    /**
+     * Retrieves a schedule by its ID.
+     */
     public LichHoc getLichHocById(int idSchedule) {
         DBContext db = DBContext.getInstance();
         String sql = """
@@ -90,35 +83,41 @@ public class LichHocDAO {
         return null;
     }
 
+    /**
+     * Retrieves a list of schedules for a teacher within a specific week.
+     */
     public static List<LichHoc> getLichHocTrongTuan(int idTaiKhoan, LocalDate startDate, LocalDate endDate) {
         List<LichHoc> list = new ArrayList<>();
         DBContext db = DBContext.getInstance();
 
-        // ✅ BƯỚC 1: Lấy ngày hiện tại của server MỘT LẦN DUY NHẤT để so sánh
+        // Get the current server date once for comparison
         LocalDate homNay = LocalDate.now();
 
         String sql = """
-                 SELECT
-                 * FROM
-                 LichHoc lh
-                 JOIN
-                 LopHoc lop ON lh.ID_LopHoc = lop.ID_LopHoc
-                 JOIN
-                 SlotHoc sl ON lh.ID_SlotHoc = sl.ID_SlotHoc
-                 JOIN
-                 GiaoVien_LopHoc gvlh ON gvlh.ID_LopHoc = lop.ID_LopHoc
-                 JOIN
-                 GiaoVien gv ON gv.ID_GiaoVien = gvlh.ID_GiaoVien
-                 JOIN 
-                 PhongHoc ph on lh.ID_PhongHoc = ph.ID_PhongHoc
-                 WHERE
-                 gv.ID_TaiKhoan = ?
-                 AND lh.NgayHoc BETWEEN ? AND ?
-                 ORDER BY
-                 lh.NgayHoc, sl.ID_SlotHoc;
-                 """;
+                    SELECT
+                    lh.*,
+                    lop.TenLopHoc,
+                    sl.SlotThoiGian,
+                    ph.TenPhongHoc
+                    FROM
+                    LichHoc lh
+                    JOIN
+                    LopHoc lop ON lh.ID_LopHoc = lop.ID_LopHoc
+                    JOIN
+                    SlotHoc sl ON lh.ID_SlotHoc = sl.ID_SlotHoc
+                    JOIN
+                    GiaoVien_LopHoc gvlh ON gvlh.ID_LopHoc = lop.ID_LopHoc
+                    JOIN
+                    GiaoVien gv ON gv.ID_GiaoVien = gvlh.ID_GiaoVien
+                    JOIN 
+                    PhongHoc ph on lh.ID_PhongHoc = ph.ID_PhongHoc
+                    WHERE
+                    gv.ID_TaiKhoan = ?
+                    AND lh.NgayHoc BETWEEN ? AND ?
+                    ORDER BY
+                    lh.NgayHoc, sl.ID_SlotHoc;
+                    """;
 
-        // ✅ Cải thiện: Dùng try-with-resources cho cả PreparedStatement và ResultSet
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
             ps.setInt(1, idTaiKhoan);
             ps.setDate(2, java.sql.Date.valueOf(startDate));
@@ -137,11 +136,11 @@ public class LichHocDAO {
                     lh.setTenPhongHoc(rs.getString("TenPhongHoc"));
                     lh.setDaDiemDanh(rs.getBoolean("DaDiemDanh"));
 
-                    // ✅ BƯỚC 2: Thêm logic so sánh ngày và set thuộc tính coTheSua
+                    // Logic to set 'coTheSua' (can be edited/attended)
                     if (lh.getNgayHoc() != null && lh.getNgayHoc().isEqual(homNay)) {
-                        lh.setCoTheSua(true); // Nếu là ngày hôm nay -> cho phép sửa
+                        lh.setCoTheSua(true); 
                     } else {
-                        lh.setCoTheSua(false); // Nếu là ngày khác -> không cho phép
+                        lh.setCoTheSua(false); 
                     }
 
                     list.add(lh);
@@ -154,6 +153,9 @@ public class LichHocDAO {
         return list;
     }
 
+    /**
+     * Retrieves a list of schedules for a specific class.
+     */
     public List<LichHoc> getLichHocByLopHoc(int idLopHoc) {
         List<LichHoc> list = new ArrayList<>();
         DBContext db = DBContext.getInstance();
@@ -187,8 +189,10 @@ public class LichHocDAO {
         }
         return list;
     }
-    // Xóa lịch học
-
+    
+    /**
+     * Deletes a schedule by its ID.
+     */
     public boolean deleteLichHoc(int idSchedule) {
         DBContext db = DBContext.getInstance();
         String sql = """
@@ -205,7 +209,9 @@ public class LichHocDAO {
         }
     }
 
-    // Thêm lịch học mới
+    /**
+     * Adds a new schedule to the database.
+     */
     public LichHoc addLichHoc(LocalDate ngayHoc, int idSlotHoc, String ghiChu) {
         DBContext db = DBContext.getInstance();
         String sql = """
@@ -225,7 +231,7 @@ public class LichHocDAO {
                     lichHoc.setNgayHoc(ngayHoc);
                     lichHoc.setID_SlotHoc(idSlotHoc);
                     lichHoc.setGhiChu(ghiChu);
-                    // Lấy SlotThoiGian
+                    // Fetch SlotThoiGian for the newly added schedule
                     String sqlSelect = """
                         SELECT SlotThoiGian FROM [dbo].[SlotHoc] WHERE ID_SlotHoc = ?
                     """;
@@ -245,7 +251,9 @@ public class LichHocDAO {
         return null;
     }
 
-    // Cập nhật lịch học
+    /**
+     * Updates an existing schedule in the database.
+     */
     public boolean updateLichHoc(int idSchedule, LocalDate ngayHoc, int idSlotHoc, String ghiChu) {
         DBContext db = DBContext.getInstance();
         String sql = """
@@ -266,6 +274,9 @@ public class LichHocDAO {
         }
     }
 
+    /**
+     * Marks an attendance record as completed for a schedule.
+     */
     public void markAttendanceAsCompleted(int scheduleId) {
         DBContext db = DBContext.getInstance();
         String sql = "UPDATE LichHoc SET daDiemDanh = 1 WHERE ID_Schedule = ?";
@@ -277,10 +288,13 @@ public class LichHocDAO {
         }
     }
 
+    /**
+     * Updates the note for a specific schedule.
+     */
     public void updateNote(int scheduleId, String newNote) {
         String sql = "UPDATE LichHoc SET GhiChu = ? WHERE ID_Schedule = ?";
-        try (Connection conn = DBContext.getInstance().getConnection(); // Hoặc cách kết nối của bạn
-                 PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBContext.getInstance().getConnection(); 
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, newNote);
             ps.setInt(2, scheduleId);
@@ -291,6 +305,9 @@ public class LichHocDAO {
         }
     }
 
+    /**
+     * Retrieves all schedules for a given class, ordered by date.
+     */
     public List<LichHoc> getAllSchedulesForClass(int classId) {
         List<LichHoc> list = new ArrayList<>();
         String sql = "SELECT * FROM LichHoc WHERE ID_LopHoc = ? ORDER BY NgayHoc";
@@ -309,6 +326,9 @@ public class LichHocDAO {
         return list;
     }
 
+    /**
+     * Retrieves schedules for a teacher on a specific date.
+     */
     public List<LichHoc> getLichHocTrongNgay(int idTaiKhoan, LocalDate filterDate) {
         List<LichHoc> list = new ArrayList<>();
 
@@ -346,19 +366,21 @@ public class LichHocDAO {
         return list;
     }
 
-    //Hàm lấy ra lịch học sắp tới của học sinh
+    /**
+     * Retrieves upcoming schedules for a student.
+     */
     public static List<LichHoc> getUpcomingScheduleByHocSinhId(Integer idHocSinh) {
         List<LichHoc> list = new ArrayList<>();
         String sql = """
-                     SELECT lh.ID_Schedule, lh.NgayHoc, lh.ID_SlotHoc, lh.ID_LopHoc, lh.GhiChu,
+                    SELECT lh.ID_Schedule, lh.NgayHoc, lh.ID_SlotHoc, lh.ID_LopHoc, lh.GhiChu,
                             sh.SlotThoiGian, l.TenLopHoc
-                     FROM HocSinh_LopHoc hslh
-                     JOIN LichHoc lh ON hslh.ID_LopHoc = lh.ID_LopHoc
-                     JOIN SlotHoc sh ON lh.ID_SlotHoc = sh.ID_SlotHoc
-                     JOIN LopHoc l ON lh.ID_LopHoc = l.ID_LopHoc
-                     WHERE hslh.ID_HocSinh = ?
-                     AND lh.NgayHoc >= CAST(GETDATE() AS DATE)
-                     ORDER BY lh.NgayHoc ASC, sh.SlotThoiGian ASC;
+                    FROM HocSinh_LopHoc hslh
+                    JOIN LichHoc lh ON hslh.ID_LopHoc = lh.ID_LopHoc
+                    JOIN SlotHoc sh ON lh.ID_SlotHoc = sh.ID_SlotHoc
+                    JOIN LopHoc l ON lh.ID_LopHoc = l.ID_LopHoc
+                    WHERE hslh.ID_HocSinh = ?
+                    AND lh.NgayHoc >= CAST(GETDATE() AS DATE)
+                    ORDER BY lh.NgayHoc ASC, sh.SlotThoiGian ASC;
                     """;
         try (Connection conn = DBContext.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, idHocSinh);
@@ -380,6 +402,9 @@ public class LichHocDAO {
         return list;
     }
 
+    /**
+     * Retrieves schedules for a specific month and year.
+     */
     public List<LichHoc> getLichHocByMonth1(int year, int month) {
         List<LichHoc> list = new ArrayList<>();
         DBContext db = DBContext.getInstance();
@@ -433,11 +458,13 @@ public class LichHocDAO {
         return list;
     }
 
+    /**
+     * Deletes schedules for a specific date if the date is not in the past.
+     */
     public boolean deleteLichHocByDate1(LocalDate date) {
-        // Kiểm tra nếu ngày là trong quá khứ
         LocalDate today = LocalDate.now();
         if (date.isBefore(today)) {
-            System.out.println("deleteLichHocByDate1: Không thể xóa lịch học trong quá khứ (ngày: " + date + ")");
+            System.out.println("deleteLichHocByDate1: Cannot delete past schedules (date: " + date + ")");
             return false;
         }
 
@@ -446,7 +473,7 @@ public class LichHocDAO {
         try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setDate(1, java.sql.Date.valueOf(date));
             int rowsAffected = stmt.executeUpdate();
-            System.out.println("deleteLichHocByDate1: Deleted " + rowsAffected + " lịch trình cho ngày=" + date);
+            System.out.println("deleteLichHocByDate1: Deleted " + rowsAffected + " schedules for date=" + date);
             return rowsAffected > 0;
         } catch (SQLException e) {
             System.out.println("SQL Error in deleteLichHocByDate1: " + e.getMessage()
@@ -456,7 +483,9 @@ public class LichHocDAO {
         }
     }
 
-    //Lấy ra toàn bộ lịch học
+    /**
+     * Retrieves all schedules for a student.
+     */
     public static List<LichHoc> getLichHocByHocSinhId(int idHocSinh) {
         List<LichHoc> list = new ArrayList<>();
         String sql = """
@@ -487,37 +516,36 @@ public class LichHocDAO {
         return list;
     }
 
+    /**
+     * Retrieves schedules for a student within a specific week, including attendance status.
+     */
     public List<LichHoc> HSgetLichHocTrongTuan(int idHocSinh, LocalDate startDate, LocalDate endDate) {
         List<LichHoc> list = new ArrayList<>();
         DBContext db = DBContext.getInstance();
 
-        // ✅ SỬA ĐỔI SQL: Dùng LEFT JOIN để lấy trạng thái điểm danh của đúng học sinh đó
         String sql = """
-                     SELECT 
-                         lh.*, 
-                         lop.TenLopHoc, 
-                         sl.SlotThoiGian, 
-                         ph.TenPhongHoc, 
-                         lop.GhiChu,
-                         dd.TrangThai AS TrangThaiDiemDanh -- Lấy trạng thái từ bảng DiemDanh
-                     FROM LichHoc lh
-                     JOIN LopHoc lop ON lh.ID_LopHoc = lop.ID_LopHoc
-                     JOIN SlotHoc sl ON lh.ID_SlotHoc = sl.ID_SlotHoc
-                     JOIN HocSinh_LopHoc hslh ON lh.ID_LopHoc = hslh.ID_LopHoc
-                     JOIN PhongHoc ph ON lop.ID_PhongHoc = ph.ID_PhongHoc
-                     -- Nối với bảng DiemDanh để lấy trạng thái của chính học sinh này
-                     LEFT JOIN DiemDanh dd ON lh.ID_Schedule = dd.ID_Schedule AND dd.ID_HocSinh = ?
-                     WHERE 
-                         hslh.ID_HocSinh = ?
-                         AND lh.NgayHoc BETWEEN ? AND ?
-                     ORDER BY 
-                         lh.NgayHoc, sl.ID_SlotHoc;
-                     """;
+                    SELECT 
+                        lh.*, 
+                        lop.TenLopHoc, 
+                        sl.SlotThoiGian, 
+                        ph.TenPhongHoc, 
+                        lop.GhiChu,
+                        dd.TrangThai AS TrangThaiDiemDanh 
+                    FROM LichHoc lh
+                    JOIN LopHoc lop ON lh.ID_LopHoc = lop.ID_LopHoc
+                    JOIN SlotHoc sl ON lh.ID_SlotHoc = sl.ID_SlotHoc
+                    JOIN HocSinh_LopHoc hslh ON lh.ID_LopHoc = hslh.ID_LopHoc
+                    JOIN PhongHoc ph ON lop.ID_PhongHoc = ph.ID_PhongHoc
+                    LEFT JOIN DiemDanh dd ON lh.ID_Schedule = dd.ID_Schedule AND dd.ID_HocSinh = ?
+                    WHERE 
+                        hslh.ID_HocSinh = ?
+                        AND lh.NgayHoc BETWEEN ? AND ?
+                    ORDER BY 
+                        lh.NgayHoc, sl.ID_SlotHoc;
+                    """;
 
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
-            // Tham số đầu tiên cho điều kiện JOIN của DiemDanh
             ps.setInt(1, idHocSinh);
-            // Tham số thứ hai cho điều kiện WHERE
             ps.setInt(2, idHocSinh);
             ps.setDate(3, java.sql.Date.valueOf(startDate));
             ps.setDate(4, java.sql.Date.valueOf(endDate));
@@ -534,7 +562,6 @@ public class LichHocDAO {
                     lh.setGhiChu(rs.getString("GhiChu"));
                     lh.setTenPhongHoc(rs.getString("TenPhongHoc"));
 
-                    // ✅ THÊM MỚI: Đọc trạng thái điểm danh và gán vào đối tượng
                     String trangThai = rs.getString("TrangThaiDiemDanh");
                     lh.setTrangThaiDiemDanh(trangThai);
 
@@ -548,20 +575,21 @@ public class LichHocDAO {
         return list;
     }
 
-    // Thêm phương thức này vào file dal/LichHocDAO.java
+    /**
+     * Retrieves schedules for a specific class within a specific week.
+     */
     public List<LichHoc> getLichHocTrongTuanForClass(int classId, LocalDate startDate, LocalDate endDate) {
         List<LichHoc> list = new ArrayList<>();
-        // Câu lệnh SQL JOIN các bảng để lấy đủ thông tin cần thiết
         String sql = """
-                 SELECT lh.*, lop.TenLopHoc, ph.TenPhongHoc, sl.SlotThoiGian, kh.TenKhoaHoc
-                 FROM LichHoc lh
-                 JOIN LopHoc lop ON lh.ID_LopHoc = lop.ID_LopHoc
-                 JOIN PhongHoc ph ON lop.ID_PhongHoc = ph.ID_PhongHoc
-                 JOIN SlotHoc sl ON lh.ID_SlotHoc = sl.ID_SlotHoc
-                 JOIN KhoaHoc kh on lop.ID_KhoaHoc = kh.ID_KhoaHoc
-                 WHERE lh.ID_LopHoc = ? AND lh.NgayHoc BETWEEN ? AND ?
-                 ORDER BY lh.NgayHoc, sl.ID_SlotHoc
-                 """;
+                    SELECT lh.*, lop.TenLopHoc, ph.TenPhongHoc, sl.SlotThoiGian, kh.TenKhoaHoc
+                    FROM LichHoc lh
+                    JOIN LopHoc lop ON lh.ID_LopHoc = lop.ID_LopHoc
+                    JOIN PhongHoc ph ON lop.ID_PhongHoc = ph.ID_PhongHoc
+                    JOIN SlotHoc sl ON lh.ID_SlotHoc = sl.ID_SlotHoc
+                    JOIN KhoaHoc kh on lop.ID_KhoaHoc = kh.ID_KhoaHoc
+                    WHERE lh.ID_LopHoc = ? AND lh.NgayHoc BETWEEN ? AND ?
+                    ORDER BY lh.NgayHoc, sl.ID_SlotHoc
+                    """;
 
         try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -570,11 +598,9 @@ public class LichHocDAO {
             ps.setDate(3, java.sql.Date.valueOf(endDate));
 
             try (ResultSet rs = ps.executeQuery()) {
-                // ✅ PHẦN CODE ĐỌC DỮ LIỆU ĐẦY ĐỦ
                 while (rs.next()) {
                     LichHoc lh = new LichHoc();
 
-                    // Đọc dữ liệu từ ResultSet và gán vào đối tượng LichHoc
                     lh.setID_Schedule(rs.getInt("ID_Schedule"));
                     lh.setID_LopHoc(rs.getInt("ID_LopHoc"));
                     lh.setID_SlotHoc(rs.getInt("ID_SlotHoc"));
@@ -582,7 +608,6 @@ public class LichHocDAO {
                     lh.setGhiChu(rs.getString("GhiChu"));
                     lh.setDaDiemDanh(rs.getBoolean("daDiemDanh"));
 
-                    // Lấy các thông tin đã JOIN từ các bảng khác
                     lh.setTenLopHoc(rs.getString("TenLopHoc"));
                     lh.setTenPhongHoc(rs.getString("TenPhongHoc"));
                     lh.setSlotThoiGian(rs.getString("SlotThoiGian"));
@@ -608,6 +633,9 @@ public class LichHocDAO {
         }
     }
 
+    /**
+     * Checks for schedule conflicts for a student when adding them to a new class.
+     */
     public String hasScheduleConflictForStudent(int idHocSinh, int idLopHoc) {
         DBContext db = DBContext.getInstance();
         String sql = """
@@ -619,21 +647,24 @@ public class LichHocDAO {
         WHERE hslh.ID_HocSinh = ?
         AND lh.NgayHoc = newLh.NgayHoc
         AND lh.ID_SlotHoc = newLh.ID_SlotHoc
-    """;
+        """;
         try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, idLopHoc);
             stmt.setInt(2, idHocSinh);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return rs.getString("TenLopHoc"); // Trả tên lớp trùng
+                return rs.getString("TenLopHoc"); 
             }
         } catch (SQLException e) {
             System.out.println("SQL Error in hasScheduleConflictForStudent: " + e.getMessage());
             e.printStackTrace();
         }
-        return null; // Không trùng
+        return null; 
     }
 
+    /**
+     * Retrieves the nearest future schedule date for a given class.
+     */
     public LocalDate getNearestFutureDate(int idLopHoc) {
         DBContext db = DBContext.getInstance();
         String sql = "SELECT TOP 1 NgayHoc FROM LichHoc WHERE ID_LopHoc = ? AND NgayHoc > GETDATE() ORDER BY NgayHoc ASC";
