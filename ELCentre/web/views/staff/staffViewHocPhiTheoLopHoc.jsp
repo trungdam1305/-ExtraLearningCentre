@@ -11,368 +11,521 @@
     Author     : wrx_Chur04
 --%>
 
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="java.time.LocalDate" %>
+<%@ page import="dal.AdminDAO" %>
+<%@ page import="model.Admin" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
-<html lang="vi">
+<html>
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Staff Dashboard - EL CENTRE</title>
+        <title>Quản lý học phí theo lớp học</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
+            :root {
+                --main-color: #1F4E79;
+                --hover-color: #163E5C;
+                --accent-color: #B0C4DE;
+                --bg-color: #f4f6f8;
+                --text-color: #333;
+                --paid-color: #2ecc71;
+                --unpaid-color: #e74c3c;
+            }
+
             body {
                 margin: 0;
-                font-family: Arial, sans-serif;
-                display: flex;
-                min-height: 100vh;
-                background-color: #f9f9f9;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: var(--bg-color);
             }
+
             .header {
-                background-color: #1F4E79;
+                background-color: var(--main-color);
                 color: white;
-                padding: 10px 20px;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-                position: fixed;
-                width: calc(100% - 250px);
-                margin-left: 250px;
-                z-index: 1000;
+                padding: 12px 24px;
                 display: flex;
-                align-items: center;
                 justify-content: space-between;
+                align-items: center;
+                position: fixed;
+                top: 0;
+                left: 250px;
+                right: 0;
+                z-index: 1000;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+                transition: background-color 0.3s;
             }
+
             .header .left-title {
-                font-size: 24px;
-                letter-spacing: 1px;
-                display: flex;
-                align-items: center;
-            }
-            .header .left-title i {
-                margin-left: 10px;
-            }
-            .admin-profile {
-                position: relative;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                cursor: pointer;
-                margin-left: 50px;
-            }
-            .admin-profile .admin-img {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                object-fit: cover;
-                border: 2px solid #B0C4DE;
-                margin-bottom: 5px;
-            }
-            .admin-profile span {
-                font-size: 16px;
-                color: #B0C4DE;
+                font-size: 20px;
                 font-weight: 600;
-                max-width: 250px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .admin-profile {
+                display: flex;
+                align-items: center;
+                position: relative;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            .admin-img {
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                border: 2px solid var(--accent-color);
+                margin-right: 10px;
+            }
+
+            .admin-profile span {
+                color: var(--accent-color);
+                font-weight: 600;
+                max-width: 180px;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                margin-right: 40px;
             }
+
             .admin-profile i {
-                color: #B0C4DE;
-                margin-left: 10px;
+                color: var(--accent-color);
+                margin-left: 8px;
             }
+
             .dropdown-menu {
-                display: none;
                 position: absolute;
-                top: 50px;
+                top: 48px;
                 right: 0;
-                background: #163E5C;
-                border-radius: 5px;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-                min-width: 150px;
+                background-color: var(--hover-color);
+                display: none;
+                border-radius: 4px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+                min-width: 160px;
                 z-index: 1001;
             }
+
             .dropdown-menu.active {
                 display: block;
             }
+
             .dropdown-menu a {
                 display: block;
-                padding: 10px 15px;
                 color: white;
-                text-decoration: none;
+                padding: 10px 15px;
                 font-size: 14px;
-                transition: background-color 0.3s ease;
+                text-decoration: none;
+                transition: background-color 0.3s;
             }
+
             .dropdown-menu a:hover {
-                background-color: #1F4E79;
+                background-color: var(--main-color);
             }
-            .dropdown-menu a i {
-                margin-right: 8px;
-            }
+
             .sidebar {
                 width: 250px;
-                background-color: #1F4E79;
+                background-color: var(--main-color);
                 color: white;
-                padding: 20px;
-                box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-                display: flex;
-                flex-direction: column;
-                height: 100vh;
                 position: fixed;
-                overflow-y: auto;
+                height: 100vh;
+                padding: 20px;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
             }
+
             .sidebar h4 {
-                margin: 0 auto;
-                font-weight: bold;
-                letter-spacing: 1.5px;
                 text-align: center;
-            }
-            .sidebar-logo {
-                width: 100px;
-                height: 100px;
-                border-radius: 50%;
-                object-fit: cover;
-                margin: 15px auto;
-                display: block;
-                border: 3px solid #B0C4DE;
-            }
-            .sidebar-section-title {
                 font-weight: bold;
-                margin-top: 30px;
-                font-size: 14px;
+                letter-spacing: 1px;
+            }
+
+            .sidebar-logo {
+                display: block;
+                margin: 15px auto;
+                width: 90px;
+                height: 90px;
+                border-radius: 50%;
+                border: 2px solid var(--accent-color);
+                object-fit: cover;
+            }
+
+            .sidebar-section-title {
+                margin-top: 25px;
+                font-size: 13px;
+                color: var(--accent-color);
                 text-transform: uppercase;
-                color: #B0C4DE;
-                border-bottom: 1px solid #B0C4DE;
+                border-bottom: 1px solid var(--accent-color);
                 padding-bottom: 5px;
             }
-            ul.sidebar-menu {
+
+            .sidebar-menu {
                 list-style: none;
-                padding-left: 0;
-                margin: 10px 0 0 0;
-            }
-            ul.sidebar-menu li {
+                padding: 0;
                 margin: 10px 0;
             }
-            ul.sidebar-menu li a {
+
+            .sidebar-menu li {
+                margin: 8px 0;
+            }
+
+            .sidebar-menu a {
+                display: flex;
+                align-items: center;
                 color: white;
                 text-decoration: none;
                 padding: 8px 12px;
-                display: flex;
-                align-items: center;
-                border-radius: 5px;
-                transition: background-color 0.3s ease;
+                border-radius: 4px;
+                transition: background-color 0.3s;
             }
-            ul.sidebar-menu li a:hover {
-                background-color: #163E5C;
+
+            .sidebar-menu a:hover {
+                background-color: var(--hover-color);
             }
-            ul.sidebar-menu li a i {
+
+            .sidebar-menu a i {
                 margin-right: 10px;
             }
+
             .main-content {
                 margin-left: 250px;
-                padding: 100px 40px 20px 40px;
-                flex: 1;
+                padding: 100px 40px 60px;
+                background-color: var(--bg-color);
                 min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-                gap: 30px;
-                background-color: #f4f6f8;
+                box-sizing: border-box;
             }
-            .footer {
-                background-color: #1F4E79;
-                color: #B0C4DE;
-                text-align: center;
-                padding: 10px 0;
-                position: fixed;
-                width: calc(100% - 250px);
-                bottom: 0;
-                margin-left: 250px;
-                box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-            }
-            .footer p {
-                margin: 0;
-                font-size: 14px;
-            }
-            /* Message Box */
-            .message-box {
-                background: linear-gradient(135deg, #FFEBEE, #FFCDD2);
-                color: #C62828;
-                font-weight: bold;
-                margin-bottom: 15px;
-                padding: 10px;
-                border-radius: 6px;
-                text-align: center;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            }
-            /* Page Header */
+
             .page-header {
+                display: flex;
+                justify-content: center;
                 margin-bottom: 20px;
             }
+
             .page-header h2 {
-                font-size: 22px;
-                color: #1F4E79;
-                font-weight: 600;
+                font-size: 24px;
+                color: var(--main-color);
                 display: flex;
                 align-items: center;
                 gap: 10px;
-                border-left: 5px solid #1F4E79;
-                padding-left: 12px;
+                margin: 0;
             }
-            .page-header h2 i {
-                color: #1F4E79;
-            }
-            /* Top Bar */
+
             .top-bar {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
+                flex-wrap: wrap;
                 gap: 20px;
                 margin-bottom: 20px;
-                flex-wrap: wrap;
             }
-            /* Action Bar */
+
             .action-bar {
                 display: flex;
                 gap: 10px;
                 flex-wrap: wrap;
-            }
-            .btn-action.btn-payment,
-            .btn-action.btn-send-tuition-notice,
-            .btn-action.back {
-                background-color: #4CAF50;
-                color: #fff;
-                padding: 8px 14px;
-                border-radius: 6px;
-                font-size: 14px;
-                text-decoration: none;
-                display: inline-flex;
                 align-items: center;
-                gap: 6px;
-                transition: background-color 0.3s ease;
-                font-weight: 600;
             }
-            .btn-action.btn-payment:hover,
-            .btn-action.btn-send-tuition-notice:hover,
-            .btn-action.back:hover {
-                background-color: #388e3c;
-            }
-            /* Filter Bar */
+
             .filter-bar {
                 display: flex;
+                flex-wrap: wrap;
                 gap: 15px;
                 align-items: center;
-                flex-wrap: wrap;
-                background: linear-gradient(135deg, #ffffff, #f0f4f8);
-                padding: 15px;
-                border-radius: 10px;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                flex-grow: 1;
+                justify-content: flex-end;
             }
+
             .filter-group {
                 display: flex;
-                flex-direction: column;
-                gap: 5px;
+                align-items: center;
+                gap: 8px;
             }
+
             .filter-group label {
-                font-size: 14px;
-                color: #1F4E79;
                 font-weight: 600;
+                font-size: 14px;
+                color: var(--text-color);
             }
-            .filter-group input,
+
+            .filter-group input[type="text"],
             .filter-group select {
                 padding: 8px 12px;
+                font-size: 14px;
                 border: 1px solid #ccc;
                 border-radius: 6px;
-                font-size: 14px;
-                outline: none;
-                box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-                min-width: 150px;
+                transition: border-color 0.3s;
             }
-            .filter-group input:focus,
+
+            .filter-group input[type="text"]:focus,
             .filter-group select:focus {
-                border-color: #1F4E79;
-                box-shadow: 0 0 5px rgba(31, 78, 121, 0.3);
+                border-color: var(--main-color);
+                outline: none;
             }
-            .btn-filter {
-                background-color: #1F4E79;
-                color: #fff;
+
+            .filter-group input[type="text"] {
+                min-width: 200px;
+                flex-grow: 1;
+            }
+
+            .filter-bar button {
                 padding: 8px 14px;
+                background-color: var(--main-color);
+                color: white;
                 border: none;
                 border-radius: 6px;
-                font-size: 14px;
-                display: flex;
-                align-items: center;
-                gap: 6px;
                 cursor: pointer;
-                transition: background-color 0.3s ease;
+                font-size: 14px;
+                transition: background-color 0.3s;
             }
-            .btn-filter:hover {
-                background-color: #163E5C;
+
+            .filter-bar button:hover {
+                background-color: var(--hover-color);
             }
-            /* Data Table */
-            .data-table-container {
-                background: linear-gradient(to bottom right, #ffffff, #f7fafd);
+
+            .data-table-wrapper {
+                background-color: #ffffff;
                 padding: 20px;
                 border-radius: 12px;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-                margin-bottom: 20px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+                margin-top: 20px;
             }
-            .data-table-container table {
+
+            table {
                 width: 100%;
                 border-collapse: collapse;
                 font-size: 14px;
+                background-color: white;
+                border-radius: 10px;
+                overflow: hidden;
             }
-            .data-table-container th,
-            .data-table-container td {
-                border: 1px solid #e0e0e0;
-                padding: 10px 14px;
-                text-align: left;
-            }
-            .data-table-container th {
-                background-color: #E3F2FD;
-                color: #0D47A1;
-                font-weight: bold;
-            }
-            .data-table-container tbody tr:hover {
-                background-color: #f1f8ff;
-                cursor: pointer;
-                transition: background-color 0.2s ease;
-            }
-            /* No Data */
-            .no-data {
+
+            table th, table td {
+                padding: 12px;
+                border: 1px solid #ddd;
                 text-align: center;
-                color: #777;
-                padding: 20px;
-                font-style: italic;
+                vertical-align: middle;
+            }
+
+            table th {
+                background-color: #e2eaf0;
+                color: var(--main-color);
+                font-weight: 600;
+            }
+
+            table tr:nth-child(even) {
                 background-color: #f9f9f9;
-                border-radius: 6px;
             }
-            .no-data .error-message {
-                color: #C62828;
-                font-weight: bold;
+
+            table tr:hover {
+                background-color: #f1f4f8;
             }
-            /* Pagination */
-            .pagination {
+
+            .action-buttons {
                 display: flex;
                 justify-content: center;
                 gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .btn-action {
+                padding: 6px 12px;
+                border: none;
+                border-radius: 5px;
+                font-size: 13px;
+                cursor: pointer;
+                text-decoration: none;
+                font-weight: 600;
+                transition: background-color 0.3s, transform 0.2s;
+            }
+
+            .btn-action:hover {
+                opacity: 0.85;
+                transform: translateY(-1px);
+            }
+
+            .btn-action:active {
+                transform: translateY(0);
+            }
+
+            .btn-action:focus {
+                outline: 2px solid var(--main-color);
+                outline-offset: 2px;
+            }
+
+            .btn-action.btn-payment, .btn-action.btn-send-tuition-notice {
+                background-color: #2ecc71;
+                color: white;
+            }
+
+            .payment-status {
+                display: inline-block;
+                padding: 6px 12px;
+                border-radius: 12px;
+                font-size: 13px;
+                font-weight: 600;
+                color: white;
+                text-align: center;
+                min-width: 100px;
+            }
+
+            .payment-status.paid {
+                background-color: var(--paid-color);
+            }
+
+            .payment-status.unpaid {
+                background-color: var(--unpaid-color);
+            }
+
+            .notification-forms {
+                display: flex;
+                gap: 20px;
+                margin-top: 20px;
+                flex-wrap: wrap;
+            }
+
+            .notification-form {
+                flex: 1;
+                min-width: 300px;
+                background-color: #ffffff;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            }
+
+            .notification-form label {
+                font-weight: 600;
+                font-size: 14px;
+                color: var(--text-color);
+                display: block;
+                margin-bottom: 8px;
+            }
+
+            .notification-form textarea {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                font-size: 14px;
+                resize: vertical;
+                min-height: 100px;
+                transition: border-color 0.3s;
+            }
+
+            .notification-form textarea:focus {
+                border-color: var(--main-color);
+                outline: none;
+            }
+
+            .no-data {
+                text-align: center;
+                color: red;
+                font-weight: 600;
                 margin: 20px 0;
             }
-            .pagination a {
-                background-color: #1F4E79;
-                color: #fff;
-                padding: 8px 12px;
-                border-radius: 6px;
-                text-decoration: none;
-                font-size: 14px;
-                transition: background-color 0.3s ease;
-            }
-            .pagination a:hover {
-                background-color: #163E5C;
-            }
-            /* Back Button */
-            .back-button {
+
+            #pagination {
                 margin-top: 20px;
                 text-align: center;
+            }
+
+            #pagination button {
+                margin: 0 4px;
+                padding: 8px 12px;
+                border: none;
+                border-radius: 4px;
+                background-color: #ddd;
+                cursor: pointer;
+                font-size: 14px;
+                transition: background-color 0.3s, color 0.3s;
+            }
+
+            #pagination button.active {
+                background-color: var(--main-color);
+                color: white;
+            }
+
+            #pagination button:hover:not(.active) {
+                background-color: var(--hover-color);
+                color: white;
+            }
+
+            .back-button {
+                text-align: right;
+                margin-top: 20px;
+            }
+
+            .back-button a {
+                text-decoration: none;
+                color: var(--main-color);
+                font-weight: 600;
+                transition: color 0.3s;
+            }
+
+            .back-button a:hover {
+                color: var(--hover-color);
+            }
+
+            .footer {
+                background-color: var(--main-color);
+                color: var(--accent-color);
+                text-align: center;
+                padding: 10px;
+                font-size: 13px;
+                position: fixed;
+                bottom: 0;
+                left: 250px;
+                right: 0;
+            }
+
+            @media (max-width: 768px) {
+                .header {
+                    left: 0;
+                }
+
+                .sidebar {
+                    display: none;
+                }
+
+                .main-content {
+                    margin-left: 0;
+                    padding: 80px 20px 60px;
+                }
+
+                .top-bar {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                .filter-bar {
+                    justify-content: center;
+                    width: 100%;
+                }
+
+                .filter-group input[type="text"] {
+                    min-width: 100%;
+                }
+
+                .notification-forms {
+                    flex-direction: column;
+                }
+
+                .notification-form {
+                    min-width: 100%;
+                }
+
+                .payment-status {
+                    min-width: 80px;
+                    font-size: 12px;
+                    padding: 4px 8px;
+                }
+
+                .action-buttons {
+                    gap: 8px;
+                }
+
+                .btn-action {
+                    padding: 5px 10px;
+                    font-size: 12px;
+                }
             }
         </style>
     </head>
@@ -426,22 +579,22 @@
 
         <div class="main-content">
             <c:if test="${not empty message}">
-                <div class="message-box">
+                <div style="color: red; font-weight: bold; margin-bottom: 15px; text-align: center;">
                     ${message}
                 </div>
             </c:if>
 
             <div class="page-header">
-                <h2><i class="fas fa-money-bill-wave"></i> Học phí lớp ${sessionScope.tenlop} tháng </h2>
+                <h2><i class="fas fa-money-bill-wave"></i> Học phí lớp ${sessionScope.tenlop} tháng</h2>
             </div>
 
-            <div class="top-bar">
-                <div class="action-bar">
-                    
-
-                </div>
+            <div class="top-bar">   
+                <div class="action-bar"></div>
                 <form action="${pageContext.request.contextPath}/staffActionWithTuition" method="get">
                     <input type="hidden" name="action" value="filterHocPhi" />
+                    <c:if test="${not empty requestScope.hocphis}">
+                        <input type="hidden" name="idLop" value="${requestScope.hocphis[0].ID_LopHoc}" />
+                    </c:if>
                     <div class="filter-bar">
                         <div class="filter-group">
                             <label for="keyword">Từ khóa:</label>
@@ -472,14 +625,14 @@
                                 <option value="2026">2026</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn-filter"><i class="fas fa-search"></i> Tìm kiếm</button>
+                        <button><i class="fas fa-search"></i></button>
                     </div>
                 </form>
             </div>
 
             <c:choose>
                 <c:when test="${not empty requestScope.hocphis}">
-                    <div class="data-table-container">
+                    <div class="data-table-wrapper">
                         <table>
                             <thead>
                                 <tr>
@@ -492,6 +645,7 @@
                                     <th>Học Phí Phải Đóng</th>
                                     <th>Tình trạng thanh toán</th>
                                     <th>Ngày thanh toán</th>
+                                    <th>Ghi Chú</th>
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
@@ -505,7 +659,11 @@
                                         <td>${hp.getNam()}</td>
                                         <td>${hp.getSoBuoi()}</td>
                                         <td>${hp.getHocPhiPhaiDong()} VND</td>
-                                        <td>${hp.getTinhTrangThanhToan()}</td>
+                                        <td>
+                                            <span class="payment-status ${hp.getTinhTrangThanhToan() eq 'Đã thanh toán' ? 'paid' : 'unpaid'}">
+                                                ${hp.getTinhTrangThanhToan()}
+                                            </span>
+                                        </td>
                                         <td>
                                             <c:choose>
                                                 <c:when test="${not empty hp.ngayThanhToan}">
@@ -516,16 +674,21 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
-                                        <td class="action-buttons">
-                                            <c:if test="${hp.getTinhTrangThanhToan() ne 'Đã thanh toán'}">
-                                                <a class="btn-action btn-payment" href="${pageContext.request.contextPath}/staffActionWithTuition?action=dongtien&idLop=${hp.getID_LopHoc()}&idHocSinh=${hp.getID_HocSinh()}&thang=${hp.getThang()}&nam=${hp.getNam()}&soTienDong=${hp.getHocPhiPhaiDong()}&tenLopHoc=${tenlop}">
-                                                    <i class="fas fa-money-bill-wave"></i> Đánh dấu là đã đóng tiền
-                                                </a>
-                                                <a class="btn-action btn-send-tuition-notice" href="${pageContext.request.contextPath}/staffActionWithTuition?action=guithongbao&idTaiKhoanHocSinh=${hp.getID_TaiKhoan()}&sodienthoai=${hp.getSDT_PhuHuynh()}&TenHocSinh=${hp.getHoTen()}&thang=${hp.getThang()}&nam=${hp.getNam()}&soTienDong=${hp.getHocPhiPhaiDong()}">
-                                                    <i class="fas fa-paper-plane"></i> Gửi thông báo đóng học phí
-                                                </a>
+                                        <td>${hp.getGhiChu()}</td>
+                                        <td>
+                                            <div class="action-buttons">
 
-                                            </c:if>
+
+                                                <c:if test="${hp.getTinhTrangThanhToan() ne 'Đã thanh toán'}">
+                                                    <a class="btn-action btn-payment" href="${pageContext.request.contextPath}/adminActionWithTuition?action=dongtien&idLop=${hp.getID_LopHoc()}&idHocSinh=${hp.getID_HocSinh()}&thang=${hp.getThang()}&nam=${hp.getNam()}&soTienDong=${hp.getHocPhiPhaiDong()}&tenLopHoc=${tenlop}">
+                                                        <i class="fas fa-money-bill-wave"></i> Đánh dấu là đã đóng tiền
+                                                    </a>
+                                                    <a class="btn-action btn-send-tuition-notice" href="${pageContext.request.contextPath}/adminActionWithTuition?action=guithongbao&idTaiKhoanHocSinh=${hp.getID_TaiKhoan()}&sodienthoai=${hp.getSDT_PhuHuynh()}&TenHocSinh=${hp.getHoTen()}&thang=${hp.getThang()}&nam=${hp.getNam()}&soTienDong=${hp.getHocPhiPhaiDong()}">
+                                                        <i class="fas fa-paper-plane"></i> Gửi thông báo đóng học phí
+                                                    </a>
+                                                </c:if>
+
+                                            </div>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -536,17 +699,17 @@
                 <c:otherwise>
                     <div class="no-data">
                         <c:if test="${not empty message}">
-                            <p class="error-message">${message}</p>
+                            <p style="color: red;">${message}</p>
                         </c:if>
                         <p>Không có dữ liệu học phí của lớp học để hiển thị.</p>
                     </div>
                 </c:otherwise>
             </c:choose>
 
-            <div id="pagination" class="pagination"></div>
+            <div id="pagination"></div>
 
             <div class="back-button">
-                <a href="${pageContext.request.contextPath}/adminGoToFirstPage" class="btn-action back">
+                <a href="${pageContext.request.contextPath}/staffGoToFirstPage" class="btn-action back">
                     <i class="fas fa-arrow-left"></i> Quay lại trang chủ
                 </a>
             </div>
@@ -569,7 +732,72 @@
                     dropdown.classList.remove('active');
                 }
             });
+
+            const tableBody = document.getElementById("notificationTableBody");
+            let allRows = [], filteredRows = [], currentPage = 1;
+            const rowsPerPage = 12;
+
+            window.onload = () => {
+                if (tableBody) {
+                    allRows = Array.from(tableBody.querySelectorAll("tr"));
+                    filteredRows = [...allRows];
+                    renderPage();
+                }
+            };
+
+            function renderPage() {
+                tableBody.innerHTML = "";
+                const start = (currentPage - 1) * rowsPerPage;
+                const end = start + rowsPerPage;
+                filteredRows.slice(start, end).forEach(row => tableBody.appendChild(row));
+                renderPagination();
+            }
+
+            function renderPagination() {
+                const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+                const pagination = document.getElementById("pagination");
+                pagination.innerHTML = "";
+
+                const maxPagesToShow = 3;
+                let startPage = Math.max(1, currentPage - 1);
+                let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+                if (endPage - startPage + 1 < maxPagesToShow) {
+                    startPage = Math.max(1, endPage - maxPagesToShow + 1);
+                }
+
+                if (currentPage > 1) {
+                    const prevBtn = document.createElement("button");
+                    prevBtn.textContent = "«";
+                    prevBtn.onclick = () => {
+                        currentPage--;
+                        renderPage();
+                    };
+                    pagination.appendChild(prevBtn);
+                }
+
+                for (let i = startPage; i <= endPage; i++) {
+                    const btn = document.createElement("button");
+                    btn.textContent = i;
+                    btn.className = i === currentPage ? "active" : "";
+                    btn.onclick = () => {
+                        currentPage = i;
+                        renderPage();
+                    };
+                    pagination.appendChild(btn);
+                }
+
+                if (currentPage < totalPages) {
+                    const nextBtn = document.createElement("button");
+                    nextBtn.textContent = "»";
+                    nextBtn.onclick = () => {
+                        currentPage++;
+                        renderPage();
+                    };
+                    pagination.appendChild(nextBtn);
+                }
+            }
         </script>
     </body>
 </html>
-```
+

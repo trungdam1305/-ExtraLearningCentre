@@ -488,6 +488,6 @@ public class HocPhiDAO {
 
     public static void main(String[] args) {
 
-        System.out.println(adminGetInforToGuiThongBaoDenTatCa().size());
+        System.out.println(adminGetAllInforByThangNam("1", "6", "2025", "").size());
     }
 }

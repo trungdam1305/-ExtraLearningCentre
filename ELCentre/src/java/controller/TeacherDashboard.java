@@ -9,6 +9,7 @@ import dal.GiaoVien_LopHocDAO;
 import dal.GiaoVienDAO;
 import dal.LichHocDAO;
 import dal.SlotHocDAO;
+import dal.ThongBaoDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,6 +21,7 @@ import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,7 @@ import model.GiaoVien_TruongHoc;
 import model.LichHoc;
 import model.SlotHoc;
 import model.TaiKhoan;
+import model.ThongBao;
 
 /**
  *
@@ -83,6 +86,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     int idTaiKhoan = user.getID_TaiKhoan();
     GiaoVienDAO gvDao = new GiaoVienDAO();
     
+    ArrayList<ThongBao> thongbaos = ThongBaoDAO.getThongBaoByTaiKhoanIdD(idTaiKhoan) ; 
     // get numHocSinh, numLopHoc and luongGV to display in the dashboard
     int numHocSinh = GiaoVien_LopHocDAO.teacherGetTongSoHocSinh(idTaiKhoan);
     int numLopHoc = GiaoVien_LopHocDAO.teacherGetTongSoLopHoc(idTaiKhoan);
@@ -92,6 +96,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     
     // request and send to jsp 
     request.setAttribute("gv", gvDao.getGiaoVienByID(idTaiKhoan));
+    request.setAttribute("thongbaos", thongbaos);
     request.setAttribute("numHocSinh", numHocSinh);
     request.setAttribute("numLopHoc", numLopHoc);
     request.setAttribute("luongGV", luongGv);

@@ -95,21 +95,21 @@ public class staffActionWithTuition extends HttpServlet {
 
     protected void doFilterHocPhi(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String ID_LopHoc = request.getParameter("idLop");
-        String TenLopHoc = request.getParameter("TenLopHoc");
-        String thang = request.getParameter("thang");
-        String nam = request.getParameter("nam");
-        String keyword = request.getParameter("keyword");
-        if (keyword == null) {
-            keyword = "";
-        }
+        String tenlop = (String) request.getSession().getAttribute("tenlop");
+        String ID_LopHoc = (String) request.getSession().getAttribute("ID_LopHoc"); 
+
+        
+        String thang = request.getParameter("thang") ; 
+        String nam = request.getParameter("nam") ; 
+        String keyword = request.getParameter("keyword") ; 
+        if (keyword == null) keyword = "";
 
         PrintWriter out = response.getWriter();
 
-        ArrayList<HocPhi> hocphis = HocPhiDAO.adminGetAllInforByThangNam(ID_LopHoc, thang, nam, keyword);
+        ArrayList<HocPhi> hocphis = HocPhiDAO.adminGetAllInforByThangNam(ID_LopHoc , thang , nam , keyword);
 
         if (hocphis != null) {
-            request.getSession().setAttribute("tenlop", TenLopHoc);
+            request.getSession().setAttribute("tenlop", tenlop);
             request.setAttribute("hocphis", hocphis);
             request.getRequestDispatcher("/views/staff/staffViewHocPhiTheoLopHoc.jsp").forward(request, response);
         } else {
@@ -265,6 +265,7 @@ public class staffActionWithTuition extends HttpServlet {
 
         if (hocphis != null) {
             request.getSession().setAttribute("tenlop", TenLopHoc);
+            request.getSession().setAttribute("ID_LopHoc", ID_LopHoc);
             request.setAttribute("hocphis", hocphis);
             request.getRequestDispatcher("/views/staff/staffViewHocPhiTheoLopHoc.jsp").forward(request, response);
         }
@@ -299,7 +300,7 @@ public class staffActionWithTuition extends HttpServlet {
         boolean s2 = ThongBaoDAO.adminSendNotification(ID_TKPH, contentPH, "PARENT");
         if (s1 && s2) {
             ArrayList<GiaoVien_ChiTietDay> lophocs1 = HocPhiDAO.adminGetAllLopHocDangHocToSendHocPhi();
-            request.setAttribute("message", "Gửi thông báo thanhg công! ");
+            request.setAttribute("message", "Gửi thông báo thành công! ");
             session.setAttribute("lophocs1", lophocs1);
             request.getRequestDispatcher("/views/staff/staffReceiveHocPhi.jsp").forward(request, response);
 

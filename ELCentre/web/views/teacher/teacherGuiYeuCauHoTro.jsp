@@ -293,7 +293,7 @@
 
     <div class="header">
         <div class="left-title">
-            Teacher Dashboard <i class="fas fa-tachometer-alt"></i>
+            Gửi yêu cầu hỗ trợ <i class="fas fa-paper-plane"></i> 
         </div>
         <div class="teacher-profile" onclick="toggleDropdown()">
             <img src="${pageContext.request.contextPath}/img/${gv.getAvatar()}" alt="Admin Photo" class="teacher-img">

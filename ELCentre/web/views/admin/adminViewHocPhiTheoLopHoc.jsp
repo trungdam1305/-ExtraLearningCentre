@@ -27,6 +27,8 @@
                 --accent-color: #B0C4DE;
                 --bg-color: #f4f6f8;
                 --text-color: #333;
+                --paid-color: #2ecc71;
+                --unpaid-color: #e74c3c;
             }
 
             body {
@@ -317,7 +319,7 @@
             .action-buttons {
                 display: flex;
                 justify-content: center;
-                gap: 8px;
+                gap: 10px;
                 flex-wrap: wrap;
             }
 
@@ -329,42 +331,45 @@
                 cursor: pointer;
                 text-decoration: none;
                 font-weight: 600;
-                transition: background-color 0.3s;
+                transition: background-color 0.3s, transform 0.2s;
             }
-
-            .btn-action.send {
-                background-color: #2ecc71;
-                color: white;
-            }
-
-            .btn-action.all-students {
-                background-color: #3498db;
-                color: white;
-            }
-
-            .btn-action.all-teachers {
-                background-color: #2ecc71;
-                color: white;
-            }
-
-            .btn-action.all-classes {
-                background-color: #f39c12;
-                color: white;
-            }
-
-            .btn-action.notification-history {
-                background-color: #9b59b6;
-                color: white;
-            }
-
 
             .btn-action:hover {
                 opacity: 0.85;
+                transform: translateY(-1px);
+            }
+
+            .btn-action:active {
+                transform: translateY(0);
             }
 
             .btn-action:focus {
                 outline: 2px solid var(--main-color);
                 outline-offset: 2px;
+            }
+
+            .btn-action.btn-payment, .btn-action.btn-send-tuition-notice {
+                background-color: #2ecc71;
+                color: white;
+            }
+
+            .payment-status {
+                display: inline-block;
+                padding: 6px 12px;
+                border-radius: 12px;
+                font-size: 13px;
+                font-weight: 600;
+                color: white;
+                text-align: center;
+                min-width: 100px;
+            }
+
+            .payment-status.paid {
+                background-color: var(--paid-color);
+            }
+
+            .payment-status.unpaid {
+                background-color: var(--unpaid-color);
             }
 
             .notification-forms {
@@ -503,13 +508,28 @@
                 .notification-form {
                     min-width: 100%;
                 }
+
+                .payment-status {
+                    min-width: 80px;
+                    font-size: 12px;
+                    padding: 4px 8px;
+                }
+
+                .action-buttons {
+                    gap: 8px;
+                }
+
+                .btn-action {
+                    padding: 5px 10px;
+                    font-size: 12px;
+                }
             }
         </style>
     </head>
     <body>
         <div class="header">
             <div class="left-title">
-                Quản lý học phí theo lớp học  <i class="fas fa-money-check-alt"></i>
+                Quản lý học phí theo lớp học <i class="fas fa-money-check-alt"></i>
             </div>
             <div class="admin-profile" onclick="toggleDropdown()">
                 <%
@@ -517,7 +537,11 @@
                 %>
                 <img src="<%= admins.get(0).getAvatar() %>" alt="Admin Photo" class="admin-img">
                 <span><%= admins.get(0).getHoTen() %></span>
-
+                <i class="fas fa-caret-down"></i>
+                <div class="dropdown-menu" id="adminDropdown">
+                    <a href="#"><i class="fas fa-key"></i> Change Password</a>
+                    <a href="#"><i class="fas fa-user-edit"></i> Update Information</a>
+                </div>
             </div>
         </div>
 
@@ -564,19 +588,17 @@
             </c:if>
 
             <div class="page-header">
-                <h2><i class="fas fa-money-bill-wave"></i>Học phí lớp ${sessionScope.tenlop} tháng </h2>
+                <h2><i class="fas fa-money-bill-wave"></i> Học phí lớp ${sessionScope.tenlop} tháng</h2>
             </div>
 
-           <div class="top-bar">   
-                <div class="action-bar">
-                    
-
-                    
-
-                        
-                </div>
+            <div class="top-bar">   
+                <div class="action-bar"></div>
                 <form action="${pageContext.request.contextPath}/adminActionWithTuition" method="get">
+
                     <input type="hidden" name="action" value="filterHocPhi" />
+                    <c:if test="${not empty requestScope.hocphis}">
+                        <input type="hidden" name="idLop" value="${requestScope.hocphis[0].ID_LopHoc}" />
+                    </c:if>
                     <div class="filter-bar">
                         <div class="filter-group">
                             <label for="keyword">Từ khóa:</label>
@@ -585,7 +607,6 @@
                         <div class="filter-group">
                             <label for="thang">Lọc theo tháng</label>
                             <select id="thang" name="thang">
-                               
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -603,13 +624,11 @@
                         <div class="filter-group">
                             <label for="nam">Lọc theo năm</label>
                             <select id="nam" name="nam">
-                                
                                 <option value="2024">2024</option>
                                 <option value="2025">2025</option>
                                 <option value="2026">2026</option>
                             </select>
                         </div>
-                        
                         <button><i class="fas fa-search"></i></button>
                     </div>
                 </form>
@@ -621,27 +640,22 @@
                         <table>
                             <thead>
                                 <tr>
-
                                     <th>Mã Học Sinh</th>
                                     <th>Họ và Tên</th>
                                     <th>Số điện thoại phụ huynh</th>
-
                                     <th>Tháng</th>
                                     <th>Năm</th>
                                     <th>Số buổi có mặt</th>
-
                                     <th>Học Phí Phải Đóng</th>
-
                                     <th>Tình trạng thanh toán</th>
                                     <th>Ngày thanh toán</th>
-
+                                    <th>Ghi Chú</th>
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
                             <tbody id="notificationTableBody">
                                 <c:forEach var="hp" items="${requestScope.hocphis}">
                                     <tr>
-
                                         <td>${hp.getMaHocSinh()}</td>
                                         <td>${hp.getHoTen()}</td>
                                         <td>${hp.getSDT_PhuHuynh()}</td>
@@ -649,8 +663,11 @@
                                         <td>${hp.getNam()}</td>
                                         <td>${hp.getSoBuoi()}</td>
                                         <td>${hp.getHocPhiPhaiDong()} VND</td>
-
-                                        <td>${hp.getTinhTrangThanhToan()}</td>
+                                        <td>
+                                            <span class="payment-status ${hp.getTinhTrangThanhToan() eq 'Đã thanh toán' ? 'paid' : 'unpaid'}">
+                                                ${hp.getTinhTrangThanhToan()}
+                                            </span>
+                                        </td>
                                         <td>
                                             <c:choose>
                                                 <c:when test="${not empty hp.ngayThanhToan}">
@@ -661,18 +678,22 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
-
+                                        <td>${hp.getGhiChu()}</td>
                                         <td>
-                                            <c:if test="${hp.getTinhTrangThanhToan() ne 'Đã thanh toán'}">
-                                                <a class="btn-action btn-payment" href="${pageContext.request.contextPath}/adminActionWithTuition?action=dongtien&idLop=${hp.getID_LopHoc()}&idHocSinh=${hp.getID_HocSinh()}&thang=${hp.getThang()}&nam=${hp.getNam()}&soTienDong=${hp.getHocPhiPhaiDong()}&tenLopHoc=${tenlop}">
-                                                    <i class="fas fa-money-bill-wave"></i> Đánh dấu là đã đóng tiền
-                                                </a>
-                                                <a class="btn-action btn-send-tuition-notice" href="${pageContext.request.contextPath}/adminActionWithTuition?action=guithongbao&idTaiKhoanHocSinh=${hp.getID_TaiKhoan()}&sodienthoai=${hp.getSDT_PhuHuynh()}&TenHocSinh=${hp.getHoTen()}&thang=${hp.getThang()}&nam=${hp.getNam()}&soTienDong=${hp.getHocPhiPhaiDong()}">
-                                                    <i class="fas fa-paper-plane"></i> Gửi thông báo đóng học phí
-                                                </a>
-                                            </c:if>
-                                        </td>
+                                            <div class="action-buttons">
 
+
+                                                <c:if test="${hp.getTinhTrangThanhToan() ne 'Đã thanh toán'}">
+                                                    <a class="btn-action btn-payment" href="${pageContext.request.contextPath}/adminActionWithTuition?action=dongtien&idLop=${hp.getID_LopHoc()}&idHocSinh=${hp.getID_HocSinh()}&thang=${hp.getThang()}&nam=${hp.getNam()}&soTienDong=${hp.getHocPhiPhaiDong()}&tenLopHoc=${tenlop}">
+                                                        <i class="fas fa-money-bill-wave"></i> Đánh dấu là đã đóng tiền
+                                                    </a>
+                                                    <a class="btn-action btn-send-tuition-notice" href="${pageContext.request.contextPath}/adminActionWithTuition?action=guithongbao&idTaiKhoanHocSinh=${hp.getID_TaiKhoan()}&sodienthoai=${hp.getSDT_PhuHuynh()}&TenHocSinh=${hp.getHoTen()}&thang=${hp.getThang()}&nam=${hp.getNam()}&soTienDong=${hp.getHocPhiPhaiDong()}">
+                                                        <i class="fas fa-paper-plane"></i> Gửi thông báo đóng học phí
+                                                    </a>
+                                                </c:if>
+
+                                            </div>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
@@ -688,7 +709,6 @@
                     </div>
                 </c:otherwise>
             </c:choose>
-
 
             <div id="pagination"></div>
 
