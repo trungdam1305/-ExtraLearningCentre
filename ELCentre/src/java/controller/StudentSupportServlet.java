@@ -75,7 +75,7 @@ public class StudentSupportServlet extends HttpServlet {
         String tenHoTro = request.getParameter("tenHoTro") ; 
         String moTa = request.getParameter("moTa") ; 
         String HoTen = HocSinhDAO.getNameHocSinhToSendSupport(ID_TaiKhoan) ; 
-        boolean s1 = HoTroDAO.sendHoTroByIdTaiKhoan(HoTen, tenHoTro, moTa, ID_TaiKhoan) ; 
+        boolean s1 = HoTroDAO.sendHoTroByIdTaiKhoan(HoTen, tenHoTro, moTa, ID_TaiKhoan , "HocSinh" , user.getSoDienThoai()) ; 
         if (s1) {
             ArrayList<HoTro> hotros = HoTroDAO.getHoTroByIdTaiKhoan(user.getID_TaiKhoan()) ; 
              session.setAttribute("hotros",hotros );

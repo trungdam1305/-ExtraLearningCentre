@@ -290,10 +290,7 @@
 
 
 
-<<<<<<< HEAD
-=======
-                                    
->>>>>>> 0abab78db51bbf8b1ef4259d49c0dd9e3d189c4a
+
                                     <td>${sct.getGhiChu()}</td>
                                     <td>${sct.getTrangThai()}</td>
                                     <td>${sct.getNgayTao()}</td>
@@ -317,11 +314,9 @@
                         <c:if test="${not empty message}">
                             <p style="color: red;">${message}</p>
                         </c:if>
-<<<<<<< HEAD
+
                         <p>Không có dữ liệu liệu lớp để hiển thị.</p>
-=======
-                        <p>Không có dữ liệu giáo viên để hiển thị.</p>
->>>>>>> 3d998d6739f75f43b0ce9d4cf8bdb0cc5c6d3d77
+
                     </div>
                 </c:otherwise>
             </c:choose>

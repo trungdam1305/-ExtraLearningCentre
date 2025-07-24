@@ -72,12 +72,12 @@
                                     <td>Loại tài liệu</td>
                                     <td><strong>${material.loaiTaiLieu}</strong></td>
                                 </tr>
-                                <tr>
-                                    <td>Giá</td>
-                                    <td><strong class="text-danger">${material.giaTien}</strong></td>
-                                </tr>
                                 </tbody>
                         </table>
+                        <div class="description-content">
+                            <h4>Mô tả tài liệu</h4>
+                            <c:out value="${material.noiDung}" escapeXml="false"/>
+                        </div>
                         <div class="mt-4">
                             <a href="${pageContext.request.contextPath}/${material.duongDan}" 
                                class="btn btn-primary download-button" 

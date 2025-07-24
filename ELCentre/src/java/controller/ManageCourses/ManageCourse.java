@@ -598,7 +598,7 @@ public class ManageCourse extends HttpServlet {
                     }
                 }
 
-                String trangThai = "Chưa bắt đầu"; // Ánh xạ sang giá trị cơ sở dữ liệu
+                String trangThai = "Đang hoạt động"; // Ánh xạ sang giá trị cơ sở dữ liệu
                 KhoaHoc khoaHoc = new KhoaHoc(null, courseCode, ten, moTa, batDau, ketThuc, ghiChu, trangThai, LocalDateTime.now(), id_khoi, imagePath, order);
 
                 KhoaHoc result = dao.addKhoaHoc(khoaHoc);

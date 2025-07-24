@@ -711,9 +711,7 @@
             <c:if test="${danhSachLopHoc == null && not empty ID_KhoaHoc && not empty ID_Khoi}">
                 <div class="alert alert-custom-danger" role="alert">Danh sách lớp học chưa được khởi tạo. Kiểm tra servlet ManageClass hoặc dữ liệu cơ sở dữ liệu.</div>
             </c:if>
-            <c:if test="${empty danhSachLopHoc && danhSachLopHoc != null}">
-                <div class="alert alert-custom-danger" role="alert">Không có lớp học nào để hiển thị cho khóa học này.</div>
-            </c:if>
+            
             <c:if test="${empty teacherList}">
                 <div class="alert alert-custom-danger" role="alert">Không có giáo viên nào trong danh sách teacherList. Kiểm tra servlet ManageClass hoặc GiaoVienDAO.</div>
             </c:if>

@@ -4,12 +4,6 @@
     Author     : wrx_Chur04
 --%>
 
-<%-- 
-    Document   : teacherReceiveHoTro
-    Created on : Jul 17, 2025, 4:45:39 PM
-    Author     : wrx_Chur04
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -293,7 +287,7 @@
 
     <div class="header">
         <div class="left-title">
-            Teacher Dashboard <i class="fas fa-tachometer-alt"></i>
+            Gửi yêu cầu hỗ trợ <i class="fas fa-paper-plane"></i> 
         </div>
         <div class="teacher-profile" onclick="toggleDropdown()">
             <img src="${pageContext.request.contextPath}/img/${gv.getAvatar()}" alt="Admin Photo" class="teacher-img">

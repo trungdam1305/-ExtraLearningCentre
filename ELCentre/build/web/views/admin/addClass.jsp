@@ -479,8 +479,7 @@
             </ul>
             <div class="sidebar-section-title">Quản lý tài chính</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
-                <li><a href="${pageContext.request.contextPath}/ManageSchedule"><i class="fas fa-calendar-alt"></i> Lịch học</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocphi"><i class="bi bi-currency-dollar"></i> Học phí</a></li>
             </ul>
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">

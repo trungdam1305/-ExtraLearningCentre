@@ -1,3 +1,5 @@
+// Author: trungdam
+// Servlet: HomePageBlog
 package controller;
 
 import dal.BlogDAO;
@@ -27,7 +29,7 @@ public class HomePageBlog extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
 
-        // --- 1. Lấy và xác thực tham số ---
+        // --- 1. Get and validate parameters ---
         String keywordIdParam = request.getParameter("keywordId");
         String keytagIdParam = request.getParameter("keytagId");
         String pageParam = request.getParameter("page");
@@ -58,37 +60,37 @@ public class HomePageBlog extends HttpServlet {
         } catch (NumberFormatException e) {
             log("Invalid page parameter: " + pageParam);
         }
-        final int pageSize = 4; // Số blog trên mỗi trang
+        final int pageSize = 4; // Number of blogs per page
 
         try {
-            // --- 2. Lấy dữ liệu từ DAO ---
+            // --- 2. Fetch data from DAO ---
             List<Blog> blogs = blogDAO.getFilteredBlogs(filterKeywordId, filterKeytagId, currentPage, pageSize);
             int totalBlogs = blogDAO.countFilteredBlogs(filterKeywordId, filterKeytagId);
             int totalPages = (int) Math.ceil((double) totalBlogs / pageSize);
 
-            // Lấy danh sách cho các dropdown
+            // Get lists for dropdowns
             List<Keyword> allKeywords = blogDAO.getAllKeywords();
             List<KeyTag> allKeytags = blogDAO.getAllKeyTags();
 
-            // --- 3. Đặt các thuộc tính cho JSP ---
+            // --- 3. Set attributes for JSP ---
             request.setAttribute("blogs", blogs);
             request.setAttribute("totalPages", totalPages);
             request.setAttribute("currentPage", currentPage);
 
-            // Gửi danh sách cho các dropdown
+            // Send lists for dropdowns
             request.setAttribute("allKeywords", allKeywords);
             request.setAttribute("allKeytags", allKeytags);
             
-            // Gửi các giá trị đã chọn để giữ trạng thái của form
+            // Send selected values to maintain form state
             request.setAttribute("selectedKeywordId", filterKeywordId);
             request.setAttribute("selectedKeytagId", filterKeytagId);
 
-            // --- 4. Chuyển tiếp đến JSP ---
+            // --- 4. Forward to JSP ---
             request.getRequestDispatcher("views/Home-Blog/Homepage-Blog.jsp").forward(request, response);
 
         } catch (Exception e) {
             log("Error fetching blog data", e);
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Không thể tải dữ liệu bài viết.");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Could not load blog data.");
         }
     }
 

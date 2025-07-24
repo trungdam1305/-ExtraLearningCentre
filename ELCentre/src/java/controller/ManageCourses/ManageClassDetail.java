@@ -83,7 +83,6 @@ public class ManageClassDetail extends HttpServlet {
                 return;
             }
 
-    
             String classCodeFromUrl = request.getParameter("ClassCode");
             if (lopHoc.getClassCode() == null && classCodeFromUrl != null && !classCodeFromUrl.trim().isEmpty()) {
                 lopHoc.setClassCode(classCodeFromUrl);
@@ -227,7 +226,7 @@ public class ManageClassDetail extends HttpServlet {
                                 continue;
                             }
                             if (hocSinhDAO.hasSchoolConflict1(id, idLopHoc)) {
-                                errors.add("Không thể thêm học sinh ID " + id + " vì xung đột trường học!");
+                                errors.add("Không thể thêm học sinh ID " + id + " vì xung đột lớp học trên trường!");
                                 continue;
                             }
                             String tenLopTrung = lichHocDAO.hasScheduleConflictForStudent(id, idLopHoc);
@@ -362,7 +361,9 @@ public class ManageClassDetail extends HttpServlet {
                     }
                     if (removedCount > 0) {
                         int newSiSo = lopHoc.getSiSo() - removedCount;
-                        if (newSiSo < 0) newSiSo = 0;
+                        if (newSiSo < 0) {
+                            newSiSo = 0;
+                        }
                         boolean siSoUpdated = lopHocInfoDAO.updateSiSo(idLopHoc, newSiSo);
                         if (siSoUpdated) {
                             session.setAttribute("studentSuc", "Đã xóa " + removedCount + " học sinh thành công!");
@@ -419,7 +420,7 @@ public class ManageClassDetail extends HttpServlet {
             request.getRequestDispatcher("/views/admin/viewClass.jsp").forward(request, response);
         }
     }
-    
+
     @Override
     public String getServletInfo() {
         return "Short description";
