@@ -57,6 +57,7 @@
     <div class="content">
         <section class="content-full-width" id="primary">
             <article id="post-8" class="post-8 page type-page status-publish hentry">
+                <!--Slogan-->
                 <div class='fullwidth-section' style="background-repeat:no-repeat;background-position:left top;">
                     <div class="fullwidth-bg">    
                         <div class="container">
@@ -96,7 +97,7 @@
                         </div>
                     </div>
                 </div>
-
+                <!--Hot Teacher-->
                 <div class="fullwidth-section" style="padding: 60px 0; background-color: #f8f9fa;">
                     <div class="container">
                         <div class='hr-title'><h2>Đội Ngũ Của Chúng Tôi</h2><div class='title-sep'><span></span></div></div>
@@ -116,7 +117,7 @@
                         <div class='dt-sc-hr-invisible-medium'></div>    
                     </div>
                 </div>
-                
+                <!--Centre's Achievement-->
                 <div class='fullwidth-section dt-sc-skin' style="background-color:#355C7D;">
                     <div class="fullwidth-bg">    
                         <div class="container">
@@ -193,6 +194,7 @@
                                     
                 <div class='fullwidth-section' style="padding: 60px 0;">
                     <div class="container">
+                        <!--Secondary-School-->
                         <div class='hr-title'><h2>Trung Học Phổ Thông</h2><div class='title-sep'><span></span></div></div>
                         <c:forEach var="khoi" items="${listKhoi}">
                             <c:if test="${khoi.ID_Khoi > 4}">
@@ -225,6 +227,7 @@
                     </div>
 
                     <div class="container" style="padding: 60px 0;">
+                        <!--High-School-->
                         <div class='hr-title'><h2>Trung Học Cơ Sở</h2><div class='title-sep'><span></span></div></div>
                         <c:forEach var="khoi" items="${listKhoi}">
                             <c:if test="${khoi.ID_Khoi <= 4}">
@@ -256,7 +259,7 @@
                         </c:forEach>
                     </div>
                 </div>
-                
+                  <!--Post List-->  
                  <div class='fullwidth-section dt-sc-parallax-section' style="background-color:#ffffff;background-repeat:repeat;background-position:left top;background-attachment:fixed;">
                     <div class="fullwidth-bg">    
                         <div class="container">
@@ -313,47 +316,7 @@
 });
     </script>
     
-    <script>
-  const form = document.getElementById('formRegister');
-  const phoneInput = document.getElementById('regPhone');
-  
-  // Chặn nhập ký tự không phải số và giới hạn 10 ký tự
-  phoneInput.addEventListener('input', function () {
-    this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
-  });
 
-  form.addEventListener('submit', function (e) {
-    if (phoneInput.value.length !== 10) {
-      e.preventDefault(); // Ngăn submit form
-      alert('Số điện thoại phải đúng 10 chữ số!');
-      phoneInput.focus();
-    }
-  });
-  
-  const birthInput = document.getElementById('regBirth');
-const currentYear = new Date().getFullYear();
-
-birthInput.addEventListener('input', function() {
-  // Xóa ký tự không phải số
-  this.value = this.value.replace(/[^0-9]/g, '');
-
-  // Giới hạn tối đa 4 ký tự
-  if (this.value.length > 4) {
-    this.value = this.value.slice(0, 4);
-  }
-
-  // Nếu đủ 4 ký tự, kiểm tra giá trị
-  if (this.value.length === 4) {
-    const year = parseInt(this.value, 10);
-    if (year < 1950) {
-      this.value = '1950';
-    } else if (year > currentYear) {
-      this.value = currentYear.toString();
-    }
-  }
-});
-
-</script>
 
 <script>
   const swiper = new Swiper('.swiper-container', {
@@ -376,7 +339,7 @@ birthInput.addEventListener('input', function() {
 			var c = document.body.className;
 			c = c.replace(/woocommerce-no-js/, 'woocommerce-js');
 			document.body.className = c;
-		})()
+		})();
 	</script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/plugins/designthemes-core-features/shortcodes/js/jquery.tipTip.minified9704.js?ver=6.7.1" id="dt-tooltip-sc-script-js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/dtguru.wpenginepowered.com/wp-content/plugins/designthemes-core-features/shortcodes/js/jquery.tabs.min9704.js?ver=6.7.1" id="dt-tabs-script-js"></script>

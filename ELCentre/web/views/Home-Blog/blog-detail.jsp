@@ -48,7 +48,6 @@
             font-size: 1.1em;
             color: #343a40;
         }
-        /* Style cho nội dung từ CKEditor */
         .blog-full-content img {
             max-width: 100%;
             height: auto;
@@ -58,8 +57,7 @@
     </style>
 </head>
 <body>
-    <%-- Có thể include header tại đây --%>
-
+    <!--Display blog details-->
     <div class="container my-5">
         <c:if test="${not empty blog}">
             <div class="row">
@@ -76,21 +74,20 @@
                         <div class="blog-meta mb-4 pb-3 border-bottom">
                             <span><i class="fas fa-calendar-alt me-2"></i>${blog.formattedDate}</span>
                             <span><i class="fas fa-tag me-2"></i>${blog.phanLoai}</span>
-                            <%-- Có thể thêm tác giả ở đây nếu có --%>
                         </div>
                         
                         <div class="blog-full-content mt-4">
-                            <%-- Dùng escapeXml="false" để hiển thị HTML từ CKEditor --%>
+                            <!--Using escapeXml="false" to display CKEditor-->
                             <c:out value="${blog.noiDung}" escapeXml="false" />
                         </div>
                         
                         <div class="mt-5 pt-4 border-top">
                             <strong>Tags:</strong>
                             <c:if test="${not empty blog.keyTag}">
-                                <span class="badge bg-primary ms-2">${blog.keyTag}</span>
+                                <span class="badge bg-primary ms-2"><a href="${pageContext.request.contextPath}/HomePageBlog?keywordId=0&keytagId=${blog.getID_KeyTag()}"  class="text-decoration-none text-white">${blog.keyTag}</a></span>
                             </c:if>
                             <c:if test="${not empty blog.keyWord}">
-                                <span class="badge bg-info ms-2">${blog.keyWord}</span>
+                                <span class="badge bg-info ms-2"><a href="${pageContext.request.contextPath}/HomePageBlog?keywordId=${blog.getID_Keyword()}&keytagId=0" class="text-decoration-none text-white">  ${blog.keyWord}</a> </span>
                             </c:if>
                         </div>
                         
@@ -113,6 +110,5 @@
         </c:if>
     </div>
 
-    <%-- Có thể include footer tại đây --%>
 </body>
 </html>

@@ -8,9 +8,8 @@
 <!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
 <head>  
     <style>
-        /* ✅ BƯỚC 1: Thêm class mới để đẩy nội dung xuống */
         .main-content-pushed-down {
-            padding-top: 120px; /* Điều chỉnh con số này cho phù hợp với chiều cao thực tế của header */
+            padding-top: 120px; 
         }
     </style>
 	<meta charset="UTF-8" />

@@ -40,7 +40,7 @@
         <h2 class="fw-bold">Bài viết của chúng tôi</h2>
         <p class="text-muted">Cập nhật những tin tức và kiến thức mới nhất</p>
     </div>
-    
+    <!--Filter by keytag, keyword and search bar form-->
     <form class="row justify-content-center g-3 my-4" method="get" action="HomePageBlog">
         <div class="col-md-4">
             <select class="form-select" name="keywordId">
@@ -66,6 +66,7 @@
             <button class="btn btn-primary w-100" type="submit">Lọc</button>
         </div>
     </form>
+    <!--Display blog-->
     <div class="row">
         <c:if test="${empty blogs}">
             <div class="col-12">
@@ -99,7 +100,7 @@
             </div>
         </c:forEach>
     </div>
-
+    <!--Pagination-->
     <nav aria-label="Blog pagination" class="mt-5">
         <ul class="pagination justify-content-center">
             <c:forEach begin="1" end="${totalPages}" var="i">

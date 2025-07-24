@@ -26,7 +26,7 @@
       font-family: 'Be Vietnam Pro', sans-serif;
     }
     .section-title {
-      font-weight: 700; /* Sử dụng font weight đậm hơn */
+      font-weight: 700; 
       text-transform: uppercase;
       font-size: 1.2rem;
       text-align: center;
@@ -47,7 +47,7 @@
       padding: 16px;
       display: flex;
       align-items: center;
-      border-radius: 8px; /* Tăng độ bo góc */
+      border-radius: 8px; 
       margin-bottom: 16px;
       transition: box-shadow 0.3s ease;
     }
@@ -57,7 +57,7 @@
     .info-box i {
       font-size: 1.4rem;
       color: #0d6efd;
-      margin-right: 16px; /* Tăng khoảng cách */
+      margin-right: 16px; 
       min-width: 32px;
       text-align: center;
     }
@@ -80,16 +80,16 @@
       border: none;
       padding: 12px 30px;
       border-radius: 8px;
-      font-weight: 700; /* Sử dụng font weight đậm hơn */
+      font-weight: 700; 
       transition: background-color 0.3s ease;
-      margin-top: -10px; /* Thêm một chút khoảng cách phía trên nút */
-      display: inline-block; /* Đảm bảo nút không chiếm toàn bộ chiều ngang nếu có vấn đề về container */
+      margin-top: -10px; 
+      display: inline-block; 
     }
     .btn-submit:hover {
         background-color: #0b5ed7;
     }
     .text-start {
-        text-align: left !important; /* Đảm bảo nút căn trái */
+        text-align: left !important;
     }
   </style>
 </head>
