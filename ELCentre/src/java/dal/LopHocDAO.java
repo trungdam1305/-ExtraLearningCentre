@@ -1189,6 +1189,47 @@ public class LopHocDAO {
 
         return list;
     }
+        
+public static List<LopHoc> getLopHocByHocSinhId(int idHocSinh) {
+    List<LopHoc> list = new ArrayList<>();
+    String sql = """
+        SELECT l.*
+        FROM HocSinh_LopHoc hslh
+        JOIN LopHoc l ON hslh.ID_LopHoc = l.ID_LopHoc
+        WHERE hslh.ID_HocSinh = ?
+    """;
+
+    try (Connection conn = DBContext.getInstance().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, idHocSinh);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                LopHoc lop = new LopHoc();
+                lop.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                lop.setClassCode(rs.getString("ClassCode"));
+                lop.setTenLopHoc(rs.getString("TenLopHoc"));
+                lop.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                lop.setSiSo(rs.getInt("SiSo"));
+                lop.setSiSoToiThieu(rs.getInt("SiSoToiThieu"));
+                lop.setID_Schedule(rs.getInt("ID_Schedule"));
+                lop.setSiSoToiDa(rs.getInt("SiSoToiDa"));
+                lop.setID_PhongHoc(rs.getInt("ID_PhongHoc"));
+                lop.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+                lop.setGhiChu(rs.getString("GhiChu"));
+                lop.setSoTien(rs.getString("SoTien"));
+                lop.setTrangThai(rs.getString("TrangThai"));
+                lop.setImage(rs.getString("Image"));
+                lop.setOrder(rs.getInt("Order"));
+                list.add(lop);
+            }
+        } 
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
+
+    
     
     public List<LopHoc> getAllActiveClassesWithTeacher() {
     List<LopHoc> list = new ArrayList<>();
@@ -1315,4 +1356,6 @@ public int countFilteredActiveClasses(String keyword, Integer courseId, Integer 
     } catch (Exception e) { e.printStackTrace(); }
     return count;
 }
+
+
 }

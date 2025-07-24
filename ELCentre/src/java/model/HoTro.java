@@ -92,6 +92,10 @@ public class HoTro {
     public void setID_TaiKhoan(int ID_TaiKhoan) {
         this.ID_TaiKhoan = ID_TaiKhoan;
     }
+
+    public void setPhanHoi(String PhanHoi) {
+        this.PhanHoi = PhanHoi;
+    }
     
     
     

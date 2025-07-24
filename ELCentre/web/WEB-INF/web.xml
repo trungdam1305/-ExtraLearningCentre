@@ -280,6 +280,38 @@
         <servlet-name>SendTransferRequestServlet</servlet-name>
         <servlet-class>controller.SendTransferRequestServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ParentDashboardServlet</servlet-name>
+        <servlet-class>controller.ParentDashboardServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ParentEditProfileServlet</servlet-name>
+        <servlet-class>controller.ParentEditProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ParentViewNotificationServlet</servlet-name>
+        <servlet-class>controller.ParentViewNotificationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ParentSupportServlet</servlet-name>
+        <servlet-class>controller.ParentSupportServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ParentPaymentServlet</servlet-name>
+        <servlet-class>controller.ParentPaymentServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ParentViewStudentDetailServlet</servlet-name>
+        <servlet-class>controller.ParentViewStudentDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ParentViewClassDetailServlet</servlet-name>
+        <servlet-class>controller.ParentViewClassDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ParentViewStudentGradeInClass</servlet-name>
+        <servlet-class>controller.ParentViewStudentGradeInClass</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -583,6 +615,38 @@
     <servlet-mapping>
         <servlet-name>SendTransferRequestServlet</servlet-name>
         <url-pattern>/SendTransferRequestServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ParentDashboardServlet</servlet-name>
+        <url-pattern>/ParentDashboardServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ParentEditProfileServlet</servlet-name>
+        <url-pattern>/ParentEditProfileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ParentViewNotificationServlet</servlet-name>
+        <url-pattern>/ParentViewNotificationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ParentSupportServlet</servlet-name>
+        <url-pattern>/ParentSupportServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ParentPaymentServlet</servlet-name>
+        <url-pattern>/ParentPaymentServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ParentViewStudentDetailServlet</servlet-name>
+        <url-pattern>/ParentViewStudentDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ParentViewClassDetailServlet</servlet-name>
+        <url-pattern>/ParentViewClassDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ParentViewStudentGradeInClass</servlet-name>
+        <url-pattern>/ParentViewStudentGradeInClass</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

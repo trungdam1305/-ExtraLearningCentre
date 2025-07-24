@@ -82,7 +82,7 @@ public class LoginServlet extends HttpServlet {
                     case 4 -> //student
                         response.sendRedirect(request.getContextPath() + "/StudentDashboardServlet");
                     case 5 -> //parent
-                        response.sendRedirect(request.getContextPath() + "/views/parent/parentDashboard.jsp");
+                        response.sendRedirect(request.getContextPath() + "/ParentDashboardServlet");
                     default -> response.sendRedirect(request.getContextPath() + "/views/login.jsp");
                 }
             } else {

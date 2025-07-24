@@ -315,7 +315,7 @@
                 left: 0;
                 z-index: 999;
             ">
-                <h2 style="margin: 0; color: white;">Trang chủ</h2>
+                <h2 style="margin: 0; color: white;">Trang chủ học sinh</h2>
                 <div class="user-menu">
                     <div class="user-toggle" onclick="toggleUserMenu()" style="color: white;">
                         <span>👋 Xin chào <strong>${hocSinhInfo.hoTen}</strong>

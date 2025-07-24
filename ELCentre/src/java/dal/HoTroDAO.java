@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class HoTroDAO {
 
@@ -193,5 +194,49 @@ public class HoTroDAO {
             
         }
         return false ; 
+    }
+    
+    
+    public static List<HoTro> getHoTroByTaiKhoanId(int idTaiKhoan) {
+        List<HoTro> list = new ArrayList<>();
+        String sql = "SELECT * FROM HoTro WHERE ID_TaiKhoan = ? ORDER BY ThoiGian DESC";
+
+        try (Connection con = DBContext.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idTaiKhoan);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                HoTro ht = new HoTro();
+                ht.setID_HoTro(rs.getInt("ID_HoTro"));
+                ht.setHoTen(rs.getString("HoTen"));
+                ht.setTenHoTro(rs.getString("TenHoTro"));
+                ht.setThoiGian(rs.getTimestamp("ThoiGian").toLocalDateTime());
+                ht.setMoTa(rs.getString("MoTa"));
+                ht.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
+                ht.setDaDuyet(rs.getString("DaDuyet"));
+                ht.setPhanHoi(rs.getString("PhanHoi"));
+                list.add(ht);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public static void insertHoTro(HoTro hoTro) {
+        String sql = "INSERT INTO HoTro(HoTen, TenHoTro, ThoiGian, MoTa, ID_TaiKhoan, DaDuyet, PhanHoi) VALUES (?, ?, GETDATE(), ?, ?, ?, ?)";
+
+        try (Connection con = DBContext.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, hoTro.getHoTen());
+            ps.setString(2, hoTro.getTenHoTro());
+            ps.setString(3, hoTro.getMoTa());
+            ps.setInt(4, hoTro.getID_TaiKhoan());
+            ps.setString(5, hoTro.getDaDuyet());
+            ps.setString(6, hoTro.getPhanHoi());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

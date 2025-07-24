@@ -24,6 +24,7 @@ public class HocPhi {
     private int ID_TaiKhoan  ; 
     private String HoTen ; 
     private String SDT_PhuHuynh ; 
+    private String hoTenHocSinh; 
 
     
 
@@ -254,6 +255,14 @@ public class HocPhi {
 
     public void setSDT_PhuHuynh(String SDT_PhuHuynh) {
         this.SDT_PhuHuynh = SDT_PhuHuynh;
+    }
+
+    public String getHoTenHocSinh() {
+        return hoTenHocSinh;
+    }
+
+    public void setHoTenHocSinh(String hoTenHocSinh) {
+        this.hoTenHocSinh = hoTenHocSinh;
     }
 
 

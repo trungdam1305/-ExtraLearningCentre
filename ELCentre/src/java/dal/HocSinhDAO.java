@@ -1193,5 +1193,50 @@ public class HocSinhDAO {
         return null;
     }
     
+
+    public static List<HocSinh> getHocSinhByPhuHuynhPhone(String sdtPhuHuynh) {
+        List<HocSinh> list = new ArrayList<>();
+        String query = "SELECT * FROM HocSinh WHERE SDT_PhuHuynh = ?";
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, sdtPhuHuynh);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                HocSinh hs = new HocSinh();
+                hs.setID_HocSinh(rs.getInt("ID_HocSinh"));
+                hs.setHoTen(rs.getString("HoTen"));
+                hs.setNgaySinh(rs.getDate("NgaySinh").toLocalDate());
+                hs.setGioiTinh(rs.getString("GioiTinh"));
+                hs.setDiaChi(rs.getString("DiaChi"));
+                hs.setLopDangHocTrenTruong(rs.getString("LopDangHocTrenTruong"));
+                hs.setAvatar(rs.getString("Avatar"));
+                hs.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
+                list.add(hs);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // Kiểm tra học sinh có thuộc quyền phụ huynh hay không
+    public static boolean isHocSinhThuocPhuHuynh(int idHocSinh, int idPhuHuynh) {
+        String sql = "SELECT 1 FROM HocSinh_PhuHuynh WHERE ID_HocSinh = ? AND ID_PhuHuynh = ?";
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idHocSinh);
+            ps.setInt(2, idPhuHuynh);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next(); // có kết quả tức là đúng phụ huynh
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    
+
     
 }
