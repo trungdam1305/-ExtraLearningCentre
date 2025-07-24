@@ -115,8 +115,8 @@ public class HocSinh {
         this.LopDangHocTrenTruong = LopDangHocTrenTruong;
         
     }
-    
-    private List<LopHoc> lopDaDangKy;
+
+        private List<LopHoc> lopDaDangKy;
 
 public List<LopHoc> getLopDaDangKy() {
     return lopDaDangKy;

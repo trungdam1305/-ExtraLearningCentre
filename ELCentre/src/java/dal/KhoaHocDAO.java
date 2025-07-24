@@ -1563,8 +1563,8 @@ public class KhoaHocDAO {
         }
         return khoaHoc;
     }
-
-        //Lấy khóa học theo classcode của lớp học
+    
+            //Lấy khóa học theo classcode của lớp học
     public static int getKhoaHocIdByClassCode(String classCode) {
         try (Connection con = DBContext.getInstance().getConnection()) {
             String sql = "SELECT ID_KhoaHoc FROM LopHoc WHERE ClassCode = ?";
@@ -1579,6 +1579,7 @@ public class KhoaHocDAO {
         }
         return -1;
     }
+
     
     public static void main(String[] args) {
         KhoaHocDAO dao = new KhoaHocDAO();

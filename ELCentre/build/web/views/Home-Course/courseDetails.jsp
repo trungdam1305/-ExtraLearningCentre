@@ -18,21 +18,19 @@
     <style>
         body {
             font-family: 'Be Vietnam Pro', sans-serif;
-            background-color: #f8f9fa; /* Thêm màu nền cho đẹp hơn */
+            background-color: #f8f9fa; 
         }
-        
         .course-detail-header {
             background-image: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
             color: white;
             border-radius: 1rem !important;
         }
-        
         .section-title {
             font-weight: 700;
             color: #343a40;
             position: relative;
             padding-bottom: 10px;
-            margin-bottom: 1.5rem; /* Tăng khoảng cách dưới tiêu đề */
+            margin-bottom: 1.5rem; 
         }
         .section-title::after {
             content: '';
@@ -43,7 +41,6 @@
             height: 3px;
             background-color: #0d6efd;
         }
-
         .class-card {
             border: 1px solid #dee2e6;
             border-radius: 0.75rem;
@@ -56,13 +53,11 @@
             transform: translateY(-5px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.12);
         }
-        
         .class-card .card-body {
              display: flex;
              flex-direction: column;
              flex-grow: 1;
         }
-
         .class-info {
             list-style: none;
             padding-left: 0;
@@ -90,9 +85,9 @@
                 <p class="col-md-10 fs-5">${course.moTa}</p>
             </div>
         </div>
-
         <div class="card">
             <div class="card-body p-4">
+                <!--Filter by Teacher-->
                 <form action="CourseDetailsServlet" method="GET" class="row g-3 align-items-end mb-4">
                     <input type="hidden" name="courseId" value="${course.ID_KhoaHoc}">
                     <div class="col-md-9">
@@ -113,7 +108,7 @@
                 <c:if test="${empty classList}">
                     <div class="alert alert-info">Hiện chưa có lớp nào cho khóa học này.</div>
                 </c:if>
-
+                <!--Show list class available in centre-->    
                 <c:if test="${not empty classList}">
                     <div class="row">
                         <c:forEach var="lop" items="${classList}">

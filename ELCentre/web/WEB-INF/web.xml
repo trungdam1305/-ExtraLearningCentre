@@ -273,6 +273,30 @@
         <servlet-class>controller.ManageCourses.PayTeacherSalary</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>staffGoToTuition</servlet-name>
+        <servlet-class>controller.staffGoToTuition</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>staffActionWithTuition</servlet-name>
+        <servlet-class>controller.staffActionWithTuition</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>staffActionWithSupport</servlet-name>
+        <servlet-class>controller.staffActionWithSupport</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Staff_ManageClass</servlet-name>
+        <servlet-class>controller.ManageCourses.Staff_ManageClass</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Staff_ManageClassDetail</servlet-name>
+        <servlet-class>controller.ManageCourses.Staff_ManageClassDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Staff_ManageCourse</servlet-name>
+        <servlet-class>controller.ManageCourses.Staff_ManageCourse</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>LoadClassToTransferServlet</servlet-name>
         <servlet-class>controller.LoadClassToTransferServlet</servlet-class>
     </servlet>
@@ -289,24 +313,24 @@
         <servlet-class>controller.ParentEditProfileServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ParentViewNotificationServlet</servlet-name>
-        <servlet-class>controller.ParentViewNotificationServlet</servlet-class>
+        <servlet-name>ParentPaymentServlet</servlet-name>
+        <servlet-class>controller.ParentPaymentServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ParentSupportServlet</servlet-name>
         <servlet-class>controller.ParentSupportServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ParentPaymentServlet</servlet-name>
-        <servlet-class>controller.ParentPaymentServlet</servlet-class>
+        <servlet-name>ParentViewClassDetailServlet</servlet-name>
+        <servlet-class>controller.ParentViewClassDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ParentViewNotificationServlet</servlet-name>
+        <servlet-class>controller.ParentViewNotificationServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ParentViewStudentDetailServlet</servlet-name>
         <servlet-class>controller.ParentViewStudentDetailServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ParentViewClassDetailServlet</servlet-name>
-        <servlet-class>controller.ParentViewClassDetailServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ParentViewStudentGradeInClass</servlet-name>
@@ -609,6 +633,30 @@
         <url-pattern>/PayTeacherSalary</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>staffGoToTuition</servlet-name>
+        <url-pattern>/staffGoToTuition</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>staffActionWithTuition</servlet-name>
+        <url-pattern>/staffActionWithTuition</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>staffActionWithSupport</servlet-name>
+        <url-pattern>/staffActionWithSupport</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Staff_ManageClass</servlet-name>
+        <url-pattern>/Staff_ManageClass</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Staff_ManageClassDetail</servlet-name>
+        <url-pattern>/Staff_ManageClassDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Staff_ManageCourse</servlet-name>
+        <url-pattern>/Staff_ManageCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>LoadClassToTransferServlet</servlet-name>
         <url-pattern>/LoadClassToTransferServlet</url-pattern>
     </servlet-mapping>
@@ -625,24 +673,24 @@
         <url-pattern>/ParentEditProfileServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ParentViewNotificationServlet</servlet-name>
-        <url-pattern>/ParentViewNotificationServlet</url-pattern>
+        <servlet-name>ParentPaymentServlet</servlet-name>
+        <url-pattern>/ParentPaymentServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ParentSupportServlet</servlet-name>
         <url-pattern>/ParentSupportServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ParentPaymentServlet</servlet-name>
-        <url-pattern>/ParentPaymentServlet</url-pattern>
+        <servlet-name>ParentViewClassDetailServlet</servlet-name>
+        <url-pattern>/ParentViewClassDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ParentViewNotificationServlet</servlet-name>
+        <url-pattern>/ParentViewNotificationServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ParentViewStudentDetailServlet</servlet-name>
         <url-pattern>/ParentViewStudentDetailServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ParentViewClassDetailServlet</servlet-name>
-        <url-pattern>/ParentViewClassDetailServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ParentViewStudentGradeInClass</servlet-name>

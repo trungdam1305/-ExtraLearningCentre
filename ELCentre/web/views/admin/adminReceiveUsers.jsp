@@ -507,9 +507,13 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
+                                       
                                         <td>
                                             <div class="action-buttons">
-                                                <a class="btn-action view" href="${pageContext.request.contextPath}/adminActionWithUser?action=view&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-eye"></i>Chi tiết</a> |
+                                                <c:if test="${tk.userType != 'Staff'}">
+                                                    <a class="btn-action view" href="${pageContext.request.contextPath}/adminActionWithUser?action=view&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-eye"></i>Chi tiết</a> |
+                                                </c:if>
+
                                                 <c:choose>
                                                     <c:when test="${tk.trangThai == 'Active'}">
                                                         <a class="btn-action disable" href="${pageContext.request.contextPath}/adminActionWithUser?action=disable&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-user-slash"></i>Vô hiệu hóa</a>
@@ -518,10 +522,15 @@
                                                         <a class="btn-action enable" href="${pageContext.request.contextPath}/adminActionWithUser?action=enable&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-user-check"></i>Kích hoạt</a>
                                                     </c:otherwise>
                                                 </c:choose>
-                                                |
-                                                <a class="btn-action update" href="${pageContext.request.contextPath}/adminActionWithUser?action=update&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-edit"></i>Cập nhật</a>
+
+                                                <c:if test="${tk.userType != 'Admin'}">
+                                                    |
+                                                    <a class="btn-action update" href="${pageContext.request.contextPath}/adminActionWithUser?action=update&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-edit"></i>Cập nhật</a>
+                                                </c:if>
                                             </div>
                                         </td>
+
+                                        
                                     </tr>
                                 </c:forEach>
                             </tbody>
@@ -571,7 +580,7 @@
             const statusFilter = document.getElementById("statusFilter");
             const roleFilter = document.getElementById("roleFilter");
             const table = document.querySelector("#userTable tbody");
-            let allRows = []; 
+            let allRows = [];
             let filteredRows = [];
             let currentPage = 1;
             const rowsPerPage = 14;

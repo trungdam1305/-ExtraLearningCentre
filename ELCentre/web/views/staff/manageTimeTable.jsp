@@ -1,3 +1,7 @@
+<!--manageTimeTable jsp
+Author : trungdam
+-->
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -379,32 +383,33 @@
     </div>
 
         <div class="sidebar">
-            <h4>EL CENTRE</h4>
-            <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
-            <div class="sidebar-section-title">Tổng quan</div>
-            <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/staffGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-            </ul>
-            <div class="sidebar-section-title">Quản lý học tập</div>
-            <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
-                <li><a href="${pageContext.request.contextPath}/StaffManageTimeTable"><i class="fas fa-calendar-alt"></i> Thời Khóa Biểu</a></li>
-                <li><a href="${pageContext.request.contextPath}/StaffManageAttendance"><i class="fas fa-check-square"></i> Điểm danh</a></li>
-            </ul>
-            <div class="sidebar-section-title">Quản lý tài chính</div>
-            <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/staffViewSalary"><i class="fas fa-money-check-alt"></i> Học phí</a></li>
-            </ul>
-            <div class="sidebar-section-title">Hỗ trợ</div>
-            <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/staffGetSupportRequests"><i class="fas fa-envelope-open-text"></i> Yêu cầu hỗ trợ</a></li>
-                <li><a href="${pageContext.request.contextPath}/staffGetConsultationRequests"><i class="fas fa-blog"></i> Yêu cầu tư vấn</a></li>
-            </ul>
-            <div class="sidebar-section-title">Khác</div>
-            <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-            </ul>
-        </div>
+        <h4>EL CENTRE</h4>
+        <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
+        <div class="sidebar-section-title">Tổng quan</div>
+        <ul class="sidebar-menu">
+            <li><a href="${pageContext.request.contextPath}/staffGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+        </ul>
+        <div class="sidebar-section-title">Quản lý học tập</div>
+        <ul class="sidebar-menu">
+            <li><a href="${pageContext.request.contextPath}/Staff_ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
+            <li><a href="${pageContext.request.contextPath}/StaffManageTimeTable"><i class="fas fa-calendar-alt"></i> Thời Khóa Biểu</a></li>
+            <li><a href="${pageContext.request.contextPath}/StaffManageAttendance"><i class="fas fa-check-square"></i> Điểm danh</a></li>
+        </ul>
+        <div class="sidebar-section-title">Quản lý tài chính</div>
+        <ul class="sidebar-menu">
+            <li><a href="${pageContext.request.contextPath}/staffViewSalary"><i class="fas fa-money-check-alt"></i> Học phí</a></li>
+        </ul>
+        <div class="sidebar-section-title">Hỗ trợ</div>
+        <ul class="sidebar-menu">
+            <li><a href="${pageContext.request.contextPath}/staffGetSupportRequests"><i class="fas fa-envelope-open-text"></i> Yêu cầu hỗ trợ</a></li>
+            <li><a href="${pageContext.request.contextPath}/staffGetConsultationRequests"><i class="fas fa-blog"></i> Yêu cầu tư vấn</a></li>
+        </ul>
+        <div class="sidebar-section-title">Khác</div>
+        <ul class="sidebar-menu">
+            <li><a href="${pageContext.request.contextPath}/ManagePost"><i class="fas fa-blog"></i> Bài Viết</a></li>
+            <li><a href="${pageContext.request.contextPath}/ManageMaterial"><i class="fas fa-file-alt"></i> Tài Liệu</a></li> <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
 
         <header class="header">
              <div class="left-title"><h3>Quản lý Thời Khóa Biểu</h3></div>

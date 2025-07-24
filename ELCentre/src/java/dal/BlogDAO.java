@@ -534,5 +534,28 @@ public class BlogDAO { // IMPORTANT: NO LONGER extends DBContext
         }
         return 0;
     }
+    
+    public List<Blog> getFourBlog() {
+        List<Blog> list = new ArrayList<>();
+        String sql = """
+                     SELECT Top 4 b.*, pl.PhanLoai, kt.KeyTag, kw.Keyword
+                     FROM Blog b
+                     JOIN PhanLoaiBlog pl ON b.ID_PhanLoai = pl.ID_PhanLoai
+                     LEFT JOIN KeyTag kt ON b.ID_KeyTag = kt.ID_KeyTag
+                     LEFT JOIN Keyword kw ON b.ID_Keyword = kw.ID_Keyword
+                     ORDER BY b.BlogDate DESC
+                     """;
+        // Get connection using getInstance()
+        try (Connection conn = DBContext.getInstance().getConnection(); // Obtain Connection
+             PreparedStatement statement = conn.prepareStatement(sql);
+             ResultSet rs = statement.executeQuery()) {
+            while (rs.next()) {
+                list.add(mapResultSetToBlog(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the exception for debugging
+        }
+        return list;
+    }
 
 }

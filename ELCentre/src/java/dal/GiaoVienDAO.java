@@ -1578,4 +1578,24 @@ public class GiaoVienDAO {
             return true;
         }
     }
+    public static String  adminGetTrangThaiDayGiaoVienByID_TaiKhoan(String ID_TaiKhoan) {
+       
+        DBContext db = DBContext.getInstance() ; 
+        try {
+            String sql = """
+                         select GV.TrangThaiDay from GiaoVien GV 
+                         WHERE GV.ID_TaiKhoan = ? 
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, ID_TaiKhoan);
+            ResultSet rs = statement.executeQuery() ; 
+            while(rs.next()) {
+                return rs.getString("TrangThaiDay") ; 
+            }
+        } catch(SQLException  e) {
+            e.printStackTrace();
+            return null ; 
+        }
+        return null ; 
+    }
 }

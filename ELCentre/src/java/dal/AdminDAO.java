@@ -20,7 +20,6 @@ public class AdminDAO {
         try {
             String sql = """
                          select *  from Admin 
-                         
                          """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
             ResultSet rs = statement.executeQuery() ; 

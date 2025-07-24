@@ -297,7 +297,7 @@
                                 <h4>Trạng thái nộp bài</h4>
                                 <c:set var="currentSubmission" value="${studentSubmissions[assignment.ID_BaiTap]}" />
                                 <c:choose>                                        
-                                    <!--If have submitted before-->
+                                    
                                     <c:when test="${not empty currentSubmission}">
                                         <div class="submitted-file-info">
                                             <p>Bạn đã nộp bài vào: ${currentSubmission.ngayNop}</p>

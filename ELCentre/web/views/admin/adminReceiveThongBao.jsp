@@ -583,9 +583,7 @@
                     <a href="${pageContext.request.contextPath}/views/admin/adminSendNotificationToAllClass.jsp" class="btn-action all-classes">
                         <i class="fas fa-users"></i> Gửi toàn bộ lớp học
                     </a>
-                    <a href="${pageContext.request.contextPath}/adminActionWithNotification?action=historyNotification" class="btn-action notification-history">
-                        <i class="fas fa-history"></i> Xem lịch sử thông báo
-                    </a>
+                    
                         
                 </div>
                 <form action="${pageContext.request.contextPath}/adminActionWithNotification" method="get">
@@ -629,7 +627,7 @@
                                 <tr>
                                     <th>Tên môn học</th>
                                     <th>Khối</th>
-                                    <th>Lớp học số</th>
+                                   
                                     <th>Tên lớp học</th>
                                     <th>Sĩ số</th>
                                     <th>Tên giáo viên</th>
@@ -642,8 +640,8 @@
                                 <c:forEach var="lop" items="${sessionScope.lophocs}">
                                     <tr>
                                         <td>${lop.getTenKhoaHoc()}</td>
-                                        <td>${lop.getID_Khoi()}</td>
-                                        <td>${lop.getID_LopHoc()}</td>
+                                        <td>${lop.getID_Khoi() + 5}  </td>
+                                       
                                         <td>${lop.getTenLopHoc()}</td>
                                         <td>${lop.getSiSo()}</td>
                                         <td>${lop.getHoTen()}</td>
@@ -653,9 +651,7 @@
                                             <a class="btn-action send" href="${pageContext.request.contextPath}/views/admin/adminSendNotificationToClass.jsp?idLop=${lop.getID_LopHoc()}">
                                                 <i class="fas fa-paper-plane"></i> Gửi thông báo
                                             </a>
-                                            <a class="btn-action send" href="${pageContext.request.contextPath}/adminActionWithNotification?type=historyNotificationClass?idLop=${lop.getID_LopHoc()}">
-                                                <i class="fas fa-paper-plane"></i> Lịch sử thông báo lớp học
-                                            </a>
+                                            
                                         </td>
                                     </tr>
                                 </c:forEach>

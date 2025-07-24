@@ -1,3 +1,5 @@
+// Author: trungdam
+// Servlet: PhanLoaiBlogDAO
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -16,6 +18,9 @@ import model.PhanLoaiBlog;
  * @author admin
  */
 public class PhanLoaiBlogDAO {
+    /**
+     * Retrieves a list of all blog categories (PhanLoaiBlog) from the database.
+     */
     public List<PhanLoaiBlog> getAllPhanLoai() {
     List<PhanLoaiBlog> list = new ArrayList<>();
     DBContext db = DBContext.getInstance();
@@ -28,11 +33,13 @@ public class PhanLoaiBlogDAO {
             pl.setPhanLoai(rs.getString("PhanLoai"));
             list.add(pl);
         }
-    } catch (Exception e) {
+    } catch (SQLException e) { // Catch SQLException specifically for database operations
+        System.err.println("Lỗi khi lấy danh sách phân loại blog: " + e.getMessage());
+        e.printStackTrace();
+    } catch (Exception e) { // Catch any other unexpected exceptions
         e.printStackTrace();
     }
 
     return list;
 }
 }
-    

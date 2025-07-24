@@ -6,9 +6,9 @@ package dal;
  * @author wrx_Chur04
  */
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.SQLException ; 
 import java.util.ArrayList ; 
-import java.sql.Connection;
 import java.sql.ResultSet ; 
 import java.sql.PreparedStatement ; 
 import java.util.List;
@@ -141,6 +141,7 @@ public class PhuHuynhDAO {
         }
     }
     
+       
 
     public static PhuHuynh getPhuHuynhByTaiKhoanId(int idTaiKhoan) {
         String query = "SELECT * FROM PhuHuynh WHERE ID_TaiKhoan = ?";
@@ -276,7 +277,4 @@ public class PhuHuynhDAO {
     }
 }
 
-
 }
-
-    

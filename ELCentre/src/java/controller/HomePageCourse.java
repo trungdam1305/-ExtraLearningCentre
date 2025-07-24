@@ -1,3 +1,5 @@
+// Author: trungdam
+// Servlet: HomePageCourse
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
@@ -27,9 +29,8 @@ import model.SubjectCategoryDTO;
  * @author admin
  */
 public class HomePageCourse extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+    
+    /** * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -53,8 +54,7 @@ public class HomePageCourse extends HttpServlet {
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
+    /** * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -100,10 +100,10 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     request.setAttribute("allCoursesForFilter", allCourses);
 
     request.setAttribute("keyword", keyword);         // For retaining the search box value
-    request.setAttribute("ID_Khoi", idKhoi);          // For keeping the selected grade
+    request.setAttribute("ID_Khoi", idKhoi);         // For keeping the selected grade
     request.setAttribute("khoaHocList", khoaHocList); // Course list to be displayed
-    request.setAttribute("currentPage", page);        // Current page number
-    request.setAttribute("totalPage", totalPage);     // Total number of pages
+    request.setAttribute("currentPage", page);         // Current page number
+    request.setAttribute("totalPage", totalPage);      // Total number of pages
 
     // Load all available grades (KhoiHoc) for filter dropdown
     request.setAttribute("allKhoi", khDAO.getAllKhoiHoc());
@@ -119,8 +119,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
 
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
+    /** * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -132,8 +131,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         processRequest(request, response);
     }
 
-    /** 
-     * Returns a short description of the servlet.
+    /** * Returns a short description of the servlet.
      * @return a String containing servlet description
      */
     @Override

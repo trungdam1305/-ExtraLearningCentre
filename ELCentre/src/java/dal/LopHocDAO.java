@@ -1106,6 +1106,7 @@ public class LopHocDAO {
         return list;
     }
     
+    
         // Lấy các lớp học mà học sinh đã đăng ký trong một khóa học cụ thể
     public static List<LopHoc> getLopHocDaDangKyByHocSinhId(int hocSinhId) {
         List<LopHoc> list = new ArrayList<>();
@@ -1229,6 +1230,7 @@ public static List<LopHoc> getLopHocByHocSinhId(int idHocSinh) {
     return list;
 }
 
+    
     
     
     public List<LopHoc> getAllActiveClassesWithTeacher() {
@@ -1356,6 +1358,4 @@ public int countFilteredActiveClasses(String keyword, Integer courseId, Integer 
     } catch (Exception e) { e.printStackTrace(); }
     return count;
 }
-
-
 }

@@ -41,33 +41,30 @@ public class staffGetSupportRequests extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-                HttpSession session = request.getSession();
-                ArrayList<HoTro> HoTroList = HoTroDAO.adminGetHoTroDashBoard();
-                session.setAttribute("HoTroList", HoTroList);
-                request.getRequestDispatcher("/views/staff/staffViewHoTro.jsp").forward(request, response);
-                
-
+        HttpSession session = request.getSession();
+        ArrayList<HoTro> HoTroList = HoTroDAO.staffGetHoTroDashBoard();
+        session.setAttribute("HoTroList", HoTroList);
+        request.getRequestDispatcher("/views/staff/staffViewHoTro.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String ID_HoTro = request.getParameter("id") ; 
-        String phanHoi = request.getParameter("phanHoi") ; 
-        String daDuyet = request.getParameter("daDuyet") ; 
-        if (daDuyet.equalsIgnoreCase("daduyet") ) {
-            boolean s1 = HoTroDAO.duyetHoTroOK(ID_HoTro, phanHoi) ; 
-             HttpSession session = request.getSession();
+        String ID_HoTro = request.getParameter("id");
+        String phanHoi = request.getParameter("phanHoi");
+        String daDuyet = request.getParameter("daDuyet");
+        if (daDuyet.equalsIgnoreCase("daduyet")) {
+            boolean s1 = HoTroDAO.duyetHoTroOK(ID_HoTro, phanHoi);
+            HttpSession session = request.getSession();
             ArrayList<HoTro> HoTroList = HoTroDAO.adminGetHoTroDashBoard();
-                session.setAttribute("HoTroList", HoTroList);
-                request.getRequestDispatcher("/views/staff/staffViewHoTro.jsp").forward(request, response);
+            session.setAttribute("HoTroList", HoTroList);
+            request.getRequestDispatcher("/views/staff/staffViewHoTro.jsp").forward(request, response);
         } else {
-            boolean s2 = HoTroDAO.duyetHoTroKhongOK(ID_HoTro, phanHoi) ;
-             HttpSession session = request.getSession();
+            boolean s2 = HoTroDAO.duyetHoTroKhongOK(ID_HoTro, phanHoi);
+            HttpSession session = request.getSession();
             ArrayList<HoTro> HoTroList = HoTroDAO.adminGetHoTroDashBoard();
-                session.setAttribute("HoTroList", HoTroList);
-                request.getRequestDispatcher("/views/staff/staffViewHoTro.jsp").forward(request, response);
+            session.setAttribute("HoTroList", HoTroList);
+            request.getRequestDispatcher("/views/staff/staffViewHoTro.jsp").forward(request, response);
         }
     }
 

@@ -391,7 +391,7 @@
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="#"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGoToFirstPage"><i class="bi bi-house-door"></i> Dashboard</a></li>
             </ul>
             <div class="sidebar-section-title">Quản lý người dùng</div>
             <ul class="sidebar-menu">

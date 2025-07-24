@@ -52,7 +52,7 @@ public class adminActionWithNotification extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
+            HttpSession session = request.getSession();
             request.setCharacterEncoding("UTF-8");
             String keyword = request.getParameter("keyword") ; 
             String khoi = request.getParameter("khoi") ; 
@@ -68,8 +68,8 @@ public class adminActionWithNotification extends HttpServlet {
                 mon = "" ; 
             }
             ArrayList<GiaoVien_ChiTietDay> lophocs = ThongBaoDAO.adminGetAllLopHocByFilter(keyword, khoi, mon);
-    session.setAttribute("lophocs", lophocs);
-    request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);  
+            session.setAttribute("lophocs", lophocs);
+            request.getRequestDispatcher("/views/admin/adminReceiveThongBao.jsp").forward(request, response);  
             
     }
 

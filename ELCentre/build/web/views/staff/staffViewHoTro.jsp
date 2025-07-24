@@ -255,6 +255,21 @@
             .btn-action.respond:hover {
                 background-color: #163E5C;
             }
+            .btn-action.create-support {
+                background-color: #1F4E79;
+                color: #fff;
+                margin-right: 10px;
+            }
+            .btn-action.create-support:hover {
+                background-color: #163E5C;
+            }
+            .btn-action.view-sent-support {
+                background-color: #27ae60;
+                color: #fff;
+            }
+            .btn-action.view-sent-support:hover {
+                background-color: #219653;
+            }
             .btn-action i {
                 margin-right: 6px;
             }
@@ -286,7 +301,8 @@
     <body>
         <div class="header">
             <div class="left-title">
-                Staff Dashboard <i class="fas fa-tachometer-alt"></i>
+                Quản lý hỗ trợ <i class="fas fa-hands-helping"></i>
+
             </div>
             <div class="admin-profile" onclick="toggleDropdown()">
                 <c:forEach var="staff" items="${staffs}">
@@ -310,10 +326,9 @@
             </ul>
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
+                <li><a href="${pageContext.request.contextPath}/Staff_ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
                 <li><a href="${pageContext.request.contextPath}/StaffManageTimeTable"><i class="fas fa-calendar-alt"></i> Thời Khóa Biểu</a></li>
                 <li><a href="${pageContext.request.contextPath}/StaffManageAttendance"><i class="fas fa-check-square"></i> Điểm danh</a></li>
-                <li><a href="#" class="btn-action upload-document"><i class="fas fa-calendar-alt"></i> Đăng tài liệu</a></li>
             </ul>
             <div class="sidebar-section-title">Quản lý tài chính</div>
             <ul class="sidebar-menu">
@@ -333,7 +348,18 @@
         <div class="main-content">
             <div class="data-table-container">
                 <h3 class="section-title"><i class="fas fa-envelope-open-text"></i> Yêu Cầu Hỗ Trợ</h3>
+                <div style="margin-bottom: 15px;">
+                    <a href="${pageContext.request.contextPath}/views/staff/staffSendSupport.jsp" class="btn-action create-support">
+                        <i class="fas fa-plus"></i> Gửi Hỗ Trợ
+                    </a>
+                    <a href="${pageContext.request.contextPath}/staffActionWithSupport" class="btn-action view-sent-support">
+                        <i class="fas fa-paper-plane"></i> Xem Hỗ Trợ Đã Gửi
+                    </a>
+                </div>
                 <input type="text" id="searchSupportInput" placeholder="Tìm kiếm (Họ tên, Yêu cầu, Mô tả...)" oninput="searchSupport()">
+                 <c:if test="${not empty message}">
+                   <div class="no-data">${message}</div>
+                 </c:if>
                 <c:choose>
                     <c:when test="${not empty sessionScope.HoTroList}">
                         <table>
@@ -341,6 +367,8 @@
                                 <tr>
                                     <th>ID Hỗ Trợ</th>
                                     <th>Họ Tên</th>
+                                    <th>Vai Trò</th>
+                                    <th>Số Điện Thoại</th>
                                     <th>Yêu Cầu</th>
                                     <th>Thời Gian</th>
                                     <th>Mô Tả</th>
@@ -352,6 +380,8 @@
                                     <tr>
                                         <td>${sp.getID_HoTro()}</td>
                                         <td>${sp.getHoTen()}</td>
+                                        <td>${sp.getVaiTro()}</td>
+                                        <td>${sp.getSoDienThoai()}</td>
                                         <td>${sp.getTenHoTro()}</td>
                                         <td>${sp.getThoiGian()}</td>
                                         <td>${sp.getMoTa()}</td>
@@ -369,7 +399,6 @@
                         <div class="no-data">Không có yêu cầu hỗ trợ nào.</div>
                     </c:otherwise>
                 </c:choose>
-
             </div>
         </div>
 
@@ -383,7 +412,7 @@
                 dropdown.classList.toggle('active');
             }
 
-            document.addEventListener('click', function (event) {
+            document.addEventListener('click', function(event) {
                 const profile = document.querySelector('.admin-profile');
                 const dropdown = document.getElementById('adminDropdown');
                 if (!profile.contains(event.target)) {
@@ -392,12 +421,18 @@
             });
 
             function searchSupport() {
-                const input = document.getElementById('searchSupportInput').value.toLowerCase();
-                const rows = document.querySelectorAll('#supportTableBody tr');
-                rows.forEach(row => {
-                    const cells = row.querySelectorAll('td');
-                    const text = Array.from(cells).slice(0, -1).map(cell => cell.textContent.toLowerCase()).join(' ');
-                    row.style.display = text.includes(input) ? '' : 'none';
+                const searchInput = document.getElementById('searchSupportInput').value.toLowerCase();
+                const supportRows = document.querySelectorAll('#supportTableBody tr');
+
+                supportRows.forEach(row => {
+                    const hoTen = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    const tenHoTro = row.querySelector('td:nth-child(5)').textContent.toLowerCase();
+                    const moTa = row.querySelector('td:nth-child(7)').textContent.toLowerCase();
+                    if (hoTen.includes(searchInput) || tenHoTro.includes(searchInput) || moTa.includes(searchInput)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
                 });
             }
         </script>

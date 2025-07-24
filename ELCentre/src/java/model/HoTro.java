@@ -16,11 +16,12 @@ public class HoTro {
     private int ID_TaiKhoan;
     private String DaDuyet ; 
     private String PhanHoi ; 
-
+    private String VaiTro ; 
+    private String SoDienThoai ; 
     public HoTro() {
     }
 
-    public HoTro(int ID_HoTro, String HoTen, String TenHoTro, LocalDateTime ThoiGian, String MoTa, int ID_TaiKhoan, String DaDuyet, String PhanHoi) {
+    public HoTro(int ID_HoTro, String HoTen, String TenHoTro, LocalDateTime ThoiGian, String MoTa, int ID_TaiKhoan, String DaDuyet, String PhanHoi, String VaiTro, String SoDienThoai) {
         this.ID_HoTro = ID_HoTro;
         this.HoTen = HoTen;
         this.TenHoTro = TenHoTro;
@@ -29,7 +30,24 @@ public class HoTro {
         this.ID_TaiKhoan = ID_TaiKhoan;
         this.DaDuyet = DaDuyet;
         this.PhanHoi = PhanHoi;
+        this.VaiTro = VaiTro;
+        this.SoDienThoai = SoDienThoai;
     }
+
+    
+
+    public String getSoDienThoai() {
+        return SoDienThoai;
+    }
+
+    
+    
+    
+    public String getVaiTro() {
+        return VaiTro;
+    }
+
+    
 
     public String getPhanHoi() {
         return PhanHoi;
@@ -95,6 +113,14 @@ public class HoTro {
 
     public void setPhanHoi(String PhanHoi) {
         this.PhanHoi = PhanHoi;
+    }
+
+    public void setVaiTro(String VaiTro) {
+        this.VaiTro = VaiTro;
+    }
+
+    public void setSoDienThoai(String SoDienThoai) {
+        this.SoDienThoai = SoDienThoai;
     }
     
     

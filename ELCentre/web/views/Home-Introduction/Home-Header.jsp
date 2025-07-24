@@ -10,7 +10,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Extra Learning Centre</title>
-    <!-- Link FontAwesome hoặc các CSS khác nếu cần -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .current-menu-item > a {
@@ -72,7 +71,6 @@
     </style>
 </head>
 <body>
-    <%-- Lấy URI hiện tại để xác định menu active --%>
     <%
         String uri = request.getRequestURI();
         String context = request.getContextPath();

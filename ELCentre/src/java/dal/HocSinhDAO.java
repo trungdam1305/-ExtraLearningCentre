@@ -1149,6 +1149,7 @@ public class HocSinhDAO {
         }
         return null;
     }
+        
     // Method private mới để cập nhật TrangThaiHoc dựa trên số lớp đang học
     private void updateTrangThaiHoc(Connection conn, int idHocSinh) throws SQLException {
         String countSql = "SELECT COUNT(*) FROM [dbo].[HocSinh_LopHoc] WHERE ID_HocSinh = ?";
@@ -1193,7 +1194,28 @@ public class HocSinhDAO {
         return null;
     }
     
-
+    public static String  adminGetTrangThaiHocHocSinhByID_TaiKhoan(String ID_TaiKhoan) {
+       
+        DBContext db = DBContext.getInstance() ; 
+        try {
+            String sql = """
+                         select HS.TrangThaiHoc from HocSinh HS
+                         WHERE HS.ID_TaiKhoan = ? 
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, ID_TaiKhoan);
+            ResultSet rs = statement.executeQuery() ; 
+            while(rs.next()) {
+                return rs.getString("TrangThaiHoc") ; 
+            }
+        } catch(SQLException  e) {
+            e.printStackTrace();
+            return null ; 
+        }
+        return null ; 
+    }
+    
+    
     public static List<HocSinh> getHocSinhByPhuHuynhPhone(String sdtPhuHuynh) {
         List<HocSinh> list = new ArrayList<>();
         String query = "SELECT * FROM HocSinh WHERE SDT_PhuHuynh = ?";
@@ -1235,8 +1257,6 @@ public class HocSinhDAO {
         return false;
     }
 
-
-    
 
     
 }
