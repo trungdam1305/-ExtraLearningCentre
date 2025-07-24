@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
 /**
  *
  * @author Vuh26
@@ -60,7 +59,7 @@ public class ManageClass extends HttpServlet {
             phongHocList = phongHocDAO.getAllPhongHoc();
             session.setAttribute("slotHocList", slotHocList);
             session.setAttribute("phongHocList", phongHocList);
-            session.setMaxInactiveInterval(1800); 
+            session.setMaxInactiveInterval(1800);
         }
 
         request.setAttribute("classCode", classCode);
@@ -248,7 +247,7 @@ public class ManageClass extends HttpServlet {
             return "Lỗi khi xử lý file ảnh: " + e.getMessage();
         }
 
-        return null; 
+        return null;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -346,7 +345,6 @@ public class ManageClass extends HttpServlet {
                     request.setAttribute("err", "Không có lớp học nào phù hợp với bộ lọc.");
                 }
 
-
                 request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
             } else if ("refresh".equalsIgnoreCase(action)) {
                 List<LopHocInfoDTO> danhSachLopHoc = lopHocDAO.getLopHocInfoList(null, null, 1, 10, idKhoaHoc, idKhoi, null, null, null, null, null);
@@ -378,7 +376,6 @@ public class ManageClass extends HttpServlet {
                 if (danhSachLopHoc.isEmpty()) {
                     request.setAttribute("err", "Chưa có lớp học nào được khởi tạo cho khóa học này.");
                 }
-
 
                 request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
             } else if ("showAddClass".equalsIgnoreCase(action)) {
@@ -469,7 +466,7 @@ public class ManageClass extends HttpServlet {
                     phongHocList = phongHocDAO.getAllPhongHoc();
                     session.setAttribute("slotHocList", slotHocList);
                     session.setAttribute("phongHocList", phongHocList);
-                    session.setMaxInactiveInterval(1800); 
+                    session.setMaxInactiveInterval(1800);
                 }
 
                 //lấy danh sách giáo viên có chuyên môn trùng với khóa học
@@ -536,6 +533,22 @@ public class ManageClass extends HttpServlet {
         if (khoaHoc == null || khoaHoc.getID_Khoi() != idKhoi) {
             request.setAttribute("err", "Khóa học không tồn tại hoặc ID_Khoi không khớp!");
             setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, null, idKhoaHoc, idKhoi);
+            request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
+            return;
+        }
+        // Kiểm tra trạng thái của khóa học
+        if ("Chưa hoạt động".equalsIgnoreCase(khoaHoc.getTrangThai())) {
+            request.setAttribute("err", "Không thể tạo lớp học vì khóa học đang ở trạng thái 'Chưa hoạt động'. Vui lòng chuyển trạng thái thành 'Đang hoạt động' trước khi tạo lớp!");
+            setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, null, idKhoaHoc, idKhoi);
+            request.setAttribute("khoaHoc", khoaHoc);
+            request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc()));
+            request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
+            return;
+        } else if (!"Đang hoạt động".equalsIgnoreCase(khoaHoc.getTrangThai())) {
+            request.setAttribute("err", "Chỉ có thể tạo lớp học khi khóa học ở trạng thái 'Đang hoạt động'!");
+            setCommonAttributes(request, null, null, null, null, null, null, null, null, null, null, null, idKhoaHoc, idKhoi);
+            request.setAttribute("khoaHoc", khoaHoc);
+            request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc()));
             request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
             return;
         }
@@ -685,7 +698,7 @@ public class ManageClass extends HttpServlet {
                     request.setAttribute("teacherList", giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc()));
                     request.getRequestDispatcher("/views/admin/addClass.jsp").forward(request, response);
                 }
-                
+
             } else if ("deleteClass".equalsIgnoreCase(action)) { //xóa lớp học
                 String csrfToken = request.getParameter("csrfToken");
                 String sessionCsrfToken = (String) request.getSession().getAttribute("csrfToken");
@@ -999,4 +1012,3 @@ public class ManageClass extends HttpServlet {
         }
     }
 }
-    
