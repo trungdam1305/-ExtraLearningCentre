@@ -7,6 +7,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.time.LocalDate" %>
+<%@ page import="dal.HocPhiDAO" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -554,6 +555,12 @@
                 });
             }
 
+            <% 
+                Integer tongSoHocSinhDiHoc = HocPhiDAO.adminTinhDiemDanhHomNay();
+                Integer tongSoHocSinhKhongDiHoc = HocPhiDAO.adminTinhVangHomNay();
+            %>
+            const tongsohocsinhhocc = <%= tongSoHocSinhDiHoc %>;
+            const tongsohocsinhvang = <%= tongSoHocSinhKhongDiHoc %>;
             const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
             const attendanceGradient = attendanceCtx.createLinearGradient(0, 0, 200, 0);
             attendanceGradient.addColorStop(0, '#1F4E79');
@@ -563,7 +570,7 @@
                 data: {
                     labels: ['Học sinh có mặt', 'Học sinh vắng'],
                     datasets: [{
-                            data: [90, 5],
+                            data: [tongsohocsinhhocc, tongsohocsinhvang],
                             backgroundColor: [attendanceGradient, '#E57373'],
                             borderColor: '#ffffff',
                             borderWidth: 3,

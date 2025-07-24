@@ -24,6 +24,7 @@
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="model.Admin" %>
 <%@ page import="dal.AdminDAO" %>
+<%@ page import="dal.HocPhiDAO" %>
 <%@ page import="dal.HocSinh_LopHocDAO" %>
 <!DOCTYPE html>
 <html>
@@ -545,11 +546,11 @@
             <div class="admin-profile" onclick="toggleDropdown()">
                 <c:forEach var="ad" items="${admins}">
                     <img src="${ad.getAvatar()}" alt="Admin Photo" class="admin-img">
-                    
-                     <span>${ad.getHoTen()}</span>
+
+                    <span>${ad.getHoTen()}</span>
                 </c:forEach>
 
-               
+
                 <i class="fas fa-caret-down"></i>
                 <div class="dropdown-menu" id="adminDropdown">
                     <a href="#"><i class="fas fa-key"></i> Change Password</a>
@@ -622,7 +623,7 @@
                 <div class="stat-card stat-tuvan">
                     <h3><i class="fas fa-envelope-open-text"></i> Tổng đơn đăng ký tư vấn chưa duyệt</h3>
                     <p>${tongSoDonTuVan}</p>
-                   
+
                 </div>
 
                 <div class="stat-card stat-hocsinh">
@@ -658,7 +659,7 @@
                                     <tr>
                                         <th>ID_Tài Khoản</th>
                                         <th>Họ và Tên</th>
-                                        
+
                                         <th>Hành Động</th>
                                         <th>Thời Gian</th>
 
@@ -669,7 +670,7 @@
                                         <tr>
                                             <td>${log.getID_TaiKhoan()}</td>
                                             <td>${log.getHoTen()}</td>
-                                            
+
                                             <td>${log.getHanhDong()}</td>
                                             <td>${log.getThoiGian()}</td>
                                         </tr>
@@ -789,7 +790,12 @@
                 }
             });
 
-
+            <% 
+                Integer tongSoHocSinhDiHoc = HocPhiDAO.adminTinhDiemDanhHomNay();
+                Integer tongSoHocSinhKhongDiHoc = HocPhiDAO.adminTinhVangHomNay();
+            %>
+            const tongsohocsinhhocc = <%= tongSoHocSinhDiHoc %>;
+            const tongsohocsinhvang = <%= tongSoHocSinhKhongDiHoc %>;
             const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
             const attendanceGradient = attendanceCtx.createLinearGradient(0, 0, 200, 0);
             attendanceGradient.addColorStop(0, '#1F4E79');
@@ -799,7 +805,7 @@
                 data: {
                     labels: ['Học sinh có mặt', 'Học sinh vắng'],
                     datasets: [{
-                            data: [90, 5],
+                            data: [tongsohocsinhhocc, tongsohocsinhvang],
                             backgroundColor: [attendanceGradient, '#E57373'],
                             borderColor: '#ffffff',
                             borderWidth: 3,
@@ -836,84 +842,124 @@
             });
 
 
-            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-            const revenueGradient = revenueCtx.createLinearGradient(0, 0, 0, 400);
-            revenueGradient.addColorStop(0, '#2E7D32');
-            revenueGradient.addColorStop(1, '#81C784');
-            new Chart(revenueCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Tháng 1/2025', 'Tháng 2/2025', 'Tháng 3/2025', 'Tháng <%= today.getMonthValue() %>/<%= today.getYear() %>'],
-                    datasets: [{
-                            label: 'Doanh thu (VND)',
-                            data: [1500000, 1800000, 2000000, 2500000],
-                            backgroundColor: revenueGradient,
-                            borderColor: '#2E7D32',
-                            borderWidth: 2,
-                            borderRadius: 5,
-                            hoverBackgroundColor: '#A5D6A7'
-                        }]
-                },
+            document.addEventListener('DOMContentLoaded', function () {
+            <% 
+                Integer tongSoTienT1 = HocPhiDAO.adminTinhTienThang("1");
+                Integer tongSoTienT2 = HocPhiDAO.adminTinhTienThang("2");
+                Integer tongSoTienT3 = HocPhiDAO.adminTinhTienThang("3");
+                Integer tongSoTienT4 = HocPhiDAO.adminTinhTienThang("4");
+                Integer tongSoTienT5 = HocPhiDAO.adminTinhTienThang("5");
+                Integer tongSoTienT6 = HocPhiDAO.adminTinhTienThang("6");
+            %>
+                const tongtienT1 = <%= tongSoTienT1 %>;
+                const tongtienT2 = <%= tongSoTienT2 %>;
+                const tongtienT3 = <%= tongSoTienT3 %>;
+                const tongtienT4 = <%= tongSoTienT4 %>;
+                const tongtienT5 = <%= tongSoTienT5 %>;
+                const tongtienT6 = <%= tongSoTienT6 %>;
 
+                const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+                const revenueGradient = revenueCtx.createLinearGradient(0, 0, 0, 400);
+                revenueGradient.addColorStop(0, '#2E7D32');
+                revenueGradient.addColorStop(1, '#81C784');
+
+                new Chart(revenueCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Tháng 1/2025', 'Tháng 2/2025', 'Tháng 3/2025', 'Tháng 4/2025', 'Tháng 5/2025', 'Tháng 6/2025'],
+                        datasets: [{
+                                label: 'Doanh thu (VND)',
+                                data: [tongtienT1, tongtienT2, tongtienT3, tongtienT4, tongtienT5, tongtienT6],
+                                backgroundColor: revenueGradient,
+                                borderColor: '#2E7D32',
+                                borderWidth: 2,
+                                borderRadius: 5,
+                                hoverBackgroundColor: '#A5D6A7'
+                            }]
+                    }
+                });
             });
 
+            document.addEventListener('DOMContentLoaded', function () {
+                // Pagination for User Logs Table
+                var soDongMoiTrang = 5;
+                var tatCaDongLog = document.querySelectorAll("#userLogTableBody tr");
+                var tongSoTrangLog = Math.ceil(tatCaDongLog.length / soDongMoiTrang);
+                var phanTrangDivLog = document.getElementById("pagination");
 
-
-
-
-
-            var soDongMoiTrang = 10;
-
-
-            var tatCaDong = document.querySelectorAll("#userLogTableBody tr");
-
-
-            var tongSoTrang = Math.ceil(tatCaDong.length / soDongMoiTrang);
-
-
-            var phanTrangDiv = document.getElementById("pagination");
-
-
-            function hienThiTrang(trang) {
-
-                for (var i = 0; i < tatCaDong.length; i++) {
-                    tatCaDong[i].style.display = "none";
-                }
-
-
-                var batDau = (trang - 1) * soDongMoiTrang;
-                var ketThuc = batDau + soDongMoiTrang;
-                for (var i = batDau; i < ketThuc && i < tatCaDong.length; i++) {
-                    tatCaDong[i].style.display = "";
-                }
-
-
-                phanTrangDiv.innerHTML = "";
-                for (var j = 1; j <= tongSoTrang; j++) {
-                    var nut = document.createElement("button");
-                    nut.innerText = j;
-
-
-                    nut.onclick = (function (trangDuocChon) {
-                        return function () {
-                            hienThiTrang(trangDuocChon);
-                        };
-                    })(j);
-
-
-                    if (j === trang) {
-                        nut.style.backgroundColor = "#1F4E79";
-                        nut.style.color = "white";
+                function hienThiTrangLog(trang) {
+                    for (var i = 0; i < tatCaDongLog.length; i++) {
+                        tatCaDongLog[i].style.display = "none";
                     }
 
-                    phanTrangDiv.appendChild(nut);
+                    var batDau = (trang - 1) * soDongMoiTrang;
+                    var ketThuc = batDau + soDongMoiTrang;
+                    for (var i = batDau; i < ketThuc && i < tatCaDongLog.length; i++) {
+                        tatCaDongLog[i].style.display = "";
+                    }
+
+                    phanTrangDivLog.innerHTML = "";
+                    for (var j = 1; j <= tongSoTrangLog; j++) {
+                        var nut = document.createElement("button");
+                        nut.innerText = j;
+                        nut.onclick = (function (trangDuocChon) {
+                            return function () {
+                                hienThiTrangLog(trangDuocChon);
+                            };
+                        })(j);
+                        if (j === trang) {
+                            nut.style.backgroundColor = "#1F4E79";
+                            nut.style.color = "white";
+                        }
+                        phanTrangDivLog.appendChild(nut);
+                    }
                 }
-            }
+
+                // Pagination for Support Requests Table
+                var tatCaDongHoTro = document.querySelectorAll("#userHoTroTableBody tr");
+                var tongSoTrangHoTro = Math.ceil(tatCaDongHoTro.length / soDongMoiTrang);
+                var phanTrangDivHoTro = document.createElement("div");
+                phanTrangDivHoTro.id = "paginationHoTro";
+                phanTrangDivHoTro.style.textAlign = "center";
+                phanTrangDivHoTro.style.marginTop = "20px";
+                document.querySelector(".data-table-container:nth-child(2)").appendChild(phanTrangDivHoTro);
+
+                function hienThiTrangHoTro(trang) {
+                    for (var i = 0; i < tatCaDongHoTro.length; i++) {
+                        tatCaDongHoTro[i].style.display = "none";
+                    }
+
+                    var batDau = (trang - 1) * soDongMoiTrang;
+                    var ketThuc = batDau + soDongMoiTrang;
+                    for (var i = batDau; i < ketThuc && i < tatCaDongHoTro.length; i++) {
+                        tatCaDongHoTro[i].style.display = "";
+                    }
+
+                    phanTrangDivHoTro.innerHTML = "";
+                    for (var j = 1; j <= tongSoTrangHoTro; j++) {
+                        var nut = document.createElement("button");
+                        nut.innerText = j;
+                        nut.onclick = (function (trangDuocChon) {
+                            return function () {
+                                hienThiTrangHoTro(trangDuocChon);
+                            };
+                        })(j);
+                        if (j === trang) {
+                            nut.style.backgroundColor = "#1F4E79";
+                            nut.style.color = "white";
+                        }
+                        phanTrangDivHoTro.appendChild(nut);
+                    }
+                }
 
 
-            hienThiTrang(1);
-
-
+                if (tatCaDongLog.length > 0) {
+                    hienThiTrangLog(1);
+                }
+                if (tatCaDongHoTro.length > 0) {
+                    hienThiTrangHoTro(1);
+                }
+            });
         </script>   
     </body>
 </html> 

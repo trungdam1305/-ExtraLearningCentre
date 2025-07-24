@@ -280,6 +280,10 @@
         <servlet-name>staffActionWithTuition</servlet-name>
         <servlet-class>controller.staffActionWithTuition</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>staffActionWithSupport</servlet-name>
+        <servlet-class>controller.staffActionWithSupport</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -583,6 +587,10 @@
     <servlet-mapping>
         <servlet-name>staffActionWithTuition</servlet-name>
         <url-pattern>/staffActionWithTuition</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>staffActionWithSupport</servlet-name>
+        <url-pattern>/staffActionWithSupport</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

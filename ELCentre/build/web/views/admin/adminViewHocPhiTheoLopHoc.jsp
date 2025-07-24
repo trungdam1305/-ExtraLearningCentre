@@ -588,7 +588,7 @@
             </c:if>
 
             <div class="page-header">
-                <h2><i class="fas fa-money-bill-wave"></i> Học phí lớp ${sessionScope.tenlop} tháng</h2>
+                <h2><i class="fas fa-money-bill-wave"></i> Học phí lớp ${sessionScope.tenlop} </h2>
             </div>
 
             <div class="top-bar">   

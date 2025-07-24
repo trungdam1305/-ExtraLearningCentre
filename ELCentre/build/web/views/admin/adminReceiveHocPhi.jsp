@@ -657,7 +657,7 @@
                                         <td>${lop.getNgayTao()}</td>
                                         <td class="action-buttons">
                                             <a class="btn-action send" href="${pageContext.request.contextPath}/adminActionWithTuition?action=view&idLop=${lop.getID_LopHoc()}&TenLopHoc=${lop.getTenLopHoc()}">
-                                                <i class="fas fa-money-bill-wave"></i> Xem chi tiết học phí tháng này trong lớp
+                                                <i class="fas fa-money-bill-wave"></i> Xem chi tiết học phí tháng vừa qua trong lớp
                                             </a>
                                         </td>
                                     </tr>

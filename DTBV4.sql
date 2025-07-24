@@ -3379,9 +3379,24 @@ GO
 ALTER TABLE [dbo].[UserLogs] CHECK CONSTRAINT [FK_UserLogs_TaiKhoan]
 GO
 
-select * from TaiKhoan ; 
-					
+select * from DiemDanh ; 
+select * from LichHoc ; 
+SELECT COUNT(*) 
+FROM DiemDanh DD
+JOIN LichHoc LH ON DD.ID_Schedule = LH.ID_Schedule
+WHERE (DD.TrangThai = N'Có mặt' OR DD.TrangThai = N'Đi muộn')
+  AND LH.NgayHoc = CAST(GETDATE() AS DATE)
+SELECT SUM(HP.HocPhiPhaiDong) AS TongDoanhThu
+                    FROM HocPhi HP
+                    where 
+                      (TinhTrangThanhToan = N'Đã thanh toán')
+                      AND (Thang = 6 )
+					   AND (Nam = 2025)
 						
 
 
 
+		select COUNT (*) from DiemDanh DD
+JOIN LichHoc LH ON DD.ID_Schedule = LH.ID_Schedule
+WHERE (DD.TrangThai = N'Có mặt' OR DD.TrangThai = N'Đi muộn')
+and LH.NgayHoc = ? 

@@ -227,4 +227,26 @@ public class TaiKhoanDAO {
         }
         return -1 ; 
     }
+    
+    public static String adminGetNameTaiKhoanByID(String ID_TaiKhoan){
+        DBContext db = DBContext.getInstance() ; 
+        try {
+            String sql = """
+                         select HoTen from Staff
+                         select HoTen from Staff ST 
+                        JOIN TaiKhoan TK ON TK.ID_TaiKhoan = ST.ID_TaiKhoan
+                        where ST.ID_TaiKhoan = ? 
+                         """ ; 
+            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+            statement.setString(1, ID_TaiKhoan);
+            ResultSet rs = statement.executeQuery() ; 
+            if (rs.next()){
+                return rs.getString("HoTen") ; 
+            } 
+        } catch(SQLException e){
+            e.printStackTrace();
+            
+        }
+        return null  ; 
+    }
 }

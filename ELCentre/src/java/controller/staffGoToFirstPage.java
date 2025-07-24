@@ -58,7 +58,7 @@ public class staffGoToFirstPage extends HttpServlet {
         Integer tongSoGiaoVienDangDay = GiaoVienDAO.adminGetTongSoGiaoVienDangDay();
         Integer tongSoLopHocDangHoc = LopHocDAO.adminGetTongSoLopHocDangHoc();
         Integer tongSoHocSinhChoHoc = HocSinhDAO.adminGetTongSoHocSinhChoHoc();
-        ArrayList<HoTro> HoTroList = (ArrayList) HoTroDAO.adminGetHoTroDashBoard();
+        ArrayList<HoTro> HoTroList = (ArrayList) HoTroDAO.staffGetHoTroDashBoard();
         ArrayList<ThongBao> ConsultationList = ThongBaoDAO.getAllTuVan();
         request.setAttribute("ConsultationList", ConsultationList);
         request.setAttribute("staffs", staffs);

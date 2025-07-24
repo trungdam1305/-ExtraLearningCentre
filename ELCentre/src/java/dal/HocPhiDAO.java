@@ -15,6 +15,7 @@ import model.HocPhi;
 import model.TinhHocPhi;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class HocPhiDAO {
 
@@ -485,9 +486,79 @@ public class HocPhiDAO {
             return hocphis;
         }
     }
+    
+    public static int adminTinhDiemDanhHomNay() {
+        DBContext db = DBContext.getInstance();
+        try {
+            String sql = """
+                    			select COUNT (*) from DiemDanh DD
+                        JOIN LichHoc LH ON DD.ID_Schedule = LH.ID_Schedule
+                        WHERE (DD.TrangThai = N'Có mặt' OR DD.TrangThai = N'Đi muộn')
+                        and LH.NgayHoc = ? 
+                    """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            LocalDate today = LocalDate.now();
+            statement.setDate(1, java.sql.Date.valueOf(today));
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    
+    public static int adminTinhVangHomNay() {
+        DBContext db = DBContext.getInstance();
+        try {
+            String sql = """
+                    			select COUNT (*) from DiemDanh DD
+                        JOIN LichHoc LH ON DD.ID_Schedule = LH.ID_Schedule
+                        WHERE (DD.TrangThai = N'Vắng')
+                        and LH.NgayHoc = ? 
+                    """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            LocalDate today = LocalDate.now();
+            statement.setDate(1, java.sql.Date.valueOf(today));
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    
+    public static int adminTinhTienThang(String Thang) {
+        DBContext db = DBContext.getInstance();
+        try {
+            String sql = """
+                    	SELECT SUM(HP.HocPhiPhaiDong) AS TongDoanhThu
+                                            FROM HocPhi HP
+                                            where 
+                                              (TinhTrangThanhToan = N'Đã thanh toán')
+                                              AND (Thang = ?  )
+                        			AND (Nam = 2025)
+                    """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setString(1, Thang);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("TongDoanhThu");
+            }
+            return 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 
     public static void main(String[] args) {
 
-        System.out.println(adminGetAllInforByThangNam("1", "6", "2025", "").size());
+        System.out.println(adminTinhVangHomNay());
     }
 }

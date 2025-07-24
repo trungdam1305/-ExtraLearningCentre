@@ -255,6 +255,21 @@
             .btn-action.respond:hover {
                 background-color: #163E5C;
             }
+            .btn-action.create-support {
+                background-color: #1F4E79;
+                color: #fff;
+                margin-right: 10px;
+            }
+            .btn-action.create-support:hover {
+                background-color: #163E5C;
+            }
+            .btn-action.view-sent-support {
+                background-color: #27ae60;
+                color: #fff;
+            }
+            .btn-action.view-sent-support:hover {
+                background-color: #219653;
+            }
             .btn-action i {
                 margin-right: 6px;
             }
@@ -286,7 +301,8 @@
     <body>
         <div class="header">
             <div class="left-title">
-                Staff Dashboard <i class="fas fa-tachometer-alt"></i>
+                Quản lý hỗ trợ <i class="fas fa-hands-helping"></i>
+
             </div>
             <div class="admin-profile" onclick="toggleDropdown()">
                 <c:forEach var="staff" items="${staffs}">
@@ -333,7 +349,18 @@
         <div class="main-content">
             <div class="data-table-container">
                 <h3 class="section-title"><i class="fas fa-envelope-open-text"></i> Yêu Cầu Hỗ Trợ</h3>
+                <div style="margin-bottom: 15px;">
+                    <a href="${pageContext.request.contextPath}/views/staff/staffSendSupport.jsp" class="btn-action create-support">
+                        <i class="fas fa-plus"></i> Gửi Hỗ Trợ
+                    </a>
+                    <a href="${pageContext.request.contextPath}/staffActionWithSupport" class="btn-action view-sent-support">
+                        <i class="fas fa-paper-plane"></i> Xem Hỗ Trợ Đã Gửi
+                    </a>
+                </div>
                 <input type="text" id="searchSupportInput" placeholder="Tìm kiếm (Họ tên, Yêu cầu, Mô tả...)" oninput="searchSupport()">
+                 <c:if test="${not empty message}">
+                   <div class="no-data">${message}</div>
+                 </c:if>
                 <c:choose>
                     <c:when test="${not empty sessionScope.HoTroList}">
                         <table>
@@ -373,7 +400,6 @@
                         <div class="no-data">Không có yêu cầu hỗ trợ nào.</div>
                     </c:otherwise>
                 </c:choose>
-
             </div>
         </div>
 
@@ -381,6 +407,35 @@
             <p>© 2025 EL CENTRE. All rights reserved. | Developed by EL CENTRE</p>
         </div>
 
-       
+        <script>
+            function toggleDropdown() {
+                const dropdown = document.getElementById('adminDropdown');
+                dropdown.classList.toggle('active');
+            }
+
+            document.addEventListener('click', function(event) {
+                const profile = document.querySelector('.admin-profile');
+                const dropdown = document.getElementById('adminDropdown');
+                if (!profile.contains(event.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+
+            function searchSupport() {
+                const searchInput = document.getElementById('searchSupportInput').value.toLowerCase();
+                const supportRows = document.querySelectorAll('#supportTableBody tr');
+
+                supportRows.forEach(row => {
+                    const hoTen = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    const tenHoTro = row.querySelector('td:nth-child(5)').textContent.toLowerCase();
+                    const moTa = row.querySelector('td:nth-child(7)').textContent.toLowerCase();
+                    if (hoTen.includes(searchInput) || tenHoTro.includes(searchInput) || moTa.includes(searchInput)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+        </script>
     </body>
 </html>

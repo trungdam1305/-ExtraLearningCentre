@@ -4,12 +4,6 @@
     Author     : wrx_Chur04
 --%>
 
-<%-- 
-    Document   : teacherReceiveHoTro
-    Created on : Jul 17, 2025, 4:45:39 PM
-    Author     : wrx_Chur04
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
