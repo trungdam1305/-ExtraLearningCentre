@@ -28,10 +28,12 @@
             <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/dal/SlotHocDAO.java</file>
         </group>
         <group>
-            <file>file:/C:/Users/Vuh26/Desktop/main24_07/-ExtraLearningCentre/ELCentre/web/views/staff/staffFooter.jsp</file>
-            <file>file:/C:/Users/Vuh26/Desktop/main24_07/-ExtraLearningCentre/ELCentre/web/views/staff/staffHeader.jsp</file>
-            <file>file:/C:/Users/Vuh26/Desktop/main24_07/-ExtraLearningCentre/ELCentre/web/views/staff/staff_ManageCourse.jsp</file>
-            <file>file:/C:/Users/Vuh26/Desktop/main24_07/-ExtraLearningCentre/ELCentre/web/views/staff/staff_addClass.jsp</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/codeFinal/-ExtraLearningCentre/ELCentre/src/java/dal/HoTroDAO.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/codeFinal/-ExtraLearningCentre/ELCentre/src/java/controller/StudentSupportServlet.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/codeFinal/-ExtraLearningCentre/ELCentre/src/java/model/HoTro.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/codeFinal/-ExtraLearningCentre/ELCentre/src/java/dal/DBContext.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/codeFinal/-ExtraLearningCentre/ELCentre/web/index.html</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/codeFinal/-ExtraLearningCentre/ELCentre/src/java/dao/DBContext.java</file>
         </group>
     </open-files>
 </project-private>

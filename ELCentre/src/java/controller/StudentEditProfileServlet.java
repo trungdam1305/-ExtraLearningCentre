@@ -35,6 +35,7 @@ public class StudentEditProfileServlet extends HttpServlet {
         int idHocSinh = HocSinhDAO.getHocSinhIdByTaiKhoanId(idTaiKhoan);
         HocSinh hocSinh = HocSinhDAO.getHocSinhById(idHocSinh);
         List<TruongHoc> dsTruongHoc = TruongHocDAO.getAllSchools();
+        request.setAttribute("hocSinhInfo", hocSinh);
         request.setAttribute("dsTruongHoc", dsTruongHoc);
         request.setAttribute("hocSinh", hocSinh);
         request.getRequestDispatcher("/views/student/studentEditProfile.jsp").forward(request, response);
@@ -88,7 +89,7 @@ public class StudentEditProfileServlet extends HttpServlet {
         // Gán vào model
         HocSinh hs = new HocSinh();
         hs.setID_HocSinh(idHocSinh);
-        hs.setID_TruongHoc(idTruongHoc); // ✅ QUAN TRỌNG
+        hs.setID_TruongHoc(idTruongHoc); 
         hs.setHoTen(hoTen);
         hs.setNgaySinh(ngaySinh);
         hs.setGioiTinh(gioiTinh);
@@ -101,12 +102,14 @@ public class StudentEditProfileServlet extends HttpServlet {
         }
 
         // Cập nhật
+        
         boolean updateSuccess = HocSinhDAO.updateHocSinh(hs);
         if (updateSuccess) {
             response.sendRedirect("StudentEditProfileServlet?success=1");
         } else {
             response.sendRedirect("StudentEditProfileServlet?error=1");
         }
+        
     }
 
     @Override

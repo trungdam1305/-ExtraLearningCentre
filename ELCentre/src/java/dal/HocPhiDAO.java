@@ -4,6 +4,7 @@ package dal;
  *
  * @author wrx_Chur04
  */
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
@@ -16,6 +17,7 @@ import model.TinhHocPhi;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.util.List;
 
 public class HocPhiDAO {
 
@@ -94,7 +96,7 @@ public class HocPhiDAO {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Timestamp ts = rs.getTimestamp("NgayThanhToan");
-                LocalDateTime ngayThanhToan = (ts != null) ? ts.toLocalDateTime() : null;
+                LocalDate ngayThanhToan = (ts != null) ? ts.toLocalDateTime().toLocalDate() : null;
 
                 HocPhi hocphi = new HocPhi(
                         rs.getInt("ID_HocPhi"),
@@ -452,7 +454,7 @@ public class HocPhiDAO {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Timestamp ts = rs.getTimestamp("NgayThanhToan");
-                LocalDateTime ngayThanhToan = (ts != null) ? ts.toLocalDateTime() : null;
+                LocalDate ngayThanhToan = (ts != null) ? ts.toLocalDateTime().toLocalDate() : null;
 
                 HocPhi hocphi = new HocPhi(
                         rs.getInt("ID_HocPhi"),
@@ -556,9 +558,117 @@ public class HocPhiDAO {
             return 0;
         }
     }
+  
+    public static List<HocPhi> getHocPhiByHocSinhId(int idHocSinh) {
+        List<HocPhi> list = new ArrayList<>();
+        String sql = """
+            SELECT hp.*, lh.ClassCode, lh.TenLopHoc, lh.SoTien
+            FROM HocPhi hp
+            JOIN LopHoc lh ON hp.ID_LopHoc = lh.ID_LopHoc
+            WHERE hp.ID_HocSinh = ?
+        """;
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idHocSinh);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                HocPhi hp = new HocPhi();
+                hp.setID_HocPhi(rs.getInt("ID_HocPhi"));
+                hp.setID_HocSinh(rs.getInt("ID_HocSinh"));
+                hp.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                hp.setMonHoc(rs.getString("MonHoc"));
+                hp.setPhuongThucThanhToan(rs.getString("PhuongThucThanhToan"));
+                hp.setTinhTrangThanhToan(rs.getString("TinhTrangThanhToan"));
 
-    public static void main(String[] args) {
+                java.sql.Date sqlDate = rs.getDate("NgayThanhToan");
+                if (sqlDate != null) {
+                    hp.setNgayThanhToan(sqlDate.toLocalDate());
+                }
 
-        System.out.println(adminTinhVangHomNay());
+                hp.setGhiChu(rs.getString("GhiChu"));
+                int tongHocPhi = rs.getInt("SoTien");  
+                int daDong = rs.getInt("SoTienDaDong"); 
+
+                hp.setTongHocPhi(tongHocPhi);
+                hp.setSoTienDaDong(daDong);
+                hp.setConThieu(Math.max(0, tongHocPhi - daDong));
+
+                list.add(hp);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
+
+    
+    public static int getTongHocPhiChuaDong(int idHocSinh) {
+        String sql = "SELECT SUM(ConThieu) FROM HocPhi WHERE ID_HocSinh = ? AND TinhTrangThanhToan != 'Đã đóng'";
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idHocSinh);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
+    public static List<HocPhi> getLichSuThanhToan(int idHocSinh) {
+        List<HocPhi> list = new ArrayList<>();
+        String sql = "SELECT * FROM HocPhi WHERE ID_HocSinh = ? AND TinhTrangThanhToan = 'Đã đóng'";
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idHocSinh);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                HocPhi hp = new HocPhi();
+                hp.setID_HocPhi(rs.getInt("ID_HocPhi"));
+                hp.setID_HocSinh(rs.getInt("ID_HocSinh"));
+                hp.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                hp.setMonHoc(rs.getString("MonHoc"));
+                hp.setPhuongThucThanhToan(rs.getString("PhuongThucThanhToan"));
+                hp.setTinhTrangThanhToan(rs.getString("TinhTrangThanhToan"));
+                LocalDateTime ngay = rs.getTimestamp("NgayThanhToan").toLocalDateTime();
+                hp.setNgayThanhToan(ngay != null ? ngay.toLocalDate() : null);
+                hp.setGhiChu(rs.getString("GhiChu"));
+                list.add(hp);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    //Kiểm tra dữ liệu
+    public static void main(String[] args) {
+        int idHocSinh = 17; // Thay ID tương ứng
+        List<HocPhi> list = getHocPhiByHocSinhId(idHocSinh);
+        if (list.isEmpty()) {
+            System.out.println("⚠️ Không tìm thấy học phí cho học sinh ID: " + idHocSinh);
+            return;
+        }
+
+        int tong = 0, daDong = 0;
+        for (HocPhi hp : list) {
+            System.out.println("📘 Môn: " + hp.getMonHoc());
+            System.out.println(" - Tổng học phí: " + hp.getTongHocPhi());
+            System.out.println(" - Đã đóng: " + hp.getSoTienDaDong());
+            System.out.println(" - Còn thiếu: " + hp.getConThieu());
+            System.out.println();
+            tong += hp.getTongHocPhi();
+            daDong += hp.getSoTienDaDong();
+        }
+        int conThieu = Math.max(0, tong - daDong);
+        System.out.println("📊 TỔNG CỘNG:");
+        System.out.println(" - Tổng học phí: " + tong);
+        System.out.println(" - Đã đóng: " + daDong);
+        System.out.println(" - Còn thiếu: " + conThieu);
+    }
+
+    
+    
 }

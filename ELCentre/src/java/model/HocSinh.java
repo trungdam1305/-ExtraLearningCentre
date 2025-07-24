@@ -2,6 +2,7 @@ package model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Represents a student with personal, contact, and school information.
@@ -114,6 +115,17 @@ public class HocSinh {
         this.LopDangHocTrenTruong = LopDangHocTrenTruong;
         
     }
+
+        private List<LopHoc> lopDaDangKy;
+
+public List<LopHoc> getLopDaDangKy() {
+    return lopDaDangKy;
+}
+
+public void setLopDaDangKy(List<LopHoc> lopDaDangKy) {
+    this.lopDaDangKy = lopDaDangKy;
+}
+
 
     /**
      * Constructor without school name

@@ -90,7 +90,7 @@ public class staffActionWithSupport extends HttpServlet {
         String IDTaiKhoan = request.getParameter("idTaiKhoan");
         String sdt = TaiKhoanDAO.admingetSDTTaiKhoanByID(IDTaiKhoan);
         String hoten = TaiKhoanDAO.adminGetNameTaiKhoanByID(IDTaiKhoan);
-        boolean s1 = HoTroDAO.sendHoTroByIdTaiKhoan(mota, tenhotro, mota, IDTaiKhoan, "Staff", sdt);
+        boolean s1 = HoTroDAO.sendHoTroByIdTaiKhoan(hoten, tenhotro, mota, IDTaiKhoan, "Staff", sdt);
         if (s1) {
             HttpSession session = request.getSession();
             ArrayList<HoTro> HoTroList = HoTroDAO.staffGetHoTroDashBoard();
