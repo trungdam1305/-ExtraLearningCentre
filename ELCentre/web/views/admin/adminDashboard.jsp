@@ -830,7 +830,7 @@
                 data: {
                     labels: ['Hài lòng', 'Không hài lòng'],
                     datasets: [{
-                            data: [tongsohocsinhkhonghaiong, tongsohocsinhhaiong],
+                            data: [ tongsohocsinhhaiong, tongsohocsinhkhonghaiong],
                             backgroundColor: [satisfactionGradient, '#F06292'],
                             borderColor: '#ffffff',
                             borderWidth: 3,

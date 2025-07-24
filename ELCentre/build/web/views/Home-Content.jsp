@@ -42,7 +42,7 @@
         <div id="layerslider_1_5r4q8o8aqo3t" class="ls-wp-container fitvidsignore" style="width:1000px;height:630px;margin:0 auto;margin-bottom: 0px; position: relative;">
             <c:forEach var="slide" items="${sliders}">
                 <div class="ls-slide" data-ls="duration:5000;transition2d:1,4;timeshift:-1000;">
-                    <img src="${pageContext.request.contextPath}/${slide.image}" class="ls-bg" alt="${slide.title}" decoding="async" fetchpriority="high" style='height:80%; width: 100%'/>
+                    <img src="${pageContext.request.contextPath}/${slide.image}" class="ls-bg" alt="${slide.title}" decoding="async" fetchpriority="high" style='height:530px; width: 1024px'/>
                     <p class="ls-l" style="position: absolute;top: 0px;left: 10px;margin: 0;font-weight: bold;text-transform: uppercase;font-size: 35px;color: #355c7d;pointer-events: none;white-space: nowrap;">
                         ${slide.title}
                     </p>

@@ -336,6 +336,14 @@
         <servlet-name>ParentViewStudentGradeInClass</servlet-name>
         <servlet-class>controller.ParentViewStudentGradeInClass</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ParentViewScheduleServlet</servlet-name>
+        <servlet-class>controller.ParentViewScheduleServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ParentViewStudentAttendanceInClass</servlet-name>
+        <servlet-class>controller.ParentViewStudentAttendanceInClass</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -695,6 +703,14 @@
     <servlet-mapping>
         <servlet-name>ParentViewStudentGradeInClass</servlet-name>
         <url-pattern>/ParentViewStudentGradeInClass</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ParentViewScheduleServlet</servlet-name>
+        <url-pattern>/ParentViewScheduleServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ParentViewStudentAttendanceInClass</servlet-name>
+        <url-pattern>/ParentViewStudentAttendanceInClass</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>

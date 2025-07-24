@@ -14,6 +14,7 @@ import java.sql.Date;
 import java.time.DayOfWeek;
 import java.util.HashMap;
 import java.util.Map;
+import model.DiemDanh;
 import model.PhongHoc;
 
 
@@ -535,7 +536,7 @@ public class LichHocDAO {
                     JOIN LopHoc lop ON lh.ID_LopHoc = lop.ID_LopHoc
                     JOIN SlotHoc sl ON lh.ID_SlotHoc = sl.ID_SlotHoc
                     JOIN HocSinh_LopHoc hslh ON lh.ID_LopHoc = hslh.ID_LopHoc
-                    JOIN PhongHoc ph ON lop.ID_PhongHoc = ph.ID_PhongHoc
+                    JOIN PhongHoc ph ON lh.ID_PhongHoc = ph.ID_PhongHoc
                     LEFT JOIN DiemDanh dd ON lh.ID_Schedule = dd.ID_Schedule AND dd.ID_HocSinh = ?
                     WHERE 
                         hslh.ID_HocSinh = ?
@@ -584,7 +585,7 @@ public class LichHocDAO {
                     SELECT lh.*, lop.TenLopHoc, ph.TenPhongHoc, sl.SlotThoiGian, kh.TenKhoaHoc
                     FROM LichHoc lh
                     JOIN LopHoc lop ON lh.ID_LopHoc = lop.ID_LopHoc
-                    JOIN PhongHoc ph ON lop.ID_PhongHoc = ph.ID_PhongHoc
+                    JOIN PhongHoc ph ON lh.ID_PhongHoc = ph.ID_PhongHoc
                     JOIN SlotHoc sl ON lh.ID_SlotHoc = sl.ID_SlotHoc
                     JOIN KhoaHoc kh on lop.ID_KhoaHoc = kh.ID_KhoaHoc
                     WHERE lh.ID_LopHoc = ? AND lh.NgayHoc BETWEEN ? AND ?
@@ -679,5 +680,36 @@ public class LichHocDAO {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public List<DiemDanh> getDiemDanhByHocSinhAndLopHoc(int idHocSinh, int idLopHoc) {
+        List<DiemDanh> list = new ArrayList<>();
+        // SQL query to select attendance records for a specific student in a specific class
+        // It joins DiemDanh with LichHoc to link attendance records to class schedules
+        String sql = """
+                     SELECT dd.ID_DiemDanh, dd.ID_HocSinh, dd.ID_Schedule, dd.TrangThai, lh.GhiChu
+                                          FROM DiemDanh dd  
+                                          JOIN LichHoc lh ON dd.ID_Schedule = lh.ID_Schedule
+                                          WHERE dd.ID_HocSinh = ? AND lh.ID_LopHoc = ?""";
+        try (Connection con = new DBContext().getConnection(); // Get connection from DBContext
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idHocSinh);
+            ps.setInt(2, idLopHoc);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                DiemDanh dd = new DiemDanh();
+                dd.setID_DiemDanh(rs.getInt("ID_DiemDanh"));
+                dd.setID_HocSinh(rs.getInt("ID_HocSinh"));
+                dd.setID_Schedule(rs.getInt("ID_Schedule"));
+                dd.setTrangThai(rs.getString("TrangThai"));
+                list.add(dd);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error in DiemDanhDAO.getDiemDanhByHocSinhAndLopHoc: " + e.getMessage());
+            // Optionally rethrow or handle more gracefully
+        }
+        return list;
     }
 }

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ include file="/views/student/sidebar.jsp" %>
+
 <c:if test="${empty sessionScope.user}">
     <c:redirect url="${pageContext.request.contextPath}/views/login.jsp" />
 </c:if>
@@ -59,7 +59,6 @@
             .sidebar {
             width: 260px;
             background-color: #1F4E79;
-            height: 100vh;
             padding: 20px;
             color: white;
             position: fixed;
@@ -257,6 +256,7 @@
         </style>
     </head>
     <body>
+        <%@ include file="/views/student/sidebar.jsp" %>
         <div class="main-content">
             <div class="header">
                 <h2>Bài tập của lớp ${className}</h2>
