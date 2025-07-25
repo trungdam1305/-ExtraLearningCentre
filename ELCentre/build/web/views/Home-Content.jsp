@@ -170,20 +170,20 @@
                                             <div class="column dt-sc-one-third">
                                                 <article class="dt-sc-course">
                                                     <div class="dt-sc-course-thumb">
-                                                        <a href="#">
+                                                        <a href="${pageContext.request.contextPath}/ClassDetailsServlet?classId=${lop.getID_LopHoc()}">
                                                             <img src="${pageContext.request.contextPath}/${lop.image}" 
                                                                  alt="${lop.tenLopHoc}" 
-                                                                 style="width:420px; height:250px; object-fit: cover; border-radius: 5px;" />
+                                                                 style="width:100%; height:250px; object-fit: cover; border-radius: 5px;" />
                                                         </a>
                                                     </div>
                                                     <div class="dt-sc-course-content">
                                                         <p class="dt-sc-course-meta">
-                                                            <a href="#">Khóa học ID: ${lop.ID_KhoaHoc}</a>
+                                                            <a href="${pageContext.request.contextPath}/ClassDetailsServlet?classId=${lop.getID_LopHoc()}">Khóa học ID: ${lop.ID_KhoaHoc}</a>
                                                         </p>
                                                         <h2 class="dt-sc-course-title">
-                                                            <a href="#" style= "font-family:'Open Sans'; font-weight: bold;" >${lop.tenLopHoc}</a>
+                                                            <a href="${pageContext.request.contextPath}/ClassDetailsServlet?classId=${lop.getID_LopHoc()}" style= "font-family:'Open Sans'; font-weight: bold;" >${lop.tenLopHoc}</a>
                                                         </h2>
-                                                         <span class="dt-sc-lessons">Thời gian học: ${lop.ID_Schedule}</span> <!-- Gợi ý đổi thành slotThoiGian -->
+                                                         <span class="dt-sc-lessons">Giáo viên chủ nhiệm: ${lop.tenGiaoVien}</span> <!-- Gợi ý đổi thành slotThoiGian -->
                                                     </div>
                                                 </article>
                                             </div>

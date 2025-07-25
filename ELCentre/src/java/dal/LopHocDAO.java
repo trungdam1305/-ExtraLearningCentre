@@ -19,8 +19,10 @@ public class LopHocDAO {
         DBContext db = DBContext.getInstance();
         List<LopHoc> list = new ArrayList<>();
         String sql = """
-                     SELECT * FROM [dbo].[LopHoc]
-                     WHERE [Order] <> 0""";
+                     SELECT * FROM [dbo].[LopHoc] lh
+                     JOIN GiaoVien_LopHoc gvlh on lh.ID_LopHoc = gvlh.ID_LopHoc
+                     JOIN GiaoVien gv on gvlh.ID_GiaoVien = gv.ID_GiaoVien
+                                          WHERE [Order] <> 0""";
         try (PreparedStatement statement = db.getConnection().prepareStatement(sql);) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
@@ -34,7 +36,7 @@ public class LopHocDAO {
                 lh.setTrangThai(rs.getString("TrangThai"));
                 lh.setSoTien(rs.getString("SoTien"));
                 lh.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
-                                        
+                lh.setTenGiaoVien(rs.getString("HoTen"));
                 lh.setImage(rs.getString("Image"));
                 list.add(lh);
             }
