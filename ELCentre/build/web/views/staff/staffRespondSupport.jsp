@@ -347,7 +347,6 @@
             <div class="sidebar-section-title">Hỗ trợ</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/staffGetSupportRequests"><i class="fas fa-envelope-open-text"></i> Yêu cầu hỗ trợ</a></li>
-                <li><a href="${pageContext.request.contextPath}/staffGetSupportRequests"><i class="fas fa-blog"></i> Yêu cầu tư vấn</a></li>
             </ul>
             <div class="sidebar-section-title">Khác</div>
             <ul class="sidebar-menu">

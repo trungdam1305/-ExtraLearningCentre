@@ -294,26 +294,12 @@
                     </div>
                 </div>
 
-                <script>
-                    function openModal() {
-                        document.getElementById("passwordModal").style.display = "flex";
-                    }
-
-                    function closeModal() {
-                        document.getElementById("passwordModal").style.display = "none";
-                    }
-
-                    // Đóng modal nếu bấm ra ngoài
-                    document.addEventListener("click", function(e) {
-                        const modal = document.getElementById("passwordModal");
-                        if (e.target === modal) {
-                            closeModal();
-                        }
-                    });
-                </script>
+               
                 </div>
                 <%@ include file="/views/student/footer.jsp" %>
             </div>             
         </div>
     </body>
 </html>
+
+

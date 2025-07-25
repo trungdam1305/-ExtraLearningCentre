@@ -35,6 +35,13 @@
                 background-color: #fff;
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             }
+            .page-title {
+                text-align: center;
+                font-size: 36px;
+                color: #1F4E79;
+                margin-bottom: 30px;
+                font-weight: bold;
+            }
             .header {
                 margin-bottom: 20px;
                 text-align: center;
@@ -229,7 +236,11 @@
                      left: 0;
                      z-index: 999;
                      ">
-                    <h2 style="margin: 0; color: white;">Thông tin học phí theo lớp</h2>
+                    <h2 style="margin: 0; color: white;">
+                        <i class="fas fa-file-invoice-dollar" style="margin-right: 10px;"></i>
+                        Thông tin học phí lớp - ${TenLopHoc}
+                    </h2>
+
                     <div class="user-menu">
                         <div class="user-toggle" onclick="toggleUserMenu()" style="color: white;">
                             <span><strong>${phuHuynh.hoTen}</strong>
@@ -244,6 +255,7 @@
                     </div>
                 </div>
                 <div class="main-content">
+                    <h1 class="page-title">Thông Tin Học Phí Lớp - ${TenLopHoc}</h1>
                     <c:choose>
                         <c:when test="${not empty requestScope.hocphis}">
                             <div class="data-table-wrapper">
@@ -252,7 +264,6 @@
                                         <tr>
                                             <th>Mã Học Sinh</th>
                                             <th>Họ và Tên</th>
-
                                             <th>Tháng</th>
                                             <th>Năm</th>
                                             <th>Số buổi có mặt</th>
@@ -260,7 +271,6 @@
                                             <th>Tình trạng thanh toán</th>
                                             <th>Ngày thanh toán</th>
                                             <th>Ghi Chú</th>
-
                                         </tr>
                                     </thead>
                                     <tbody id="notificationTableBody">
@@ -268,7 +278,6 @@
                                             <tr>
                                                 <td>${hp.getMaHocSinh()}</td>
                                                 <td>${hp.getHoTen()}</td>
-
                                                 <td>${hp.getThang()}</td>
                                                 <td>${hp.getNam()}</td>
                                                 <td>${hp.getSoBuoi()}</td>
@@ -289,7 +298,6 @@
                                                     </c:choose>
                                                 </td>
                                                 <td>${hp.getGhiChu()}</td>
-
                                             </tr>
                                         </c:forEach>
                                     </tbody>
@@ -316,3 +324,4 @@
         </div>
     </body>
 </html>
+

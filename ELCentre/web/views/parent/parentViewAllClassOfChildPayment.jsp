@@ -35,6 +35,13 @@
                 background-color: #fff;
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             }
+            .page-title {
+                text-align: center;
+                font-size: 36px;
+                color: #1F4E79;
+                margin-bottom: 30px;
+                font-weight: bold;
+            }
             .header {
                 margin-bottom: 20px;
                 text-align: center;
@@ -226,7 +233,11 @@
                      left: 0;
                      z-index: 999;
                      ">
-                    <h2 style="margin: 0; color: white;">Thông tin học phí theo lớp</h2>
+                    <h2 style="margin: 0; color: white;">
+                        <i class="fas fa-file-invoice-dollar" style="margin-right: 10px;"></i>
+                        Thông tin học phí theo lớp
+                    </h2>
+
                     <div class="user-menu">
                         <div class="user-toggle" onclick="toggleUserMenu()" style="color: white;">
                             <span><strong>${phuHuynh.hoTen}</strong>
@@ -241,6 +252,7 @@
                     </div>
                 </div>
                 <div class="main-content">
+                    <h1 class="page-title">Thông Tin Học Phí Theo Lớp</h1>
                     <c:choose>
                         <c:when test="${not empty sessionScope.lophocs}">
                             <div class="data-table-wrapper">
@@ -256,7 +268,6 @@
                                             <th>Ghi chú</th>
                                             <th>Trạng thái lớp</th>
                                             <th>Hành động</th>
-
                                         </tr>
                                     </thead>
                                     <tbody id="notificationTableBody">
@@ -294,12 +305,10 @@
                             </div>
                         </c:otherwise>
                     </c:choose>
-
-
-
                 </div>
                 <%@ include file="/views/parent/footer.jsp" %>
             </div>
         </div>
     </body>
 </html>
+
