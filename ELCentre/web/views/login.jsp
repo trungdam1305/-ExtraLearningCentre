@@ -383,24 +383,15 @@ body {
                         <a href="../views/forgotPassword.jsp" class="small">Quên mật khẩu?</a>
                     </div>
 
-                     ✅ Google reCAPTCHA 
-                    <div class="g-recaptcha mb-3" data-sitekey="6Ldf8E4rAAAAACIhQBZn-9343I1wWxzJwzawYS1s"></div>
- 
+
                     <button type="submit" name="action" class="btn btn-login">Đăng nhập</button>
                 </form>
 
 
 
-                <div class="text-center mt-4">
-                    <p class="small">Hoặc đăng nhập bằng</p>
-                    <div class="d-flex justify-content-between">
-                        <button class="btn btn-dark" onclick="FB.login(checkLoginState, {scope: 'public_profile,email'})">
-                            <i class="fab fa-facebook-f"></i> Facebook
-                        </button>
-                        <button class="btn btn-secondary" onclick="onGoogleLoginClick()">
-                            <i class="fab fa-google-plus-g"></i> Google
-                        </button>
-                    </div>
+
+
+                
                 </div>
             </div>
         </div>
