@@ -11,6 +11,7 @@ import java.sql.ResultSet ;
 import java.sql.SQLException ; 
 import java.util.ArrayList ;
 import model.TaiKhoan ; 
+import java.sql.Connection;
 public class TaiKhoanDAO {
     
     public static ArrayList<TaiKhoan> adminGetAllTaiKhoan(){
@@ -249,4 +250,20 @@ public class TaiKhoanDAO {
         }
         return null  ; 
     }
+    
+    public static boolean insertPendingAccount(String email, String hashedPassword, String sdt, String hoTen) {
+    String sql = "INSERT INTO TaiKhoan (Email, MatKhau, ID_VaiTro, UserType, SoDienThoai, TrangThai, NgayTao) "
+               + "VALUES (?, ?, 3, N'HocSinh', ?, N'Pending', GETDATE())";
+    try (Connection con = DBContext.getInstance().getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, email);
+        ps.setString(2, hashedPassword);
+        ps.setString(3, sdt);
+        return ps.executeUpdate() > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
 }

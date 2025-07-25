@@ -30,7 +30,7 @@ public class ParentSupportServlet extends HttpServlet {
         int idPhuHuynh = PhuHuynhDAO.getPhuHuynhIdByTaiKhoanId(idTaiKhoan);
         PhuHuynh phuHuynh = PhuHuynhDAO.getPhuHuynhById(idPhuHuynh);
 
-        List<HoTro> danhSachHoTro = HoTroDAO.getHoTroByTaiKhoanId(idTaiKhoan);
+        List<HoTro> danhSachHoTro = HoTroDAO.getHoTroByIdTaiKhoan(idTaiKhoan);
 
         request.setAttribute("phuHuynh", phuHuynh);
         request.setAttribute("dsHoTro", danhSachHoTro);
@@ -48,24 +48,20 @@ public class ParentSupportServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/views/login.jsp");
             return;
         }
-
         int idTaiKhoan = user.getID_TaiKhoan();
         int idPhuHuynh = PhuHuynhDAO.getPhuHuynhIdByTaiKhoanId(idTaiKhoan);
+        String ID_TaiKhoan = String.valueOf(idTaiKhoan) ; 
+        
         PhuHuynh phuHuynh = PhuHuynhDAO.getPhuHuynhById(idPhuHuynh);
-
+        
         String tenHoTro = request.getParameter("tenHoTro");
         String moTa = request.getParameter("moTa");
 
-        if (tenHoTro != null && !tenHoTro.trim().isEmpty()) {
-            HoTro hoTro = new HoTro();
-            hoTro.setHoTen(phuHuynh.getHoTen());  // lấy từ đối tượng phụ huynh
-            hoTro.setTenHoTro(tenHoTro);
-            hoTro.setMoTa(moTa);
-            hoTro.setID_TaiKhoan(idTaiKhoan);
-            hoTro.setDaDuyet("Chờ duyệt");
-            hoTro.setPhanHoi(""); // chưa có phản hồi
-            HoTroDAO.insertHoTro(hoTro);
-        }
+       
+            boolean s1 = HoTroDAO.sendHoTroByIdTaiKhoan(phuHuynh.getHoTen(), tenHoTro, moTa, ID_TaiKhoan, "PhuHuynh", phuHuynh.getSDT()) ; 
+        
+            
+        
 
         // Không cần truyền lại phuHuynh vì servlet sẽ redirect đến doGet
         response.sendRedirect("ParentSupportServlet");

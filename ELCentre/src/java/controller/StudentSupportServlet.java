@@ -15,9 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.List;
 import model.HoTro;
-import model.HocSinh;
 import model.TaiKhoan;
 
 /**
@@ -53,19 +51,10 @@ public class StudentSupportServlet extends HttpServlet {
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    throws ServletException, IOException {
+        
         HttpSession session = request.getSession();
         TaiKhoan user = (TaiKhoan) session.getAttribute("user");
-
-        if (user == null || user.getID_VaiTro() != 4) {
-            response.sendRedirect(request.getContextPath() + "/views/login.jsp");
-            return;
-        }
-               int idTaiKhoan = user.getID_TaiKhoan();
-        int idHocSinh = HocSinhDAO.getHocSinhIdByTaiKhoanId(idTaiKhoan);
-        HocSinh hocSinh = HocSinhDAO.getHocSinhById(idHocSinh);
-        request.setAttribute("hocSinhInfo", hocSinh);
         ArrayList<HoTro> hotros = HoTroDAO.getHoTroByIdTaiKhoan(user.getID_TaiKhoan()) ; 
         if (hotros == null ) {
             request.setAttribute("message", "Không có yêu cầu hỗ trợ nào đã được gửi!");
@@ -86,7 +75,7 @@ public class StudentSupportServlet extends HttpServlet {
         String tenHoTro = request.getParameter("tenHoTro") ; 
         String moTa = request.getParameter("moTa") ; 
         String HoTen = HocSinhDAO.getNameHocSinhToSendSupport(ID_TaiKhoan) ; 
-        boolean s1 = HoTroDAO.sendHoTroByIdTaiKhoan(HoTen, tenHoTro, moTa, ID_TaiKhoan) ; 
+        boolean s1 = HoTroDAO.sendHoTroByIdTaiKhoan(HoTen, tenHoTro, moTa, ID_TaiKhoan , "HocSinh" , user.getSoDienThoai()) ; 
         if (s1) {
             ArrayList<HoTro> hotros = HoTroDAO.getHoTroByIdTaiKhoan(user.getID_TaiKhoan()) ; 
              session.setAttribute("hotros",hotros );

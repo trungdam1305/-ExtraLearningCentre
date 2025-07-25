@@ -51,6 +51,10 @@ public class adminGetFromDashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+
         String action = request.getParameter("action");       //get paramerter from adminDashboard
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
@@ -131,7 +135,20 @@ public class adminGetFromDashboard extends HttpServlet {
                 break;
 
             case "yeucautuvan": //action xử lý phê duyệt yêu cầu
-                ArrayList<ThongBao> listTuVan = ThongBaoDAO.getAllTuVan();
+                    ArrayList<ThongBao> listTuVan = ThongBaoDAO.getAllTuVan();
+
+                // 🧪 In dữ liệu ra console để test
+                System.out.println("=== [DEBUG] Danh sách yêu cầu tư vấn ===");
+                for (ThongBao tb : listTuVan) {
+                    System.out.println("ID: " + tb.getID_ThongBao());
+                    System.out.println("Họ tên: " + tb.getHoTen());
+                    System.out.println("Email: " + tb.getEmail());
+                    System.out.println("SĐT: " + tb.getSoDienThoai());
+                    System.out.println("Nội dung tư vấn: " + tb.getNoiDungTuVan());
+                    System.out.println("Thời gian: " + tb.getThoiGian());
+                    System.out.println("Trạng thái: " + tb.getStatus());
+                    System.out.println("------------------------------");
+                }
                 if (listTuVan == null || listTuVan.isEmpty()) {
                     request.setAttribute("message", "Không có yêu cầu tư vấn nào.");
                     request.getRequestDispatcher("/views/admin/adminApproveRegisterUser.jsp").forward(request, response);

@@ -491,6 +491,7 @@
                             </thead>
                             <tbody>
                                 <c:forEach var="tk" items="${sessionScope.taikhoans}">
+                                    <c:if test="${tk.trangThai != 'Pending'}">
                                     <tr>
                                         <td>${tk.ID_TaiKhoan}</td>
                                         <td>${tk.hoTen}</td>
@@ -532,6 +533,7 @@
 
                                         
                                     </tr>
+                                    </c:if>
                                 </c:forEach>
                             </tbody>
                         </table>
