@@ -50,7 +50,7 @@
                 box-shadow: 0 2px 5px rgba(0,0,0,0.1);
                 position: fixed;
                 width: calc(100% - 250px);
-                margin-left: 250px;
+                margin-left: 270px;
                 z-index: 1000;
                 display: flex;
                 align-items: center;
@@ -145,6 +145,7 @@
                 flex-direction: column;
                 height: 100vh;
                 position: fixed;
+                overflow-y:auto;
             }
 
             .sidebar h4 {

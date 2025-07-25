@@ -1,6 +1,5 @@
 package dal;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +18,8 @@ import model.HocSinh;
 import java.sql.Connection;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Random;
+
 public class HocSinhDAO {
 
     public static ArrayList<HocSinh> adminGetAllHocSinh() {
@@ -33,7 +34,7 @@ public class HocSinhDAO {
             while (rs.next()) {
                 HocSinh hocsinh = new HocSinh(
                         rs.getInt("ID_HocSinh"),
-                        rs.getString("MaHocSinh") , 
+                        rs.getString("MaHocSinh"),
                         rs.getInt("ID_TaiKhoan"),
                         rs.getString("HoTen"),
                         rs.getDate("NgaySinh").toLocalDate(),
@@ -44,9 +45,9 @@ public class HocSinhDAO {
                         rs.getString("GhiChu"),
                         rs.getString("TrangThai"),
                         rs.getTimestamp("NgayTao").toLocalDateTime(),
-                        rs.getString("TenTruongHoc") , 
-                        rs.getString("LopDangHocTrenTruong") , 
-                        rs.getString("TrangThaiHoc") , 
+                        rs.getString("TenTruongHoc"),
+                        rs.getString("LopDangHocTrenTruong"),
+                        rs.getString("TrangThaiHoc"),
                         rs.getString("Avatar")
                 );
                 hocsinhs.add(hocsinh);
@@ -222,7 +223,7 @@ public class HocSinhDAO {
             rs.close();
             statement.close();
         } catch (Exception e) {
-            return 0; 
+            return 0;
         }
         return total;
     }
@@ -462,10 +463,10 @@ public class HocSinhDAO {
                      INSERT INTO HocSinh (ID_TaiKhoan, HoTen, NgaySinh, GioiTinh, DiaChi, SDT_PhuHuynh, TruongHoc, GhiChu, TrangThai, NgayTao)
                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                      """;
-        try (PreparedStatement statement = db.getConnection().prepareStatement(sql) ) {
+        try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
             statement.setInt(1, hs.getID_TaiKhoan());
             statement.setString(2, hs.getHoTen());
-        
+
             if (hs.getNgaySinh() != null) {
                 statement.setDate(3, java.sql.Date.valueOf(hs.getNgaySinh()));
             } else {
@@ -516,7 +517,7 @@ public class HocSinhDAO {
             e.printStackTrace();
         }
     }
-    
+
     public static int adminGetTongSoHocSinhChoHoc() {
         DBContext db = DBContext.getInstance();
         int tong = 0;
@@ -540,37 +541,35 @@ public class HocSinhDAO {
         }
         return tong;
     }
-    
-    public static ArrayList<String> adminGetListIDHSbyID_LopHoc(String ID_LopHoc){
-        DBContext db = DBContext.getInstance() ; 
-        ArrayList<String> listID = new ArrayList<String>() ; 
-        
+
+    public static ArrayList<String> adminGetListIDHSbyID_LopHoc(String ID_LopHoc) {
+        DBContext db = DBContext.getInstance();
+        ArrayList<String> listID = new ArrayList<String>();
+
         try {
             String sql = """
                           select  HS.ID_TaiKhoan from HocSinh_LopHoc HL 
                         JOIN HocSinh HS
                         ON HS.ID_HocSinh = HL.ID_HocSinh
                         WHERE HL.ID_LopHoc = ?  ; 
-                         """ ; 
-            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
-            statement.setString(1,ID_LopHoc );
-            ResultSet rs = statement.executeQuery() ;  
-            while(rs.next()) {
-               listID.add(rs.getString("ID_TaiKhoan") ) ; 
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setString(1, ID_LopHoc);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                listID.add(rs.getString("ID_TaiKhoan"));
             }
             return listID;
-        } catch(SQLException  e ) {
+        } catch (SQLException e) {
             e.printStackTrace();
-            return null ; 
+            return null;
         }
     }
 
-    
-    
     public List<HocSinh> getPreviousStudentsByLopHoc(int idLopHoc) {
-    List<HocSinh> previousStudents = new ArrayList<>();
-    DBContext db = DBContext.getInstance();
-    String sql = """
+        List<HocSinh> previousStudents = new ArrayList<>();
+        DBContext db = DBContext.getInstance();
+        String sql = """
                  SELECT DISTINCT hs.ID_HocSinh, hs.ID_TaiKhoan, hs.HoTen, hs.NgaySinh, 
                                 hs.GioiTinh, hs.DiaChi, hs.SDT_PhuHuynh, hs.ID_TruongHoc, 
                                 hs.GhiChu, hs.TrangThai, hs.NgayTao, th.TenTruongHoc
@@ -581,38 +580,38 @@ public class HocSinhDAO {
                  JOIN TruongHoc th ON hs.ID_TruongHoc = th.ID_TruongHoc
                  WHERE lh.ID_LopHoc = ? AND lh.NgayHoc < GETDATE()
                  """;
-    try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
-        stmt.setInt(1, idLopHoc);
-        ResultSet rs = stmt.executeQuery();
-        while (rs.next()) {
-            HocSinh hocSinh = new HocSinh(
-                rs.getInt("ID_HocSinh"),
-                null, 
-                rs.getInt("ID_TaiKhoan"),
-                rs.getString("HoTen"),
-                rs.getDate("NgaySinh") != null ? rs.getDate("NgaySinh").toLocalDate() : null,
-                rs.getString("GioiTinh"),
-                rs.getString("DiaChi"),
-                rs.getString("SDT_PhuHuynh"),
-                rs.getInt("ID_TruongHoc"),
-                rs.getString("GhiChu"),
-                rs.getString("TrangThai"),
-                rs.getTimestamp("NgayTao") != null ? rs.getTimestamp("NgayTao").toLocalDateTime() : null,
-                rs.getString("TenTruongHoc"),
-                null, 
-                null, 
-                rs.getString("Avatar")
-            );
-            previousStudents.add(hocSinh);
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, idLopHoc);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                HocSinh hocSinh = new HocSinh(
+                        rs.getInt("ID_HocSinh"),
+                        null,
+                        rs.getInt("ID_TaiKhoan"),
+                        rs.getString("HoTen"),
+                        rs.getDate("NgaySinh") != null ? rs.getDate("NgaySinh").toLocalDate() : null,
+                        rs.getString("GioiTinh"),
+                        rs.getString("DiaChi"),
+                        rs.getString("SDT_PhuHuynh"),
+                        rs.getInt("ID_TruongHoc"),
+                        rs.getString("GhiChu"),
+                        rs.getString("TrangThai"),
+                        rs.getTimestamp("NgayTao") != null ? rs.getTimestamp("NgayTao").toLocalDateTime() : null,
+                        rs.getString("TenTruongHoc"),
+                        null,
+                        null,
+                        rs.getString("Avatar")
+                );
+                previousStudents.add(hocSinh);
+            }
+            System.out.println("Previous students fetched for LopHoc ID " + idLopHoc + ": " + previousStudents.size());
+        } catch (SQLException e) {
+            System.out.println("SQL Error in getPreviousStudentsByLopHoc: " + e.getMessage());
+            e.printStackTrace();
         }
-        System.out.println("Previous students fetched for LopHoc ID " + idLopHoc + ": " + previousStudents.size());
-    } catch (SQLException e) {
-        System.out.println("SQL Error in getPreviousStudentsByLopHoc: " + e.getMessage());
-        e.printStackTrace();
+        return previousStudents;
     }
-    return previousStudents;
-}
-    
+
     // Ghi log khi xóa học sinh khỏi lớp
     public boolean logStudentRemoval1(int idHocSinh, int idLopHoc) throws SQLException {
         DBContext db = DBContext.getInstance();
@@ -790,12 +789,14 @@ public class HocSinhDAO {
     public boolean hasSchoolConflict1(int idHocSinh, int idLopHoc) {
         DBContext db = DBContext.getInstance();
         String sql = """
-            SELECT COUNT(*) 
-            FROM HocSinh hs
-            JOIN GiaoVien_LopHoc glh ON glh.ID_LopHoc = ?
-            JOIN GiaoVien g ON glh.ID_GiaoVien = g.ID_GiaoVien
-            WHERE hs.ID_HocSinh = ? AND hs.ID_TruongHoc = g.ID_TruongHoc
-        """;
+        SELECT COUNT(*) 
+        FROM HocSinh hs
+        JOIN GiaoVien_LopHoc glh ON glh.ID_LopHoc = ?
+        JOIN GiaoVien g ON glh.ID_GiaoVien = g.ID_GiaoVien
+        WHERE hs.ID_HocSinh = ? 
+        AND hs.ID_TruongHoc = g.ID_TruongHoc
+        AND hs.LopDangHocTrenTruong = g.LopDangDayTrenTruong
+    """;
         try (Connection conn = db.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, idLopHoc);
             stmt.setInt(2, idHocSinh);
@@ -867,6 +868,7 @@ public class HocSinhDAO {
             }
         }
     }
+
     // Xóa học sinh khỏi lớp
     public boolean removeStudentFromClass1(int idHocSinh, int idLopHoc) throws SQLException {
         DBContext db = DBContext.getInstance();
@@ -962,12 +964,12 @@ public class HocSinhDAO {
         }
         return previousStudents;
     }
+
     //Lấy thông tin học sinh theo id tài khoản    
     public static int getHocSinhIdByTaiKhoanId(int idTaiKhoan) {
         int idHocSinh = -1;
         String sql = "SELECT ID_HocSinh FROM HocSinh WHERE ID_TaiKhoan = ?";
-        try (Connection conn = DBContext.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBContext.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, idTaiKhoan);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -978,7 +980,7 @@ public class HocSinhDAO {
         }
         return idHocSinh;
     }
-    
+
     // Lấy thông tin học sinh theo id học sinh
     public static HocSinh getHocSinhById(int idHocSinh) {
         HocSinh hs = null;
@@ -989,8 +991,7 @@ public class HocSinhDAO {
             WHERE h.ID_HocSinh = ?
         """;
 
-        try (Connection conn = DBContext.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBContext.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, idHocSinh);
             ResultSet rs = ps.executeQuery();
@@ -1033,7 +1034,7 @@ public class HocSinhDAO {
 
         return hs;
     }
-    
+
 //        // Lấy thông tin học sinh theo id học sinh
 //    public static List<HocSinh> getHocSinhInfoByIdHocSinh(Integer idHocSinh) {
 //        List<HocSinh> list = new ArrayList<>();
@@ -1089,7 +1090,6 @@ public class HocSinhDAO {
 //
 //        return list;
 //    }
-    
     //Cập nhật thông tin tài khoản học sinh
     public static boolean updateHocSinh(HocSinh hs) {
         String sql = """
@@ -1107,8 +1107,7 @@ public class HocSinhDAO {
             WHERE ID_HocSinh = ?
         """;
 
-        try (Connection conn = DBContext.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBContext.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, hs.getHoTen());
             ps.setDate(2, hs.getNgaySinh() != null ? Date.valueOf(hs.getNgaySinh()) : null);
@@ -1130,11 +1129,10 @@ public class HocSinhDAO {
         }
         return false;
     }
-    
-        public static HocSinh findByTaiKhoanId(int idTaiKhoan) {
+
+    public static HocSinh findByTaiKhoanId(int idTaiKhoan) {
         String sql = "SELECT * FROM HocSinh WHERE ID_TaiKhoan = ?";
-        try (Connection con = DBContext.getInstance().getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = DBContext.getInstance().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, idTaiKhoan);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -1149,7 +1147,7 @@ public class HocSinhDAO {
         }
         return null;
     }
-        
+
     // Method private mới để cập nhật TrangThaiHoc dựa trên số lớp đang học
     private void updateTrangThaiHoc(Connection conn, int idHocSinh) throws SQLException {
         String countSql = "SELECT COUNT(*) FROM [dbo].[HocSinh_LopHoc] WHERE ID_HocSinh = ?";
@@ -1171,7 +1169,7 @@ public class HocSinhDAO {
             }
         }
     }
-    
+
     public static String getNameHocSinhToSendSupport(String ID_TaiKhoan) {
         DBContext db = DBContext.getInstance();
         try {
@@ -1193,34 +1191,32 @@ public class HocSinhDAO {
         }
         return null;
     }
-    
-    public static String  adminGetTrangThaiHocHocSinhByID_TaiKhoan(String ID_TaiKhoan) {
-       
-        DBContext db = DBContext.getInstance() ; 
+
+    public static String adminGetTrangThaiHocHocSinhByID_TaiKhoan(String ID_TaiKhoan) {
+
+        DBContext db = DBContext.getInstance();
         try {
             String sql = """
                          select HS.TrangThaiHoc from HocSinh HS
                          WHERE HS.ID_TaiKhoan = ? 
-                         """ ; 
-            PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
             statement.setString(1, ID_TaiKhoan);
-            ResultSet rs = statement.executeQuery() ; 
-            while(rs.next()) {
-                return rs.getString("TrangThaiHoc") ; 
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                return rs.getString("TrangThaiHoc");
             }
-        } catch(SQLException  e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-            return null ; 
+            return null;
         }
-        return null ; 
+        return null;
     }
-    
-    
+
     public static List<HocSinh> getHocSinhByPhuHuynhPhone(String sdtPhuHuynh) {
         List<HocSinh> list = new ArrayList<>();
         String query = "SELECT * FROM HocSinh WHERE SDT_PhuHuynh = ?";
-        try (Connection conn = DBContext.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
+        try (Connection conn = DBContext.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, sdtPhuHuynh);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -1244,8 +1240,7 @@ public class HocSinhDAO {
     // Kiểm tra học sinh có thuộc quyền phụ huynh hay không
     public static boolean isHocSinhThuocPhuHuynh(int idHocSinh, int idPhuHuynh) {
         String sql = "SELECT 1 FROM HocSinh_PhuHuynh WHERE ID_HocSinh = ? AND ID_PhuHuynh = ?";
-        try (Connection conn = DBContext.getInstance().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBContext.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, idHocSinh);
             ps.setInt(2, idPhuHuynh);
             try (ResultSet rs = ps.executeQuery()) {
@@ -1256,7 +1251,83 @@ public class HocSinhDAO {
         }
         return false;
     }
-
-
     
+    public static void insertHocSinhPending(int idTaiKhoan, String hoTen) {
+    String sql = "INSERT INTO HocSinh (ID_TaiKhoan, HoTen, NgayTao) VALUES (?, ?, GETDATE())";
+    try (Connection conn = DBContext.getInstance().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, idTaiKhoan);
+        ps.setString(2, hoTen);
+        ps.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+      
+public static void insertHocSinhPending(int idTaiKhoan, String hoTen, String sdtPhuHuynh, int idTruongHoc) {
+    String maHocSinh = generateUniqueMaHocSinh(); // Giả sử đã tồn tại
+
+    if (maHocSinh == null) {
+        System.err.println("❌ Không thể tạo mã học sinh.");
+        return;
+    }
+
+    String sql = "INSERT INTO HocSinh (MaHocSinh, ID_TaiKhoan, HoTen, DiaChi, GhiChu, SDT_PhuHuynh, ID_TruongHoc, NgayTao) "
+               + "VALUES (?, ?, ?, ?, ?, ?, ?, GETDATE())";
+
+    try (Connection conn = DBContext.getInstance().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, maHocSinh);
+        ps.setInt(2, idTaiKhoan);
+        ps.setString(3, hoTen);
+        ps.setString(4, "None"); // DiaChi
+        ps.setString(5, "None"); // GhiChu
+        ps.setString(6, sdtPhuHuynh); // SĐT
+        ps.setInt(7, idTruongHoc); // ✅ Bổ sung ID_TruongHoc
+
+        ps.executeUpdate();
+        System.out.println("✅ Đã thêm học sinh với mã: " + maHocSinh);
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+
+
+
+public static String generateUniqueMaHocSinh() {
+    Random random = new Random();
+    String maHocSinh;
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
+    try {
+        conn = DBContext.getInstance().getConnection();
+        do {
+            int number = 100000 + random.nextInt(900000); // 6 chữ số
+            maHocSinh = "HS" + number;
+
+            String sql = "SELECT 1 FROM HocSinh WHERE MaHocSinh = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, maHocSinh);
+            rs = ps.executeQuery();
+
+        } while (rs.next()); // Nếu tồn tại → tạo lại
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        maHocSinh = null;
+    } finally {
+        try { if (rs != null) rs.close(); } catch (Exception e) {}
+        try { if (ps != null) ps.close(); } catch (Exception e) {}
+        try { if (conn != null) conn.close(); } catch (Exception e) {}
+    }
+
+    return maHocSinh;
+}
+
+
 }

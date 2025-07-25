@@ -44,7 +44,7 @@
                 align-items: center;
                 position: fixed;
                 top: 0;
-                left: 250px;
+                left: 270px;
                 right: 0;
                 z-index: 1000;
                 box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -126,6 +126,7 @@
                 height: 100vh;
                 padding: 20px;
                 box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+                overflow-y:auto;
             }
 
             .sidebar h4 {
@@ -464,7 +465,7 @@
                 font-size: 13px;
                 position: fixed;
                 bottom: 0;
-                left: 250px;
+                left: 260px;
                 right: 0;
             }
 
@@ -531,31 +532,36 @@
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/adminGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+
             </ul>
+
             <div class="sidebar-section-title">Quản lý người dùng</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocsinh">Học sinh</a></li>
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=giaovien">Giáo viên</a></li>
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=taikhoan">Tài khoản</a></li>
             </ul>
+
             <div class="sidebar-section-title">Quản lý tài chính</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocphi"><i class="fas fa-money-bill-wave"></i> Học phí</a></li>
             </ul>
+
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
                 <li><a href="${pageContext.request.contextPath}/ManageSchedule"><i class="fas fa-calendar-alt"></i> Lịch học</a></li>
             </ul>
+
             <div class="sidebar-section-title">Hệ thống</div>
             <ul class="sidebar-menu">
-                <li><a href="#"><i class="fas fa-cog"></i> Cài đặt</a></li>
+                <li><a href="${pageContext.request.contextPath}/ManageSlider"><i class="fas fa-cog"></i> Cài Đặt HomePage</a></li>
             </ul>
+
             <div class="sidebar-section-title">Khác</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=yeucautuvan"><i class="fas fa-blog"></i> Yêu cầu tư vấn</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=yeucautuvan"><i class="fas fa-blog"></i>Yêu cầu tư vấn</a></li>
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
-                <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
                 <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </div>

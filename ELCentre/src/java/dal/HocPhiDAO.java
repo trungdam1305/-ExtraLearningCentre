@@ -643,32 +643,126 @@ public class HocPhiDAO {
         return list;
     }
     
-    //Kiểm tra dữ liệu
-    public static void main(String[] args) {
-        int idHocSinh = 17; // Thay ID tương ứng
-        List<HocPhi> list = getHocPhiByHocSinhId(idHocSinh);
-        if (list.isEmpty()) {
-            System.out.println("⚠️ Không tìm thấy học phí cho học sinh ID: " + idHocSinh);
-            return;
+    
+    
+    public static ArrayList<GiaoVien_ChiTietDay> GetAllLopHocDangHocChiTietHocSinhToSendHocPhi(int ID_HocSinh) {
+        ArrayList<GiaoVien_ChiTietDay> lophocs = new ArrayList<GiaoVien_ChiTietDay>();
+        DBContext db = DBContext.getInstance();
+        try {
+            String sql = """
+                    select LH.ID_KhoaHoc, LH.ID_LopHoc , GVLH.ID_GiaoVien , GV.HoTen , TH.TenTruongHoc  , LH.TenLopHoc , LH.SiSo  , LH.GhiChu , LH.TrangThai , LH.NgayTao , LH.Image  , KH.TenKhoaHoc , KH.ID_Khoi , LH.SoTien from GiaoVien_LopHoc GVLH 
+                    join LopHoc LH 
+                    on GVLH.ID_LopHoc = LH.ID_LopHoc 
+
+                    JOIN GiaoVien GV 
+                    ON GVLH.ID_GiaoVien = GV.ID_GiaoVien
+                    JOIN TruongHoc TH 
+                    ON TH.ID_TruongHoc = GV.ID_TruongHoc
+                     JOIN KhoaHoc KH 
+                     ON KH.ID_KhoaHoc = LH.ID_KhoaHoc
+                    JOIN HocSinh_LopHoc HSLH ON HSLH.ID_LopHoc = LH.ID_LopHoc
+
+                    WHERE  HSLH.ID_HocSinh = ? 
+                    AND (LH.TrangThai = N'Đang học' OR LH.TrangThai = N'Đã học')
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            statement.setInt(1, ID_HocSinh);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                GiaoVien_ChiTietDay giaovien = new GiaoVien_ChiTietDay(
+                        rs.getInt("ID_KhoaHoc"),
+                        rs.getInt("ID_LopHoc"),
+                        rs.getInt("ID_GiaoVien"),
+                        rs.getString("HoTen"),
+                        rs.getString("TenTruongHoc"),
+                        rs.getString("TenLopHoc"),
+                        rs.getString("SiSo"),
+                        rs.getString("GhiChu"),
+                        rs.getString("TrangThai"),
+                        rs.getTimestamp("NgayTao").toLocalDateTime(),
+                        rs.getString("Image"),
+                        rs.getInt("ID_Khoi"),
+                        rs.getString("TenKhoaHoc"),
+                        rs.getString("SoTien")
+                );
+                lophocs.add(giaovien);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
 
-        int tong = 0, daDong = 0;
-        for (HocPhi hp : list) {
-            System.out.println("📘 Môn: " + hp.getMonHoc());
-            System.out.println(" - Tổng học phí: " + hp.getTongHocPhi());
-            System.out.println(" - Đã đóng: " + hp.getSoTienDaDong());
-            System.out.println(" - Còn thiếu: " + hp.getConThieu());
-            System.out.println();
-            tong += hp.getTongHocPhi();
-            daDong += hp.getSoTienDaDong();
+        if (lophocs == null) {
+            return null;
+        } else {
+            return lophocs;
         }
-        int conThieu = Math.max(0, tong - daDong);
-        System.out.println("📊 TỔNG CỘNG:");
-        System.out.println(" - Tổng học phí: " + tong);
-        System.out.println(" - Đã đóng: " + daDong);
-        System.out.println(" - Còn thiếu: " + conThieu);
+    }
+    
+    
+    public static ArrayList<HocPhi> GetAllInforHocPhiLopHocHocSinh( String ID_LopHoc , int ID_HocSinh ) {
+        ArrayList<HocPhi> hocphis = new ArrayList<HocPhi>();
+        DBContext db = DBContext.getInstance();
+        try {
+            String sql = """
+                         SELECT hp.ID_HocPhi, hp.ID_HocSinh, hp.ID_LopHoc,
+                        hp.Thang, hp.Nam, hp.SoBuoi, hp.HocPhiPhaiDong,
+                        hp.DaDong, hp.NoConLai, hp.TinhTrangThanhToan,
+                        hp.PhuongThucThanhToan, hp.NgayThanhToan,
+                        hp.GhiChu, hs.MaHocSinh , hp.NgayThanhToan , 
+                        hs.HoTen, hs.SDT_PhuHuynh , hs.ID_TaiKhoan 
+                            FROM HocPhi hp
+                            JOIN HocSinh hs ON hp.ID_HocSinh = hs.ID_HocSinh
+                            where HP.ID_LopHoc = ? and hp.ID_HocSinh = ? ; 
+                         """;
+            PreparedStatement statement = db.getConnection().prepareStatement(sql);
+            
+            statement.setString(1, ID_LopHoc);
+            statement.setInt(2, ID_HocSinh);
+            
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Timestamp ts = rs.getTimestamp("NgayThanhToan");
+                LocalDate ngayThanhToan = (ts != null) ? ts.toLocalDateTime().toLocalDate() : null;
+
+                HocPhi hocphi = new HocPhi(
+                        rs.getInt("ID_HocPhi"),
+                        rs.getInt("ID_HocSinh"),
+                        rs.getInt("ID_LopHoc"),
+                        rs.getString("PhuongThucThanhToan"),
+                        rs.getString("TinhTrangThanhToan"),
+                        ngayThanhToan,
+                        rs.getString("GhiChu"),
+                        rs.getInt("Thang"),
+                        rs.getInt("Nam"),
+                        rs.getInt("SoBuoi"),
+                        rs.getInt("HocPhiPhaiDong"),
+                        rs.getInt("DaDong"),
+                        rs.getInt("NoConLai"),
+                        rs.getString("MaHocSinh"),
+                        rs.getInt("ID_TaiKhoan"),
+                        rs.getString("HoTen"),
+                        rs.getString("SDT_PhuHuynh")
+                );
+                hocphis.add(hocphi);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        if (hocphis == null) {
+            return null;
+        } else {
+            return hocphis;
+        }
     }
 
-    
+    //Kiểm tra dữ liệu
+    public static void main(String[] args) {
+        
+        System.out.println(GetAllInforHocPhiLopHocHocSinh("1", 1).size());
+    }
     
 }

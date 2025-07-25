@@ -91,17 +91,7 @@ public class ManageMaterial extends HttpServlet {
             log("Database error in ManageMaterial doGet: " + e.getMessage(), e);
             request.setAttribute("errorMessage", "A database error occurred: " + e.getMessage());
             request.getRequestDispatcher("/views/error.jsp").forward(request, response);
-        } catch (NumberFormatException e) {
-            // Log errors related to invalid number formats (e.g., for IDs)
-            log("Invalid number format in ManageMaterial doGet: " + e.getMessage(), e);
-            request.setAttribute("errorMessage", "Invalid input format for ID.");
-            request.getRequestDispatcher("/views/error.jsp").forward(request, response);
-        } catch (Exception e) {
-            // Catch any other unexpected errors
-            log("An unexpected error occurred in ManageMaterial doGet: " + e.getMessage(), e);
-            request.setAttribute("errorMessage", "An unexpected error occurred.");
-            request.getRequestDispatcher("/views/error.jsp").forward(request, response);
-        }
+        } 
     }
 
     @Override
@@ -136,15 +126,7 @@ public class ManageMaterial extends HttpServlet {
              log("Database error in ManageMaterial doPost: " + e.getMessage(), e);
              request.setAttribute("errorMessage", "A database error occurred: " + e.getMessage());
              request.getRequestDispatcher("/views/error.jsp").forward(request, response);
-        } catch (NumberFormatException e) {
-             log("Invalid number format in ManageMaterial doPost: " + e.getMessage(), e);
-             request.setAttribute("errorMessage", "Invalid input format for ID.");
-             request.getRequestDispatcher("/views/error.jsp").forward(request, response);
-        } catch (Exception e) {
-             log("An unexpected error occurred in ManageMaterial doPost: " + e.getMessage(), e);
-             request.setAttribute("errorMessage", "An unexpected error occurred.");
-             request.getRequestDispatcher("/views/error.jsp").forward(request, response);
-        }
+        } 
     }
 
     /**
@@ -256,9 +238,9 @@ public class ManageMaterial extends HttpServlet {
     }
 
     // Directory for actual material files (e.g., PDFs, DOCX)
-    private static final String UPLOAD_DIR_FILES = "uploads" + File.separator + "materials"; 
+    private static final String UPLOAD_DIR_FILES = "" + File.separator + ""; 
     // Directory for thumbnail images
-    private static final String UPLOAD_DIR_IMAGES = "uploads" + File.separator + "images"; 
+    private static final String UPLOAD_DIR_IMAGES = "" + File.separator + ""; 
 
     /**
      * Uploads a file to the server and returns its unique generated name.

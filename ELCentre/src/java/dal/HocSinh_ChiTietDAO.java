@@ -5,6 +5,7 @@ package dal;
  *
  * @author wrx_Chur04
  */
+import java.math.BigDecimal;
 import model.HocSinh_ChiTietHoc;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
@@ -174,7 +175,7 @@ public class HocSinh_ChiTietDAO {
         }
     }
     
-   public static boolean updateTruongLopGiaoVien(String idTruongHoc  , String lopTrenTruong  , String sdt , String hot , String ID_GiaoVien , int Luong ) {
+   public static boolean updateTruongLopGiaoVien(String idTruongHoc  , String lopTrenTruong  , String sdt , int hot , String ID_GiaoVien , BigDecimal Luong ) {
         
         DBContext db = DBContext.getInstance() ; 
        int rs = 0 ; 
@@ -191,8 +192,8 @@ public class HocSinh_ChiTietDAO {
                          """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
             statement.setString(1, idTruongHoc);
-            statement.setInt(2, Luong);
-            statement.setString(3, hot);
+            statement.setBigDecimal(2, Luong);
+            statement.setInt(3, hot);
             statement.setString(4, lopTrenTruong);
             statement.setString(5, sdt);
             statement.setString(6, ID_GiaoVien);

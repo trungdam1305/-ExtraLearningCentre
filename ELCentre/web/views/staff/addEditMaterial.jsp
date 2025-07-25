@@ -132,7 +132,7 @@ Author : trungdam
         </ul>
         <div class="sidebar-section-title">Quản lý tài chính</div>
         <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/staffViewSalary"><i class="fas fa-money-check-alt"></i> Học phí</a></li>
+            <li><a href="${pageContext.request.contextPath}/staffGoToTuition"><i class="fas fa-money-check-alt"></i> Học phí</a></li>
         </ul>
         <div class="sidebar-section-title">Hỗ trợ</div>
         <ul class="sidebar-menu">

@@ -797,8 +797,6 @@
                                     </th>
                                     <th class="${sortColumn == 'Order' ? 'sorted' : ''}">
                                         Thứ tự ưu tiên
-                                        <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=Order&sortOrder=asc&searchQuery=${searchQuery}&page=${page}&sortName=${sortName}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'Order' && sortOrder == 'asc' ? 'active' : ''}" aria-label="Sắp xếp thứ tự tăng dần"><i class="bi bi-caret-up-fill"></i></a>
-                                        <a href="${pageContext.request.contextPath}/ManageClass?action=sort&sortColumn=Order&sortOrder=desc&searchQuery=${searchQuery}&page=${page}&sortName=${sortName}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'Order' && sortOrder == 'desc' ? 'active' : ''}" aria-label="Sắp xếp thứ tự giảm dần"><i class="bi bi-caret-down-fill"></i></a>
                                     </th>
                                     <th class="${sortColumn == 'TrangThai' ? 'sorted' : ''}">
                                         Trạng thái

@@ -34,6 +34,15 @@ public class ParentDashboardServlet extends HttpServlet {
             List<LopHoc> dsLop = HocSinh_LopHocDAO.getLopHocDaDangKyByHocSinhId(hs.getID_HocSinh());
             hs.setLopDaDangKy(dsLop); // Bổ sung field này vào model HocSinh để phục vụ hiển thị
         }
+        
+         List<LichHoc> lichHocSapToi = new ArrayList<>();
+        for (HocSinh hs : dsCon) {
+            List<LichHoc> lichCuaCon = LichHocDAO.getUpcomingScheduleByHocSinhId(hs.getID_HocSinh());
+            for (LichHoc lh : lichCuaCon) {
+                lh.setTenHocSinh(hs.getHoTen()); // 👈 cần thêm thuộc tính này vào model `LichHoc`
+            }
+            lichHocSapToi.addAll(lichCuaCon);
+        }
 
         // Lấy thông báo dành cho phụ huynh
         List<ThongBao> dsThongBao = ThongBaoDAO.getThongBaoByTaiKhoanId(idTaiKhoan);

@@ -88,15 +88,7 @@ public class ManageSlider extends HttpServlet {
             log("Database error in ManageSlider doGet: " + e.getMessage(), e);
             request.setAttribute("errorMessage", "A database error occurred: " + e.getMessage());
             request.getRequestDispatcher("/views/error.jsp").forward(request, response);
-        } catch (NumberFormatException e) {
-            log("Invalid number format in ManageSlider doGet: " + e.getMessage(), e);
-            request.setAttribute("errorMessage", "Invalid ID format.");
-            request.getRequestDispatcher("/views/error.jsp").forward(request, response);
-        } catch (Exception e) {
-            log("An unexpected error occurred in ManageSlider doGet: " + e.getMessage(), e);
-            request.setAttribute("errorMessage", "An unexpected error occurred.");
-            request.getRequestDispatcher("/views/error.jsp").forward(request, response);
-        }
+        } 
     }
 
     @Override
@@ -139,13 +131,11 @@ public class ManageSlider extends HttpServlet {
                 try {
                     showAddForm(request, response); // Go back to add form
                 } catch (SQLException ex) {
-                    Logger.getLogger(ManageSlider.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else if ("updateSlider".equals(action)) {
                 try {
                     showEditForm(request, response); // Go back to edit form
                 } catch (SQLException ex) {
-                    Logger.getLogger(ManageSlider.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 request.getRequestDispatcher("").forward(request, response); // General error page
@@ -365,7 +355,6 @@ public class ManageSlider extends HttpServlet {
                 newImageFileName = saveUploadedFile(imagePart, UPLOAD_DIR_SLIDER_IMAGES, request);
             }
         } catch (Exception e) {
-            log("Error uploading new slider image for update: " + e.getMessage(), e);
             request.setAttribute("errorMessage", "Lỗi khi tải ảnh slider mới lên: " + e.getMessage());
             showEditForm(request, response); // Re-show form with upload error
             return;

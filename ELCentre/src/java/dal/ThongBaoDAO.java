@@ -86,31 +86,60 @@ public class ThongBaoDAO {
         return tb;
     }
         
-    //Hàm lấy ra tất cả yêu cầu tư 
+        //Hàm lấy ra tất cả yêu cầu tư 
     public static ArrayList<ThongBao> getAllTuVan() {
         ArrayList<ThongBao> list = new ArrayList<>();
-        DBContext db = DBContext.getInstance();
-        try {
-            String sql = "SELECT * FROM ThongBao WHERE NoiDung LIKE N'%tư vấn%' ORDER BY ThoiGian DESC";
-            PreparedStatement ps = db.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+        String sql = "SELECT ID_ThongBao, NoiDung, ThoiGian, Status FROM ThongBao WHERE NoiDung LIKE N'%tư vấn%' ORDER BY ThoiGian DESC";
+
+        try (Connection con = DBContext.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
             while (rs.next()) {
-                ThongBao tb = new ThongBao(
-                        rs.getInt("ID_ThongBao"),
-                        rs.getInt("ID_TaiKhoan"),
-                        rs.getString("NoiDung"),
-                        rs.getInt("ID_HocPhi"),
-                        rs.getTimestamp("ThoiGian").toLocalDateTime(),
-                        rs.getString("Status")
-                );
-                list.add(tb);
+                Integer id = rs.getInt("ID_ThongBao");
+                String noiDungGoc = rs.getString("NoiDung");
+                Timestamp ts = rs.getTimestamp("ThoiGian");
+                LocalDateTime thoiGian = (ts != null) ? ts.toLocalDateTime() : null;
+                String status = rs.getString("Status");
+
+                // Tách thông tin từ chuỗi NoiDung
+                String hoTen = extractField(noiDungGoc, "Họ tên:");
+                String email = extractField(noiDungGoc, "Email:");
+                String sdt = extractField(noiDungGoc, "SĐT:");
+                String ndTuvan = extractField(noiDungGoc, "Nội dung:");
+
+                // Tạo đối tượng ThongBao theo đúng constructor
+                list.add(new ThongBao(id, noiDungGoc, thoiGian, status, hoTen, email, sdt, ndTuvan));
             }
-        } catch (SQLException e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
         return list;
     }
+
+
+    private static String extractField(String fullText, String label) {
+        try {
+            int start = fullText.indexOf(label);
+            if (start == -1) return "";
+            start += label.length();
+
+            int end = fullText.indexOf("|", start);
+            if (end == -1) return fullText.substring(start).trim(); // cuối cùng
+            return fullText.substring(start, end).trim();
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
     
+    
+
+
+
+
     
 
 //    //Hàm lấy thông báo theo id tài khoản
@@ -620,9 +649,89 @@ public class ThongBaoDAO {
              return thongbaos ; 
          }
      } 
-    public static void main(String[] args) {
-        String id = "1";
-        System.out.println(adminGetListIDHSbyID_LopHoc(id).size());
-        System.out.println(adminGetIdGiaoVienToSendNTF(id));
+     
+          
+    public static ThongBao getThongBaoByID(int id) {
+    String sql = "SELECT * FROM ThongBao WHERE ID_ThongBao = ?";
+    try (Connection con = DBContext.getInstance().getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, id);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                String nd = rs.getString("NoiDung");
+                LocalDateTime tg = rs.getTimestamp("ThoiGian").toLocalDateTime();
+                String st = rs.getString("Status");
+                return new ThongBao(id, nd, tg, st, "", "", "", "");
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    return null;
+}
+    
+    public static boolean deleteThongBaoByID(int id) {
+    String sql = "DELETE FROM ThongBao WHERE ID_ThongBao = ?";
+    try (Connection con = DBContext.getInstance().getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, id);
+        return ps.executeUpdate() > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+    
+    public static boolean updateNoiDung(int id, String newNoiDung) {
+    String sql = "UPDATE ThongBao SET NoiDung = ? WHERE ID_ThongBao = ?";
+    try (Connection con = DBContext.getInstance().getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, newNoiDung);
+        ps.setInt(2, id);
+        return ps.executeUpdate() > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+    public static boolean updateStatus(int id, String newStatus) {
+    String sql = "UPDATE ThongBao SET Status = ? WHERE ID_ThongBao = ?";
+    try (Connection con = DBContext.getInstance().getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, newStatus);
+        ps.setInt(2, id);
+        return ps.executeUpdate() > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+    
+    
+     
+    public static void main(String[] args) {
+        ArrayList<ThongBao> danhSachTuVan = getAllTuVan();
+
+        if (danhSachTuVan == null || danhSachTuVan.isEmpty()) {
+            System.out.println("❌ Không có yêu cầu tư vấn nào.");
+            return;
+        }
+
+        System.out.println("=== Danh sách yêu cầu tư vấn ===");
+        for (ThongBao tb : danhSachTuVan) {
+            System.out.println("ID: " + tb.getID_ThongBao());
+            System.out.println("Trạng thái: " + tb.getStatus());
+            System.out.println("Họ tên: " + tb.getHoTen());
+            System.out.println("Email: " + tb.getEmail());
+            System.out.println("SĐT: " + tb.getSoDienThoai());
+            System.out.println("Nội dung tư vấn: " + tb.getNoiDungTuVan());
+            System.out.println("Thời gian gửi: " + tb.getThoiGian());
+            System.out.println("-------------------------------");
+        }
+    }
+
+
 }

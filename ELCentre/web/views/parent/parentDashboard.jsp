@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:if test="${empty sessionScope.user}">
     <c:redirect url="${pageContext.request.contextPath}/views/login.jsp" />
 </c:if>
@@ -418,9 +419,9 @@
                     </div>
                     <div id="pagination-thongbao"></div>
                 </div>
-
+                
                 <div class="section">
-                    <h3>Lịch học sắp diễn ra</h3>
+                    <h3>Thông báo</h3>
                     <div id="listLichHoc">
                         <c:choose>
                             <c:when test="${empty lichHocSapToi}">
@@ -431,7 +432,8 @@
                             <c:otherwise>
                                 <c:forEach var="lh" items="${lichHocSapToi}">
                                     <div class="box-item">
-                                        📅 <strong>${lh.ngayHoc}</strong> — Lớp: <strong>${lh.tenLopHoc}</strong>, Slot: ${lh.slotThoiGian}
+                                        📅 <strong>${fn:substring(lh.ngayHoc, 8, 10)}/${fn:substring(lh.ngayHoc, 5, 7)}/${fn:substring(lh.ngayHoc, 0, 4)}</strong>
+                                        – <strong>${lh.tenHocSinh}</strong> – Lớp: <strong>${lh.tenLopHoc}</strong>, Slot: ${lh.slotThoiGian}
                                     </div>
                                 </c:forEach>
                             </c:otherwise>
@@ -439,7 +441,7 @@
                     </div>
                     <div id="pagination-lichhoc"></div>
                 </div>
-            </div>
+            </div>    
         </div>
                 <%@ include file="/views/parent/footer.jsp" %>
     </div>
@@ -466,8 +468,8 @@
                 }
             });
         }
-        applyPagination("#listThongBao", ".box-item", "#pagination-thongbao", 3);
-        applyPagination("#listLichHoc", ".box-item", "#pagination-lichhoc", 5);
+        applyPagination("#listThongBao", ".box-item", "#pagination-thongbao", 1);
+        applyPagination("#listLichHoc", ".box-item", "#pagination-lichhoc", 3);
     });
 
     function toggleUserMenu() {
@@ -518,3 +520,4 @@
 
 </body>
 </html>
+

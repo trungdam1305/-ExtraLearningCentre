@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import dal.GiaoVienDAO;
 import model.HocPhi;
 import dal.HocPhiDAO;
+import dal.HocSinhDAO;
 import model.ThongBao;
 import dal.ThongBaoDAO;
 import dal.KhoaHocDAO;
@@ -20,7 +21,9 @@ import dal.TaiKhoanChiTietDAO;
 import model.GiaoVien_TruongHoc;
 import model.HocSinh_SDT;
 import dal.HocSinh_SDTDAO;
+import dal.TaiKhoanDAO;
 import model.GiaoVien_ChiTietDay;
+import model.TaiKhoan;
 
 /**
  * Created on:May 24 , 2025 11:48:56 PM
@@ -31,7 +34,7 @@ import model.GiaoVien_ChiTietDay;
  * JSP to show for admin
  */
 public class adminGetFromDashboard extends HttpServlet {
-
+    HocSinhDAO HocSinhDAO  = new HocSinhDAO();
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -51,6 +54,10 @@ public class adminGetFromDashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+         request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+
         String action = request.getParameter("action");       //get paramerter from adminDashboard
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
@@ -130,8 +137,23 @@ public class adminGetFromDashboard extends HttpServlet {
                 }
                 break;
 
-            case "yeucautuvan": //action xử lý phê duyệt yêu cầu
-                ArrayList<ThongBao> listTuVan = ThongBaoDAO.getAllTuVan();
+                        case "yeucautuvan": //action xử lý phê duyệt yêu cầu
+                    ArrayList<ThongBao> listTuVan = ThongBaoDAO.getAllTuVan();
+                    ArrayList<TaiKhoan> pendingAccounts = TaiKhoanDAO.getPendingAccounts();
+                    request.setAttribute("pendingAccounts", pendingAccounts);
+
+                // 🧪 In dữ liệu ra console để test
+                System.out.println("=== [DEBUG] Danh sách yêu cầu tư vấn ===");
+                for (ThongBao tb : listTuVan) {
+                    System.out.println("ID: " + tb.getID_ThongBao());
+                    System.out.println("Họ tên: " + tb.getHoTen());
+                    System.out.println("Email: " + tb.getEmail());
+                    System.out.println("SĐT: " + tb.getSoDienThoai());
+                    System.out.println("Nội dung tư vấn: " + tb.getNoiDungTuVan());
+                    System.out.println("Thời gian: " + tb.getThoiGian());
+                    System.out.println("Trạng thái: " + tb.getStatus());
+                    System.out.println("------------------------------");
+                }
                 if (listTuVan == null || listTuVan.isEmpty()) {
                     request.setAttribute("message", "Không có yêu cầu tư vấn nào.");
                     request.getRequestDispatcher("/views/admin/adminApproveRegisterUser.jsp").forward(request, response);
@@ -141,7 +163,34 @@ public class adminGetFromDashboard extends HttpServlet {
 
                 }
                 break;
+                
+                case "activatePendingAccount":
+                    int idTaiKhoan = Integer.parseInt(request.getParameter("id"));
 
+                    // Cập nhật trạng thái tài khoản
+                    TaiKhoanDAO.updateTrangThai(idTaiKhoan, "Inactive");
+
+                    // Lấy họ tên và số điện thoại từ request
+                    String hoTen = request.getParameter("hoTen");
+                    String sdt = request.getParameter("sdt");
+
+                    if (hoTen == null || hoTen.trim().isEmpty()) {
+                        hoTen = "Học viên mới";
+                    }
+                    if (sdt == null || sdt.trim().isEmpty()) {
+                        sdt = "none";
+                    }
+
+                    // ID trường học mặc định (nếu bạn chưa chọn cho phép admin chọn)
+                    int idTruongHoc = 1;
+
+                    // Chèn học sinh vào bảng HocSinh
+                    HocSinhDAO.insertHocSinhPending(idTaiKhoan, hoTen, sdt, idTruongHoc);
+
+                    // Thông báo
+                    session.setAttribute("successMessage", "Đã tạo tài khoản và thêm học sinh thành công!");
+                    response.sendRedirect("adminGetFromDashboard?action=yeucautuvan");
+                return;
         }
 
     }
