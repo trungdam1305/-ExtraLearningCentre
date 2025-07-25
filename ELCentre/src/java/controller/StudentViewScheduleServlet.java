@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import model.DiemDanh;
+import model.HocSinh;
 import model.LichHoc;
 import model.SlotHoc;
 import model.TaiKhoan;
@@ -65,7 +66,7 @@ public class StudentViewScheduleServlet extends HttpServlet {
         }
 
         LocalDate endOfWeek = startOfWeek.plusDays(6); // Calculate Sunday of the current week
-
+        HocSinh hocSinh = HocSinhDAO.getHocSinhById(idHocSinh);
         // --- Fetch data from the database ---
         LichHocDAO lichHocDAO = new LichHocDAO();
         SlotHocDAO slotHocDAO = new SlotHocDAO();
@@ -94,6 +95,7 @@ public class StudentViewScheduleServlet extends HttpServlet {
         DateTimeFormatter weekInputFormatter = DateTimeFormatter.ofPattern("YYYY'-W'ww");
         
         // --- Set attributes for the JSP to display schedule components and navigation links ---
+        request.setAttribute("hocSinhInfo", hocSinh);
         request.setAttribute("displayWeekRange", "Tuần từ " + startOfWeek.format(displayFormatter) + " đến " + endOfWeek.format(displayFormatter));
         request.setAttribute("previousWeekLink", startOfWeek.minusWeeks(1).toString()); // Link for previous week
         request.setAttribute("nextWeekLink", startOfWeek.plusWeeks(1).toString()); // Link for next week

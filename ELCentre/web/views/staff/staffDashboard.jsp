@@ -7,6 +7,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.time.LocalDate" %>
+<%@ page import="dal.HocPhiDAO" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -373,13 +374,13 @@
             </ul>
             <div class="sidebar-section-title">Quản lý học tập</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
+                <li><a href="${pageContext.request.contextPath}/Staff_ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
                 <li><a href="${pageContext.request.contextPath}/StaffManageTimeTable"><i class="fas fa-calendar-alt"></i> Thời Khóa Biểu</a></li>
                 <li><a href="${pageContext.request.contextPath}/StaffManageAttendance"><i class="fas fa-check-square"></i> Điểm danh</a></li>
             </ul>
             <div class="sidebar-section-title">Quản lý tài chính</div>
             <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/staffViewSalary"><i class="fas fa-money-check-alt"></i> Học phí</a></li>
+                <li><a href="${pageContext.request.contextPath}/staffGoToTuition"><i class="fas fa-money-check-alt"></i> Học phí</a></li>
             </ul>
             <div class="sidebar-section-title">Hỗ trợ</div>
             <ul class="sidebar-menu">
@@ -399,23 +400,23 @@
             <div class="dashboard-stats">
                 <div class="stat-card stat-hocsinh">
                     <h3><i class="fas fa-user-graduate"></i> Tổng số học sinh đang học</h3>
-                    <p>59</p>
+                    <p>${tongHS}</p>
                 </div>
                 <div class="stat-card stat-giaovien">
                     <h3><i class="fas fa-chalkboard-teacher"></i> Tổng số giáo viên đang dạy</h3>
-                    <p>6</p>
+                    <p>${tongGV}</p>
                 </div>
                 <div class="stat-card stat-lophoc">
                     <h3><i class="fas fa-school"></i> Tổng số lớp học đang học</h3>
-                    <p>5</p>
+                    <p>${tongLH}</p>
                 </div>
                 <div class="stat-card stat-tuvan">
                     <h3><i class="fas fa-envelope-open-text"></i> Tổng đơn đăng ký tư vấn chưa duyệt</h3>
-                    <p>${pendingConsultations}</p>
+                    <p>${tongSoDonTuVan}</p>
                 </div>
-                <div class="stat-card stat-salary">
-                    <h3><i class="fas fa-money-check-alt"></i> Lương tháng này</h3>
-                    <p>${staffSalary}</p>
+                <div class="stat-card stat-hocsinh">
+                    <h3><i class="fas fa-user-clock"></i> Tổng số học sinh chờ lớp</h3>
+                    <p>${hsChoHoc}</p>
                 </div>
             </div>
 
@@ -430,6 +431,8 @@
                                 <thead>
                                     <tr>
                                         <th>Họ Tên</th>
+                                        <th>Vai Trò</th>
+                                        <th>Số Điện Thoại</th>
                                         <th>Yêu Cầu</th>
                                         <th>Mô Tả</th>
                                         <th>Thời Gian</th>
@@ -440,6 +443,8 @@
                                     <c:forEach var="sp" items="${HoTroList}">
                                         <tr>
                                             <td>${sp.getHoTen()}</td>
+                                            <td>${sp.getVaiTro()}</td>
+                                            <td>${sp.getSoDienThoai()}</td>
                                             <td>${sp.getTenHoTro()}</td>
                                             <td>${sp.getMoTa()}</td>
                                             <td>${sp.getThoiGian()}</td>
@@ -550,6 +555,12 @@
                 });
             }
 
+            <% 
+                Integer tongSoHocSinhDiHoc = HocPhiDAO.adminTinhDiemDanhHomNay();
+                Integer tongSoHocSinhKhongDiHoc = HocPhiDAO.adminTinhVangHomNay();
+            %>
+            const tongsohocsinhhocc = <%= tongSoHocSinhDiHoc %>;
+            const tongsohocsinhvang = <%= tongSoHocSinhKhongDiHoc %>;
             const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
             const attendanceGradient = attendanceCtx.createLinearGradient(0, 0, 200, 0);
             attendanceGradient.addColorStop(0, '#1F4E79');
@@ -559,7 +570,7 @@
                 data: {
                     labels: ['Học sinh có mặt', 'Học sinh vắng'],
                     datasets: [{
-                            data: [90, 5],
+                            data: [tongsohocsinhhocc, tongsohocsinhvang],
                             backgroundColor: [attendanceGradient, '#E57373'],
                             borderColor: '#ffffff',
                             borderWidth: 3,

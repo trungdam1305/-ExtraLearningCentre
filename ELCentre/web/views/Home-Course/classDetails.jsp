@@ -55,7 +55,7 @@
             <div class="col-lg-4">
                 <img src="${pageContext.request.contextPath}/${lopHoc.image}" class="img-fluid rounded shadow-sm course-image mb-3" alt="${lopHoc.tenLopHoc}">
                 <div class="d-grid gap-2">
-                    <a href="#" class="btn btn-success btn-lg fw-bold"><i class="fas fa-user-plus"></i> Đăng ký ngay</a>
+                    <a href="${pageContext.request.contextPath}/views/advice.jsp" class="btn btn-success btn-lg fw-bold"><i class="fas fa-user-plus"></i> Đăng ký ngay
                     <a href="${pageContext.request.contextPath}/CourseDetailsServlet?courseId=${lopHoc.ID_KhoaHoc}" class="btn btn-outline-secondary">
                         <i class="fas fa-arrow-left"></i> Quay lại khóa học
                     </a>
@@ -73,7 +73,6 @@
                             <li><i class="fas fa-book"></i><span class="info-label">Thuộc khóa học:</span> <span class="info-value">${lopHoc.tenKhoaHoc}</span></li>
                             <li><i class="fas fa-chalkboard-teacher"></i><span class="info-label">Giáo viên:</span> <span class="info-value">${lopHoc.tenGiaoVien}</span></li>
                             <li><i class="fas fa-users"></i><span class="info-label">Sĩ số:</span> <span class="info-value">${lopHoc.siSo} / ${lopHoc.siSoToiDa} (Tối thiểu: ${lopHoc.siSoToiThieu})</span></li>
-                            <li><i class="fas fa-map-marker-alt"></i><span class="info-label">Phòng học:</span> <span class="info-value">${lopHoc.tenPhongHoc}</span></li>
                             <li><i class="fas fa-info-circle"></i><span class="info-label">Trạng thái:</span> <span class="info-value"><span class="badge bg-primary">${lopHoc.trangThai}</span></span></li>
                             <li><i class="fas fa-pen"></i><span class="info-label">Ghi chú:</span> <span class="info-value">${lopHoc.ghiChu}</span></li>
                         </ul>

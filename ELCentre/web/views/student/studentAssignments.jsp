@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ include file="/views/student/sidebar.jsp" %>
+
 <c:if test="${empty sessionScope.user}">
     <c:redirect url="${pageContext.request.contextPath}/views/login.jsp" />
 </c:if>
@@ -59,7 +59,6 @@
             .sidebar {
             width: 260px;
             background-color: #1F4E79;
-            height: 100vh;
             padding: 20px;
             color: white;
             position: fixed;
@@ -253,10 +252,11 @@
 
             .back-button:hover {
                 background-color: #5a6268;
-            
+            }
         </style>
     </head>
     <body>
+        <%@ include file="/views/student/sidebar.jsp" %>
         <div class="main-content">
             <div class="header">
                 <h2>Bài tập của lớp ${className}</h2>
@@ -293,55 +293,46 @@
                                 <p>Tệp đính kèm: <a href="${pageContext.request.contextPath}/uploads/${assignment.fileName}" download>${assignment.fileName}</a></p>
                             </c:if>
 
-                    <div class="submission-status">
-                        <h4>Trạng thái nộp bài</h4>
-                        <c:set var="currentSubmission" value="${studentSubmissions[assignment.ID_BaiTap]}" />
-
-                        <c:choose>
-                            <%-- Student had submited --%>
-                            <c:when test="${not empty currentSubmission}">
-                                <div class="submitted-file-info">
-                                    <p>Bạn đã nộp bài vào: ${currentSubmission.ngayNop}</p>
-                                    <p>Tệp bạn đã nộp:
-                                        <a href="${pageContext.request.contextPath}/uploads/${currentSubmission.tepNop}" class="download-link" download>
-                                            <i class="fas fa-file-alt"></i> ${currentSubmission.tepNop}
-                                        </a>
-                                    </p>
-                                    <c:if test="${not empty currentSubmission.diem}">
-                                        <p>Điểm của bạn: <strong>${currentSubmission.diem}</strong></p>
-                                    </c:if>
-                                     <c:if test="${ empty currentSubmission.diem}">
-                                        <p>Điểm của bạn: <strong>Chưa có điểm</strong></p>
-                                    </c:if>
-                                    <c:if test="${not empty currentSubmission.nhanXet}">
-                                        <p>Nhận xét của giáo viên: <em>"${currentSubmission.nhanXet}"</em></p>
-                                    </c:if>
-                                </div>
-
-                                <c:choose>
-                                    <c:when test="${currentDate.isAfter(assignment.deadline)}">
-                                        <p style="color: red; font-weight: bold; margin-top: 15px;">Đã quá hạn nộp lại bài.</p>
-                                    </c:when>
-                                    <c:otherwise>
+                            <div class="submission-status">
+                                <h4>Trạng thái nộp bài</h4>
+                                <c:set var="currentSubmission" value="${studentSubmissions[assignment.ID_BaiTap]}" />
+                                <c:choose>                                        
+                                    
+                                    <c:when test="${not empty currentSubmission}">
+                                        <div class="submitted-file-info">
+                                            <p>Bạn đã nộp bài vào: ${currentSubmission.ngayNop}</p>
+                                            <p>Tệp bạn đã nộp:
+                                                <a href="${pageContext.request.contextPath}/uploads/${currentSubmission.tepNop}" class="download-link" download>
+                                                    <i class="fas fa-file-alt"></i> ${currentSubmission.tepNop}
+                                                </a>
+                                            </p>
+                                            <c:if test="${not empty currentSubmission.diem}">
+                                                <p>Điểm của bạn: <strong>${currentSubmission.diem}</strong></p>
+                                            </c:if>
+                                            <c:if test="${ empty currentSubmission.diem}">
+                                                <p>Điểm của bạn: <strong>null</strong></p>
+                                            </c:if>    
+                                            <c:if test="${not empty currentSubmission.nhanXet}">
+                                                <p>Nhận xét của giáo viên: <em>"${currentSubmission.nhanXet}"</em></p>
+                                            </c:if>
+                                            <c:if test="${ empty currentSubmission.nhanXet}">
+                                                <p>Nhận xét của giáo viên: <em>null</em></p>
+                                            </c:if>    
+                                            <p class="resubmit-note">Bạn có thể nộp lại bài để cập nhật.</p>
+                                        </div>
                                         <div class="submission-form">
                                             <h5>Nộp lại bài tập (sẽ ghi đè bản nộp trước)</h5>
                                             <form action="${pageContext.request.contextPath}/StudentAssignmentServlet" method="post" enctype="multipart/form-data">
                                                 <input type="hidden" name="assignmentId" value="${assignment.ID_BaiTap}">
                                                 <input type="hidden" name="classId" value="${classId}">
-                                                <c:if test="${not empty searchQuery}"><input type="hidden" name="search" value="${searchQuery}"></c:if>
+                                                <c:if test="${not empty searchQuery}">
+                                                    <input type="hidden" name="search" value="${searchQuery}">
+                                                </c:if>
                                                 <label for="resubmitFile_${assignment.ID_BaiTap}">Chọn tệp để nộp lại:</label>
                                                 <input type="file" id="resubmitFile_${assignment.ID_BaiTap}" name="submissionFile" required>
                                                 <button type="submit">Nộp lại</button>
                                             </form>
                                         </div>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:when>                  
-                            <c:otherwise>
-                                <c:choose>
-                                    <%--Student had not submitted--%>
-                                    <c:when test="${currentDate.isAfter(assignment.deadline)}">
-                                         <p style="color: red; font-weight: bold;">Đã quá hạn nộp bài.</p>
                                     </c:when>
                                     <c:otherwise>
                                         <p>Bạn chưa nộp bài tập này.</p>
@@ -350,7 +341,10 @@
                                             <form action="${pageContext.request.contextPath}/StudentAssignmentServlet" method="post" enctype="multipart/form-data">
                                                 <input type="hidden" name="assignmentId" value="${assignment.ID_BaiTap}">
                                                 <input type="hidden" name="classId" value="${classId}">
-                                                <c:if test="${not empty searchQuery}"><input type="hidden" name="search" value="${searchQuery}"></c:if>
+                                                <%-- Ensure search query is passed in POST form if active --%>
+                                                <c:if test="${not empty searchQuery}">
+                                                    <input type="hidden" name="search" value="${searchQuery}">
+                                                </c:if>
                                                 <label for="submissionFile_${assignment.ID_BaiTap}">Chọn tệp để nộp:</label>
                                                 <input type="file" id="submissionFile_${assignment.ID_BaiTap}" name="submissionFile" required>
                                                 <button type="submit">Nộp bài</button>
@@ -358,9 +352,8 @@
                                         </div>
                                     </c:otherwise>
                                 </c:choose>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
+                            </div>
+                        </div>
                     </c:forEach>
 
                     <div class="pagination">

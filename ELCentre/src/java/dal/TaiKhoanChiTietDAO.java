@@ -20,25 +20,27 @@ public class TaiKhoanChiTietDAO {
         
         try {
             String sql  = """
-                          
-                          SELECT 
+                            SELECT 
                               T.ID_TaiKhoan,
                               T.Email,
-                          	
                               T.UserType,
-                              COALESCE(HS.HoTen, GV.HoTen, PH.HoTen) AS HoTen , 
-                          	T.MatKhau , 
-                          	T.ID_VaiTro , 
-                          	T.UserType , 
-                          	T.SoDienThoai , 
-                          	T.TrangThai , 
-                          	T.NgayTao 
+                              COALESCE(HS.HoTen, GV.HoTen, PH.HoTen, ST.HoTen) AS HoTen, 
+                              T.MatKhau, 
+                              T.ID_VaiTro, 
+                              T.SoDienThoai, 
+                              T.TrangThai, 
+                              T.NgayTao 
                           FROM TaiKhoan T
                           LEFT JOIN HocSinh HS ON T.ID_TaiKhoan = HS.ID_TaiKhoan
                           LEFT JOIN GiaoVien GV ON T.ID_TaiKhoan = GV.ID_TaiKhoan
                           LEFT JOIN PhuHuynh PH ON T.ID_TaiKhoan = PH.ID_TaiKhoan 
-                          where T.UserType != 'Staff' and T.UserType != 'Admin' 
-
+                          LEFT JOIN Staff ST ON T.ID_TaiKhoan = ST.ID_TaiKhoan 
+                          WHERE 
+                              T.UserType != 'Admin' AND 
+                              (
+                                  T.UserType = 'HocSinh' 
+                                  OR COALESCE(GV.HoTen, PH.HoTen, ST.HoTen) IS NOT NULL
+                              );
                           """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
             ResultSet rs = statement.executeQuery() ; 

@@ -52,6 +52,8 @@ public class LichHoc {
      private String trangThaiDiemDanh;
      
      private String TenKhoaHoc;
+     
+     private String TenHocSinh;
     /**
      * Default constructor.
      */
@@ -249,6 +251,18 @@ public class LichHoc {
     public void setTenKhoaHoc(String TenKhoaHoc) {
         this.TenKhoaHoc = TenKhoaHoc;
     }
+
+    public String getTenHocSinh() {
+        return TenHocSinh;
+    }
+
+    public void setTenHocSinh(String TenHocSinh) {
+        this.TenHocSinh = TenHocSinh;
+    }
+
+    
     
     
 }
+
+

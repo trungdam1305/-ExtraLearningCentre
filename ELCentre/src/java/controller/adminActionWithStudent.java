@@ -245,4 +245,3 @@ public class adminActionWithStudent extends HttpServlet {
     request.getRequestDispatcher("/views/admin/viewLopHoc_HocSinh.jsp").forward(request, response);
 }
 }
-

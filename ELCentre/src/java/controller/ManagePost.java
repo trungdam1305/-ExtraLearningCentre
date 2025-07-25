@@ -309,7 +309,7 @@ public class ManagePost extends HttpServlet {
                 extension = originalFileName.substring(lastDotIndex); // Extract file extension
             }
             String newFileName = UUID.randomUUID().toString() + extension; // Generate a unique filename
-            String uploadPath = getServletContext().getRealPath("") + File.separator + "img" + File.separator + "blog_images"; // Define upload directory
+            String uploadPath = getServletContext().getRealPath("") + File.separator + "" + File.separator + ""; // Define upload directory
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) uploadDir.mkdirs(); // Create directory if it doesn't exist
             filePart.write(uploadPath + File.separator + newFileName); // Write the file to disk
@@ -325,7 +325,7 @@ public class ManagePost extends HttpServlet {
      */
     private void deleteOldImage(String fileName, HttpServletRequest request) {
         if (fileName != null && !fileName.isEmpty()) {
-            String uploadPath = getServletContext().getRealPath("") + File.separator + "img" + File.separator + "blog_images";
+            String uploadPath = getServletContext().getRealPath("") + File.separator + "" + File.separator + "";
             File imageFile = new File(uploadPath + File.separator + fileName);
             if (imageFile.exists()) imageFile.delete(); // Delete the file if it exists
         }

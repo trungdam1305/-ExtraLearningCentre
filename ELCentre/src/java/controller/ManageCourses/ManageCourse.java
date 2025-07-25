@@ -190,7 +190,6 @@ public class ManageCourse extends HttpServlet {
             }
         } catch (NumberFormatException e) {
             pageNumber = 1;
-            System.out.println("ManageCourse: Invalid page parameter - page=" + pageParam);
         }
         int offset = (pageNumber - 1) * pageSize;
 
@@ -216,7 +215,6 @@ public class ManageCourse extends HttpServlet {
                 idKhoi = Integer.parseInt(khoiFilter);
             } catch (NumberFormatException e) {
                 idKhoi = null;
-                System.out.println("ManageCourse: Invalid khoiFilter format - khoiFilter=" + khoiFilter);
             }
         }
 
@@ -227,7 +225,6 @@ public class ManageCourse extends HttpServlet {
                 order = Integer.parseInt(orderFilter);
             } catch (NumberFormatException e) {
                 order = null;
-                System.out.println("ManageCourse: Invalid orderFilter format - orderFilter=" + orderFilter);
             }
         }
 
@@ -244,7 +241,6 @@ public class ManageCourse extends HttpServlet {
         } catch (Exception e) {
             start = null;
             end = null;
-            System.out.println("ManageCourse: Invalid date format - startDate=" + startDate + ", endDate=" + endDate);
         }
 
         // Ánh xạ trạng thái từ giao diện sang cơ sở dữ liệu
@@ -302,7 +298,6 @@ public class ManageCourse extends HttpServlet {
                     int id = Integer.parseInt(request.getParameter("ID_KhoaHoc"));
                     KhoaHoc khoaHoc = dao.getKhoaHocById(id);
                     if (khoaHoc == null) {
-                        System.out.println("deleteCourse: Course not found - ID_KhoaHoc=" + id);
                         request.setAttribute("err", "Không tìm thấy khóa học với ID: " + id);
                     } else {
                         String trangThai = khoaHoc.getTrangThai();
@@ -315,11 +310,9 @@ public class ManageCourse extends HttpServlet {
                             if (deleted != null) {
                                 request.setAttribute("suc", "Xóa khóa học với ID " + id + " thành công!");
                             } else {
-                                System.out.println("deleteCourse: Failed to delete course - ID_KhoaHoc=" + id);
                                 request.setAttribute("err", "Xóa thất bại! Có thể do ràng buộc dữ liệu.");
                             }
                         } else {
-                            System.out.println("deleteCourse: Cannot delete course due to invalid status - ID_KhoaHoc=" + id + ", TrangThai=" + trangThai);
                             request.setAttribute("err", "Không thể xóa khóa học vì trạng thái không phù hợp! (Chỉ được xóa khi Chưa hoạt động, Chưa bắt đầu hoặc đã kết thúc)");
                         }
                     }
@@ -331,7 +324,6 @@ public class ManageCourse extends HttpServlet {
                     request.getRequestDispatcher("/views/admin/manageCourses.jsp").forward(request, response);
                     return;
                 } catch (NumberFormatException e) {
-                    System.out.println("deleteCourse: Invalid ID_KhoaHoc format - ID_KhoaHoc=" + request.getParameter("ID_KhoaHoc"));
                     request.setAttribute("err", "ID khóa học không hợp lệ!");
                     khoaHocList = dao.getCoursesByFilters(name, dbStatusFilter, idKhoi, order, start, end, offset, pageSize);
                     totalCourses = dao.getTotalCoursesByFilters(name, dbStatusFilter, idKhoi, order, start, end);
@@ -340,11 +332,9 @@ public class ManageCourse extends HttpServlet {
                 try {
                     String idKhoiStr = request.getParameter("ID_Khoi");
                     String idKhoaStr = request.getParameter("ID_KhoaHoc");
-                    System.out.println("ViewCourse: ID_KhoaHoc=" + idKhoaStr + ", ID_Khoi=" + idKhoiStr);
 
                     if (idKhoiStr == null || idKhoiStr.trim().isEmpty() || idKhoaStr == null || idKhoaStr.trim().isEmpty()) {
                         request.setAttribute("err", "Thiếu hoặc không hợp lệ tham số ID_KhoaHoc hoặc ID_Khoi.");
-                        System.out.println("Error: ID_KhoaHoc or ID_Khoi is null or empty");
                         request.getRequestDispatcher("/views/admin/manageCourses.jsp").forward(request, response);
                         return;
                     }
@@ -380,7 +370,6 @@ public class ManageCourse extends HttpServlet {
                         }
                     } catch (NumberFormatException e) {
                         pageNumber = 1;
-                        System.out.println("ViewCourse: Invalid page parameter - page=" + request.getParameter("page"));
                     }
 
                     // Sử dụng hàm getLopHocInfoList để lấy danh sách lớp học với các bộ lọc
@@ -391,7 +380,6 @@ public class ManageCourse extends HttpServlet {
                     // Lấy danh sách giáo viên dựa trên chuyên môn của khóa học
                     List<GiaoVien> teacherList = giaoVienDAO.getTeachersBySpecialization(khoaHoc.getTenKhoaHoc());
                     if (teacherList == null || teacherList.isEmpty()) {
-                        System.out.println("ViewCourse: No teachers found with specialization matching tenKhoaHoc=" + khoaHoc.getTenKhoaHoc() + " for ID_KhoaHoc=" + idKhoaHoc);
                         request.setAttribute("err", "Không có giáo viên nào có chuyên môn phù hợp với khóa học.");
                     }
 
@@ -415,22 +403,16 @@ public class ManageCourse extends HttpServlet {
                         request.setAttribute("err", "Chưa có lớp học nào được khởi tạo cho khóa học này.");
                     }
 
-                    System.out.println("ViewCourse: Successfully processed - ID_KhoaHoc=" + idKhoaHoc + ", ID_Khoi=" + idKhoi +
-                            ", searchQuery=" + searchQuery + ", sortName=" + sortName + ", teacherFilter=" + teacherFilter +
-                            ", feeFilter=" + feeFilter + ", orderFilter=" + orderFilter + ", sortColumn=" + sortColumn +
-                            ", sortOrder=" + sortOrder + ", page=" + pageNumber + ", totalItems=" + totalItems);
 
                     request.getRequestDispatcher("/views/admin/manageClass.jsp").forward(request, response);
                     return;
                 } catch (NumberFormatException e) {
                     request.setAttribute("err", "ID_KhoaHoc hoặc ID_Khoi không hợp lệ!");
-                    System.out.println("ViewCourse: NumberFormatException - " + e.getMessage());
                     e.printStackTrace();
                     request.getRequestDispatcher("/views/admin/manageCourses.jsp").forward(request, response);
                     return;
                 } catch (Exception e) {
                     request.setAttribute("err", "Lỗi xử lý yêu cầu: " + e.getMessage());
-                    System.out.println("ViewCourse: Exception - " + e.getMessage());
                     e.printStackTrace();
                     request.getRequestDispatcher("/views/admin/manageCourses.jsp").forward(request, response);
                     return;
@@ -441,7 +423,6 @@ public class ManageCourse extends HttpServlet {
                     KhoaHoc khoaHoc = dao.getKhoaHocById1(id);
 
                     if (khoaHoc == null) {
-                        System.out.println("updateCourse: Course not found - ID_KhoaHoc=" + id);
                         request.setAttribute("err", "Không tìm thấy khóa học với ID: " + id);
                         request.getRequestDispatcher("/views/admin/manageCourses.jsp").forward(request, response);
                         return;
@@ -451,7 +432,6 @@ public class ManageCourse extends HttpServlet {
                     request.getRequestDispatcher("/views/admin/updateCourse.jsp").forward(request, response);
                     return;
                 } catch (NumberFormatException e) {
-                    System.out.println("updateCourse: Invalid ID_KhoaHoc format - ID_KhoaHoc=" + request.getParameter("ID_KhoaHoc"));
                     request.setAttribute("err", "ID khóa học không hợp lệ!");
                     request.getRequestDispatcher("/views/admin/manageCourses.jsp").forward(request, response);
                     return;
@@ -463,12 +443,10 @@ public class ManageCourse extends HttpServlet {
             }
 
             if (khoaHocList == null) {
-                System.out.println("ManageCourse: Failed to retrieve course list from database");
                 request.setAttribute("err", "Không thể lấy danh sách khóa học từ cơ sở dữ liệu.");
                 khoaHocList = new ArrayList<>();
                 totalCourses = 0;
             } else if (khoaHocList.isEmpty()) {
-                System.out.println("ManageCourse: No courses found for filters");
                 request.setAttribute("err", "Không tìm thấy khóa học nào phù hợp với bộ lọc.");
             }
 
@@ -478,7 +456,6 @@ public class ManageCourse extends HttpServlet {
                     statusFilter, khoiFilter, orderFilter, startDate, endDate, name);
             request.getRequestDispatcher("/views/admin/manageCourses.jsp").forward(request, response);
         } catch (Exception e) {
-            System.out.println("ManageCourse: Error - " + e.getMessage());
             e.printStackTrace();
             request.setAttribute("err", "Lỗi hệ thống: " + e.getMessage());
             request.getRequestDispatcher("/views/admin/manageCourses.jsp").forward(request, response);
@@ -505,20 +482,17 @@ public class ManageCourse extends HttpServlet {
                 Part imagePart = request.getPart("Image");
 
                 if (ten == null || ten.trim().isEmpty()) {
-                    System.out.println("addKhoaHoc: Missing TenKhoaHoc");
                     request.setAttribute("err", "Vui lòng nhập tên khóa học.");
                     request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                     return;
                 }
                 ten = ten.trim();
                 if (!ten.matches("^[\\p{L}0-9\\s]+$")) {
-                    System.out.println("addKhoaHoc: Invalid TenKhoaHoc format - TenKhoaHoc=" + ten);
                     request.setAttribute("err", "Tên khóa học chỉ được chứa chữ, số và khoảng trắng.");
                     request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                     return;
                 }
                 if (!isTenKhoaHocHopLe(ten)) {
-                    System.out.println("addKhoaHoc: Invalid TenKhoaHoc - TenKhoaHoc=" + ten);
                     request.setAttribute("err", "Tên khóa học không hợp lệ. Phải thuộc danh sách môn học cho phép.");
                     request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                     return;
@@ -527,21 +501,18 @@ public class ManageCourse extends HttpServlet {
                 int id_khoi = -1;
                 try {
                     if (ID_Khoi == null || ID_Khoi.trim().isEmpty()) {
-                        System.out.println("addKhoaHoc: Missing ID_Khoi");
                         request.setAttribute("err", "Vui lòng nhập ID khối học.");
                         request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                         return;
                     }
                     id_khoi = Integer.parseInt(ID_Khoi.trim());
                 } catch (NumberFormatException e) {
-                    System.out.println("addKhoaHoc: Invalid ID_Khoi format - ID_Khoi=" + ID_Khoi);
                     request.setAttribute("err", "ID khối học phải là số nguyên hợp lệ.");
                     request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                     return;
                 }
 
                 if (ten.startsWith("Khóa tổng ôn ") && id_khoi != 8) {
-                    System.out.println("addKhoaHoc: Invalid block for Khóa tổng ôn - ID_Khoi=" + id_khoi);
                     request.setAttribute("err", "Khóa tổng ôn chỉ áp dụng cho khối 8!");
                     request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                     return;
@@ -549,7 +520,6 @@ public class ManageCourse extends HttpServlet {
 
                 KhoaHocDAO dao = new KhoaHocDAO();
                 if (dao.isDuplicateTenKhoaHocAndIDKhoi(ten, id_khoi)) {
-                    System.out.println("addKhoaHoc: Duplicate TenKhoaHoc and ID_Khoi - TenKhoaHoc=" + ten + ", ID_Khoi=" + id_khoi);
                     request.setAttribute("err", "Tên khóa học đã tồn tại trong cùng khối học!");
                     request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                     return;
@@ -557,14 +527,12 @@ public class ManageCourse extends HttpServlet {
 
                 String courseCode = generateCourseCode(ten, id_khoi);
                 if (courseCode == null || courseCode.length() > 20 || !courseCode.matches("^[A-Za-z0-9]+$")) {
-                    System.out.println("addKhoaHoc: Invalid CourseCode - CourseCode=" + courseCode);
                     request.setAttribute("err", "Mã khóa học không hợp lệ, quá dài hoặc chứa ký tự không cho phép!");
                     request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                     return;
                 }
 
                 if (dao.isDuplicateCourseCode(courseCode)) {
-                    System.out.println("addKhoaHoc: Duplicate CourseCode - CourseCode=" + courseCode);
                     request.setAttribute("err", "Mã khóa học " + courseCode + " đã tồn tại!");
                     request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                     return;
@@ -575,13 +543,11 @@ public class ManageCourse extends HttpServlet {
                     try {
                         order = Integer.parseInt(orderStr);
                         if (order < 0) {
-                            System.out.println("addKhoaHoc: Invalid Order - Order=" + orderStr);
                             request.setAttribute("err", "Thứ tự phải là số không âm.");
                             request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                             return;
                         }
                     } catch (NumberFormatException e) {
-                        System.out.println("addKhoaHoc: Invalid Order format - Order=" + orderStr);
                         request.setAttribute("err", "Thứ tự phải là số nguyên hợp lệ.");
                         request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                         return;
@@ -593,14 +559,12 @@ public class ManageCourse extends HttpServlet {
                 LocalDate today = LocalDate.now();
 
                 if (batDau != null && batDau.isBefore(today)) {
-                    System.out.println("addKhoaHoc: Invalid start date - ThoiGianBatDau=" + batDauStr);
                     request.setAttribute("err", "Ngày bắt đầu không được ở trong quá khứ!");
                     request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                     return;
                 }
 
                 if (batDau != null && ketThuc != null && !ketThuc.isAfter(batDau.plusDays(29))) {
-                    System.out.println("addKhoaHoc: Invalid date range - ThoiGianBatDau=" + batDauStr + ", ThoiGianKetThuc=" + ketThucStr);
                     request.setAttribute("err", "Ngày kết thúc phải sau ngày bắt đầu ít nhất 30 ngày!");
                     request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                     return;
@@ -610,7 +574,6 @@ public class ManageCourse extends HttpServlet {
                 if (imagePart != null && imagePart.getSize() > 0) {
                     String contentType = imagePart.getContentType();
                     if (!contentType.equals("image/jpeg") && !contentType.equals("image/png")) {
-                        System.out.println("addKhoaHoc: Invalid image format - ContentType=" + contentType);
                         request.setAttribute("err", "Chỉ chấp nhận file ảnh định dạng .jpg hoặc .png!");
                         request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                         return;
@@ -619,7 +582,7 @@ public class ManageCourse extends HttpServlet {
                     String originalFileName = imagePart.getSubmittedFileName();
                     String safeFileName = originalFileName.replaceAll("\\s+", "_");
                     String fileName = UUID.randomUUID().toString() + "_" + safeFileName;
-                    String uploadPath = getServletContext().getRealPath("/images/course");
+                    String uploadPath = getServletContext().getRealPath("");
                     File uploadDir = new File(uploadPath);
                     if (!uploadDir.exists()) {
                         uploadDir.mkdirs();
@@ -627,9 +590,8 @@ public class ManageCourse extends HttpServlet {
                     String filePath = uploadPath + File.separator + fileName;
                     try {
                         imagePart.write(filePath);
-                        imagePath = "img/avatar/" + fileName;
+                        imagePath = "" + fileName;
                     } catch (IOException e) {
-                        System.out.println("addKhoaHoc: Error saving image - " + e.getMessage());
                         request.setAttribute("err", "Lỗi khi lưu tệp hình ảnh: " + e.getMessage());
                         request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                         return;
@@ -642,16 +604,13 @@ public class ManageCourse extends HttpServlet {
                 KhoaHoc result = dao.addKhoaHoc(khoaHoc);
 
                 if (result != null) {
-                    System.out.println("addKhoaHoc: Successfully added course - ID_KhoaHoc=" + result.getID_KhoaHoc());
                     request.setAttribute("suc", "Thêm khóa học thành công!");
                 } else {
-                    System.out.println("addKhoaHoc: Failed to add course - TenKhoaHoc=" + ten);
                     request.setAttribute("err", "Thêm khóa học thất bại! Thiếu thông tin hoặc mã khóa học đã tồn tại.");
                 }
                 request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
                 return;
             } catch (Exception e) {
-                System.out.println("addKhoaHoc: Error - " + e.getMessage());
                 e.printStackTrace();
                 request.setAttribute("err", "Lỗi: " + e.getMessage());
                 request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
@@ -675,7 +634,6 @@ public class ManageCourse extends HttpServlet {
                 KhoaHoc khoaHocCu = dao.getKhoaHocById(id);
 
                 if (khoaHocCu == null) {
-                    System.out.println("submitUpdateCourse: Course not found - ID_KhoaHoc=" + id);
                     request.setAttribute("err", "Không tìm thấy khóa học với ID: " + id);
                     request.getRequestDispatcher("/views/admin/updateCourse.jsp").forward(request, response);
                     return;
@@ -691,14 +649,12 @@ public class ManageCourse extends HttpServlet {
                     try {
                         order = Integer.parseInt(orderStr);
                         if (order < 0) {
-                            System.out.println("submitUpdateCourse: Invalid Order - Order=" + orderStr);
                             request.setAttribute("err", "Thứ tự phải là số không âm.");
                             request.setAttribute("khoaHoc", khoaHocCu);
                             request.getRequestDispatcher("/views/admin/updateCourse.jsp").forward(request, response);
                             return;
                         }
                     } catch (NumberFormatException e) {
-                        System.out.println("submitUpdateCourse: Invalid Order format - Order=" + orderStr);
                         request.setAttribute("err", "Thứ tự phải là số nguyên hợp lệ.");
                         request.setAttribute("khoaHoc", khoaHocCu);
                         request.getRequestDispatcher("/views/admin/updateCourse.jsp").forward(request, response);
@@ -723,7 +679,6 @@ public class ManageCourse extends HttpServlet {
                             dbTrangThai = "Đã kết thúc";
                             break;
                         default:
-                            System.out.println("submitUpdateCourse: Invalid TrangThai - TrangThai=" + trangThai);
                             request.setAttribute("err", "Trạng thái không hợp lệ!");
                             request.setAttribute("khoaHoc", khoaHocCu);
                             request.getRequestDispatcher("/views/admin/updateCourse.jsp").forward(request, response);
@@ -736,7 +691,6 @@ public class ManageCourse extends HttpServlet {
                 LocalDate today = LocalDate.now();
 
                 if (batDau != null && batDau.isBefore(today)) {
-                    System.out.println("submitUpdateCourse: Invalid start date - ThoiGianBatDau=" + batDauStr);
                     request.setAttribute("err", "Ngày bắt đầu không được ở trong quá khứ!");
                     request.setAttribute("khoaHoc", khoaHocCu);
                     request.getRequestDispatcher("/views/admin/updateCourse.jsp").forward(request, response);
@@ -744,7 +698,6 @@ public class ManageCourse extends HttpServlet {
                 }
 
                 if (batDau != null && ketThuc != null && !ketThuc.isAfter(batDau.plusDays(29))) {
-                    System.out.println("submitUpdateCourse: Invalid date range - ThoiGianBatDau=" + batDauStr + ", ThoiGianKetThuc=" + ketThucStr);
                     request.setAttribute("err", "Ngày kết thúc phải sau ngày bắt đầu ít nhất 30 ngày!");
                     request.setAttribute("khoaHoc", khoaHocCu);
                     request.getRequestDispatcher("/views/admin/updateCourse.jsp").forward(request, response);
@@ -755,7 +708,6 @@ public class ManageCourse extends HttpServlet {
                 if (imagePart != null && imagePart.getSize() > 0) {
                     String contentType = imagePart.getContentType();
                     if (!contentType.equals("image/jpeg") && !contentType.equals("image/png")) {
-                        System.out.println("submitUpdateCourse: Invalid image format - ContentType=" + contentType);
                         request.setAttribute("err", "Chỉ chấp nhận file ảnh định dạng .jpg hoặc .png!");
                         request.setAttribute("khoaHoc", khoaHocCu);
                         request.getRequestDispatcher("/views/admin/updateCourse.jsp").forward(request, response);
@@ -765,7 +717,7 @@ public class ManageCourse extends HttpServlet {
                     String originalFileName = imagePart.getSubmittedFileName();
                     String safeFileName = originalFileName.replaceAll("\\s+", "_");
                     String fileName = UUID.randomUUID().toString() + "_" + safeFileName;
-                    String uploadPath = getServletContext().getRealPath("/images/course");
+                    String uploadPath = getServletContext().getRealPath("");
                     File uploadDir = new File(uploadPath);
                     if (!uploadDir.exists()) {
                         uploadDir.mkdirs();
@@ -773,9 +725,8 @@ public class ManageCourse extends HttpServlet {
                     String filePath = uploadPath + File.separator + fileName;
                     try {
                         imagePart.write(filePath);
-                        imagePath = "/images/course/" + fileName;
+                        imagePath = "" + fileName;
                     } catch (IOException e) {
-                        System.out.println("submitUpdateCourse: Error saving image - " + e.getMessage());
                         request.setAttribute("err", "Lỗi khi lưu tệp hình ảnh: " + e.getMessage());
                         request.setAttribute("khoaHoc", khoaHocCu);
                         request.getRequestDispatcher("/views/admin/updateCourse.jsp").forward(request, response);
@@ -788,11 +739,9 @@ public class ManageCourse extends HttpServlet {
                 KhoaHoc khoaHocUpdated = dao.updateKhoaHoc(khoaHoc);
 
                 if (khoaHocUpdated != null) {
-                    System.out.println("submitUpdateCourse: Successfully updated course - ID_KhoaHoc=" + id);
                     request.setAttribute("suc", "Cập nhật thành công");
                     request.setAttribute("khoaHoc", khoaHocUpdated);
                 } else {
-                    System.out.println("submitUpdateCourse: Failed to update course - ID_KhoaHoc=" + id);
                     request.setAttribute("err", "Cập nhật thất bại!");
                     request.setAttribute("khoaHoc", khoaHoc);
                 }
@@ -800,7 +749,6 @@ public class ManageCourse extends HttpServlet {
                 request.getRequestDispatcher("/views/admin/updateCourse.jsp").forward(request, response);
                 return;
             } catch (Exception e) {
-                System.out.println("submitUpdateCourse: Error - " + e.getMessage());
                 e.printStackTrace();
                 request.setAttribute("err", "Có lỗi xảy ra: " + e.getMessage());
                 request.getRequestDispatcher("/views/admin/updateCourse.jsp").forward(request, response);

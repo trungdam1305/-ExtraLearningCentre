@@ -95,38 +95,44 @@
     </div>
 
     <div class="sidebar">
-        <h4>EL CENTRE</h4>
-        <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
-        <div class="sidebar-section-title">Tổng quan</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/adminGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-        </ul>
-        <div class="sidebar-section-title">Quản lý người dùng</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/ManageStaff"><i class="fas fa-users-cog"></i> Nhân Viên</a></li>
-            <li><a href="${pageContext.request.contextPath}/ManageCustomer"><i class="fas fa-user-graduate"></i> Học Viên</a></li>
-        </ul>
-        <div class="sidebar-section-title">Quản lý nội dung</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/ManagePost"><i class="fas fa-blog"></i> Bài Viết</a></li>
-            <li><a href="${pageContext.request.contextPath}/ManageMaterial"><i class="fas fa-file-alt"></i> Tài Liệu</a></li>
-            <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khóa Học</a></li>
-        </ul>
-        <div class="sidebar-section-title">Quản lý cài đặt</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/ManageSlider"><i class="fas fa-sliders-h"></i> Sliders</a></li>
-            <li><a href="${pageContext.request.contextPath}/ManageHomePageSettings"><i class="fas fa-cog"></i> Trang chủ</a></li>
-        </ul>
-        <div class="sidebar-section-title">Hỗ trợ</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/adminGetSupportRequests"><i class="fas fa-envelope-open-text"></i> Yêu cầu hỗ trợ</a></li>
-            <li><a href="${pageContext.request.contextPath}/adminGetConsultationRequests"><i class="fas fa-hands-helping"></i> Yêu cầu tư vấn</a></li>
-        </ul>
-        <div class="sidebar-section-title">Khác</div>
-        <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-        </ul>
-    </div>
+            <h4>EL CENTRE</h4>
+            <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
+            <div class="sidebar-section-title">Tổng quan</div>
+            <ul class="sidebar-menu">
+                <li><a href="${pageContext.request.contextPath}/adminGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+
+            </ul>
+
+            <div class="sidebar-section-title">Quản lý người dùng</div>
+            <ul class="sidebar-menu">
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocsinh">Học sinh</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=giaovien">Giáo viên</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=taikhoan">Tài khoản</a></li>
+            </ul>
+
+            <div class="sidebar-section-title">Quản lý tài chính</div>
+            <ul class="sidebar-menu">
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=hocphi"><i class="fas fa-money-bill-wave"></i> Học phí</a></li>
+            </ul>
+
+            <div class="sidebar-section-title">Quản lý học tập</div>
+            <ul class="sidebar-menu">
+                <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
+                <li><a href="${pageContext.request.contextPath}/ManageSchedule"><i class="fas fa-calendar-alt"></i> Lịch học</a></li>
+            </ul>
+
+            <div class="sidebar-section-title">Hệ thống</div>
+            <ul class="sidebar-menu">
+                <li><a href="${pageContext.request.contextPath}/ManageSlider"><i class="fas fa-cog"></i> Cài Đặt HomePage</a></li>
+            </ul>
+
+            <div class="sidebar-section-title">Khác</div>
+            <ul class="sidebar-menu">
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=yeucautuvan"><i class="fas fa-blog"></i>Yêu cầu tư vấn</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
+                <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
 
     <main class="main-content">
         <h1>Quản lý Sliders</h1>

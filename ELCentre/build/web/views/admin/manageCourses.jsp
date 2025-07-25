@@ -650,7 +650,7 @@
             <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
-                <li><a href="#"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="${pageContext.request.contextPath}/adminGoToFirstPage"><i class="bi bi-house-door"></i> Dashboard</a></li>
             </ul>
 
             <div class="sidebar-section-title">Quản lý người dùng</div>
@@ -787,8 +787,7 @@
                                     </th>
                                     <th class="${sortColumn == 'Order' ? 'sorted' : ''}">
                                         Thứ tự ưu tiên
-                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=Order&sortOrder=asc&name=${name}&page=${pageNumber}&statusFilter=${statusFilter}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" class="sort-link ${sortColumn == 'Order' && sortOrder == 'asc' ? 'active' : ''}" aria-label="Sắp xếp thứ tự tăng dần"><i class="bi bi-caret-up-fill"></i></a>
-                                        <a href="${pageContext.request.contextPath}/ManageCourse?action=sort&sortColumn=Order&sortOrder=desc&name=${name}&page=${pageNumber}&statusFilter=${statusFilter}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" class="sort-link ${sortColumn == 'Order' && sortOrder == 'desc' ? 'active' : ''}" aria-label="Sắp xếp thứ tự giảm dần"><i class="bi bi-caret-down-fill"></i></a>
+                                        
                                     </th>
                                     <th class="${sortColumn == 'TrangThai' ? 'sorted' : ''}">
                                         Trạng thái

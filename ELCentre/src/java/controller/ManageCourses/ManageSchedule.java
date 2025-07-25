@@ -41,7 +41,6 @@ public class ManageSchedule extends HttpServlet {
                 year = Integer.parseInt(request.getParameter("year"));
             }
         } catch (NumberFormatException e) {
-            System.out.println("Invalid month/year parameters: " + e.getMessage());
         }
 
         LichHocDAO dao = new LichHocDAO();
@@ -89,12 +88,11 @@ public class ManageSchedule extends HttpServlet {
                 if (success) {
                     request.setAttribute("suc", "Xóa tất cả lịch học trong ngày " + day + "/" + month + "/" + year + " thành công!");
                 } else {
-                    request.setAttribute("err", "Không có lịch học để xóa hoặc xảy ra lỗi!");
+                    request.setAttribute("err", "Không có lịch học để xóa hoặc xảy ra lỗi(Xóa ngày trong quá khứ!");
                 }
             } catch (NumberFormatException e) {
                 request.setAttribute("err", "Dữ liệu ngày không hợp lệ!");
             } catch (Exception e) {
-                System.out.println("Error in deleteLichHocByDate1: " + e.getMessage());
                 e.printStackTrace();
                 request.setAttribute("err", "Đã xảy ra lỗi khi xóa lịch học!");
             }

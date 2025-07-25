@@ -126,6 +126,7 @@
                 height: 100vh;
                 padding: 20px;
                 box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+                overflow-y:auto;
             }
 
             .sidebar h4 {
@@ -408,6 +409,7 @@
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/adminGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+
             </ul>
 
             <div class="sidebar-section-title">Quản lý người dùng</div>
@@ -430,14 +432,13 @@
 
             <div class="sidebar-section-title">Hệ thống</div>
             <ul class="sidebar-menu">
-                <li><a href="#"><i class="fas fa-cog"></i> Cài đặt</a></li>
+                <li><a href="${pageContext.request.contextPath}/ManageSlider"><i class="fas fa-cog"></i> Cài Đặt HomePage</a></li>
             </ul>
 
             <div class="sidebar-section-title">Khác</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=yeucautuvan"><i class="fas fa-blog"></i>Yêu cầu tư vấn</a></li>
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
-                <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
                 <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </div>
@@ -491,6 +492,7 @@
                             </thead>
                             <tbody>
                                 <c:forEach var="tk" items="${sessionScope.taikhoans}">
+                                    <c:if test="${tk.trangThai != 'Pending'}">
                                     <tr>
                                         <td>${tk.ID_TaiKhoan}</td>
                                         <td>${tk.hoTen}</td>
@@ -507,9 +509,13 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
+                                       
                                         <td>
                                             <div class="action-buttons">
-                                                <a class="btn-action view" href="${pageContext.request.contextPath}/adminActionWithUser?action=view&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-eye"></i>Chi tiết</a> |
+                                                <c:if test="${tk.userType != 'Staff'}">
+                                                    <a class="btn-action view" href="${pageContext.request.contextPath}/adminActionWithUser?action=view&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-eye"></i>Chi tiết</a> |
+                                                </c:if>
+
                                                 <c:choose>
                                                     <c:when test="${tk.trangThai == 'Active'}">
                                                         <a class="btn-action disable" href="${pageContext.request.contextPath}/adminActionWithUser?action=disable&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-user-slash"></i>Vô hiệu hóa</a>
@@ -518,11 +524,17 @@
                                                         <a class="btn-action enable" href="${pageContext.request.contextPath}/adminActionWithUser?action=enable&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-user-check"></i>Kích hoạt</a>
                                                     </c:otherwise>
                                                 </c:choose>
-                                                |
-                                                <a class="btn-action update" href="${pageContext.request.contextPath}/adminActionWithUser?action=update&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-edit"></i>Cập nhật</a>
+
+                                                <c:if test="${tk.userType != 'Admin'}">
+                                                    |
+                                                    <a class="btn-action update" href="${pageContext.request.contextPath}/adminActionWithUser?action=update&id=${tk.ID_TaiKhoan}&type=${tk.userType}"><i class="fas fa-edit"></i>Cập nhật</a>
+                                                </c:if>
                                             </div>
                                         </td>
+
+                                        
                                     </tr>
+                                    </c:if>
                                 </c:forEach>
                             </tbody>
                         </table>
@@ -571,7 +583,7 @@
             const statusFilter = document.getElementById("statusFilter");
             const roleFilter = document.getElementById("roleFilter");
             const table = document.querySelector("#userTable tbody");
-            let allRows = []; 
+            let allRows = [];
             let filteredRows = [];
             let currentPage = 1;
             const rowsPerPage = 14;

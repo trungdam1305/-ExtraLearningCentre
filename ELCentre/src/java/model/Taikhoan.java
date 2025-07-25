@@ -14,7 +14,9 @@ public class TaiKhoan {
 
     public TaiKhoan() {
     }
-
+    
+    
+    
     public TaiKhoan(Integer ID_TaiKhoan, String Email, String MatKhau, Integer ID_VaiTro, String UserType, String SoDienThoai, String TrangThai, LocalDateTime NgayTao) {
         this.ID_TaiKhoan = ID_TaiKhoan;
         this.Email = Email;
@@ -25,6 +27,17 @@ public class TaiKhoan {
         this.TrangThai = TrangThai;
         this.NgayTao = NgayTao;
     }
+    
+    public TaiKhoan(String email, String matKhau, Integer idVaiTro, String userType, String soDienThoai, String trangThai, LocalDateTime NgayTao) {
+    this.Email = email;
+    this.MatKhau = matKhau;
+    this.ID_VaiTro = idVaiTro;
+    this.UserType = userType;
+    this.SoDienThoai = soDienThoai;
+    this.TrangThai = trangThai;
+    this.NgayTao = NgayTao;
+}
+
 
     
     public Integer getID_TaiKhoan() { return ID_TaiKhoan; }
@@ -51,3 +64,5 @@ public class TaiKhoan {
     public LocalDateTime getNgayTao() { return NgayTao; }
     public void setNgayTao(LocalDateTime NgayTao) { this.NgayTao = NgayTao; }
 }
+
+

@@ -10,7 +10,9 @@ package controller;
 import dal.GiaoVien_LopHocDAO;
 import dal.GiaoVienDAO;
 import dal.LichHocDAO;
+import dal.SalaryDAO;
 import dal.SlotHocDAO;
+import dal.ThongBaoDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,27 +20,33 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.GiaoVien;
 import model.GiaoVien_TruongHoc;
 import model.LichHoc;
+import model.SalaryInfo;
 import model.SlotHoc;
 import model.TaiKhoan;
+import model.ThongBao;
 
 /**
  *
  * @author admin
  */
 public class TeacherDashboard extends HttpServlet {
-    
+    SalaryDAO salaryDAO = new SalaryDAO();
     /** * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -90,6 +98,9 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     int idTaiKhoan = user.getID_TaiKhoan();
     GiaoVienDAO gvDao = new GiaoVienDAO();
     
+    ArrayList<ThongBao> thongbaos = ThongBaoDAO.getThongBaoByTaiKhoanIdD(idTaiKhoan) ; 
+    
+    
     // Fetch dashboard statistics for the teacher
     int numHocSinh = GiaoVien_LopHocDAO.teacherGetTongSoHocSinh(idTaiKhoan); // Total students taught by this teacher
     int numLopHoc = GiaoVien_LopHocDAO.teacherGetTongSoLopHoc(idTaiKhoan); // Total classes taught by this teacher
@@ -103,7 +114,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     request.setAttribute("gv", gvDao.getGiaoVienByID(idTaiKhoan)); // Teacher's personal information
     request.setAttribute("numHocSinh", numHocSinh); 
     request.setAttribute("numLopHoc", numLopHoc);
-    request.setAttribute("luongGV", luongGv);
+    
     
     // --- Logic for displaying weekly schedule ---
     LocalDate startOfWeek; // Variable to store the start date of the displayed week
@@ -158,13 +169,22 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     // Define date formatters for display purposes
     DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     DateTimeFormatter weekInputFormatter = DateTimeFormatter.ofPattern("YYYY'-W'ww");
-
+    int idGv = GiaoVienDAO.getGiaoVienByID(idTaiKhoan).getID_GiaoVien();
+    List<SalaryInfo> salaryList;
+        try {
+            salaryList = salaryDAO.calculateTeacherSalary(idGv, "15-06-2025", "14-07-2025");
+            request.setAttribute("luongGV", salaryList);
+        } catch (SQLException ex) {
+            Logger.getLogger(TeacherDashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    
     // Set schedule-related attributes for the JSP
     request.setAttribute("displayWeekRange", "Tuần từ " + startOfWeek.format(displayFormatter) + " đến " + endOfWeek.format(displayFormatter)); // Display range of the week
     request.setAttribute("previousWeekLink", startOfWeek.minusWeeks(1).toString()); // Link for previous week
     request.setAttribute("nextWeekLink", startOfWeek.plusWeeks(1).toString()); // Link for next week
     request.setAttribute("selectedWeekValue", startOfWeek.format(weekInputFormatter)); // Value for HTML input type="week"
-
+    request.setAttribute("thongbaos", thongbaos);
     request.setAttribute("scheduleMap", scheduleMap); // The map of schedules
     request.setAttribute("timeSlots", timeSlots); // All defined time slots
     request.setAttribute("weekDates", weekDates); // Dates for each day of the current week

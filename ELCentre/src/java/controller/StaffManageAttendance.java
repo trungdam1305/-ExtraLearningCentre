@@ -102,7 +102,7 @@ public class StaffManageAttendance extends HttpServlet {
         request.setAttribute("attendanceMap", attendanceMap);
         
         // Forward the request to the JSP page for displaying the attendance report
-        request.getRequestDispatcher("/views/teacher/classAttendanceReport.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/staff/classAttendanceReport.jsp").forward(request, response);
     } catch (Exception e) {
         // Print stack trace for debugging purposes
         e.printStackTrace();

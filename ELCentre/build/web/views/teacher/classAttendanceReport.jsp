@@ -480,7 +480,7 @@
                 display: flex;
                 flex-wrap: wrap; 
                 align-items: center;
-                gap: 15p
+                gap: 15p;
                 padding: 15px;
                 background-color: #f8f9fa;
                 border: 1px solid #dee2e6;

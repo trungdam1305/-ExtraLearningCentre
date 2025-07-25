@@ -5,6 +5,7 @@ package dal;
  *
  * @author wrx_Chur04
  */
+import java.math.BigDecimal;
 import model.HocSinh_ChiTietHoc;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
@@ -23,7 +24,7 @@ public class HocSinh_ChiTietDAO {
         try {
             String sql = """
 
-                         select DISTINCT  LH.ID_KhoaHoc ,  HSLH.ID_LopHoc , HSLH.ID_HocSinh ,GV.ID_GiaoVien  , LH.TenLopHoc   ,  GV.HoTen , LH.GhiChu , LH.TrangThai , LH.SoTien , HP.TinhTrangThanhToan , LH.NgayTao , LH.Image    from HocSinh_LopHoc HSLH
+                        select DISTINCT  LH.ID_KhoaHoc ,  HSLH.ID_LopHoc , HSLH.ID_HocSinh ,GV.ID_GiaoVien  , LH.TenLopHoc   ,  GV.HoTen , LH.GhiChu , LH.TrangThai , LH.SoTien , HP.TinhTrangThanhToan , LH.NgayTao , LH.Image    from HocSinh_LopHoc HSLH
                         join  LopHoc LH
                         on HSLH.ID_LopHoc = LH.ID_LopHoc 
                         JOIN GiaoVien_LopHoc GVLH 
@@ -34,6 +35,7 @@ public class HocSinh_ChiTietDAO {
                         on  HP.ID_LopHoc = HSLH.ID_LopHoc
                         WHERE HSLH.ID_HocSinh = ? 
                         and LH.TrangThai = N'Đang học'
+                        
 
                          """;
             PreparedStatement statement = db.getConnection().prepareStatement(sql);
@@ -173,7 +175,7 @@ public class HocSinh_ChiTietDAO {
         }
     }
     
-   public static boolean updateTruongLopGiaoVien(String idTruongHoc  , String lopTrenTruong  , String sdt , String hot , String ID_GiaoVien , int Luong ) {
+   public static boolean updateTruongLopGiaoVien(String idTruongHoc  , String lopTrenTruong  , String sdt , int hot , String ID_GiaoVien , BigDecimal Luong ) {
         
         DBContext db = DBContext.getInstance() ; 
        int rs = 0 ; 
@@ -190,8 +192,8 @@ public class HocSinh_ChiTietDAO {
                          """ ; 
             PreparedStatement statement = db.getConnection().prepareStatement(sql) ; 
             statement.setString(1, idTruongHoc);
-            statement.setInt(2, Luong);
-            statement.setString(3, hot);
+            statement.setBigDecimal(2, Luong);
+            statement.setInt(3, hot);
             statement.setString(4, lopTrenTruong);
             statement.setString(5, sdt);
             statement.setString(6, ID_GiaoVien);

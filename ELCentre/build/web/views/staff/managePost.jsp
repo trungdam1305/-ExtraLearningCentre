@@ -65,13 +65,13 @@ Author : trungdam
         </ul>
         <div class="sidebar-section-title">Quản lý học tập</div>
         <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
+            <li><a href="${pageContext.request.contextPath}/Staff_ManageCourse"><i class="fas fa-book"></i> Khoá học</a></li>
             <li><a href="${pageContext.request.contextPath}/StaffManageTimeTable"><i class="fas fa-calendar-alt"></i> Thời Khóa Biểu</a></li>
             <li><a href="${pageContext.request.contextPath}/StaffManageAttendance"><i class="fas fa-check-square"></i> Điểm danh</a></li>
         </ul>
         <div class="sidebar-section-title">Quản lý tài chính</div>
         <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/staffViewSalary"><i class="fas fa-money-check-alt"></i> Học phí</a></li>
+            <li><a href="${pageContext.request.contextPath}/staffGoToTuition"><i class="fas fa-money-check-alt"></i> Học phí</a></li>
         </ul>
         <div class="sidebar-section-title">Hỗ trợ</div>
         <ul class="sidebar-menu">
@@ -136,7 +136,6 @@ Author : trungdam
                                 <th>Tiêu đề</th>
                                 <th>Keyword</th>
                                 <th>KeyTag</th>
-                                <th>Phân loại</th>
                                 <th>Ngày đăng</th>
                                 <th style="width: 120px;">Hành động</th>
                             </tr>
@@ -153,7 +152,6 @@ Author : trungdam
                                             <td>${blog.blogTitle}</td>
                                             <td class="text-center"><span class="badge bg-success">${blog.keyWord}</span></td>
                                             <td class="text-center"><span class="badge bg-info text-dark">${blog.keyTag}</span></td>
-                                            <td class="text-center"><span class="badge bg-secondary">${blog.phanLoai}</span></td>
                                             <td class="text-center">${blog.formattedDate}</td>
                                             <td class="text-center">
                                                 <a href="${pageContext.request.contextPath}/ManagePost?action=edit&id=${blog.ID_Blog}" class="btn btn-warning btn-sm" title="Sửa"><i class="fas fa-edit"></i></a>

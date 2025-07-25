@@ -42,7 +42,7 @@
         <div id="layerslider_1_5r4q8o8aqo3t" class="ls-wp-container fitvidsignore" style="width:1000px;height:630px;margin:0 auto;margin-bottom: 0px; position: relative;">
             <c:forEach var="slide" items="${sliders}">
                 <div class="ls-slide" data-ls="duration:5000;transition2d:1,4;timeshift:-1000;">
-                    <img src="${pageContext.request.contextPath}/${slide.image}" class="ls-bg" alt="${slide.title}" decoding="async" fetchpriority="high" style='height:80%; width: 100%'/>
+                    <img src="${pageContext.request.contextPath}/${slide.image}" class="ls-bg" alt="${slide.title}" decoding="async" fetchpriority="high" style='height:530px; width: 1024px'/>
                     <p class="ls-l" style="position: absolute;top: 0px;left: 10px;margin: 0;font-weight: bold;text-transform: uppercase;font-size: 35px;color: #355c7d;pointer-events: none;white-space: nowrap;">
                         ${slide.title}
                     </p>
@@ -170,20 +170,20 @@
                                             <div class="column dt-sc-one-third">
                                                 <article class="dt-sc-course">
                                                     <div class="dt-sc-course-thumb">
-                                                        <a href="#">
+                                                        <a href="${pageContext.request.contextPath}/ClassDetailsServlet?classId=${lop.getID_LopHoc()}">
                                                             <img src="${pageContext.request.contextPath}/${lop.image}" 
                                                                  alt="${lop.tenLopHoc}" 
-                                                                 style="width:420px; height:250px; object-fit: cover; border-radius: 5px;" />
+                                                                 style="width:100%; height:250px; object-fit: cover; border-radius: 5px;" />
                                                         </a>
                                                     </div>
                                                     <div class="dt-sc-course-content">
                                                         <p class="dt-sc-course-meta">
-                                                            <a href="#">Khóa học ID: ${lop.ID_KhoaHoc}</a>
+                                                            <a href="${pageContext.request.contextPath}/ClassDetailsServlet?classId=${lop.getID_LopHoc()}">Khóa học ID: ${lop.ID_KhoaHoc}</a>
                                                         </p>
                                                         <h2 class="dt-sc-course-title">
-                                                            <a href="#" style= "font-family:'Open Sans'; font-weight: bold;" >${lop.tenLopHoc}</a>
+                                                            <a href="${pageContext.request.contextPath}/ClassDetailsServlet?classId=${lop.getID_LopHoc()}" style= "font-family:'Open Sans'; font-weight: bold;" >${lop.tenLopHoc}</a>
                                                         </h2>
-                                                         <span class="dt-sc-lessons">Thời gian học: ${lop.ID_Schedule}</span> <!-- Gợi ý đổi thành slotThoiGian -->
+                                                         <span class="dt-sc-lessons">Giáo viên chủ nhiệm: ${lop.tenGiaoVien}</span> <!-- Gợi ý đổi thành slotThoiGian -->
                                                     </div>
                                                 </article>
                                             </div>
