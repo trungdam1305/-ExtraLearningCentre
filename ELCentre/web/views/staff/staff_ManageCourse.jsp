@@ -584,8 +584,6 @@
                                 </th>
                                 <th class="${sortColumn == 'Order' ? 'sorted' : ''}">
                                     Thứ tự ưu tiên
-                                    <a href="${pageContext.request.contextPath}/Staff_ManageCourse?action=sort&sortColumn=Order&sortOrder=asc&name=${name}&page=${pageNumber}&statusFilter=${statusFilter}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" class="sort-link ${sortColumn == 'Order' && sortOrder == 'asc' ? 'active' : ''}" aria-label="Sắp xếp thứ tự tăng dần"><i class="bi bi-caret-up-fill"></i></a>
-                                    <a href="${pageContext.request.contextPath}/Staff_ManageCourse?action=sort&sortColumn=Order&sortOrder=desc&name=${name}&page=${pageNumber}&statusFilter=${statusFilter}&khoiFilter=${khoiFilter}&orderFilter=${orderFilter}&startDate=${startDate}&endDate=${endDate}" class="sort-link ${sortColumn == 'Order' && sortOrder == 'desc' ? 'active' : ''}" aria-label="Sắp xếp thứ tự giảm dần"><i class="bi bi-caret-down-fill"></i></a>
                                 </th>
                                 <th class="${sortColumn == 'TrangThai' ? 'sorted' : ''}">
                                     Trạng thái

@@ -86,7 +86,7 @@ public class ThongBaoDAO {
         return tb;
     }
         
-    //Hàm lấy ra tất cả yêu cầu tư 
+        //Hàm lấy ra tất cả yêu cầu tư 
     public static ArrayList<ThongBao> getAllTuVan() {
         ArrayList<ThongBao> list = new ArrayList<>();
         String sql = "SELECT ID_ThongBao, NoiDung, ThoiGian, Status FROM ThongBao WHERE NoiDung LIKE N'%tư vấn%' ORDER BY ThoiGian DESC";
@@ -133,31 +133,7 @@ public class ThongBaoDAO {
             return "";
         }
     }
-
     
-    
-
-//    //Hàm lấy thông báo theo id tài khoản
-//    public static List<ThongBao> getThongBaoByTaiKhoanId(int idTaiKhoan) throws SQLException {
-//         List<ThongBao> list = new ArrayList<>();
-//         String sql = "SELECT * FROM ThongBao WHERE ID_TaiKhoan = ? ORDER BY ThoiGian DESC";
-//         try (Connection conn = DBContext.getInstance().getConnection();
-//              PreparedStatement ps = conn.prepareStatement(sql)) {
-//              ps.setInt(1, idTaiKhoan);
-//              ResultSet rs = ps.executeQuery();
-//              while (rs.next()) {
-//                 ThongBao tb = new ThongBao();
-//                 tb.setID_ThongBao(rs.getInt("ID_ThongBao"));
-//                 tb.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
-//                 tb.setNoiDung(rs.getString("NoiDung"));
-//                 tb.setThoiGian(rs.getTimestamp("ThoiGian").toLocalDateTime());
-//                 list.add(tb);
-//             }
-//         } catch (SQLException e) {
-//             e.printStackTrace();
-//         }
-//         return list;
-//     } 
      public static ArrayList<ThongBao> getThongBaoByTaiKhoanId(int idTaiKhoan)  {
          DBContext db = DBContext.getInstance() ; 
          ArrayList<ThongBao> thongbaos = new ArrayList<ThongBao>() ; 
@@ -645,6 +621,7 @@ public class ThongBaoDAO {
          }
      } 
      
+          
     public static ThongBao getThongBaoByID(int id) {
     String sql = "SELECT * FROM ThongBao WHERE ID_ThongBao = ?";
     try (Connection con = DBContext.getInstance().getConnection();
@@ -727,6 +704,5 @@ public class ThongBaoDAO {
         }
     }
 
+
 }
-
-

@@ -31,6 +31,7 @@ import model.KhoaHoc;
 import model.KhoiHoc;
 import model.LichHoc;
 import model.LopHoc;
+import model.TaiKhoan;
 
 /**
  *
@@ -102,7 +103,7 @@ public class StaffManageAttendance extends HttpServlet {
         request.setAttribute("attendanceMap", attendanceMap);
         
         // Forward the request to the JSP page for displaying the attendance report
-        request.getRequestDispatcher("/views/teacher/classAttendanceReport.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/staff/classAttendanceReport.jsp").forward(request, response);
     } catch (Exception e) {
         // Print stack trace for debugging purposes
         e.printStackTrace();
@@ -118,9 +119,11 @@ public class StaffManageAttendance extends HttpServlet {
         if (action == null) action = ""; // Default action if not provided
         
         HttpSession session = request.getSession();
-        // Check if user is logged in
-        if (session.getAttribute("user") == null) {
-            response.sendRedirect("views/login.jsp"); // Redirect to login page if not logged in
+        TaiKhoan user = (TaiKhoan) session.getAttribute("user");
+
+        // Check if user is logged in and has the correct role (ID_VaiTro = 2, staff)
+        if (user == null || user.getID_VaiTro() != 2) {
+            response.sendRedirect(request.getContextPath() + "/views/login.jsp");
             return;
         }
         

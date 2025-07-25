@@ -124,6 +124,7 @@
                 height: 100vh;
                 padding: 20px;
                 box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+                overflow-y:auto;
             }
 
             .sidebar h4 {
@@ -423,6 +424,7 @@
             <div class="sidebar-section-title">Tổng quan</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/adminGoToFirstPage"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+
             </ul>
 
             <div class="sidebar-section-title">Quản lý người dùng</div>
@@ -445,14 +447,13 @@
 
             <div class="sidebar-section-title">Hệ thống</div>
             <ul class="sidebar-menu">
-                <li><a href="#"><i class="fas fa-cog"></i> Cài đặt</a></li>
+                <li><a href="${pageContext.request.contextPath}/ManageSlider"><i class="fas fa-cog"></i> Cài Đặt HomePage</a></li>
             </ul>
 
             <div class="sidebar-section-title">Khác</div>
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=yeucautuvan"><i class="fas fa-blog"></i>Yêu cầu tư vấn</a></li>
                 <li><a href="${pageContext.request.contextPath}/adminGetFromDashboard?action=thongbao"><i class="fas fa-bell"></i> Thông báo</a></li>
-                <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
                 <li><a href="${pageContext.request.contextPath}/LogoutServlet"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </div>
@@ -545,8 +546,8 @@
                                                 <a class="btn-action update" title="Xem lớp và chuyển lớp" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewClass&id=${hocsinh.getID_HocSinh()}">
                                                      <i class="fas fa-exchange-alt"></i> Xem lớp & Chuyển lớp
                                                 </a>
-                                                <a class="btn-action enable" title="Học phí và Thông báo" href="${pageContext.request.contextPath}/adminActionWithStudent?action=viewTuiTionAndSendNTF&id=${hocsinh.getID_HocSinh()}&idtaikhoan=${hocsinh.getID_TaiKhoan()}&name=${hocsinh.getHoTen()}">
-                                                    <i class="fas fa-money-bill-wave"></i> Học Phí & Thông báo
+                                                <a class="btn-action enable" title="Thông báo" href="${pageContext.request.contextPath}/views/admin/adminSendNotificationStudent.jsp?id=${hocsinh.getID_HocSinh()}&idtaikhoan=${hocsinh.getID_TaiKhoan()}&name=${hocsinh.getHoTen()}">
+                                                    <i class="fas fa-money-bill-wave"></i> Thông báo
                                                 </a>
                                                      
                                             </td>
@@ -666,3 +667,4 @@
 
         </body>
     </html>
+

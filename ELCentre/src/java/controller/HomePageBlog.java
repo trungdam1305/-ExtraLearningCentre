@@ -89,8 +89,6 @@ public class HomePageBlog extends HttpServlet {
             request.getRequestDispatcher("views/Home-Blog/Homepage-Blog.jsp").forward(request, response);
 
         } catch (Exception e) {
-            log("Error fetching blog data", e);
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Could not load blog data.");
         }
     }
 

@@ -78,14 +78,14 @@ public class SendAdviceMailServlet extends HttpServlet {
             ThongBao tb = ThongBaoDAO.getThongBaoById(id);
             if (tb == null) {
                 request.getSession().setAttribute("errorMessage", "Không tìm thấy thông báo.");
-                response.sendRedirect(request.getContextPath() + "/adminGetFromDashboard?action=yeucautuvan");
+                response.sendRedirect(request.getContextPath() + "/views/admin/adminApproveRegisterUser.jsp");
                 return;
             }
 
             String email = extractEmail(tb.getNoiDung());
             if (email == null || email.isEmpty()) {
                 request.getSession().setAttribute("errorMessage", "Không tìm thấy địa chỉ email trong nội dung.");
-                response.sendRedirect(request.getContextPath() + "/adminGetFromDashboard?action=yeucautuvan");
+                response.sendRedirect(request.getContextPath() + "/views/admin/adminApproveRegisterUser.jsp");
                 return;
             }
 
@@ -97,7 +97,7 @@ public class SendAdviceMailServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             request.getSession().setAttribute("errorMessage", "Đã xảy ra lỗi khi gửi email.");
-            response.sendRedirect(request.getContextPath() + "/adminGetFromDashboard?action=yeucautuvan");
+            response.sendRedirect(request.getContextPath() + "/views/admin/adminApproveRegisterUser.jsp");
         }
     }
     // Hàm tách mail từ nội dung thông báo

@@ -38,7 +38,6 @@
     .sidebar {
         width: 260px;
         background-color: #1F4E79;
-        height: 100vh;
         padding: 20px;
         color: white;
         box-sizing: border-box;

@@ -20,6 +20,7 @@ import dal.ThongBaoDAO;
 import dal.TruongHocDAO;
 import dao.UserLogsDAO;
 import jakarta.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import model.HocSinh;
 import model.HocSinh_SDT;
@@ -159,7 +160,9 @@ public class adminActionWithTeacher extends HttpServlet {
         String sdt = request.getParameter("sdt");
         String luong = request.getParameter("luong");
         String isHot = request.getParameter("hot");
+        int IsHot = Integer.parseInt(isHot);
         int ID_TruongGV = Integer.parseInt(idTruong);
+        double luong1 = Double.parseDouble(luong);
         ArrayList<HocSinh> truongVaLopDangHocCuaHocSinhTrongLopGiaoVien = HocSinh_ChiTietDAO.adminGetLopHocCuaHocSinhSoVoiGiaoVien(ID_GiaoVien);
 
         boolean canUpdate = true;
@@ -175,7 +178,7 @@ public class adminActionWithTeacher extends HttpServlet {
         if (canUpdate) {
             try {
                 int ID_TaiKhoan = Integer.parseInt(ID_taikhoan);
-                int Luong = Integer.parseInt(luong);
+                BigDecimal Luong = BigDecimal.valueOf(luong1);
                 if (sdt.length() != 10) {
                     throw new Exception("Số điện thoại phải dài 10 chữ số!");
                 }
@@ -184,12 +187,10 @@ public class adminActionWithTeacher extends HttpServlet {
                     throw new Exception("Số điện thoại phải bắt đầu bằng số 0!");
                 }
 
-                if (Luong < 0) {
-                    throw new Exception("Lương phải lớn hơn 0! ");
-                }
+
 
                 boolean s1 = TaiKhoanDAO.adminUpdateInformationAccount(sdt, ID_TaiKhoan);
-                boolean s2 = HocSinh_ChiTietDAO.updateTruongLopGiaoVien(idTruong, lopTrenTruong, sdt, isHot, ID_GiaoVien, Luong);
+                boolean s2 = HocSinh_ChiTietDAO.updateTruongLopGiaoVien(idTruong, lopTrenTruong, sdt, IsHot, ID_GiaoVien, Luong);
                 if (s1 == true && s2 == true) {
                     request.setAttribute("message", "Thay đổi thành công!");
                     UserLogs log = new UserLogs(0, 1, "Thay đổi thông tin giáo viên có ID tài khoản " + ID_TaiKhoan, LocalDateTime.now());

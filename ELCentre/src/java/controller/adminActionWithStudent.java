@@ -77,7 +77,7 @@ public class adminActionWithStudent extends HttpServlet {
                 break;
 
             case "viewTuiTionAndSendNTF":
-                doViewTuiTionAndSendNotification(request, response);
+//                doViewTuiTionAndSendNotification(request, response);
                 break;
         }
     }
@@ -176,20 +176,20 @@ public class adminActionWithStudent extends HttpServlet {
         }
 
     }
-    protected void doViewTuiTionAndSendNotification(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        String ID = request.getParameter("id");
-        String ID_TaiKhoan = request.getParameter("idtaikhoan");
-        String name = request.getParameter("name") ; 
-        ArrayList<HocSinh_ChiTietHoc> hocsinhchitiets = HocSinh_ChiTietDAO.adminGetAllLopHocCuaHocSinh(ID);
-        if (hocsinhchitiets != null) {
-            request.setAttribute("name", name);
-            request.setAttribute("idtk", ID_TaiKhoan);
-            request.setAttribute("hocsinhchitiets", hocsinhchitiets);
-            request.getRequestDispatcher("views/admin/adminViewHocPhiHocSinh.jsp").forward(request, response);
-        }
-    }
+//    protected void doViewTuiTionAndSendNotification(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        PrintWriter out = response.getWriter();
+//        String ID = request.getParameter("id");
+//        String ID_TaiKhoan = request.getParameter("idtaikhoan");
+//        String name = request.getParameter("name") ; 
+//        ArrayList<HocSinh_ChiTietHoc> hocsinhchitiets = HocSinh_ChiTietDAO.adminGetAllLopHocCuaHocSinh(ID);
+//        if (hocsinhchitiets != null) {
+//            request.setAttribute("name", name);
+//            request.setAttribute("idtk", ID_TaiKhoan);
+//            request.setAttribute("hocsinhchitiets", hocsinhchitiets);
+//            request.getRequestDispatcher("views/admin/adminViewHocPhiHocSinh.jsp").forward(request, response);
+//        }
+//    }
 
     protected void doSendNotification(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -245,3 +245,6 @@ public class adminActionWithStudent extends HttpServlet {
     request.getRequestDispatcher("/views/admin/viewLopHoc_HocSinh.jsp").forward(request, response);
 }
 }
+
+
+

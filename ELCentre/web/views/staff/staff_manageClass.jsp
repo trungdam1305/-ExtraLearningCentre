@@ -690,12 +690,11 @@
         </ul>
         <div class="sidebar-section-title">Quản lý tài chính</div>
         <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/staffViewSalary"><i class="fas fa-money-check-alt"></i> Học phí</a></li>
+            <li><a href="${pageContext.request.contextPath}/staffGoToTuition"><i class="fas fa-money-check-alt"></i> Học phí</a></li>
         </ul>
         <div class="sidebar-section-title">Hỗ trợ</div>
         <ul class="sidebar-menu">
             <li><a href="${pageContext.request.contextPath}/staffGetSupportRequests"><i class="fas fa-envelope-open-text"></i> Yêu cầu hỗ trợ</a></li>
-            <li><a href="${pageContext.request.contextPath}/staffGetConsultationRequests"><i class="fas fa-blog"></i> Yêu cầu tư vấn</a></li>
         </ul>
         <div class="sidebar-section-title">Khác</div>
         <ul class="sidebar-menu">
@@ -826,8 +825,6 @@
                                 </th>
                                 <th class="${sortColumn == 'Order' ? 'sorted' : ''}">
                                     Thứ tự ưu tiên
-                                    <a href="${pageContext.request.contextPath}/Staff_ManageClass?action=sort&sortColumn=Order&sortOrder=asc&searchQuery=${searchQuery}&page=${page}&sortName=${sortName}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'Order' && sortOrder == 'asc' ? 'active' : ''}" aria-label="Sắp xếp thứ tự tăng dần"><i class="bi bi-caret-up-fill"></i></a>
-                                    <a href="${pageContext.request.contextPath}/Staff_ManageClass?action=sort&sortColumn=Order&sortOrder=desc&searchQuery=${searchQuery}&page=${page}&sortName=${sortName}&teacherFilter=${teacherFilter}&feeFilter=${feeFilter}&orderFilter=${orderFilter}&ID_KhoaHoc=${ID_KhoaHoc}&ID_Khoi=${ID_Khoi}" class="sort-link ${sortColumn == 'Order' && sortOrder == 'desc' ? 'active' : ''}" aria-label="Sắp xếp thứ tự giảm dần"><i class="bi bi-caret-down-fill"></i></a>
                                 </th>
                                 <th class="${sortColumn == 'TrangThai' ? 'sorted' : ''}">
                                     Trạng thái

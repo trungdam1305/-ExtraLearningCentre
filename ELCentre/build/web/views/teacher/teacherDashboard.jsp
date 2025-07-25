@@ -608,10 +608,6 @@
                     <h3><i class="fas fa-school"></i> Tổng số lớp học đang giảng dạy</h3>
                     <p>${numLopHoc}</p>
                 </div>
-                <div class="stat-card stat-lophoc">
-                    <h3><i class="fas fa-money-bill"></i> Lương hằng tháng</h3>
-                    <p>${luongGV}</p>
-                </div>
             </div>
 
             <div class="notification-container">

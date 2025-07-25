@@ -42,7 +42,7 @@ import java.util.UUID;
 )
 public class ManageClass extends HttpServlet {
 
-    private static final String UPLOAD_DIR = "images/class";
+    private static final String UPLOAD_DIR = "";
 
     private void setCommonAttributes(HttpServletRequest request, String classCode, String tenLopHoc, Integer siSoToiDa,
             Integer siSoToiThieu, String ghiChu, String trangThai, String soTien, Integer order,

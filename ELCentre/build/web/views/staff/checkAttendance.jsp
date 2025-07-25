@@ -397,12 +397,11 @@ Author : trungdam
         </ul>
         <div class="sidebar-section-title">Quản lý tài chính</div>
         <ul class="sidebar-menu">
-            <li><a href="${pageContext.request.contextPath}/staffViewSalary"><i class="fas fa-money-check-alt"></i> Học phí</a></li>
+            <li><a href="${pageContext.request.contextPath}/staffGoToTuition"><i class="fas fa-money-check-alt"></i> Học phí</a></li>
         </ul>
         <div class="sidebar-section-title">Hỗ trợ</div>
         <ul class="sidebar-menu">
             <li><a href="${pageContext.request.contextPath}/staffGetSupportRequests"><i class="fas fa-envelope-open-text"></i> Yêu cầu hỗ trợ</a></li>
-            <li><a href="${pageContext.request.contextPath}/staffGetConsultationRequests"><i class="fas fa-blog"></i> Yêu cầu tư vấn</a></li>
         </ul>
         <div class="sidebar-section-title">Khác</div>
         <ul class="sidebar-menu">
@@ -472,7 +471,7 @@ Author : trungdam
                                     <td>${lop.tenLopHoc}</td>
                                     <td>${lop.tenGiaoVien}</td>
                                     <td class="text-center">
-                                        <a href="StaffManageAttendance?action=viewDetail&classId=${lop.ID_LopHoc}" class="btn btn-sm" style="background: linear-gradient(135deg, #E0F7FA, #B2EBF2)">
+                                        <a href="StaffManageAttendance?action=showClassAttendanceReport&classId=${lop.ID_LopHoc}" class="btn btn-sm" style="background: linear-gradient(135deg, #E0F7FA, #B2EBF2)">
                                             <i class="fas fa-calendar-week"></i> Xem Điểm Danh
                                         </a>
                                     </td>

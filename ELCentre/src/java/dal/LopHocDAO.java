@@ -19,8 +19,10 @@ public class LopHocDAO {
         DBContext db = DBContext.getInstance();
         List<LopHoc> list = new ArrayList<>();
         String sql = """
-                     SELECT * FROM [dbo].[LopHoc]
-                     WHERE [Order] <> 0""";
+                     SELECT * FROM [dbo].[LopHoc] lh
+                     JOIN GiaoVien_LopHoc gvlh on lh.ID_LopHoc = gvlh.ID_LopHoc
+                     JOIN GiaoVien gv on gvlh.ID_GiaoVien = gv.ID_GiaoVien
+                                          WHERE [Order] <> 0""";
         try (PreparedStatement statement = db.getConnection().prepareStatement(sql);) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
@@ -34,7 +36,7 @@ public class LopHocDAO {
                 lh.setTrangThai(rs.getString("TrangThai"));
                 lh.setSoTien(rs.getString("SoTien"));
                 lh.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
-                                        
+                lh.setTenGiaoVien(rs.getString("HoTen"));
                 lh.setImage(rs.getString("Image"));
                 list.add(lh);
             }
@@ -1064,9 +1066,8 @@ public class LopHocDAO {
         List<LopHoc> list = new ArrayList<>();
         List<Object> params = new ArrayList<>();
         StringBuilder sql = new StringBuilder("""
-            SELECT l.*, p.TenPhongHoc, gv.HoTen AS TenGiaoVien , kh.TenKhoaHoc
+            SELECT l.*,gv.HoTen AS TenGiaoVien , kh.TenKhoaHoc
             FROM LopHoc l
-            JOIN PhongHoc p ON l.ID_PhongHoc = p.ID_PhongHoc
             LEFT JOIN GiaoVien_LopHoc gvlh ON l.ID_LopHoc = gvlh.ID_LopHoc
             LEFT JOIN GiaoVien gv ON gvlh.ID_GiaoVien = gv.ID_GiaoVien
             JOIN KhoaHoc kh ON kh.ID_KhoaHoc = l.ID_KhoaHoc
@@ -1095,7 +1096,6 @@ public class LopHocDAO {
                     lop.setSiSoToiDa(rs.getInt("SiSoToiDa"));
                     lop.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
                     lop.setGhiChu(rs.getString("GhiChu"));
-                    lop.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
                     lop.setTenGiaoVien(rs.getString("TenGiaoVien"));
                                       list.add(lop);
                 }

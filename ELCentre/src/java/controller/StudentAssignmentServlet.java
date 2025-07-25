@@ -2,6 +2,7 @@
 // Servlet: StudentAssignmentServlet
 package controller;
 
+import dal.HocSinhDAO;
 import dal.TaiBaiTapDAO;
 import dal.NopBaiTapDAO;
 import dal.LopHocDAO;
@@ -123,8 +124,7 @@ public class StudentAssignmentServlet extends HttpServlet {
 
         // Fetch student's submissions for the assignments currently displayed on the page
         Map<Integer, NopBaiTap> studentSubmissions = new HashMap<>(); // Map to store submissions (key: assignmentId, value: submission object)
-        int studentId = user.getID_TaiKhoan(); // Get the student's account ID
-
+        int studentId = HocSinhDAO.getHocSinhIdByTaiKhoanId(user.getID_TaiKhoan());
         for (TaoBaiTap assignment : assignments) { // Loop through each assignment
             // Get the submission for the current student and assignment
             NopBaiTap submission = submissionDAO.getSubmissionByStudentAndAssignment(studentId, assignment.getID_BaiTap()); 
@@ -160,7 +160,7 @@ public class StudentAssignmentServlet extends HttpServlet {
 
         // Get parameters from the form submission
         int assignmentId = Integer.parseInt(request.getParameter("assignmentId")); // Get the ID of the assignment being submitted
-        int studentId = user.getID_TaiKhoan(); // Get the student's ID from the session
+        int studentId = HocSinhDAO.getHocSinhIdByTaiKhoanId(user.getID_TaiKhoan()); // Get the student's ID from the session
 
         int classId = Integer.parseInt(request.getParameter("classId")); // Get the class ID to maintain context
         String searchQuery = request.getParameter("search"); // Get the search query to maintain filter state

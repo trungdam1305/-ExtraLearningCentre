@@ -5,13 +5,13 @@ package dal;
  *
  * @author wrx_Chur04
  */
+import java.sql.Connection;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement ;
 import java.sql.ResultSet ;
 import java.sql.SQLException ; 
 import java.util.ArrayList ;
 import model.TaiKhoan ; 
-import java.sql.Connection;
 public class TaiKhoanDAO {
     
     public static ArrayList<TaiKhoan> adminGetAllTaiKhoan(){
@@ -250,10 +250,10 @@ public class TaiKhoanDAO {
         }
         return null  ; 
     }
-    
+        
     public static boolean insertPendingAccount(String email, String hashedPassword, String sdt, String hoTen) {
     String sql = "INSERT INTO TaiKhoan (Email, MatKhau, ID_VaiTro, UserType, SoDienThoai, TrangThai, NgayTao) "
-               + "VALUES (?, ?, 3, N'HocSinh', ?, N'Pending', GETDATE())";
+               + "VALUES (?, ?, 4, N'HocSinh', ?, N'Pending', GETDATE())";
     try (Connection con = DBContext.getInstance().getConnection();
          PreparedStatement ps = con.prepareStatement(sql)) {
         ps.setString(1, email);
@@ -266,4 +266,44 @@ public class TaiKhoanDAO {
     return false;
 }
 
+    public static ArrayList<TaiKhoan> getPendingAccounts() {
+    ArrayList<TaiKhoan> list = new ArrayList<>();
+    String sql = "SELECT * FROM TaiKhoan WHERE TrangThai = 'Pending' ORDER BY NgayTao DESC";
+    try (Connection con = DBContext.getInstance().getConnection();
+         PreparedStatement ps = con.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        
+        while (rs.next()) {
+            TaiKhoan tk = new TaiKhoan(
+                rs.getInt("ID_TaiKhoan"),
+                rs.getString("Email"),
+                rs.getString("MatKhau"),
+                rs.getInt("ID_VaiTro"),
+                rs.getString("UserType"),
+                rs.getString("SoDienThoai"),
+                rs.getString("TrangThai"),
+                rs.getTimestamp("NgayTao").toLocalDateTime()
+            );
+            list.add(tk);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
+    
+    public static boolean updateTrangThai(int id, String newStatus) {
+    String sql = "UPDATE TaiKhoan SET TrangThai = ? WHERE ID_TaiKhoan = ?";
+    try (Connection con = DBContext.getInstance().getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, newStatus);
+        ps.setInt(2, id);
+        return ps.executeUpdate() > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}   
+
+       
 }

@@ -8,7 +8,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
     <title>Chi tiết học sinh</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/student-style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-pagination.js@1.6/simplePagination.css">
@@ -224,8 +223,6 @@
                                             <td>
                                                
                                                 <a href="${pageContext.request.contextPath}/ParentViewClassDetailServlet?idHocSinh=${hocSinh.ID_HocSinh}&classCode=${lop.classCode}" class="btn-view">Xem chi tiết</a>
-
-                                                <a href="${pageContext.request.contextPath}/ParentViewStudentGradeInClass?idHocSinh=${hocSinh.ID_HocSinh}&classCode=${lop.classCode}" class="btn-grade">Xem điểm</a>
 
                                                 <a href="${pageContext.request.contextPath}/ParentViewStudentAttendanceInClass?idHocSinh=${hocSinh.ID_HocSinh}&idLopHoc=${lop.ID_LopHoc}" class="btn-attendance">Xem điểm danh</a>
 

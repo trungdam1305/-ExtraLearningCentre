@@ -28,9 +28,12 @@
             <file>file:/C:/Users/admin/Desktop/huhiu/-ExtraLearningCentre/ELCentre/src/java/dal/SlotHocDAO.java</file>
         </group>
         <group>
-            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/Code%20inter%203/Merger_inter_3_3/-ExtraLearningCentre/ELCentre/web/views/admin/adminApproveRegisterUser.jsp</file>
-            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/Code%20inter%203/Merger_inter_3_3/-ExtraLearningCentre/ELCentre/src/java/controller/adminGetFromDashboard.java</file>
-            <file>file:/E:/Download/FPT%20University/Kì%205%20Chuyên%20Ngành%20SE/Project%20SWP/Code%20inter%203/Merger_inter_3_3/-ExtraLearningCentre/ELCentre/src/java/dal/ThongBaoDAO.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/codeFinal/-ExtraLearningCentre/ELCentre/src/java/dal/HoTroDAO.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/codeFinal/-ExtraLearningCentre/ELCentre/src/java/controller/StudentSupportServlet.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/codeFinal/-ExtraLearningCentre/ELCentre/src/java/model/HoTro.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/codeFinal/-ExtraLearningCentre/ELCentre/src/java/dal/DBContext.java</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/codeFinal/-ExtraLearningCentre/ELCentre/web/index.html</file>
+            <file>file:/C:/Users/wrx_Chur04/Desktop/codeFinal/-ExtraLearningCentre/ELCentre/src/java/dao/DBContext.java</file>
         </group>
     </open-files>
 </project-private>

@@ -15,10 +15,48 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f0eff5;
-        }
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #1F4E79 0%, #3a6b9e 100%);
+    min-height: 100vh;
+}
+
+.login-container {
+    display: flex;
+    height: 100vh;
+}
+
+.left-panel, .right-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    position: relative;
+}
+
+.right-panel {
+    /* Xoá nền trắng */
+    background: none;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 400px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    color: black;
+    z-index: 1;
+}
+
+
+
+
         .login-container { display: flex; height: 100vh; }
         .left-panel {
             flex: 1; background-color: #e1e3e8;
@@ -27,7 +65,8 @@
             padding: 2rem;
         }
         .right-panel {
-            flex: 2; background-color: white;
+            flex: 2; 
+            
             display: flex; justify-content: center; align-items: center;
         }
         .login-box {
@@ -53,28 +92,262 @@
             background-color: #1877F2; color: white;
             padding: 8px 16px; border-top-left-radius: 8px;
         }
+        
+        body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f8fb;
+    margin: 0;
+    padding: 0;
+}
+
+.login-container {
+    display: flex;
+    height: 100vh;
+    flex-wrap: wrap;
+}
+
+.left-panel {
+    flex: 1;
+    background: linear-gradient(135deg, #1F4E79 0%, #3a6b9e 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.left-panel::before {
+    content: "";
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.left-panel::after {
+    content: "";
+    position: absolute;
+    bottom: -50px;
+    right: -50px;
+    width: 250px;
+    height: 250px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.left-panel * {
+    z-index: 1;
+    position: relative;
+}
+
+.left-panel i {
+    font-size: 60px;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.left-panel h4 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.left-panel .slogan {
+    font-size: 16px;
+    font-style: italic;
+    color: #dce5f1;
+    max-width: 80%;
+    margin: 0 auto 25px auto;
+}
+
+.left-panel .banner-box {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.left-panel .decor-lines {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    gap: 8px;
+}
+
+.left-panel .decor-lines div {
+    width: 12px;
+    height: 80px;
+    background-color: rgba(255,255,255,0.4);
+    border-radius: 6px;
+}
+
+
+
+
+.login-box {
+    width: 100%;
+    max-width: 400px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.08);
+}
+
+.login-box h3 {
+    color: #1F4E79;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.login-box .form-control {
+    height: 42px;
+    font-size: 14px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.btn-login {
+    width: 100%;
+    background-color: #1F4E79;
+    color: white;
+    border: none;
+    font-weight: 600;
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-login:hover {
+    background-color: #163E5C;
+}
+
+.btn-dark,
+.btn-secondary {
+    width: 48%;
+    padding: 10px;
+    font-weight: bold;
+    border-radius: 6px;
+    border: none;
+}
+
+.btn-dark {
+    background-color: #3b5998;
+}
+
+.btn-secondary {
+    background-color: #db4437;
+}
+
+.btn-dark:hover {
+    background-color: #2d4373;
+}
+
+.btn-secondary:hover {
+    background-color: #c23321;
+}
+
+.small a {
+    color: #1F4E79;
+    text-decoration: none;
+}
+
+.small a:hover {
+    text-decoration: underline;
+}
+
+.footer-chat {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background-color: #1F4E79;
+    color: white;
+    padding: 8px 16px;
+    border-top-left-radius: 8px;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+    }
+    .left-panel {
+        display: none;
+    }
+    .right-panel {
+        flex: none;
+        padding: 30px 20px;
+    }
+}
+
+.background-decor {
+    position: relative;
+    background: linear-gradient(135deg, #1F4E79 0%, #3a6b9e 100%);
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+/* Các vòng tròn bóng nước */
+.background-decor::before,
+.background-decor::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    z-index: 0;
+}
+
+/* Vòng tròn trên bên trái */
+.background-decor::before {
+    width: 400px;
+    height: 400px;
+    top: -100px;
+    left: -100px;
+}
+
+/* Vòng tròn dưới bên phải */
+.background-decor::after {
+    width: 300px;
+    height: 300px;
+    bottom: -80px;
+    right: -80px;
+}
+
+
     </style>
 </head>
 
 <body>
+    <div class="background-decor">
     <div class="login-container">
         <!-- Left Panel -->
-        <div class="left-panel text-center">
-            <i class="fas fa-user-circle fa-4x mb-3"></i>
-            <h4><strong>Extra Learning Centre</strong></h4>
-            <div class="mt-5">
-                <div class="bg-light p-4 rounded">
-                    <div class="d-flex justify-content-between text-muted small">
-                        <span>Welcome</span><span>Edu</span>
-                    </div>
-                    <div class="mt-3 d-flex justify-content-around">
-                        <div style="width: 10px; height: 100px; background-color: #7a7f8c;"></div>
-                        <div style="width: 10px; height: 100px; background-color: #7a7f8c;"></div>
-                        <div style="width: 10px; height: 100px; background-color: #7a7f8c;"></div>
-                    </div>
-                </div>
-            </div>
+<div class="left-panel text-center">
+    <i class="fas fa-chalkboard-teacher"></i>
+    <h4><strong>Extra Learning Centre</strong></h4>
+    <p class="slogan">Nâng bước tri thức - Vững bước tương lai</p>
+
+    <div class="banner-box">
+        <div class="text-muted small d-flex justify-content-between">
+            <span>Welcome</span>
+            <span>Edu+</span>
         </div>
+        <div class="decor-lines mt-3">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+
 
         <!-- Right Panel -->
         <div class="right-panel">
@@ -131,6 +404,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <div class="footer-chat">

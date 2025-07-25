@@ -20,41 +20,91 @@
         <!-- Google Identity -->
         <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-        <style>
-            body {
-                font-family: 'Segoe UI', sans-serif;
-                background-color: #f0eff5;
-            }
-            .login-container { display: flex; height: 100vh; }
-            .right-panel {
-                flex: 2; background-color: white;
-                display: flex; justify-content: center; align-items: center;
-            }
-            .login-box {
-                width: 100%; max-width: 400px;
-            }
-            .login-box input { margin-bottom: 1rem; }
-            .btn-login {
-                width: 100%; background-color: #525a6d; color: white;
-            }
-            .btn-dark {
-                background-color: #1877F2;
-                color: white;
-            }
-            .btn-secondary {
-                background-color: #DB4437;
-                color: white;
-            }
-            .btn-login:hover {
-                background-color: #1877F2; /* Màu xanh Facebook */
-                color: white;
-            }
-            .footer-chat {
-                position: fixed; bottom: 0; right: 0;
-                background-color: #1877F2; color: white;
-                padding: 8px 16px; border-top-left-radius: 8px;
-            }
-        </style>
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f4f8fb;
+        margin: 0;
+        padding: 0;
+    }
+
+    .login-container {
+        display: flex;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .right-panel {
+        background-color: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        max-width: 450px;
+        width: 100%;
+    }
+
+    .login-box h3 {
+        color: #1F4E79;
+        margin-bottom: 25px;
+        border-left: 5px solid #1F4E79;
+        padding-left: 10px;
+    }
+
+    .form-control {
+        margin-bottom: 15px;
+        height: 42px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    textarea.form-control {
+        height: auto;
+        resize: vertical;
+    }
+
+    .btn-login {
+        width: 100%;
+        background-color: #1F4E79;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        padding: 12px;
+        transition: background-color 0.3s ease;
+        font-size: 15px;
+    }
+
+    .btn-login:hover {
+        background-color: #163E5C;
+    }
+
+    .alert {
+        font-size: 14px;
+        padding: 10px;
+        border-radius: 4px;
+    }
+
+    .footer-chat {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        background-color: #1F4E79;
+        color: white;
+        padding: 10px 18px;
+        font-size: 14px;
+        border-top-left-radius: 10px;
+        box-shadow: 0 -2px 6px rgba(0,0,0,0.15);
+    }
+
+    @media (max-width: 576px) {
+        .right-panel {
+            padding: 20px;
+        }
+    }
+</style>
+
     </head>
 
     <body>

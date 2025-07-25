@@ -14,7 +14,9 @@ public class TaiKhoan {
 
     public TaiKhoan() {
     }
-
+    
+    
+    
     public TaiKhoan(Integer ID_TaiKhoan, String Email, String MatKhau, Integer ID_VaiTro, String UserType, String SoDienThoai, String TrangThai, LocalDateTime NgayTao) {
         this.ID_TaiKhoan = ID_TaiKhoan;
         this.Email = Email;
@@ -62,3 +64,5 @@ public class TaiKhoan {
     public LocalDateTime getNgayTao() { return NgayTao; }
     public void setNgayTao(LocalDateTime NgayTao) { this.NgayTao = NgayTao; }
 }
+
+

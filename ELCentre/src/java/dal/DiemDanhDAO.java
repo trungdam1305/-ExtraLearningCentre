@@ -117,7 +117,7 @@ public class DiemDanhDAO {
         }
     } catch (Exception e) { 
         e.printStackTrace(); 
-        System.err.println("Lỗi khi lấy bản đồ điểm danh cho lớp: " + e.getMessage());
+        System.err.println("Lỗi khi lấy điểm danh cho lớp: " + e.getMessage());
     }
     return map;
 }
