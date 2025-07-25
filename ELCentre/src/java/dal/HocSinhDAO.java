@@ -1266,33 +1266,35 @@ public class HocSinhDAO {
 
       
 public static void insertHocSinhPending(int idTaiKhoan, String hoTen, String sdtPhuHuynh, int idTruongHoc) {
-    String maHocSinh = generateUniqueMaHocSinh(); // Giả sử đã tồn tại
+    String maHocSinh = generateUniqueMaHocSinh();
 
     if (maHocSinh == null) {
-        System.err.println("❌ Không thể tạo mã học sinh.");
         return;
     }
 
-    String sql = "INSERT INTO HocSinh (MaHocSinh, ID_TaiKhoan, HoTen, DiaChi, GhiChu, SDT_PhuHuynh, ID_TruongHoc, NgayTao) "
-               + "VALUES (?, ?, ?, ?, ?, ?, ?, GETDATE())";
+    String sql = "INSERT INTO HocSinh (MaHocSinh, ID_TaiKhoan, HoTen, DiaChi, GhiChu, SDT_PhuHuynh, ID_TruongHoc, "
+               + "NgayTao, NgaySinh, GioiTinh, TrangThaiHoc, LopDangHocTrenTruong) "
+               + "VALUES (?, ?, ?, ?, ?, ?, ?, GETDATE(), ?, ?, ?, ?)";
 
     try (Connection conn = DBContext.getInstance().getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
-
         ps.setString(1, maHocSinh);
         ps.setInt(2, idTaiKhoan);
         ps.setString(3, hoTen);
-        ps.setString(4, "None"); // DiaChi
-        ps.setString(5, "None"); // GhiChu
-        ps.setString(6, sdtPhuHuynh); // SĐT
-        ps.setInt(7, idTruongHoc); // ✅ Bổ sung ID_TruongHoc
-
+        ps.setString(4, "None");            
+        ps.setString(5, "None");          
+        ps.setString(6, sdtPhuHuynh);
+        ps.setInt(7, idTruongHoc);
+        ps.setDate(8, java.sql.Date.valueOf("2000-01-01")); 
+        ps.setString(9, "K");            
+        ps.setString(10, "Chờ học");        
+        ps.setString(11, "None");          
         ps.executeUpdate();
-        System.out.println("✅ Đã thêm học sinh với mã: " + maHocSinh);
     } catch (SQLException e) {
         e.printStackTrace();
     }
 }
+
 
 
 
@@ -1307,7 +1309,7 @@ public static String generateUniqueMaHocSinh() {
     try {
         conn = DBContext.getInstance().getConnection();
         do {
-            int number = 100000 + random.nextInt(900000); // 6 chữ số
+            int number = 1000 + random.nextInt(9000); // 4 chữ số
             maHocSinh = "HS" + number;
 
             String sql = "SELECT 1 FROM HocSinh WHERE MaHocSinh = ?";
@@ -1315,7 +1317,7 @@ public static String generateUniqueMaHocSinh() {
             ps.setString(1, maHocSinh);
             rs = ps.executeQuery();
 
-        } while (rs.next()); // Nếu tồn tại → tạo lại
+        } while (rs.next()); 
 
     } catch (SQLException e) {
         e.printStackTrace();

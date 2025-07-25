@@ -32,6 +32,27 @@ public class adminActionWithAdvice extends HttpServlet {
                     markAdviceAsRead(request, session);
                     session.setAttribute("successMessage", "Cập nhật trạng thái thành công.");
                     break;
+                
+                case "saveUpdate":
+                    int idUpdate = Integer.parseInt(request.getParameter("id"));
+                    String hoTen = request.getParameter("hoTen");
+                    String email = request.getParameter("email");
+                    String sdt = request.getParameter("sdt");
+                    String noiDung = request.getParameter("noiDung");
+                    String noiDungGop = "[TƯ VẤN] Họ tên: " + hoTen + " | Email: " + email + " | SĐT: " + sdt + " | Nội dung: " + noiDung;
+
+                    boolean success = ThongBaoDAO.updateNoiDung(idUpdate, noiDungGop);
+                    if (success) {
+                        session.setAttribute("successMessage", "Cập nhật nội dung tư vấn thành công.");
+                    } else {
+                        session.setAttribute("errorMessage", "Cập nhật thất bại.");
+                    }
+                    response.sendRedirect("adminGetFromDashboard?action=yeucautuvan");
+                    return;
+
+
+
+                    
                 default:
                     session.setAttribute("errorMessage", "Hành động không hợp lệ.");
             }
@@ -55,20 +76,22 @@ public class adminActionWithAdvice extends HttpServlet {
             ThongBao tb = ThongBaoDAO.getThongBaoByID(id);
             if (tb != null) {
                 request.setAttribute("tuvan", tb);
-                request.getRequestDispatcher("/views/admin/updateAdvice.jsp").forward(request, response);
+                request.getRequestDispatcher("/views/updateAdvice.jsp").forward(request, response);
             } else {
                 session.setAttribute("errorMessage", "Không tìm thấy tư vấn.");
                 response.sendRedirect("adminGetFromDashboard?action=yeucautuvan");
             }
         }
     }
+    
+    
 
     private void createPendingAccount(HttpServletRequest request, HttpSession session) {
         String email = request.getParameter("email");
         String hoTen = request.getParameter("hoTen");
         String sdt = request.getParameter("sdt");
 
-        String matKhauMacDinh = "123456"; // nên hash
+        String matKhauMacDinh = "123456"; 
         TaiKhoan tk = new TaiKhoan(email, matKhauMacDinh, 4, "HocSinh", sdt, "Pending", LocalDateTime.now());
         TaiKhoanDAO.insertPendingAccount(email, matKhauMacDinh, sdt, hoTen);
     }
@@ -82,5 +105,7 @@ public class adminActionWithAdvice extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         ThongBaoDAO.updateStatus(id, "Đã đọc");
     }
+
+
 }
 

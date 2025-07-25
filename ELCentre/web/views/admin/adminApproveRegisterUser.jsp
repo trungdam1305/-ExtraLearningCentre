@@ -209,6 +209,7 @@
             text-align: center;
             line-height: 60px;
         }
+       
         .action-buttons {
     display: flex;
     flex-wrap: wrap;
@@ -221,10 +222,87 @@
     display: inline-block;
 }
 
+
 .action-buttons button {
     padding: 6px 10px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+
+.action-buttons button:hover {
+    background-color: #163e5c;
+}
+
+.btn-email {
+    background-color: #007bff;
+}
+
+.btn-create {
+    background-color: #28a745; 
+}
+
+.btn-update {
+    background-color: #ffc107;
+    color: black;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+}
+
+.btn-mark {
+    background-color: #6c757d; 
+}
+
+/* Hover effect đồng bộ */
+.action-buttons button:hover {
+    opacity: 0.9;
+}
+
+.search-input {
+    width: 300px;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.search-container {
+    text-align: right;
+    margin: 10px 0;
+}
+
+.search-input {
+    width: 250px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+.search-button {
+    padding: 8px 15px;
     background-color: #1F4E79;
     color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: #163E5C;
+}
+.btn-create {
+    background-color: #28a745;
+    color: white;
+    padding: 6px 10px;
     border: none;
     border-radius: 4px;
     font-size: 13px;
@@ -232,9 +310,12 @@
     transition: background-color 0.2s ease;
 }
 
-.action-buttons button:hover {
-    background-color: #163e5c;
+.btn-create:hover {
+    background-color: #218838;
 }
+
+
+
 
     </style>
 </head>
@@ -322,7 +403,14 @@
             <c:when test="${not empty requestScope.listTuVan}">
 
 
-                <table>
+                <table id="tuvan-table">
+                    <div class="search-container">
+                        <form onsubmit="event.preventDefault(); filterTable(document.getElementById('searchTuVan'), 'tuvan-table');">
+                            <input type="text" id="searchTuVan" placeholder="Tìm kiếm yêu cầu tư vấn..." class="search-input" />
+                            <button type="submit" class="search-button">Tìm</button>
+                        </form>
+                    </div>
+
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -351,41 +439,43 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <!-- Gửi email kết quả tư vấn -->
-                                    <form action="${pageContext.request.contextPath}/views/sendAdviceMail.jsp" method="get" style="display:inline;">
-                                        <input type="hidden" name="id" value="${tb.ID_ThongBao}" />
-                                        <button type="submit">Gửi email kết quả tư vấn</button>
-                                    </form>
+                                    <div class="action-buttons">
+                                        <!-- Gửi email -->
+                                        <form action="${pageContext.request.contextPath}/views/sendAdviceMail.jsp" method="get">
+                                            <input type="hidden" name="id" value="${tb.ID_ThongBao}" />
+                                            <button type="submit" class="btn-email">Gửi email</button>
+                                        </form>
 
-                                    <!-- Tạo tài khoản trạng thái Pending -->
-                                    <form action="${pageContext.request.contextPath}/adminActionWithAdvice" method="post" style="display:inline;">
-                                        <input type="hidden" name="action" value="createPendingAccount" />
-                                        <input type="hidden" name="email" value="${tb.email}" />
-                                        <input type="hidden" name="sdt" value="${tb.soDienThoai}" />
-                                        <input type="hidden" name="hoTen" value="${tb.hoTen}" />
-                                        <button type="submit">Tạo tài khoản</button>
-                                    </form>
+                                        <!-- Tạo tài khoản -->
+                                        <form action="${pageContext.request.contextPath}/adminActionWithAdvice" method="post">
+                                            <input type="hidden" name="action" value="createPendingAccount" />
+                                            <input type="hidden" name="email" value="${tb.email}" />
+                                            <input type="hidden" name="sdt" value="${tb.soDienThoai}" />
+                                            <input type="hidden" name="hoTen" value="${tb.hoTen}" />
+                                            <button type="submit" class="btn-create">Tạo TK</button>
+                                        </form>
 
-                                    <!-- Cập nhật nội dung tư vấn -->
-                                    <form action="${pageContext.request.contextPath}/adminActionWithAdvice" method="get" style="display:inline;">
-                                        <input type="hidden" name="action" value="update" />
-                                        <input type="hidden" name="id" value="${tb.ID_ThongBao}" />
-                                        <button type="submit">Cập nhật tư vấn</button>
-                                    </form>
+                                        <!-- Sửa ND -->
+                                        <form action="${pageContext.request.contextPath}/adminActionWithAdvice" method="get">
+                                            <input type="hidden" name="action" value="update" />
+                                            <input type="hidden" name="id" value="${tb.ID_ThongBao}" />
+                                            <button type="submit" class="btn-update">Sửa nội dung</button>
+                                        </form>
 
-                                    <!-- Xoá tư vấn -->
-                                    <form action="${pageContext.request.contextPath}/adminActionWithAdvice" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn xoá yêu cầu tư vấn này?');">
-                                        <input type="hidden" name="action" value="delete" />
-                                        <input type="hidden" name="id" value="${tb.ID_ThongBao}" />
-                                        <button type="submit">Xoá</button>
-                                    </form>
+                                        <!-- Xoá -->
+                                        <form action="${pageContext.request.contextPath}/adminActionWithAdvice" method="post" onsubmit="return confirm('Bạn có chắc muốn xoá yêu cầu tư vấn này?');">
+                                            <input type="hidden" name="action" value="delete" />
+                                            <input type="hidden" name="id" value="${tb.ID_ThongBao}" />
+                                            <button type="submit" class="btn-delete">Xoá</button>
+                                        </form>
 
-                                    <!-- Cập nhật trạng thái -->
-                                    <form action="${pageContext.request.contextPath}/adminActionWithAdvice" method="post" style="display:inline;">
-                                        <input type="hidden" name="action" value="markRead" />
-                                        <input type="hidden" name="id" value="${tb.ID_ThongBao}" />
-                                        <button type="submit">Cập nhật trạng thái</button>
-                                    </form>
+                                        <!-- Đánh dấu -->
+                                        <form action="${pageContext.request.contextPath}/adminActionWithAdvice" method="post">
+                                            <input type="hidden" name="action" value="markRead" />
+                                            <input type="hidden" name="id" value="${tb.ID_ThongBao}" />
+                                            <button type="submit" class="btn-mark">Đánh dấu</button>
+                                        </form>
+                                    </div>  
                                 </td>    
                             </tr>
                         </c:forEach>
@@ -399,40 +489,47 @@
                 
                 <h2 style="margin-top:50px;">Danh sách tài khoản Pending</h2>
                     
-<c:if test="${not empty pendingAccounts}">
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Email</th>
-                <th>SĐT</th>
-                <th>Ngày tạo</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="tk" items="${pendingAccounts}">
-                <tr>
-                    <td>${tk.ID_TaiKhoan}</td>
-                    <td>${tk.email}</td>
-                    <td>${tk.soDienThoai}</td>
-                    <td>${tk.ngayTao}</td>
-                    <td>
-                        <form action="${pageContext.request.contextPath}/adminGetFromDashboard" method="get">
-                            <input type="hidden" name="action" value="activatePendingAccount" />
-                            <input type="hidden" name="id" value="${tk.ID_TaiKhoan}" />
-                            <button type="submit">Tạo</button> <!-- Chuyển trạng thái từ Pending sang Inactive -->
+            <c:if test="${not empty pendingAccounts}">
+                <table id="pending-table">
+                    <div class="search-container">
+                        <form onsubmit="event.preventDefault(); filterTable(document.getElementById('searchPending'), 'pending-table');">
+                            <input type="text" id="searchPending" placeholder="Tìm kiếm tài khoản pending..." class="search-input" />
+                            <button type="submit" class="search-button">Tìm</button>
                         </form>
-                    </td>
-                </tr>
-            </c:forEach>
-        </tbody>
-    </table>
-</c:if>
+                    </div>
 
-<c:if test="${empty pendingAccounts}">
-    <div class="no-data">Không có tài khoản nào ở trạng thái Pending.</div>
-</c:if>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Email</th>
+                            <th>SĐT</th>
+                            <th>Ngày tạo</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="tk" items="${pendingAccounts}">
+                            <tr>
+                                <td>${tk.ID_TaiKhoan}</td>
+                                <td>${tk.email}</td>
+                                <td>${tk.soDienThoai}</td>
+                                <td>${tk.ngayTao}</td>
+                                <td>
+                                    <form action="${pageContext.request.contextPath}/adminGetFromDashboard" method="get">
+                                        <input type="hidden" name="action" value="activatePendingAccount" />
+                                        <input type="hidden" name="id" value="${tk.ID_TaiKhoan}" />
+                                        <button type="submit" class="btn-create">Tạo</button> <!-- Chuyển trạng thái từ Pending sang Inactive -->
+                                    </form>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </c:if>
+
+            <c:if test="${empty pendingAccounts}">
+                <div class="no-data">Không có tài khoản nào ở trạng thái Pending.</div>
+            </c:if>
 
 
         <div class="back-button">
@@ -459,6 +556,94 @@
             }
         });
     </script>
+    
+    <script>
+function filterTable(input, tableId) {
+    const filter = input.value.toLowerCase();
+    const rows = document.querySelectorAll(`#${tableId} tbody tr`);
+    rows.forEach(row => {
+        const match = [...row.cells].some(cell => 
+            cell.textContent.toLowerCase().includes(filter)
+        );
+        row.style.display = match ? '' : 'none';
+    });
+}
+</script>
+
+
+<script>
+function paginateTable(tableId, itemsPerPage) {
+    const table = document.getElementById(tableId);
+    const rows = table.querySelectorAll('tbody tr');
+    const totalRows = rows.length;
+    const totalPages = Math.ceil(totalRows / itemsPerPage);
+
+    let currentPage = 1;
+
+    function showPage(page) {
+        currentPage = page;
+        rows.forEach((row, index) => {
+            row.style.display = (index >= (page-1)*itemsPerPage && index < page*itemsPerPage) ? '' : 'none';
+        });
+
+        const buttons = document.querySelectorAll(`#${tableId}-pagination button`);
+        buttons.forEach((btn, i) => btn.classList.toggle('active', i+1 === page));
+    }
+
+    const pagination = document.createElement('div');
+    pagination.id = `${tableId}-pagination`;
+    pagination.className = 'pagination';
+
+    for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i;
+        btn.onclick = () => showPage(i);
+        pagination.appendChild(btn);
+    }
+
+    table.parentNode.insertBefore(pagination, table.nextSibling);
+    showPage(1);
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    paginateTable('tuvan-table', 4);      
+    paginateTable('pending-table', 4);    
+});
+</script>
+
+<style>
+.pagination {
+    margin: 10px auto;
+    text-align: center;
+}
+.pagination button {
+    margin: 0 3px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #1F4E79;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.pagination button.active,
+.pagination button:hover {
+    background-color: #163E5C;
+}
+</style>
+
+<script>
+    function filterTable(inputElem, tableId) {
+        const filter = inputElem.value.toLowerCase();
+        const table = document.getElementById(tableId);
+        const rows = table.getElementsByTagName("tr");
+
+        for (let i = 1; i < rows.length; i++) {
+            const rowText = rows[i].innerText.toLowerCase();
+            rows[i].style.display = rowText.includes(filter) ? "" : "none";
+        }
+    }
+</script>
+
 
 </body>
 </html>

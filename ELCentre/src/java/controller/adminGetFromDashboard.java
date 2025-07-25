@@ -137,22 +137,14 @@ public class adminGetFromDashboard extends HttpServlet {
                 }
                 break;
 
-                        case "yeucautuvan": //action xử lý phê duyệt yêu cầu
+                case "yeucautuvan": 
                     ArrayList<ThongBao> listTuVan = ThongBaoDAO.getAllTuVan();
                     ArrayList<TaiKhoan> pendingAccounts = TaiKhoanDAO.getPendingAccounts();
                     request.setAttribute("pendingAccounts", pendingAccounts);
 
-                // 🧪 In dữ liệu ra console để test
-                System.out.println("=== [DEBUG] Danh sách yêu cầu tư vấn ===");
+                
                 for (ThongBao tb : listTuVan) {
                     System.out.println("ID: " + tb.getID_ThongBao());
-                    System.out.println("Họ tên: " + tb.getHoTen());
-                    System.out.println("Email: " + tb.getEmail());
-                    System.out.println("SĐT: " + tb.getSoDienThoai());
-                    System.out.println("Nội dung tư vấn: " + tb.getNoiDungTuVan());
-                    System.out.println("Thời gian: " + tb.getThoiGian());
-                    System.out.println("Trạng thái: " + tb.getStatus());
-                    System.out.println("------------------------------");
                 }
                 if (listTuVan == null || listTuVan.isEmpty()) {
                     request.setAttribute("message", "Không có yêu cầu tư vấn nào.");
@@ -181,7 +173,7 @@ public class adminGetFromDashboard extends HttpServlet {
                         sdt = "none";
                     }
 
-                    // ID trường học mặc định (nếu bạn chưa chọn cho phép admin chọn)
+                    
                     int idTruongHoc = 1;
 
                     // Chèn học sinh vào bảng HocSinh

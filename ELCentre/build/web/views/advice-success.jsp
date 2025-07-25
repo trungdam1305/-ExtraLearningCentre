@@ -49,9 +49,42 @@
             color: #888;
             font-size: 13px;
         }
+        .background-decor {
+    position: relative;
+    background: linear-gradient(135deg, #1F4E79 0%, #3a6b9e 100%);
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+/* Các vòng tròn bóng nước */
+.background-decor::before,
+.background-decor::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    z-index: 0;
+}
+
+/* Vòng tròn trên bên trái */
+.background-decor::before {
+    width: 400px;
+    height: 400px;
+    top: -100px;
+    left: -100px;
+}
+
+/* Vòng tròn dưới bên phải */
+.background-decor::after {
+    width: 300px;
+    height: 300px;
+    bottom: -80px;
+    right: -80px;
+}
     </style>
 </head>
 <body>
+    
     <div class="message-box">
         <h2>✅ Cảm ơn bạn đã gửi yêu cầu tư vấn!</h2>
         <p>Chúng tôi sẽ liên hệ với bạn sớm nhất có thể.</p>

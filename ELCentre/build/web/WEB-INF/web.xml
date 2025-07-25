@@ -356,6 +356,14 @@
         <servlet-name>adminActionWithAdvice</servlet-name>
         <servlet-class>controller.adminActionWithAdvice</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StaffActionWithAdvice</servlet-name>
+        <servlet-class>controller.StaffActionWithAdvice</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaffGetFromDashboard</servlet-name>
+        <servlet-class>controller.StaffGetFromDashboard</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/SendEmailServlet</url-pattern>
@@ -735,6 +743,14 @@
     <servlet-mapping>
         <servlet-name>adminActionWithAdvice</servlet-name>
         <url-pattern>/adminActionWithAdvice</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffActionWithAdvice</servlet-name>
+        <url-pattern>/StaffActionWithAdvice</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffGetFromDashboard</servlet-name>
+        <url-pattern>/StaffGetFromDashboard</url-pattern>
     </servlet-mapping>
     <welcome-file-list>HomePage</welcome-file-list>
 </web-app>
