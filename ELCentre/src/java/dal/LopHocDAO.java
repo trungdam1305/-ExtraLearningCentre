@@ -1106,6 +1106,133 @@ public class LopHocDAO {
         return list;
     }
     
+    
+        // Lấy các lớp học mà học sinh đã đăng ký trong một khóa học cụ thể
+    public static List<LopHoc> getLopHocDaDangKyByHocSinhId(int hocSinhId) {
+        List<LopHoc> list = new ArrayList<>();
+        String sql = """
+            SELECT lh.*
+            FROM HocSinh_LopHoc hslh
+            JOIN LopHoc lh ON hslh.ID_LopHoc = lh.ID_LopHoc
+            WHERE hslh.ID_HocSinh = ?
+        """;
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, hocSinhId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                LopHoc lop = new LopHoc();
+                lop.setClassCode(rs.getString("ClassCode"));
+                lop.setTenLopHoc(rs.getString("TenLopHoc"));
+                lop.setSiSo(rs.getInt("SiSo"));
+                lop.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                lop.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+                lop.setID_PhongHoc(rs.getInt("ID_PhongHoc"));
+                lop.setGhiChu(rs.getString("GhiChu"));
+                list.add(lop);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+        //Lấy mã lớp theo các lớp mà học sinh đang học
+    public static List<String> getClassCodesByStudentInCourse(int hocSinhId, int khoaHocId) {
+        List<String> classCodes = new ArrayList<>();
+        String sql = """
+            SELECT lh.ClassCode
+            FROM HocSinh_LopHoc hslh
+            JOIN LopHoc lh ON hslh.ID_LopHoc = lh.ID_LopHoc
+            WHERE hslh.ID_HocSinh = ? AND lh.ID_KhoaHoc = ?
+        """;
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, hocSinhId);
+            ps.setInt(2, khoaHocId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                classCodes.add(rs.getString("ClassCode"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return classCodes;
+    }
+    
+        public static List<LopHoc> getAllClassesInSameCourse(int idKhoaHoc) {
+        List<LopHoc> list = new ArrayList<>();
+        String sql = "SELECT * FROM LopHoc WHERE ID_KhoaHoc = ?";
+
+        try (Connection conn = DBContext.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idKhoaHoc);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                LopHoc lop = new LopHoc();
+                lop.setClassCode(rs.getString("ClassCode"));
+                lop.setTenLopHoc(rs.getString("TenLopHoc"));
+                lop.setSiSo(rs.getInt("SiSo"));
+                lop.setSiSoToiDa(rs.getInt("SiSoToiDa"));
+                lop.setSiSoToiThieu(rs.getInt("SiSoToiThieu"));
+                lop.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                lop.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+                lop.setID_PhongHoc(rs.getInt("ID_PhongHoc"));
+                lop.setGhiChu(rs.getString("GhiChu"));
+                list.add(lop);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+        
+public static List<LopHoc> getLopHocByHocSinhId(int idHocSinh) {
+    List<LopHoc> list = new ArrayList<>();
+    String sql = """
+        SELECT l.*
+        FROM HocSinh_LopHoc hslh
+        JOIN LopHoc l ON hslh.ID_LopHoc = l.ID_LopHoc
+        WHERE hslh.ID_HocSinh = ?
+    """;
+
+    try (Connection conn = DBContext.getInstance().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, idHocSinh);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                LopHoc lop = new LopHoc();
+                lop.setID_LopHoc(rs.getInt("ID_LopHoc"));
+                lop.setClassCode(rs.getString("ClassCode"));
+                lop.setTenLopHoc(rs.getString("TenLopHoc"));
+                lop.setID_KhoaHoc(rs.getInt("ID_KhoaHoc"));
+                lop.setSiSo(rs.getInt("SiSo"));
+                lop.setSiSoToiThieu(rs.getInt("SiSoToiThieu"));
+                lop.setID_Schedule(rs.getInt("ID_Schedule"));
+                lop.setSiSoToiDa(rs.getInt("SiSoToiDa"));
+                lop.setID_PhongHoc(rs.getInt("ID_PhongHoc"));
+                lop.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+                lop.setGhiChu(rs.getString("GhiChu"));
+                lop.setSoTien(rs.getString("SoTien"));
+                lop.setTrangThai(rs.getString("TrangThai"));
+                lop.setImage(rs.getString("Image"));
+                lop.setOrder(rs.getInt("Order"));
+                list.add(lop);
+            }
+        } 
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
+
+    
+    
+    
     public List<LopHoc> getAllActiveClassesWithTeacher() {
     List<LopHoc> list = new ArrayList<>();
     String sql = """

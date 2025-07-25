@@ -1563,6 +1563,22 @@ public class KhoaHocDAO {
         }
         return khoaHoc;
     }
+    
+            //Lấy khóa học theo classcode của lớp học
+    public static int getKhoaHocIdByClassCode(String classCode) {
+        try (Connection con = DBContext.getInstance().getConnection()) {
+            String sql = "SELECT ID_KhoaHoc FROM LopHoc WHERE ClassCode = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, classCode);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("ID_KhoaHoc");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 
     
     public static void main(String[] args) {

@@ -163,7 +163,7 @@ public class adminActionWithUser extends HttpServlet {
 
                 } else if (type.equalsIgnoreCase("HocSinh")) {      //if user is student
                     String OKKO = HocSinhDAO.adminGetTrangThaiHocHocSinhByID_TaiKhoan(id);
-                    if (OKKO.equalsIgnoreCase("Đang học")) {
+                    if (!OKKO.equalsIgnoreCase("Đang học")) {
                         boolean b1 = TaiKhoanDAO.adminDisableAccountUser(id);       //admin disnable in table account
                         boolean b2 = HocSinhDAO.adminDisableHocSinh(id);            //admin disnable in table of this user
                         if (b1 == true && b2 == true) {

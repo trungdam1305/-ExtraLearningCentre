@@ -36,9 +36,6 @@ public class PayTeacherSalary extends HttpServlet {
             String chuKyBatDau = request.getParameter("startDate"); // Lấy từ hidden input
             String chuKyKetThuc = request.getParameter("endDate"); // Lấy từ hidden input
 
-            System.out.println("PayTeacherSalary: Processing payment for ID_Luong=" + idLuong + 
-                              ", ID_GiaoVien=" + idGiaoVien + 
-                              ", ChuKyBatDau=" + chuKyBatDau + ", ChuKyKetThuc=" + chuKyKetThuc);
 
             // Lấy chu kỳ từ bản ghi hiện tại nếu không có trong request
             if (chuKyBatDau == null || chuKyKetThuc == null) {
@@ -51,8 +48,6 @@ public class PayTeacherSalary extends HttpServlet {
 
             // Cập nhật trạng thái thành "Paid" cho tất cả bản ghi có cùng chu kỳ
             int rowsAffected = salaryDAO.markSalariesAsPaid(idGiaoVien, chuKyBatDau, chuKyKetThuc);
-            System.out.println("PayTeacherSalary: Updated " + rowsAffected + " record(s) to 'Paid' for ID_GiaoVien=" + idGiaoVien + 
-                              ", ChuKyBatDau=" + chuKyBatDau + ", ChuKyKetThuc=" + chuKyKetThuc);
 
             // Chuẩn bị thông báo và redirect
             String message = URLEncoder.encode("Đã thanh toán lương cho giáo viên!", StandardCharsets.UTF_8.toString());
@@ -62,18 +57,14 @@ public class PayTeacherSalary extends HttpServlet {
                                 "&message=" + message);
 
         } catch (NumberFormatException e) {
-            System.out.println("NumberFormatException in PayTeacherSalary: " + e.getMessage());
             e.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/SalaryCalculation?idGiaoVien=" + request.getParameter("idGiaoVien") +
                                 "&message=" + URLEncoder.encode("Lỗi: Dữ liệu đầu vào không hợp lệ", StandardCharsets.UTF_8.toString()));
         } catch (SQLException e) {
-            System.out.println("SQL Error in PayTeacherSalary: " + e.getMessage() +
-                              " [SQLState: " + e.getSQLState() + ", ErrorCode: " + e.getErrorCode() + "]");
             e.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/SalaryCalculation?idGiaoVien=" + request.getParameter("idGiaoVien") +
                                 "&message=" + URLEncoder.encode("Lỗi: Lỗi cơ sở dữ liệu khi thanh toán lương", StandardCharsets.UTF_8.toString()));
         } catch (Exception e) {
-            System.out.println("Unexpected Error in PayTeacherSalary: " + e.getMessage());
             e.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/SalaryCalculation?idGiaoVien=" + request.getParameter("idGiaoVien") +
                                 "&message=" + URLEncoder.encode("Lỗi: Lỗi không xác định khi thanh toán lương", StandardCharsets.UTF_8.toString()));

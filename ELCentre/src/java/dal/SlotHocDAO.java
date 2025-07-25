@@ -1,3 +1,5 @@
+// Author: trungdam
+// Servlet: SlotHocDAO
 package dal;
 
 import java.sql.Connection;
@@ -12,7 +14,9 @@ import model.SlotHoc;
 
 public class SlotHocDAO {
 
-    // Lấy tất cả slot học từ database
+    /**
+     * Retrieves all time slots from the database.
+     */
     public List<SlotHoc> getAllSlotHoc() throws SQLException {
         List<SlotHoc> slotHocList = new ArrayList<>();
         DBContext db = DBContext.getInstance();
@@ -24,12 +28,18 @@ public class SlotHocDAO {
                 slot.setSlotThoiGian(rs.getString("SlotThoiGian"));
                 slotHocList.add(slot);
             }
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi lấy tất cả slot học: " + e.getMessage());
+            e.printStackTrace();
+            throw e; // Re-throw the exception for handling upstream
         }
         return slotHocList;
     }
 
-    
-       public List<SlotHoc> getAllSlotHoc1() {
+    /**
+     * Retrieves all time slots from the database (alternative method, functionally similar to getAllSlotHoc but with logging).
+     */
+    public List<SlotHoc> getAllSlotHoc1() {
         List<SlotHoc> list = new ArrayList<>();
         DBContext db = DBContext.getInstance();
         String sql = "SELECT ID_SlotHoc, SlotThoiGian FROM SlotHoc";
@@ -49,7 +59,9 @@ public class SlotHocDAO {
         return list;
     }
 
-    // Lấy slot học theo ID
+    /**
+     * Retrieves a time slot by its ID.
+     */
     public SlotHoc getSlotHocById(int idSlotHoc) throws SQLException {
         DBContext db = DBContext.getInstance();
         String sql = "SELECT ID_SlotHoc, SlotThoiGian FROM [dbo].[SlotHoc] WHERE ID_SlotHoc = ?";
@@ -63,11 +75,17 @@ public class SlotHocDAO {
                     return slot;
                 }
             }
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi lấy slot học theo ID: " + e.getMessage());
+            e.printStackTrace();
+            throw e; // Re-throw the exception
         }
         return null;
     }
 
-    // Thêm slot học mới
+    /**
+     * Adds a new time slot to the database.
+     */
     public boolean addSlotHoc(SlotHoc slot) throws SQLException {
         DBContext db = DBContext.getInstance();
         String sql = "INSERT INTO [dbo].[SlotHoc] (SlotThoiGian) VALUES (?)";
@@ -75,10 +93,16 @@ public class SlotHocDAO {
             ps.setString(1, slot.getSlotThoiGian());
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi thêm slot học: " + e.getMessage());
+            e.printStackTrace();
+            throw e; // Re-throw the exception
         }
     }
 
-    // Cập nhật slot học
+    /**
+     * Updates an existing time slot in the database.
+     */
     public boolean updateSlotHoc(int idSlotHoc, SlotHoc slot) throws SQLException {
         DBContext db = DBContext.getInstance();
         String sql = "UPDATE [dbo].[SlotHoc] SET SlotThoiGian = ? WHERE ID_SlotHoc = ?";
@@ -87,10 +111,16 @@ public class SlotHocDAO {
             ps.setInt(2, idSlotHoc);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi cập nhật slot học: " + e.getMessage());
+            e.printStackTrace();
+            throw e; // Re-throw the exception
         }
     }
 
-    // Xóa slot học
+    /**
+     * Deletes a time slot from the database by its ID.
+     */
     public boolean deleteSlotHoc(int idSlotHoc) throws SQLException {
         DBContext db = DBContext.getInstance();
         String sql = "DELETE FROM [dbo].[SlotHoc] WHERE ID_SlotHoc = ?";
@@ -98,9 +128,16 @@ public class SlotHocDAO {
             ps.setInt(1, idSlotHoc);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi xóa slot học: " + e.getMessage());
+            e.printStackTrace();
+            throw e; // Re-throw the exception
         }
     }
 
+    /**
+     * Checks if two time slots conflict.
+     */
     private boolean isTimeConflict(String slotThoiGian1, String slotThoiGian2) {
         try {
             if (slotThoiGian1 == null || slotThoiGian2 == null) {
@@ -118,7 +155,7 @@ public class SlotHocDAO {
             LocalTime end1 = LocalTime.parse(parts1[1].trim(), timeFormatter);
             LocalTime start2 = LocalTime.parse(parts2[0].trim(), timeFormatter);
             LocalTime end2 = LocalTime.parse(parts2[1].trim(), timeFormatter);
-            // Kiểm tra giao nhau (trùng nếu có bất kỳ thời điểm nào chung)
+            // Check for overlap (conflicts if any time points are common)
             return !end1.isBefore(start2) && !start1.isAfter(end2);
         } catch (Exception e) {
             System.err.println("Lỗi phân tích SlotThoiGian: slot1 = " + slotThoiGian1 + ", slot2 = " + slotThoiGian2 + ", error = " + e.getMessage());
@@ -132,7 +169,7 @@ public class SlotHocDAO {
         List<SlotHoc> li = new ArrayList<>();
         li = dao.getAllSlotHoc1();
         for (SlotHoc l : li){
-            System.out.println(l.getID_SlotHoc() + l.getSlotThoiGian());
+            System.out.println(l.getID_SlotHoc() + " " + l.getSlotThoiGian());
         }
     }
 }

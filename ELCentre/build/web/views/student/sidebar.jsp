@@ -11,6 +11,8 @@
 
 -->
 <div class="sidebar">
+    <h4>EL CENTRE</h4>
+    <img src="<%= request.getContextPath() %>/img/SieuLogo-xoaphong.png" alt="Center Logo" class="sidebar-logo">
     <div class="sidebar-title">STUDENT</div>
 
     <div class="sidebar-section">TỔNG QUAN</div>
@@ -77,4 +79,20 @@
         font-weight: bold;
         color: #ffcccc;
     }
-    </style>
+    .sidebar-logo {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin: 15px auto;
+        display: block;
+        border: 3px solid #B0C4DE;
+    }
+    .sidebar h4 {
+        text-align: center;
+        margin: 0;
+        font-weight: bold;
+        font-size: 20px;
+        letter-spacing: 1.5px;
+    }
+</style>

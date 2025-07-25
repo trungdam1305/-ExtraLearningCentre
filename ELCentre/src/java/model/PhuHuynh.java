@@ -36,6 +36,8 @@ public class PhuHuynh {
 
     // Date and time the parent record was created
     private LocalDateTime NgayTao;
+    
+    private String Avatar;
 
     private String MatKhau ; 
     // Default constructor
@@ -66,6 +68,22 @@ public class PhuHuynh {
         this.NgayTao = NgayTao;
         this.MatKhau = MatKhau;
     }
+
+    public PhuHuynh(Integer ID_PhuHuynh, Integer ID_TaiKhoan, String HoTen, String SDT, String Email, String DiaChi, String GhiChu, String TrangThai, LocalDateTime NgayTao, String Avatar, String MatKhau) {
+        this.ID_PhuHuynh = ID_PhuHuynh;
+        this.ID_TaiKhoan = ID_TaiKhoan;
+        this.HoTen = HoTen;
+        this.SDT = SDT;
+        this.Email = Email;
+        this.DiaChi = DiaChi;
+        this.GhiChu = GhiChu;
+        this.TrangThai = TrangThai;
+        this.NgayTao = NgayTao;
+        this.Avatar = Avatar;
+        this.MatKhau = MatKhau;
+    }
+    
+    
 
     public String getMatKhau() {
         return MatKhau;
@@ -148,4 +166,13 @@ public class PhuHuynh {
     public void setNgayTao(LocalDateTime NgayTao) {
         this.NgayTao = NgayTao;
     }
+
+    public String getAvatar() {
+        return Avatar;
+    }
+
+    public void setAvatar(String Avatar) {
+        this.Avatar = Avatar;
+    }
+    
 }

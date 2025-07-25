@@ -180,6 +180,22 @@ public class ThongBaoDAO {
         return false;
     }
     
+            //Nhập vào thông báo thay đổi lớp học
+    public static boolean insertRequestChangeClass(ThongBao tb) {
+        String sql = "INSERT INTO ThongBao (ID_TaiKhoan, NoiDung, ThoiGian) VALUES (?, ?, ?)";
+        try (Connection con = DBContext.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, tb.getID_TaiKhoan());
+            ps.setString(2, tb.getNoiDung());
+            ps.setTimestamp(3, Timestamp.valueOf(tb.getThoiGian()));
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    
     public static boolean adminSendNotification(String ID_TaiKhoan, String NoiDung, String status) {
         int rs = 0;
         DBContext db = DBContext.getInstance();
@@ -533,6 +549,22 @@ public class ThongBaoDAO {
             return null;
         }
     }
+    
+        //Nhập vào thông báo rời lớp học
+    public static boolean insertRequestLeaveClass(ThongBao tb) {
+    String sql = "INSERT INTO ThongBao (ID_TaiKhoan, NoiDung, ThoiGian) VALUES (?, ?, ?)";
+    try (Connection con = DBContext.getInstance().getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, tb.getID_TaiKhoan());
+        ps.setString(2, tb.getNoiDung());
+        ps.setTimestamp(3, Timestamp.valueOf(tb.getThoiGian()));
+        return ps.executeUpdate() > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
 
     public static int getSoTuVan() {
         

@@ -45,7 +45,7 @@
                 box-shadow: 0 2px 5px rgba(0,0,0,0.1);
                 position: fixed;
                 width: calc(100% - 250px);
-                margin-left: 250px; /* Adjusted to match sidebar width */
+                margin-left: 290px; /* Adjusted to match sidebar width */
                 z-index: 1000;
                 display: flex;
                 align-items: center;
@@ -200,6 +200,7 @@
             }
 
             .main-content {
+                margin-top:20px;
                 margin-left: auto;
                 margin-right: auto;
                 padding: 80px 20px 20px 20px;
@@ -209,7 +210,9 @@
                 flex-direction: column;
                 gap: 30px;
                 max-width: 1200px;
-                width: calc(100% - 270px); /* Account for sidebar (250px) + padding */
+                width: calc(100% - 270px); 
+                transform: translateX(140px);
+                
             }
 
             .dashboard-stats {

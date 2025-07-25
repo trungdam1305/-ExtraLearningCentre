@@ -468,6 +468,22 @@
                 right: 0;
             }
 
+            .status {
+                display: inline-block;
+                padding: 6px 12px;
+                border-radius: 4px;
+                font-size: 14px;
+                font-weight: 500;
+            }
+            .status.dang-hoc {
+                color: white;
+                background-color: #28a745; 
+            }
+            .status.da-hoc {
+                color: white;
+                background-color: #dc3545; 
+            }
+
             @media (max-width: 768px) {
                 .header {
                     left: 0;
@@ -581,7 +597,7 @@
                         <i class="fas fa-paper-plane"></i> Gửi thông báo học phí toàn bộ lớp học
                     </a>
 
-                        
+
                 </div>
                 <form action="${pageContext.request.contextPath}/adminActionWithTuition" method="get">
                     <input type="hidden" name="action" value="filterClass" />
@@ -633,14 +649,15 @@
                                 <tr>
                                     <th>Tên môn học</th>
                                     <th>Khối</th>
-                                   
+
 
                                     <th>Tên lớp học</th>
                                     <th>Số tiền</th>
                                     <th>Sĩ số</th>
                                     <th>Tên giáo viên</th>
                                     <th>Ghi chú</th>
-                                    <th>Ngày tạo</th>
+
+                                    <th>Trạng thái lớp</th>
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
@@ -654,7 +671,11 @@
                                         <td>${lop.getSiSo()}</td>
                                         <td>${lop.getHoTen()}</td>
                                         <td>${lop.getGhiChu()}</td>
-                                        <td>${lop.getNgayTao()}</td>
+                                        <td>
+                                            <span class="status ${lop.getTrangThai() eq 'Đang học' ? 'dang-hoc' : 'da-hoc'}">
+                                                ${lop.getTrangThai()}
+                                            </span>
+                                        </td>
                                         <td class="action-buttons">
                                             <a class="btn-action send" href="${pageContext.request.contextPath}/adminActionWithTuition?action=view&idLop=${lop.getID_LopHoc()}&TenLopHoc=${lop.getTenLopHoc()}">
                                                 <i class="fas fa-money-bill-wave"></i> Xem chi tiết học phí tháng vừa qua trong lớp

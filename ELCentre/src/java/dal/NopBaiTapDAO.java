@@ -1,3 +1,5 @@
+// Author: trungdam
+// Servlet: NopBaiTapDAO
 package dal;
 
 import model.NopBaiTap; // Import NopBaiTap
@@ -12,6 +14,9 @@ import java.util.List;
 
 public class NopBaiTapDAO {
 
+    /**
+     * Retrieves a list of submission information for a specific assignment ID.
+     */
     public List<NopBaiTapInfo> getSubmissionsByAssignmentId(int assignmentId) {
         List<NopBaiTapInfo> list = new ArrayList<>();
         String sql = "SELECT hs.HoTen, hs.MaHocSinh, nbt.* FROM NopBaiTap nbt " +
@@ -34,10 +39,16 @@ public class NopBaiTapDAO {
                     list.add(sub);
                 }
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { 
+            e.printStackTrace(); 
+            System.err.println("Lỗi khi lấy danh sách bài nộp theo ID bài tập: " + e.getMessage());
+        }
         return list;
     }
 
+    /**
+     * Updates the grade and comment for a specific student's submission to an assignment.
+     */
     public void updateGradeAndComment(int assignmentId, int studentId, BigDecimal grade, String comment) {
         String sql = "UPDATE NopBaiTap SET Diem = ?, NhanXet = ? WHERE ID_BaiTap = ? AND ID_HocSinh = ?";
         try (Connection conn = DBContext.getInstance().getConnection();
@@ -47,11 +58,14 @@ public class NopBaiTapDAO {
             ps.setInt(3, assignmentId);
             ps.setInt(4, studentId);
             ps.executeUpdate();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { 
+            e.printStackTrace(); 
+            System.err.println("Lỗi khi cập nhật điểm và nhận xét: " + e.getMessage());
+        }
     }
 
     /**
-     * Thêm một bài nộp mới vào cơ sở dữ liệu.
+     * Adds a new submission record to the database.
      */
     public void addSubmission(NopBaiTap submission) {
         String sql = "INSERT INTO NopBaiTap (ID_HocSinh, ID_BaiTap, TepNop, NgayNop, Diem, NhanXet, ID_LopHoc) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -67,11 +81,12 @@ public class NopBaiTapDAO {
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
+            System.err.println("Lỗi khi thêm bài nộp mới: " + e.getMessage());
         }
     }
 
     /**
-     * Cập nhật thông tin bài nộp đã tồn tại.
+     * Updates an existing submission record in the database.
      */
     public void updateSubmission(NopBaiTap submission) {
         String sql = "UPDATE NopBaiTap SET TepNop = ?, NgayNop = ?, Diem = ?, NhanXet = ? WHERE ID_HocSinh = ? AND ID_BaiTap = ?";
@@ -86,11 +101,12 @@ public class NopBaiTapDAO {
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
+            System.err.println("Lỗi khi cập nhật bài nộp: " + e.getMessage());
         }
     }
 
     /**
-     * Lấy bài nộp của một học sinh cho một bài tập cụ thể.
+     * Retrieves a specific submission by student ID and assignment ID.
      */
     public NopBaiTap getSubmissionByStudentAndAssignment(int studentId, int assignmentId) {
         String sql = "SELECT * FROM NopBaiTap WHERE ID_HocSinh = ? AND ID_BaiTap = ?";
@@ -113,6 +129,7 @@ public class NopBaiTapDAO {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            System.err.println("Lỗi khi lấy bài nộp của học sinh cho bài tập: " + e.getMessage());
         }
         return null;
     }

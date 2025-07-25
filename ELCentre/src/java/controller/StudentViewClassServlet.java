@@ -9,6 +9,7 @@ import model.TaiKhoan;
 
 import java.io.IOException;
 import java.util.List;
+import model.HocSinh;
 
 public class StudentViewClassServlet extends HttpServlet {
 
@@ -27,9 +28,10 @@ public class StudentViewClassServlet extends HttpServlet {
 
         int idTaiKhoan = user.getID_TaiKhoan();
         int idHocSinh = HocSinhDAO.getHocSinhIdByTaiKhoanId(idTaiKhoan);
-
+        HocSinh hocSinh = HocSinhDAO.getHocSinhById(idHocSinh);
         List<LopHoc> dsLopHoc = HocSinh_LopHocDAO.getLopHocDaDangKyByHocSinhId(idHocSinh);
 
+        request.setAttribute("hocSinhInfo", hocSinh);
         request.setAttribute("dsLopHoc", dsLopHoc);
         request.getRequestDispatcher("/views/student/studentViewClass.jsp").forward(request, response);
     }

@@ -1,13 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ include file="/views/student/sidebar.jsp" %>
 <c:if test="${empty sessionScope.user}">
     <c:redirect url="${pageContext.request.contextPath}/views/login.jsp" />
 </c:if>
 <!DOCTYPE html>
 <html>
-    <!<!-- CSS -->
+    <!-- CSS -->
     <head>
         <meta charset="UTF-8">
         <title>Trang chủ</title>
@@ -17,6 +16,7 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-pagination.js@1.6/jquery.simplePagination.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-pagination.js@1.6/simplePagination.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
         <style>
             body {
@@ -33,7 +33,7 @@
             }
             .main-content {
                 flex: 1;
-                padding: 30px;
+                padding: 0px;
             }
             .header {
                 display: flex;
@@ -87,8 +87,8 @@
                 cursor: pointer;
                 color: white;
                 background-color: #1F4E79;
+                transition: background-color 0.2s ease;
             }
-
             .action-btn:hover {
                 background-color: #163d5c;
             }
@@ -135,10 +135,12 @@
             .pagination li.active span {
                 background-color: #163d5c;
             }
+            
             .header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
+                position: sticky;
+                top: 0;
+                z-index: 999;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             }
 
             .user-menu {
@@ -232,37 +234,122 @@
             .modal-actions .cancel {
                 background-color: #999;
             }
+            .new-support-btn {
+                background-color: #1F4E79;
+                color: white;
+                padding: 8px 14px;
+                border-radius: 5px;
+                font-weight: bold;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+                font-size: 14px;
+            }
+
+            .new-support-btn i {
+                margin-right: 6px;
+            }
+
+            .new-support-btn:hover {
+                background-color: #163d5c;
+            }
+
+            /* Wrapper layout */
+            .wrapper {
+                display: flex;
+                min-height: 100vh;
+                width: 100%;
+            }
+            
+            .main-area {
+               flex: 1;
+               display: flex;
+               flex-direction: column;
+               background-color: #f4f6f9;
+               overflow-x: auto;
+            }
+            
+            .header {
+                background-color: #1F4E79;
+                color: white;
+                padding: 16px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .main-content {
+                flex: 1;
+                padding: 30px;
+                max-width: 100%; /* Đảm bảo không giới hạn chiều rộng */
+                box-sizing: border-box; /* Bao gồm padding trong chiều rộng */
+            }
+            
 
 
 
         </style>
     </head>
     <body>
-        <div class="main-content">
-            <!<!-- Header -->
-            <div class="header">
-                <h2>Trang chủ</h2>
+        <div class="wrapper">
+            <%@ include file="/views/student/sidebar.jsp" %>
+            <div class="main-area">
+                <c:if test="${not empty sessionScope.message}">
+                    <div class="message success">
+                        <c:out value="${sessionScope.message}" />
+                    </div>
+                    <c:remove var="message" scope="session" />
+                </c:if>            
+            <div class="header" style="
+                background-color: #1F4E79;
+                color: white;
+                padding: 16px 30px;
+                margin: 0;
+                width: 100%;
+                box-sizing: border-box;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-radius: 0;
+                position: relative;
+                top: 0;
+                left: 0;
+                z-index: 999;
+            ">
+                <h2 style="margin: 0; color: white;">Trang chủ học sinh</h2>
                 <div class="user-menu">
-                    <div class="user-toggle" onclick="toggleUserMenu()">
-                        <span>👋 Xin chào <strong>${hocSinhInfo.hoTen}</strong> 
-                        <img src="${pageContext.request.contextPath}/${hocSinhInfo.avatar}" class="user-avatar" alt="Avatar">
-                        ☰ </span>
+                    <div class="user-toggle" onclick="toggleUserMenu()" style="color: white;">
+                        <span>👋 Xin chào <strong>${hocSinhInfo.hoTen}</strong>
+                            <img src="${pageContext.request.contextPath}/${hocSinhInfo.avatar}" class="user-avatar" alt="Avatar">
+                            ☰
+                        </span>
                     </div>
                     <div class="user-dropdown" id="userDropdown">
-                        <a href="#" onclick="openModal(); return false;">🔑 Đổi mật khẩu</a>
+                        <a href="${pageContext.request.contextPath}/ResetPasswordServlet" onclick="openModal(); return false;">🔑 Đổi mật khẩu</a>
                         <a href="${pageContext.request.contextPath}/LogoutServlet">🚪 Đăng xuất</a>
                     </div>
                 </div>
             </div>
-                                  
+        
+        
+        <div class="main-content" style="padding: 30px;">            
             <!--Hiển thị thông tin lớp học đã đăng kí của học sinh-->
-            <h3>Lớp học đã đăng kí</h3>                       
-            <div style="text-align: right; margin-bottom: 20px;">
-                <form method="get" style="display: inline-block;">
-                    <input id="searchInput" type="text" name="keyword" placeholder="Tìm kiếm..." value="${param.keyword}" style="padding: 8px; font-size: 14px; width: 300px;">
+            <h3>Lớp học đã đăng ký</h3>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <!-- Nút Gửi hỗ trợ mới -->
+                <a href="${pageContext.request.contextPath}/StudentSupportServlet" class="new-support-btn">
+                    <i class="fas fa-plus-circle"></i> Gửi hỗ trợ mới
+                </a>
+
+                <!-- Ô tìm kiếm -->
+                <form method="get" style="display: flex; align-items: center; gap: 10px;">
+                    <input id="searchInput" type="text" name="keyword" placeholder="Tìm kiếm..." 
+                           value="${param.keyword}" 
+                           style="padding: 8px; font-size: 14px; width: 300px;">
                     <button type="submit" class="action-btn">Tìm</button>
                 </form>
             </div>
+
             <table>
                 <thead>
                     <tr>
@@ -287,10 +374,10 @@
                     </c:forEach>
                 </tbody>
             </table>                  
-            <!<!-- Phân trang -->
+            <!-- Phân trang -->
             <div id="pagination-lophoc"></div>
             
-            <!<!-- Thông báo và lịch học sắp tới -->
+            <!-- Thông báo và lịch học sắp tới -->
             <div class="section-box">
                 <div class="section">
                     <h3>Thông báo</h3>
@@ -303,9 +390,28 @@
                             </c:when>
                             <c:otherwise>
                                 <c:forEach var="tb" items="${dsThongBao}">
-                                    <div class="box-item">
-                                        <div style="font-weight: 500;">${tb.noiDung}</div>
-                                        <div style="font-size: 13px; color: #666;">🕒 ${tb.thoiGian}</div>
+                                    <div class="box-item" style="display: flex; justify-content: space-between; align-items: stretch; border: 1px solid #ddd; border-radius: 6px; overflow: hidden; margin-bottom: 10px;">
+                                        <!-- Nội dung thông báo -->
+                                        <div style="padding: 10px; flex: 1;">
+                                            <div style="font-weight: 500;">${tb.noiDung}</div>
+                                            <div style="font-size: 13px; color: #666;">🕒 ${tb.thoiGian}</div>
+                                        </div>
+
+                                        <!-- Xử lý trạng thái với giá trị mặc định nếu trống -->
+                                        <c:set var="trangThai" value="${empty tb.status ? 'Chưa đọc' : tb.status}" />
+
+                                        <c:choose>
+                                            <c:when test="${trangThai eq 'Đã đọc'}">
+                                                <div style="padding: 10px 15px; background-color: #e6f4ea; font-size: 13px; color: #2e7d32; display: flex; align-items: center; white-space: nowrap;">
+                                                    ${trangThai}
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div style="padding: 10px 15px; background-color: #fdecea; font-size: 13px; color: #c62828; display: flex; align-items: center; white-space: nowrap;">
+                                                    ${trangThai}
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                 </c:forEach>
                             </c:otherwise>
@@ -335,93 +441,98 @@
                     <div id="pagination-lichhoc"></div>
                 </div>
             </div>
-        </div>          
+                  
         
-        <!<!-- Java script phân trang -->            
-        <script>
-            $(document).ready(function () {
-                function applyPagination(containerSelector, itemSelector, paginationSelector, itemsPerPage = 5) {
-                    const items = $(containerSelector).children(itemSelector);
-                    const numItems = items.length;
+                <!-- Java script phân trang -->            
+                <script>
+                    $(document).ready(function () {
+                        function applyPagination(containerSelector, itemSelector, paginationSelector, itemsPerPage = 5) {
+                            const items = $(containerSelector).children(itemSelector);
+                            const numItems = items.length;
 
-                    if (numItems === 0) return;
+                            if (numItems === 0) return;
 
-                    function showPage(page) {
-                        const start = (page - 1) * itemsPerPage;
-                        const end = start + itemsPerPage;
-                        items.hide().slice(start, end).show();
+                            function showPage(page) {
+                                const start = (page - 1) * itemsPerPage;
+                                const end = start + itemsPerPage;
+                                items.hide().slice(start, end).show();
+                            }
+
+                            showPage(1);
+                            $(paginationSelector).pagination({
+                                items: numItems,
+                                itemsOnPage: itemsPerPage,
+                                onPageClick: function (pageNumber) {
+                                    showPage(pageNumber);
+                                }
+                            });
+                        }
+
+                        // Gọi hàm cho từng khu vực
+                        applyPagination("#tableLopHoc", "tr", "#pagination-lophoc", 5);
+                        applyPagination("#listThongBao", ".box-item", "#pagination-thongbao", 3);
+                        applyPagination("#listLichHoc", ".box-item", "#pagination-lichhoc", 5);
+                    });
+                </script>
+        
+                <!-- Java script thanh menu người dùng --> 
+                <script>
+                    function toggleUserMenu() {
+                        const dropdown = document.getElementById("userDropdown");
+                        dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
                     }
 
-                    showPage(1);
-                    $(paginationSelector).pagination({
-                        items: numItems,
-                        itemsOnPage: itemsPerPage,
-                        onPageClick: function (pageNumber) {
-                            showPage(pageNumber);
+                    document.addEventListener("click", function (event) {
+                        const toggle = document.querySelector(".user-toggle");
+                        const dropdown = document.getElementById("userDropdown");
+                        if (!toggle.contains(event.target) && !dropdown.contains(event.target)) {
+                            dropdown.style.display = "none";
                         }
                     });
-                }
-
-                // Gọi hàm cho từng khu vực
-                applyPagination("#tableLopHoc", "tr", "#pagination-lophoc", 5);
-                applyPagination("#listThongBao", ".box-item", "#pagination-thongbao", 5);
-                applyPagination("#listLichHoc", ".box-item", "#pagination-lichhoc", 5);
-            });
-        </script>
+                </script>
         
-        <!<!-- Java script thanh menu người dùng --> 
-        <script>
-            function toggleUserMenu() {
-                const dropdown = document.getElementById("userDropdown");
-                dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
-            }
-
-            document.addEventListener("click", function (event) {
-                const toggle = document.querySelector(".user-toggle");
-                const dropdown = document.getElementById("userDropdown");
-                if (!toggle.contains(event.target) && !dropdown.contains(event.target)) {
-                    dropdown.style.display = "none";
-                }
-            });
-        </script>
-        
-        <!-- 🔐 MODAL ĐỔI MẬT KHẨU -->
-        <div id="passwordModal" class="modal-overlay" style="display: none;">
-            <div class="modal-content">
-                <h3>🔐 Đổi mật khẩu</h3>
-                <!-- ✅ submit bình thường, không dùng fetch -->
-                <form method="post" action="${pageContext.request.contextPath}/ResetPasswordServlet">
-                    <input type="password" name="currentPassword" placeholder="Mật khẩu hiện tại" required>
-                    <input type="password" name="newPassword" placeholder="Mật khẩu mới" required>
-                    <input type="password" name="confirmPassword" placeholder="Xác nhận mật khẩu" required>
-                    <div class="modal-actions">
-                        <button type="submit" class="action-btn">Cập nhật</button>
-                        <button type="button" class="action-btn cancel" onclick="closeModal()">Hủy</button>
+                <!-- 🔐 MODAL ĐỔI MẬT KHẨU -->
+                <div id="passwordModal" class="modal-overlay" style="display: none;">
+                    <div class="modal-content">
+                        <h3>🔐 Đổi mật khẩu</h3>
+                        <!-- ✅ submit bình thường, không dùng fetch -->
+                        <form method="post" action="${pageContext.request.contextPath}/ResetPasswordServlet">
+                            <input type="password" name="currentPassword" placeholder="Mật khẩu hiện tại" required>
+                            <input type="password" name="newPassword" placeholder="Mật khẩu mới" required>
+                            <input type="password" name="confirmPassword" placeholder="Xác nhận mật khẩu" required>
+                            <div class="modal-actions">
+                                <button type="submit" class="action-btn">Cập nhật</button>
+                                <button type="button" class="action-btn cancel" onclick="closeModal()">Hủy</button>
+                            </div>
+                        </form>
+                        <!-- ✅ Hiển thị thông báo (nếu có) -->
+                        <c:if test="${not empty requestScope.message}">
+                            <p style="color: red; margin-top: 10px;">${requestScope.message}</p>
+                        </c:if>
                     </div>
-                </form>
-                <!-- ✅ Hiển thị thông báo (nếu có) -->
-                <c:if test="${not empty requestScope.message}">
-                    <p style="color: red; margin-top: 10px;">${requestScope.message}</p>
-                </c:if>
-            </div>
+                </div>
+
+                <script>
+                    function openModal() {
+                        document.getElementById("passwordModal").style.display = "flex";
+                    }
+
+                    function closeModal() {
+                        document.getElementById("passwordModal").style.display = "none";
+                    }
+
+                    // Đóng modal nếu bấm ra ngoài
+                    document.addEventListener("click", function(e) {
+                        const modal = document.getElementById("passwordModal");
+                        if (e.target === modal) {
+                            closeModal();
+                        }
+                    });
+                </script>
+                
+                </div>
+                <%@ include file="/views/student/footer.jsp" %>
+            </div>             
         </div>
-
-        <script>
-            function openModal() {
-                document.getElementById("passwordModal").style.display = "flex";
-            }
-
-            function closeModal() {
-                document.getElementById("passwordModal").style.display = "none";
-            }
-
-            // Đóng modal nếu bấm ra ngoài
-            document.addEventListener("click", function(e) {
-                const modal = document.getElementById("passwordModal");
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
-        </script>
     </body>
 </html>
