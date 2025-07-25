@@ -58,9 +58,11 @@ public class teacherGetFromDashboard extends HttpServlet {
         if (action == null) action = ""; // Default action if none specified
 
         HttpSession session = request.getSession();
-        // Redirect to login if user is not authenticated
-        if (session.getAttribute("user") == null) {
-            response.sendRedirect("views/login.jsp"); 
+        TaiKhoan user = (TaiKhoan) session.getAttribute("user");
+
+        // Check if user is logged in and has the correct role (ID_VaiTro = 2, staff)
+        if (user == null || user.getID_VaiTro() != 3) {
+            response.sendRedirect(request.getContextPath() + "/views/login.jsp");
             return;
         }
 

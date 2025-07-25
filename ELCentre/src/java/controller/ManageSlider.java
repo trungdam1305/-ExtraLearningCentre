@@ -56,7 +56,7 @@ public class ManageSlider extends HttpServlet {
         TaiKhoan user = (TaiKhoan) session.getAttribute("user");
 
         // Basic authentication check: Only authorized users (e.g., admins) can manage sliders
-        if (user == null) { // Or check user.getID_VaiTro() for specific role
+        if (user == null || user.getID_VaiTro() != 1) { // Or check user.getID_VaiTro() for specific role
             response.sendRedirect(request.getContextPath() + "/views/login.jsp"); // Redirect to login
             return;
         }

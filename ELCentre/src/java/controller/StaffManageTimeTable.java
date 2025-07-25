@@ -122,7 +122,7 @@ public class StaffManageTimeTable extends HttpServlet {
         
         // --- Set Staff info for Header (common for all views) ---
         // Redirect to login if no user is found in session
-        if (user != null) {
+        if (user != null && user.getID_VaiTro() == 2) {
             ArrayList<Staff> staffs = staffDAO.getNameStaff(user.getID_TaiKhoan()); 
             request.setAttribute("staffs", staffs); 
         } else {

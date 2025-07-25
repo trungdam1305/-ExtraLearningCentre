@@ -46,8 +46,9 @@ public class ManagePost extends HttpServlet {
 
         HttpSession session = request.getSession();
         TaiKhoan user = (TaiKhoan) session.getAttribute("user");
-        // Redirect to login if no user is in session
-        if (user == null) {
+
+        // Check if user is logged in and has the correct role (ID_VaiTro = 2, staff)
+        if (user == null || user.getID_VaiTro() != 2) {
             response.sendRedirect(request.getContextPath() + "/views/login.jsp");
             return;
         }
