@@ -31,10 +31,21 @@ public class HomePageMaterial extends HttpServlet {
         String pageParam = request.getParameter("page");
 
         // Parse 'monHocId' parameter, handling potential NumberFormatException.
-        Integer monHocId = Integer.parseInt(monHocIdParam);
+        Integer monHocId = null;
+        try {
+            if (monHocIdParam != null && !monHocIdParam.isEmpty()) {
+                monHocId = Integer.parseInt(monHocIdParam);
+            }
+        } catch (NumberFormatException e) { /* Ignore and keep as null if invalid */ }
 
         // Parse 'loaiTaiLieuId' parameter, handling potential NumberFormatException.
-        Integer loaiTaiLieuId = Integer.parseInt(loaiTaiLieuIdParam);
+        Integer loaiTaiLieuId = null;
+        try {
+            if (loaiTaiLieuIdParam != null && !loaiTaiLieuIdParam.isEmpty()) {
+                loaiTaiLieuId = Integer.parseInt(loaiTaiLieuIdParam);
+            }
+        } catch (NumberFormatException e) { /* Ignore and keep as null if invalid */ }
+
         // Parse 'page' parameter, defaulting to 1 if invalid or not provided.
         int page = 1;
         try {

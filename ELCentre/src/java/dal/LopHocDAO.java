@@ -1064,9 +1064,8 @@ public class LopHocDAO {
         List<LopHoc> list = new ArrayList<>();
         List<Object> params = new ArrayList<>();
         StringBuilder sql = new StringBuilder("""
-            SELECT l.*, p.TenPhongHoc, gv.HoTen AS TenGiaoVien , kh.TenKhoaHoc
+            SELECT l.*,gv.HoTen AS TenGiaoVien , kh.TenKhoaHoc
             FROM LopHoc l
-            JOIN PhongHoc p ON l.ID_PhongHoc = p.ID_PhongHoc
             LEFT JOIN GiaoVien_LopHoc gvlh ON l.ID_LopHoc = gvlh.ID_LopHoc
             LEFT JOIN GiaoVien gv ON gvlh.ID_GiaoVien = gv.ID_GiaoVien
             JOIN KhoaHoc kh ON kh.ID_KhoaHoc = l.ID_KhoaHoc
@@ -1095,7 +1094,6 @@ public class LopHocDAO {
                     lop.setSiSoToiDa(rs.getInt("SiSoToiDa"));
                     lop.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
                     lop.setGhiChu(rs.getString("GhiChu"));
-                    lop.setTenKhoaHoc(rs.getString("TenKhoaHoc"));
                     lop.setTenGiaoVien(rs.getString("TenGiaoVien"));
                                       list.add(lop);
                 }
