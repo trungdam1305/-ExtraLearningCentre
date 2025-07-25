@@ -51,7 +51,7 @@ public class ManageMaterial extends HttpServlet {
         HttpSession session = request.getSession();
         TaiKhoan user = (TaiKhoan) session.getAttribute("user");
 
-        // Check if user is logged in and has the correct role (ID_VaiTro = 2, likely staff/teacher)
+        // Check if user is logged in and has the correct role (ID_VaiTro = 2, staff)
         if (user == null || user.getID_VaiTro() != 2) {
             response.sendRedirect(request.getContextPath() + "/views/login.jsp");
             return;

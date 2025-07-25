@@ -62,6 +62,7 @@
             padding: 20px;
             color: white;
             position: fixed;
+            overflow-y:auto;
             }
             .sidebar-title {
                 font-size: 18px;
