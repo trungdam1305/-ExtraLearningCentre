@@ -472,7 +472,7 @@ Author : trungdam
                                     <td>${lop.tenLopHoc}</td>
                                     <td>${lop.tenGiaoVien}</td>
                                     <td class="text-center">
-                                        <a href="StaffManageAttendance?action=viewDetail&classId=${lop.ID_LopHoc}" class="btn btn-sm" style="background: linear-gradient(135deg, #E0F7FA, #B2EBF2)">
+                                        <a href="StaffManageAttendance?action=showClassAttendanceReport&classId=${lop.ID_LopHoc}" class="btn btn-sm" style="background: linear-gradient(135deg, #E0F7FA, #B2EBF2)">
                                             <i class="fas fa-calendar-week"></i> Xem Điểm Danh
                                         </a>
                                     </td>

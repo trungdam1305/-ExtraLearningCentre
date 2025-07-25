@@ -582,7 +582,7 @@ public class ManageCourse extends HttpServlet {
                     String originalFileName = imagePart.getSubmittedFileName();
                     String safeFileName = originalFileName.replaceAll("\\s+", "_");
                     String fileName = UUID.randomUUID().toString() + "_" + safeFileName;
-                    String uploadPath = getServletContext().getRealPath("/images/course");
+                    String uploadPath = getServletContext().getRealPath("");
                     File uploadDir = new File(uploadPath);
                     if (!uploadDir.exists()) {
                         uploadDir.mkdirs();
@@ -590,7 +590,7 @@ public class ManageCourse extends HttpServlet {
                     String filePath = uploadPath + File.separator + fileName;
                     try {
                         imagePart.write(filePath);
-                        imagePath = "img/avatar/" + fileName;
+                        imagePath = "" + fileName;
                     } catch (IOException e) {
                         request.setAttribute("err", "Lỗi khi lưu tệp hình ảnh: " + e.getMessage());
                         request.getRequestDispatcher("/views/admin/addCourse.jsp").forward(request, response);
@@ -717,7 +717,7 @@ public class ManageCourse extends HttpServlet {
                     String originalFileName = imagePart.getSubmittedFileName();
                     String safeFileName = originalFileName.replaceAll("\\s+", "_");
                     String fileName = UUID.randomUUID().toString() + "_" + safeFileName;
-                    String uploadPath = getServletContext().getRealPath("/images/course");
+                    String uploadPath = getServletContext().getRealPath("");
                     File uploadDir = new File(uploadPath);
                     if (!uploadDir.exists()) {
                         uploadDir.mkdirs();
@@ -725,7 +725,7 @@ public class ManageCourse extends HttpServlet {
                     String filePath = uploadPath + File.separator + fileName;
                     try {
                         imagePart.write(filePath);
-                        imagePath = "/images/course/" + fileName;
+                        imagePath = "" + fileName;
                     } catch (IOException e) {
                         request.setAttribute("err", "Lỗi khi lưu tệp hình ảnh: " + e.getMessage());
                         request.setAttribute("khoaHoc", khoaHocCu);
